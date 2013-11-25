@@ -1,0 +1,29 @@
+// ident @(#)lq01.mql	1.1 04/02/16
+// This finds instances of the verb "FIJM" (to put) with double object
+// both in Hebrew and Aramaic.
+// Janet Dyk came up with this problem.
+
+/*
+<metadata>
+<meta type="research_question">Can the verb שִׂים have a double object?</meta> 
+<meta type="researcher" value="Janet Dyk"/>
+<meta type="date_created" value="2004-02-16"/>
+<meta type="date_run" value="2012-01-27"/>
+<meta type="description">This finds instances of the verb "שִׂים" (to put) with double object both in Hebrew and Aramaic.</meta>
+<meta type="publications"></meta>
+</metadata>
+*/
+
+//==========
+SELECT ALL OBJECTS
+WHERE
+[Clause
+  [Phrase
+     [Word FOCUS part_of_speech = verb AND lexeme = "FJM["]
+  ]
+  ..
+  [Phrase FOCUS phrase_function = Objc OR phrase_function = IrpO]
+  ..
+  [Phrase FOCUS phrase_function = Objc OR phrase_function = IrpO]
+]
+GO
