@@ -1,7 +1,7 @@
 // ident @(#)lq01.mql	1.1 04/02/16
 // This finds instances of the verb "FIJM" (to put) with double object
 // both in Hebrew and Aramaic.
-// Janet Dyk came up with this problem.
+// J D came up with this problem.
 
 /*
 <metadata>
