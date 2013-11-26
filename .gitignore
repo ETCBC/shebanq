@@ -1,0 +1,10 @@
+.DS_Store
+.idea/
+*.pyc
+*.pyo
+databases/*.table
+databases/*.log
+databases/*.sqlite
+languages/*
+sessions/*
+uploads/*
