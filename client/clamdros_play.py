@@ -63,40 +63,43 @@ while data.status != clam.common.status.DONE:
 
 print >>sys.stderr, "Finished... " + str(len(data.output)) + " output files"
 #Iterate over output files
-for outputfile in data.output:
+#for outputfile in data.output:
+#
+#    # no metadata present!?
+#    #try:
+#    #outputfile.loadmetadata() #metadata contains information on output template
+#
+#    #except:
+#        #print >>sys.stderr, "exc"
+#        #continue
+#
+#    #outputtemplate = outputfile.metadata.provenance.outputtemplate_id
+#    #print outputtemplate
+#    #You can check this value against the following predefined output templates,
+#    # and determine desired behaviour based on the output template:	#
+#    #if outputtemplate == "mql-result": #MQL Query Results (UndefinedXMLFormat)	#Download the remote file
+#        #outputfile.copy(output_filename)
+#
+#    #..or iterate over its (textual) contents one line at a time:
+#    #for line in outputfile.readlines():
+#		#print line
+#
+#    print "\tFILE: " + str(outputfile)
+#    print "\tCONTENTS: "
+#    #Download and immediately read the output file
+#    for line in outputfile:
+#        print "\t\t" + line,
+#    print
 
-    # no metadata present!?
-    #try:
-    #outputfile.loadmetadata() #metadata contains information on output template
 
-    #except:
-        #print >>sys.stderr, "exc"
-        #continue
-
-    #outputtemplate = outputfile.metadata.provenance.outputtemplate_id
-    #print outputtemplate
-    #You can check this value against the following predefined output templates,
-    # and determine desired behaviour based on the output template:	#
-    #if outputtemplate == "mql-result": #MQL Query Results (UndefinedXMLFormat)	#Download the remote file
-        #outputfile.copy(output_filename)
-
-    #..or iterate over its (textual) contents one line at a time:
-    #for line in outputfile.readlines():
-		#print line
-
-    print "\tFILE: " + str(outputfile)
-    print "\tCONTENTS: "
-    #Download and immediately read the output file
-    for line in outputfile:
-        print "\t\t" + line,
-    print
+print(len(data.output[0].readlines()))
 
 zipurl = data.baseurl + "/" + project + "/output/zip/"
-print "zip url: " + zipurl
+print("zip url: " + zipurl)
 
-zipfile = open(project+".zip", "w")
-clamclient.downloadarchive(project, zipfile)
-zipfile.close()
+#zipfile = open(project+".zip", "w")
+#clamclient.downloadarchive(project, zipfile)
+#zipfile.close()
 
 
 #delete the project (otherwise it would remain on server and clients would leave a mess)

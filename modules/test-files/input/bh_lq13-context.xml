@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<context_list level="0">
+<context>
+<focus first="11747" last="11747"/>
+<focus first="11748" last="11748"/>
+<focus first="11749" last="11749"/>
+<focus first="11750" last="11750"/>
+<context_part>
+<v d="Unknown" b="Genesis" c="24" v="32">
+<s id_d="86068">
+<w fm="11746">לִ</w>
+<w fm="11747">רְחֹ֣ץ</w>
+<w fm="11748">רַגְלָ֔יו</w>
+<w fm="11749">וְ</w>
+<w fm="11750">רַגְלֵ֥י</w>
+<w fm="11751">הָ</w>
+<w fm="11752">אֲנָשִׁ֖ים</w>
+</s>
+</v>
+</context_part>
+</context>
+<context>
+<focus first="119177" last="119177"/>
+<focus first="119178" last="119178"/>
+<focus first="119179" last="119179"/>
+<focus first="119180" last="119180"/>
+<context_part>
+<v d="Unknown" b="Joshua" c="10" v="20">
+<s id_d="405787">
+<w fm="119176">כְּ</w>
+<w fm="119177">כַלֹּ֨ות</w>
+<w fm="119178">יְהֹושֻׁ֜עַ</w>
+<w fm="119179">וּ</w>
+<w fm="119180">בְנֵ֣י</w>
+<w fm="119181">יִשְׂרָאֵ֗ל</w>
+</s>
+</v>
+</context_part>
+</context>
+<context>
+<focus first="203695" last="203695"/>
+<focus first="203696" last="203696"/>
+<focus first="203697" last="203697"/>
+<focus first="203698" last="203698"/>
+<context_part>
+<s id_d="685158">
+<v d="Unknown" b="II_Kings" c="12" v="13">
+<w fm="203693">וְ</w>
+<w fm="203694">לִ</w>
+<w fm="203695">קְנֹ֤ות</w>
+<w fm="203696">עֵצִים֙</w>
+<w fm="203697">וְ</w>
+<w fm="203698">אַבְנֵ֣י</w>
+<w fm="203699">מַחְצֵ֔ב</w>
+</v>
+</s>
+</context_part>
+</context>
+<context>
+<focus first="210195" last="210195"/>
+<focus first="210196" last="210196"/>
+<focus first="210197" last="210197"/>
+<focus first="210198" last="210198"/>
+<context_part>
+<s id_d="685965">
+<v d="Unknown" b="II_Kings" c="22" v="6">
+<w fm="210193">וְ</w>
+<w fm="210194">לִ</w>
+<w fm="210195">קְנֹ֤ות</w>
+<w fm="210196">עֵצִים֙</w>
+<w fm="210197">וְ</w>
+<w fm="210198">אַבְנֵ֣י</w>
+<w fm="210199">מַחְצֵ֔ב</w>
+</v>
+</s>
+</context_part>
+</context>
+<context>
+<focus first="373299" last="373299"/>
+<focus first="373300" last="373300"/>
+<focus first="373301" last="373301"/>
+<focus first="373302" last="373302"/>
+<context_part>
+<v d="Unknown" b="Daniel" c="1" v="4">
+<s id_d="1293300">
+<w fm="373297">וּֽ</w>
+<w fm="373298">לֲ</w>
+<w fm="373299">לַמְּדָ֥ם</w>
+<w fm="373300">סֵ֖פֶר</w>
+<w fm="373301">וּ</w>
+<w fm="373302">לְשֹׁ֥ון</w>
+<w fm="373303">כַּשְׂדִּֽים</w>
+</s>
+</v>
+</context_part>
+</context></context_list>

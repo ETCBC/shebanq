@@ -1,0 +1,41 @@
+div.result {
+width: 100%;
+}
+div.context {
+padding:2px 7px 2px 7px;
+margin-top:1em;
+margin-bottom:1em;
+background-color:  	#C0C0C0; /*#EDEDED;*/
+text-align:right;
+}
+div.book-title {
+margin-bottom:0.5em;
+margin-top:0.5em;
+color: blue;
+font-size:90%;
+font-family:Verdana, Geneva, sans-serif;
+}
+div.hebrew {
+font-size: 150%;
+line-height:1.3em;
+}
+span.sentence {
+/*background-color:white;*/
+margin-left:7px;
+margin-right:7px;
+padding:2px;
+}
+span.word {
+
+}
+span.focus {
+background-color: yellow;
+}
+
+div.query {
+width: 50em;
+}
+
+textarea.query {
+width: 100%;
+}

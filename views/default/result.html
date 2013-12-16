@@ -1,0 +1,37 @@
+{{extend 'layout.html'}}
+{{import os}}
+<h3>Query</h3>
+<pre>
+{{=session.mql_query}}
+</pre>
+<h3>Result</h3>
+
+{{=XML(result_context)}}
+
+<h4>query returned {{=str(len(output))}} files.</h4>
+
+{{teller=0}}
+{{for outputfile in output: }}
+{{teller += 1}}
+    <div>
+    <button id="toggler_{{=teller}}">Toggle</button>
+    <a href="{{=str(outputfile)}}" target="_blank">{{=os.path.basename(str(outputfile))}}</a>
+
+    <br/>
+    <div id="toggled_{{=teller}}">
+    {{for line in outputfile:}}
+        <span>{{=line}}</span><br/>
+    {{pass}}
+    </div>
+    <script>
+        $( "#toggler_{{=teller}}" ).click(function() {
+            $( "#toggled_{{=teller}}" ).slideToggle( );
+
+        });
+        $( "#toggler_{{=teller}}" ).click()
+    </script>
+    </div>
+
+{{pass}}
+
+
