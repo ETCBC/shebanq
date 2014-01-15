@@ -17,7 +17,7 @@
 //==========
 SELECT ALL OBJECTS
 WHERE
-[Clause
+[Clause `context
   [Phrase
      [Word FOCUS part_of_speech = verb AND lexeme = "FJM["]
   ]

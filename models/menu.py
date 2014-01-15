@@ -56,6 +56,7 @@ response.menu = [
         ])
     ]),
     (T('Query'), False, URL('default', 'query'), []),
+    (T('Query2'), False, URL('linquer', 'query'), []),
     (T('testform'), False, URL('default', 'testform'), [])
 ]
 

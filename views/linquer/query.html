@@ -1,0 +1,36 @@
+{{extend 'layout.html'}}
+<h2>Query</h2>
+<div class="mql_form">
+{{=form}}
+
+<!--{{=BEAUTIFY(form.errors)}}-->
+
+    <script>
+
+        function toggleContextHandler()
+        {
+            if( $( "#handler_namelevel" ).prop("checked")) {
+                $( "#mql_queries_context_level__row" ).fadeIn( );
+                $( "#mql_queries_context_marker__row" ).hide( );
+            }
+            if( $( "#handler_namemarks" ).prop("checked")) {
+                $( "#mql_queries_context_level__row" ).hide( );
+                $( "#mql_queries_context_marker__row" ).fadeIn( );
+            }
+
+        }
+
+        $( "#handler_namemarks" ).change(function() {
+            toggleContextHandler();
+        });
+
+        $( "#handler_namelevel" ).change(function() {
+            toggleContextHandler();
+        });
+
+        $( document ).ready(function() {
+            toggleContextHandler();
+        });
+    </script>
+
+</div>

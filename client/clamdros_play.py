@@ -40,7 +40,7 @@ clamclient.addinputfile(project, data.inputtemplate("mql-query"), input_filename
 #Start project execution with custom parameters.
 # Parameters are specified as Python keyword arguments to the start() method
 # (parameterid=value)#contextlevel=...  #(IntegerParameter) -   Offset -  Limit result context to straw depth
-data = clamclient.start(project)
+data = clamclient.start(project, contexthandlername="marks", contextlevel=1)
 
 
 #Always check for parameter errors! Don't just assume everything went well!
@@ -93,6 +93,9 @@ print >>sys.stderr, "Finished... " + str(len(data.output)) + " output files"
 
 
 print(len(data.output[0].readlines()))
+
+for line in data.output[0]:
+    print(line)
 
 zipurl = data.baseurl + "/" + project + "/output/zip/"
 print("zip url: " + zipurl)

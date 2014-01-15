@@ -28,16 +28,18 @@ from lxml import etree
 
 class Client(object):
 
-
     def __init__(self):
         self.project = "shebanq" + str(random.getrandbits(64))
         self.clamclient = clam.common.client.CLAMClient(props.clamdros_url)#, props.clamdros_username, props.clamdros_password)
 
-    def query(self, input_filename):
+    def query(self, input_filename, contexthandlername="level", contextlevel=0, contextmark='context'):
         self.clamclient.create(self.project)
         data = self.clamclient.get(self.project)
         self.clamclient.addinputfile(self.project, data.inputtemplate("mql-query"), input_filename)
-        data = self.clamclient.startsafe(self.project)
+        data = self.clamclient.startsafe(self.project,
+                                         contexthandlername=contexthandlername,
+                                         contextlevel=contextlevel,
+                                         contextmark=contextmark)
 
         while data.status != clam.common.status.DONE:
             #print "not ready, going to sleep"

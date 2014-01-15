@@ -1,7 +1,9 @@
 {{extend 'layout.html'}}
-<h1>Query</h1>
+<h1>No-db Query</h1>
 <div class="query">
 {{=form}}
+
+<!--{{=BEAUTIFY(form.errors)}}-->
 
 {{=XML(result_context)}}
 
