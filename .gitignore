@@ -10,3 +10,4 @@ languages/*
 sessions/*
 uploads/*
 errors/*
+cache/*
