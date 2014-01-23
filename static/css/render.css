@@ -1,3 +1,9 @@
+body {
+color: #0E0E0E;
+background-color: #FEFEFE;
+}
+
+/* mql result */
 div.result {
 width: 100%;
 }
@@ -33,15 +39,35 @@ background-color: yellow;
 }
 
 /* mql form */
-div.w2p_fc {
-vertical-align:top;
+div.mql_form {
+background-color: #EEEEEE;
+padding: 10px 10px 10px 10px;
 }
-#mql_queries_mql {
+.mql_form div.w2p_fl label {
+font-weight:bold;
+}
+.mql_form div.w2p_fw {
+
+}
+.mql_form div.w2p_fc {
+padding-left: 1em;
+font-size: 90%;
+color: grey;
+}
+
+#mql_queries_mql, #mql_queries_description {
 width: 50em;
+}
+#mql_queries_description {
+height: 8em;
+}
+#mql_queries_handler_name__row {
+background-color: #EEEEEE;
+width: 51em;
 }
 #mql_queries_handler_name__row div.w2p_fw div {
 float: left;
-margin-left: 20px;
+margin-left: 23px;
 }
 #mql_queries_handler_name__row div.w2p_fl {
 float: left;
@@ -53,6 +79,10 @@ margin-right: 10px;
 #mql_queries_context_level {
 width: 2em;
 }
+#mql_queries_context_marker {
+width: 7em;
+}
+
 #mql_queries_context_level__row, #mql_queries_context_marker__row {
 clear: left;
 }
@@ -81,6 +111,9 @@ font-size: 90%;
 #submit_record__row {
 padding-top: 20px;
 clear: left;
+}
+button {
+margin-right: 10px;
 }
 
 

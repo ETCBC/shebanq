@@ -85,6 +85,10 @@ auth.settings.reset_password_requires_verification = True
 #If the user tried to access the register page but is already logged in, redirect to profile.
 auth.settings.logged_url = URL('user', args='profile')
 
+## if crud is to be used...
+# crud.settings.auth = auth
+##
+
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
 ## register with janrain.com, write your domain:api_key in private/janrain.key
 from gluon.contrib.login_methods.rpx_account import use_janrain

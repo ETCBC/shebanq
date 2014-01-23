@@ -29,10 +29,10 @@ class IS_FILLED_OR_DEFAULT(Validator):
     """
     Replaces empty value with given default_value, otherwise returns value.
         >> IS_FILLED_OR_DEFAULT(0)('5')
-        (5, None)
+        ('5', None)
 
         >> IS_FILLED_OR_DEFAULT(0)('')
-        (0, None)
+        ('0', None)
 
         >> IS_FILLED_OR_DEFAULT('some value')('any')
         ('any', None)
@@ -53,6 +53,39 @@ class IS_FILLED_OR_DEFAULT(Validator):
         if empty:
             value = self.default_value
         return (value, None)
+
+
+class IS_MQL_QUERY(Validator):
+
+    def __call__(self, value):
+        value, empty = is_empty(value, empty_regex=None)
+        if empty:
+            return value, 'Enter a query'
+
+        words = ['select', 'all', 'objects', 'where']
+        missing_words = []
+        l_value = value.lower()
+        pos = 0
+        for word in words:
+            pos = l_value.find(word, pos, len(l_value))
+            if pos < 0:
+                missing_words.append(word)
+
+        if len(missing_words) == len(words):
+            value = 'SELECT ALL OBJECTS WHERE\n' + value
+
+        if 0 < len(missing_words) < len(words):
+            return value, 'The query is invalid. Missing or misplaced key words: ' + str(missing_words)
+
+        return value, None
+
+
+class IS_TEST(Validator):
+    def __call__(self, value):
+        print value
+        print type(value)
+        return (value, None)
+
 
 # Define the table that contains the handler types for query results
 #db.define_table("mql_context_handler",
@@ -77,10 +110,12 @@ signature = db.Table(db,'auth_signature',
 
 # Define the query table
 db.define_table("mql_queries",
-    Field('mql', 'text', requires=IS_NOT_EMPTY(error_message="Enter a query")),
+    Field('name', 'string', requires=IS_NOT_EMPTY(error_message='Enter a name for the query')),
+    Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Enter the description of the query')),
+    Field('mql', 'text', requires=IS_MQL_QUERY()),
     Field('handler_name', 'string',
           #requires=IS_IN_SET(range(2),('level', 'marks')), # field type: integer, default=0 | 1
-          requires=IS_IN_SET({'level' : 'Level', 'marks' : 'Marks'}),
+          requires=IS_IN_SET({'marks' : 'Marks', 'level' : 'Level'}),
           default='level',
           widget=lambda k,v: SQLFORM.widgets.radio.widget(k, v, style='divs',),
         ),

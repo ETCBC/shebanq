@@ -112,10 +112,6 @@ def query():
 
     return dictio
 
-@auth.requires_login()
-def query2():
-    return 'Hello from query2 ' + str(auth.user.last_name)
-
 
 # old result was on separate page..
 def result():
