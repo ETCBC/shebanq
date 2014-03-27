@@ -56,9 +56,9 @@ response.menu = [
         ])
     ]),
     (T('Query'), False, URL('default', 'query'), []),
-    (T('Query2'), False, URL('linquer', 'query'), [
-        (T('Query'), False, URL('linquer', 'query'), []),
-        (T('My Queries'), False, URL('linquer', 'manage_queries'), []),
+    (T('Query2'), False, URL('linquer', 'edit_query'), [
+        (T('Edit Query'), False, URL('linquer', 'edit_query'), []),
+        (T('My Queries'), False, URL('linquer', 'my_queries'), []),
     ]),
     (T('testform'), False, URL('default', 'testform'), [])
 ]

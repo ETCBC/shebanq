@@ -53,6 +53,7 @@ class Client(object):
     def render(self, context_file):
         xslPath = os.path.dirname(__file__) + "/render.xsl"
         xslRoot = etree.fromstring(open(xslPath).read())
+
         transform = etree.XSLT(xslRoot)
 
         list = context_file.readlines()

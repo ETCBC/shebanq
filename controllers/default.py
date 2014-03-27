@@ -120,10 +120,10 @@ def result():
     mqfile = open(input_file, "w")
     mqfile.writelines(session.mql_query)
     mqfile.close()
-    client = clamdros.Client()
-    output = client.query(input_file)
+    #client = clamdros.Client()
+    #output = client.query(input_file)
 
-    return dict(output=output[0], result_context=output[1])
+    return dict(output="old output", result_context="old result context")#output[0], result_context=output[1])
 
 
 def testform():
