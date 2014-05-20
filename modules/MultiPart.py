@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Python is missing a framework for handling multiPart responses.
+
 # # Fake imports and web2py variables. See also: __init__.py
 # This code only serves to satisfy the editor. It is never executed.
 if 0:
@@ -26,14 +28,25 @@ import requests
 from cStringIO import StringIO
 
 class MultiPartDirector(object):
-
+    """
+    MultiPartDirector decides what ContentHandler shall handle the content of different bodyParts.
+    The default behavior of this MultiPartDirector is to always return a standard ContentHandler.
+    Implementers that wish to get control over what ContentHandler should handle which body part's content
+    should subclass this class.
+    """
     def getHandlerFor(self, bodypart):
-        # default behavior is to return a default ContentHandler
+        """
+        Get the handler for content of the given BodyPart. The given BodyPart instance should have parsed all header
+        lines of the body part for which a contentHandler is requested.
+
+        """
         return ContentHandler()
 
 
 class ContentHandler(object):
-
+    """
+    Handler for the content lines in a multi part body part. This handler collects all lines of content in a StringIO.
+    """
     def __init__(self):
         self.content = StringIO()
 
