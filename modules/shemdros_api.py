@@ -34,6 +34,7 @@ reload(multiPart)
 from purl import URL
 from lxml import etree
 
+
 def result_to_html(xml_tree):
     xsl_path = os.path.dirname(__file__) + "/render2.xsl"
     xsl_tree = etree.parse(xsl_path)
@@ -195,18 +196,13 @@ class MqlResource(Resource):
         if response.status_code != 200:
             raise RemoteException(response)
 
-        director = MqlAndContextDirector()
-        mp = multiPart.MultiPart(response, multipart_director=director)
+        mp = multiPart.MultiPart(response, multipart_director=MqlAndContextDirector())
 
-        print (mp.mime_type)
-        print (mp.boundery)
+        multi = {}
         for bp in mp.bodyparts:
-            print(bp.content_type)
-            print(bp.disposition)
-            print(bp.filename)
-            print(bp.getcontent_as_string())
+            multi[bp.filename]=bp.getcontent_as_string()
 
-        print(len(mp.bodyparts))
+        return multi
 
 
 class MqlAndContextDirector(multiPart.MultiPartDirector):
@@ -222,6 +218,8 @@ class MqlContextHandler(multiPart.ContentHandler):
 
     def __init__(self):
         self.parser = etree.XMLParser()
+        self.xml_tree=None
+        self.html_tree=etree.fromstring('<div/>')
 
     def __handleline__(self, line):
         self.parser.feed(line)
@@ -236,6 +234,8 @@ class MqlContextHandler(multiPart.ContentHandler):
 
 
 if __name__ == '__main__':
+
+
     import time
     sh = ShemdrosResource()
 
@@ -280,15 +280,15 @@ if __name__ == '__main__':
     # d = mq.getMqlXml(query)
     # print(d)
     #
-    d = mq.getContextHtml(query)
-    print(d)
+    # d = mq.getContextHtml(query)
+    # print(d)
 
-    #response = mq.queryAndRender(query)
-    #print(response.headers['content-type'])
-    #print(response.text)
+    response = mq.queryAndRender(query)
+    print(response.headers['content-type'])
+    print(response.text)
 
-    d = mq.getMqlAndContextHtml(query)
-    print(d)
+    #d = mq.getMqlAndContextHtml(query)
+    #print(d)
 
     # multipart/mixed; boundary=Boundary_3_429738776_1395677545737
     # --Boundary_3_429738776_1395677545737
