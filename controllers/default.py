@@ -34,12 +34,12 @@ if 0:
 #########################################################################
 
 # long import statement for editor and web2py
-from applications.shebanq.modules import clamdros
+# from applications.shebanq.modules import clamdros
 # short import statement only satisfies web2py
 #import trypy as tpy
 
 #only use this during development:
-reload(clamdros)
+# reload(clamdros)
 
 
 def index():
@@ -99,14 +99,14 @@ def query():
         mqfile.writelines(current_query)
         mqfile.close()
 
-        client = clamdros.Client()
-        output = client.query(input_file,
-                              contexthandlername=handler_type, contextlevel=contextlevel, contextmark=contextkey)
-
-        dictio["result_context"] = output[1]
-        dictio["result_files"] = output[0]
-
-        client.remove()
+        #client = clamdros.Client()
+        # output = client.query(input_file,
+        #                       contexthandlername=handler_type, contextlevel=contextlevel, contextmark=contextkey)
+        #
+        # dictio["result_context"] = output[1]
+        # dictio["result_files"] = output[0]
+        #
+        # client.remove()
     elif form.errors:
         response.flash = 'form has errors, see details'
 

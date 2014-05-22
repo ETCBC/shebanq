@@ -55,8 +55,15 @@ font-size: 90%;
 color: grey;
 }
 
+#queries_mql, #queries_description {
+width: 50em;
+}
 #mql_queries_mql, #mql_queries_description {
 width: 50em;
+}
+
+#queries_description {
+height: 8em;
 }
 #mql_queries_description {
 height: 8em;
@@ -86,11 +93,26 @@ width: 7em;
 #mql_queries_context_level__row, #mql_queries_context_marker__row {
 clear: left;
 }
+
+#queries_created_on__label, #queries_created_by__label, #queries_modified_on__label, #queries_modified_by__label {
+font-size: 100%;
+}
 #mql_queries_created_on__label, #mql_queries_created_by__label, #mql_queries_modified_on__label, #mql_queries_modified_by__label {
 font-size: 100%;
 }
+
+#queries_created_on__row {
+float:left;
+font-size: 90%;
+}
 #mql_queries_created_on__row {
 float:left;
+font-size: 90%;
+}
+
+#queries_created_by__row {
+float:left;
+margin-left: 20px;
 font-size: 90%;
 }
 #mql_queries_created_by__row {
@@ -98,7 +120,19 @@ float:left;
 margin-left: 20px;
 font-size: 90%;
 }
+
+#queries_modified_on__row {
+float: left;
+margin-left: 20px;
+font-size: 90%;
+}
 #mql_queries_modified_on__row {
+float: left;
+margin-left: 20px;
+font-size: 90%;
+}
+
+#queries_modified_by__row {
 float: left;
 margin-left: 20px;
 font-size: 90%;
