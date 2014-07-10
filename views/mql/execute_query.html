@@ -3,9 +3,19 @@
 <div class="mql_form">
 {{=form}}
 </div>
-<div class="monad_sets">
-{{=monad_sets}}
-</div>
-<div class="exception">
-    {{=exception}}
-</div>
+
+
+    {{if exception is not None:}}
+        <div class="exception">
+            <div>The error message is printed below.</div>
+            <div>
+                {{=exception_message}}
+            </div>
+            <div>Remote exception:</div>
+            {{=exception}}
+         </div>
+    {{else:}}
+        <div class="monad_sets">
+            {{=monad_sets}}
+        </div>
+        {{pass}}

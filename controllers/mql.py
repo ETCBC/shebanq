@@ -22,6 +22,7 @@ if 0:
     # End of fake imports to satisfy the editor.
     #
 
+
 def get_record_id():
     #print "get_record_id"
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
@@ -78,6 +79,7 @@ def get_mql_form(mql_record, readonly=False):
        formstyle='divs',
        buttons=[TAG.button('Save', _type='submit', _name='button_save'),
                 TAG.button('Execute', _type='submit', _name='button_execute'),
+                TAG.button('Render', _type='submit', _name='button_render'),
                 TAG.button('New', _type='submit', _name='button_new'), ]
     )
     return mql_form
@@ -93,6 +95,9 @@ def handle_response(mql_form):
 
         elif request.vars.has_key('button_execute'):
             redirect(URL('execute_query', vars=dict(id=record_id)))
+
+        elif request.vars.has_key('button_render'):
+            redirect(URL('render_query', vars=dict(id=record_id)))
 
         elif request.vars.has_key('button_new'):
             session.flash = 'saved previous query as ' + record_id
@@ -133,10 +138,45 @@ def execute_query():
         monad_sets = mql.list_monad_set(mql_record.mql)
     except RemoteException, e:
         response.flash = 'Exception while executing query: '
-        return dict(form=mql_form, monad_sets=[[]], exception=CODE(e.message))
+        return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
 
     response.flash = 'Query executed'
-    return dict(form=mql_form, monad_sets=monad_sets, exception='')
+    return dict(form=mql_form, monad_sets=monad_sets, exception=None)
+
+@auth.requires(lambda: check_query_access_execute())
+def render_query():
+    from shemdros.client.api import MonadsetIterator
+    from shemdros.client.api import RemoteException
+    from shebanq_db.etcbc import VerseIterator
+
+    record_id = get_record_id()
+    mql_form = get_mql_form(record_id)
+    handle_response(mql_form)
+
+    mql_record = db.queries[record_id]
+    query = mql_record.mql
+    try:
+        verse_iter = VerseIterator(MonadsetIterator(query), max_verses=10)
+
+    except RemoteException, e:
+        response.flash = 'Exception while executing query: '
+        return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
+
+    response.flash = 'Query executed'
+    return dict(form=mql_form, exception=None, verse_iter=verse_iter)
+
+
+def parse_exception(message):
+    import xml.etree.ElementTree as ET
+    try:
+        root = ET.XML(message)
+        result = root.find('.//http-status/code').text
+        result += ' '
+        result += root.find('.//http-status/reason').text
+        result += root.find('.//exception/message').text
+        return result
+    except:
+        return "<Unparsable result>"
 
 @auth.requires_login()
 def my_queries():
@@ -168,3 +208,4 @@ def delete_multiple():
 
     session.flash="deleted " + str(request.vars.id)
     redirect(URL('my_queries'))
+
