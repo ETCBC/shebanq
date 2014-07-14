@@ -1,0 +1,39 @@
+h1, h2 {
+    display: inline-block;
+}
+
+#verses {
+    direction:rtl;
+    unicode-bidi:bidi-override;
+}
+#verses dt {
+    line-height: 3em;
+}
+#verses dd {
+    line-height: 3em;
+    margin-top: -3.1em;
+    margin-right: 2em;
+    margin-left: 2em;
+}
+#verses_form ul, #verses_form li, #verses_form div, #verses_form label {
+    display: inline;
+}
+#verses_form .btn {
+    vertical-align: top;
+}
+
+.highlight {
+    background: #FFFF00;
+}
+
+#highlighter_form input[type="text"] {
+    width: 95%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+#highlighter_form div {
+    display: block;
+}
+#highlighter_form label {
+    display: none;
+}

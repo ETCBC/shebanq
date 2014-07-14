@@ -1,0 +1,35 @@
+{{ left_sidebar_enabled = True }}
+{{ if verses: }}
+    {{ response.subtitle = "%s - Chapter %s" % (book.name, chapter.chapter_num) }}
+{{ pass }}
+{{ extend 'layout.html' }}
+
+{{ block head }}
+    <link type="text/css" rel="stylesheet" href="{{=URL('static', 'css/etcbc.css')}}" />
+    {{ if monads: }}
+        <script type="text/javascript">
+            // This is necessary to pass on the information in a web2py
+            // controller variable to javascript.
+            var w2p_monads = {{ =XML(response.json(monads)) }};
+        </script>
+    {{ pass }}
+    <script src="{{=URL('static', 'js/etcbc.js')}}"></script>
+{{ end }}
+
+{{ include 'etcbc/browser_form.html' }}
+
+{{ if verses: }}
+    <dl id="verses">
+    {{ for verse in verses: }}
+        <dt>{{ =verse.verse_num }}</dt>
+        <dd>{{ =XML(verse.html) }}</dd>
+    {{ pass }}
+    </dl>
+{{ pass }}
+
+
+{{ block left_sidebar }}
+    {{ include 'etcbc/highlight_form.html' }}
+    <p>or</p>
+    {{ include 'etcbc/query_form.html' }}
+{{ end }}

@@ -61,6 +61,7 @@ response.menu = [
         (T('Edit Query'), False, URL('mql', 'edit_query'), []),
         (T('My Queries'), False, URL('mql', 'my_queries'), []),
     ]),
+    (T('Browse'), False, URL('etcbc', 'browser'), []),
 ]
 
 DEVELOPMENT_MENU = True
