@@ -88,7 +88,8 @@ db.define_table("queries",
                 Field('project', 'reference project', requires=IS_IN_DB(db, db.project.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("project", controller='select_or_add_option_widget').widget),
                 Field('organization', 'reference organization', requires=IS_IN_DB(db, db.organization.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("organization", controller='select_or_add_option_widget').widget),
 
-                signature)
+                signature,
+                format=lambda r: r.name or r.id,)
 
 db.define_table("monadsets",
                 Field('query_id', 'reference queries'),

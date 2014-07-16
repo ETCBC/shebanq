@@ -93,8 +93,8 @@ def handle_response(mql_form):
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
 
-            session.flash = 'saved query as ' + record_id
         if 'button_save' in request.vars:
+            session.flash = 'saved query ' + str(mql_form.vars.name)
 
         elif 'button_execute' in request.vars:
             redirect(URL('execute_query', vars=dict(id=record_id)))
@@ -102,8 +102,8 @@ def handle_response(mql_form):
         elif 'button_render' in request.vars:
             redirect(URL('render_query', vars=dict(id=record_id)))
 
-            session.flash = 'saved previous query as ' + record_id
         elif 'button_new' in request.vars:
+            session.flash = 'saved previous query ' + str(mql_form.vars.name)
             record_id = '0'
 
         redirect(URL('edit_query', vars=dict(id=record_id)))
