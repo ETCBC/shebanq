@@ -17,6 +17,8 @@
 
 # # Fake imports and web2py variables. See also: __init__.py
 # This code only serves to satisfy the editor. It is never executed.
+from shemdros.client.api import CashedMonadsetIterator
+
 if 0:
     from . import *
     # End of fake imports to satisfy the editor.
@@ -108,6 +110,12 @@ def handle_response(mql_form):
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
 
+def store_monad_sets(record_id, monad_sets):
+    db.executesql('DELETE FROM monadsets WHERE query_id=' + str(record_id) + ';')
+    #db.monadsets.delete(record_id)
+    for monad_set in monad_sets:
+        db.monadsets.insert(query_id=record_id, first_m=monad_set[0], last_m=monad_set[1])
+
 def index():
     redirect(URL('edit_query'))
 
@@ -136,6 +144,7 @@ def execute_query():
     mql = MqlResource()
     try:
         monad_sets = mql.list_monad_set(mql_record.mql)
+        store_monad_sets(record_id, monad_sets)
     except RemoteException, e:
         response.flash = 'Exception while executing query: '
         return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
@@ -156,7 +165,9 @@ def render_query():
     mql_record = db.queries[record_id]
     query = mql_record.mql
     try:
-        verse_iter = VerseIterator(MonadsetIterator(query), max_verses=10)
+        ms_iter = CashedMonadsetIterator(query)
+        store_monad_sets(record_id, ms_iter.monadsets)
+        verse_iter = VerseIterator(ms_iter, max_verses=10)
 
     except RemoteException, e:
         response.flash = 'Exception while executing query: '

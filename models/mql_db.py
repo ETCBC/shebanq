@@ -69,3 +69,8 @@ db.define_table("queries",
     Field('mql', 'text', requires=IS_MQL_QUERY()),
 
     signature)
+
+db.define_table("monadsets",
+                Field('query_id', 'reference queries'),
+                Field('first_m', 'integer'),
+                Field('last_m', 'integer'))
