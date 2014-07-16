@@ -8,8 +8,8 @@ def get_books():
     Return all the books as Web2Py Rows with an added 'number of chapters'
     field.
     """
-    return etcbc_db(etcbc_db.book.id > 0).select(cache=(cache.ram, 3600),
-                                                 cacheable=True)
+    return passage_db(passage_db.book.id > 0).select(cache=(cache.ram, 3600),
+                                                     cacheable=True)
 
 
 def get_book():
@@ -18,7 +18,7 @@ def get_book():
     """
     book_name = request.vars.book or request.vars.Book  # request.vars.Book for the Ajax queries
     if book_name:
-        book = etcbc_db.book(name=book_name)
+        book = passage_db.book(name=book_name)
     else:
         book = None
     return book
@@ -32,7 +32,7 @@ def get_chapter():
     book = get_book()
     chapter_num = request.vars.chapter
     if book and chapter_num:
-        chapter = etcbc_db.chapter(chapter_num=chapter_num, book_id=book)
+        chapter = passage_db.chapter(chapter_num=chapter_num, book_id=book)
     else:
         chapter = None
     return chapter
@@ -44,7 +44,7 @@ def get_verses():
     """
     chapter = get_chapter()
     if chapter:
-        verses = etcbc_db(etcbc_db.verse.chapter_id == chapter).select()
+        verses = passage_db(passage_db.verse.chapter_id == chapter).select()
     else:
         verses = []
 
@@ -55,10 +55,10 @@ def max_chapters():
     """ HELPER
     Return the maximum number of chapters in any book.
     """
-    max = etcbc_db.chapter.chapter_num.max()
-    return etcbc_db().select(max,
-                             cache=(cache.ram, 3600),
-                             cacheable=True).first()[max]
+    max = passage_db.chapter.chapter_num.max()
+    return passage_db().select(max,
+                               cache=(cache.ram, 3600),
+                               cacheable=True).first()[max]
 
 
 def last_chapter_num():
