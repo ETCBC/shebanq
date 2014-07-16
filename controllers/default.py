@@ -18,8 +18,6 @@
 # #######################################################################
 # Fake imports and web2py variables. See also: __init__.py
 # This code only serves to satisfy the editor. It is never executed.
-from StdSuites.AppleScript_Suite import cubic_centimeters
-
 if 0:
     from . import *
 # End of fake imports to satisfy the editor.
