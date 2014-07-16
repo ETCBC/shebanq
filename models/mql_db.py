@@ -82,7 +82,7 @@ signature = db.Table(db, 'auth_signature',
 
 # Define the query table
 db.define_table("queries",
-                    Field('name', 'string', requires=IS_NOT_EMPTY(error_message='Enter a name for the query')),
+                Field('name', 'string', requires=IS_NOT_EMPTY(error_message='Enter a name for the query')),
                 Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Enter the description of the query')),
                 Field('mql', 'text', requires=IS_MQL_QUERY()),
                 Field('project', 'reference project', requires=IS_IN_DB(db, db.project.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("project", controller='select_or_add_option_widget').widget),
