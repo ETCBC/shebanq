@@ -262,6 +262,11 @@ def browser():
     highlight = process_highlighter_form()
     queries = process_get_queries_form()
 
+    response.title = T("Browse")
+    if 'verses' in browse and browse['verses']:
+        response.subtitle = "%s - Chapter %s" % (browse['book'].name,
+                                                 browse['chapter'].chapter_num)
+
     return dict(forms.items()
                 + browse.items()
                 + highlight.items()

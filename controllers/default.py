@@ -48,8 +48,8 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
-    #response.title = "SHEBANQ"
-    #response.subtitle = T("Queries As Annotations")
+    response.title = T("SHEBANQ")
+    response.subtitle = T("Queries As Annotations")
     #response.flash = T("Welcome to SHEBANQ")
     return dict()
 
@@ -153,6 +153,8 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
+
+    response.title = T("User Profile")
     return dict(form=auth())
 
 @cache.action()

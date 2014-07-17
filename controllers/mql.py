@@ -132,7 +132,8 @@ def edit_query():
 
     mql_form = get_mql_form(mql_record)
     handle_response(mql_form)
-    return dict(form=mql_form, message=T('Edit Query'))
+
+    return dict(form=mql_form)
 
 
 @auth.requires(lambda: check_query_access_execute())
