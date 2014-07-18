@@ -17,15 +17,16 @@ text-align:right;
 div.book-title {
 margin-bottom:0.5em;
 margin-top:0.5em;
+line-height: 1em;
 color: blue;
 font-size:90%;
 font-family:Verdana, Geneva, sans-serif;
 text-align: right;
 }
 div.hebrew {
-font-size: 1.3em;
+font-size: 2em;
 font-family: "SBL Hebrew", "Ezra SIL", sans-serif;
-line-height:1.3em;
+line-height:2em;
 direction:rtl;
 unicode-bidi:bidi-override;
 }

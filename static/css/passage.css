@@ -5,17 +5,18 @@ h1, h2 {
 #verses {
     direction:rtl;
     unicode-bidi:bidi-override;
-    font-size: 1.3em;
+    font-size: 2em;
 }
 #verses dt {
-    line-height: 3em;
+    line-height: 2em;
+    color: #CCCCCC;
 }
 #verses dd {
-    line-height: 3em;
-    margin-top: -3.1em;
-    margin-right: 2em;
-    margin-left: 2em;
+    line-height: 2em;
     font-family: "SBL Hebrew", "Ezra SIL", sans-serif;
+    margin-top: -2em;
+    margin-right: 1.75em;
+    margin-left: 0;
 }
 #verses_form ul, #verses_form li, #verses_form div, #verses_form label {
     display: inline;
