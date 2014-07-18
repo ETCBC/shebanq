@@ -54,7 +54,13 @@ def get_verses(no_controller=True):
 
 def max_chapters(no_controller=True):
     """ HELPER
-    Return the maximum number of chapters in any book.
+    Find the largest number of chapters in all books.
+
+    E.g.:
+    book1 has 10 chapters,
+    book2 has 25 chapters,
+    book3 has 15 chapters.
+    Returns: 25.
     """
     max = passage_db.chapter.chapter_num.max()
     return passage_db().select(max,
@@ -218,10 +224,8 @@ def get_json_monads_from_group(group):
 
 def process_get_queries_form(no_controller=True):
     """ CONTROLLER HELPER to process the get queries form.
-    Return:
-    * query_monads: a list of dictionaries of queries for a specific book
-    and chapter and their associated monads;
-    * monads: a flat list of the monad numbers in query_monads.
+    Return query_monads: a list of dictionaries of queries for a specific book
+    and chapter and their associated monads.
 
     get queries =>
         get all monads in current chapter =>
@@ -238,7 +242,8 @@ def process_get_queries_form(no_controller=True):
 
 def generate_monads(no_controller=True):
     """ HELPER
-    Generate monads.
+    Empty the query database and refill it with 10 queries, each with 100
+    random monad numbers.
     Usage: just temporarily add it to a controller to generate the monads.
     """
     query_db.query.truncate()
