@@ -8,8 +8,9 @@ def get_books():
     Return all the books as Web2Py Rows with an added 'number of chapters'
     field.
     """
-    return passage_db(passage_db.book.id > 0).select(cache=(cache.ram, 3600),
-                                                     cacheable=True)
+    return passage_db().select(passage_db.book.ALL,
+                               cache=(cache.ram, 3600),
+                               cacheable=True)
 
 
 def get_book():
