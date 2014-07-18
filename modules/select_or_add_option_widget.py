@@ -1,3 +1,6 @@
+"""Original code source:
+`Web2Py Slices - Widget Select or Add Option <http://www.web2pyslices.com/slice/show/1616/widget-select-or-add-option-ng>`_.
+"""
 from gluon.sqlhtml import OptionsWidget
 from gluon.html import DIV, SPAN, A, SCRIPT
 from gluon.compileapp import LOAD

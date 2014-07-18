@@ -1,3 +1,8 @@
+"""Original code source:
+`Web2Py Slices - Widget Select or Add Option <http://www.web2pyslices.com/slice/show/1616/widget-select-or-add-option-ng>`_.
+"""
+
+
 def referenced_data():
     """ shows dialog with reference add/edit form
     the idea is taken from "data" function, just first argument is the id of calling select box
