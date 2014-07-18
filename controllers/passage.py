@@ -68,7 +68,7 @@ def max_chapters(no_controller=True):
                                cacheable=True).first()[max]
 
 
-def last_chapter_num(no_controller=True):
+def last_chapter_num():
     """ HELPER
     Return the last chapter number of a book from a request variable.
     Used in an Ajax query.
