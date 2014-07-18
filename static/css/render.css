@@ -20,10 +20,14 @@ margin-top:0.5em;
 color: blue;
 font-size:90%;
 font-family:Verdana, Geneva, sans-serif;
+text-align: right;
 }
 div.hebrew {
-font-size: 150%;
+font-size: 1.3em;
+font-family: "SBL Hebrew", "Ezra SIL", sans-serif;
 line-height:1.3em;
+direction:rtl;
+unicode-bidi:bidi-override;
 }
 span.sentence {
 /*background-color:white;*/

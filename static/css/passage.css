@@ -5,6 +5,7 @@ h1, h2 {
 #verses {
     direction:rtl;
     unicode-bidi:bidi-override;
+    font-size: 1.3em;
 }
 #verses dt {
     line-height: 3em;
@@ -14,6 +15,7 @@ h1, h2 {
     margin-top: -3.1em;
     margin-right: 2em;
     margin-left: 2em;
+    font-family: "SBL Hebrew", "Ezra SIL", sans-serif;
 }
 #verses_form ul, #verses_form li, #verses_form div, #verses_form label {
     display: inline;
