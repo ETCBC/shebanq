@@ -1,7 +1,4 @@
 {{ left_sidebar_enabled = True }}
-{{ if verses: }}
-    {{ response.subtitle = "%s - Chapter %s" % (book.name, chapter.chapter_num) }}
-{{ pass }}
 {{ extend 'layout.html' }}
 
 {{ block head }}

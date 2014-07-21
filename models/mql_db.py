@@ -23,6 +23,8 @@ if 0:
     #
 
 from gluon.validators import Validator, is_empty
+from select_or_add_option_widget import SELECT_OR_ADD_OPTION
+
 
 class IS_MQL_QUERY(Validator):
 
@@ -48,27 +50,46 @@ class IS_MQL_QUERY(Validator):
 
         return value, None
 
+
+db.define_table('project',
+                Field('name', 'string'),
+                Field('website', 'string', requires=IS_URL()),
+                format=lambda r: r.name or 'unknown',  # Necessary for SELECT_OR_ADD_OPTION widget
+                )
+
+db.define_table('organization',
+                Field('name', 'string'),
+                Field('website', 'string', requires=IS_URL()),
+                format=lambda r: r.name or 'unknown',  # Necessary for SELECT_OR_ADD_OPTION widget
+                )
+
 # Define read-only signature
-signature = db.Table(db,'auth_signature',
-    Field('is_active','boolean',default=True,
-          writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,
-        writable=False,readable=True),
-    Field('created_by',auth.settings.table_user,default=auth.user_id,
-        writable=False,readable=True),
-    Field('modified_on','datetime',update=request.now,default=request.now,
-        writable=False,readable=True),
-    Field('modified_by',auth.settings.table_user,
-        default=auth.user_id,update=auth.user_id,
-        writable=False,readable=True))
+signature = db.Table(db, 'auth_signature',
+                     Field('is_active', 'boolean', default=True,
+                           writable=False, readable=False),
+                     Field('created_on', 'datetime', default=request.now,
+                           writable=False, readable=True),
+                     Field('created_by', auth.settings.table_user,
+                           default=auth.user_id,
+                           writable=False, readable=True),
+                     Field('modified_on', 'datetime',
+                           update=request.now, default=request.now,
+                           writable=False, readable=True),
+                     Field('modified_by', auth.settings.table_user,
+                           default=auth.user_id, update=auth.user_id,
+                           writable=False, readable=True)
+                     )
 
 # Define the query table
 db.define_table("queries",
-    Field('name', 'string', requires=IS_NOT_EMPTY(error_message='Enter a name for the query')),
-    Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Enter the description of the query')),
-    Field('mql', 'text', requires=IS_MQL_QUERY()),
+                Field('name', 'string', requires=IS_NOT_EMPTY(error_message='Enter a name for the query')),
+                Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Enter the description of the query')),
+                Field('mql', 'text', requires=IS_MQL_QUERY()),
+                Field('project', 'reference project', requires=IS_IN_DB(db, db.project.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("project", controller='select_or_add_option_widget').widget),
+                Field('organization', 'reference organization', requires=IS_IN_DB(db, db.organization.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("organization", controller='select_or_add_option_widget').widget),
 
-    signature)
+                signature,
+                format=lambda r: r.name or r.id,)
 
 db.define_table("monadsets",
                 Field('query_id', 'reference queries'),

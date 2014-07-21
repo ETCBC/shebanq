@@ -3,16 +3,17 @@ from random import randint
 from itertools import groupby
 
 
-def get_books():
+def get_books(no_controller=True):
     """ HELPER
     Return all the books as Web2Py Rows with an added 'number of chapters'
     field.
     """
-    return passage_db(passage_db.book.id > 0).select(cache=(cache.ram, 3600),
-                                                     cacheable=True)
+    return passage_db().select(passage_db.book.ALL,
+                               cache=(cache.ram, 3600),
+                               cacheable=True)
 
 
-def get_book():
+def get_book(no_controller=True):
     """ HELPER
     Return a specific book based on a request variable.
     """
@@ -24,7 +25,7 @@ def get_book():
     return book
 
 
-def get_chapter():
+def get_chapter(no_controller=True):
     """ HELPER
     Return a specific chapter based on a book and chapter in the request
     variable.
@@ -38,7 +39,7 @@ def get_chapter():
     return chapter
 
 
-def get_verses():
+def get_verses(no_controller=True):
     """ HELPER
     Return all verses from a book-chapter specified in the request variable.
     """
@@ -51,9 +52,15 @@ def get_verses():
     return verses
 
 
-def max_chapters():
+def max_chapters(no_controller=True):
     """ HELPER
-    Return the maximum number of chapters in any book.
+    Find the largest number of chapters in all books.
+
+    E.g.:
+    book1 has 10 chapters,
+    book2 has 25 chapters,
+    book3 has 15 chapters.
+    Returns: 25.
     """
     max = passage_db.chapter.chapter_num.max()
     return passage_db().select(max,
@@ -69,7 +76,7 @@ def last_chapter_num():
     return get_book().last_chapter_num
 
 
-def browser_form():
+def browser_form(no_controller=True):
     """ CONTROLLER HELPER
     Generate and process the book and chapter option form.
     """
@@ -93,7 +100,7 @@ def browser_form():
     return form
 
 
-def process_browser_form():
+def process_browser_form(no_controller=True):
     """ CONTROLLER HELPER
     Process the browser form input and produce the book, chapter and verses.
     """
@@ -104,7 +111,7 @@ def process_browser_form():
     return locals()
 
 
-def highlighter_form():
+def highlighter_form(no_controller=True):
     """ CONTROLLER HELPER
     Generate the highlight form.
     Monads to highlight field takes comma or spaces seperated integers.
@@ -131,7 +138,7 @@ def highlighter_form():
     return form
 
 
-def process_highlighter_form():
+def process_highlighter_form(no_controller=True):
     """ CONTROLLER HELPER
     Process the highlighter form input and generate a JSON string list of
     monads to be processed by JQuery in the view.
@@ -145,7 +152,7 @@ def process_highlighter_form():
     return dict(monads=monads, )
 
 
-def get_queries_form():
+def get_queries_form(no_controller=True):
     """ CONTROLLER HELPER
     Generate the get queries form.
     """
@@ -215,12 +222,10 @@ def get_json_monads_from_group(group):
     return json.dumps(sum([m['monads'] for m in group], []))
 
 
-def process_get_queries_form():
+def process_get_queries_form(no_controller=True):
     """ CONTROLLER HELPER to process the get queries form.
-    Return:
-    * query_monads: a list of dictionaries of queries for a specific book
-    and chapter and their associated monads;
-    * monads: a flat list of the monad numbers in query_monads.
+    Return query_monads: a list of dictionaries of queries for a specific book
+    and chapter and their associated monads.
 
     get queries =>
         get all monads in current chapter =>
@@ -235,9 +240,10 @@ def process_get_queries_form():
     return dict(query_monads=query_monads,)
 
 
-def generate_monads():
+def generate_monads(no_controller=True):
     """ HELPER
-    Generate monads.
+    Empty the query database and refill it with 10 queries, each with 100
+    random monad numbers.
     Usage: just temporarily add it to a controller to generate the monads.
     """
     query_db.query.truncate()
@@ -262,7 +268,16 @@ def browser():
     highlight = process_highlighter_form()
     queries = process_get_queries_form()
 
+    response.title = T("Browse")
+    if 'verses' in browse and browse['verses']:
+        response.subtitle = "%s - Chapter %s" % (browse['book'].name,
+                                                 browse['chapter'].chapter_num)
+
     return dict(forms.items()
                 + browse.items()
                 + highlight.items()
                 + queries.items())
+
+
+def index():
+    redirect(URL('browser', vars={}))

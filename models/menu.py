@@ -32,7 +32,8 @@ response.logo = A(B('SHEBANQ'),
                   _href="http://annotation-paradigm.readthedocs.org/en/latest/queries-as-annotations/history.html",
                   _target="_blank")
 
-response.title = request.application.replace('_',' ').title()
+#response.title = request.application.replace('_',' ').title()
+response.title = request.function.replace('_', ' ').capitalize()
 response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html

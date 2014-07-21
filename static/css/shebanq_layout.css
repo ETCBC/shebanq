@@ -1,0 +1,16 @@
+.github img {
+    margin: 0 1em 0 0;
+}
+.github:last-child img {
+    margin: 0;
+}
+
+a.github {
+    text-decoration: none;
+}
+
+.logos {
+    text-align: right;
+    margin-bottom: -80px;
+    margin-top: 25px;
+}
