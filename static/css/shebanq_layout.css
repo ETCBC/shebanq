@@ -1,21 +1,10 @@
-.github {
-    display: inline-block;
-    border-radius: 15px;
-    background: #BBBBBB;
-    padding: 3px;
-    height: 24px;
-    width: 26px;
-    margin: 0 1em -1em 0.75em;
-}
-.github:before {
-    content: "\25C0";
-    margin: 0 0 0 -11px;
-    color: #BBBBBB;
-}
 .github img {
-    margin: 0 0 -6px 0;
-    padding: 0;
+    margin: 0 1em 0 0;
 }
+.github:last-child img {
+    margin: 0;
+}
+
 a.github {
     text-decoration: none;
 }
