@@ -1,4 +1,5 @@
 from get_db_config import Configuration
+import re
 
 
 config = Configuration()
@@ -39,10 +40,20 @@ passage_db.define_table('verse',
     Field('xml', 'string'),
     migrate=False)
 
+
+def xml_replace(xml):
+    """Helper func. to transform the verse XML into HTML for the virtual field
+    html.
+    """
+    return re.sub(r'<w m="(?P<monad>\d*)" t="(?P<trailer>[^"]*)">(?P<content>.*?)</w>',
+                  r'<span m="\g<monad>">\g<content></span>\g<trailer>',
+                  xml)
+
+
 """Virtual field 'html' replaces the <w> tags in the xml field with <span> tags."""
 passage_db.verse.html = Field.Virtual(
     'html',
-    lambda row: row.verse.xml.replace('</w>', '</span>').replace('<w', '<span'))
+    lambda row: xml_replace(row.verse.xml))
 
 """Virtual method 'monads' adds a list of all monads to each verse."""
 passage_db.verse.monads = Field.Method(
