@@ -21,4 +21,15 @@
                 <div class="hebrew">{{for word in verse.get_words():}}{{if word.focus:}}<span class="focus">{{=word.text}}</span>{{else:}}<span class="word">{{=word.text}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
             {{pass}}
         </div>
+        <div class="pagination">
+            <ul>
+                <li class="disabled"><a href="#">&laquo;</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
      {{pass}}

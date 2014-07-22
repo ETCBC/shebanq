@@ -18,9 +18,9 @@ div.book-title {
 margin-bottom:0.5em;
 margin-top:0.5em;
 line-height: 1em;
-color: blue;
 font-size:90%;
 font-family:Verdana, Geneva, sans-serif;
+color: grey;
 text-align: right;
 }
 div.hebrew {
@@ -176,4 +176,8 @@ float: right;
 
 label.radio {
 margin-left: 3px;
+}
+
+.pagination {
+    text-align: center;
 }
