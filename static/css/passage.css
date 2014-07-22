@@ -40,3 +40,15 @@ h1, h2 {
 #highlighter_form label {
     display: none;
 }
+
+#verse_word_highlighter_form input[type="text"] {
+    width: 95%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+#verse_word_highlighter_form div {
+    display: block;
+}
+#verse_word_highlighter_form label {
+    display: none;
+}

@@ -52,6 +52,16 @@ def get_verses(no_controller=True):
     return verses
 
 
+def get_verse(no_controller=True):
+    chapter = get_chapter()
+    verse_num = request.vars.verse
+    if chapter and verse_num:
+        verse = passage_db.verse(chapter_id=chapter.id, verse_num=verse_num)
+    else:
+        verse = None
+    return verse
+
+
 def max_chapters(no_controller=True):
     """ HELPER
     Find the largest number of chapters in all books.
@@ -148,6 +158,74 @@ def process_highlighter_form(no_controller=True):
         monads = json.dumps([int(x.strip()) for x in monads.split(' ')])
     else:
         monads = []
+
+    return dict(monads=monads, )
+
+
+def verse_word_highlighter_form(no_controller=True):
+    """ CONTROLLER HELPER
+    Generate the verse-word highlighter form: highlight specified (nth) words
+    in a specified verse.
+    Verse field takes one integer.
+    Words field takes comma or spaces seperated integers.
+    """
+    MY_PLACEHOLDER_STRING_WIDGET_WORDS = lambda field, value: SQLFORM.widgets.string.widget(field,
+                                                                                            value,
+                                                                                            _placeholder=T('Word nos. (comma separated)...'))
+    MY_PLACEHOLDER_STRING_WIDGET_VERSE = lambda field, value: SQLFORM.widgets.string.widget(field,
+                                                                                            value,
+                                                                                            _placeholder=T('Verse number...'))
+    form = SQLFORM.factory(Field('Verse', 'integer',
+                                 required=IS_NOT_EMPTY(),
+                                 default=request.vars.verse if request.vars.verse else None,
+                                 widget=MY_PLACEHOLDER_STRING_WIDGET_VERSE),
+                           Field('Words',
+                                 default=request.vars.words if request.vars.words else None,
+                                 widget=MY_PLACEHOLDER_STRING_WIDGET_WORDS),
+                           table_name='verse_word_highlight_form',
+                           submit_button=T('Highlight words'),
+                           formstyle='ul',
+                           _id='verse_word_highlighter_form',
+                           )
+
+    if form.process().accepted:
+        verse = form.vars['Verse']
+        words = [x.strip() for x in form.vars['Words'].split(',')]
+        redirect(URL('browser', vars={'book': request.vars.book,
+                                      'chapter': request.vars.chapter,
+                                      'verse': verse,
+                                      'words': ','.join(words)}))
+    return form
+
+
+def process_verse_word_highlighter_form(no_controller=True):
+    """ CONTROLLER HELPER
+    Process the verse-word highlighter form input and generate a JSON string
+    list of monads to be processed (highlighted) by JQuery in the view.
+    """
+    verse = get_verse()
+    words = request.vars.words
+    if verse and words:
+        # Transform the (nth) words of the verse into monads.
+        words = [int(x.strip()) for x in request.vars.words.split(',')]  # Process the raw request variable words
+        verse_monads = verse.monads()  # Get a list of in order monads in the verse
+        monads = json.dumps([verse_monads[w - 1]
+                            for w in words
+                            if w < len(verse_monads) + 1])  # Map the words onto the monads
+        # Notify the user of non-existing words
+        not_in_verse = ', '.join(map(lambda x: str(x),
+                                     filter(lambda x: x > len(verse_monads),
+                                            words)))  # Out: '80, 90, 93' or ''
+        if not_in_verse:
+            response.flash = "Warning: word%s %s not in verse %i." % ('s' if len(not_in_verse.split(', ')) > 1 else '',
+                                                                      not_in_verse,
+                                                                      verse.verse_num)
+    elif verse:
+        # No words were specified so highlight all words/monads in the verse.
+        monads = json.dumps(verse.monads())
+    else:
+        # No verse specified / empty form
+        return dict()
 
     return dict(monads=monads, )
 
@@ -262,11 +340,13 @@ def browser():
     """
     forms = {'browse_form': browser_form(),
              'highlight_form': highlighter_form(),
-             'get_queries_form': get_queries_form()}
+             'get_queries_form': get_queries_form(),
+             'verse_word_highlighter_form': verse_word_highlighter_form(), }
 
     browse = process_browser_form()
     highlight = process_highlighter_form()
     queries = process_get_queries_form()
+    words = process_verse_word_highlighter_form()
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:
@@ -276,7 +356,8 @@ def browser():
     return dict(forms.items()
                 + browse.items()
                 + highlight.items()
-                + queries.items())
+                + queries.items()
+                + words.items())
 
 
 def index():

@@ -59,7 +59,7 @@ passage_db.verse.html = Field.Virtual(
 passage_db.verse.monads = Field.Method(
     lambda row: [x['anchor'] for x in passage_db(
         passage_db.word_verse.verse_id == row.verse.id)
-        .select(passage_db.word_verse.anchor)
+        .select(passage_db.word_verse.anchor, orderby=passage_db.word_verse.anchor)
         .as_list()]
 )
 
