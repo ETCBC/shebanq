@@ -210,8 +210,8 @@ def process_verse_word_highlighter_form(no_controller=True):
         words = [int(x.strip()) for x in request.vars.words.split(',')]  # Process the raw request variable words
         verse_monads = verse.monads()  # Get a list of in order monads in the verse
         monads = json.dumps([verse_monads[w - 1]
-                            for w in words
-                            if w < len(verse_monads) + 1])  # Map the words onto the monads
+                             for w in words
+                             if w < len(verse_monads) + 1])  # Map the words onto the monads
         # Notify the user of non-existing words
         not_in_verse = ', '.join(map(lambda x: str(x),
                                      filter(lambda x: x > len(verse_monads),
