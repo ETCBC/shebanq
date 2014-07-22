@@ -15,6 +15,7 @@
          </div>
     {{else:}}
         <div class="monad_sets">
+            There are {{=len(monad_sets)}} result{{='' if len(monad_sets) == 1 else 's'}}
             {{=monad_sets}}
         </div>
         {{pass}}
