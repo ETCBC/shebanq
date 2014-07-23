@@ -15,7 +15,10 @@
          </div>
     {{else:}}
         <div class="monad_sets">
-            There are {{=len(monad_sets)}} result{{='' if len(monad_sets) == 1 else 's'}}
-            {{=monad_sets}}
+            There {{'is' if len(monad_sets) == 1 else 'are'}} {{=len(monad_sets)}} highlighted passage{{='' if len(monad_sets) == 1 else 's'}}.
+            {{if len(monad_sets) != 0:}}
+            <br/>Press the <i>Render</i> button to view them.
+            {{pass}}
+            {{monad_sets if False else ''}}
         </div>
         {{pass}}
