@@ -1,6 +1,18 @@
 import json
 from random import randint
 from itertools import groupby
+from collections import defaultdict
+import time
+
+
+def print_timing(func):
+    def wrapper(*arg):
+        t1 = time.time()
+        res = func(*arg)
+        t2 = time.time()
+        print '%s took %0.3f ms' % (func.func_name, (t2-t1)*1000.0)
+        return res
+    return wrapper
 
 
 def get_books(no_controller=True):
@@ -247,7 +259,12 @@ def get_queries_form(no_controller=True):
     return form
 
 
-def group(input):
+def intersect(a, b):
+    return list(set(a) & set(b))
+
+
+@print_timing
+def group(input, chapter):
     """ HELPER for process_get_queries_form
     Reorganise a query_monad query.
 
@@ -260,6 +277,13 @@ def group(input):
         {'query': 5L, 'id': 423L, 'monad': 198090L}
     ]
 
+    [
+        {'query': 10L, 'monad': 197563L},
+        {'query': 7L, 'monad': 198280L},
+        {'query': 9L, 'monad': 198228L},
+        {'query': 10L, 'monad': 198142L},
+        {'query': 5L, 'monad': 198090L}
+    ]
     Grouped query dict:
     [
         {'query': 5L, 'monads': [198090L]},
@@ -280,17 +304,53 @@ def group(input):
          'monads': [197563L, 198142L]}
     ]
     """
-    sorted_input = sorted(input, key=lambda x: x['query'])
+    sorted_input = sorted(input, key=lambda x: x.query_id)
+    groups = groupby(sorted_input, key=lambda x: x.query_id)
+    r = []
+    for k, v in groups:
+        query = db.queries(k)
+        monads = [(m.first_m, m.last_m) for m in v]
+        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1]),
+                                                                xrange(chapter.first_monad(), chapter.last_monad()))
+                                                      for x in monads],
+                                                     [])))))  # You only want the monads that actually appear in the text to avoid massive overhead
+        r.append({'query': query,
+                  'monadsets': monads,
+                  'json_monads': json_monads})
+    return r
+
+
+@print_timing
+def alt_group(input, chapter):
+    flattened_input = [{'query': x.query_id,
+                        'monads': (x.first_m, x.last_m)}
+                       for x in input]
+    sorted_input = sorted(flattened_input, key=lambda x: x['query'])
     groups = groupby(sorted_input, key=lambda x: x['query'])
     r = []
     for k, v in groups:
-        query = query_db.query(id=k)
-        monads = [x['monad'] for x in v]
-        json_monads = json.dumps(monads)
+        query = db.queries(k)
+        monads = ([m['monads'] for m in v])
+        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1]),
+                                                                xrange(chapter.first_monad(), chapter.last_monad()))
+                                                      for x in monads],
+                                                     [])))))  # You only want the monads that actually appear in the text to avoid massive overhead
         r.append({'query': query,
-                  'monads': monads,
+                  'monadsets': monads,
                   'json_monads': json_monads})
     return r
+
+
+@print_timing
+def alt_alt_group(input, chapter):
+    res = defaultdict(list)
+    for x in input:
+        res[x.query_id].extend(intersect(xrange(x.first_m,
+                                                x.last_m),
+                                         xrange(chapter.first_monad(),
+                                                chapter.last_monad())))
+    return res
+
 
 
 def get_json_monads_from_group(group):
@@ -298,6 +358,29 @@ def get_json_monads_from_group(group):
     Return a list of all the monads from a 'group'-ed query_monad query.
     """
     return json.dumps(sum([m['monads'] for m in group], []))
+
+
+def monadset_in_text(m, t):
+    """HELPER
+    True if the monadset is in the text otherwise False.
+    IN: (start monad, end monad), (start monad text, end monad text)
+    OUT: True or False
+    """
+    return ((m[0] <= t[0] and m[1] >= t[0]) or
+            (m[0] >= t[0] and m[0] <= t[1]))
+
+@print_timing
+def get_monadsets(chapter):
+    does_monadset_overlap_with_chapter = monadset_in_text((db.monadsets.first_m,
+                                                           db.monadsets.last_m),
+                                                          (chapter.first_monad(),
+                                                           chapter.last_monad())).case(True, False)
+    monadsets = map(lambda x: x.monadsets,
+                    db().select(db.monadsets.query_id,
+                                db.monadsets.first_m,
+                                db.monadsets.last_m,
+                                does_monadset_overlap_with_chapter))
+    return monadsets
 
 
 def process_get_queries_form(no_controller=True):
@@ -311,8 +394,11 @@ def process_get_queries_form(no_controller=True):
     """
     get_queries = request.vars.get_queries
     if bool(get_queries):
-        all_monads_in_all_chapter_verses = sum([v.monads() for v in get_verses()], [])  # Flatten list of lists of monads
-        query_monads = group(query_db(query_db.query_monad.monad.belongs(all_monads_in_all_chapter_verses)).select().as_dict().values())
+        chapter = get_chapter()
+        monadsets = get_monadsets(chapter)
+        query_monads = group(monadsets, chapter)
+        #query_monads = alt_group(monadsets, chapter)
+        #query_monads = alt_alt_group(monadsets, chapter)
     else:
         query_monads = []
     return dict(query_monads=query_monads,)

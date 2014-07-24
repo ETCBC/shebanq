@@ -87,6 +87,7 @@ db.define_table("queries",
                 Field('mql', 'text', requires=IS_MQL_QUERY()),
                 Field('project', 'reference project', requires=IS_IN_DB(db, db.project.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("project", controller='select_or_add_option_widget').widget),
                 Field('organization', 'reference organization', requires=IS_IN_DB(db, db.organization.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("organization", controller='select_or_add_option_widget').widget),
+                Field('is_published', 'boolean', default=False),
 
                 signature,
                 format=lambda r: r.name or r.id,)
@@ -95,3 +96,8 @@ db.define_table("monadsets",
                 Field('query_id', 'reference queries'),
                 Field('first_m', 'integer'),
                 Field('last_m', 'integer'))
+
+
+db.monadsets.monads = Field.Virtual(
+    'monads',
+    lambda row: xrange(row.monadsets.first_m, row.monadsets.last_m + 1))

@@ -30,6 +30,18 @@ passage_db.define_table('chapter',
     Field('chapter_num', 'integer'),
     migrate=False)
 
+passage_db.chapter.first_monad = Field.Method(
+    lambda row: int(row.chapter.verse.select(orderby=passage_db.verse.verse_num)[0].monads()[0]))
+
+passage_db.chapter.last_monad = Field.Method(
+    lambda row: int(row.chapter.verse.select(orderby=passage_db.verse.verse_num)[-1].monads()[-1]))
+
+passage_db.chapter.monads = Field.Method(
+    lambda row: sorted(map(lambda x: int(x),
+                           sum(map(lambda x: x.monads(),
+                                   row.chapter.verse.select()),
+                               []))))
+
 
 """Verse table"""
 passage_db.define_table('verse',
