@@ -269,67 +269,31 @@ def group(input, chapter):
 
     Input (query dict):
     [
-        {'query': 10L, 'id': 996L, 'monad': 197563L},
-        {'query': 7L, 'id': 602L, 'monad': 198280L},
-        {'query': 9L, 'id': 803L, 'monad': 198228L},
-        {'query': 10L, 'id': 911L, 'monad': 198142L},
-        {'query': 5L, 'id': 423L, 'monad': 198090L}
+        {'query': 10L, 'first_m': 197563L, 'last_m': 197663L},
+        {'query': 7L,  'first_m': 198280L, 'last_m': 197663L},
+        {'query': 9L,  'first_m': 198228L, 'last_m': 197663L},
+        {'query': 10L, 'first_m': 198142L, 'last_m': 197663L},
+        {'query': 5L,  'first_m': 198090L, 'last_m': 197663L}
     ]
-
-    [
-        {'query': 10L, 'monad': 197563L},
-        {'query': 7L, 'monad': 198280L},
-        {'query': 9L, 'monad': 198228L},
-        {'query': 10L, 'monad': 198142L},
-        {'query': 5L, 'monad': 198090L}
-    ]
-    Grouped query dict:
-    [
-        {'query': 5L, 'monads': [198090L]},
-        {'query': 7L, 'monads': [198280L]},
-        {'query': 9L, 'monads': [198228L]},
-        {'query': 10L, 'monads': [197563L, 198142L]}
-    ]
-
     Output (replace the query id with the actual query row object):
     [
         {'query': <Row {'query': 'Dit is query 5.', 'id': 5L}>,
-         'monads': [198090L]},
+         'monadsets': [(198090L,197663L),],
+         'json_monads': },
         {'query': <Row {'query': 'Dit is query 7.', 'id': 7L}>,
-         'monads': [198280L]},
+         'monads': [(198280L, 197663L)]},
         {'query': <Row {'query': 'Dit is query 9.', 'id': 9L}>,
-         'monads': [198228L]},
+         'monads': [(198228L, 197663L)]},
         {'query': <Row {'query': 'Dit is query 10.', 'id': 10L}>,
-         'monads': [197563L, 198142L]}
+         'monads': [(197563L, 197663L), (198142L, 197663L)]}
     ]
     """
-    sorted_input = sorted(input, key=lambda x: x.query_id)
-    groups = groupby(sorted_input, key=lambda x: x.query_id)
+    sorted_input = sorted(input, key=lambda x: x['query_id'])
+    groups = groupby(sorted_input, key=lambda x: x['query_id'])
     r = []
     for k, v in groups:
         query = db.queries(k)
-        monads = [(m.first_m, m.last_m) for m in v]
-        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1] + 1),
-                                                                xrange(chapter.first_m, chapter.last_m + 1))
-                                                      for x in monads],
-                                                     [])))))  # You only want the monads that actually appear in the text to avoid massive overhead
-        r.append({'query': query,
-                  'monadsets': monads,
-                  'json_monads': json_monads})
-    return r
-
-
-@print_timing
-def alt_group(input, chapter):
-    flattened_input = [{'query': x.query_id,
-                        'monads': (x.first_m, x.last_m)}
-                       for x in input]
-    sorted_input = sorted(flattened_input, key=lambda x: x['query'])
-    groups = groupby(sorted_input, key=lambda x: x['query'])
-    r = []
-    for k, v in groups:
-        query = db.queries(k)
-        monads = ([m['monads'] for m in v])
+        monads = [(m['first_m'], m['last_m']) for m in v]
         json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1] + 1),
                                                                 xrange(chapter.first_m, chapter.last_m + 1))
                                                       for x in monads],
@@ -342,20 +306,40 @@ def alt_group(input, chapter):
 
 @print_timing
 def alt_alt_group(input, chapter):
+    """ HELPER for process_get_queries_form
+    Reorganise a query_monad query.
+
+    Input (query dict):
+    [
+        {'query': 10L, 'first_m': 197563L, 'last_m': 197663L},
+        {'query': 7L,  'first_m': 198280L, 'last_m': 197663L},
+        {'query': 9L,  'first_m': 198228L, 'last_m': 197663L},
+        {'query': 10L, 'first_m': 198142L, 'last_m': 197663L},
+        {'query': 5L,  'first_m': 198090L, 'last_m': 197663L}
+    ]
+    Output (replace the query id with the actual query row object):
+    [
+        {'query': <Row {'query': 'Dit is query 5.', 'id': 5L}>,
+         'monadsets': [(198090L,197663L),],
+         'json_monads': },
+        {'query': <Row {'query': 'Dit is query 7.', 'id': 7L}>,
+         'monads': [(198280L, 197663L)]},
+        {'query': <Row {'query': 'Dit is query 9.', 'id': 9L}>,
+         'monads': [(198228L, 197663L)]},
+        {'query': <Row {'query': 'Dit is query 10.', 'id': 10L}>,
+         'monads': [(197563L, 197663L), (198142L, 197663L)]}
+    ]
+    """
     res = defaultdict(list)
     for x in input:
-        res[x.query_id].extend(intersect(xrange(x.first_m,
-                                                x.last_m + 1),
-                                         xrange(chapter.first_m,
-                                                chapter.last_m + 1)))
-    return res
-
-
-def get_json_monads_from_group(group):
-    """ HELPER
-    Return a list of all the monads from a 'group'-ed query_monad query.
-    """
-    return json.dumps(sum([m['monads'] for m in group], []))
+        res[x['query_id']].extend(intersect(xrange(x['first_m'],
+                                                   x['last_m'] + 1),
+                                            xrange(chapter.first_m,
+                                                   chapter.last_m + 1)))
+    return [{'query': db.queries(x[0]),
+             'monadsets': x[1],
+             'json_monads': json.dumps(x[1])}
+            for x in res.items()]
 
 
 def monadset_in_text(m, t):
@@ -370,15 +354,12 @@ def monadset_in_text(m, t):
 
 @print_timing
 def get_monadsets(chapter):
-    does_monadset_overlap_with_chapter = monadset_in_text((db.monadsets.first_m,
-                                                           db.monadsets.last_m),
-                                                          (chapter.first_m,
-                                                           chapter.last_m)).case(True, False)
-    monadsets = map(lambda x: x.monadsets,
-                    db().select(db.monadsets.query_id,
-                                db.monadsets.first_m,
-                                db.monadsets.last_m,
-                                does_monadset_overlap_with_chapter))
+    monadsets = db.executesql("""\
+            select DISTINCT query_id, GREATEST(first_m, {chapter_first_m}) as first_m, LEAST(last_m, {chapter_last_m}) as last_m \
+            from monadsets \
+            WHERE (first_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR \
+                  (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR \
+                  ({chapter_first_m} BETWEEN first_m AND last_m);""".format(chapter_last_m = chapter.last_m, chapter_first_m = chapter.first_m), as_dict=True)
     return monadsets
 
 
@@ -396,8 +377,7 @@ def process_get_queries_form(no_controller=True):
         chapter = get_chapter()
         monadsets = get_monadsets(chapter)
         query_monads = group(monadsets, chapter)
-        #query_monads = alt_group(monadsets, chapter)
-        #query_monads = alt_alt_group(monadsets, chapter)
+        query_monads = alt_alt_group(monadsets, chapter)
     else:
         query_monads = []
     return dict(query_monads=query_monads,)
