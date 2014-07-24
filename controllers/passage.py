@@ -1,5 +1,4 @@
 import json
-from random import randint
 from itertools import groupby
 from collections import defaultdict
 import time
@@ -10,7 +9,7 @@ def print_timing(func):
         t1 = time.time()
         res = func(*arg)
         t2 = time.time()
-        print '%s took %0.3f ms' % (func.func_name, (t2-t1)*1000.0)
+        print '%s took %0.3f ms' % (func.func_name, (t2 - t1) * 1000.0)
         return res
     return wrapper
 
@@ -352,7 +351,6 @@ def alt_alt_group(input, chapter):
     return res
 
 
-
 def get_json_monads_from_group(group):
     """ HELPER
     Return a list of all the monads from a 'group'-ed query_monad query.
@@ -368,6 +366,7 @@ def monadset_in_text(m, t):
     """
     return ((m[0] <= t[0] and m[1] >= t[0]) or
             (m[0] >= t[0] and m[0] <= t[1]))
+
 
 @print_timing
 def get_monadsets(chapter):
@@ -402,22 +401,6 @@ def process_get_queries_form(no_controller=True):
     else:
         query_monads = []
     return dict(query_monads=query_monads,)
-
-
-def generate_monads(no_controller=True):
-    """ HELPER
-    Empty the query database and refill it with 10 queries, each with 100
-    random monad numbers.
-    Usage: just temporarily add it to a controller to generate the monads.
-    """
-    query_db.query.truncate()
-    query_db.query_monad.truncate()
-    for x in xrange(1, 11):
-        # Create the Query object
-        query_db.query.insert(query="Dit is query %i." % x)
-        query = query_db(query_db.query.id == x).select()[0]
-        for y in xrange(0, 100):
-            query_db.query_monad.insert(query=query, monad=randint(0, 430000))
 
 
 def browser():
