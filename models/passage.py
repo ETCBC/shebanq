@@ -15,6 +15,8 @@ passage_db = DAL('mysql://%s:%s@%s/%s' % (config.passage_user,
 passage_db.define_table('book',
     Field('id', 'integer'),
     Field('name', 'string'),
+    Field('first_m', 'integer'),
+    Field('last_m', 'integer'),
     migrate=False)
 
 """Virtual field 'number of chapters' adds the chapter count to each book."""
@@ -28,19 +30,12 @@ passage_db.define_table('chapter',
     Field('id', 'integer'),
     Field('book_id', 'reference book'),
     Field('chapter_num', 'integer'),
+    Field('first_m', 'integer'),
+    Field('last_m', 'integer'),
     migrate=False)
 
-passage_db.chapter.first_monad = Field.Method(
-    lambda row: int(row.chapter.verse.select(orderby=passage_db.verse.verse_num)[0].monads()[0]))
-
-passage_db.chapter.last_monad = Field.Method(
-    lambda row: int(row.chapter.verse.select(orderby=passage_db.verse.verse_num)[-1].monads()[-1]))
-
 passage_db.chapter.monads = Field.Method(
-    lambda row: sorted(map(lambda x: int(x),
-                           sum(map(lambda x: x.monads(),
-                                   row.chapter.verse.select()),
-                               []))))
+    lambda row: range(row.chapter.first_m, row.chapter.last_m + 1))
 
 
 """Verse table"""
@@ -50,6 +45,8 @@ passage_db.define_table('verse',
     Field('verse_num', 'integer'),
     Field('text', 'string'),
     Field('xml', 'string'),
+    Field('first_m', 'integer'),
+    Field('last_m', 'integer'),
     migrate=False)
 
 
@@ -69,15 +66,11 @@ passage_db.verse.html = Field.Virtual(
 
 """Virtual method 'monads' adds a list of all monads to each verse."""
 passage_db.verse.monads = Field.Method(
-    lambda row: [x['anchor'] for x in passage_db(
-        passage_db.word_verse.verse_id == row.verse.id)
-        .select(passage_db.word_verse.anchor, orderby=passage_db.word_verse.anchor)
-        .as_list()]
-)
+    lambda row: range(row.verse.first_m, row.verse.last_m + 1))
 
 
 """Word verse table"""
 passage_db.define_table('word_verse',
-    Field('anchor', 'string'),
+    Field('anchor', 'integer'),
     Field('verse_id', 'reference verse'),
     migrate=False)

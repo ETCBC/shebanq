@@ -310,8 +310,8 @@ def group(input, chapter):
     for k, v in groups:
         query = db.queries(k)
         monads = [(m.first_m, m.last_m) for m in v]
-        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1]),
-                                                                xrange(chapter.first_monad(), chapter.last_monad()))
+        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1] + 1),
+                                                                xrange(chapter.first_m, chapter.last_m + 1))
                                                       for x in monads],
                                                      [])))))  # You only want the monads that actually appear in the text to avoid massive overhead
         r.append({'query': query,
@@ -331,8 +331,8 @@ def alt_group(input, chapter):
     for k, v in groups:
         query = db.queries(k)
         monads = ([m['monads'] for m in v])
-        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1]),
-                                                                xrange(chapter.first_monad(), chapter.last_monad()))
+        json_monads = json.dumps(sorted(list(set(sum([intersect(xrange(x[0], x[1] + 1),
+                                                                xrange(chapter.first_m, chapter.last_m + 1))
                                                       for x in monads],
                                                      [])))))  # You only want the monads that actually appear in the text to avoid massive overhead
         r.append({'query': query,
@@ -346,9 +346,9 @@ def alt_alt_group(input, chapter):
     res = defaultdict(list)
     for x in input:
         res[x.query_id].extend(intersect(xrange(x.first_m,
-                                                x.last_m),
-                                         xrange(chapter.first_monad(),
-                                                chapter.last_monad())))
+                                                x.last_m + 1),
+                                         xrange(chapter.first_m,
+                                                chapter.last_m + 1)))
     return res
 
 
@@ -373,8 +373,8 @@ def monadset_in_text(m, t):
 def get_monadsets(chapter):
     does_monadset_overlap_with_chapter = monadset_in_text((db.monadsets.first_m,
                                                            db.monadsets.last_m),
-                                                          (chapter.first_monad(),
-                                                           chapter.last_monad())).case(True, False)
+                                                          (chapter.first_m,
+                                                           chapter.last_m)).case(True, False)
     monadsets = map(lambda x: x.monadsets,
                     db().select(db.monadsets.query_id,
                                 db.monadsets.first_m,
