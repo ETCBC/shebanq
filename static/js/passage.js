@@ -27,9 +27,10 @@ function get_last_chapter_num() {
 /*****************************************************************************/
 /********************** HIGHLIGHTS *******************************************/
 /* Cases:
- * 1. Monads of 1 query (click trigger);
- * 2. Monads of all queries;
- * 3. Specific monads from an input field.
+ * 1. Get queries: on select 'highlight all queries' checkbox highlight monads
+ *    of all queries;
+ * 2. Get queries: on select query checkbox highlight selected queries;
+ * 3. Request var: on page load highlight specific monads from an input field.
  */
 
 // Helper: clear all highlights present in the text.
@@ -49,20 +50,26 @@ function add_highlights(monads) {
     });
 }
 
-// 1. Highlight monads of 1 query: use click on query trigger to highlight
-// monads in text.
-function add_query_highlights() {
-    $("#queries li").click(function() {
+// 1. Highlight all monads of all queries on 'highlight all queries' check.
+function add_all_monads_highlights() {
+    $("#highlight_all_queries").change(function() {
         clear_all_highlights();
-        add_highlights($(this).attr('monads'));
+        if ($(this).is(':checked')) {
+            $("#queries li").each( function(index, item) {
+                add_highlights($(item).attr('monads'));
+            });
+        }
     });
 }
 
-// 2. Highlight all monads from all queries.
-function add_all_monads_highlights() {
-    clear_all_highlights();
-    $("#queries li").each( function(index, item) {
-        add_highlights($(item).attr('monads'));
+// 2. Highlight monads of the selected/checked queries, the trigger is: checking
+// a query checkbox.
+function highlight_selected_queries() {
+    $("#queries input[type=checkbox]").change(function() {
+        clear_all_highlights();
+        $("#queries input:checked").each( function(index, item) {
+            add_highlights($(item).closest("li").attr('monads'));
+        });
     });
 }
 
@@ -78,7 +85,7 @@ function add_specific_monad_highlights() {
 
 $( document ).ready(function () {
     add_all_monads_highlights();        // Highlights case 1
-    add_query_highlights();             // Highlights case 2
+    highlight_selected_queries();       // Highlights case 2
     add_specific_monad_highlights();    // Highlights case 3
 
     get_last_chapter_num();             // Chapter options

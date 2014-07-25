@@ -2,9 +2,15 @@
 
 {{ if query_monads: }}
     <hr />
+    <p>
+        <input type="checkbox" name="highlight_all_queries" id="highlight_all_queries" />
+        Highlight all queries
+    </p>
+    <hr />
     <ul id="queries">
     {{ for q in query_monads: }}
         <li id="query_{{ =q['query'].id }}" monads="{{ =q['json_monads'] }}">
+            <p><input type="checkbox" name="highlight" /> Highlight this query</p>
             <dl>
                 <dt>Name</dt>
                 <dd>{{ =q['query'].name }}</dd>
