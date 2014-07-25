@@ -96,8 +96,3 @@ db.define_table("monadsets",
                 Field('query_id', 'reference queries'),
                 Field('first_m', 'integer'),
                 Field('last_m', 'integer'))
-
-
-db.monadsets.monads = Field.Virtual(
-    'monads',
-    lambda row: xrange(row.monadsets.first_m, row.monadsets.last_m + 1))
