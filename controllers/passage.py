@@ -263,7 +263,7 @@ def intersect(a, b):
 
 
 @print_timing
-def group(input, chapter):
+def group_MySQL(input, chapter):
     """ HELPER for process_get_queries_form
     Reorganise a query_monad query.
 
@@ -305,7 +305,7 @@ def group(input, chapter):
 
 
 @print_timing
-def alt_alt_group(input, chapter):
+def alt_alt_group_MySQL(input, chapter):
     """ HELPER for process_get_queries_form
     Reorganise a query_monad query.
 
@@ -342,24 +342,26 @@ def alt_alt_group(input, chapter):
             for x in res.items()]
 
 
-def monadset_in_text(m, t):
-    """HELPER
-    True if the monadset is in the text otherwise False.
-    IN: (start monad, end monad), (start monad text, end monad text)
-    OUT: True or False
-    """
-    return ((m[0] <= t[0] and m[1] >= t[0]) or
-            (m[0] >= t[0] and m[0] <= t[1]))
+def get_monadsets_DAL(chapter):
+    """DAL version of MySQL statement below (note that GREATEST and LEAST are missing here):"""
+    monadsets = db(((db.monadsets.first_m <= chapter.first_m) & (db.monadsets.last_m >= chapter.first_m)) |
+                   ((db.monadsets.first_m >= chapter.first_m) & (db.monadsets.first_m <= chapter.last_m))).select(db.monadsets.first_m,
+                                                                                                                  db.monadsets.last_m,
+                                                                                                                  db.monadsets.query_id,
+                                                                                                                  distinct=True)
 
 
-@print_timing
-def get_monadsets(chapter):
-    monadsets = db.executesql("""\
-            select DISTINCT query_id, GREATEST(first_m, {chapter_first_m}) as first_m, LEAST(last_m, {chapter_last_m}) as last_m \
-            from monadsets \
-            WHERE (first_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR \
-                  (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR \
-                  ({chapter_first_m} BETWEEN first_m AND last_m);""".format(chapter_last_m = chapter.last_m, chapter_first_m = chapter.first_m), as_dict=True)
+def get_monadsets_MySQL(chapter):
+    monadsets = db.executesql("""
+            select DISTINCT query_id,
+                            GREATEST(first_m, {chapter_first_m}) as first_m,
+                            LEAST(last_m, {chapter_last_m}) as last_m
+            from monadsets
+            WHERE (first_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
+                  (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
+                  ({chapter_first_m} BETWEEN first_m AND last_m);""".format(chapter_last_m=chapter.last_m,
+                                                                            chapter_first_m=chapter.first_m),
+                                                                     as_dict=True)
     return monadsets
 
 
@@ -375,9 +377,9 @@ def process_get_queries_form(no_controller=True):
     get_queries = request.vars.get_queries
     if bool(get_queries):
         chapter = get_chapter()
-        monadsets = get_monadsets(chapter)
-        query_monads = group(monadsets, chapter)
-        query_monads = alt_alt_group(monadsets, chapter)
+        monadsets = get_monadsets_MySQL(chapter)
+        query_monads = group_MySQL(monadsets, chapter)
+        query_monads = alt_alt_group_MySQL(monadsets, chapter)
     else:
         query_monads = []
     return dict(query_monads=query_monads,)
