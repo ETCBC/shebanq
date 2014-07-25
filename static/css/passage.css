@@ -62,3 +62,6 @@ h1, h2 {
 #queries input[type="checkbox"] {
     margin: -0.25em 0 0 0;
 }
+#queries dl dd {
+    margin-left: 0;
+}
