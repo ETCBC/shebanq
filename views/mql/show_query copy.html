@@ -1,4 +1,20 @@
-            <div class="monad_sets qresults" id="qresults">
+<div class="mql_form">
+{{=form}}
+</div>
+
+
+    {{if exception is not None:}}
+        <div class="exception">
+            <div>The error message is printed below.</div>
+            <div>
+                {{=exception_message}}
+            </div>
+            <div>Remote exception:</div>
+            {{=exception}}
+         </div>
+    {{else:}}
+        <div id='rlist' class='qresults'>
+            <div class="monadsets">
                 <p>Page {{=page}} of {{=pages}} with {{=results}} results.</p>
                 {{verses = verse_data}}
                 {{for verse in verses:}}
@@ -32,3 +48,5 @@
                 {{pass}}
                 </ul>
             </div>
+        </div>
+     {{pass}}
