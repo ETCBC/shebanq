@@ -12,14 +12,6 @@
                 <dd>{{ =q['query'].created_by.first_name }} {{ =q['query'].created_by.last_name }}</dd>
                 <dt>MQL Query:</dt>
                 <dd>{{ =q['query'].mql }}</dd>
-                <dt>All monadsets in query</dt>
-                <dd>
-                    {{ for m in q['monadsets']: }}
-                        {{ =m }}<br/>
-                    {{ pass }}
-                </dd>
-                <dt>Associated monads in this chapter</dt>
-                <dd>{{ =q['json_monads'] }}</dd>
             </dl>
             <hr />
         </li>
