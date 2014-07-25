@@ -5,19 +5,14 @@
     <ul id="queries">
     {{ for q in query_monads: }}
         <li id="query_{{ =q['query'].id }}" monads="{{ =q['json_monads'] }}">
-            <p>
-                {{ =q['query'].query }}
-            </p>
-            <p>
-                All monads in query:<br />
-                {{ =q['query'].monads() }}
-            </p>
-            <p>
-                Associated monads in this chapter:<br />
-                {{ for m in q['monads']: }}
-                    {{ =m }}<br />
-                {{ pass }}
-            </p>
+            <dl>
+                <dt>Name</dt>
+                <dd>{{ =q['query'].name }}</dd>
+                <dt>Author</dt>
+                <dd>{{ =q['query'].created_by.first_name }} {{ =q['query'].created_by.last_name }}</dd>
+                <dt>MQL Query:</dt>
+                <dd>{{ =q['query'].mql }}</dd>
+            </dl>
             <hr />
         </li>
     {{ pass }}

@@ -1,5 +1,4 @@
 import json
-from random import randint
 from itertools import groupby
 
 
@@ -53,6 +52,10 @@ def get_verses(no_controller=True):
 
 
 def get_verse(no_controller=True):
+    """ HELPER
+    Return a specific verse based on a book, chapter and verse number in the
+    request variable.
+    """
     chapter = get_chapter()
     verse_num = request.vars.verse
     if chapter and verse_num:
@@ -247,91 +250,96 @@ def get_queries_form(no_controller=True):
     return form
 
 
-def group(input):
+def group_MySQL(input):
     """ HELPER for process_get_queries_form
     Reorganise a query_monad query.
 
     Input (query dict):
     [
-        {'query': 10L, 'id': 996L, 'monad': 197563L},
-        {'query': 7L, 'id': 602L, 'monad': 198280L},
-        {'query': 9L, 'id': 803L, 'monad': 198228L},
-        {'query': 10L, 'id': 911L, 'monad': 198142L},
-        {'query': 5L, 'id': 423L, 'monad': 198090L}
+        {'query_id': 10L, 'first_m': 1L,  'last_m': 7L},
+        {'query_id': 7L,  'first_m': 1L,  'last_m': 7L},
+        {'query_id': 9L,  'first_m': 1L,  'last_m': 7L},
+        {'query_id': 10L, 'first_m': 10L, 'last_m': 13L},
+        {'query_id': 5L,  'first_m': 1L,  'last_m': 7L}
     ]
-
-    Grouped query dict:
-    [
-        {'query': 5L, 'monads': [198090L]},
-        {'query': 7L, 'monads': [198280L]},
-        {'query': 9L, 'monads': [198228L]},
-        {'query': 10L, 'monads': [197563L, 198142L]}
-    ]
-
     Output (replace the query id with the actual query row object):
     [
-        {'query': <Row {'query': 'Dit is query 5.', 'id': 5L}>,
-         'monads': [198090L]},
-        {'query': <Row {'query': 'Dit is query 7.', 'id': 7L}>,
-         'monads': [198280L]},
-        {'query': <Row {'query': 'Dit is query 9.', 'id': 9L}>,
-         'monads': [198228L]},
-        {'query': <Row {'query': 'Dit is query 10.', 'id': 10L}>,
-         'monads': [197563L, 198142L]}
+        {'query': <Row {'query': 'Dit is query 5.', 'id': 5L, ...}>,
+         'monadsets': [(1L, 7L),],
+         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L]',},
+        {'query': <Row {'query': 'Dit is query 7.', 'id': 7L, ...}>,
+         'monadsets': [(1L, 7L),],
+         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L]',},
+        {'query': <Row {'query': 'Dit is query 9.', 'id': 9L, ...}>,
+         'monadsets': [(1L, 7L),],
+         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L]',},
+        {'query': <Row {'query': 'Dit is query 10.', 'id': 10L, ...}>,
+         'monadsets': [(1L, 7L), (10L, 15L)],
+         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L, 10L, 11L, 12L, 13L]',},
     ]
     """
-    sorted_input = sorted(input, key=lambda x: x['query'])
-    groups = groupby(sorted_input, key=lambda x: x['query'])
+    sorted_input = sorted(input, key=lambda x: x['query_id'])
+    groups = groupby(sorted_input, key=lambda x: x['query_id'])
     r = []
     for k, v in groups:
-        query = query_db.query(id=k)
-        monads = [x['monad'] for x in v]
-        json_monads = json.dumps(monads)
+        query = db.queries(k)
+        monads = [(m['first_m'], m['last_m']) for m in v]
+        json_monads = json.dumps(sorted(list(set(sum([range(x[0], x[1] + 1)
+                                                      for x in monads],
+                                                     [])))))
         r.append({'query': query,
-                  'monads': monads,
+                  'monadsets': monads,
                   'json_monads': json_monads})
     return r
 
 
-def get_json_monads_from_group(group):
+def get_monadsets_DAL(chapter):
     """ HELPER
-    Return a list of all the monads from a 'group'-ed query_monad query.
+    DAL version of MySQL statement below (note that GREATEST and LEAST are
+    missing here):
     """
-    return json.dumps(sum([m['monads'] for m in group], []))
+    return db(((db.monadsets.first_m <= chapter.first_m) & (db.monadsets.last_m >= chapter.first_m)) |
+              ((db.monadsets.first_m >= chapter.first_m) & (db.monadsets.first_m <= chapter.last_m))).select(db.monadsets.first_m,
+                                                                                                             db.monadsets.last_m,
+                                                                                                             db.monadsets.query_id,
+                                                                                                             distinct=True)
+
+
+def get_monadsets_MySQL(chapter):
+    """ HELPER to get all monadsets that relate to selected chapter.
+    These will be transformed into queries with monads by 'group'.
+
+    Output:
+    [{'first_m': 296211L, 'query_id': 2L, 'last_m': 296496L},
+     {'first_m': 296438L, 'query_id': 6L, 'last_m': 296438L},
+     {'first_m': 296470L, 'query_id': 6L, 'last_m': 296470L},
+     {'first_m': 296494L, 'query_id': 6L, 'last_m': 296494L}, ...]
+    """
+    return db.executesql("""
+           select DISTINCT query_id,
+                           GREATEST(first_m, {chapter_first_m}) as first_m,
+                           LEAST(last_m, {chapter_last_m}) as last_m
+           from monadsets
+           WHERE (first_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
+                 (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
+                 ({chapter_first_m} BETWEEN first_m AND last_m);""".format(chapter_last_m=chapter.last_m,
+                                                                           chapter_first_m=chapter.first_m),
+                         as_dict=True)
 
 
 def process_get_queries_form(no_controller=True):
     """ CONTROLLER HELPER to process the get queries form.
     Return query_monads: a list of dictionaries of queries for a specific book
     and chapter and their associated monads.
-
-    get queries =>
-        get all monads in current chapter =>
-            get corresponding queries
     """
     get_queries = request.vars.get_queries
     if bool(get_queries):
-        all_monads_in_all_chapter_verses = sum([v.monads() for v in get_verses()], [])  # Flatten list of lists of monads
-        query_monads = group(query_db(query_db.query_monad.monad.belongs(all_monads_in_all_chapter_verses)).select().as_dict().values())
+        chapter = get_chapter()
+        monadsets = get_monadsets_MySQL(chapter)
+        query_monads = group_MySQL(monadsets)
     else:
         query_monads = []
     return dict(query_monads=query_monads,)
-
-
-def generate_monads(no_controller=True):
-    """ HELPER
-    Empty the query database and refill it with 10 queries, each with 100
-    random monad numbers.
-    Usage: just temporarily add it to a controller to generate the monads.
-    """
-    query_db.query.truncate()
-    query_db.query_monad.truncate()
-    for x in xrange(1, 11):
-        # Create the Query object
-        query_db.query.insert(query="Dit is query %i." % x)
-        query = query_db(query_db.query.id == x).select()[0]
-        for y in xrange(0, 100):
-            query_db.query_monad.insert(query=query, monad=randint(0, 430000))
 
 
 def browser():
