@@ -1,0 +1,34 @@
+            <div class="monad_sets">
+                <p>Page {{=page}} of {{=pages}} with {{=results}} results.</p>
+                {{verses = verse_data}}
+                {{for verse in verses:}}
+                    <div class="book-title">{{=verse.citation_ref()}}</div>
+                    <div class="hebrew">{{for word in verse.get_words():}}{{if word.focus:}}<span class="focus">{{=word.text}}</span>{{else:}}<span class="word">{{=word.text}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
+                {{pass}}
+            </div>
+            <div class="pagination">
+                <ul>
+                {{if page == 1:}}
+                    <li class="disabled"><a>«</a></li>
+                {{else:}}
+                    <li>{{=A('«', callback=URL('mql', 'result_page', vars=dict(id=qid, page=page-1)), target='rlist')}}</li>
+                {{pass}}
+
+                {{ 
+                    for p in pagelist:
+                        class_active = ' class="active"' if p == page else ''
+                }} 
+                {{if page == p:}}
+                    <li class="active"><a>{{=p}}</a></li>
+                {{else:}}
+                    <li>{{=A(str(p), callback=URL('mql', 'result_page', vars=dict(id=qid, page=p)), target='rlist')}}</li>
+                {{pass}}
+                {{pass}}
+
+                {{if page == pages:}}
+                    <li class="disabled"><a>»</a></li>
+                {{else:}}
+                    <li>{{=A('»', callback=URL('mql', 'result_page', vars=dict(id=qid, page=page+1)), target='rlist')}}</li>
+                {{pass}}
+                </ul>
+            </div>
