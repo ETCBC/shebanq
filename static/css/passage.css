@@ -52,6 +52,10 @@ h1, h2 {
 #verse_word_highlighter_form label {
     display: none;
 }
+#get_queries_form ul li {
+    margin: 0;
+    padding: 0;
+}
 #queries {
     margin-left: 0;
 }
