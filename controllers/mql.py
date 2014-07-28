@@ -260,7 +260,7 @@ ORDER BY verse.id;'''.format(','.join([str(v) for v in verse_ids])))
             v_id = int(v[0])
             verse_data.append(Verse(v[1], v[2], v[3], v[4], set(verse_monads[v_id]))) 
 
-    return (nvt, cur_page, verse_data)
+    return (nvt, cur_page + 1, verse_data)
 
 
 def index():
