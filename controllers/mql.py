@@ -124,10 +124,15 @@ def check_query_access_execute(record_id=get_record_id()):
     return authorized
 
 
-def get_mql_form(mql_record, readonly=False):
-    mql_form = SQLFORM(db.queries, record=mql_record, readonly=readonly,
+def get_mql_form(record_id, readonly=False):
+    mql_record = db.queries[record_id]
+    buttons = [
+        TAG.button('New', _type='submit', _name='button_new'),
+        TAG.button('Save', _type='submit', _name='button_save'),
+    ]
+    mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
                        showid=False, ignore_rw=False,
-                       labels={'mql': 'MQL Query'},
+                       labels={'mql': 'MQL Query', 'is_published': 'Public'},
                        col3={'name': 'A name for this query that will be shown in list views.',
                              'description': 'A description and motivation for this query.',
                              'mql': A('MQL quick reference guide (pdf)',
@@ -135,12 +140,10 @@ def get_mql_form(mql_record, readonly=False):
                                       _href=URL('static', 'docs/MQL-QuickRef.pdf')),
                              },
                        formstyle='divs',
-                       buttons=[TAG.button('Save', _type='submit', _name='button_save'),
-                                TAG.button('Fresh results', _type='submit', _name='button_execute'),
-                                TAG.button('Stored results', _type='submit', _name='button_render'),
-                                TAG.button('New', _type='submit', _name='button_new'), ]
+                       buttons=buttons
                        )
     return mql_form
+
 
 
 def handle_response(mql_form):
@@ -149,14 +152,11 @@ def handle_response(mql_form):
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
 
+        if 'button_published' in request.vars:
+            session.flash = 'published query ' + str(mql_form.vars.name)
+
         if 'button_save' in request.vars:
             session.flash = 'saved query ' + str(mql_form.vars.name)
-
-        elif 'button_execute' in request.vars:
-            redirect(URL('execute_query', vars=dict(id=record_id)))
-
-        elif 'button_render' in request.vars:
-            redirect(URL('render_query', vars=dict(id=record_id)))
 
         elif 'button_new' in request.vars:
             session.flash = 'saved previous query ' + str(mql_form.vars.name)
@@ -269,34 +269,63 @@ def index():
 
 @auth.requires(lambda: check_query_access_write())
 def edit_query():
-    #print "edit_query"
-    mql_record = get_record_id()
-    if mql_record is None:
-        mql_record = db(db.queries.created_by == auth.user).select().last() or 0
+    record_id = get_record_id()
+    if record_id is None:
+        record_id = db(db.queries.created_by == auth.user).select().last() or 0
 
-    mql_form = get_mql_form(mql_record)
+    mql_form = get_mql_form(record_id)
+    mql_record = db.queries[record_id]
     handle_response(mql_form)
 
-    return dict(form=mql_form)
+    return dict(
+        edit=True,
+        exception=None,
+        form=mql_form,
+        qid=record_id,
+        query=mql_record,
+        page=0, pages=0, results=0, pagelist=[],
+        verse_data= [],
+    )
 
+@auth.requires(lambda: check_query_access_write())
+def publish_query():
+    record_id = get_record_id()
+    if record_id is None:
+        pass
+    else:
+        mql_record.update_record(is_published='F')
+    return display_query()
+
+@auth.requires(lambda: check_query_access_read())
+def display_query():
+    record_id = get_record_id()
+    if record_id is None:
+        record_id = db(db.queries.created_by == auth.user).select().last() or 0
+
+    mql_record = db.queries[record_id]
+    person = auth.settings.table_user[mql_record.created_by]
+    project = db.project[mql_record.project]
+    organization = db.organization[mql_record.organization]
+    return dict(
+        edit=False,
+        exception=None,
+        qid=record_id,
+        query=mql_record,
+        person=person, project=project, organization=organization,
+        page=0, pages=0, results=0, pagelist=[],
+        verse_data= [],
+    )
 
 @auth.requires(lambda: check_query_access_execute())
 def execute_query():
-    return show_query(True, "Fresh results")
-
-
-@auth.requires(lambda: check_query_access_read())
-def render_query():
-    title = "Fresh results"
-    response.title = T("Stored results")
-    return show_query(False, "Stored Results")
+    return show_query(True, "Query Executed")
 
 def show_query(with_execute, title):
     from shemdros.client.api import MqlResource
     from shemdros.client.api import RemoteException
 #    from shebanq_db.etcbc import VerseIterator
 
-    record_id = get_record_id()
+    record_id = int(request.vars.id) if request.vars else get_record_id()
     mql_form = get_mql_form(record_id)
     handle_response(mql_form)
     mql_record = db.queries[record_id]
@@ -313,6 +342,7 @@ def show_query(with_execute, title):
             response.flash = 'Exception while executing query: '
             return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
 
+        mql_record.update_record(executed_on=request.now)
         response.flash = 'Query executed'
     else:
         monad_sets = load_monad_sets(record_id)
@@ -322,6 +352,7 @@ def show_query(with_execute, title):
     response.title = T(title)
 
     return dict(
+        edit=True,
         form=mql_form, exception=None,
         qid=record_id,
         results=nresults,
@@ -335,6 +366,7 @@ def result_page():
     page = int(request.vars.page) if request.vars else 1
     if record_id < 0:
         return dict(
+            exception=None,
             qid=record_id,
             results = 0,
             pages=0, page=0, pagelist=[],
@@ -344,9 +376,9 @@ def result_page():
     monad_sets = load_monad_sets(record_id)
 
     (nresults, npages, verse_data) = get_pagination(page, monad_sets)
-    response.flash = '{} results on {} pages'.format(nresults, npages)
 
     return dict(
+        exception=None,
         qid=record_id,
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
@@ -379,17 +411,72 @@ def parse_exception(message):
 def my_queries():
     grid = SQLFORM.grid(db.queries.created_by == auth.user,
                         fields={db.queries.id, db.queries.name, db.queries.created_on,
-                                db.queries.modified_on, db.queries.modified_by},
+                                db.queries.modified_on, db.queries.executed_on, db.queries.modified_by},
                         orderby=~db.queries.modified_on,
                         selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
                         editable=False,
                         details=False,
-                        create=False,
-                        links=[lambda row: A(SPAN(_class='icon pen icon-pencil'),
-                                             SPAN('Edit', _class='buttontext button', _title='Edit'),
-                                             _class='button btn',
-                                             _href=URL('mql', 'edit_query', vars=dict(id=row.id)), ), ],
-                        paginate=3,
+                        create=True,
+                        links=[
+                            dict(
+                                header='view',
+                                body=lambda row: A(
+                                    SPAN(_class='icon info-sign icon-info-sign'),
+                                    SPAN('', _class='buttontext button', _title='View'),
+                                    _class='button btn',
+                                    _href=URL('mql', 'display_query', vars=dict(id=row.id)),
+                                ) 
+                            ),
+                            dict(
+                                header='edit',
+                                body=lambda row: A(
+                                    SPAN(_class='icon pen icon-pencil'),
+                                    SPAN('', _class='buttontext button', _title='Edit'),
+                                    _class='button btn',
+                                    _href=URL('mql', 'edit_query', vars=dict(id=row.id)),
+                                ),
+                            ),
+                        ],
+                        showbuttontext=False,
+                        paginate=20,
+                        csv=False)
+
+    if 1 in grid:
+        grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
+    return locals()
+
+@auth.requires_login()
+def all_queries():
+    grid = SQLFORM.grid((db.queries.created_by == auth.user) | (db.queries.is_published == True),
+                        fields={db.queries.id, db.queries.name, db.queries.created_on,
+                                db.queries.modified_on, db.queries.executed_on,db.queries.modified_by, db.queries.is_published},
+                        orderby=~db.queries.modified_on,
+                        selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
+                        editable=False,
+                        deletable=False,
+                        details=False,
+                        create=True,
+                        links=[
+                            dict(
+                                header='view',
+                                body=lambda row: A(
+                                    SPAN(_class='icon info-sign icon-info-sign'),
+                                    SPAN('', _class='buttontext button', _title='View'),
+                                    _class='button btn',
+                                    _href=URL('mql', 'display_query', vars=dict(id=row.id)),
+                                ) 
+                            ),
+                            dict(
+                                header='edit',
+                                body=lambda row: A(
+                                    SPAN(_class='icon pen icon-pencil'),
+                                    SPAN('', _class='buttontext button', _title='Edit'),
+                                    _class='button btn',
+                                    _href=URL('mql', 'edit_query', vars=dict(id=row.id)),
+                                ) if row.modified_by == auth.user.id else ''
+                            ),
+                        ],
+                        paginate=20,
                         csv=False)
 
     grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"

@@ -75,6 +75,9 @@ signature = db.Table(db, 'auth_signature',
                      Field('modified_on', 'datetime',
                            update=request.now, default=request.now,
                            writable=False, readable=True),
+                     Field('executed_on', 'datetime',
+                           default=request.now,
+                           writable=False, readable=True),
                      Field('modified_by', auth.settings.table_user,
                            default=auth.user_id, update=auth.user_id,
                            writable=False, readable=True)
@@ -87,7 +90,7 @@ db.define_table("queries",
                 Field('mql', 'text', requires=IS_MQL_QUERY()),
                 Field('project', 'reference project', requires=IS_IN_DB(db, db.project.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("project", controller='select_or_add_option_widget').widget),
                 Field('organization', 'reference organization', requires=IS_IN_DB(db, db.organization.id, '%(name)s'), widget=SELECT_OR_ADD_OPTION("organization", controller='select_or_add_option_widget').widget),
-                Field('is_published', 'boolean', default=False),
+                Field('is_published', 'boolean', writable=False, readable=True, default=False),
 
                 signature,
                 format=lambda r: r.name or r.id,)

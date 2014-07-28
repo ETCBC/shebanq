@@ -15,11 +15,21 @@
 
 {{ include 'passage/browser_form.html' }}
 
+{{
+    ua = request.user_agent().browser.name
+    adapt = ua == 'Safari' or ua == 'Chrome'
+}}
+
 {{ if verses: }}
     <dl id="verses">
-    {{ for verse in verses: }}
+    {{ for verse in verses:
+        if adapt:
+            ht = verse.html.replace('</span><span', '&nbsp;</span><span/')
+        else:
+            ht = verse.html
+    }}{{pass}}
         <dt>{{ =verse.verse_num }}</dt>
-        <dd>{{ =XML(verse.html) }}</dd>
+        <dd>{{ =XML(ht) }}</dd>
     {{ pass }}
     </dl>
 {{ pass }}

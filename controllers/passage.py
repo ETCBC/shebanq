@@ -319,7 +319,7 @@ def get_monadsets_MySQL(chapter):
            select DISTINCT query_id,
                            GREATEST(first_m, {chapter_first_m}) as first_m,
                            LEAST(last_m, {chapter_last_m}) as last_m
-           from monadsets
+           from monadsets inner join queries on monadsets.query_id = queries.id and queries.is_published = 'F'
            WHERE (first_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
                  (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
                  ({chapter_first_m} BETWEEN first_m AND last_m);""".format(chapter_last_m=chapter.last_m,

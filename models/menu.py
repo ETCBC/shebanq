@@ -51,21 +51,22 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('default', 'index'), []),
-    (T('Test'), False, URL('default', 'index'), [
-        (T('Register'), False, URL('default/user', 'register'), [
-            (T('En nog meer'), False, URL('default', 'index'))
-        ])
-    ]),
-    (T('Query'), False, URL('default', 'query'), []),
-    (T('testform'), False, URL('default', 'testform'), []),
+#    (T('Test'), False, URL('default', 'index'), [
+#        (T('Register'), False, URL('default/user', 'register'), [
+#            (T('En nog meer'), False, URL('default', 'index'))
+#        ])
+#    ]),
+#    (T('Query'), False, URL('default', 'query'), []),
+#    (T('testform'), False, URL('default', 'testform'), []),
     (T('Queries'), False, URL('mql', 'edit_query'), [
-        (T('Edit Query'), False, URL('mql', 'edit_query'), []),
+#        (T('Edit Query'), False, URL('mql', 'edit_query'), []),
         (T('My Queries'), False, URL('mql', 'my_queries'), []),
+        (T('All Queries'), False, URL('mql', 'all_queries'), []),
     ]),
     (T('Browse'), False, URL('passage', 'browser'), []),
 ]
 
-DEVELOPMENT_MENU = True
+DEVELOPMENT_MENU = False
 
 #########################################################################
 ## provide shortcuts for development. remove in production

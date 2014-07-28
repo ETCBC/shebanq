@@ -189,3 +189,13 @@ margin-left: 3px;
 .qresults {
     overflow: auto;
 }
+
+span.error {
+    background-color: #ffaaaa;
+}
+span.warning {
+    background-color: #ffddaa;
+}
+span.info {
+    background-color: #aaffaa;
+}
