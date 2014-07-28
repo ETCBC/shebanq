@@ -1,14 +1,28 @@
+{{
+    ua = request.user_agent().browser.name
+    def adapted_text(text, trailer): return text
+}}
+{{
+    if ua == 'Safari' or ua == 'Chrome':
+        def adapted_text(text, trailer):
+            return XML(text + '&nbsp;')
+}}
+{{pass}}
             <div class="monad_sets qresults" id="qresults">
                 <p>Page {{=page}} of {{=pages}} with {{=results}} results.</p>
+                <p>{{=BEAUTIFY(request.user_agent().browser.name)}}</p>
                 {{verses = verse_data}}
                 {{for verse in verses:}}
                     <div class="book-title">{{=verse.citation_ref()}}</div>
-                    <div class="hebrew">{{for word in verse.get_words():}}{{if word.focus:}}<span class="focus">{{=word.text}}</span>{{else:}}<span class="word">{{=word.text}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
+                    <div class="hebrew">{{
+                        for word in verse.get_words():
+                            atext = adapted_text(word.text, word.trailer)
+                    }}{{if word.focus:}}<span class="focus">{{=atext}}</span>{{else:}}<span class="word">{{=atext}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
                 {{pass}}
             </div>
             <div class="pagination">
                 <ul>
-                {{if page == 1:}}
+                {{if page <= 1:}}
                     <li class="disabled"><a>«</a></li>
                 {{else:}}
                     <li>{{=A('«', callback=URL('mql', 'result_page', vars=dict(id=qid, page=page-1)), target='rlist')}}</li>
@@ -16,7 +30,6 @@
 
                 {{ 
                     for p in pagelist:
-                        class_active = ' class="active"' if p == page else ''
                 }} 
                 {{if page == p:}}
                     <li class="active"><a>{{=p}}</a></li>
@@ -25,10 +38,23 @@
                 {{pass}}
                 {{pass}}
 
-                {{if page == pages:}}
+                {{if page >= pages:}}
                     <li class="disabled"><a>»</a></li>
                 {{else:}}
                     <li>{{=A('»', callback=URL('mql', 'result_page', vars=dict(id=qid, page=page+1)), target='rlist')}}</li>
                 {{pass}}
                 </ul>
             </div>
+<script language="javascript">
+function adjustheight () {
+	var cheight_n = window.innerHeight - 140
+    var mheight_n = cheight_n / 4
+    var rheight_n = cheight_n / 2
+	var mheight = "" + mheight_n + "px"
+	var rheight = "" + rheight_n + "px"
+	document.getElementById('mform').style.height = mheight
+	document.getElementById('qresults').style.height = rheight
+}
+
+adjustheight()
+</script>

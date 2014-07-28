@@ -205,7 +205,7 @@ def get_pagination(p, monad_sets):
     nvt = 0 # number of verses added in total
     lm = len(monad_sets)
     lv = len(verse_boundaries)
-    cur_page = 0 # current page
+    cur_page = 1 # current page
     verse_ids = []
     verse_monads = {}
     verse_data = []
@@ -260,7 +260,7 @@ ORDER BY verse.id;'''.format(','.join([str(v) for v in verse_ids])))
             v_id = int(v[0])
             verse_data.append(Verse(v[1], v[2], v[3], v[4], set(verse_monads[v_id]))) 
 
-    return (nvt, cur_page + 1, verse_data)
+    return (nvt, cur_page, verse_data)
 
 
 def index():
@@ -301,8 +301,7 @@ def show_query(with_execute, title):
     handle_response(mql_form)
     mql_record = db.queries[record_id]
     query = mql_record.mql
-    page = 0
-    page = response.vars.page if response.vars else 0
+    page = response.vars.page if response.vars else 1
 
     monad_sets = None
     if with_execute:
@@ -326,17 +325,14 @@ def show_query(with_execute, title):
         form=mql_form, exception=None,
         qid=record_id,
         results=nresults,
-        pages=npages, page=page+1, pagelist=pagelist(page+1, npages, 10),
+        pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data
     )
 
 @auth.requires(lambda: check_query_access_read())
 def result_page():
     record_id = int(request.vars.id) if request.vars else -1
-    page = int(request.vars.page) if request.vars else 0
-    print('RESPONSE = {}'.format(response.vars))
-    print('REQUEST = {}'.format(request.vars))
-    print("RECORDID={}".format(record_id))
+    page = int(request.vars.page) if request.vars else 1
     if record_id < 0:
         return dict(
             qid=record_id,
@@ -353,7 +349,7 @@ def result_page():
     return dict(
         qid=record_id,
         results=nresults,
-        pages=npages, page=page+1, pagelist=pagelist(page+1, npages, 10),
+        pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data
     )
 
