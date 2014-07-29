@@ -15,7 +15,7 @@
     {{
         if ua == 'Safari' or ua == 'Chrome':
             def adapted_text(text, trailer):
-                return XML(text + '&nbsp;')
+                return XML(text + ('&nbsp;' if trailer == '' else ''))
     }}
     {{pass}}
                 <div>
