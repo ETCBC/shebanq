@@ -28,6 +28,7 @@
         {{=A('[Execute Query]', callback=URL('mql', 'execute_query', vars=dict(id=qid)), target='top')}}
     {{pass}}
     {{=A('[Show Results]', callback=URL('mql', 'result_page', vars=dict(id=qid, page=1)), target='rlist')}}
+    {{=A('[MQL quick reference guide (pdf)]', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}
     </p>
 </div>
 

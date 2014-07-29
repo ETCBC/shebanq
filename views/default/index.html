@@ -7,15 +7,76 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<h4>{{=T('Information')}}</h4>
+<h4>{{=T('Get started')}}</h4>
+You can read passages and encounter other people's published queries:
+<ul class="text">
+    <li>jump to a book and chapter via <i>browse</i></li>
+    <li>while reading, click <i>get related queries</i></li>
+    <li>highlight the query results</li>
+</ul>
 
-<h4>{{=T('News')}}</h4>
+<h4>{{=T('Next steps')}}</h4>
+You can contribute interesting queries yourself:
+<ul class="text">
+    <li>register/login</li>
+    <li>follow the My Queries menu item and add a query</li>
+    <li>or select an existing one for editing</li>
+    <li>type an MQL search
+        (consult the {{=A('MQL quick reference guide', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}})
+        </li>
+    <li>execute the query</li>
+</ul>
+
+You can publish your queries:
+<ul class="text">
+    <li>go to a query through <i>My Queries</i> and then the edit button</li>
+    <li>the query is publishable if it has been executed <i>after</i> its last save.</li>
+    <li>so, if needed, execute the query, and do not save it</li>
+    <li>then go to the query again through <i>My Queries - edit</i> and press the <i>Publish</i> button. No saving needed.</li>
+</ul>
+
+<h4>{{=T('About')}}</h4>
+This is <i>shebanq</i> the first data service of <i>ancient-data.org</i>.
+
+Shebanq is a search engine for the Hebrew Bible, powered by the ETCBC4 linguistic database, formerly know as WIVU.
+The data is archived for <i>open access</i>, clicking the
+<a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY">DANS logo</a>
+above will bring you to the treasure trove.
+
+<p><b>Authors</b>:</p>
+<dl>
+    <dt>ETCBC</dt>
+    <dd><a target="_blank" href="">Eep Talstra Center for Bible and Computing</a><br/>
+     <a href="mailto:w.t.van.peursen@vu.nl">Wido van Peursen (ETCBC)</a>
+    </dd>
+    <dt>DANS</dt>
+    <dd><a target="_blank" href="">Data Archiving and Networked Services</a><br>
+     <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda (DANS)</a>
+    </dd>
+</dl>
+
+<h4>{{=T('History')}}</h4>
+<h5>2014-07-29</h5>
+SHEBANQ goes live, but it is a demonstrator, with open issues.
+Currently we are aware of:
+<ol class="text">
+    <li>Publishing queries is not as smooth as it should be</li>
+    <li>The query engine might cause exceptions that are not yet handled</li>
+    <li>The rendering of the text is not completely correct.
+        Webkit browsers (Chrome, Safari) are known to mangle white space around accented Hebrew characters, and even Firefox has errors.
+        Some of these are caused by the interaction between plain UNICODE Hebrew text and surrounding HTML &lt;span&gt;
+        elements. Others occur even inside plain UNICODE text.
+        If you work on a computer, we recommend Firefox.
+        But we have tried very hard to work around the issues with Chrome and Safari,
+        so that you can enjoy the otherwise beautiful typography also on your iPad.
+        However, there might be problems that we have not spotted before. Feedback welcome.</li>
+</ol>
 
 {{block right_sidebar}}
     {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
 
     <h6>{{=T("Don't know what to do?")}}</h6>
-    <ul>
+    <ul class="text">
       <li>{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
       <li><a href="http://web2py.com">web2py.com</a></li>
       <li><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>

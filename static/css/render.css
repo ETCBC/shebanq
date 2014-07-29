@@ -27,7 +27,7 @@ text-align: right;
 }
 div.hebrew {
 font-size: 2em;
-font-family: "SBL Hebrew", "Ezra SIL", sans-serif;
+font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
 line-height:2em;
 direction:rtl;
 unicode-bidi:bidi-override;

@@ -96,13 +96,12 @@
   <div class="container">
     <div class="logos row">
         <div class="span12">
-            <a href="http://www.godgeleerdheid.vu.nl/etcbc" title="VU ETCBC"><img src="{{=URL('static', 'images/VU-ETCBC-small.png')}}" width="100px"/></a>
-            <a href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">
+            <a target="_blank" href="http://www.godgeleerdheid.vu.nl/etcbc" title="VU ETCBC"><img src="{{=URL('static', 'images/VU-ETCBC-small.png')}}" width="100px"/></a>
+            <a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">
                 <img src="{{=URL('static', 'images/github_mark_arrow.gif')}}"/>
             </a>
-            <!--<a href="http://dans.knaw.nl" title="DANS - Data Archiving and Networked Services"><img src="{{=URL('static', 'images/DANS.png')}}" /></a>-->
-            <a href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY"><img src="{{=URL('static', 'images/etcbc4easy-small.png')}}" /></a>
-            <a href="https://github.com/Dans-labs" title="View DANS Labs on Github" class="github">
+            <a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY"><img src="{{=URL('static', 'images/etcbc4easy-small.png')}}" /></a>
+            <a target="_blank" href="https://github.com/Dans-labs" title="View DANS Labs on Github" class="github">
                 <img src="{{=URL('static', 'images/github_mark_arrow.gif')}}"/>
             </a>
         </div>
@@ -152,10 +151,10 @@
         <footer class="footer span12" id="footer">
             <div class="footer-content">
                 {{block footer}} <!-- this is default footer -->
-                <div class="copyright pull-left">{{=T('Copyright')}} &#169; {{=request.now.year}}</div>
+                <div class="copyright pull-left">SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</div>
                 <div id="poweredBy" class="pull-right">
-                    {{=T('Powered by')}}
-                    <a href="http://www.web2py.com/">web2py</a>
+                    {{=T('funded by')}}
+                    <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>
                 </div>
                 {{end}}
             </div>

@@ -13,7 +13,7 @@ h1, h2 {
 }
 #verses dd {
     line-height: 2em;
-    font-family: "SBL Hebrew", "Ezra SIL", sans-serif;
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     margin-top: -2em;
     margin-right: 1.75em;
     margin-left: 0;

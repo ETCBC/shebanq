@@ -133,12 +133,6 @@ def get_mql_form(record_id, readonly=False):
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
                        showid=False, ignore_rw=False,
                        labels={'mql': 'MQL Query', 'is_published': 'Public'},
-                       col3={'name': 'A name for this query that will be shown in list views.',
-                             'description': 'A description and motivation for this query.',
-                             'mql': A('MQL quick reference guide (pdf)',
-                                      _target='_blank',
-                                      _href=URL('static', 'docs/MQL-QuickRef.pdf')),
-                             },
                        formstyle='divs',
                        buttons=buttons
                        )

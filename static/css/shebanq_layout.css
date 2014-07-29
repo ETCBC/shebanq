@@ -28,3 +28,11 @@ a.github {
     margin-bottom: -80px;
     margin-top: 25px;
 }
+
+ul.text {
+    list-style-type: disc;
+}
+
+ol.text {
+    list-style-type: decimal;
+}

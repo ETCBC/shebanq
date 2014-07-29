@@ -37,10 +37,10 @@ response.title = request.function.replace('_', ' ').capitalize()
 response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html
-response.meta.author = 'Your Name <you@example.com>'
-response.meta.description = 'a cool new app'
-response.meta.keywords = 'web2py, python, framework'
-response.meta.generator = 'Web2py Web Framework'
+response.meta.author = 'Dirk Roorda <dirk.roorda@dans.knaw.nl>'
+response.meta.description = 'Search engine for biblical Hebrew based on ETCBC database (formerly known as WIVU)'
+response.meta.keywords = 'Hebrew, Text Database, Bible, Query, Annotation'
+response.meta.generator = 'ETCBC4 Data'
 
 ## your http://google.com/analytics id
 response.google_analytics_id = None
@@ -51,18 +51,8 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('default', 'index'), []),
-#    (T('Test'), False, URL('default', 'index'), [
-#        (T('Register'), False, URL('default/user', 'register'), [
-#            (T('En nog meer'), False, URL('default', 'index'))
-#        ])
-#    ]),
-#    (T('Query'), False, URL('default', 'query'), []),
-#    (T('testform'), False, URL('default', 'testform'), []),
-    (T('Queries'), False, URL('mql', 'edit_query'), [
-#        (T('Edit Query'), False, URL('mql', 'edit_query'), []),
-        (T('My Queries'), False, URL('mql', 'my_queries'), []),
-        (T('All Queries'), False, URL('mql', 'all_queries'), []),
-    ]),
+    (T('My Queries'), False, URL('mql', 'my_queries'), []),
+    (T('All Queries'), False, URL('mql', 'all_queries'), []),
     (T('Browse'), False, URL('passage', 'browser'), []),
 ]
 
