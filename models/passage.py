@@ -54,10 +54,9 @@ def xml_replace(xml):
     """Helper func. to transform the verse XML into HTML for the virtual field
     html.
     """
-    return re.sub(r'<w m="(?P<monad>\d*)" t="(?P<trailer>[^"]*)">(?P<content>.*?)</w>',
-                  r'<span m="\g<monad>">\g<content></span>\g<trailer>',
+    return re.sub('<w m="(?P<monad>\d*)" t="(?P<trailer>[^"]*)">(?P<content>.*?)</w>',
+                  '<span m="\g<monad>">\g<content></span>\g<trailer>',
                   xml)
-
 
 """Virtual field 'html' replaces the <w> tags in the xml field with <span> tags."""
 passage_db.verse.html = Field.Virtual(
