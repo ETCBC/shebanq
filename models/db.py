@@ -95,7 +95,7 @@ mail.settings.login = None #'username:password'
 auth.settings.registration_requires_verification = True
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-auth.settings.login_after_registration = True
+auth.settings.login_after_registration = False
 #If the user tried to access the register page but is already logged in, redirect to profile.
 auth.settings.logged_url = URL('user', args='profile')
 
