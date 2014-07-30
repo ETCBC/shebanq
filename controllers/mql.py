@@ -253,7 +253,7 @@ def get_pagination(p, monad_sets):
             else:
                 v += 1
     
-    if p <= cur_page:
+    if p <= cur_page and len(verse_ids):
         verse_info = passage_db.executesql('''
 SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
 INNER JOIN chapter ON verse.chapter_id=chapter.id
@@ -300,6 +300,7 @@ def display_query():
 def execute_query(record_id, with_publish=None):
     from shemdros.client.api import MqlResource
     from shemdros.client.api import RemoteException
+    mql_form = get_mql_form(record_id)
     mql_record = db.queries[record_id]
     monad_sets = None
     mql = MqlResource()
@@ -308,7 +309,13 @@ def execute_query(record_id, with_publish=None):
         store_monad_sets(record_id, normalize_ranges(monad_sets))
     except RemoteException, e:
         response.flash = 'Exception while executing query: '
-        return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
+        return dict(
+            edit=True, form=mql_form, qid=record_id, query=mql_record,
+            exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)),
+            results=0,
+            pages=0, page=0, pagelist=[],
+            verse_data=[]
+        )
 
     mql_record.update_record(executed_on=request.now)
     mql_record.update_record(is_published='T')
@@ -337,7 +344,8 @@ def show_query(title):
 
     result_dict = dict(
         edit=True,
-        form=mql_form, exception=None,
+        form=mql_form,
+        exception=None,
         qid=record_id,
         query=mql_record,
     )
