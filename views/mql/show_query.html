@@ -20,14 +20,7 @@
     {{if not query.executed_on:}}<span class='warning'>This query needs to be executed.</span>
     {{elif query.executed_on < query.modified_on:}}<span class='error'>The stored query results are outdated.</span>
     {{else:}}<span class='info'>The stored query results are up to date.</span>
-    {{if edit and not query.is_published == True:}}
-        {{=A('[Publish Query]', callback=URL('mql', 'publish_query', vars=dict(id=qid)), target='top')}}
     {{pass}}
-    {{pass}}
-    {{if edit:}}
-        {{=A('[Execute Query]', callback=URL('mql', 'execute_query', vars=dict(id=qid)), target='top')}}
-    {{pass}}
-    {{=A('[Show Results]', callback=URL('mql', 'result_page', vars=dict(id=qid, page=1)), target='rlist')}}
     {{=A('[MQL quick reference guide (pdf)]', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}
     </p>
 </div>

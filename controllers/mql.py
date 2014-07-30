@@ -127,9 +127,15 @@ def check_query_access_execute(record_id=get_record_id()):
 def get_mql_form(record_id, readonly=False):
     mql_record = db.queries[record_id]
     buttons = [
-        TAG.button('New', _type='submit', _name='button_new'),
         TAG.button('Save', _type='submit', _name='button_save'),
+        TAG.button('Execute', _type='submit', _name='button_execute'),
     ]
+    buttons.append(TAG.button(
+            'Make Private', _type='submit', _name='button_private'
+        ) if mql_record.is_published else TAG.button(
+            'Publish', _type='submit', _name='button_public'
+        )
+    )
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
                        showid=False, ignore_rw=False,
                        labels={'mql': 'MQL Query', 'is_published': 'Public'},
@@ -152,11 +158,15 @@ def handle_response(mql_form):
         if 'button_save' in request.vars:
             session.flash = 'saved query ' + str(mql_form.vars.name)
 
-        elif 'button_new' in request.vars:
-            session.flash = 'saved previous query ' + str(mql_form.vars.name)
-            record_id = '0'
+        elif 'button_execute' in request.vars:
+            return execute_query(record_id, with_publish=False) 
+        elif 'button_public' in request.vars:
+            return execute_query(record_id, with_publish=True) 
+        elif 'button_private' in request.vars:
+            return private_query(record_id) 
 
         redirect(URL('edit_query', vars=dict(id=record_id)))
+
 
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
@@ -263,32 +273,7 @@ def index():
 
 @auth.requires(lambda: check_query_access_write())
 def edit_query():
-    record_id = get_record_id()
-    if record_id is None:
-        record_id = db(db.queries.created_by == auth.user).select().last() or 0
-
-    mql_form = get_mql_form(record_id)
-    mql_record = db.queries[record_id]
-    handle_response(mql_form)
-
-    return dict(
-        edit=True,
-        exception=None,
-        form=mql_form,
-        qid=record_id,
-        query=mql_record,
-        page=0, pages=0, results=0, pagelist=[],
-        verse_data= [],
-    )
-
-@auth.requires(lambda: check_query_access_write())
-def publish_query():
-    record_id = get_record_id()
-    if record_id is None:
-        pass
-    else:
-        mql_record.update_record(is_published='F')
-    return display_query()
+    return show_query("Query Executed")
 
 @auth.requires(lambda: check_query_access_read())
 def display_query():
@@ -300,55 +285,71 @@ def display_query():
     person = auth.settings.table_user[mql_record.created_by]
     project = db.project[mql_record.project]
     organization = db.organization[mql_record.organization]
-    return dict(
+
+    result_dict = dict(
         edit=False,
         exception=None,
         qid=record_id,
         query=mql_record,
         person=person, project=project, organization=organization,
-        page=0, pages=0, results=0, pagelist=[],
-        verse_data= [],
     )
+    result_dict.update(show_results(record_id))
+    return result_dict
 
 @auth.requires(lambda: check_query_access_execute())
-def execute_query():
-    return show_query(True, "Query Executed")
-
-def show_query(with_execute, title):
+def execute_query(record_id, with_publish=None):
     from shemdros.client.api import MqlResource
     from shemdros.client.api import RemoteException
+    mql_record = db.queries[record_id]
+    monad_sets = None
+    mql = MqlResource()
+    try:
+        monad_sets = mql.list_monad_set(mql_record.mql)
+        store_monad_sets(record_id, normalize_ranges(monad_sets))
+    except RemoteException, e:
+        response.flash = 'Exception while executing query: '
+        return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
+
+    mql_record.update_record(executed_on=request.now)
+    mql_record.update_record(is_published='T')
+    redirect(URL('edit_query', vars=dict(id=record_id)))
+    return show_query("Query Published" if with_publish else "Query Executed")
+
+@auth.requires(lambda: check_query_access_write())
+def private_query(record_id):
+    mql_record = db.queries[record_id]
+    mql_record.update_record(is_published='F')
+    redirect(URL('edit_query', vars=dict(id=record_id)))
+    return show_query("Private Query")
+
+def show_query(title):
 #    from shebanq_db.etcbc import VerseIterator
 
-    record_id = int(request.vars.id) if request.vars else get_record_id()
+    record_id = get_record_id()
+    if record_id is None:
+        record_id = 0
     mql_form = get_mql_form(record_id)
     handle_response(mql_form)
     mql_record = db.queries[record_id]
     query = mql_record.mql
-    page = response.vars.page if response.vars else 1
 
-    monad_sets = None
-    if with_execute:
-        mql = MqlResource()
-        try:
-            monad_sets = mql.list_monad_set(mql_record.mql)
-            store_monad_sets(record_id, normalize_ranges(monad_sets))
-        except RemoteException, e:
-            response.flash = 'Exception while executing query: '
-            return dict(form=mql_form, exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)))
-
-        mql_record.update_record(executed_on=request.now)
-        response.flash = 'Query executed'
-    else:
-        monad_sets = load_monad_sets(record_id)
-
-    (nresults, npages, verse_data) = get_pagination(page, monad_sets)
-    response.flash = '{} results on {} pages'.format(nresults, npages)
     response.title = T(title)
 
-    return dict(
+    result_dict = dict(
         edit=True,
         form=mql_form, exception=None,
         qid=record_id,
+        query=mql_record,
+    )
+    result_dict.update(show_results(record_id))
+    return result_dict
+
+def show_results(record_id):
+    page = response.vars.page if response.vars else 1
+    monad_sets = load_monad_sets(record_id)
+    (nresults, npages, verse_data) = get_pagination(page, monad_sets)
+    response.flash = '{} results on {} pages'.format(nresults, npages)
+    return dict(
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data
@@ -404,9 +405,15 @@ def parse_exception(message):
 @auth.requires_login()
 def my_queries():
     grid = SQLFORM.grid(db.queries.created_by == auth.user,
-                        fields={db.queries.id, db.queries.name, db.queries.created_on,
-                                db.queries.modified_on, db.queries.executed_on, db.queries.modified_by},
+                        fields={db.queries.name,
+                                db.queries.modified_on, db.queries.executed_on, db.queries.is_published},
                         orderby=~db.queries.modified_on,
+                        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
+                        headers={
+                            'queries.is_published': 'Public',
+                            'queries.executed_on': 'Last Run',
+                            'queries.modified_on': 'Modified',
+                        },
                         selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
                         editable=False,
                         details=False,
@@ -441,10 +448,15 @@ def my_queries():
 
 @auth.requires_login()
 def all_queries():
-    grid = SQLFORM.grid((db.queries.created_by == auth.user) | (db.queries.is_published == True),
+    grid = SQLFORM.grid(db.queries.is_published == True,
                         fields={db.queries.id, db.queries.name, db.queries.created_on,
-                                db.queries.modified_on, db.queries.executed_on,db.queries.modified_by, db.queries.is_published},
+                                db.queries.modified_on, db.queries.executed_on,db.queries.modified_by},
                         orderby=~db.queries.modified_on,
+                        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
+                        headers={
+                            'queries.executed_on': 'Last Run',
+                            'queries.modified_on': 'Modified',
+                        },
                         selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
                         editable=False,
                         deletable=False,
