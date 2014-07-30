@@ -92,9 +92,10 @@ mail.settings.sender = 'foo.bar@dans.knaw.nl'
 mail.settings.login = None #'username:password'
 
 ## configure auth policy
-auth.settings.registration_requires_verification = False
-auth.settings.registration_requires_approval = True
+auth.settings.registration_requires_verification = True
+auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
+auth.settings.login_after_registration = True
 #If the user tried to access the register page but is already logged in, redirect to profile.
 auth.settings.logged_url = URL('user', args='profile')
 
