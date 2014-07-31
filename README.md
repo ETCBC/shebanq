@@ -29,4 +29,4 @@ DANS
 [Data Archiving and Networked Services](http://www.dans.knaw.nl)
 [Dirk Roorda](mailto:dirk.roorda@dans.knaw.nl)
     
-
+2013-2014: The SHEBANQ demonstrator and the data curation of the ETCBC4 data into LAF have been funded by [CLARIN-NL](http://www.clarin.nl)
