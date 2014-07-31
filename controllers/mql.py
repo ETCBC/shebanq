@@ -402,8 +402,8 @@ def parse_exception(message):
 @auth.requires_login()
 def my_queries():
     grid = SQLFORM.grid(db.queries.created_by == auth.user,
-                        fields={db.queries.name,
-                                db.queries.modified_on, db.queries.executed_on, db.queries.is_published},
+                        fields=[db.queries.name, db.queries.is_published,
+                                db.queries.modified_on, db.queries.executed_on],
                         orderby=~db.queries.modified_on,
                         sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
                         headers={
@@ -445,15 +445,14 @@ def my_queries():
 
 def public_queries():
     grid = SQLFORM.grid(db.queries.is_published == True,
-                        fields={db.queries.id, db.queries.name, db.queries.created_on,
-                                db.queries.modified_on, db.queries.executed_on,db.queries.modified_by},
+                        fields=[db.queries.id, db.queries.name ,db.queries.modified_by, db.queries.created_on,
+                                db.queries.modified_on, db.queries.executed_on],
                         orderby=~db.queries.modified_on,
                         sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
                         headers={
                             'queries.executed_on': 'Last Run',
                             'queries.modified_on': 'Modified',
                         },
-                        selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
                         editable=False,
                         deletable=False,
                         details=False,
@@ -472,7 +471,6 @@ def public_queries():
                         paginate=20,
                         csv=False)
 
-    grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
     return locals()
 
 
