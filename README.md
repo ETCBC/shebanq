@@ -1,3 +1,5 @@
+![shebanq](https://raw.github.com/dans-labs/laf-fabric/master/static/images/shebanq.png)
+
 SHEBANQ
 =======
 
