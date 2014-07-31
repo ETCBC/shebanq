@@ -143,7 +143,7 @@ def handle_response(mql_form):
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
 
-        elif 'button_execute' in request.vars:
+        if 'button_execute' in request.vars:
             return execute_query(record_id, with_publish=False) 
         elif 'button_public' in request.vars:
             return execute_query(record_id, with_publish=True) 
