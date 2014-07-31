@@ -143,12 +143,6 @@ def handle_response(mql_form):
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
 
-        if 'button_published' in request.vars:
-            session.flash = 'published query ' + str(mql_form.vars.name)
-
-        if 'button_save' in request.vars:
-            session.flash = 'saved query ' + str(mql_form.vars.name)
-
         elif 'button_execute' in request.vars:
             return execute_query(record_id, with_publish=False) 
         elif 'button_public' in request.vars:
@@ -346,7 +340,6 @@ def show_results(record_id):
     page = response.vars.page if response.vars else 1
     monad_sets = load_monad_sets(record_id)
     (nresults, npages, verse_data) = get_pagination(page, monad_sets)
-    response.flash = '{} results on {} pages'.format(nresults, npages)
     return dict(
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),

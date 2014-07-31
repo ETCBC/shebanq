@@ -42,7 +42,7 @@ if 0:
 
 def index():
     """
-    example action using the internationalization operator T and flash
+    example action using the internationalization operator T 
     rendered by views/default/index.html or views/generic.html
 
     if you need a simple wiki simply replace the two lines below with:
@@ -50,7 +50,6 @@ def index():
     """
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the ETCBC4 database")
-    #response.flash = T("Welcome to SHEBANQ")
     return dict()
 
 
