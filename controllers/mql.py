@@ -44,6 +44,9 @@ class Verse():
     def citation_ref(self):
         return "{} {}:{}".format(self.book_name.replace('_', ' '), self.chapter_num, self.verse_num)
 
+    def chapter_link(self):
+        return (self.book_name, self.chapter_num)
+
     def get_words(self):
         if (len(self.words) is 0):
             root = ET.fromstring(u'<verse>{}</verse>'.format(self.xml).encode('utf-8'))
@@ -82,18 +85,6 @@ def get_record_id():
             raise HTTP(404, "get_record_id: Object not found in database: " + str(record_id))
     return record_id
 
-
-@auth.requires_login()
-def check_query_access_read(record_id=get_record_id()):
-    #print "check_query_access_write"
-    authorized = True
-
-    if record_id is not None and record_id > 0:
-        mql_record = db.queries[record_id]
-        if mql_record is None:
-            raise HTTP(404, "No read access. Object not found in database. record_id=" + str(record_id))
-
-    return authorized
 
 @auth.requires_login()
 def check_query_access_write(record_id=get_record_id()):
@@ -273,9 +264,8 @@ def index():
 
 @auth.requires(lambda: check_query_access_write())
 def edit_query():
-    return show_query("Query Executed")
+    return show_query("Edit Query")
 
-@auth.requires(lambda: check_query_access_read())
 def display_query():
     record_id = get_record_id()
     if record_id is None:
@@ -363,7 +353,6 @@ def show_results(record_id):
         verse_data=verse_data
     )
 
-@auth.requires(lambda: check_query_access_read())
 def result_page():
     record_id = int(request.vars.id) if request.vars else -1
     page = int(request.vars.page) if request.vars else 1
@@ -454,8 +443,7 @@ def my_queries():
         grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
     return locals()
 
-@auth.requires_login()
-def all_queries():
+def public_queries():
     grid = SQLFORM.grid(db.queries.is_published == True,
                         fields={db.queries.id, db.queries.name, db.queries.created_on,
                                 db.queries.modified_on, db.queries.executed_on,db.queries.modified_by},
@@ -469,7 +457,7 @@ def all_queries():
                         editable=False,
                         deletable=False,
                         details=False,
-                        create=True,
+                        create=False,
                         links=[
                             dict(
                                 header='view',
@@ -479,15 +467,6 @@ def all_queries():
                                     _class='button btn',
                                     _href=URL('mql', 'display_query', vars=dict(id=row.id)),
                                 ) 
-                            ),
-                            dict(
-                                header='edit',
-                                body=lambda row: A(
-                                    SPAN(_class='icon pen icon-pencil'),
-                                    SPAN('', _class='buttontext button', _title='Edit'),
-                                    _class='button btn',
-                                    _href=URL('mql', 'edit_query', vars=dict(id=row.id)),
-                                ) if row.modified_by == auth.user.id else ''
                             ),
                         ],
                         paginate=20,

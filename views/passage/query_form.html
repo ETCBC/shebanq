@@ -12,12 +12,11 @@
         <li id="query_{{ =q['query'].id }}" monads="{{ =q['json_monads'] }}">
             <p><input type="checkbox" name="highlight" /> Highlight this query</p>
             <dl>
-                <dt>Name</dt>
-                <dd>{{ =q['query'].name }}</dd>
-                <dt>Author</dt>
-                <dd>{{ =q['query'].created_by.first_name }} {{ =q['query'].created_by.last_name }}</dd>
-                <dt>MQL Query</dt>
-                <dd>{{ =q['query'].mql }}</dd>
+                <dt>{{=A(
+                    '{} by {} {}'.format(q['query'].name, q['query'].created_by.first_name, q['query'].created_by.last_name),
+                    _target='_blank', _href=URL('mql', 'display_query', vars=dict(id=q['query'].id))
+                    )}}</dt>
+                <dd>{{=q['query'].description}}</dd>
             </dl>
             <hr />
         </li>

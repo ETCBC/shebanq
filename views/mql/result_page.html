@@ -24,8 +24,13 @@
                 </div>
                 <div class="monad_sets qresults" id="qresults">
                     {{verses = verse_data}}
-                    {{for verse in verses:}}
-                        <div class="book-title">{{=verse.citation_ref()}}</div>
+                    {{for verse in verses:
+                        (book, chapter) = verse.chapter_link()
+                    }}
+                        <div class="book-title">{{=A(
+                            verse.citation_ref(),
+                            _target='_blank', _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, get_queries=True))
+                        )}}</div>
                         <div class="hebrew">{{
                             for word in verse.get_words():
                                 atext = adapted_text(word.text)
