@@ -450,20 +450,18 @@ def public_queries():
                         deletable=False,
                         details=False,
                         create=False,
+                        links_placement='left',
                         links=[
                             dict(
-                                header='view',
+                                header='View',
                                 body=lambda row: A(
-                                    SPAN(_class='icon info-sign icon-info-sign'),
-                                    SPAN('', _class='buttontext button', _title='View'),
-                                    _class='button btn',
+                                    row.name,
                                     _href=URL('mql', 'display_query', vars=dict(id=row.id)),
                                 ) 
                             ),
                         ],
                         paginate=20,
                         csv=False)
-
     return locals()
 
 
