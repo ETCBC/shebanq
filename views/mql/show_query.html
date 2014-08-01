@@ -2,16 +2,13 @@
 {{if edit:}}
     {{=form}}
 {{else:}}
-    <h2>{{=query.name}}</h2>
+    <h2>{{=query.name}} ({{if query.is_published:}}public{{else:}}private{{pass}})</h2>
     <p>{{=query.description}}</p>
-    <code>{{=query.mql}}</code>
-    <p><i>Created by</i> <b>{{=person.first_name}} {{=person.last_name}}</b>, .</b></p>
-    <p><i>Created on</i> {{=query.created_on}} by <b>{{=person.first_name}} {{=person.last_name}}</b>,
-    affiliated with <a target="_blank" href="{{=organization.website}}">{{=organization.name}}</a>,
-    for project <a target="_blank" href="{{=project.website}}">{{=project.name}}</a>.</p>
-    <p><i>Modified on</i>: {{=query.modified_on}}. 
-    <p><i>Executed on</i>: {{=query.executed_on}}. 
-    <p>{{if query.is_published:}}<b>Public</b>{{else:}}Private{{pass}}</p>
+    <pre>{{=query.mql}}</pre>
+    <p><i>By</i> <b>{{=person.first_name}} {{=person.last_name}}</b>,
+    <i>affiliated with</i> <a target="_blank" href="{{=organization.website}}">{{=organization.name}}</a>,
+    <i>for project</i> <a target="_blank" href="{{=project.website}}">{{=project.name}}</a>.</p>
+    <p><i>Created on</i> {{=query.created_on}}; <i>modified on</i>: {{=query.modified_on}}; <i>last executed on</i>: {{=query.executed_on}}.</p> 
 {{pass}}
 </div>
 
