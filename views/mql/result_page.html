@@ -20,7 +20,7 @@
     }}
     {{pass}}
                 <div>
-                    <p>{{if page == 0:}}No results retrieved yet{{else:}}Page {{=page}} of {{=pages}} with {{=results}} results{{pass}}.</p>
+                    <p>{{if page == 0:}}No results retrieved yet{{else:}}Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}{{pass}}.</p>
                 </div>
                 <div class="monad_sets qresults" id="qresults">
                     {{verses = verse_data}}
