@@ -14,7 +14,8 @@
         def adapted_text(text): return text
     }}
     {{
-        if ua == 'Safari' or ua == 'Chrome':
+        #if ua == 'Safari' or ua == 'Chrome':
+        if ua == 'Safari':
             def adapted_text(text):
                 return XML('' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')))
     }}
