@@ -33,6 +33,15 @@ def result_to_html(xml_tree, xsl_file=os.path.dirname(__file__) + "/stylesheets/
     return html_tree
 
 
+def sanitize(query):
+    lines = query.splitlines()
+    slines = []
+    for line in lines:
+        slines.append(line.split('//', 1)[0])
+    slines.append('GO')
+    return '\n'.join(line.replace('\/', '/') for line in slines)
+        
+
 class ClientException(Exception):
     pass
 
@@ -175,7 +184,7 @@ class MqlResource(Resource):
     def query(self, query, database="default", result_format="mql-xml", stream=False):
         url = self.url.add_path_segment("query")
         params = {'database':database, 'result-format':result_format}
-        self.response = requests.post(str(url), params=params, data=query, stream=stream)
+        self.response = requests.post(str(url), params=params, data=sanitize(query), stream=stream)
         return self.response
 
     # The render methods cannot be used because elements in the xml-output of Emdros are mismatched.
@@ -194,7 +203,7 @@ class MqlResource(Resource):
         params = {'database':database, 'result-format':result_format, 'json-name':json_name, 'renderer':renderer, \
                   'context-level':context_level, 'context-mark':context_mark, 'offset-first':offset_first, \
                   'offset-last':offset_last}
-        self.response = requests.post(str(url), params=params, data=query, stream=stream)
+        self.response = requests.post(str(url), params=params, data=sanitize(query), stream=stream)
         return self.response
 
     def get_mql_xml(self, query, database="default"):
@@ -242,7 +251,7 @@ class MqlResource(Resource):
     def get_monad_set_csv(self, query, database="default", stream=False):
         url = self.url.add_path_segment("query")
         params = {'database':database, 'result-format':"monadset-csv"}
-        self.response = requests.post(str(url), params=params, data=query, stream=stream)
+        self.response = requests.post(str(url), params=params, data=sanitize(query), stream=stream)
 
         if self.response.status_code != 200:
             raise RemoteException(self.response)
@@ -252,7 +261,7 @@ class MqlResource(Resource):
     def get_monad_set_xml(self, query, database="default", stream=False):
         url = self.url.add_path_segment("query")
         params = {'database':database, 'result-format':"monadset-xml"}
-        self.response = requests.post(str(url), params=params, data=query, stream=stream)
+        self.response = requests.post(str(url), params=params, data=sanitize(query), stream=stream)
 
         if self.response.status_code != 200:
             raise RemoteException(self.response)
