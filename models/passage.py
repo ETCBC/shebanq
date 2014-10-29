@@ -54,7 +54,7 @@ def xml_replace(xml):
     """Helper func. to transform the verse XML into HTML for the virtual field
     html.
     """
-    return re.sub('<w m="(?P<monad>\d*)" t="(?P<trailer>[^"]*)">(?P<content>.*?)</w>',
+    return re.sub('<w m="(?P<monad>\d*?)" t="(?P<trailer>[^"]*?)"[^>]*>(?P<content>.*?)</w>',
                   '<span m="\g<monad>">\g<content></span>\g<trailer>',
                   xml)
 
