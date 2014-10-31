@@ -35,7 +35,7 @@
                         <div class="hebrew">{{
                             for word in verse.get_words():
                                 atext = adapted_text(word.text)
-                        }}{{if word.focus:}}<span class="focus">{{=atext}}</span>{{else:}}<span class="word">{{=atext}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
+                        }}{{if word.focus:}}<span class="highlight">{{=atext}}</span>{{else:}}<span class="word">{{=atext}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
                     {{pass}}
                 </div>
                 <div class="pagination">

@@ -1,6 +1,7 @@
 import json
 from itertools import groupby
 
+from render import Verse
 
 def get_books(no_controller=True):
     """ HELPER
@@ -42,12 +43,20 @@ def get_verses(no_controller=True):
     """ HELPER
     Return all verses from a book-chapter specified in the request variable.
     """
+    book = get_book()
     chapter = get_chapter()
     if chapter:
-        verses = passage_db(passage_db.verse.chapter_id == chapter).select()
+        book_name = request.vars.book or request.vars.Book  # request.vars.Book for the Ajax queries
+        chapter_num = request.vars.chapter
+        verse_info = passage_db.executesql('''
+SELECT id, verse_num, xml FROM verse
+WHERE chapter_id = {}
+ORDER BY verse_num;'''.format(chapter.id)) 
     else:
-        verses = []
-
+        verse_info = []
+    verses = []
+    for verse in verse_info:
+        verses.append(Verse(book_name, chapter_num, verse[1], verse[2], set()))
     return verses
 
 

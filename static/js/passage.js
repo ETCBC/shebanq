@@ -58,6 +58,10 @@ function add_all_monads_highlights() {
             $("#queries li").each( function(index, item) {
                 add_highlights($(item).attr('monads'));
             });
+            $("#queries input[type=checkbox]").attr('checked', true)
+        }
+        else {
+            $("#queries input[type=checkbox]").attr('checked', false)
         }
     });
 }
