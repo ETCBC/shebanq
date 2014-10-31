@@ -181,10 +181,12 @@ def get_pagination(p, monad_sets):
         if v != last_v:
             if cur_page == p:
                 verse_ids.append(v)
-            last_v = v
+                last_v = v
+            #last_v = v
             nvp += 1
             nvt += 1
-        if cur_page == p:
+        #if cur_page == p:
+        if last_v == v:
             if v not in verse_monads: verse_monads[v] = set()
             clipped_m = set(range(max(v_b, m_b), min(v_e, m_e) + 1))
             verse_monads[v] |= clipped_m
