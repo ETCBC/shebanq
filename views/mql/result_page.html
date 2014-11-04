@@ -26,7 +26,9 @@
                 <div>
                     {{if page == 0:}}<p>No results retrieved yet</p>{{else:}}<p>Page
 {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
-{{=XML(verses.legend())}}
+{{if verses != None:}}
+    {{=XML(verses.legend())}}
+{{pass}}
                     {{pass}}
                 </div>
                 <div class="monad_sets qresults" id="qresults">
@@ -43,9 +45,11 @@
                         {{pass}}
                     {{pass}}
                 </div>
+{{if verses != None:}}
                 <script type="text/javascript">
                     add_highlights('{{=verses.hl_query}}')
                 </script>
+{{pass}}
                 <div class="pagination">
                     <ul>
                     {{if page <= 1:}}
