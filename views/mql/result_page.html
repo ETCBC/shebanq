@@ -20,24 +20,32 @@
                 return XML('' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')))
     }}
     {{pass}}
+    <script src="{{=URL('static', 'js/rhtext_def.js')}}"></script>
+    <script src="{{=URL('static', 'js/passage.js')}}"></script>
+{{verses = verse_data}}
                 <div>
-                    <p>{{if page == 0:}}No results retrieved yet{{else:}}Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}{{pass}}.</p>
-                </div>
-                <div class="monad_sets qresults" id="qresults">
-                    {{verses = verse_data}}
-                    {{for verse in verses:
-                        (book, chapter) = verse.chapter_link()
-                    }}
-                        <div class="book-title">{{=A(
-                            verse.citation_ref(),
-                            _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, get_queries=True))
-                        )}}</div>
-                        <div class="hebrew">{{
-                            for word in verse.get_words():
-                                atext = adapted_text(word.text)
-                        }}{{if word.focus:}}<span class="highlight">{{=atext}}</span>{{else:}}<span class="word">{{=atext}}</span>{{pass}}{{=word.trailer}}{{pass}}</div>
+                    {{if page == 0:}}<p>No results retrieved yet</p>{{else:}}<p>Page
+{{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
+{{=XML(verses.legend())}}
                     {{pass}}
                 </div>
+                <div class="monad_sets qresults" id="qresults">
+                    {{if verses != None:}}
+                        {{for verse in verses.verses:
+                            (book, chapter) = verse.chapter_link()
+                        }}
+                            <div class="book-title">{{=A(
+                                verse.citation_ref(),
+                                _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, get_queries=True))
+                            )}}</div>
+                            <div class="p">{{=XML(verse.plain_text(ua))}}</div>
+                            <div class="il">{{=XML(verse.rich_text(ua))}}</div>
+                        {{pass}}
+                    {{pass}}
+                </div>
+                <script type="text/javascript">
+                    add_highlights('{{=verses.hl_query}}')
+                </script>
                 <div class="pagination">
                     <ul>
                     {{if page <= 1:}}
@@ -63,6 +71,7 @@
                     {{pass}}
                     </ul>
                 </div>
+    <script src="{{=URL('static', 'js/rhtext_call.js')}}"></script>
 {{pass}}
 
 {{include 'mql/window_adjust.html'}}

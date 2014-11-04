@@ -28,7 +28,7 @@ if 0:
 
 import xml.etree.ElementTree as ET
 
-from render import Verse
+from render import Verses
 
 def get_record_id():
     #print "get_record_id"
@@ -154,7 +154,7 @@ def get_pagination(p, monad_sets):
     lv = len(verse_boundaries)
     cur_page = 1 # current page
     verse_ids = []
-    verse_monads = {}
+    verse_monads = set()
     verse_data = []
     last_v = -1
     while m < lm and v < lv:
@@ -182,14 +182,11 @@ def get_pagination(p, monad_sets):
             if cur_page == p:
                 verse_ids.append(v)
                 last_v = v
-            #last_v = v
             nvp += 1
             nvt += 1
-        #if cur_page == p:
         if last_v == v:
-            if v not in verse_monads: verse_monads[v] = set()
             clipped_m = set(range(max(v_b, m_b), min(v_e, m_e) + 1))
-            verse_monads[v] |= clipped_m
+            verse_monads |= clipped_m
         if cur_page != p:
             v +=1
         else:
@@ -197,19 +194,8 @@ def get_pagination(p, monad_sets):
                 m += 1
             else:
                 v += 1
-    
-    if p <= cur_page and len(verse_ids):
-        verse_info = passage_db.executesql('''
-SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
-INNER JOIN chapter ON verse.chapter_id=chapter.id
-INNER JOIN book ON chapter.book_id=book.id
-WHERE verse.id IN ({})
-ORDER BY verse.id;'''.format(','.join([str(v) for v in verse_ids]))) 
-        for v in verse_info:
-            v_id = int(v[0])
-            verse_data.append(Verse(v[1], v[2], v[3], v[4], set(verse_monads[v_id]))) 
 
-    return (nvt, cur_page, verse_data)
+    return (nvt, cur_page, Verses(passage_db, verse_ids=verse_ids, highlights=list(verse_monads)) if p <= cur_page and len(verse_ids) else None)
 
 
 def index():

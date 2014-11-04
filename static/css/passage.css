@@ -7,8 +7,9 @@ h1, h2 {
     unicode-bidi:bidi-override;
     font-size: 2em;
 }
-#verses dt {
-    line-height: 2em;
+.vnum {
+    vertical-align: super;
+    font-size: 10pt;
     color: #CCCCCC;
 }
 #verses dd {
