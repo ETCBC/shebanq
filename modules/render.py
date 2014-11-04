@@ -128,7 +128,7 @@ ORDER BY word_number;
 
         for v in verse_info:
             v_id = int(v[0])
-            self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id], [] if highlights == None else [highlights[v_id]])) 
+            self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
     def legend(self):
         return '''<p class="sel"><input type="checkbox" id="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il"/>data</p>
@@ -136,12 +136,11 @@ ORDER BY word_number;
 
 class Verse():
 
-    def __init__(self, book_name, chapter_num, verse_num, xml, word_data, highlights=set()):
+    def __init__(self, book_name, chapter_num, verse_num, xml, word_data):
         self.book_name = book_name
         self.chapter_num = chapter_num
         self.verse_num = verse_num
         self.xml = xml
-        self.highlights = highlights
         self.word_data = word_data
         self.words = []
 
