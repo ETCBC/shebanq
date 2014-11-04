@@ -52,6 +52,11 @@ def index():
     response.subtitle = T("Query the Hebrew Bible through the ETCBC4 database")
     return dict()
 
+def about():
+    response.title = T("SHEBANQ")
+    response.subtitle = T("About the ETCBC4 database")
+    return dict()
+
 
 def user():
     """

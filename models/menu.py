@@ -51,6 +51,7 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('default', 'index'), []),
+    (T('About'), False, URL('default', 'about'), []),
     (T('My Queries'), False, URL('mql', 'my_queries'), []),
     (T('Public Queries'), False, URL('mql', 'public_queries'), []),
     (T('Browse'), False, URL('passage', 'browser'), []),

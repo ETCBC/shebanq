@@ -14,7 +14,7 @@ or the
 <a href="http://shebanq.ancient-data.org/mql/display_query?id=13">definite article query</a> (more than 10,000 results) or
 find an other <a href="http://shebanq.ancient-data.org/mql/public_queries">public query</a> that interests you.<br/>
 Try to click on everything that has a color (except yellow)!
-In this way you switch back and forth from browsing passages to inspecting relevant queries.
+In this way you switch back and forth from browsing passages to inspecting relevant queries. Or start reading a <a href="http://shebanq.ancient-data.org/passage/browser?book=Genesis&amp;chapter=1&amp;get_queries=True">passage</a> and look which queries land there. Do not forget to check the underlying data. You can customize the data that is shown, and lookup the meaning of the data fields by clicking on it in the legend.
 </p>
 
 <h4>{{=T('Next step: make your own queries')}}</h4>
@@ -39,52 +39,6 @@ They also are shown in the margin when you browse Bible chapters containing thei
 In this way they are become a valuable resource for fellow Hebrew readers.
 See for example the 
 <a href="http://shebanq.ancient-data.org/mql/display_query?id=30">P"Alef verbs</a> (by Oliver Glanz).
-
-<h4>{{=T('About')}}</h4>
-<p>The <i>shebanq</i> service is the first data service of <i>ancient-data.org</i>.<br/>
-Shebanq is a search engine for the Hebrew Bible, powered by the ETCBC4 linguistic database, formerly know as WIVU.<br/>
-The data is archived for <i>open access</i>, clicking the
-<a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY">DANS logo</a>
-above will bring you to the treasure trove.<br/>
-You can read about the history leading to this application by clicking on
-<a target="_blank" href="http://annotation-paradigm.readthedocs.org/en/latest/queries-as-annotations/history.html">SHEBANQ</a>
-in the menu bar.<br/>
-Shebanq is open source.
-It consists of a webservice
-<a target="_blank" href="https://github.com/Dans-labs/shemdros">shemdros</a>
-and a web application
-<a target="_blank" href="https://github.com/Dans-labs/shebanq">shebanq</a>.
-</p>
-
-<p><b>Authors</b>:</p>
-<dl>
-    <dt>ETCBC</dt>
-    <dd><a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">Eep Talstra Center for Bible and Computing</a><br/>
-     <a href="mailto:w.t.van.peursen@vu.nl">Wido van Peursen (ETCBC)</a>
-    </dd>
-    <dt>DANS</dt>
-    <dd><a target="_blank" href="http://www.dans.knaw.nl">Data Archiving and Networked Services</a><br>
-     <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda (DANS)</a>
-    </dd>
-</dl>
-
-<h4>{{=T('Problems?')}}</h4>
-If you encounter problems, e.g <i>exception while executing query</i>, please report it to <a href="mailto:henk.van.den.berg@dans.knaw.nl">Henk van den Berg</a>.
-
-<h4>{{=T('History')}}</h4>
-<h5>2014-07-29</h5>
-SHEBANQ goes live, but it is a demonstrator, with open issues.
-Currently we are aware of:
-<ol class="text">
-    <li>The query engine might cause exceptions that are not yet handled</li>
-    <li>The rendering of the spacing between words is not completely correct, at least in Chrome.
-        We have tried
-        <a target="_blank" href="http://nbviewer.ipython.org/github/ETCBC/laf-fabric-nbs/blob/master/text/font-rendering.ipynb">very hard</a>
-        to work around the issues, so that you can enjoy the otherwise beautiful typography even on your iPad.
-        N.B.: to our great pleasure we obeserved that as of Safari 7.1 on OSX 10.9.5 there is no need for a work-around anymore.
-</ol>
-<h5>Older</h5>
-<a target="_blank" href="http://annotation-paradigm.readthedocs.org/en/latest/queries-as-annotations/history.html">Queries-as-Annotations</a>
 
 {{block right_sidebar}}
     {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
