@@ -10,7 +10,7 @@
     <ul id="queries">
     {{ for q in query_monads: }}
         <li id="query_{{ =q['query'].id }}" monads="{{ =q['json_monads'] }}">
-            <p><input type="checkbox" name="highlight"/> Highlight this query</p>
+            <p><input type="checkbox" name="highlight" /> Highlight this query</p>
             <dl>
                 <dt>{{=A(
                     '{} by {} {}'.format(q['query'].name, q['query'].created_by.first_name, q['query'].created_by.last_name),
