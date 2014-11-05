@@ -45,7 +45,7 @@ def get_verses(no_controller=True):
     """
     chapter = get_chapter()
     if chapter:
-        verses = Verses(passage_db, chapter=chapter.id)
+        verses = Verses(passage_db, request, session, chapter=chapter.id)
     else:
         verses = None
     return verses
@@ -341,7 +341,6 @@ def process_get_queries_form(no_controller=True):
         query_monads = []
     return dict(query_monads=query_monads,)
 
-
 def browser():
     """ CONTROLLER
     Display the selected book-chapter and highlight monads.
@@ -355,6 +354,7 @@ def browser():
     highlight = process_highlighter_form()
     queries = process_get_queries_form()
     words = process_verse_word_highlighter_form()
+
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:

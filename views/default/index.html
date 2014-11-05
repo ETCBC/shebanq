@@ -9,19 +9,27 @@
 
 <h4>{{=T('Get started')}}</h4>
 <p>Just have a look at the
-<a href="http://shebanq.ancient-data.org/mql/display_query?id=18">shibboleth query</a> (1 result)
+{{=A(T("shibboleth query"), _href=URL('mql', 'display_query', vars=dict(id=18)))}}
+(1 result)
 or the
-<a href="http://shebanq.ancient-data.org/mql/display_query?id=13">definite article query</a> (more than 10,000 results) or
-find an other <a href="http://shebanq.ancient-data.org/mql/public_queries">public query</a> that interests you.<br/>
+{{=A(T("definite article query"), _href=URL('mql', 'display_query', vars=dict(id=13)))}}
+(more than 10,000 results)
+or find an other
+{{=A(T("public query"), _href=URL('mql', 'public_queries'))}}
+that interests you.<br/>
 Try to click on everything that has a color (except yellow)!
-In this way you switch back and forth from browsing passages to inspecting relevant queries. Or start reading a <a href="http://shebanq.ancient-data.org/passage/browser?book=Genesis&amp;chapter=1&amp;get_queries=True">passage</a> and look which queries land there. Do not forget to check the underlying data. You can customize the data that is shown, and lookup the meaning of the data fields by clicking on it in the legend.
+In this way you switch back and forth from browsing passages to inspecting relevant queries.
+Or start reading a
+{{=A(T("passage"), _href=URL('passage', 'browser', vars=dict(book='Genesis', chapter=1, get_queries=True)))}}
+and look which queries land there. Do not forget to check the underlying data. You can customize the data that is shown, and lookup the meaning of the data fields by clicking on it in the legend.
 </p>
 
 <h4>{{=T('Next step: make your own queries')}}</h4>
 <p>
 You can contribute queries yourself, but then you have to register/login.
 By filling in your institution and your project you provide other users with a bit of context.<br/>
-Start with the menu item <a href="http://shebanq.ancient-data.org/mql/my_queries">My Queries</a>.
+Start with the menu item
+{{=A(T("My Queries"), _href=URL('mql', 'my_queries'))}}.
 You can add a query by means of the + button, and you can edit, save, execute existing queries.<br/>
 Precise, concise documentation is at your finger tips:
 {{=A('MQL quick reference guide', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}
@@ -38,7 +46,8 @@ Published queries show up under <i>Public Queries</i>.
 They also are shown in the margin when you browse Bible chapters containing their results.<br/>
 In this way they are become a valuable resource for fellow Hebrew readers.
 See for example the 
-<a href="http://shebanq.ancient-data.org/mql/display_query?id=30">P"Alef verbs</a> (by Oliver Glanz).
+{{=A(T('P"Alef verbs'), _href=URL('mql', 'display_query', vars=dict(id=30)))}}
+(by Oliver Glanz).
 
 {{block right_sidebar}}
     {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}

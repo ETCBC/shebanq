@@ -45,11 +45,6 @@
                         {{pass}}
                     {{pass}}
                 </div>
-{{if verses != None:}}
-                <script type="text/javascript">
-                    add_highlights('{{=verses.hl_query}}')
-                </script>
-{{pass}}
                 <div class="pagination">
                     <ul>
                     {{if page <= 1:}}
@@ -76,6 +71,10 @@
                     </ul>
                 </div>
     <script src="{{=URL('static', 'js/rhtext_call.js')}}"></script>
+{{if verses != None:}}
+                <script type="text/javascript">add_highlights('{{=verses.hl_query}}')</script>
+                <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
+{{pass}}
 {{pass}}
 
 {{include 'mql/window_adjust.html'}}

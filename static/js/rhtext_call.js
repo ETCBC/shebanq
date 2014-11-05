@@ -1,5 +1,4 @@
 set_toggle_txt_il()
-$("#toggle_txt_il").change()
 set_toggle_txt_p()
 set_toggle_ht()
 set_toggle_hl()

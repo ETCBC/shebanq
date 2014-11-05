@@ -31,6 +31,7 @@
             add_highlights('{{=verses.hl_query}}')
         </script>
         <script src="{{=URL('static', 'js/rhtext_call.js')}}"></script>
+        <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
     {{ pass }}
 {{ pass }}
 

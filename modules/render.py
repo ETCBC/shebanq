@@ -8,15 +8,6 @@ import xml.etree.ElementTree as ET
 base_doc = 'http://shebanq-doc.readthedocs.org/en/latest/features/comments'
 
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
-def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
-
-def h_esc(material, fill=True):
-    material = material.replace(
-        '&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot').replace(
-        "'", '&apos;').replace('\\n', '\n')
-    if fill:
-        if material == '': material = '&nbsp;'
-    return material
 
 field_names = '''
 word_number	word_heb	word_vlex	word_tran	word_lex	word_gloss	word_lang	word_pos	word_subpos	word_tense	word_stem	word_gender	word_gnumber	word_person	word_state	subphrase_border	subphrase_number	subphrase_rela	phrase_border	phrase_number	phrase_function	phrase_typ	phrase_det	clause_border	clause_number	clause_typ	clause_txt	sentence_border	sentence_number
@@ -94,8 +85,18 @@ legend_tpl = '''
 </table>
 '''
 
+def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
+
+def h_esc(material, fill=True):
+    material = material.replace(
+        '&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot').replace(
+        "'", '&apos;').replace('\\n', '\n')
+    if fill:
+        if material == '': material = '&nbsp;'
+    return material
+
 class Verses():
-    def __init__(self, passage_db, verse_ids=None, chapter=None, highlights=None):
+    def __init__(self, passage_db, request, session, verse_ids=None, chapter=None, highlights=None):
         self.verses = []
         self.this_legend = legend_tpl.format(base_doc=base_doc)
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -105,6 +106,15 @@ class Verses():
         condition = condition_pre.format(cfield)
         wcondition = condition_pre.format(cwfield)
         self.hl_query = json.dumps(highlights if highlights != None else [])
+
+        view_data = request.vars.view_data
+        view_data = None if view_data == None else view_data.lower() == 'true' or view_data == '1'
+        if view_data == None:
+            view_data = session.view_data
+            if view_data == None: view_data = False
+        else:
+            session.view_data = view_data
+        self.view_data = view_data
 
         verse_info = passage_db.executesql('''
 SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
@@ -133,6 +143,9 @@ ORDER BY word_number;
     def legend(self):
         return '''<p class="sel"><input type="checkbox" id="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il"/>data</p>
 <div class="il">{}</div>'''.format(self.this_legend)
+
+    def adjust_data_view(self):
+        return '''if ({}$("#toggle_txt_il").attr("checked")) {{$("#toggle_txt_il").click()}}'''.format('!' if self.view_data else '')
 
 class Verse():
 

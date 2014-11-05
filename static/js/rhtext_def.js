@@ -1,6 +1,6 @@
 
 function set_toggle_txt_il() {
-    $("#toggle_txt_il").attr('checked', false);
+    $("#toggle_txt_il").attr('checked', true);
     $("#toggle_txt_il").change(function() {
         $('div.il').each(function () {
             $( this ).toggle();
