@@ -22,7 +22,10 @@
 
 {{ if verses != None: }}
     {{if len(verses.verses) > 0: }}
-        {{=XML(verses.legend())}}
+        {{
+            ajax_url = URL('default', 'textdata')
+        }}
+        {{=XML(verses.legend().format(ajax_url=ajax_url))}}
         {{ for verse in verses.verses:}}
             <div class="p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
             <div class="il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>

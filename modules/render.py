@@ -108,7 +108,15 @@ class Verses():
         self.hl_query = json.dumps(highlights if highlights != None else [])
 
         view_data = request.vars.view_data
+        view_text = request.vars.view_text
         view_data = None if view_data == None else view_data.lower() == 'true' or view_data == '1'
+        view_text = None if view_text == None else view_text.lower() == 'true' or view_text == '1'
+        if view_text == None:
+            view_text = session.view_text
+            if view_text == None: view_text = True
+        else:
+            session.view_text = view_text
+        self.view_text = view_text
         if view_data == None:
             view_data = session.view_data
             if view_data == None: view_data = False
@@ -141,11 +149,18 @@ ORDER BY word_number;
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
     def legend(self):
-        return '''<p class="sel"><input type="checkbox" id="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il"/>data</p>
-<div class="il">{}</div>'''.format(self.this_legend)
+        ajax = '''ajax('{ajax_url}', ['toggle_txt_p', 'toggle_txt_il'], 1)'''
+        return '''<p class="sel"><input type="checkbox" id="toggle_txt_p" name="toggle_txt_p" onchange="{ajax}"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il" onchange="{ajax}"/>data</p>
+<div class="il">{legend}</div>'''.format(legend=self.this_legend, ajax=ajax)
 
     def adjust_data_view(self):
-        return '''if ({}$("#toggle_txt_il").attr("checked")) {{$("#toggle_txt_il").click()}}'''.format('!' if self.view_data else '')
+        return '''
+if ({t}$("#toggle_txt_p").attr("checked")) {{$("#toggle_txt_p").click()}}
+if ({d}$("#toggle_txt_il").attr("checked")) {{$("#toggle_txt_il").click()}}
+'''.format(
+    t='!' if self.view_text else '',
+    d='!' if self.view_data else '',
+        )
 
 class Verse():
 

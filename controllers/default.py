@@ -57,6 +57,9 @@ def about():
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
+def textdata():
+    session.view_text = request.vars.toggle_txt_p
+    session.view_data = request.vars.toggle_txt_il
 
 def user():
     """
