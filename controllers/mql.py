@@ -195,7 +195,7 @@ def get_pagination(p, monad_sets):
             else:
                 v += 1
 
-    return (nvt, cur_page, Verses(passage_db, request, response, session, verse_ids=verse_ids, highlights=list(verse_monads)) if p <= cur_page and len(verse_ids) else None)
+    return (nvt, cur_page, Verses(passage_db, request, response, verse_ids=verse_ids, highlights=list(verse_monads)) if p <= cur_page and len(verse_ids) else None)
 
 
 def index():

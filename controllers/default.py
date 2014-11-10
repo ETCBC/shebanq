@@ -39,6 +39,7 @@ if 0:
 #only use this during development:
 # reload(clamdros)
 
+from render import viewlink
 
 def index():
     """
@@ -63,7 +64,7 @@ def save_var():
     response.cookies[tname] = val == True or val == 'true' or val == 'on' or val == 1
     response.cookies[tname]['expires'] = 30 * 24 * 3600
     response.cookies[tname]['path'] = '/'
-    return 1
+    return viewlink(request, response, fresh=tname)
 
 def user():
     """

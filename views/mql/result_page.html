@@ -21,7 +21,7 @@ var save_url = "{{=URL('default', 'save_var')}}"
                     {{if page == 0:}}<p>No results retrieved yet</p>{{else:}}<p>Page
 {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
 {{if verses != None:}}
-    {{=XML(verses.legend())}}
+    {{=XML(verses.legend(request, response))}}
 {{pass}}
                     {{pass}}
                 </div>

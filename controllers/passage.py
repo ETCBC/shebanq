@@ -45,7 +45,7 @@ def get_verses(no_controller=True):
     """
     chapter = get_chapter()
     if chapter:
-        verses = Verses(passage_db, request, response, session, chapter=chapter.id)
+        verses = Verses(passage_db, request, response, chapter=chapter.id)
     else:
         verses = None
     return verses

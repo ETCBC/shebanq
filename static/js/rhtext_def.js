@@ -10,7 +10,7 @@ function set_toggle_txt_il(init) {
         $('.txt_il').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_txt_il', ['toggle_txt_il'], ':eval')
+        ajax(save_url + '?tg=toggle_txt_il', ['toggle_txt_il'], 'curviewlnk')
     });
 }
 
@@ -25,7 +25,7 @@ function set_toggle_txt_p(init) {
         $('.txt_p').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_txt_p', ['toggle_txt_p'], ':eval')
+        ajax(save_url + '?tg=toggle_txt_p', ['toggle_txt_p'], 'curviewlnk')
     });
 }
 
@@ -40,7 +40,7 @@ function set_toggle_ht(init) {
         $('.ht').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_ht', ['toggle_ht'], ':eval')
+        ajax(save_url + '?tg=toggle_ht', ['toggle_ht'], 'curviewlnk')
     });
 }
 
@@ -55,7 +55,7 @@ function set_toggle_hl(init) {
         $('.hl').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_hl', ['toggle_hl'], ':eval')
+        ajax(save_url + '?tg=toggle_hl', ['toggle_hl'], 'curviewlnk')
     });
 }
 
@@ -70,7 +70,7 @@ function set_toggle_tt(init) {
         $('.tt').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_tt', ['toggle_tt'], ':eval')
+        ajax(save_url + '?tg=toggle_tt', ['toggle_tt'], 'curviewlnk')
     });
 }
 
@@ -85,7 +85,7 @@ function set_toggle_tl(init) {
         $('.tl').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_tl', ['toggle_tl'], ':eval')
+        ajax(save_url + '?tg=toggle_tl', ['toggle_tl'], 'curviewlnk')
     });
 }
 
@@ -100,7 +100,7 @@ function set_toggle_gl(init) {
         $('.gl').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_gl', ['toggle_gl'], ':eval')
+        ajax(save_url + '?tg=toggle_gl', ['toggle_gl'], 'curviewlnk')
     });
 }
 
@@ -115,7 +115,7 @@ function set_toggle_wd1(init) {
         $('.wd1').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd1', ['toggle_wd1'], ':eval')
+        ajax(save_url + '?tg=toggle_wd1', ['toggle_wd1'], 'curviewlnk')
     });
 }
 
@@ -130,7 +130,7 @@ function set_toggle_wd1_subpos(init) {
         $('.wd1_subpos').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd1_subpos', ['toggle_wd1_subpos'], ':eval')
+        ajax(save_url + '?tg=toggle_wd1_subpos', ['toggle_wd1_subpos'], 'curviewlnk')
     });
 }
 
@@ -145,7 +145,7 @@ function set_toggle_wd1_pos(init) {
         $('.wd1_pos').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd1_pos', ['toggle_wd1_pos'], ':eval')
+        ajax(save_url + '?tg=toggle_wd1_pos', ['toggle_wd1_pos'], 'curviewlnk')
     });
 }
 
@@ -160,7 +160,7 @@ function set_toggle_wd1_lang(init) {
         $('.wd1_lang').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd1_lang', ['toggle_wd1_lang'], ':eval')
+        ajax(save_url + '?tg=toggle_wd1_lang', ['toggle_wd1_lang'], 'curviewlnk')
     });
 }
 
@@ -175,7 +175,7 @@ function set_toggle_wd1_n(init) {
         $('.wd1_n').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd1_n', ['toggle_wd1_n'], ':eval')
+        ajax(save_url + '?tg=toggle_wd1_n', ['toggle_wd1_n'], 'curviewlnk')
     });
 }
 
@@ -190,7 +190,7 @@ function set_toggle_wd2(init) {
         $('.wd2').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2', ['toggle_wd2'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2', ['toggle_wd2'], 'curviewlnk')
     });
 }
 
@@ -205,7 +205,7 @@ function set_toggle_wd2_gender(init) {
         $('.wd2_gender').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2_gender', ['toggle_wd2_gender'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2_gender', ['toggle_wd2_gender'], 'curviewlnk')
     });
 }
 
@@ -220,7 +220,7 @@ function set_toggle_wd2_gnumber(init) {
         $('.wd2_gnumber').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2_gnumber', ['toggle_wd2_gnumber'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2_gnumber', ['toggle_wd2_gnumber'], 'curviewlnk')
     });
 }
 
@@ -235,7 +235,7 @@ function set_toggle_wd2_person(init) {
         $('.wd2_person').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2_person', ['toggle_wd2_person'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2_person', ['toggle_wd2_person'], 'curviewlnk')
     });
 }
 
@@ -250,7 +250,7 @@ function set_toggle_wd2_state(init) {
         $('.wd2_state').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2_state', ['toggle_wd2_state'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2_state', ['toggle_wd2_state'], 'curviewlnk')
     });
 }
 
@@ -265,7 +265,7 @@ function set_toggle_wd2_tense(init) {
         $('.wd2_tense').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2_tense', ['toggle_wd2_tense'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2_tense', ['toggle_wd2_tense'], 'curviewlnk')
     });
 }
 
@@ -280,7 +280,7 @@ function set_toggle_wd2_stem(init) {
         $('.wd2_stem').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_wd2_stem', ['toggle_wd2_stem'], ':eval')
+        ajax(save_url + '?tg=toggle_wd2_stem', ['toggle_wd2_stem'], 'curviewlnk')
     });
 }
 
@@ -295,7 +295,7 @@ function set_toggle_sp(init) {
         $('.sp').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_sp', ['toggle_sp'], ':eval')
+        ajax(save_url + '?tg=toggle_sp', ['toggle_sp'], 'curviewlnk')
     });
 }
 
@@ -310,7 +310,7 @@ function set_toggle_sp_rela(init) {
         $('.sp_rela').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_sp_rela', ['toggle_sp_rela'], ':eval')
+        ajax(save_url + '?tg=toggle_sp_rela', ['toggle_sp_rela'], 'curviewlnk')
     });
 }
 
@@ -325,7 +325,7 @@ function set_toggle_sp_n(init) {
         $('.sp_n').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_sp_n', ['toggle_sp_n'], ':eval')
+        ajax(save_url + '?tg=toggle_sp_n', ['toggle_sp_n'], 'curviewlnk')
     });
 }
 
@@ -340,7 +340,7 @@ function set_toggle_ph(init) {
         $('.ph').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_ph', ['toggle_ph'], ':eval')
+        ajax(save_url + '?tg=toggle_ph', ['toggle_ph'], 'curviewlnk')
     });
 }
 
@@ -355,7 +355,7 @@ function set_toggle_ph_det(init) {
         $('.ph_det').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_ph_det', ['toggle_ph_det'], ':eval')
+        ajax(save_url + '?tg=toggle_ph_det', ['toggle_ph_det'], 'curviewlnk')
     });
 }
 
@@ -370,7 +370,7 @@ function set_toggle_ph_fun(init) {
         $('.ph_fun').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_ph_fun', ['toggle_ph_fun'], ':eval')
+        ajax(save_url + '?tg=toggle_ph_fun', ['toggle_ph_fun'], 'curviewlnk')
     });
 }
 
@@ -385,7 +385,7 @@ function set_toggle_ph_typ(init) {
         $('.ph_typ').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_ph_typ', ['toggle_ph_typ'], ':eval')
+        ajax(save_url + '?tg=toggle_ph_typ', ['toggle_ph_typ'], 'curviewlnk')
     });
 }
 
@@ -400,7 +400,7 @@ function set_toggle_ph_n(init) {
         $('.ph_n').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_ph_n', ['toggle_ph_n'], ':eval')
+        ajax(save_url + '?tg=toggle_ph_n', ['toggle_ph_n'], 'curviewlnk')
     });
 }
 
@@ -415,7 +415,7 @@ function set_toggle_cl(init) {
         $('.cl').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_cl', ['toggle_cl'], ':eval')
+        ajax(save_url + '?tg=toggle_cl', ['toggle_cl'], 'curviewlnk')
     });
 }
 
@@ -430,7 +430,7 @@ function set_toggle_cl_dom(init) {
         $('.cl_dom').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_cl_dom', ['toggle_cl_dom'], ':eval')
+        ajax(save_url + '?tg=toggle_cl_dom', ['toggle_cl_dom'], 'curviewlnk')
     });
 }
 
@@ -445,7 +445,7 @@ function set_toggle_cl_typ(init) {
         $('.cl_typ').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_cl_typ', ['toggle_cl_typ'], ':eval')
+        ajax(save_url + '?tg=toggle_cl_typ', ['toggle_cl_typ'], 'curviewlnk')
     });
 }
 
@@ -460,7 +460,7 @@ function set_toggle_cl_n(init) {
         $('.cl_n').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_cl_n', ['toggle_cl_n'], ':eval')
+        ajax(save_url + '?tg=toggle_cl_n', ['toggle_cl_n'], 'curviewlnk')
     });
 }
 
@@ -475,7 +475,7 @@ function set_toggle_sn(init) {
         $('.sn').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_sn', ['toggle_sn'], ':eval')
+        ajax(save_url + '?tg=toggle_sn', ['toggle_sn'], 'curviewlnk')
     });
 }
 
@@ -490,6 +490,6 @@ function set_toggle_sn_n(init) {
         $('.sn_n').each(function () {
             $( this ).toggle();
         });
-        ajax(save_url + '?tg=toggle_sn_n', ['toggle_sn_n'], ':eval')
+        ajax(save_url + '?tg=toggle_sn_n', ['toggle_sn_n'], 'curviewlnk')
     });
 }

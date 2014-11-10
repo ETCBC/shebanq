@@ -101,8 +101,18 @@ def h_esc(material, fill=True):
         if material == '': material = '&nbsp;'
     return material
 
+def viewlink(request, response, fresh=None):
+    values = []
+    for x in toggles:
+        if x[0] == fresh:
+            val = response.cookies[x[0]].value if response.cookies.has_key(x[0]) else 'False'
+        else:
+            val = request.cookies[x[0]].value if request.cookies.has_key(x[0]) else 'False'
+        values.append('{}={}'.format(x[0], val))
+    return '<a title="adapt the url of this page to the current view for sharing it by copy and paste" href="{}">link to this view</a>'.format('#?' + '&'.join(v for v in values))
+
 class Verses():
-    def __init__(self, passage_db, request, response, session, verse_ids=None, chapter=None, highlights=None):
+    def __init__(self, passage_db, request, response, verse_ids=None, chapter=None, highlights=None):
         self.verses = []
         self.this_legend = legend_tpl.format(base_doc=base_doc)
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -153,9 +163,9 @@ ORDER BY word_number;
             v_id = int(v[0])
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
-    def legend(self):
-        return '''<p class="sel"><input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data</p>
-<div class="txt_il">{legend}</div>'''.format(legend=self.this_legend)
+    def legend(self, request, response):
+        return '''<p class="sel"><span id="curviewlnk">{viewlink}</span> <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data</p>
+<div class="txt_il">{legend}</div>'''.format(legend=self.this_legend, viewlink=viewlink(request, response))
 
     def adjust_data_view(self):
         adjustments = ['set_{}({})\n'.format(tg, 'true' if self.view_state[tg] else 'false') for tg in self.view_state]
