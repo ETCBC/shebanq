@@ -61,6 +61,7 @@ def save_var():
     tname = request.vars.tg
     val = request.vars[tname]
     response.cookies[tname] = val == True or val == 'true' or val == 'on' or val == 1
+    response.cookies[tname]['expires'] = 30 * 24 * 3600
     response.cookies[tname]['path'] = '/'
     return 1
 
