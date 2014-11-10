@@ -11,6 +11,9 @@
     {{
         ua = request.user_agent().browser.name
     }}
+    <script type="text/javascript">
+var save_url = "{{=URL('default', 'save_var')}}"
+    </script>
     <script src="{{=URL('static', 'js/rhtext_def.js')}}"></script>
     <script src="{{=URL('static', 'js/passage.js')}}"></script>
 {{verses = verse_data}}
@@ -18,10 +21,7 @@
                     {{if page == 0:}}<p>No results retrieved yet</p>{{else:}}<p>Page
 {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
 {{if verses != None:}}
-    {{
-        ajax_url = URL('default', 'textdata')
-    }}
-    {{=XML(verses.legend().format(ajax_url=ajax_url))}}
+    {{=XML(verses.legend())}}
 {{pass}}
                     {{pass}}
                 </div>
@@ -34,8 +34,8 @@
                                 verse.citation_ref(),
                                 _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, get_queries=True))
                             )}}</div>
-                            <div class="p">{{=XML(verse.plain_text(ua))}}</div>
-                            <div class="il">{{=XML(verse.rich_text(ua))}}</div>
+                            <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
+                            <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>
                         {{pass}}
                     {{pass}}
                 </div>
@@ -64,10 +64,9 @@
                     {{pass}}
                     </ul>
                 </div>
-    <script src="{{=URL('static', 'js/rhtext_call.js')}}"></script>
+    <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
 {{if verses != None:}}
                 <script type="text/javascript">add_highlights('{{=verses.hl_query}}')</script>
-                <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
 {{pass}}
 {{pass}}
 

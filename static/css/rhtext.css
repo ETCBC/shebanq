@@ -6,7 +6,7 @@ h2.vlabel {
     line-height: 24pt;
     font-weight: bold;
 }
-p.p, div.p {
+p.p, div.p, .txt_p {
     text-align: right;
     direction: rtl;
     line-height: 32pt;
@@ -14,7 +14,7 @@ p.p, div.p {
     font-size: 18pt;
     color: #000000;
 }
-p.il, div.il {
+p.il, div.il, .txt_il {
     text-align: right;
     direction: rtl;
 }

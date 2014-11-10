@@ -57,9 +57,12 @@ def about():
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
-def textdata():
-    session.view_text = request.vars.toggle_txt_p
-    session.view_data = request.vars.toggle_txt_il
+def save_var():
+    tname = request.vars.tg
+    val = request.vars[tname]
+    response.cookies[tname] = val == True or val == 'true' or val == 'on' or val == 1
+    response.cookies[tname]['path'] = '/'
+    return 1
 
 def user():
     """

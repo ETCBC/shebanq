@@ -1,297 +1,495 @@
 
-function set_toggle_txt_il() {
-    $("#toggle_txt_il").attr('checked', true);
+function set_toggle_txt_il(init) {
+    $("#toggle_txt_il").attr('checked', init);
+    if (!init) {
+        $('.txt_il').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_txt_il").change(function() {
-        $('div.il').each(function () {
+        $('.txt_il').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_txt_il', ['toggle_txt_il'], ':eval')
     });
 }
 
-function set_toggle_txt_p() {
-    $("#toggle_txt_p").attr('checked', true);
+function set_toggle_txt_p(init) {
+    $("#toggle_txt_p").attr('checked', init);
+    if (!init) {
+        $('.txt_p').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_txt_p").change(function() {
-        $('div.p').each(function () {
+        $('.txt_p').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_txt_p', ['toggle_txt_p'], ':eval')
     });
 }
 
-function set_toggle_ht() {
-    $("#toggle_ht").attr('checked', true);
+function set_toggle_ht(init) {
+    $("#toggle_ht").attr('checked', init);
+    if (!init) {
+        $('.ht').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_ht").change(function() {
         $('.ht').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_ht', ['toggle_ht'], ':eval')
     });
 }
 
-function set_toggle_hl() {
-    $("#toggle_hl").attr('checked', true);
+function set_toggle_hl(init) {
+    $("#toggle_hl").attr('checked', init);
+    if (!init) {
+        $('.hl').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_hl").change(function() {
         $('.hl').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_hl', ['toggle_hl'], ':eval')
     });
 }
 
-function set_toggle_tt() {
-    $("#toggle_tt").attr('checked', true);
+function set_toggle_tt(init) {
+    $("#toggle_tt").attr('checked', init);
+    if (!init) {
+        $('.tt').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_tt").change(function() {
         $('.tt').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_tt', ['toggle_tt'], ':eval')
     });
 }
 
-function set_toggle_tl() {
-    $("#toggle_tl").attr('checked', true);
+function set_toggle_tl(init) {
+    $("#toggle_tl").attr('checked', init);
+    if (!init) {
+        $('.tl').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_tl").change(function() {
         $('.tl').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_tl', ['toggle_tl'], ':eval')
     });
 }
 
-function set_toggle_gl() {
-    $("#toggle_gl").attr('checked', true);
+function set_toggle_gl(init) {
+    $("#toggle_gl").attr('checked', init);
+    if (!init) {
+        $('.gl').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_gl").change(function() {
         $('.gl').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_gl', ['toggle_gl'], ':eval')
     });
 }
 
-function set_toggle_wd1() {
-    $("#toggle_wd1").attr('checked', true);
+function set_toggle_wd1(init) {
+    $("#toggle_wd1").attr('checked', init);
+    if (!init) {
+        $('.wd1').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd1").change(function() {
         $('.wd1').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd1', ['toggle_wd1'], ':eval')
     });
 }
 
-function set_toggle_wd1_subpos() {
-    $("#toggle_wd1_subpos").attr('checked', true);
+function set_toggle_wd1_subpos(init) {
+    $("#toggle_wd1_subpos").attr('checked', init);
+    if (!init) {
+        $('.wd1_subpos').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd1_subpos").change(function() {
         $('.wd1_subpos').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd1_subpos', ['toggle_wd1_subpos'], ':eval')
     });
 }
 
-function set_toggle_wd1_pos() {
-    $("#toggle_wd1_pos").attr('checked', true);
+function set_toggle_wd1_pos(init) {
+    $("#toggle_wd1_pos").attr('checked', init);
+    if (!init) {
+        $('.wd1_pos').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd1_pos").change(function() {
         $('.wd1_pos').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd1_pos', ['toggle_wd1_pos'], ':eval')
     });
 }
 
-function set_toggle_wd1_lang() {
-    $("#toggle_wd1_lang").attr('checked', true);
+function set_toggle_wd1_lang(init) {
+    $("#toggle_wd1_lang").attr('checked', init);
+    if (!init) {
+        $('.wd1_lang').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd1_lang").change(function() {
         $('.wd1_lang').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd1_lang', ['toggle_wd1_lang'], ':eval')
     });
 }
 
-function set_toggle_wd1_n() {
-    $("#toggle_wd1_n").attr('checked', true);
+function set_toggle_wd1_n(init) {
+    $("#toggle_wd1_n").attr('checked', init);
+    if (!init) {
+        $('.wd1_n').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd1_n").change(function() {
         $('.wd1_n').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd1_n', ['toggle_wd1_n'], ':eval')
     });
 }
 
-function set_toggle_wd2() {
-    $("#toggle_wd2").attr('checked', true);
+function set_toggle_wd2(init) {
+    $("#toggle_wd2").attr('checked', init);
+    if (!init) {
+        $('.wd2').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2").change(function() {
         $('.wd2').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2', ['toggle_wd2'], ':eval')
     });
 }
 
-function set_toggle_wd2_gender() {
-    $("#toggle_wd2_gender").attr('checked', true);
+function set_toggle_wd2_gender(init) {
+    $("#toggle_wd2_gender").attr('checked', init);
+    if (!init) {
+        $('.wd2_gender').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2_gender").change(function() {
         $('.wd2_gender').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2_gender', ['toggle_wd2_gender'], ':eval')
     });
 }
 
-function set_toggle_wd2_gnumber() {
-    $("#toggle_wd2_gnumber").attr('checked', true);
+function set_toggle_wd2_gnumber(init) {
+    $("#toggle_wd2_gnumber").attr('checked', init);
+    if (!init) {
+        $('.wd2_gnumber').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2_gnumber").change(function() {
         $('.wd2_gnumber').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2_gnumber', ['toggle_wd2_gnumber'], ':eval')
     });
 }
 
-function set_toggle_wd2_person() {
-    $("#toggle_wd2_person").attr('checked', true);
+function set_toggle_wd2_person(init) {
+    $("#toggle_wd2_person").attr('checked', init);
+    if (!init) {
+        $('.wd2_person').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2_person").change(function() {
         $('.wd2_person').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2_person', ['toggle_wd2_person'], ':eval')
     });
 }
 
-function set_toggle_wd2_state() {
-    $("#toggle_wd2_state").attr('checked', true);
+function set_toggle_wd2_state(init) {
+    $("#toggle_wd2_state").attr('checked', init);
+    if (!init) {
+        $('.wd2_state').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2_state").change(function() {
         $('.wd2_state').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2_state', ['toggle_wd2_state'], ':eval')
     });
 }
 
-function set_toggle_wd2_tense() {
-    $("#toggle_wd2_tense").attr('checked', true);
+function set_toggle_wd2_tense(init) {
+    $("#toggle_wd2_tense").attr('checked', init);
+    if (!init) {
+        $('.wd2_tense').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2_tense").change(function() {
         $('.wd2_tense').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2_tense', ['toggle_wd2_tense'], ':eval')
     });
 }
 
-function set_toggle_wd2_stem() {
-    $("#toggle_wd2_stem").attr('checked', true);
+function set_toggle_wd2_stem(init) {
+    $("#toggle_wd2_stem").attr('checked', init);
+    if (!init) {
+        $('.wd2_stem').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_wd2_stem").change(function() {
         $('.wd2_stem').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_wd2_stem', ['toggle_wd2_stem'], ':eval')
     });
 }
 
-function set_toggle_sp() {
-    $("#toggle_sp").attr('checked', true);
+function set_toggle_sp(init) {
+    $("#toggle_sp").attr('checked', init);
+    if (!init) {
+        $('.sp').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_sp").change(function() {
         $('.sp').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_sp', ['toggle_sp'], ':eval')
     });
 }
 
-function set_toggle_sp_rela() {
-    $("#toggle_sp_rela").attr('checked', true);
+function set_toggle_sp_rela(init) {
+    $("#toggle_sp_rela").attr('checked', init);
+    if (!init) {
+        $('.sp_rela').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_sp_rela").change(function() {
         $('.sp_rela').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_sp_rela', ['toggle_sp_rela'], ':eval')
     });
 }
 
-function set_toggle_sp_n() {
-    $("#toggle_sp_n").attr('checked', true);
+function set_toggle_sp_n(init) {
+    $("#toggle_sp_n").attr('checked', init);
+    if (!init) {
+        $('.sp_n').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_sp_n").change(function() {
         $('.sp_n').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_sp_n', ['toggle_sp_n'], ':eval')
     });
 }
 
-function set_toggle_ph() {
-    $("#toggle_ph").attr('checked', true);
+function set_toggle_ph(init) {
+    $("#toggle_ph").attr('checked', init);
+    if (!init) {
+        $('.ph').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_ph").change(function() {
         $('.ph').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_ph', ['toggle_ph'], ':eval')
     });
 }
 
-function set_toggle_ph_det() {
-    $("#toggle_ph_det").attr('checked', true);
+function set_toggle_ph_det(init) {
+    $("#toggle_ph_det").attr('checked', init);
+    if (!init) {
+        $('.ph_det').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_ph_det").change(function() {
         $('.ph_det').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_ph_det', ['toggle_ph_det'], ':eval')
     });
 }
 
-function set_toggle_ph_fun() {
-    $("#toggle_ph_fun").attr('checked', true);
+function set_toggle_ph_fun(init) {
+    $("#toggle_ph_fun").attr('checked', init);
+    if (!init) {
+        $('.ph_fun').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_ph_fun").change(function() {
         $('.ph_fun').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_ph_fun', ['toggle_ph_fun'], ':eval')
     });
 }
 
-function set_toggle_ph_typ() {
-    $("#toggle_ph_typ").attr('checked', true);
+function set_toggle_ph_typ(init) {
+    $("#toggle_ph_typ").attr('checked', init);
+    if (!init) {
+        $('.ph_typ').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_ph_typ").change(function() {
         $('.ph_typ').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_ph_typ', ['toggle_ph_typ'], ':eval')
     });
 }
 
-function set_toggle_ph_n() {
-    $("#toggle_ph_n").attr('checked', true);
+function set_toggle_ph_n(init) {
+    $("#toggle_ph_n").attr('checked', init);
+    if (!init) {
+        $('.ph_n').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_ph_n").change(function() {
         $('.ph_n').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_ph_n', ['toggle_ph_n'], ':eval')
     });
 }
 
-function set_toggle_cl() {
-    $("#toggle_cl").attr('checked', true);
+function set_toggle_cl(init) {
+    $("#toggle_cl").attr('checked', init);
+    if (!init) {
+        $('.cl').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_cl").change(function() {
         $('.cl').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_cl', ['toggle_cl'], ':eval')
     });
 }
 
-function set_toggle_cl_dom() {
-    $("#toggle_cl_dom").attr('checked', true);
+function set_toggle_cl_dom(init) {
+    $("#toggle_cl_dom").attr('checked', init);
+    if (!init) {
+        $('.cl_dom').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_cl_dom").change(function() {
         $('.cl_dom').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_cl_dom', ['toggle_cl_dom'], ':eval')
     });
 }
 
-function set_toggle_cl_typ() {
-    $("#toggle_cl_typ").attr('checked', true);
+function set_toggle_cl_typ(init) {
+    $("#toggle_cl_typ").attr('checked', init);
+    if (!init) {
+        $('.cl_typ').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_cl_typ").change(function() {
         $('.cl_typ').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_cl_typ', ['toggle_cl_typ'], ':eval')
     });
 }
 
-function set_toggle_cl_n() {
-    $("#toggle_cl_n").attr('checked', true);
+function set_toggle_cl_n(init) {
+    $("#toggle_cl_n").attr('checked', init);
+    if (!init) {
+        $('.cl_n').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_cl_n").change(function() {
         $('.cl_n').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_cl_n', ['toggle_cl_n'], ':eval')
     });
 }
 
-function set_toggle_sn() {
-    $("#toggle_sn").attr('checked', true);
+function set_toggle_sn(init) {
+    $("#toggle_sn").attr('checked', init);
+    if (!init) {
+        $('.sn').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_sn").change(function() {
         $('.sn').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_sn', ['toggle_sn'], ':eval')
     });
 }
 
-function set_toggle_sn_n() {
-    $("#toggle_sn_n").attr('checked', true);
+function set_toggle_sn_n(init) {
+    $("#toggle_sn_n").attr('checked', init);
+    if (!init) {
+        $('.sn_n').each(function () {
+            $( this ).toggle();
+        });
+    }
     $("#toggle_sn_n").change(function() {
         $('.sn_n').each(function () {
             $( this ).toggle();
         });
+        ajax(save_url + '?tg=toggle_sn_n', ['toggle_sn_n'], ':eval')
     });
 }

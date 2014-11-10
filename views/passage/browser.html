@@ -10,6 +10,9 @@
             var w2p_monads = {{ =XML(response.json(monads)) }};
         </script>
     {{ pass }}
+    <script type="text/javascript">
+var save_url = "{{=URL('default', 'save_var')}}"
+    </script>
     <script src="{{=URL('static', 'js/passage.js')}}"></script>
     <script src="{{=URL('static', 'js/rhtext_def.js')}}"></script>
 {{ end }}
@@ -22,18 +25,14 @@
 
 {{ if verses != None: }}
     {{if len(verses.verses) > 0: }}
-        {{
-            ajax_url = URL('default', 'textdata')
-        }}
-        {{=XML(verses.legend().format(ajax_url=ajax_url))}}
+        {{=XML(verses.legend())}}
         {{ for verse in verses.verses:}}
-            <div class="p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
-            <div class="il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
+            <div class="txt_p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
+            <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
         {{ pass }}
         <script type="text/javascript">
             add_highlights('{{=verses.hl_query}}')
         </script>
-        <script src="{{=URL('static', 'js/rhtext_call.js')}}"></script>
         <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
     {{ pass }}
 {{ pass }}

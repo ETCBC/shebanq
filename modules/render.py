@@ -10,77 +10,83 @@ base_doc = 'http://shebanq-doc.readthedocs.org/en/latest/features/comments'
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
 
 field_names = '''
-word_number	word_heb	word_vlex	word_tran	word_lex	word_gloss	word_lang	word_pos	word_subpos	word_tense	word_stem	word_gender	word_gnumber	word_person	word_state	subphrase_border	subphrase_number	subphrase_rela	phrase_border	phrase_number	phrase_function	phrase_typ	phrase_det	clause_border	clause_number	clause_typ	clause_txt	sentence_border	sentence_number
-'''.strip().split('\t')
+word_number word_heb word_vlex word_tran word_lex word_gloss word_lang word_pos word_subpos word_tense word_stem word_gender word_gnumber word_person word_state subphrase_border subphrase_number subphrase_rela phrase_border phrase_number phrase_function phrase_typ phrase_det clause_border clause_number clause_typ clause_txt sentence_border sentence_number
+'''.strip().split()
+
+toggle_spec = '''
+toggle_ht,1 toggle_hl,1 toggle_tt,0 toggle_tl,0 toggle_gl,1 toggle_wd1,1 toggle_wd1_subpos,0 toggle_wd1_pos,1 toggle_wd1_lang,0 toggle_wd1_n,0 toggle_wd2,1 toggle_wd2_gender,1 toggle_wd2_gnumber,1 toggle_wd2_person,1 toggle_wd2_state,1 toggle_wd2_tense,1 toggle_wd2_stem,1 toggle_sp,1 toggle_sp_rela,1 toggle_sp_n,1 toggle_ph,1 toggle_ph_det,1 toggle_ph_fun,1 toggle_ph_typ,1 toggle_ph_n,1 toggle_cl,1 toggle_cl_dom,1 toggle_cl_typ,1 toggle_cl_n,1 toggle_sn,1 toggle_sn_n,1 toggle_txt_p,1 toggle_txt_il,0
+'''.strip().split()
+toggle_proto = [tuple(tg.split(',')) for tg in toggle_spec]
+toggles = [(x[0], x[1] == '1') for x in toggle_proto]
 
 text_tpl = u'''<table class="il c">
-	<tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
-	<tr class="il hl"><td class="il hl"><span class="hl">{word_vlex}</span></td></tr>
-	<tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
-	<tr class="il tl"><td class="il tl"><span class="tl">{word_lex}</span></td></tr>
-	<tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>
-	<tr class="il wd1"><td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td></tr>
-	<tr class="il wd2"><td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td></tr>
-	<tr class="il sp"><td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td></tr>
-	<tr class="il ph"><td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td></tr>
-	<tr class="il cl"><td class="il cl {clause_border}"><span class="il cl_dom">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td></tr>
-	<tr class="il sn"><td class="il sn {sentence_border}"><span class="n sn_n">{sentence_number}</span></td></tr>
+    <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
+    <tr class="il hl"><td class="il hl"><span class="hl">{word_vlex}</span></td></tr>
+    <tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
+    <tr class="il tl"><td class="il tl"><span class="tl">{word_lex}</span></td></tr>
+    <tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>
+    <tr class="il wd1"><td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td></tr>
+    <tr class="il wd2"><td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td></tr>
+    <tr class="il sp"><td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td></tr>
+    <tr class="il ph"><td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td></tr>
+    <tr class="il cl"><td class="il cl {clause_border}"><span class="il cl_dom">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td></tr>
+    <tr class="il sn"><td class="il sn {sentence_border}"><span class="n sn_n">{sentence_number}</span></td></tr>
 </table>'''
 
 legend_tpl = '''
 <table class="il">
-	<tr class="il l_ht"><td class="c l_ht"><input
-    type="checkbox" id="toggle_ht"/></td><td
+    <tr class="il l_ht"><td class="c l_ht"><input
+    type="checkbox" id="toggle_ht" name="toggle_ht"/></td><td
     class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text כתף</span></a></td></tr>
-	<tr class="il l_hl"><td class="c l_hl"><input
-    type="checkbox" id="toggle_hl"/></td><td
+    <tr class="il l_hl"><td class="c l_hl"><input
+    type="checkbox" id="toggle_hl" name="toggle_hl"/></td><td
     class="il l_hl"><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span class="l_hl">lexeme דבר</span></a></td></tr>
-	<tr class="il l_tt"><td class="c l_tt"><input
-    type="checkbox" id="toggle_tt"/></td><td
+    <tr class="il l_tt"><td class="c l_tt"><input
+    type="checkbox" id="toggle_tt" name="toggle_tt"/></td><td
     class="il l_tt"><a target="_blank" href="{base_doc}/g_word.html"><span class="l_tt">text</span></a></td></tr>
-	<tr class="il l_tl"><td class="c l_tl"><input
-    type="checkbox" id="toggle_tl"/></td><td
+    <tr class="il l_tl"><td class="c l_tl"><input
+    type="checkbox" id="toggle_tl" name="toggle_tl"/></td><td
     class="il l_tl"><a target="_blank" href="{base_doc}/g_lex.html"><span class="l_tl">lexeme</span></a></td></tr>
-	<tr class="il l_gl"><td class="c l_gl"><input
-    type="checkbox" id="toggle_gl"/></td><td
+    <tr class="il l_gl"><td class="c l_gl"><input
+    type="checkbox" id="toggle_gl" name="toggle_gl"/></td><td
     class="il l_gl"><a target="_blank" href="{base_doc}/gloss.html"><span class="l_gl">gloss</span></a></td></tr>
-	<tr class="il l_wd1"><td class="c l_wd1"><input
-    type="checkbox" id="toggle_wd1"/></td><td
-    class="il l_wd1"><input type="checkbox" id="toggle_wd1_subpos"/><a target="_blank" href="{base_doc}/ls.html"><span
-    class="il l_wd1_subpos">lexical set</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_pos"/><a target="_blank" href="{base_doc}/sp.html"><span
-    class="il l_wd1_pos">part-of-speech</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_lang"/><a target="_blank" href="{base_doc}/language.html"><span
-    class="il l_wd1_lang">language</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    <tr class="il l_wd1"><td class="c l_wd1"><input
+    type="checkbox" id="toggle_wd1" name="toggle_wd1"/></td><td
+    class="il l_wd1"><input type="checkbox" id="toggle_wd1_subpos" name="toggle_wd1_subpos"/><a target="_blank" href="{base_doc}/ls.html"><span
+    class="il l_wd1_subpos">lexical set</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_pos" name="toggle_wd1_pos"/><a target="_blank" href="{base_doc}/sp.html"><span
+    class="il l_wd1_pos">part-of-speech</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_lang" name="toggle_wd1_lang"/><a target="_blank" href="{base_doc}/language.html"><span
+    class="il l_wd1_lang">language</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_n" name="toggle_wd1_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_wd1_n">monad#</span></a></td></tr>
-	<tr class="il l_wd2"><td class="c l_wd2"><input
-    type="checkbox" id="toggle_wd2"/></td><td
-    class="il l_wd2"><input type="checkbox" id="toggle_wd2_gender"/><a target="_blank" href="{base_doc}/gn.html"><span
-    class="il l_wd2_gender">gender</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_gnumber"/><a target="_blank" href="{base_doc}/nu.html"><span
-    class="il l_wd2_gnumber">number</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_person"/><a target="_blank" href="{base_doc}/ps.html"><span
-    class="il l_wd2_person">person</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_state"/><a target="_blank" href="{base_doc}/st.html"><span
-    class="il l_wd2_state">state</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_tense"/><a target="_blank" href="{base_doc}/vt.html"><span
-    class="il l_wd2_tense">tense</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_stem"/><a target="_blank" href="{base_doc}/vs.html"><span
+    <tr class="il l_wd2"><td class="c l_wd2"><input
+    type="checkbox" id="toggle_wd2" name="toggle_wd2"/></td><td
+    class="il l_wd2"><input type="checkbox" id="toggle_wd2_gender" name="toggle_wd2_gender"/><a target="_blank" href="{base_doc}/gn.html"><span
+    class="il l_wd2_gender">gender</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_gnumber" name="toggle_wd2_gnumber"/><a target="_blank" href="{base_doc}/nu.html"><span
+    class="il l_wd2_gnumber">number</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_person" name="toggle_wd2_person"/><a target="_blank" href="{base_doc}/ps.html"><span
+    class="il l_wd2_person">person</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_state" name="toggle_wd2_state"/><a target="_blank" href="{base_doc}/st.html"><span
+    class="il l_wd2_state">state</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_tense" name="toggle_wd2_tense"/><a target="_blank" href="{base_doc}/vt.html"><span
+    class="il l_wd2_tense">tense</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_stem" name="toggle_wd2_stem"/><a target="_blank" href="{base_doc}/vs.html"><span
     class="il l_wd2_stem">verbal stem</span></a></td></tr>
-	<tr class="il l_sp"><td class="c l_sp"><input
-    type="checkbox" id="toggle_sp"/></td><td
-    class="il l_sp"><input type="checkbox" id="toggle_sp_rela"/><a target="_blank" href="{base_doc}/rela.html"><span
-    class="il l_sp_rela">relation</span></a>&nbsp;<input type="checkbox" id="toggle_sp_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    <tr class="il l_sp"><td class="c l_sp"><input
+    type="checkbox" id="toggle_sp" name="toggle_sp"/></td><td
+    class="il l_sp"><input type="checkbox" id="toggle_sp_rela" name="toggle_sp_rela"/><a target="_blank" href="{base_doc}/rela.html"><span
+    class="il l_sp_rela">relation</span></a>&nbsp;<input type="checkbox" id="toggle_sp_n" name="toggle_sp_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_sp_n">subphrase#</span></a></td></tr>
-	<tr class="il l_ph"><td class="c l_ph"><input
-    type="checkbox" id="toggle_ph"/></td><td
-    class="il l_ph"><input type="checkbox" id="toggle_ph_det"/><a target="_blank" href="{base_doc}/det.html"><span
-    class="il l_ph_det">determination</span></a>&nbsp;<input type="checkbox" id="toggle_ph_fun"/><a target="_blank" href="{base_doc}/function.html"><span
-    class="il l_ph_fun">function</span></a>&nbsp;<input type="checkbox" id="toggle_ph_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
-    class="il l_ph_typ">type</span></a>&nbsp;<input type="checkbox" id="toggle_ph_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    <tr class="il l_ph"><td class="c l_ph"><input
+    type="checkbox" id="toggle_ph" name="toggle_ph"/></td><td
+    class="il l_ph"><input type="checkbox" id="toggle_ph_det" name="toggle_ph_det"/><a target="_blank" href="{base_doc}/det.html"><span
+    class="il l_ph_det">determination</span></a>&nbsp;<input type="checkbox" id="toggle_ph_fun" name="toggle_ph_fun"/><a target="_blank" href="{base_doc}/function.html"><span
+    class="il l_ph_fun">function</span></a>&nbsp;<input type="checkbox" id="toggle_ph_typ" name="toggle_ph_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
+    class="il l_ph_typ">type</span></a>&nbsp;<input type="checkbox" id="toggle_ph_n" name="toggle_ph_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_ph_n">phrase#</span></a></td></tr>
-	<tr class="il l_cl"><td class="c l_cl"><input
-    type="checkbox" id="toggle_cl"/></td><td
-    class="il l_cl"><input type="checkbox" id="toggle_cl_dom"/><a target="_blank" href="{base_doc}/domain.html"><span
-    class="il l_cl_dom">domain</span></a>&nbsp;<input type="checkbox" id="toggle_cl_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
-    class="il l_cl_typ">type</span></a>&nbsp;<input type="checkbox" id="toggle_cl_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    <tr class="il l_cl"><td class="c l_cl"><input
+    type="checkbox" id="toggle_cl" name="toggle_cl"/></td><td
+    class="il l_cl"><input type="checkbox" id="toggle_cl_dom" name="toggle_cl_dom"/><a target="_blank" href="{base_doc}/domain.html"><span
+    class="il l_cl_dom">domain</span></a>&nbsp;<input type="checkbox" id="toggle_cl_typ" name="toggle_cl_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
+    class="il l_cl_typ">type</span></a>&nbsp;<input type="checkbox" id="toggle_cl_n" name="toggle_cl_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_cl_n">clause#</span></a></td></tr>
-	<tr class="il l_sn"><td class="c l_sn"><input
-    type="checkbox" id="toggle_sn"/></td><td
-    class="il l_sn"><input type="checkbox" id="toggle_sn_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    <tr class="il l_sn"><td class="c l_sn"><input
+    type="checkbox" id="toggle_sn" name="toggle_sn"/></td><td
+    class="il l_sn"><input type="checkbox" id="toggle_sn_n" name="toggle_sn_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_sn_n">sentence#</span></a></td></tr>
 </table>
 '''
@@ -96,7 +102,7 @@ def h_esc(material, fill=True):
     return material
 
 class Verses():
-    def __init__(self, passage_db, request, session, verse_ids=None, chapter=None, highlights=None):
+    def __init__(self, passage_db, request, response, session, verse_ids=None, chapter=None, highlights=None):
         self.verses = []
         self.this_legend = legend_tpl.format(base_doc=base_doc)
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -106,23 +112,22 @@ class Verses():
         condition = condition_pre.format(cfield)
         wcondition = condition_pre.format(cwfield)
         self.hl_query = json.dumps(highlights if highlights != None else [])
-
-        view_data = request.vars.view_data
-        view_text = request.vars.view_text
-        view_data = None if view_data == None else view_data.lower() == 'true' or view_data == '1'
-        view_text = None if view_text == None else view_text.lower() == 'true' or view_text == '1'
-        if view_text == None:
-            view_text = session.view_text
-            if view_text == None: view_text = True
-        else:
-            session.view_text = view_text
-        self.view_text = view_text
-        if view_data == None:
-            view_data = session.view_data
-            if view_data == None: view_data = False
-        else:
-            session.view_data = view_data
-        self.view_data = view_data
+        
+        self.view_state = {}
+        for (tg, init) in toggles:
+            vstate = request.vars[tg]
+            vstate = None if vstate == None else vstate.lower() == 'true' or vstate == '1' or vstate == 'on'
+            if vstate == None:
+                cvstate = None
+                if request.cookies.has_key(tg):
+                    cvstate = request.cookies[tg].value
+                else:
+                    cvstate = None
+                vstate = init if cvstate == None else cvstate == 'True'
+            response.cookies[tg] = vstate
+            response.cookies[tg]['expires'] = 30 * 24 * 3600
+            response.cookies[tg]['path'] = '/'
+            self.view_state[tg] = vstate
 
         verse_info = passage_db.executesql('''
 SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
@@ -149,18 +154,12 @@ ORDER BY word_number;
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
     def legend(self):
-        ajax = '''ajax('{ajax_url}', ['toggle_txt_p', 'toggle_txt_il'], 1)'''
-        return '''<p class="sel"><input type="checkbox" id="toggle_txt_p" name="toggle_txt_p" onchange="{ajax}"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il" onchange="{ajax}"/>data</p>
-<div class="il">{legend}</div>'''.format(legend=self.this_legend, ajax=ajax)
+        return '''<p class="sel"><input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data</p>
+<div class="txt_il">{legend}</div>'''.format(legend=self.this_legend)
 
     def adjust_data_view(self):
-        return '''
-if ({t}$("#toggle_txt_p").attr("checked")) {{$("#toggle_txt_p").click()}}
-if ({d}$("#toggle_txt_il").attr("checked")) {{$("#toggle_txt_il").click()}}
-'''.format(
-    t='!' if self.view_text else '',
-    d='!' if self.view_data else '',
-        )
+        adjustments = ['set_{}({})\n'.format(tg, 'true' if self.view_state[tg] else 'false') for tg in self.view_state]
+        return '\n'.join(adjustments)
 
 class Verse():
 
