@@ -109,7 +109,28 @@ def viewlink(request, response, fresh=None):
         else:
             val = request.cookies[x[0]].value if request.cookies.has_key(x[0]) else 'False'
         values.append('{}={}'.format(x[0], val))
-    return '<a title="adapt the url of this page to the current view for sharing it by copy and paste" href="{}">link to this view</a>'.format('#?' + '&'.join(v for v in values))
+    return '''<a id="yviewlink" href="#">show link to this view</a> <a id="xviewlink" href="#">hide link to this view</a>
+<textarea readonly id="cviewlink">&{vars}</textarea>
+<script type="text/javascript">
+$("#cviewlink").hide();
+$("#xviewlink").hide();
+
+$("#xviewlink").click(function() {{
+    $("#cviewlink").hide()
+    $("#xviewlink").hide()
+    $("#yviewlink").show()
+}})
+$("#yviewlink").click(function() {{
+    $("#yviewlink").hide()
+    $("#xviewlink").show()
+    $('#cviewlink').each(function () {{
+        $( this ).val(view_url + "&{vars}")
+        $( this ).show()
+        $( this ).select()
+    }})
+}})
+</script>
+'''.format(vars='&'.join(v for v in values))
 
 class Verses():
     def __init__(self, passage_db, request, response, verse_ids=None, chapter=None, highlights=None):

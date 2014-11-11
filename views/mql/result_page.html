@@ -13,17 +13,20 @@
     }}
     <script type="text/javascript">
 var save_url = "{{=URL('default', 'save_var')}}"
+var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     </script>
     <script src="{{=URL('static', 'js/rhtext_def.js')}}"></script>
     <script src="{{=URL('static', 'js/passage.js')}}"></script>
 {{verses = verse_data}}
                 <div>
-                    {{if page == 0:}}<p>No results retrieved yet</p>{{else:}}<p>Page
-{{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
+{{if page == 0:}}
+                    <p>No results retrieved yet</p>
+{{else:}}
+                    <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
+{{pass}}
 {{if verses != None:}}
     {{=XML(verses.legend(request, response))}}
 {{pass}}
-                    {{pass}}
                 </div>
                 <div class="monad_sets qresults" id="qresults">
                     {{if verses != None:}}
@@ -64,8 +67,8 @@ var save_url = "{{=URL('default', 'save_var')}}"
                     {{pass}}
                     </ul>
                 </div>
-    <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
 {{if verses != None:}}
+                <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
                 <script type="text/javascript">add_highlights('{{=verses.hl_query}}')</script>
 {{pass}}
 {{pass}}

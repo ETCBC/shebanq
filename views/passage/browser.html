@@ -12,6 +12,7 @@
     {{ pass }}
     <script type="text/javascript">
 var save_url = "{{=URL('default', 'save_var')}}"
+var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     </script>
     <script src="{{=URL('static', 'js/passage.js')}}"></script>
     <script src="{{=URL('static', 'js/rhtext_def.js')}}"></script>
