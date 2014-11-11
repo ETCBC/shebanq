@@ -28,7 +28,7 @@ if 0:
 
 import xml.etree.ElementTree as ET
 
-from render import Verses
+from render import Verses, picker
 
 def get_record_id():
     #print "get_record_id"
@@ -144,7 +144,7 @@ def normalize_ranges(ranges):
     if cur_end != None: result.append((cur_start, cur_end - 1))
     return result
 
-def get_pagination(p, monad_sets):
+def get_pagination(p, monad_sets, qid):
     verse_boundaries = passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;')
     m = 0 # monad range index, walking through monad_sets
     v = 0 # verse id, walking through verse_boundaries
@@ -195,7 +195,7 @@ def get_pagination(p, monad_sets):
             else:
                 v += 1
 
-    return (nvt, cur_page, Verses(passage_db, request, response, verse_ids=verse_ids, highlights=list(verse_monads)) if p <= cur_page and len(verse_ids) else None)
+    return (nvt, cur_page, Verses(passage_db, request, response, verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None)
 
 
 def index():
@@ -283,11 +283,12 @@ def show_query(title):
 def show_results(record_id):
     page = response.vars.page if response.vars else 1
     monad_sets = load_monad_sets(record_id)
-    (nresults, npages, verse_data) = get_pagination(page, monad_sets)
+    (nresults, npages, verse_data) = get_pagination(page, monad_sets, record_id)
     return dict(
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
-        verse_data=verse_data
+        verse_data=verse_data,
+        picker=picker,
     )
 
 def result_page():
@@ -304,7 +305,7 @@ def result_page():
 
     monad_sets = load_monad_sets(record_id)
 
-    (nresults, npages, verse_data) = get_pagination(page, monad_sets)
+    (nresults, npages, verse_data) = get_pagination(page, monad_sets, record_id)
 
     return dict(
         exception=None,

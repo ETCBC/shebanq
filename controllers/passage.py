@@ -1,7 +1,7 @@
 import json
 from itertools import groupby
 
-from render import Verses
+from render import Verses, picker
 
 def get_books(no_controller=True):
     """ HELPER
@@ -365,7 +365,9 @@ def browser():
                 + browse.items()
                 + highlight.items()
                 + queries.items()
-                + words.items())
+                + words.items()
+                + [('picker', picker)]
+    )
 
 
 def index():

@@ -18,7 +18,14 @@ p.il, div.il, .txt_il {
     text-align: right;
     direction: rtl;
 }
-p.sel {
+div.sel, p.sel {
+    text-align: right;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 8pt;
+    color: #aaaaaa;
+    line-height: 10pt;
+}
+span.sel {
     text-align: right;
     font-family: Verdana, Arial, sans-serif;
     font-size: 8pt;

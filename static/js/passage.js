@@ -41,28 +41,20 @@ function clear_all_highlights() {
 }
 
 // Helper: Add highlights based on monads variable.
-function add_highlights(monads) {
+function add_highlights(monads, qid) {
     monads = $.parseJSON(monads);
 
     // Add a 'highlight' class to each monad SPAN
+    qhc = $('#sel_' + qid).css('background-color')
     $.each(monads, function(index, item) {
-        $('span[m="' + item + '"]').addClass('highlight');
+        $('span[m="' + item + '"]').css('background-color', qhc);
     });
 }
 
 // 1. Highlight all monads of all queries on 'highlight all queries' check.
 function add_all_monads_highlights() {
-    $("#highlight_all_queries").change(function() {
-        clear_all_highlights();
-        if ($(this).is(':checked')) {
-            $("#queries li").each( function(index, item) {
-                add_highlights($(item).attr('monads'));
-            });
-            $("#queries input[type=checkbox]").attr('checked', true)
-        }
-        else {
-            $("#queries input[type=checkbox]").attr('checked', false)
-        }
+    $("#queries li").each( function(index, item) {
+        add_highlights($(item).attr('monads'), $(item).attr('qid'));
     });
 }
 
@@ -72,7 +64,7 @@ function highlight_selected_queries() {
     $("#queries input[type=checkbox]").change(function() {
         clear_all_highlights();
         $("#queries input:checked").each( function(index, item) {
-            add_highlights($(item).closest("li").attr('monads'));
+            add_highlights($(item).closest("li").attr('monads'), $(item).closest("li").attr('qid'));
         });
     });
 }

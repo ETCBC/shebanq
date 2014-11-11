@@ -19,6 +19,44 @@ toggle_ht,1 toggle_hl,1 toggle_tt,0 toggle_tl,0 toggle_gl,1 toggle_wd1,1 toggle_
 toggle_proto = [tuple(tg.split(',')) for tg in toggle_spec]
 toggles = [(x[0], x[1] == '1') for x in toggle_proto]
 
+qcolors = '''ff0000 ff6688 ffcc66 ffff00 00ff00 ccff66 66ffcc 00ffff 8888ff 66ccff cc44ff ff00ff'''.strip().split()
+(nrows, ncols) = (3, 4)
+
+def ccell(q,c): return '\t\t<td class="cc {q}" style="background-color: #{c}">&nbsp;</td>'.format(q=q,c=qcolors[c])
+def crow(q,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(q,c) for c in range(r * ncols, (r + 1) * ncols)))
+def ctable(q): return '<table class="picker" id="picker_{q}">\n{cs}\n</table>\n'.format(q=q, cs='\n'.join(crow(q,r) for r in range(nrows)))
+def qsel(q): return '<table class="picked"><tr><td class="cc_sel" id="sel_{q}">&nbsp;</td></tr></table>\n'.format(q=q)
+def qdef(q): 
+    mod = q % 12
+    return qcolors[4 * (mod % 3) + int(mod / 3)]
+
+def js(q, initc, monads, detour):
+    picker_code = '''
+$('#picker_{q}').hide()
+$('#sel_{q}').click(function() {{
+    $('#picker_{q}').show()
+}})
+$('.cc.{q}').click(function() {{
+    $('#picker_{q}').hide()
+    $('#sel_{q}').css('background-color', $(this).css('background-color'))
+    add_highlights({mn}, {tgt});
+}})
+'''.format(
+        q=q, ic=initc,
+        cm='' if initc in qcolors else '//',
+        mn='''$('#query_{q}').attr('monads')'''.format(q=q) if monads == None else "'{}'".format(monads),
+        tgt='''$('#query_{q}').attr('qid')'''.format(q=q) if detour else q,
+    )
+    init_code = '''
+$('#sel_{q}').css('background-color', '#{ic}')
+'''.format(q=q, ic=initc) if initc != '' else ''
+    return picker_code+init_code
+
+def picker(q,initc=None,monads=None, detour=False):
+    if initc == None or initc not in qcolors:
+        initc = qdef(q)
+    return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=qsel(q), p=ctable(q), j=js(q, initc, monads, detour))
+
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
     <tr class="il hl"><td class="il hl"><span class="hl">{word_vlex}</span></td></tr>
@@ -133,7 +171,8 @@ $("#yviewlink").click(function() {{
 '''.format(vars='&'.join(v for v in values))
 
 class Verses():
-    def __init__(self, passage_db, request, response, verse_ids=None, chapter=None, highlights=None):
+    def __init__(self, passage_db, request, response, verse_ids=None, chapter=None, highlights=None, qid=None):
+        self.qid = qid
         self.verses = []
         self.this_legend = legend_tpl.format(base_doc=base_doc)
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -184,13 +223,14 @@ ORDER BY word_number;
             v_id = int(v[0])
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
-    def legend(self, request, response):
-        return '''<p class="sel"><span id="curviewlnk">{viewlink}</span> <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data</p>
-<div class="txt_il">{legend}</div>'''.format(legend=self.this_legend, viewlink=viewlink(request, response))
+    def legend(self, request, response, extra=None):
+        return '''<div class="sel"><span id="curviewlnk">{viewlink}</span> <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data {extra}</div>
+<div class="txt_il">{legend}</div>'''.format(legend=self.this_legend, viewlink=viewlink(request, response), extra='' if extra == None else extra)
 
     def adjust_data_view(self):
         adjustments = ['set_{}({})\n'.format(tg, 'true' if self.view_state[tg] else 'false') for tg in self.view_state]
         return '\n'.join(adjustments)
+
 
 class Verse():
 
