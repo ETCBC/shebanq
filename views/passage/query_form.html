@@ -11,20 +11,7 @@
                 )}}
             <span class="sel"><a href="#" id="m_{{=qid}}">more</a><a href="#" id="l_{{=qid}}">less</a></span><p>
             <p id="d_{{=qid}}">{{=q['query'].description}}</p>
-            <script type="text/javascript">
-$('#l_{{=qid}}').hide()
-$('#d_{{=qid}}').hide()
-$('#l_{{=qid}}').click(function() {
-    $('#l_{{=qid}}').hide()
-    $('#m_{{=qid}}').show()
-    $('#d_{{=qid}}').hide()
-})
-$('#m_{{=qid}}').click(function() {
-    $('#l_{{=qid}}').show()
-    $('#m_{{=qid}}').hide()
-    $('#d_{{=qid}}').show()
-})
-                </script>
+            <script type="text/javascript">jsqueryview({{=qid}})</script>
         </li>
     {{ pass }}
     </ul>

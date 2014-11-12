@@ -33,56 +33,92 @@ function get_last_chapter_num() {
  * 3. Request var: on page load highlight specific monads from an input field.
  */
 
+
+function jsviewlink(vars) {
+    $("#cviewlink").hide();
+    $("#xviewlink").hide();
+
+    $("#xviewlink").click(function() {
+        $("#cviewlink").hide()
+        $("#xviewlink").hide()
+        $("#yviewlink").show()
+    })
+    $("#yviewlink").click(function() {
+        $("#yviewlink").hide()
+        $("#xviewlink").show()
+        $('#cviewlink').each(function () {
+            $( this ).val(view_url + "&" + vars)
+            $( this ).show()
+            $( this ).select()
+        })
+    })
+}
+
+function jsqueriesview(init) {
+    $('#h_queries').hide()
+    $('#s_queries').click(function(){
+        $('#s_queries').hide()
+        $('#h_queries').show()
+        $('#qbar').show()
+    })
+    $('#h_queries').click(function(){
+        $('#h_queries').hide()
+        $('#s_queries').show()
+        $('#qbar').hide()
+    })
+    if (init == 1) {
+       $('#fetchqueries').click()
+       $('#s_queries').hide()
+    }
+}
+
+function jsqueryview(qid) {
+    $('#l_' + qid).hide()
+    $('#d_' + qid).hide()
+    $('#l_' + qid).click(function() {
+        $('#l_' + qid).hide()
+        $('#m_' + qid).show()
+        $('#d_' + qid).hide()
+    })
+    $('#m_' + qid).click(function() {
+        $('#l_' + qid).show()
+        $('#m_' + qid).hide()
+        $('#d_' + qid).show()
+    })
+    add_highlights(null, qid)
+}
+
 function jscolorpicker(qid, initc, monads) {
     $('#picker_' + qid).hide()
     $('#sel_' + qid).click(function() {
         $('#picker_' + qid).show()
     })
-    var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
     $('.cc.' + qid).click(function() {
         $('#picker_' + qid).hide()
         $('#sel_' + qid).css('background-color', $(this).css('background-color'))
         $('#sel_' + qid).html($(this).html())
-        add_highlights(mn, qid);
+        add_highlights(monads, qid);
     })
     if (initc != '') {
         $('#sel_' + qid).css('background-color', initc)
     }
 }
 
-// Helper: clear all highlights present in the text.
-function clear_all_highlights() {
-    $('.highlight').each(function () {
-        $( this ).removeClass('highlight');
-    });
+function set_highlights_off() {
+    $('#qhloff').click(function() {
+        $('#queries li')
+    }
 }
 
 // Helper: Add highlights based on monads variable.
 function add_highlights(monads, qid) {
-    monads = $.parseJSON(monads);
+    var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
+    mn = $.parseJSON(mn);
 
     // Add a 'highlight' class to each monad SPAN
     qhc = $('#sel_' + qid).css('background-color')
-    $.each(monads, function(index, item) {
+    $.each(mn, function(index, item) {
         $('span[m="' + item + '"]').css('background-color', qhc);
-    });
-}
-
-// 1. Highlight all monads of all queries on 'highlight all queries' check.
-function add_all_monads_highlights() {
-    $("#queries li").each( function(index, item) {
-        add_highlights($(item).attr('monads'), $(item).attr('qid'));
-    });
-}
-
-// 2. Highlight monads of the selected/checked queries, the trigger is: checking
-// a query checkbox.
-function highlight_selected_queries() {
-    $("#queries input[type=checkbox]").change(function() {
-        clear_all_highlights();
-        $("#queries input:checked").each( function(index, item) {
-            add_highlights($(item).closest("li").attr('monads'), $(item).closest("li").attr('qid'));
-        });
     });
 }
 
@@ -90,8 +126,5 @@ function highlight_selected_queries() {
 
 
 $( document ).ready(function () {
-    add_all_monads_highlights();        // Highlights case 1
-    highlight_selected_queries();       // Highlights case 2
-
     get_last_chapter_num();             // Chapter options
 });

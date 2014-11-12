@@ -24,32 +24,20 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
             <div class="txt_p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
             <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
         {{ pass }}
-        <script type="text/javascript">
-            add_highlights('{{=verses.hl_query}}')
-        </script>
         <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
     {{ pass }}
 {{ pass }}
 
 
 {{ block left_sidebar }}
+{{ if request.vars.chapter: }}
 <div>
-    <span id="s_queries">{{=A('get queries', callback=URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter)), target='qbar')}}</span>
+    <span id="s_queries">{{=A('get queries', _id='fetchqueries', callback=URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter)), target='qbar')}}</span>
     <span id="h_queries"><a href="#">hide queries</a></span>
-    <script type="text/javascript">
-$('#h_queries').hide()
-$('#s_queries').click(function(){
-    $('#s_queries').hide()
-    $('#h_queries').show()
-    $('#qbar').show()
-})
-$('#h_queries').click(function(){
-    $('#h_queries').hide()
-    $('#s_queries').show()
-    $('#qbar').hide()
-})
-    </script>
+    <script type="text/javascript">jsqueriesview({{= 1 if request.vars.get_queries == 'True' else 0}})</script>
 </div>
 <div id='qbar'>
+    {{include 'passage/query_form.html'}}
 </div>
+{{ pass}}
 {{ end }}

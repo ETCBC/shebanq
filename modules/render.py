@@ -160,25 +160,7 @@ def viewlink(request, response, fresh=None):
         values.append('{}={}'.format(x[0], val))
     return '''<a id="yviewlink" href="#">show link to this view</a> <a id="xviewlink" href="#">hide link to this view</a>
 <textarea readonly id="cviewlink">&{vars}</textarea>
-<script type="text/javascript">
-$("#cviewlink").hide();
-$("#xviewlink").hide();
-
-$("#xviewlink").click(function() {{
-    $("#cviewlink").hide()
-    $("#xviewlink").hide()
-    $("#yviewlink").show()
-}})
-$("#yviewlink").click(function() {{
-    $("#yviewlink").hide()
-    $("#xviewlink").show()
-    $('#cviewlink').each(function () {{
-        $( this ).val(view_url + "&{vars}")
-        $( this ).show()
-        $( this ).select()
-    }})
-}})
-</script>
+<script type="text/javascript">jsviewlink("{vars}")</script>
 '''.format(vars='&'.join(v for v in values))
 
 class Verses():
@@ -235,7 +217,14 @@ ORDER BY word_number;
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
     def legend(self, request, response, extra=None):
-        return '''<div class="sel"><span id="curviewlnk">{viewlink}</span> <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text - <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data {extra}</div>
+        return '''
+<div class="sel">
+    <a href="#" id="qhloff">highlights off</a>
+    <span id="curviewlnk">{viewlink}</span>
+    <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text -
+    <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data {extra}
+</div>
+<script type="text/javascript">set_highlights_off()</script>
 <div class="txt_il">{legend}</div>'''.format(legend=self.this_legend, viewlink=viewlink(request, response), extra='' if extra == None else extra)
 
     def adjust_data_view(self):

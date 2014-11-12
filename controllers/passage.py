@@ -51,20 +51,6 @@ def get_verses(no_controller=True):
     return verses
 
 
-def get_verse(no_controller=True):
-    """ HELPER
-    Return a specific verse based on a book, chapter and verse number in the
-    request variable.
-    """
-    chapter = get_chapter()
-    verse_num = request.vars.verse
-    if chapter and verse_num:
-        verse = passage_db.verse(chapter_id=chapter.id, verse_num=verse_num)
-    else:
-        verse = None
-    return verse
-
-
 def max_chapters(no_controller=True):
     """ HELPER
     Find the largest number of chapters in all books.
@@ -124,26 +110,8 @@ def process_browser_form(no_controller=True):
     return locals()
 
 
-def get_queries_form(no_controller=True):
-    """ CONTROLLER HELPER
-    Generate the get queries form.
-    """
-    
-    form = SQLFORM.factory(submit_button='Get related queries',
-                           table_name='get_queries_form',
-                           formstyle='ul',
-                           _id='get_queries_form')
-
-    if form.process().accepted:
-        redirect(URL('browser', vars={'book': request.vars.book,
-                                      'chapter': request.vars.chapter,
-                                      'get_queries': True}))
-
-    return form
-
-
 def group_MySQL(input):
-    """ HELPER for process_get_queries_form
+    """ HELPER for query_form
     Reorganise a query_monad query.
 
     Input (query dict):
@@ -207,20 +175,6 @@ def get_monadsets_MySQL(chapter):
                          as_dict=True)
 
 
-def process_get_queries_form(no_controller=True):
-    """ CONTROLLER HELPER to process the get queries form.
-    Return query_monads: a list of dictionaries of queries for a specific book
-    and chapter and their associated monads.
-    """
-    get_queries = request.vars.get_queries
-    if bool(get_queries):
-        chapter = get_chapter()
-        monadsets = get_monadsets_MySQL(chapter)
-        query_monads = group_MySQL(monadsets)
-    else:
-        query_monads = []
-    return dict(query_monads=query_monads,)
-
 def query_form():
     chapter = get_chapter()
     monadsets = get_monadsets_MySQL(chapter)
@@ -231,13 +185,10 @@ def browser():
     """ CONTROLLER
     Display the selected book-chapter and highlight monads.
     """
-    forms = {'browse_form': browser_form(),
-             'get_queries_form': get_queries_form(),
-             }
+    forms = {'browse_form': browser_form()}
 
     browse = process_browser_form()
-    queries = process_get_queries_form()
-
+    queries = query_form() if request.vars.get_queries == 'True' else dict(query_monads=[],)
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:
