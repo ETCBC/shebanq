@@ -220,11 +220,15 @@ ORDER BY word_number;
         return '''
 <div class="sel">
     <a href="#" id="qhloff">highlights off</a>
+    <a href="#" id="qhlon">highlights on</a>
+    -
     <span id="curviewlnk">{viewlink}</span>
-    <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text -
+    -
+    <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text
+    -
     <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data {extra}
 </div>
-<script type="text/javascript">set_highlights_off()</script>
+<script type="text/javascript">set_highlights()</script>
 <div class="txt_il">{legend}</div>'''.format(legend=self.this_legend, viewlink=viewlink(request, response), extra='' if extra == None else extra)
 
     def adjust_data_view(self):

@@ -104,22 +104,42 @@ function jscolorpicker(qid, initc, monads) {
     }
 }
 
-function set_highlights_off() {
+function set_highlights() {
     $('#qhloff').click(function() {
-        $('#queries li')
-    }
+        $('#qhloff').hide()
+        $('#qhlon').show()
+        $("#queries li").each(function(index, item) {
+            clear_highlights($(item).attr('monads'));
+        })
+    })
+    $('#qhlon').click(function() {
+        $('#qhlon').hide()
+        $('#qhloff').show()
+        $("#queries li").each(function(index, item) {
+            add_highlights($(item).attr('monads'), $(item).attr('qid'));
+        })
+    })
+    $('#qhlon').hide()
 }
 
-// Helper: Add highlights based on monads variable.
+function clear_highlights(monads) {
+    var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
+    mn = $.parseJSON(mn);
+
+    qhc = '#ffffff'
+    $.each(mn, function(index, item) {
+        $('span[m="' + item + '"]').css('background-color', qhc);
+    })
+}
+
 function add_highlights(monads, qid) {
     var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
     mn = $.parseJSON(mn);
 
-    // Add a 'highlight' class to each monad SPAN
     qhc = $('#sel_' + qid).css('background-color')
     $.each(mn, function(index, item) {
         $('span[m="' + item + '"]').css('background-color', qhc);
-    });
+    })
 }
 
 /*****************************************************************************/
