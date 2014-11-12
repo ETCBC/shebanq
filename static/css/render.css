@@ -209,20 +209,26 @@ table.picker {
     border: 0;
 }
 td.cc {
-    width: 18pt;
+    color: #000000;
+    font-size: 8pt;
+    width: 4em;
     height: 18pt;
-    line-height: 18pt;
+    line-height: 10pt;
     padding: 0;
     margin: 0;
     border: 2pt solid #ffffff;
     text-align: center;
+    vertical-align: middle;
 }
 td.cc_sel {
-    width: 12pt;
+    color: #000000;
+    font-size: 8pt;
+    width: 4em;
     height: 12pt;
-    line-height: 12pt;
+    line-height: 10pt;
     padding: 0;
     margin: 0;
     border: 1pt solid #aaaaaa;
     text-align: center;
+    vertical-align: middle;
 }

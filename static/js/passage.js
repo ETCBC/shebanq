@@ -33,6 +33,23 @@ function get_last_chapter_num() {
  * 3. Request var: on page load highlight specific monads from an input field.
  */
 
+function jscolorpicker(qid, initc, monads) {
+    $('#picker_' + qid).hide()
+    $('#sel_' + qid).click(function() {
+        $('#picker_' + qid).show()
+    })
+    var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
+    $('.cc.' + qid).click(function() {
+        $('#picker_' + qid).hide()
+        $('#sel_' + qid).css('background-color', $(this).css('background-color'))
+        $('#sel_' + qid).html($(this).html())
+        add_highlights(mn, qid);
+    })
+    if (initc != '') {
+        $('#sel_' + qid).css('background-color', initc)
+    }
+}
+
 // Helper: clear all highlights present in the text.
 function clear_all_highlights() {
     $('.highlight').each(function () {

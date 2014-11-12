@@ -28,7 +28,7 @@ if 0:
 
 import xml.etree.ElementTree as ET
 
-from render import Verses, picker
+from render import Verses, Queries
 
 def get_record_id():
     #print "get_record_id"
@@ -195,7 +195,11 @@ def get_pagination(p, monad_sets, qid):
             else:
                 v += 1
 
-    return (nvt, cur_page, Verses(passage_db, request, response, verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None)
+    return (
+        nvt, cur_page,
+        Verses(passage_db, request, response, verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None,
+        Queries(),
+    )
 
 
 def index():
@@ -244,7 +248,8 @@ def execute_query(record_id, with_publish=None):
             exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)),
             results=0,
             pages=0, page=0, pagelist=[],
-            verse_data=[]
+            verse_data=[],
+            query_settings=None,
         )
 
     mql_record.update_record(executed_on=request.now)
@@ -283,12 +288,12 @@ def show_query(title):
 def show_results(record_id):
     page = response.vars.page if response.vars else 1
     monad_sets = load_monad_sets(record_id)
-    (nresults, npages, verse_data) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, query_settings) = get_pagination(page, monad_sets, record_id)
     return dict(
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
-        picker=picker,
+        query_settings=query_settings,
     )
 
 def result_page():
@@ -300,19 +305,21 @@ def result_page():
             qid=record_id,
             results = 0,
             pages=0, page=0, pagelist=[],
-            verse_data=[]
+            verse_data=[],
+            query_settings=None,
         )
 
     monad_sets = load_monad_sets(record_id)
 
-    (nresults, npages, verse_data) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, query_settings) = get_pagination(page, monad_sets, record_id)
 
     return dict(
         exception=None,
         qid=record_id,
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
-        verse_data=verse_data
+        verse_data=verse_data,
+        query_settings=query_settings,
     )
 
 def pagelist(page, pages, spread):

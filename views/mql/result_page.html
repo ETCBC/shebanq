@@ -25,7 +25,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
                     <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
 {{pass}}
 {{if verses != None:}}
-    {{=XML(verses.legend(request, response , extra=picker(verses.qid, monads=verses.hl_query)))}}
+    {{=XML(verses.legend(request, response , extra=query_settings.colorpicker(verses.qid, monads=verses.hl_query)))}}
 {{pass}}
                 </div>
                 <div class="monad_sets qresults" id="qresults">

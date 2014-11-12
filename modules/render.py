@@ -19,43 +19,54 @@ toggle_ht,1 toggle_hl,1 toggle_tt,0 toggle_tl,0 toggle_gl,1 toggle_wd1,1 toggle_
 toggle_proto = [tuple(tg.split(',')) for tg in toggle_spec]
 toggles = [(x[0], x[1] == '1') for x in toggle_proto]
 
-qcolors = '''ff0000 ff6688 ffcc66 ffff00 00ff00 ccff66 66ffcc 00ffff 8888ff 66ccff cc44ff ff00ff'''.strip().split()
-(nrows, ncols) = (3, 4)
+class Queries():
+    qcolor_spec = '''#ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1 #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1 #8888ff,blue,1 #66ccff,skye,1 #cc44ff,lilac,1 #ff00ff,magenta,1 #eeeeee,grey,0 #aaaaaa,gray,0 #000000,black,0 #ffffff,white,0'''.strip().split()
+    qcolor_proto = [tuple(qc.split(',')) for qc in qcolor_spec]
+    qcolors = [x[0] for x in qcolor_proto]
+    qcolornames = dict((x[0], x[1]) for x in qcolor_proto)
+    qdefaultcolors = [x[0] for x in qcolor_proto if x[2] == '1']
+    nrows = 4
+    ncols = 4
+    dnrows = 3
+    dncols = 4
+    ndefcolors = len(qdefaultcolors)
 
-def ccell(q,c): return '\t\t<td class="cc {q}" style="background-color: #{c}">&nbsp;</td>'.format(q=q,c=qcolors[c])
-def crow(q,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(q,c) for c in range(r * ncols, (r + 1) * ncols)))
-def ctable(q): return '<table class="picker" id="picker_{q}">\n{cs}\n</table>\n'.format(q=q, cs='\n'.join(crow(q,r) for r in range(nrows)))
-def qsel(q): return '<table class="picked"><tr><td class="cc_sel" id="sel_{q}">&nbsp;</td></tr></table>\n'.format(q=q)
-def qdef(q): 
-    mod = q % 12
-    return qcolors[4 * (mod % 3) + int(mod / 3)]
+    def __init__(self):
+        if Queries.nrows * Queries.ncols != len(Queries.qcolors):
+            print("Query settings: mismatch in number of colors: {} * {} != {}".format(Queries.nrows, Queries.ncols, len(Queries.qcolors)))
+        if Queries.dnrows * Queries.dncols != len(Queries.qdefaultcolors):
+            print("Query settings: mismatch in number of default colors: {} * {} != {}".format(Queries.dnrows, Queries.dncols, len(Queries.qdefaultcolors)))
 
-def js(q, initc, monads, detour):
-    picker_code = '''
-$('#picker_{q}').hide()
-$('#sel_{q}').click(function() {{
-    $('#picker_{q}').show()
-}})
-$('.cc.{q}').click(function() {{
-    $('#picker_{q}').hide()
-    $('#sel_{q}').css('background-color', $(this).css('background-color'))
-    add_highlights({mn}, {tgt});
-}})
-'''.format(
-        q=q, ic=initc,
-        cm='' if initc in qcolors else '//',
-        mn='''$('#query_{q}').attr('monads')'''.format(q=q) if monads == None else "'{}'".format(monads),
-        tgt='''$('#query_{q}').attr('qid')'''.format(q=q) if detour else q,
-    )
-    init_code = '''
-$('#sel_{q}').css('background-color', '#{ic}')
-'''.format(q=q, ic=initc) if initc != '' else ''
-    return picker_code+init_code
+    @staticmethod
+    def _qdef(qid):
+        mod = qid % Queries.ndefcolors
+        return Queries.qdefaultcolors[Queries.dncols * (mod % Queries.dnrows) + int(mod / Queries.dnrows)]
 
-def picker(q,initc=None,monads=None, detour=False):
-    if initc == None or initc not in qcolors:
-        initc = qdef(q)
-    return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=qsel(q), p=ctable(q), j=js(q, initc, monads, detour))
+    @staticmethod
+    def _ccell(qid,c):
+        cc = Queries.qcolors[c]
+        cn = Queries.qcolornames[cc]
+        return '\t\t<td class="cc {qid}" style="background-color: {c}">{n}</td>'.format(qid=qid,c=cc,n=cn)
+
+    @staticmethod
+    def _crow(qid,r):
+        return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(Queries._ccell(qid,c) for c in range(r * Queries.ncols, (r + 1) * Queries.ncols)))
+
+    @staticmethod
+    def _ctable(qid):
+        return '<table class="picker" id="picker_{qid}">\n{cs}\n</table>\n'.format(qid=qid, cs='\n'.join(Queries._crow(qid,r) for r in range(Queries.nrows)))
+
+    @staticmethod
+    def _qsel(qid, initn): return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}">{n}</td></tr></table>\n'.format(qid=qid, n=initn)
+
+    def _js(self, qid, initc, monads):
+        return 'jscolorpicker({qid}, "{ic}", {mn})\n'.format(qid=qid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
+
+    def colorpicker(self, qid, initc=None,monads=None):
+        if initc == None or initc not in Queries.qcolors:
+            initc = Queries._qdef(qid)
+        initn = Queries.qcolornames.get(initc, 'choose...')
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel(qid, initn), p=Queries._ctable(qid), j=self._js(qid, initc, monads))
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
