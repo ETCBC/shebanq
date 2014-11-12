@@ -86,20 +86,12 @@ function highlight_selected_queries() {
     });
 }
 
-// 3. Highlight specific monads using a global w2p_monads variable.
-function add_specific_monad_highlights() {
-    if (!(typeof w2p_monads === 'undefined')){
-        clear_all_highlights();
-        add_highlights(w2p_monads);
-    }
-}
 /*****************************************************************************/
 
 
 $( document ).ready(function () {
     add_all_monads_highlights();        // Highlights case 1
     highlight_selected_queries();       // Highlights case 2
-    add_specific_monad_highlights();    // Highlights case 3
 
     get_last_chapter_num();             // Chapter options
 });

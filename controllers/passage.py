@@ -124,119 +124,11 @@ def process_browser_form(no_controller=True):
     return locals()
 
 
-def highlighter_form(no_controller=True):
-    """ CONTROLLER HELPER
-    Generate the highlight form.
-    Monads to highlight field takes comma or spaces seperated integers.
-    """
-    MY_PLACEHOLDER_STRING_WIDGET = lambda field, value: SQLFORM.widgets.string.widget(field,
-                                                                                      value,
-                                                                                      _placeholder='Monads (comma separated)...')
-    form = SQLFORM.factory(Field('Monads to highlight',
-                                 requires=IS_NOT_EMPTY(),
-                                 default=request.vars.monads if request.vars.monads else None,
-                                 widget=MY_PLACEHOLDER_STRING_WIDGET),
-                           table_name='highlight_form',
-                           submit_button='Highlight monads',
-                           formstyle='ul',
-                           _id='highlighter_form',
-                           )
-
-    if form.process().accepted:
-        monads = [x.strip() for x in form.vars['Monads to highlight'].split(',')]
-        redirect(URL('browser', vars={'book': request.vars.book,
-                                      'chapter': request.vars.chapter,
-                                      'monads': ' '.join(monads)}))
-
-    return form
-
-
-def process_highlighter_form(no_controller=True):
-    """ CONTROLLER HELPER
-    Process the highlighter form input and generate a JSON string list of
-    monads to be processed by JQuery in the view.
-    """
-    monads = request.vars.monads
-    if monads:
-        monads = json.dumps([int(x.strip()) for x in monads.split(' ')])
-    else:
-        monads = []
-
-    return dict(monads=monads, )
-
-
-def verse_word_highlighter_form(no_controller=True):
-    """ CONTROLLER HELPER
-    Generate the verse-word highlighter form: highlight specified (nth) words
-    in a specified verse.
-    Verse field takes one integer.
-    Words field takes comma or spaces seperated integers.
-    """
-    MY_PLACEHOLDER_STRING_WIDGET_WORDS = lambda field, value: SQLFORM.widgets.string.widget(field,
-                                                                                            value,
-                                                                                            _placeholder=T('Word nos. (comma separated)...'))
-    MY_PLACEHOLDER_STRING_WIDGET_VERSE = lambda field, value: SQLFORM.widgets.string.widget(field,
-                                                                                            value,
-                                                                                            _placeholder=T('Verse number...'))
-    form = SQLFORM.factory(Field('Verse', 'integer',
-                                 required=IS_NOT_EMPTY(),
-                                 default=request.vars.verse if request.vars.verse else None,
-                                 widget=MY_PLACEHOLDER_STRING_WIDGET_VERSE),
-                           Field('Words',
-                                 default=request.vars.words if request.vars.words else None,
-                                 widget=MY_PLACEHOLDER_STRING_WIDGET_WORDS),
-                           table_name='verse_word_highlight_form',
-                           submit_button=T('Highlight words'),
-                           formstyle='ul',
-                           _id='verse_word_highlighter_form',
-                           )
-
-    if form.process().accepted:
-        verse = form.vars['Verse']
-        words = [x.strip() for x in form.vars['Words'].split(',')]
-        redirect(URL('browser', vars={'book': request.vars.book,
-                                      'chapter': request.vars.chapter,
-                                      'verse': verse,
-                                      'words': ','.join(words)}))
-    return form
-
-
-def process_verse_word_highlighter_form(no_controller=True):
-    """ CONTROLLER HELPER
-    Process the verse-word highlighter form input and generate a JSON string
-    list of monads to be processed (highlighted) by JQuery in the view.
-    """
-    verse = get_verse()
-    words = request.vars.words
-    if verse and words:
-        # Transform the (nth) words of the verse into monads.
-        words = [int(x.strip()) for x in request.vars.words.split(',')]  # Process the raw request variable words
-        verse_monads = verse.monads()  # Get a list of in order monads in the verse
-        monads = json.dumps([verse_monads[w - 1]
-                             for w in words
-                             if w < len(verse_monads) + 1])  # Map the words onto the monads
-        # Notify the user of non-existing words
-        not_in_verse = ', '.join(map(lambda x: str(x),
-                                     filter(lambda x: x > len(verse_monads),
-                                            words)))  # Out: '80, 90, 93' or ''
-        if not_in_verse:
-            response.flash = "Warning: word%s %s not in verse %i." % ('s' if len(not_in_verse.split(', ')) > 1 else '',
-                                                                      not_in_verse,
-                                                                      verse.verse_num)
-    elif verse:
-        # No words were specified so highlight all words/monads in the verse.
-        monads = json.dumps(verse.monads())
-    else:
-        # No verse specified / empty form
-        return dict()
-
-    return dict(monads=monads, )
-
-
 def get_queries_form(no_controller=True):
     """ CONTROLLER HELPER
     Generate the get queries form.
     """
+    
     form = SQLFORM.factory(submit_button='Get related queries',
                            table_name='get_queries_form',
                            formstyle='ul',
@@ -293,18 +185,6 @@ def group_MySQL(input):
     return r
 
 
-def get_monadsets_DAL(chapter):
-    """ HELPER
-    DAL version of MySQL statement below (note that GREATEST and LEAST are
-    missing here):
-    """
-    return db(((db.monadsets.first_m <= chapter.first_m) & (db.monadsets.last_m >= chapter.first_m)) |
-              ((db.monadsets.first_m >= chapter.first_m) & (db.monadsets.first_m <= chapter.last_m))).select(db.monadsets.first_m,
-                                                                                                             db.monadsets.last_m,
-                                                                                                             db.monadsets.query_id,
-                                                                                                             distinct=True)
-
-
 def get_monadsets_MySQL(chapter):
     """ HELPER to get all monadsets that relate to selected chapter.
     These will be transformed into queries with monads by 'group'.
@@ -341,19 +221,22 @@ def process_get_queries_form(no_controller=True):
         query_monads = []
     return dict(query_monads=query_monads,)
 
+def query_form():
+    chapter = get_chapter()
+    monadsets = get_monadsets_MySQL(chapter)
+    query_monads = group_MySQL(monadsets)
+    return dict(query_monads=query_monads, query_settings=Queries())
+
 def browser():
     """ CONTROLLER
     Display the selected book-chapter and highlight monads.
     """
     forms = {'browse_form': browser_form(),
-             'highlight_form': highlighter_form(),
              'get_queries_form': get_queries_form(),
-             'verse_word_highlighter_form': verse_word_highlighter_form(), }
+             }
 
     browse = process_browser_form()
-    highlight = process_highlighter_form()
     queries = process_get_queries_form()
-    words = process_verse_word_highlighter_form()
 
 
     response.title = T("Browse")
@@ -363,12 +246,8 @@ def browser():
 
     return dict(forms.items()
                 + browse.items()
-                + highlight.items()
                 + queries.items()
-                + words.items()
-                + [('query_settings', Queries())]
     )
-
 
 def index():
     redirect(URL('browser', vars={}))
