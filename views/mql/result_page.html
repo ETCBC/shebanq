@@ -12,10 +12,11 @@
         ua = request.user_agent().browser.name
     }}
     <script type="text/javascript">
-var save_url = "{{=URL('default', 'save_var')}}"
+var dataview_url = "{{=URL('default', 'save_dataview')}}"
+var queryview_url = "{{=URL('default', 'save_queryview')}}"
+var querymap_url = "{{=URL('default', 'save_querymap')}}"
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     </script>
-    <script src="{{=URL('static', 'js/rhtext_def.js')}}"></script>
     <script src="{{=URL('static', 'js/passage.js')}}"></script>
 {{verses = verse_data}}
                 <div>
@@ -25,7 +26,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
                     <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
 {{pass}}
 {{if verses != None:}}
-    {{=XML(verses.legend(request, response , extra=query_settings.colorpicker(verses.qid, monads=verses.hl_query)))}}
+    {{include 'passage/view_settings.html'}}
 {{pass}}
                 </div>
                 <div class="monad_sets qresults" id="qresults">
@@ -35,7 +36,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
                         }}
                             <div class="book-title">{{=A(
                                 verse.citation_ref(),
-                                _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, get_queries=True))
+                                _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, get_queries=1))
                             )}}</div>
                             <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
                             <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>
@@ -68,8 +69,8 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
                     </ul>
                 </div>
 {{if verses != None:}}
-                <script type="text/javascript">{{=XML(verses.adjust_data_view())}}</script>
-                <script type="text/javascript">add_highlights('{{=verses.hl_query}}', {{=verses.qid}})</script>
+                <script type="text/javascript">{{=XML(verses.adjust_view())}}</script>
+                <script type="text/javascript">add_highlights('{{=verses.hl_query}}', {{=verses.qid}}, null)</script>
 {{pass}}
 {{pass}}
 

@@ -18,8 +18,8 @@ function get_last_chapter_num() {
 
     // Replace chapter options with current chapter options after ajax call
     // finishes.
-    $( document ).ajaxComplete(function(event, xhr, settings) {
-        if ( settings.url === 'last_chapter_num' ) {
+    $(document).ajaxComplete(function(event, xhr, settings) {
+        if (settings.url === 'last_chapter_num') {
             replace_select_options('#verses_form_Chapter', xhr.responseText);
         }
     });
@@ -33,8 +33,79 @@ function get_last_chapter_num() {
  * 3. Request var: on page load highlight specific monads from an input field.
  */
 
+function getdataviewvars() {
+    var vars = ''
+    var jvars = {}
+    $('#txt_p, #txt_il, #legend input').each(function() {
+        name = $(this).attr('id')
+        val = $(this).prop('checked')?1:0
+        vars += "&" + name + "=" + val
+        jvars[name] = val
+    })
+    $('#dataviewvars').val(JSON.stringify(jvars))
+    return vars
+}
 
-function jsviewlink(vars) {
+function savedataviewvars() {
+    getdataviewvars()
+    ajax(dataview_url, ['dataviewvars'], ':eval')
+}
+
+function getqueryviewvars() {
+    var vars = ''
+    var jvars = {}
+    $('#qhlon, #qhlone').each(function() {
+        name = $(this).attr('id')
+        val = $(this).prop('checked')?1:0
+        vars += "&" + name + "=" + val
+        jvars[name] = val
+    })
+    val = $('#sel_one').html()
+    vars += "&" + "sel_one" + "=" + val
+    jvars['sel_one'] = val
+    $('#queryviewvars').val(JSON.stringify(jvars))
+    return vars
+}
+
+function savequeryviewvars() {
+    getqueryviewvars()
+    ajax(queryview_url, ['queryviewvars'], ':eval')
+}
+
+function getquerymapvars() {
+    var vars = ''
+    var jvars = {}
+    $('.cc_sel').each(function() {
+        name = 'q_' + $(this).attr('id').substring(4)
+        val = $(this).html()
+        vars += "&" + name + "=" + val
+        jvars[name] = val
+    })
+    $('#querymapvars').val(JSON.stringify(jvars))
+    return vars
+}
+
+function savequerymapvars() {
+    getquerymapvars()
+    ajax(querymap_url, ['querymapvars'], ':eval')
+}
+
+function set_d(fld, init) {
+    $('#' + fld).attr('checked', init);
+    if (!init) {
+        $('.' + fld).each(function () {
+            $( this ).toggle();
+        });
+    }
+    $('#' + fld).change(function() {
+        $('.' + fld).each(function () {
+            $( this ).toggle();
+        });
+        savedataviewvars()
+    });
+}
+
+function jsviewlink() {
     $("#cviewlink").hide();
     $("#xviewlink").hide();
 
@@ -46,10 +117,10 @@ function jsviewlink(vars) {
     $("#yviewlink").click(function() {
         $("#yviewlink").hide()
         $("#xviewlink").show()
-        $('#cviewlink').each(function () {
-            $( this ).val(view_url + "&" + vars)
-            $( this ).show()
-            $( this ).select()
+        $('#cviewlink').val(view_url + getdataviewvars() + getquerymapvars() + getqueryviewvars())
+        $('#cviewlink').each(function() {
+            $(this).show()
+            $(this).select()
         })
     })
 }
@@ -85,7 +156,7 @@ function jsqueryview(qid) {
         $('#m_' + qid).hide()
         $('#d_' + qid).show()
     })
-    add_highlights(null, qid)
+    add_highlights(null, qid, null)
 }
 
 function jscolorpicker(qid, initc, monads) {
@@ -97,46 +168,79 @@ function jscolorpicker(qid, initc, monads) {
         $('#picker_' + qid).hide()
         $('#sel_' + qid).css('background-color', $(this).css('background-color'))
         $('#sel_' + qid).html($(this).html())
-        add_highlights(monads, qid);
+        add_highlights(monads, qid, null);
+        savequerymapvars()
     })
     if (initc != '') {
         $('#sel_' + qid).css('background-color', initc)
     }
 }
 
+function jscolorpicker2() {
+    $('#picker_one').hide()
+    $('#sel_one').click(function() {
+        $('#picker_one').show()
+    })
+    $('.cc.one').click(function() {
+        var bcol = $(this).css('background-color')
+        $('#picker_one').hide()
+        $('#sel_one').css('background-color', bcol)
+        $('#sel_one').html($(this).html())
+        change_highlights(bcol)
+        savequeryviewvars()
+    })
+}
+
+function colorinit2(initn, initc) {
+    $('#sel_one').css('background-color', initc)
+    $('#sel_one').html(initn)
+    change_highlights(initc)
+}
+
+function change_highlights(clr) {
+    isonbox =  $('#qhlon')
+    isonebox =  $('#qhlone')
+    isonelab =  $('#qhlonelab')
+    isonecol =  $('#sel_one')
+    ison = isonbox.prop('checked')
+    isone = isonebox.prop('checked')
+    $('#queries li').each(function(index, item) {
+        if (ison) {
+            isonebox.show()
+            isonelab.show()
+            if (isone) {
+                isonecol.show()
+                add_highlights($(item).attr('monads'), null, clr)
+            }
+            else {
+                isonecol.hide()
+                add_highlights($(item).attr('monads'), $(item).attr('qid'), null)
+            }
+        }
+        else {
+            isonebox.hide()
+            isonelab.hide()
+            isonecol.hide()
+            add_highlights($(item).attr('monads'), null, '#ffffff')
+        }
+    })
+    savequeryviewvars()
+}
+
 function set_highlights() {
-    $('#qhloff').click(function() {
-        $('#qhloff').hide()
-        $('#qhlon').show()
-        $("#queries li").each(function(index, item) {
-            clear_highlights($(item).attr('monads'));
-        })
-    })
     $('#qhlon').click(function() {
-        $('#qhlon').hide()
-        $('#qhloff').show()
-        $("#queries li").each(function(index, item) {
-            add_highlights($(item).attr('monads'), $(item).attr('qid'));
-        })
+        change_highlights('#ffff00')
     })
-    $('#qhlon').hide()
-}
-
-function clear_highlights(monads) {
-    var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
-    mn = $.parseJSON(mn);
-
-    qhc = '#ffffff'
-    $.each(mn, function(index, item) {
-        $('span[m="' + item + '"]').css('background-color', qhc);
+    $('#qhlone').click(function() {
+        change_highlights('#ffff00')
     })
 }
 
-function add_highlights(monads, qid) {
+function add_highlights(monads, qid, clr) {
     var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
     mn = $.parseJSON(mn);
 
-    qhc = $('#sel_' + qid).css('background-color')
+    qhc = (clr == null)? $('#sel_' + qid).css('background-color') : clr
     $.each(mn, function(index, item) {
         $('span[m="' + item + '"]').css('background-color', qhc);
     })
@@ -145,6 +249,6 @@ function add_highlights(monads, qid) {
 /*****************************************************************************/
 
 
-$( document ).ready(function () {
+$(document).ready(function () {
     get_last_chapter_num();             // Chapter options
 });

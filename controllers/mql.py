@@ -195,10 +195,11 @@ def get_pagination(p, monad_sets, qid):
             else:
                 v += 1
 
+    verses_obj = Verses(passage_db, 'query', request, response, verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None
     return (
         nvt, cur_page,
-        Verses(passage_db, request, response, verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None,
-        Queries(),
+        verses_obj,
+        Queries(verses_obj),
     )
 
 
@@ -250,6 +251,7 @@ def execute_query(record_id, with_publish=None):
             pages=0, page=0, pagelist=[],
             verse_data=[],
             query_settings=None,
+            page_kind='query',
         )
 
     mql_record.update_record(executed_on=request.now)
@@ -294,6 +296,7 @@ def show_results(record_id):
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
         query_settings=query_settings,
+        page_kind='query',
     )
 
 def result_page():
@@ -307,6 +310,7 @@ def result_page():
             pages=0, page=0, pagelist=[],
             verse_data=[],
             query_settings=None,
+            page_kind='query',
         )
 
     monad_sets = load_monad_sets(record_id)
@@ -320,6 +324,7 @@ def result_page():
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
         query_settings=query_settings,
+        page_kind='query',
     )
 
 def pagelist(page, pages, spread):

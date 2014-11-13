@@ -13,17 +13,25 @@ field_names = '''
 word_number word_heb word_vlex word_tran word_lex word_gloss word_lang word_pos word_subpos word_tense word_stem word_gender word_gnumber word_person word_state subphrase_border subphrase_number subphrase_rela phrase_border phrase_number phrase_function phrase_typ phrase_det clause_border clause_number clause_typ clause_txt sentence_border sentence_number
 '''.strip().split()
 
-toggle_spec = '''
-toggle_ht,1 toggle_hl,1 toggle_tt,0 toggle_tl,0 toggle_gl,1 toggle_wd1,1 toggle_wd1_subpos,0 toggle_wd1_pos,1 toggle_wd1_lang,0 toggle_wd1_n,0 toggle_wd2,1 toggle_wd2_gender,1 toggle_wd2_gnumber,1 toggle_wd2_person,1 toggle_wd2_state,1 toggle_wd2_tense,1 toggle_wd2_stem,1 toggle_sp,1 toggle_sp_rela,1 toggle_sp_n,1 toggle_ph,1 toggle_ph_det,1 toggle_ph_fun,1 toggle_ph_typ,1 toggle_ph_n,1 toggle_cl,1 toggle_cl_dom,1 toggle_cl_typ,1 toggle_cl_n,1 toggle_sn,1 toggle_sn_n,1 toggle_txt_p,1 toggle_txt_il,0
+data_spec = '''
+ht,1 hl,1 tt,0 tl,0 gl,1 wd1,1 wd1_subpos,0 wd1_pos,1 wd1_lang,0 wd1_n,0 wd2,1 wd2_gender,1 wd2_gnumber,1 wd2_person,1 wd2_state,1 wd2_tense,1 wd2_stem,1 sp,1 sp_rela,1 sp_n,1 ph,1 ph_det,1 ph_fun,1 ph_typ,1 ph_n,1 cl,1 cl_dom,1 cl_typ,1 cl_n,1 sn,1 sn_n,1 txt_p,1 txt_il,0
 '''.strip().split()
-toggle_proto = [tuple(tg.split(',')) for tg in toggle_spec]
-toggles = [(x[0], x[1] == '1') for x in toggle_proto]
+data_proto = [tuple(d.split(',')) for d in data_spec]
+datas = [(x[0], x[1] == '1') for x in data_proto]
+
+qview_spec = '''qhlon,1 qhlone,0'''.strip().split()
+qview_proto = [tuple(q.split(',')) for q in qview_spec]
+qviews = [(x[0], x[1] == '1') for x in qview_proto]
+
+qcol_spec = '''sel_one,yellow'''.strip().split()
+qcols = [tuple(q.split(',')) for q in qcol_spec]
 
 class Queries():
     qcolor_spec = '''#ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1 #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1 #8888ff,blue,1 #66ccff,skye,1 #cc44ff,lilac,1 #ff00ff,magenta,1 #eeeeee,grey,0 #aaaaaa,gray,0 #000000,black,0 #ffffff,white,0'''.strip().split()
     qcolor_proto = [tuple(qc.split(',')) for qc in qcolor_spec]
     qcolors = [x[0] for x in qcolor_proto]
     qcolornames = dict((x[0], x[1]) for x in qcolor_proto)
+    qcolorcodes = dict((x[1], x[0]) for x in qcolor_proto)
     qdefaultcolors = [x[0] for x in qcolor_proto if x[2] == '1']
     nrows = 4
     ncols = 4
@@ -31,7 +39,8 @@ class Queries():
     dncols = 4
     ndefcolors = len(qdefaultcolors)
 
-    def __init__(self):
+    def __init__(self, verses_obj):
+        self.verses = verses_obj
         if Queries.nrows * Queries.ncols != len(Queries.qcolors):
             print("Query settings: mismatch in number of colors: {} * {} != {}".format(Queries.nrows, Queries.ncols, len(Queries.qcolors)))
         if Queries.dnrows * Queries.dncols != len(Queries.qdefaultcolors):
@@ -62,11 +71,17 @@ class Queries():
     def _js(self, qid, initc, monads):
         return 'jscolorpicker({qid}, "{ic}", {mn})\n'.format(qid=qid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
 
-    def colorpicker(self, qid, initc=None,monads=None):
-        if initc == None or initc not in Queries.qcolors:
-            initc = Queries._qdef(qid)
-        initn = Queries.qcolornames.get(initc, 'choose...')
+    def _js2(self):
+        return 'jscolorpicker2()\n'
+
+    def colorpicker(self, qid, monads=None):
+        initn = self.verses.query_map.get('q_{}'.format(qid), None)
+        initc = Queries.qcolorcodes.get(initn, Queries._qdef(qid))
+        initn = Queries.qcolornames[initc]
         return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel(qid, initn), p=Queries._ctable(qid), j=self._js(qid, initc, monads))
+
+    def colorpicker2(self):
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel('one', 'choose...'), p=Queries._ctable('one'), j=self._js2())
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
@@ -83,59 +98,59 @@ text_tpl = u'''<table class="il c">
 </table>'''
 
 legend_tpl = '''
-<table class="il">
+<table id="legend" class="il">
     <tr class="il l_ht"><td class="c l_ht"><input
-    type="checkbox" id="toggle_ht" name="toggle_ht"/></td><td
+    type="checkbox" id="ht" name="ht"/></td><td
     class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text כתף</span></a></td></tr>
     <tr class="il l_hl"><td class="c l_hl"><input
-    type="checkbox" id="toggle_hl" name="toggle_hl"/></td><td
+    type="checkbox" id="hl" name="hl"/></td><td
     class="il l_hl"><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span class="l_hl">lexeme דבר</span></a></td></tr>
     <tr class="il l_tt"><td class="c l_tt"><input
-    type="checkbox" id="toggle_tt" name="toggle_tt"/></td><td
+    type="checkbox" id="tt" name="tt"/></td><td
     class="il l_tt"><a target="_blank" href="{base_doc}/g_word.html"><span class="l_tt">text</span></a></td></tr>
     <tr class="il l_tl"><td class="c l_tl"><input
-    type="checkbox" id="toggle_tl" name="toggle_tl"/></td><td
+    type="checkbox" id="tl" name="tl"/></td><td
     class="il l_tl"><a target="_blank" href="{base_doc}/g_lex.html"><span class="l_tl">lexeme</span></a></td></tr>
     <tr class="il l_gl"><td class="c l_gl"><input
-    type="checkbox" id="toggle_gl" name="toggle_gl"/></td><td
+    type="checkbox" id="gl" name="gl"/></td><td
     class="il l_gl"><a target="_blank" href="{base_doc}/gloss.html"><span class="l_gl">gloss</span></a></td></tr>
     <tr class="il l_wd1"><td class="c l_wd1"><input
-    type="checkbox" id="toggle_wd1" name="toggle_wd1"/></td><td
-    class="il l_wd1"><input type="checkbox" id="toggle_wd1_subpos" name="toggle_wd1_subpos"/><a target="_blank" href="{base_doc}/ls.html"><span
-    class="il l_wd1_subpos">lexical set</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_pos" name="toggle_wd1_pos"/><a target="_blank" href="{base_doc}/sp.html"><span
-    class="il l_wd1_pos">part-of-speech</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_lang" name="toggle_wd1_lang"/><a target="_blank" href="{base_doc}/language.html"><span
-    class="il l_wd1_lang">language</span></a>&nbsp;<input type="checkbox" id="toggle_wd1_n" name="toggle_wd1_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    type="checkbox" id="wd1" name="wd1"/></td><td
+    class="il l_wd1"><input type="checkbox" id="wd1_subpos" name="wd1_subpos"/><a target="_blank" href="{base_doc}/ls.html"><span
+    class="il l_wd1_subpos">lexical set</span></a>&nbsp;<input type="checkbox" id="wd1_pos" name="wd1_pos"/><a target="_blank" href="{base_doc}/sp.html"><span
+    class="il l_wd1_pos">part-of-speech</span></a>&nbsp;<input type="checkbox" id="wd1_lang" name="wd1_lang"/><a target="_blank" href="{base_doc}/language.html"><span
+    class="il l_wd1_lang">language</span></a>&nbsp;<input type="checkbox" id="wd1_n" name="wd1_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_wd1_n">monad#</span></a></td></tr>
     <tr class="il l_wd2"><td class="c l_wd2"><input
-    type="checkbox" id="toggle_wd2" name="toggle_wd2"/></td><td
-    class="il l_wd2"><input type="checkbox" id="toggle_wd2_gender" name="toggle_wd2_gender"/><a target="_blank" href="{base_doc}/gn.html"><span
-    class="il l_wd2_gender">gender</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_gnumber" name="toggle_wd2_gnumber"/><a target="_blank" href="{base_doc}/nu.html"><span
-    class="il l_wd2_gnumber">number</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_person" name="toggle_wd2_person"/><a target="_blank" href="{base_doc}/ps.html"><span
-    class="il l_wd2_person">person</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_state" name="toggle_wd2_state"/><a target="_blank" href="{base_doc}/st.html"><span
-    class="il l_wd2_state">state</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_tense" name="toggle_wd2_tense"/><a target="_blank" href="{base_doc}/vt.html"><span
-    class="il l_wd2_tense">tense</span></a>&nbsp;<input type="checkbox" id="toggle_wd2_stem" name="toggle_wd2_stem"/><a target="_blank" href="{base_doc}/vs.html"><span
+    type="checkbox" id="wd2" name="wd2"/></td><td
+    class="il l_wd2"><input type="checkbox" id="wd2_gender" name="wd2_gender"/><a target="_blank" href="{base_doc}/gn.html"><span
+    class="il l_wd2_gender">gender</span></a>&nbsp;<input type="checkbox" id="wd2_gnumber" name="wd2_gnumber"/><a target="_blank" href="{base_doc}/nu.html"><span
+    class="il l_wd2_gnumber">number</span></a>&nbsp;<input type="checkbox" id="wd2_person" name="wd2_person"/><a target="_blank" href="{base_doc}/ps.html"><span
+    class="il l_wd2_person">person</span></a>&nbsp;<input type="checkbox" id="wd2_state" name="wd2_state"/><a target="_blank" href="{base_doc}/st.html"><span
+    class="il l_wd2_state">state</span></a>&nbsp;<input type="checkbox" id="wd2_tense" name="wd2_tense"/><a target="_blank" href="{base_doc}/vt.html"><span
+    class="il l_wd2_tense">tense</span></a>&nbsp;<input type="checkbox" id="wd2_stem" name="wd2_stem"/><a target="_blank" href="{base_doc}/vs.html"><span
     class="il l_wd2_stem">verbal stem</span></a></td></tr>
     <tr class="il l_sp"><td class="c l_sp"><input
-    type="checkbox" id="toggle_sp" name="toggle_sp"/></td><td
-    class="il l_sp"><input type="checkbox" id="toggle_sp_rela" name="toggle_sp_rela"/><a target="_blank" href="{base_doc}/rela.html"><span
-    class="il l_sp_rela">relation</span></a>&nbsp;<input type="checkbox" id="toggle_sp_n" name="toggle_sp_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    type="checkbox" id="sp" name="sp"/></td><td
+    class="il l_sp"><input type="checkbox" id="sp_rela" name="sp_rela"/><a target="_blank" href="{base_doc}/rela.html"><span
+    class="il l_sp_rela">relation</span></a>&nbsp;<input type="checkbox" id="sp_n" name="sp_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_sp_n">subphrase#</span></a></td></tr>
     <tr class="il l_ph"><td class="c l_ph"><input
-    type="checkbox" id="toggle_ph" name="toggle_ph"/></td><td
-    class="il l_ph"><input type="checkbox" id="toggle_ph_det" name="toggle_ph_det"/><a target="_blank" href="{base_doc}/det.html"><span
-    class="il l_ph_det">determination</span></a>&nbsp;<input type="checkbox" id="toggle_ph_fun" name="toggle_ph_fun"/><a target="_blank" href="{base_doc}/function.html"><span
-    class="il l_ph_fun">function</span></a>&nbsp;<input type="checkbox" id="toggle_ph_typ" name="toggle_ph_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
-    class="il l_ph_typ">type</span></a>&nbsp;<input type="checkbox" id="toggle_ph_n" name="toggle_ph_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    type="checkbox" id="ph" name="ph"/></td><td
+    class="il l_ph"><input type="checkbox" id="ph_det" name="ph_det"/><a target="_blank" href="{base_doc}/det.html"><span
+    class="il l_ph_det">determination</span></a>&nbsp;<input type="checkbox" id="ph_fun" name="ph_fun"/><a target="_blank" href="{base_doc}/function.html"><span
+    class="il l_ph_fun">function</span></a>&nbsp;<input type="checkbox" id="ph_typ" name="ph_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
+    class="il l_ph_typ">type</span></a>&nbsp;<input type="checkbox" id="ph_n" name="ph_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_ph_n">phrase#</span></a></td></tr>
     <tr class="il l_cl"><td class="c l_cl"><input
-    type="checkbox" id="toggle_cl" name="toggle_cl"/></td><td
-    class="il l_cl"><input type="checkbox" id="toggle_cl_dom" name="toggle_cl_dom"/><a target="_blank" href="{base_doc}/domain.html"><span
-    class="il l_cl_dom">domain</span></a>&nbsp;<input type="checkbox" id="toggle_cl_typ" name="toggle_cl_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
-    class="il l_cl_typ">type</span></a>&nbsp;<input type="checkbox" id="toggle_cl_n" name="toggle_cl_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    type="checkbox" id="cl" name="cl"/></td><td
+    class="il l_cl"><input type="checkbox" id="cl_dom" name="cl_dom"/><a target="_blank" href="{base_doc}/domain.html"><span
+    class="il l_cl_dom">domain</span></a>&nbsp;<input type="checkbox" id="cl_typ" name="cl_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
+    class="il l_cl_typ">type</span></a>&nbsp;<input type="checkbox" id="cl_n" name="cl_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_cl_n">clause#</span></a></td></tr>
     <tr class="il l_sn"><td class="c l_sn"><input
-    type="checkbox" id="toggle_sn" name="toggle_sn"/></td><td
-    class="il l_sn"><input type="checkbox" id="toggle_sn_n" name="toggle_sn_n"/><a target="_blank" href="{base_doc}/number.html"><span
+    type="checkbox" id="sn" name="sn"/></td><td
+    class="il l_sn"><input type="checkbox" id="sn_n" name="sn_n"/><a target="_blank" href="{base_doc}/number.html"><span
     class="n l_sn_n">sentence#</span></a></td></tr>
 </table>
 '''
@@ -150,22 +165,10 @@ def h_esc(material, fill=True):
         if material == '': material = '&nbsp;'
     return material
 
-def viewlink(request, response, fresh=None):
-    values = []
-    for x in toggles:
-        if x[0] == fresh:
-            val = response.cookies[x[0]].value if response.cookies.has_key(x[0]) else 'False'
-        else:
-            val = request.cookies[x[0]].value if request.cookies.has_key(x[0]) else 'False'
-        values.append('{}={}'.format(x[0], val))
-    return '''<a id="yviewlink" href="#">show link to this view</a> <a id="xviewlink" href="#">hide link to this view</a>
-<textarea readonly id="cviewlink">&{vars}</textarea>
-<script type="text/javascript">jsviewlink("{vars}")</script>
-'''.format(vars='&'.join(v for v in values))
-
 class Verses():
-    def __init__(self, passage_db, request, response, verse_ids=None, chapter=None, highlights=None, qid=None):
+    def __init__(self, passage_db, page_kind, request, response, verse_ids=None, chapter=None, highlights=None, qid=None):
         self.qid = qid
+        self.page_kind = page_kind
         self.verses = []
         self.this_legend = legend_tpl.format(base_doc=base_doc)
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -176,21 +179,61 @@ class Verses():
         wcondition = condition_pre.format(cwfield)
         self.hl_query = json.dumps(highlights if highlights != None else [])
         
-        self.view_state = {}
-        for (tg, init) in toggles:
-            vstate = request.vars[tg]
-            vstate = None if vstate == None else vstate.lower() == 'true' or vstate == '1' or vstate == 'on'
+        self.data_view = {}
+        self.query_view = {}
+        self.query_map = {}
+        cdata_view = {}
+        cquery_view = {}
+        cquery_map = {}
+        if request.cookies.has_key('dataview'):
+            cdata_view = json.loads(request.cookies['dataview'].value) 
+        if request.cookies.has_key('querymap'):
+            cquery_map = json.loads(request.cookies['querymap'].value) 
+        if page_kind == 'passage' and request.cookies.has_key('queryview'):
+            cquery_view = json.loads(request.cookies['queryview'].value) 
+        for (x, init) in datas:
+            vstate = request.vars[x]
+            vstate = None if vstate == None else vstate == '1'
             if vstate == None:
-                cvstate = None
-                if request.cookies.has_key(tg):
-                    cvstate = request.cookies[tg].value
+                cvstate = cdata_view.get(x, None) 
+                vstate = init if cvstate == None else cvstate == 1
+                self.data_view[x] = vstate
+            else:
+                cdata_view[x] = 1 if vstate else 0
+        if page_kind == 'passage':
+            for (x, init) in qviews:
+                vstate = request.vars[x]
+                vstate = None if vstate == None else vstate == '1'
+                if vstate == None:
+                    cvstate = cquery_view.get(x, None) 
+                    vstate = init if cvstate == None else cvstate == 1
+                    self.query_view[x] = vstate
                 else:
-                    cvstate = None
-                vstate = init if cvstate == None else cvstate == 'True'
-            response.cookies[tg] = vstate
-            response.cookies[tg]['expires'] = 30 * 24 * 3600
-            response.cookies[tg]['path'] = '/'
-            self.view_state[tg] = vstate
+                    cquery_view[x] = 1 if vstate else 0
+            for (x, init) in qcols:
+                vstate = request.vars[x]
+                if vstate == None:
+                    cvstate = cquery_view.get(x, None) 
+                    vstate = init if cvstate == None else cvstate
+                    self.query_view[x] = vstate
+                else:
+                    cquery_view[x] = vstate
+        for x in cquery_map: self.query_map[x] = cquery_map[x]
+        for x in request.vars:
+            parts = x.split('_')
+            if len(parts) == 2 and parts[0] == 'q' and parts[1].isdigit():
+                self.query_map[x] = request.vars.x
+
+        response.cookies['dataview'] = json.dumps(cdata_view)
+        response.cookies['dataview']['expires'] = 30 * 24 * 3600
+        response.cookies['dataview']['path'] = '/'
+        if page_kind == 'passage':
+            response.cookies['queryview'] = json.dumps(cquery_view)
+            response.cookies['queryview']['expires'] = 30 * 24 * 3600
+            response.cookies['queryview']['path'] = '/'
+        response.cookies['querymap'] = json.dumps(self.query_map)
+        response.cookies['querymap']['expires'] = 30 * 24 * 3600
+        response.cookies['querymap']['path'] = '/'
 
         verse_info = passage_db.executesql('''
 SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
@@ -216,23 +259,17 @@ ORDER BY word_number;
             v_id = int(v[0])
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
-    def legend(self, request, response, extra=None):
-        return '''
-<div class="sel">
-    <a href="#" id="qhloff">highlights off</a>
-    <a href="#" id="qhlon">highlights on</a>
-    -
-    <span id="curviewlnk">{viewlink}</span>
-    -
-    <input type="checkbox" id="toggle_txt_p" name="toggle_txt_p"/>text
-    -
-    <input type="checkbox" id="toggle_txt_il" name="toggle_txt_il"/>data {extra}
-</div>
-<script type="text/javascript">set_highlights()</script>
-<div class="txt_il">{legend}</div>'''.format(legend=self.this_legend, viewlink=viewlink(request, response), extra='' if extra == None else extra)
+    def legend(self): return self.this_legend
 
-    def adjust_data_view(self):
-        adjustments = ['set_{}({})\n'.format(tg, 'true' if self.view_state[tg] else 'false') for tg in self.view_state]
+    def adjust_view(self):
+        adjustments = ['set_d("{}", {})\n'.format(x[0], 'true' if self.data_view[x[0]] else 'false') for x in datas]
+        if self.page_kind == 'passage':
+            adjustments.extend(['''$('#{}').prop('checked', {})\n'''.format(x[0], 'true' if self.query_view[x[0]] else 'false') for x in qviews])
+            adjustments.extend(['colorinit2("{}","{}")\n'.format(self.query_view[x[0]], Queries.qcolorcodes[self.query_view[x[0]]]) for x in qcols])
+        if self.page_kind == 'passage':
+            adjustments.append('''$('#cviewlink').val(view_url + getqueryviewvars())''')
+        else:
+            adjustments.append('''$('#cviewlink').val(view_url + getdataviewvars())''')
         return '\n'.join(adjustments)
 
 

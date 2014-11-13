@@ -55,12 +55,14 @@ db.define_table('project',
                 Field('name', 'string'),
                 Field('website', 'string', requires=IS_URL()),
                 format=lambda r: r.name or 'unknown',  # Necessary for SELECT_OR_ADD_OPTION widget
+                migrate=False,
                 )
 
 db.define_table('organization',
                 Field('name', 'string'),
                 Field('website', 'string', requires=IS_URL()),
                 format=lambda r: r.name or 'unknown',  # Necessary for SELECT_OR_ADD_OPTION widget
+                migrate=False,
                 )
 
 # Define read-only signature
@@ -80,7 +82,8 @@ signature = db.Table(db, 'auth_signature',
                            writable=False, readable=True),
                      Field('modified_by', auth.settings.table_user,
                            default=auth.user_id, update=auth.user_id,
-                           writable=False, readable=True)
+                           writable=False, readable=True),
+                    migrate=False,
                      )
 
 # Define the query table
@@ -98,4 +101,6 @@ db.define_table("queries",
 db.define_table("monadsets",
                 Field('query_id', 'reference queries'),
                 Field('first_m', 'integer'),
-                Field('last_m', 'integer'))
+                Field('last_m', 'integer'),
+                migrate=False,
+                )

@@ -1,0 +1,23 @@
+<div class="sel">
+    <a id="yviewlink" href="#">show link to this view</a> <a id="xviewlink" href="#">hide link to this view</a>
+    <textarea readonly id="cviewlink"></textarea>
+    <input type="hidden" name="dataviewvars" id="dataviewvars"/>
+    <input type="hidden" name="queryviewvars" id="queryviewvars"/>
+    <input type="hidden" name="querymapvars" id="querymapvars"/>
+    {{if page_kind == 'passage':}}
+    -
+    query colors:
+    <input type="checkbox" id="qhlon" name="qhlon"/>on
+    <input type="checkbox" id="qhlone" name="qhlone"/><span id="qhlonelab">one</span>
+    {{=XML(query_settings.colorpicker2())}}
+    {{else:}}
+    {{=XML(query_settings.colorpicker(verses.qid, monads=verses.hl_query))}}
+    {{pass}}
+    -
+    <input type="checkbox" id="txt_p" name="txt_p"/>text
+    <input type="checkbox" id="txt_il" name="txt_il"/>data
+</div>
+<script type="text/javascript">
+    jsviewlink()
+</script>
+<div class="txt_il">{{=XML(verses.this_legend)}}</div>

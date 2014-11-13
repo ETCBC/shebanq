@@ -39,8 +39,6 @@ if 0:
 #only use this during development:
 # reload(clamdros)
 
-from render import viewlink
-
 def index():
     """
     example action using the internationalization operator T 
@@ -58,13 +56,23 @@ def about():
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
-def save_var():
-    tname = request.vars.tg
-    val = request.vars[tname]
-    response.cookies[tname] = val == True or val == 'true' or val == 'on' or val == 1
-    response.cookies[tname]['expires'] = 30 * 24 * 3600
-    response.cookies[tname]['path'] = '/'
-    return viewlink(request, response, fresh=tname)
+def save_dataview():
+    response.cookies['dataview'] = request.vars.dataviewvars
+    response.cookies['dataview']['expires'] = 30 * 24 * 3600
+    response.cookies['dataview']['path'] = '/'
+    return ''
+
+def save_queryview():
+    response.cookies['queryview'] = request.vars.queryviewvars
+    response.cookies['queryview']['expires'] = 30 * 24 * 3600
+    response.cookies['queryview']['path'] = '/'
+    return ''
+
+def save_querymap():
+    response.cookies['querymap'] = request.vars.querymapvars
+    response.cookies['querymap']['expires'] = 30 * 24 * 3600
+    response.cookies['querymap']['path'] = '/'
+    return ''
 
 def user():
     """
