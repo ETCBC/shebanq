@@ -2,15 +2,26 @@
     <ul id="queries">
     {{ for q in query_monads:
             qid = q['query'].id
+            qname = q['query'].name
+            fname = q['query'].created_by.first_name
+            lname = q['query'].created_by.last_name
+            pname = fname + ' ' + lname
+            desc = q['query'].description
+            mql = q['query'].mql
+            qname_short = qname if len(qname) < 10 else qname[0:10]+'..'
+            pname_short = pname if len(pname) < 12 else pname[0:12]+'..'
     }}
         <li id="query_{{=qid}}" qid="{{=qid}}" monads="{{ =q['json_monads'] }}">
-            <p>{{=XML(query_settings.colorpicker(qid))}}
-               {{=A(
-                    '{} by {} {}'.format(q['query'].name, q['query'].created_by.first_name, q['query'].created_by.last_name),
-                    _href=URL('mql', 'display_query', vars=dict(id=qid)),
-                )}}
-            <span class="sel"><a href="#" id="m_{{=qid}}">more</a><a href="#" id="l_{{=qid}}">less</a></span><p>
-            <p id="d_{{=qid}}">{{=q['query'].description}}</p>
+            <div>{{=XML(query_settings.colorpicker(qid))}}
+                {{=A(qname_short, _href=URL('mql', 'display_query', vars=dict(id=qid)))}},
+                <a href="#" id="m_{{=qid}}">{{=pname_short}}</a>
+            </div>
+            <div id="d_{{=qid}}">
+                <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
+                {{=desc}}<br/>
+                <pre>{{=XML(mql)}}</pre>
+            </div>
+            <div><a href="#" id="l_{{=qid}}">less</a></div>
             <script type="text/javascript">jsqueryview({{=qid}})</script>
         </li>
     {{ pass }}

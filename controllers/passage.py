@@ -45,7 +45,7 @@ def get_verses(no_controller=True):
     """
     chapter = get_chapter()
     if chapter:
-        verses = Verses(passage_db, 'passage', request, response, chapter=chapter.id)
+        verses = Verses(passage_db, 'passage', chapter=chapter.id)
     else:
         verses = None
     return verses
@@ -175,13 +175,13 @@ def get_monadsets_MySQL(chapter):
                          as_dict=True)
 
 
-def query_form(verses_obj):
+def query_form():
     chapter = get_chapter()
     monadsets = get_monadsets_MySQL(chapter)
     query_monads = group_MySQL(monadsets)
     return dict(
         query_monads=query_monads,
-        query_settings=Queries(verses_obj),
+        query_settings=Queries('passage', request, response)
     )
 
 def browser():
@@ -191,7 +191,7 @@ def browser():
     forms = {'browse_form': browser_form()}
 
     browse = process_browser_form()
-    queries = query_form(browse['verses']) if request.vars.get_queries == '1' else dict(query_monads=[],)
+    queries = query_form() if request.vars.get_queries == '1' else dict(query_monads=[], query_settings=Queries('passage', request, response))
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:

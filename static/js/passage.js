@@ -33,7 +33,7 @@ function get_last_chapter_num() {
  * 3. Request var: on page load highlight specific monads from an input field.
  */
 
-function getdataviewvars() {
+function getdataviewvars(asstr) {
     var vars = ''
     var jvars = {}
     $('#txt_p, #txt_il, #legend input').each(function() {
@@ -43,51 +43,69 @@ function getdataviewvars() {
         jvars[name] = val
     })
     $('#dataviewvars').val(JSON.stringify(jvars))
-    return vars
+    return asstr?vars:jvars
 }
 
 function savedataviewvars() {
-    getdataviewvars()
+    getdataviewvars(true)
     ajax(dataview_url, ['dataviewvars'], ':eval')
 }
 
-function getqueryviewvars() {
+function getqueryviewvars(asstr) {
     var vars = ''
     var jvars = {}
-    $('#qhlon, #qhlone').each(function() {
+    $('.qhradio').each(function() {
         name = $(this).attr('id')
-        val = $(this).prop('checked')?1:0
+        val = $(this).hasClass('ison')?1:0
         vars += "&" + name + "=" + val
         jvars[name] = val
     })
-    val = $('#sel_one').html()
+    val = $('#sel_one').prop('cname')
     vars += "&" + "sel_one" + "=" + val
     jvars['sel_one'] = val
     $('#queryviewvars').val(JSON.stringify(jvars))
-    return vars
+    return asstr?vars:jvars
 }
 
 function savequeryviewvars() {
-    getqueryviewvars()
+    getqueryviewvars(true)
     ajax(queryview_url, ['queryviewvars'], ':eval')
 }
 
-function getquerymapvars() {
+function getquerymapvars(asstr) {
     var vars = ''
     var jvars = {}
     $('.cc_sel').each(function() {
-        name = 'q_' + $(this).attr('id').substring(4)
-        val = $(this).html()
-        vars += "&" + name + "=" + val
-        jvars[name] = val
+        name = $(this).attr('id').substring(4)
+        val = $(this).prop('cname')
+        iscust = $(this).prop('iscust')
+        if (iscust) {
+            vars += "&" + name + "=" + val
+            jvars[name] = val
+        }
     })
     $('#querymapvars').val(JSON.stringify(jvars))
-    return vars
+    return asstr?vars:jvars
 }
 
-function savequerymapvars() {
-    getquerymapvars()
-    ajax(querymap_url, ['querymapvars'], ':eval')
+function savequerymapvars(remove) {
+    getquerymapvars(true)
+    $.ajax({
+        dataType: 'json',
+        url: querymap_url,
+        data: {querymapvars: $('#querymapvars').val(), remove: remove}, 
+        success: function (dt, tstatus) {
+            var vars = ''
+            var jvars = {}
+            for (name in dt) {
+                vars += "&" + name + "=" + dt[name]
+                jvars[name] = dt[name]
+            }
+            $('#querymapvarsq').val(vars)
+            $('#querymapvars').val(JSON.stringify(jvars))
+        },
+        async: false,
+    })
 }
 
 function set_d(fld, init) {
@@ -105,6 +123,15 @@ function set_d(fld, init) {
     });
 }
 
+function set_q(fld, init) {
+    if (init) {
+        $('#'+fld).addClass('ison')
+    }
+    else {
+        $('#'+fld).removeClass('ison')
+    }
+}
+
 function jsviewlink() {
     $("#cviewlink").hide();
     $("#xviewlink").hide();
@@ -117,7 +144,8 @@ function jsviewlink() {
     $("#yviewlink").click(function() {
         $("#yviewlink").hide()
         $("#xviewlink").show()
-        $('#cviewlink').val(view_url + getdataviewvars() + getquerymapvars() + getqueryviewvars())
+        savequerymapvars()
+        $('#cviewlink').val(view_url + getdataviewvars(true) + $('#querymapvarsq').val() + getqueryviewvars(true))
         $('#cviewlink').each(function() {
             $(this).show()
             $(this).select()
@@ -156,7 +184,7 @@ function jsqueryview(qid) {
         $('#m_' + qid).hide()
         $('#d_' + qid).show()
     })
-    add_highlights(null, qid, null)
+    //add_highlights(null, qid, null)
 }
 
 function jscolorpicker(qid, initc, monads) {
@@ -167,7 +195,8 @@ function jscolorpicker(qid, initc, monads) {
     $('.cc.' + qid).click(function() {
         $('#picker_' + qid).hide()
         $('#sel_' + qid).css('background-color', $(this).css('background-color'))
-        $('#sel_' + qid).html($(this).html())
+        $('#sel_' + qid).prop('cname', $(this).html())
+        $('#sel_' + qid).prop('iscust', true)
         add_highlights(monads, qid, null);
         savequerymapvars()
     })
@@ -185,60 +214,84 @@ function jscolorpicker2() {
         var bcol = $(this).css('background-color')
         $('#picker_one').hide()
         $('#sel_one').css('background-color', bcol)
-        $('#sel_one').html($(this).html())
-        change_highlights(bcol)
+        $('#sel_one').prop('cname', $(this).html())
+        change_highlights(null)
         savequeryviewvars()
     })
 }
 
-function colorinit2(initn, initc) {
+function colorinit2(initv, initn, initc) {
     $('#sel_one').css('background-color', initc)
-    $('#sel_one').html(initn)
-    change_highlights(initc)
+    $('#sel_one').prop('cname', initn)
+    change_highlights(initv)
 }
 
-function change_highlights(clr) {
-    isonbox =  $('#qhlon')
-    isonebox =  $('#qhlone')
-    isonelab =  $('#qhlonelab')
-    isonecol =  $('#sel_one')
-    ison = isonbox.prop('checked')
-    isone = isonebox.prop('checked')
-    $('#queries li').each(function(index, item) {
-        if (ison) {
-            isonebox.show()
-            isonelab.show()
-            if (isone) {
-                isonecol.show()
-                add_highlights($(item).attr('monads'), null, clr)
-            }
-            else {
-                isonecol.hide()
-                add_highlights($(item).attr('monads'), $(item).attr('qid'), null)
-            }
+function change_highlights(initv) {
+    if (initv != null) {
+        $('.qhradio').removeClass('ison')
+        $('#'+initv).addClass('ison')
+
+        if ($('#qhlone').hasClass('ison') || $('#qhlmy').hasClass('ison')) {
+            $('#sel_one').show()
         }
         else {
-            isonebox.hide()
-            isonelab.hide()
-            isonecol.hide()
-            add_highlights($(item).attr('monads'), null, '#ffffff')
+            $('#sel_one').hide()
         }
-    })
+    }
+
+    selclr = $('#sel_one').css('background-color')
+    if ($('#qhloff').hasClass('ison')) {
+        $('#queries li').each(function(index, item) {
+            add_highlights($(item).attr('monads'), null, '#ffffff')
+        })
+    }
+    else if ($('#qhlone').hasClass('ison')) {
+        $('#queries li').each(function(index, item) {
+            add_highlights($(item).attr('monads'), null, selclr)
+        })
+    }
+    else if ($('#qhlmy').hasClass('ison')) {
+        savequerymapvars()
+        querymap = $.parseJSON($('#querymapvars').val());
+        $('#queries li').each(function(index, item) {
+            qid =  $(item).attr('qid')
+            add_highlights($(item).attr('monads'), qid, (qid in querymap)?null:selclr)
+        })
+    }
+    else if ($('#qhlmany').hasClass('ison')) {
+        $('#queries li').each(function(index, item) {
+            add_highlights($(item).attr('monads'), $(item).attr('qid'), null)
+        })
+    }
+    else if ($('#qhldel').hasClass('ison')) {
+        savequerymapvars(true)
+        $('#qhldel').removeClass('ison')
+        $('#qhlmany').addClass('ison')
+        $('#queries li').each(function(index, item) {
+            add_highlights($(item).attr('monads'), $(item).attr('qid'), null)
+        })
+    }
     savequeryviewvars()
 }
 
 function set_highlights() {
-    $('#qhlon').click(function() {
-        change_highlights('#ffff00')
-    })
-    $('#qhlone').click(function() {
-        change_highlights('#ffff00')
+    $('.qhradio').click(function() {
+        change_highlights($(this).attr('id'))
     })
 }
 
 function add_highlights(monads, qid, clr) {
     var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
     mn = $.parseJSON(mn);
+
+    qhc = clr
+    if (qid != null) {
+        if (clr == null) {
+            qhc = $('#sel_' + qid).css('background-color')
+        }
+        else {
+        }
+    }
 
     qhc = (clr == null)? $('#sel_' + qid).css('background-color') : clr
     $.each(mn, function(index, item) {

@@ -69,3 +69,12 @@ h1, h2 {
 #queries dt {
     font-weight: normal;
 }
+.qhradio.ison {
+    font-weight: bold;
+    background-color: #ffff88;
+    color: #0000ff;
+}
+.qhradio {
+    font-weight: normal;
+    background-color: #ffffff;
+}

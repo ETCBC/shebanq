@@ -26,7 +26,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
             <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
         {{ pass }}
         <script type="text/javascript">
-{{=XML(verses.adjust_view())}}
+{{=XML(query_settings.adjust_view())}}
 set_highlights()
         </script>
     {{ pass }}

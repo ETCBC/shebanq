@@ -39,6 +39,8 @@ if 0:
 #only use this during development:
 # reload(clamdros)
 
+import json
+
 def index():
     """
     example action using the internationalization operator T 
@@ -69,10 +71,20 @@ def save_queryview():
     return ''
 
 def save_querymap():
-    response.cookies['querymap'] = request.vars.querymapvars
+    doremove = request.vars.remove 
+    if doremove:
+        new_map_json = json.dumps({})
+    else:
+        new_map = json.loads(request.vars.querymapvars)
+        old_map = {}
+        if request.cookies.has_key('querymap'):
+            old_map = json.loads(request.cookies['querymap'].value)
+        old_map.update(new_map)
+        new_map_json = json.dumps(old_map)
+    response.cookies['querymap'] = new_map_json
     response.cookies['querymap']['expires'] = 30 * 24 * 3600
     response.cookies['querymap']['path'] = '/'
-    return ''
+    return new_map_json
 
 def user():
     """

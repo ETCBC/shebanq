@@ -195,11 +195,10 @@ def get_pagination(p, monad_sets, qid):
             else:
                 v += 1
 
-    verses_obj = Verses(passage_db, 'query', request, response, verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None
     return (
         nvt, cur_page,
-        verses_obj,
-        Queries(verses_obj),
+        Verses(passage_db, 'query', verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None,
+        Queries('query', request, response),
     )
 
 

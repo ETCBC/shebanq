@@ -19,7 +19,7 @@ ht,1 hl,1 tt,0 tl,0 gl,1 wd1,1 wd1_subpos,0 wd1_pos,1 wd1_lang,0 wd1_n,0 wd2,1 w
 data_proto = [tuple(d.split(',')) for d in data_spec]
 datas = [(x[0], x[1] == '1') for x in data_proto]
 
-qview_spec = '''qhlon,1 qhlone,0'''.strip().split()
+qview_spec = '''qhloff,0 qhlone,0 qhlmy,0 qhlmany,1'''.strip().split()
 qview_proto = [tuple(q.split(',')) for q in qview_spec]
 qviews = [(x[0], x[1] == '1') for x in qview_proto]
 
@@ -39,12 +39,86 @@ class Queries():
     dncols = 4
     ndefcolors = len(qdefaultcolors)
 
-    def __init__(self, verses_obj):
-        self.verses = verses_obj
+    def __init__(self, page_kind, request, response):
         if Queries.nrows * Queries.ncols != len(Queries.qcolors):
             print("Query settings: mismatch in number of colors: {} * {} != {}".format(Queries.nrows, Queries.ncols, len(Queries.qcolors)))
         if Queries.dnrows * Queries.dncols != len(Queries.qdefaultcolors):
             print("Query settings: mismatch in number of default colors: {} * {} != {}".format(Queries.dnrows, Queries.dncols, len(Queries.qdefaultcolors)))
+        init_qview = [x[0] for x in qviews if x[1]]
+        if len(init_qview) != 1:
+            print("Query settings: the initial query view state is not uniquely defined: {}".format(init_qview))
+            self.init_qview = qviews[-1][0]
+        else:
+            self.init_qview = init_qview[0]
+
+        self.page_kind = page_kind
+        self.data_view = {}
+        self.query_view = {}
+        self.query_map = {}
+        cdata_view = {}
+        cquery_view = {}
+        cquery_map = {}
+        if request.cookies.has_key('dataview'):
+            cdata_view = json.loads(request.cookies['dataview'].value) 
+        if request.cookies.has_key('querymap'):
+            cquery_map = json.loads(request.cookies['querymap'].value) 
+        if page_kind == 'passage' and request.cookies.has_key('queryview'):
+            cquery_view = json.loads(request.cookies['queryview'].value) 
+        for (x, init) in datas:
+            vstate = request.vars[x]
+            vstate = None if vstate == None else vstate == '1'
+            if vstate == None:
+                cvstate = cdata_view.get(x, None) 
+                vstate = init if cvstate == None else cvstate == 1
+            else:
+                cdata_view[x] = 1 if vstate else 0
+            self.data_view[x] = vstate
+        if page_kind == 'passage':
+            for (x, init) in qviews:
+                vstate = request.vars[x]
+                vstate = None if vstate == None else vstate == '1'
+                if vstate == None:
+                    cvstate = cquery_view.get(x, None) 
+                    vstate = init if cvstate == None else cvstate == 1
+                else:
+                    cquery_view[x] = 1 if vstate else 0
+                self.query_view[x] = vstate
+            for (x, init) in qcols:
+                vstate = request.vars[x]
+                if vstate == None:
+                    cvstate = cquery_view.get(x, None) 
+                    vstate = init if cvstate == None else cvstate
+                else:
+                    cquery_view[x] = vstate
+                self.query_view[x] = vstate
+        for x in cquery_map: self.query_map[x] = cquery_map[x]
+        for x in request.vars:
+            parts = x.split('_')
+            if len(parts) == 2 and parts[0] == 'q' and parts[1].isdigit():
+                self.query_map[parts[1]] = request.vars[x]
+
+        response.cookies['dataview'] = json.dumps(cdata_view)
+        response.cookies['dataview']['expires'] = 30 * 24 * 3600
+        response.cookies['dataview']['path'] = '/'
+        if page_kind == 'passage':
+            response.cookies['queryview'] = json.dumps(cquery_view)
+            response.cookies['queryview']['expires'] = 30 * 24 * 3600
+            response.cookies['queryview']['path'] = '/'
+        response.cookies['querymap'] = json.dumps(self.query_map)
+        response.cookies['querymap']['expires'] = 30 * 24 * 3600
+        response.cookies['querymap']['path'] = '/'
+
+    def adjust_view(self):
+        adjustments = ['set_d("{}", {})\n'.format(x[0], 'true' if self.data_view[x[0]] else 'false') for x in datas]
+        if self.page_kind == 'passage':
+            qviewon = [x[0] for x in qviews if self.query_view[x[0]]]
+            thisison = qviewon[0] if len(qviewon) else self.init_qview 
+            adjustments.extend(['colorinit2("{}","{}","{}")\n'.format(thisison, self.query_view[x[0]], Queries.qcolorcodes[self.query_view[x[0]]]) for x in qcols])
+        if self.page_kind == 'passage':
+            adjustments.append('''$('#cviewlink').val(view_url + getqueryviewvars(false))''')
+        else:
+            adjustments.append('''$('#cviewlink').val(view_url + getdataviewvars(false))''')
+        return '\n'.join(adjustments)
 
     @staticmethod
     def _qdef(qid):
@@ -66,7 +140,7 @@ class Queries():
         return '<table class="picker" id="picker_{qid}">\n{cs}\n</table>\n'.format(qid=qid, cs='\n'.join(Queries._crow(qid,r) for r in range(Queries.nrows)))
 
     @staticmethod
-    def _qsel(qid, initn): return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}">{n}</td></tr></table>\n'.format(qid=qid, n=initn)
+    def _qsel(qid, initn): return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}" prop="{n}">&nbsp;</td></tr></table>\n'.format(qid=qid, n=initn)
 
     def _js(self, qid, initc, monads):
         return 'jscolorpicker({qid}, "{ic}", {mn})\n'.format(qid=qid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
@@ -75,7 +149,7 @@ class Queries():
         return 'jscolorpicker2()\n'
 
     def colorpicker(self, qid, monads=None):
-        initn = self.verses.query_map.get('q_{}'.format(qid), None)
+        initn = self.query_map.get(str(qid), None)
         initc = Queries.qcolorcodes.get(initn, Queries._qdef(qid))
         initn = Queries.qcolornames[initc]
         return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel(qid, initn), p=Queries._ctable(qid), j=self._js(qid, initc, monads))
@@ -166,7 +240,7 @@ def h_esc(material, fill=True):
     return material
 
 class Verses():
-    def __init__(self, passage_db, page_kind, request, response, verse_ids=None, chapter=None, highlights=None, qid=None):
+    def __init__(self, passage_db, page_kind, verse_ids=None, chapter=None, highlights=None, qid=None):
         self.qid = qid
         self.page_kind = page_kind
         self.verses = []
@@ -178,62 +252,6 @@ class Verses():
         condition = condition_pre.format(cfield)
         wcondition = condition_pre.format(cwfield)
         self.hl_query = json.dumps(highlights if highlights != None else [])
-        
-        self.data_view = {}
-        self.query_view = {}
-        self.query_map = {}
-        cdata_view = {}
-        cquery_view = {}
-        cquery_map = {}
-        if request.cookies.has_key('dataview'):
-            cdata_view = json.loads(request.cookies['dataview'].value) 
-        if request.cookies.has_key('querymap'):
-            cquery_map = json.loads(request.cookies['querymap'].value) 
-        if page_kind == 'passage' and request.cookies.has_key('queryview'):
-            cquery_view = json.loads(request.cookies['queryview'].value) 
-        for (x, init) in datas:
-            vstate = request.vars[x]
-            vstate = None if vstate == None else vstate == '1'
-            if vstate == None:
-                cvstate = cdata_view.get(x, None) 
-                vstate = init if cvstate == None else cvstate == 1
-                self.data_view[x] = vstate
-            else:
-                cdata_view[x] = 1 if vstate else 0
-        if page_kind == 'passage':
-            for (x, init) in qviews:
-                vstate = request.vars[x]
-                vstate = None if vstate == None else vstate == '1'
-                if vstate == None:
-                    cvstate = cquery_view.get(x, None) 
-                    vstate = init if cvstate == None else cvstate == 1
-                    self.query_view[x] = vstate
-                else:
-                    cquery_view[x] = 1 if vstate else 0
-            for (x, init) in qcols:
-                vstate = request.vars[x]
-                if vstate == None:
-                    cvstate = cquery_view.get(x, None) 
-                    vstate = init if cvstate == None else cvstate
-                    self.query_view[x] = vstate
-                else:
-                    cquery_view[x] = vstate
-        for x in cquery_map: self.query_map[x] = cquery_map[x]
-        for x in request.vars:
-            parts = x.split('_')
-            if len(parts) == 2 and parts[0] == 'q' and parts[1].isdigit():
-                self.query_map[x] = request.vars.x
-
-        response.cookies['dataview'] = json.dumps(cdata_view)
-        response.cookies['dataview']['expires'] = 30 * 24 * 3600
-        response.cookies['dataview']['path'] = '/'
-        if page_kind == 'passage':
-            response.cookies['queryview'] = json.dumps(cquery_view)
-            response.cookies['queryview']['expires'] = 30 * 24 * 3600
-            response.cookies['queryview']['path'] = '/'
-        response.cookies['querymap'] = json.dumps(self.query_map)
-        response.cookies['querymap']['expires'] = 30 * 24 * 3600
-        response.cookies['querymap']['path'] = '/'
 
         verse_info = passage_db.executesql('''
 SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
@@ -260,18 +278,6 @@ ORDER BY word_number;
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
 
     def legend(self): return self.this_legend
-
-    def adjust_view(self):
-        adjustments = ['set_d("{}", {})\n'.format(x[0], 'true' if self.data_view[x[0]] else 'false') for x in datas]
-        if self.page_kind == 'passage':
-            adjustments.extend(['''$('#{}').prop('checked', {})\n'''.format(x[0], 'true' if self.query_view[x[0]] else 'false') for x in qviews])
-            adjustments.extend(['colorinit2("{}","{}")\n'.format(self.query_view[x[0]], Queries.qcolorcodes[self.query_view[x[0]]]) for x in qcols])
-        if self.page_kind == 'passage':
-            adjustments.append('''$('#cviewlink').val(view_url + getqueryviewvars())''')
-        else:
-            adjustments.append('''$('#cviewlink').val(view_url + getdataviewvars())''')
-        return '\n'.join(adjustments)
-
 
 class Verse():
 
