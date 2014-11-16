@@ -98,7 +98,7 @@ function savequerymapvars(remove) {
             var vars = ''
             var jvars = {}
             for (name in dt) {
-                vars += "&" + name + "=" + dt[name]
+                vars += "&q" + name + "=" + dt[name]
                 jvars[name] = dt[name]
             }
             $('#querymapvarsq').val(vars)

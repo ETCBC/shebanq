@@ -93,9 +93,8 @@ class Queries():
                 self.query_view[x] = vstate
         for x in cquery_map: self.query_map[x] = cquery_map[x]
         for x in request.vars:
-            parts = x.split('_')
-            if len(parts) == 2 and parts[0] == 'q' and parts[1].isdigit():
-                self.query_map[parts[1]] = request.vars[x]
+            if x[0] == 'q' and x[1:].isdigit():
+                self.query_map[x[1:]] = request.vars[x]
 
         response.cookies['dataview'] = json.dumps(cdata_view)
         response.cookies['dataview']['expires'] = 30 * 24 * 3600
