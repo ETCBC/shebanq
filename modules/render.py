@@ -19,12 +19,16 @@ ht,1 hl,1 tt,0 tl,0 gl,1 wd1,1 wd1_subpos,0 wd1_pos,1 wd1_lang,0 wd1_n,0 wd2,1 w
 data_proto = [tuple(d.split(',')) for d in data_spec]
 datas = [(x[0], x[1] == '1') for x in data_proto]
 
-qview_spec = '''qhloff,0 qhlone,0 qhlmy,0 qhlmany,1'''.strip().split()
+qview_spec = '''qhloff,0 qhlone,0 qhlmy,1 qhlmany,0'''.strip().split()
 qview_proto = [tuple(q.split(',')) for q in qview_spec]
 qviews = [(x[0], x[1] == '1') for x in qview_proto]
 
-qcol_spec = '''sel_one,yellow'''.strip().split()
+qcol_spec = '''sel_one,grey'''.strip().split()
 qcols = [tuple(q.split(',')) for q in qcol_spec]
+
+qset_spec = '''get_queries,0'''.strip().split()
+qset_proto = [tuple(q.split(',')) for q in qset_spec]
+qsets = [(x[0], x[1] == '1') for x in qset_proto]
 
 class Queries():
     qcolor_spec = '''#ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1 #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1 #8888ff,blue,1 #66ccff,skye,1 #cc44ff,lilac,1 #ff00ff,magenta,1 #eeeeee,grey,0 #aaaaaa,gray,0 #000000,black,0 #ffffff,white,0'''.strip().split()
@@ -74,7 +78,7 @@ class Queries():
                 cdata_view[x] = 1 if vstate else 0
             self.data_view[x] = vstate
         if page_kind == 'passage':
-            for (x, init) in qviews:
+            for (x, init) in qviews + qsets:
                 vstate = request.vars[x]
                 vstate = None if vstate == None else vstate == '1'
                 if vstate == None:
@@ -139,7 +143,17 @@ class Queries():
         return '<table class="picker" id="picker_{qid}">\n{cs}\n</table>\n'.format(qid=qid, cs='\n'.join(Queries._crow(qid,r) for r in range(Queries.nrows)))
 
     @staticmethod
-    def _qsel(qid, initn): return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}" prop="{n}">&nbsp;</td></tr></table>\n'.format(qid=qid, n=initn)
+    def _qsel(qid, initn, iscust):
+        defc = Queries._qdef(qid)
+        return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
+            qid=qid, n=initn, ic=iscust, dc=defc, dn=Queries.qcolornames[defc],
+        )
+
+    @staticmethod
+    def _qsel2(qid, initn):
+        return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}" cname="{n}">&nbsp;</td></tr></table>\n'.format(
+            qid=qid, n=initn,
+        )
 
     def _js(self, qid, initc, monads):
         return 'jscolorpicker({qid}, "{ic}", {mn})\n'.format(qid=qid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
@@ -149,12 +163,13 @@ class Queries():
 
     def colorpicker(self, qid, monads=None):
         initn = self.query_map.get(str(qid), None)
+        iscust = 'true' if initn != None else 'false' 
         initc = Queries.qcolorcodes.get(initn, Queries._qdef(qid))
         initn = Queries.qcolornames[initc]
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel(qid, initn), p=Queries._ctable(qid), j=self._js(qid, initc, monads))
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel(qid, initn, iscust), p=Queries._ctable(qid), j=self._js(qid, initc, monads))
 
     def colorpicker2(self):
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel('one', 'choose...'), p=Queries._ctable('one'), j=self._js2())
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel2('one', 'choose...'), p=Queries._ctable('one'), j=self._js2())
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>

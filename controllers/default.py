@@ -72,7 +72,7 @@ def save_queryview():
 
 def save_querymap():
     doremove = request.vars.remove 
-    if doremove:
+    if doremove == 'all':
         new_map_json = json.dumps({})
     else:
         new_map = json.loads(request.vars.querymapvars)
@@ -80,6 +80,8 @@ def save_querymap():
         if request.cookies.has_key('querymap'):
             old_map = json.loads(request.cookies['querymap'].value)
         old_map.update(new_map)
+        if doremove and doremove in old_map:
+            del old_map[doremove]
         new_map_json = json.dumps(old_map)
     response.cookies['querymap'] = new_map_json
     response.cookies['querymap']['expires'] = 30 * 24 * 3600

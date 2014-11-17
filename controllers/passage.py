@@ -175,13 +175,16 @@ def get_monadsets_MySQL(chapter):
                          as_dict=True)
 
 
-def query_form():
+def query_form(): return query_form_generic()
+
+def query_form_generic(query_settings=None):
     chapter = get_chapter()
     monadsets = get_monadsets_MySQL(chapter)
     query_monads = group_MySQL(monadsets)
+    if query_settings == None: query_settings = Queries('passage', request, response)
     return dict(
         query_monads=query_monads,
-        query_settings=Queries('passage', request, response)
+        query_settings=query_settings
     )
 
 def browser():
@@ -191,7 +194,8 @@ def browser():
     forms = {'browse_form': browser_form()}
 
     browse = process_browser_form()
-    queries = query_form() if request.vars.get_queries == '1' else dict(query_monads=[], query_settings=Queries('passage', request, response))
+    query_settings = Queries('passage', request, response)
+    queries = query_form_generic(query_settings=query_settings) if query_settings.query_view['get_queries'] else dict(query_monads=[], query_settings=query_settings)
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:

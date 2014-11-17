@@ -60,9 +60,14 @@ function getqueryviewvars(asstr) {
         vars += "&" + name + "=" + val
         jvars[name] = val
     })
-    val = $('#sel_one').prop('cname')
-    vars += "&" + "sel_one" + "=" + val
-    jvars['sel_one'] = val
+    name = 'sel_one'
+    val = $('#'+name).prop('cname')
+    vars += "&" + name + "=" + val
+    jvars[name] = val
+    name = 'get_queries'
+    val = $('#'+name).is(':hidden')?1:0
+    vars += "&" + name + "=" + val
+    jvars[name] = val
     $('#queryviewvars').val(JSON.stringify(jvars))
     return asstr?vars:jvars
 }
@@ -155,19 +160,21 @@ function jsviewlink() {
 
 function jsqueriesview(init) {
     $('#h_queries').hide()
-    $('#s_queries').click(function(){
-        $('#s_queries').hide()
+    $('#get_queries').click(function(){
+        $('#get_queries').hide()
         $('#h_queries').show()
         $('#qbar').show()
+        savequeryviewvars()
     })
     $('#h_queries').click(function(){
         $('#h_queries').hide()
-        $('#s_queries').show()
+        $('#get_queries').show()
         $('#qbar').hide()
+        savequeryviewvars()
     })
     if (init == 1) {
        $('#fetchqueries').click()
-       $('#s_queries').hide()
+       $('#get_queries').hide()
     }
 }
 
@@ -184,25 +191,45 @@ function jsqueryview(qid) {
         $('#m_' + qid).hide()
         $('#d_' + qid).show()
     })
-    //add_highlights(null, qid, null)
 }
 
 function jscolorpicker(qid, initc, monads) {
-    $('#picker_' + qid).hide()
-    $('#sel_' + qid).click(function() {
-        $('#picker_' + qid).show()
+    var sel = $('#sel_'+qid)
+    var picker = $('#picker_'+qid)
+    picker.hide()
+    sel.click(function() {
+        picker.show()
+    })
+    sel.dblclick(function() {
+        picker.hide()
+        var was_cust = sel.prop('iscust')
+        if (was_cust) {
+            sel.prop('iscust', false)
+            sel.prop('cname', sel.attr('defn'))
+            sel.css('background-color', sel.attr('defc'))
+            change_highlight(monads, qid, qid);
+        }
+        else {
+            sel.prop('iscust', true)
+            change_highlight(monads, qid, null);
+        }
+        var iscust = sel.prop('iscust')
+        sel.css('border', iscust?'4pt solid #aaaaaa':'0pt')
     })
     $('.cc.' + qid).click(function() {
-        $('#picker_' + qid).hide()
-        $('#sel_' + qid).css('background-color', $(this).css('background-color'))
-        $('#sel_' + qid).prop('cname', $(this).html())
-        $('#sel_' + qid).prop('iscust', true)
-        add_highlights(monads, qid, null);
-        savequerymapvars()
+        picker.hide()
+        sel.css('background-color', $(this).css('background-color'))
+        sel.prop('cname', $(this).html())
+        sel.prop('iscust', true)
+        sel.css('border', '4pt solid #aaaaaa')
+        change_highlight(monads, qid, null);
     })
     if (initc != '') {
-        $('#sel_' + qid).css('background-color', initc)
+        sel.css('background-color', initc)
     }
+    var iscust = sel.attr('iscust')
+    sel.prop('iscust', (iscust=='true')?true:false)
+    sel.css('border', (iscust=='true')?'4pt solid #aaaaaa':'0pt')
 }
 
 function jscolorpicker2() {
@@ -224,6 +251,37 @@ function colorinit2(initv, initn, initc) {
     $('#sel_one').css('background-color', initc)
     $('#sel_one').prop('cname', initn)
     change_highlights(initv)
+}
+
+function change_highlight(monads, qid, delqid) {
+    var qhlmy = $('#qhlmy')
+    var qhlmany = $('#qhlmany')
+    var sel = $('#sel_'+qid)
+    var defc = sel.attr('defc')
+    var defn = sel.attr('defn')
+    var iscust = sel.prop('iscust')
+    savequerymapvars(delqid)
+    if (!qhlmy) {
+        add_highlights(monads, qid, null);
+    }
+    else {
+        var qhlmyon = qhlmy.hasClass('ison') 
+        var qhlmanyon = qhlmany.hasClass('ison') 
+        if (qhlmanyon || qhlmyon) {
+            if (qhlmanyon) {
+                add_highlights(monads, qid, null);
+            }
+            else {
+                if (iscust) {
+                    add_highlights(monads, qid, null);
+                }
+                else {
+                    selclr = $('#sel_one').css('background-color')
+                    add_highlights(monads, qid, selclr);
+                }
+            }
+        }
+    }
 }
 
 function change_highlights(initv) {
@@ -264,11 +322,17 @@ function change_highlights(initv) {
         })
     }
     else if ($('#qhldel').hasClass('ison')) {
-        savequerymapvars(true)
+        savequerymapvars('all')
         $('#qhldel').removeClass('ison')
-        $('#qhlmany').addClass('ison')
+        $('#qhlmy').addClass('ison')
         $('#queries li').each(function(index, item) {
-            add_highlights($(item).attr('monads'), $(item).attr('qid'), null)
+            qid = $(item).attr('qid')
+            var sel = $('#sel_'+qid)
+            sel.prop('iscust', false)
+            sel.prop('cname', sel.attr('defn'))
+            sel.css('background-color', sel.attr('defc'))
+            sel.css('border', '0pt')
+            add_highlights($(item).attr('monads'), qid, selclr)
         })
     }
     savequeryviewvars()
@@ -283,15 +347,6 @@ function set_highlights() {
 function add_highlights(monads, qid, clr) {
     var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
     mn = $.parseJSON(mn);
-
-    qhc = clr
-    if (qid != null) {
-        if (clr == null) {
-            qhc = $('#sel_' + qid).css('background-color')
-        }
-        else {
-        }
-    }
 
     qhc = (clr == null)? $('#sel_' + qid).css('background-color') : clr
     $.each(mn, function(index, item) {
