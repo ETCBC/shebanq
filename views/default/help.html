@@ -1,0 +1,81 @@
+{{ left_sidebar_enabled = False }}
+{{ right_sidebar_enabled = False }}
+{{ ('message' in globals()) }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<h4>{{=T('Usage')}}</h4>
+<p>You can <i>browse chapters in the Hebrew Bible</i> and <i>perform advanced queries in the Hebrew database</i>.
+When you read a chapter, you may encounter queries with results in the chapter you are reading.
+You can investigate those queries and their results, and switch back and forth between chapter and query results.
+</p>
+
+<h4>{{=T('Browse')}}</h4>
+<p>Use the {{=A(T("Browse"), _href=URL('passage', 'browser', vars=dict(get_queries=0)))}} menu.<br/>
+Select book and chapter and click <i>View</i>.
+</p>
+
+<h4>{{=T('Get queries')}}</h4>
+<p><img src="{{=URL('static', 'images/getqueries.png')}}"/></p>
+<p>Click <i>get queries</i> to show the list of queries with results in this chapter.
+The list will appear in the left margin.
+You can also hide the queries again.
+Once the queries have appeared, you can have their results highlighted in the present chapter.
+See <i>Adjusting the view</i> for ways in which you can have the data presented.
+</p>
+
+<h4>{{=T('Adjusting the view')}}</h4>
+<p>There are many ways to get to the information you need, to highlight the relevant bits and to hide the rest.
+</p>
+<p><img src="{{=URL('static', 'images/viewsettings.png')}}"/></p>
+<p>Directly above the text is a row of <i>view controls</i>.</p>
+<p><img src="{{=URL('static', 'images/viewdetail.png')}}"/></p>
+<p>Going from right to left there are switches for
+<dl>
+<dt>data and text</dt>
+<dd>The <i>data</i> switch enables you to few the underlying data with the text.
+It is an interlinear display of word-level features and features at the levels of subphrase, phrase, clause and sentence.
+A legenda of this extra data is provided on top of the passage.
+It can be used to hide the bits of information that are not relevant to you.
+By clicking on the name of a data feature you are taken to a documentation page that explains the feature.
+</dd>
+<dt>query colors</dt>
+<dd>A set of controls for adjusting the way queries are highlighted:
+<dl>
+<dt>off</dt><dd>click this to remove all query highlights immediatel;y</dd>
+<dt>one</dt><dd>all queries are highlighted with the same color, which can be selected by clicking the color picker to the left;</dd>
+<dd>my own</dt><dd>all queries are highlighted with the same color, as <i>one</i> has been clicked, except for colors that 
+you have expressly customized. You customize a query color by clicking on the color picker next to the query and selecting a color.
+Alternatively, you can customize a query color by double clicking its color picker. In that case the color does not change, but counts
+as customized. Double clicking an already customized color will uncustomize it;</dd>
+<dt>many</dt><dd>assigns fixed default colors to the queries. Queries will be highlighted using this default color,
+except for the customized ones, which will be highlighted in the colors you have assigned to them;</dd>
+<dt>reset</dt><dd>uncustomize all query colors, so you can start with a clean slate.</dd>
+</dl>
+</dd>
+<dt>share link</dt><dd>all view settings (including custom query colors) that you have adjusted will
+be remembered by your browser (in a couple of <i>cookies</i>).
+If you want to share your view with others, you can generate a link and send it to others.
+If they open that link in their browser, they will see eaxctly the customizations that you have defined for yourself.
+For example, if you want to read Exodus 6, with a query highlighted that shows all the verbs, and another one that shows all the
+proper names, follow this
+{{=A(T("link"), _href=URL('passage', 'browser', vars=dict(book='Exodus', chapter=6))+'&txt_p=1&txt_il=0&ht=1&hl=0&tt=0&tl=0&gl=1&wd1=1&wd1_subpos=0&wd1_pos=1&wd1_lang=0&wd1_n=0&wd2=0&wd2_gender=1&wd2_gnumber=1&wd2_person=1&wd2_state=1&wd2_tense=1&wd2_stem=1&sp=0&sp_rela=1&sp_n=1&ph=0&ph_det=1&ph_fun=1&ph_typ=1&ph_n=1&cl=1&cl_dom=1&cl_typ=1&cl_n=1&sn=1&sn_n=1&q401=spring&q402=salmon&qhloff=0&qhlone=0&qhlmy=1&qhlmany=0&qhldel=0&sel_one=grey&get_queries=1')}}.
+<br/><b>Warning:</b> if you click on such a link, sent by somebody else, it will override your own settings.
+It is a good idea to bookmark a link to your own view first, before clicking on link shared by someone else.
+</dd> 
+</dl>
+</p>
+
+{{block right_sidebar}}
+    {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
+
+    <h6>{{=T("Don't know what to do?")}}</h6>
+    <ul class="text">
+      <li>{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
+      <li><a href="http://web2py.com">web2py.com</a></li>
+      <li><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>
+    </ul>
+{{end}}

@@ -58,6 +58,11 @@ def about():
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
+def help():
+    response.title = T("SHEBANQ")
+    response.subtitle = T("Help for using SHEBANQ")
+    return dict()
+
 def save_dataview():
     response.cookies['dataview'] = request.vars.dataviewvars
     response.cookies['dataview']['expires'] = 30 * 24 * 3600

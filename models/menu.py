@@ -55,6 +55,7 @@ response.menu = [
     (T('My Queries'), False, URL('mql', 'my_queries'), []),
     (T('Public Queries'), False, URL('mql', 'public_queries'), []),
     (T('Browse'), False, URL('passage', 'browser'), []),
+    (T('Help'), False, URL('default', 'help'), []),
 ]
 
 DEVELOPMENT_MENU = False

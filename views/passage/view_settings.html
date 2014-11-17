@@ -8,12 +8,12 @@
     {{if page_kind == 'passage':}}
     -
     query colors:
-    <a href="#" id="qhloff" class="qhradio">off</a>
-    <a href="#" id="qhlone" class="qhradio">one</a>
-    {{=XML(query_settings.colorpicker2())}}
-    <a href="#" id="qhlmy" class="qhradio">my own</a>
-    <a href="#" id="qhlmany" class="qhradio">many</a>
     <a href="#" id="qhldel" class="qhradio">reset</a>
+    <a href="#" id="qhlmany" class="qhradio">many</a>
+    <a href="#" id="qhlmy" class="qhradio">my own</a>
+    {{=XML(query_settings.colorpicker2())}}
+    <a href="#" id="qhlone" class="qhradio">one</a>
+    <a href="#" id="qhloff" class="qhradio">off</a>
     {{else:}}
     {{=XML(query_settings.colorpicker(verses.qid, monads=verses.hl_query))}}
     {{pass}}
