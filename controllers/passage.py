@@ -195,7 +195,7 @@ def browser():
 
     browse = process_browser_form()
     query_settings = Queries('passage', request, response)
-    queries = query_form_generic(query_settings=query_settings) if query_settings.query_view['get_queries'] else dict(query_monads=[], query_settings=query_settings)
+    queries = query_form_generic(query_settings=query_settings) if query_settings.query_view['get_queries'] and browse['chapter'] else dict(query_monads=[], query_settings=query_settings)
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:

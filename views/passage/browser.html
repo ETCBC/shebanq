@@ -43,7 +43,7 @@ set_highlights()
             target='qbar',
         )}}</span>
     <span id="h_queries"><a href="#">hide queries</a></span>
-    <script type="text/javascript">jsqueriesview({{= 1 if query_settings.query_view['get_queries'] else 0}})</script>
+    <script type="text/javascript">jsqueriesview({{= 1 if query_settings.query_view['get_queries'] and request.vars.chapter else 0}})</script>
 </div>
 <div id='qbar'>
     {{include 'passage/query_form.html'}}
