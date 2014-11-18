@@ -29,7 +29,7 @@ if 0:
 from gluon.custom_import import track_changes; track_changes(True)
 import xml.etree.ElementTree as ET
 
-from render import Verses, Queries
+from render import Verses, Viewsettings
 
 def get_record_id():
     #print "get_record_id"
@@ -199,7 +199,7 @@ def get_pagination(p, monad_sets, qid):
     return (
         nvt, cur_page,
         Verses(passage_db, 'query', verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None,
-        Queries('query'),
+        Viewsettings('query'),
     )
 
 
@@ -249,7 +249,7 @@ def execute_query(record_id, with_publish=None):
             results=0,
             pages=0, page=0, pagelist=[],
             verse_data=[],
-            query_settings=None,
+            viewsettings=None,
             page_kind='query',
         )
 
@@ -289,12 +289,12 @@ def show_query(title):
 def show_results(record_id):
     page = response.vars.page if response.vars else 1
     monad_sets = load_monad_sets(record_id)
-    (nresults, npages, verse_data, query_settings) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, viewsettings) = get_pagination(page, monad_sets, record_id)
     return dict(
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
-        query_settings=query_settings,
+        viewsettings=viewsettings,
         page_kind='query',
     )
 
@@ -308,13 +308,13 @@ def result_page():
             results = 0,
             pages=0, page=0, pagelist=[],
             verse_data=[],
-            query_settings=None,
+            viewsettings=None,
             page_kind='query',
         )
 
     monad_sets = load_monad_sets(record_id)
 
-    (nresults, npages, verse_data, query_settings) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, viewsettings) = get_pagination(page, monad_sets, record_id)
 
     return dict(
         exception=None,
@@ -322,7 +322,7 @@ def result_page():
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
-        query_settings=query_settings,
+        viewsettings=viewsettings,
         page_kind='query',
     )
 

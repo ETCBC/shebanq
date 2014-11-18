@@ -12,7 +12,7 @@
             pname_short = pname if len(pname) < 12 else pname[0:12]+'..'
     }}
         <li id="query_{{=qid}}" qid="{{=qid}}" monads="{{ =q['json_monads'] }}">
-            <div>{{=XML(query_settings.colorpicker(qid))}}
+            <div>{{=XML(viewsettings.colorpicker(qid))}}
                 <table class="qlist" id="h_{{=qid}}"><tr><td class="qauth">{{=A(pname_short, _href=URL('mql', 'display_query', vars=dict(id=qid)))}}</td>
                 <td class="qname"><a href="#" id="m_{{=qid}}">{{=qname_short}}</a></td></tr></table>
             </div>

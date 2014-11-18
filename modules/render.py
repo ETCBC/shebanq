@@ -11,107 +11,114 @@ base_doc = 'http://shebanq-doc.readthedocs.org/en/latest/features/comments'
 
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
 
+vcolor_spec = '''
+    #ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1
+    #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1
+    #8888ff,blue,1 #66ccff,skye,1 #cc44ff,lilac,1 #ff00ff,magenta,1
+    #eeeeee,grey,0 #aaaaaa,gray,0 #000000,black,0 #ffffff,white,0
+'''
+
 field_names = '''
-word_number word_heb word_vlex word_tran word_lex word_gloss word_lang word_pos word_subpos word_tense word_stem word_gender word_gnumber word_person word_state subphrase_border subphrase_number subphrase_rela phrase_border phrase_number phrase_function phrase_typ phrase_det clause_border clause_number clause_typ clause_txt sentence_border sentence_number
+    word_heb word_vlex word_tran word_lex word_gloss
+    word_subpos word_pos word_lang word_number
+    word_gender word_gnumber word_person word_state word_tense word_stem
+    subphrase_border subphrase_number subphrase_rela
+    phrase_border phrase_number phrase_function phrase_typ phrase_det
+    clause_border clause_number clause_typ clause_txt
+    sentence_border sentence_number
 '''.strip().split()
 
-data_spec = '''
-ht,1 hl,1 tt,0 tl,0 gl,1 wd1,1 wd1_subpos,0 wd1_pos,1 wd1_lang,0 wd1_n,0 wd2,1 wd2_gender,1 wd2_gnumber,1 wd2_person,1 wd2_state,1 wd2_tense,1 wd2_stem,1 sp,1 sp_rela,1 sp_n,1 ph,1 ph_det,1 ph_fun,1 ph_typ,1 ph_n,1 cl,1 cl_dom,1 cl_typ,1 cl_n,1 sn,1 sn_n,1 txt_p,1 txt_il,0
-'''.strip().split()
-data_proto = [tuple(d.split(',')) for d in data_spec]
-datas = [(x[0], x[1] == '1') for x in data_proto]
+specs = dict(
+    hebrewdata=('''
+        ht hl tt tl gl
+        wd1 wd1_subpos wd1_pos wd1_lang wd1_n
+        wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
+        sp sp_rela sp_n
+        ph ph_det ph_fun ph_typ ph_n
+        cl cl_dom cl_typ cl_n
+        sn sn_n
+        txt_p txt_il
+    ''', dict(''='''
+        1 1 0 0 1
+        1 0 1 0 0
+        1 1 1 1 1 1 1
+        1 1 1
+        1 1 1 1 1
+        1 1 1 1
+        1 1
+        1 0
+    ''')),
+    hlview=('''hloff hlone hlmy hlmany sel_one get''', dict(q='0 0 1 0 grey 0', w='0 0 1 0 gray 0')),
+    cmap=('', dict(q='', w=''))
+)
+settings = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+for group in specs:
+    (flds, init) = specs[group]
+    flds = flds.strip().split()
+    for k in init:
+        initk = init[k].strip().split()
+        for (i, f) in enumerate(flds):
+            v = initk[i]
+            settings[group][k][f] = True if v == '1' else False if v == '0' else v
 
-qview_spec = '''qhloff,0 qhlone,0 qhlmy,1 qhlmany,0'''.strip().split()
-qview_proto = [tuple(q.split(',')) for q in qview_spec]
-qviews = [(x[0], x[1] == '1') for x in qview_proto]
+if nrows * ncols != len(vcolors):
+    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolors)))
+if dnrows * dncols != len(vdefaultcolors):
+    print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
+hlviewinit = collections.defaultdict(lambda {})
+settingsview = settings['hlview']
+for k in settingsview:
+    init = [x for x in settingsview[k] if settingsview[k][x] and x.startswith('hl')]
+    if len(init) != 1:
+        print("View settings: the initial view state is not uniquely defined: {} {}".format(k, init))
+        hlviewinit[k] = settingsview[k][-1][0]
+    else:
+        hlviewinit[k] = init[0]
 
-qcol_spec = '''sel_one,grey'''.strip().split()
-qcols = [tuple(q.split(',')) for q in qcol_spec]
+vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
+vcolors = [x[0] for x in vcolor_proto]
+vcolornames = dict((x[0], x[1]) for x in vcolor_proto)
+vcolorcodes = dict((x[1], x[0]) for x in vcolor_proto)
+vdefaultcolors = [x[0] for x in vcolor_proto if x[2] == '1']
+nrows = 4
+ncols = 4
+dnrows = 3
+dncols = 4
+ndefcolors = len(vdefaultcolors)
 
-qset_spec = '''get_queries,0'''.strip().split()
-qset_proto = [tuple(q.split(',')) for q in qset_spec]
-qsets = [(x[0], x[1] == '1') for x in qset_proto]
-
-class Queries():
-    qcolor_spec = '''#ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1 #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1 #8888ff,blue,1 #66ccff,skye,1 #cc44ff,lilac,1 #ff00ff,magenta,1 #eeeeee,grey,0 #aaaaaa,gray,0 #000000,black,0 #ffffff,white,0'''.strip().split()
-    qcolor_proto = [tuple(qc.split(',')) for qc in qcolor_spec]
-    qcolors = [x[0] for x in qcolor_proto]
-    qcolornames = dict((x[0], x[1]) for x in qcolor_proto)
-    qcolorcodes = dict((x[1], x[0]) for x in qcolor_proto)
-    qdefaultcolors = [x[0] for x in qcolor_proto if x[2] == '1']
-    nrows = 4
-    ncols = 4
-    dnrows = 3
-    dncols = 4
-    ndefcolors = len(qdefaultcolors)
-
+class Viewsettings():
     def __init__(self, page_kind):
         request = current.request
         response = current.response
-        if Queries.nrows * Queries.ncols != len(Queries.qcolors):
-            print("Query settings: mismatch in number of colors: {} * {} != {}".format(Queries.nrows, Queries.ncols, len(Queries.qcolors)))
-        if Queries.dnrows * Queries.dncols != len(Queries.qdefaultcolors):
-            print("Query settings: mismatch in number of default colors: {} * {} != {}".format(Queries.dnrows, Queries.dncols, len(Queries.qdefaultcolors)))
-        init_qview = [x[0] for x in qviews if x[1]]
-        if len(init_qview) != 1:
-            print("Query settings: the initial query view state is not uniquely defined: {}".format(init_qview))
-            self.init_qview = qviews[-1][0]
-        else:
-            self.init_qview = init_qview[0]
 
         self.page_kind = page_kind
-        self.data_view = {}
-        self.query_view = {}
-        self.query_map = {}
-        cdata_view = {}
-        cquery_view = {}
-        cquery_map = {}
-        if request.cookies.has_key('dataview'):
-            try:
-                cdata_view = json.loads(request.cookies['dataview'].value) 
-            except ValueError:
-                cdata_view = {}
-        if request.cookies.has_key('querymap'):
-            try:
-                cquery_map = json.loads(request.cookies['querymap'].value) 
-            except ValueError:
-                cquery_map = {}
-        if page_kind == 'passage' and request.cookies.has_key('queryview'):
-            try:
-                cquery_view = json.loads(request.cookies['queryview'].value) 
-            except ValueError:
-                cquery_view = {}
-        for (x, init) in datas:
-            vstate = request.vars[x]
-            vstate = None if vstate == None else vstate == '1'
-            if vstate == None:
-                cvstate = cdata_view.get(x, None) 
-                vstate = init if cvstate == None else cvstate == 1
-            else:
-                cdata_view[x] = 1 if vstate else 0
-            self.data_view[x] = vstate
-        if page_kind == 'passage':
-            for (x, init) in qviews + qsets:
-                vstate = request.vars[x]
-                vstate = None if vstate == None else vstate == '1'
-                if vstate == None:
-                    cvstate = cquery_view.get(x, None) 
-                    vstate = init if cvstate == None else cvstate == 1
-                else:
-                    cquery_view[x] = 1 if vstate else 0
-                self.query_view[x] = vstate
-            for (x, init) in qcols:
-                vstate = request.vars[x]
-                if vstate == None:
-                    cvstate = cquery_view.get(x, None) 
-                    vstate = init if cvstate == None else cvstate
-                else:
-                    cquery_view[x] = vstate
-                self.query_view[x] = vstate
+        self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+        for group in settings:
+            if page_kind != 'passage' and group == 'hlview': continue
+            for k in settings[group]
+                from_cookie = {}
+                if request.cookies.has_key(group+k):
+                    try:
+                        from_cookie = json.loads(request.cookies['dataview'].value) 
+                    except ValueError: pass
+                for x in settings[group][k]:
+                    init = settings[group][k][x]
+                    vstate = request.vars[k+x]
+                    vstate = None if vstate == None else True if vstate == '1' else False if vstate == '0' else vstate
+                    if vstate == None:
+                        cvstate = from_cookie.get(x, None) 
+                        vstate = init if cvstate == None else True if cvstate == '1' else False if cvstate == '0' else cvstate
+                    else:
+                        from_cookie[x] = 1 if vstate == True else 0 if vstate == False else vstate
+                    self.state[group][k][x] = vstate
         for x in cquery_map: self.query_map[x] = cquery_map[x]
         for x in request.vars:
             if x[0] == 'q' and x[1:].isdigit():
                 self.query_map[x[1:]] = request.vars[x]
+        for x in cword_map: self.word_map[x] = cword_map[x]
+        for x in request.vars:
+            if x[0] == 'w' and x[1:].isdigit():
+                self.word_map[x[1:]] = request.vars[x]
 
         response.cookies['dataview'] = json.dumps(cdata_view)
         response.cookies['dataview']['expires'] = 30 * 24 * 3600
@@ -120,16 +127,22 @@ class Queries():
             response.cookies['queryview'] = json.dumps(cquery_view)
             response.cookies['queryview']['expires'] = 30 * 24 * 3600
             response.cookies['queryview']['path'] = '/'
+            response.cookies['wordview'] = json.dumps(cword_view)
+            response.cookies['wordview']['expires'] = 30 * 24 * 3600
+            response.cookies['wordview']['path'] = '/'
         response.cookies['querymap'] = json.dumps(self.query_map)
         response.cookies['querymap']['expires'] = 30 * 24 * 3600
         response.cookies['querymap']['path'] = '/'
+        response.cookies['wordmap'] = json.dumps(self.word_map)
+        response.cookies['wordmap']['expires'] = 30 * 24 * 3600
+        response.cookies['wordmap']['path'] = '/'
 
     def adjust_view(self):
         adjustments = ['set_d("{}", {})\n'.format(x[0], 'true' if self.data_view[x[0]] else 'false') for x in datas]
         if self.page_kind == 'passage':
             qviewon = [x[0] for x in qviews if self.query_view[x[0]]]
-            thisison = qviewon[0] if len(qviewon) else self.init_qview 
-            adjustments.extend(['colorinit2("{}","{}","{}")\n'.format(thisison, self.query_view[x[0]], Queries.qcolorcodes[self.query_view[x[0]]]) for x in qcols])
+            thisison = qviewon[0] if len(qviewon) else self.initsettings['view']['q'] 
+            adjustments.extend(['colorinit2("{}","{}","{}")\n'.format(thisison, self.query_view[x[0]], vcolorcodes[self.query_view[x[0]]]) for x in qcols])
         if self.page_kind == 'passage':
             adjustments.append('''$('#cviewlink').val(view_url + getqueryviewvars(false))''')
         else:
@@ -138,28 +151,28 @@ class Queries():
 
     @staticmethod
     def _qdef(qid):
-        mod = qid % Queries.ndefcolors
-        return Queries.qdefaultcolors[Queries.dncols * (mod % Queries.dnrows) + int(mod / Queries.dnrows)]
+        mod = qid % ndefcolors
+        return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
 
     @staticmethod
     def _ccell(qid,c):
-        cc = Queries.qcolors[c]
-        cn = Queries.qcolornames[cc]
+        cc = vcolors[c]
+        cn = vcolornames[cc]
         return '\t\t<td class="cc {qid}" style="background-color: {c}">{n}</td>'.format(qid=qid,c=cc,n=cn)
 
     @staticmethod
     def _crow(qid,r):
-        return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(Queries._ccell(qid,c) for c in range(r * Queries.ncols, (r + 1) * Queries.ncols)))
+        return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(Viewsettings._ccell(qid,c) for c in range(r * ncols, (r + 1) * ncols)))
 
     @staticmethod
     def _ctable(qid):
-        return '<table class="picker" id="picker_{qid}">\n{cs}\n</table>\n'.format(qid=qid, cs='\n'.join(Queries._crow(qid,r) for r in range(Queries.nrows)))
+        return '<table class="picker" id="picker_{qid}">\n{cs}\n</table>\n'.format(qid=qid, cs='\n'.join(Viewsettings._crow(qid,r) for r in range(nrows)))
 
     @staticmethod
     def _qsel(qid, initn, iscust):
-        defc = Queries._qdef(qid)
+        defc = Viewsettings._qdef(qid)
         return '<table class="picked"><tr><td class="cc_selc"><input type="checkbox" id="selc_{qid}" name="selc_{qid}"/></td><td class="cc_sel" id="sel_{qid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
-            qid=qid, n=initn, ic=iscust, dc=defc, dn=Queries.qcolornames[defc],
+            qid=qid, n=initn, ic=iscust, dc=defc, dn=vcolornames[defc],
         )
 
     @staticmethod
@@ -177,12 +190,12 @@ class Queries():
     def colorpicker(self, qid, monads=None):
         initn = self.query_map.get(str(qid), None)
         iscust = 'true' if initn != None else 'false' 
-        initc = Queries.qcolorcodes.get(initn, Queries._qdef(qid))
-        initn = Queries.qcolornames[initc]
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel(qid, initn, iscust), p=Queries._ctable(qid), j=self._js(qid, initc, monads))
+        initc = vcolorcodes.get(initn, Viewsettings._qdef(qid))
+        initn = vcolornames[initc]
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Viewsettings._qsel(qid, initn, iscust), p=Viewsettings._ctable(qid), j=self._js(qid, initc, monads))
 
     def colorpicker2(self):
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Queries._qsel2('one', 'choose...'), p=Queries._ctable('one'), j=self._js2())
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Viewsettings._qsel2('one', 'choose...'), p=Viewsettings._ctable('one'), j=self._js2())
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>

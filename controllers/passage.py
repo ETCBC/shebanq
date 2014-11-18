@@ -3,7 +3,7 @@ from gluon.custom_import import track_changes; track_changes(True)
 import json
 from itertools import groupby
 
-from render import Verses, Queries
+from render import Verses, Viewsettings
 
 def get_books(no_controller=True):
     """ HELPER
@@ -179,14 +179,14 @@ def get_monadsets_MySQL(chapter):
 
 def query_form(): return query_form_generic()
 
-def query_form_generic(query_settings=None):
+def query_form_generic(viewsettings=None):
     chapter = get_chapter()
     monadsets = get_monadsets_MySQL(chapter)
     query_monads = group_MySQL(monadsets)
-    if query_settings == None: query_settings = Queries('passage')
+    if viewsettings == None: viewsettings = Viewsettings('passage')
     return dict(
         query_monads=query_monads,
-        query_settings=query_settings
+        viewsettings=viewsettings
     )
 
 def browser():
@@ -196,8 +196,8 @@ def browser():
     forms = {'browse_form': browser_form()}
 
     browse = process_browser_form()
-    query_settings = Queries('passage')
-    queries = query_form_generic(query_settings=query_settings) if query_settings.query_view['get_queries'] and browse['chapter'] else dict(query_monads=[], query_settings=query_settings)
+    viewsettings = Viewsettings('passage')
+    queries = query_form_generic(viewsettings=viewsettings) if viewsettings.query_view['qget'] and browse['chapter'] else dict(query_monads=[], viewsettings=viewsettings)
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:

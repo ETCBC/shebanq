@@ -11,11 +11,11 @@
     <a href="#" id="qhldel" class="qhradio">reset</a>
     <a href="#" id="qhlmany" class="qhradio">many</a>
     <a href="#" id="qhlmy" class="qhradio">my own</a>
-    {{=XML(query_settings.colorpicker2())}}
+    {{=XML(viewsettings.colorpicker2())}}
     <a href="#" id="qhlone" class="qhradio">one</a>
     <a href="#" id="qhloff" class="qhradio">off</a>
     {{else:}}
-    {{=XML(query_settings.colorpicker(verses.qid, monads=verses.hl_query))}}
+    {{=XML(viewsettings.colorpicker(verses.qid, monads=verses.hl_query))}}
     {{pass}}
     -
     <input type="checkbox" id="txt_p" name="txt_p"/>text

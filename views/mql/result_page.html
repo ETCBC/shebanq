@@ -68,7 +68,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
                     </ul>
                 </div>
 {{if verses != None:}}
-                <script type="text/javascript">{{=XML(query_settings.adjust_view())}}</script>
+                <script type="text/javascript">{{=XML(viewsettings.adjust_view())}}</script>
                 <script type="text/javascript">add_highlights('{{=verses.hl_query}}', {{=verses.qid}}, null)</script>
 {{pass}}
 {{pass}}
