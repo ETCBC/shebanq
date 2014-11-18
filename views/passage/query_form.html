@@ -1,7 +1,7 @@
 {{ if query_monads: }}
     <ul id="queries">
     {{ for q in query_monads:
-            qid = q['query'].id
+            vid = q['query'].id
             qname = q['query'].name
             fname = q['query'].created_by.first_name
             lname = q['query'].created_by.last_name
@@ -11,18 +11,18 @@
             qname_short = qname if len(qname) < 10 else qname[0:10]+'..'
             pname_short = pname if len(pname) < 12 else pname[0:12]+'..'
     }}
-        <li id="query_{{=qid}}" qid="{{=qid}}" monads="{{ =q['json_monads'] }}">
-            <div>{{=XML(viewsettings.colorpicker(qid))}}
-                <table class="qlist" id="h_{{=qid}}"><tr><td class="qauth">{{=A(pname_short, _href=URL('mql', 'display_query', vars=dict(id=qid)))}}</td>
-                <td class="qname"><a href="#" id="m_{{=qid}}">{{=qname_short}}</a></td></tr></table>
+        <li id="q{{=vid}}" vid="{{=vid}}" monads="{{ =q['json_monads'] }}">
+            <div>{{=XML(viewsettings.colorpicker(vid))}}
+                <table class="qlist" id="h_q{{=vid}}"><tr><td class="qauth">{{=A(pname_short, _href=URL('mql', 'display_query', vars=dict(id=vid)))}}</td>
+                <td class="qname"><a href="#" id="m_q{{=vid}}">{{=qname_short}}</a></td></tr></table>
             </div>
-            <div id="d_{{=qid}}">
+            <div id="d_q{{=vid}}">
                 <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
                 {{=desc}}<br/>
                 <pre>{{=XML(mql)}}</pre>
             </div>
-            <div><a href="#" id="l_{{=qid}}">less</a></div>
-            <script type="text/javascript">jsqueryview({{=qid}})</script>
+            <div><a href="#" id="l_q{{=vid}}">less</a></div>
+            <script type="text/javascript">jshlview('q',{{=vid}})</script>
         </li>
     {{ pass }}
     </ul>

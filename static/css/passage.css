@@ -24,12 +24,12 @@ h1, h2 {
 #verses_form .btn {
     vertical-align: top;
 }
-.qhradio.ison {
+.qhradio.ison,.whradio.ison {
     font-weight: bold;
     background-color: #ffff88;
     color: #0000ff;
 }
-.qhradio {
+.qhradio,.whradio {
     font-weight: normal;
     background-color: #ffffff;
 }
@@ -57,7 +57,7 @@ td.cc {
     text-align: center;
     vertical-align: middle;
 }
-td.cc_sel {
+td.cc_selq,td.cc_selw {
     color: #000000;
     font-size: 8pt;
     width: 1em;
@@ -69,7 +69,7 @@ td.cc_sel {
     text-align: center;
     vertical-align: middle;
 }
-td.cc_selc {
+td.cc_selcq,td.cc_selcw {
     color: #000000;
     font-size: 8pt;
     height: 1em;

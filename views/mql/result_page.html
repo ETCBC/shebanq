@@ -12,9 +12,9 @@
         ua = request.user_agent().browser.name
     }}
     <script type="text/javascript">
-var dataview_url = "{{=URL('default', 'save_dataview')}}"
-var queryview_url = "{{=URL('default', 'save_queryview')}}"
-var querymap_url = "{{=URL('default', 'save_querymap')}}"
+var hebrewdata_url = "{{=URL('default', 'save_hebrewdata')}}"
+var hlview_url = "{{=URL('default', 'save_hlview')}}"
+var cmap_url = "{{=URL('default', 'save_cmap')}}"
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     </script>
 {{verses = verse_data}}

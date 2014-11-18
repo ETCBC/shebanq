@@ -20,7 +20,12 @@ function get_last_chapter_num() {
     })
 }
 
-function getdataviewvars(asstr) {
+
+$(document).ready(function () {
+    get_last_chapter_num()
+})
+
+function gethebrewdatavars(asstr) {
     var vars = ''
     var jvars = {}
     $('#txt_p, #txt_il, #legend input').each(function() {
@@ -29,72 +34,74 @@ function getdataviewvars(asstr) {
         vars += "&" + name + "=" + val
         jvars[name] = val
     })
-    $('#dataviewvars').val(JSON.stringify(jvars))
+    $('#hebrewdatavars').val(JSON.stringify(jvars))
     return asstr?vars:jvars
 }
 
-function savedataviewvars() {
-    getdataviewvars(true)
-    ajax(dataview_url, ['dataviewvars'], ':eval')
+function savehebrewdatavars() {
+    gethebrewdatavars(true)
+    ajax(hebrewdata_url, ['hebrewdatavars'], ':eval')
 }
 
-function getqueryviewvars(asstr) {
+function gethlviewvars(k,asstr) {
     var vars = ''
     var jvars = {}
-    $('.qhradio').each(function() {
+    $('.'+k+'hradio').each(function() {
         name = $(this).attr('id')
         val = $(this).hasClass('ison')?1:0
-        vars += "&" + name + "=" + val
+        vars += "&"+name+"="+val
         jvars[name] = val
     })
     name = 'sel_one'
-    val = $('#'+name).prop('cname')
-    vars += "&" + name + "=" + val
-    jvars[name] = val
-    name = 'get_queries'
-    val = $('#'+name).is(':hidden')?1:0
-    vars += "&" + name + "=" + val
-    jvars[name] = val
-    $('#queryviewvars').val(JSON.stringify(jvars))
+    val = $('#'+k+name).prop('cname')
+    vars += "&"+k+name+"="+val
+    jvars[k+name] = val
+    name = 'get'
+    val = $('#'+k+name).is(':hidden')?1:0
+    vars += "&"+k+name+"="+val
+    jvars[k+name] = val
+    $('#'+k+hlviewvars').val(JSON.stringify(jvars))
     return asstr?vars:jvars
 }
 
-function savequeryviewvars() {
-    getqueryviewvars(true)
-    ajax(queryview_url, ['queryviewvars'], ':eval')
+function savehlviewvars(k) {
+    gethlviewvars(k,true)
+    ajax(hlview_url, [k+'hlviewvars'], ':eval')
 }
 
-function getquerymapvars(asstr) {
+function getcmapvars(k,asstr) {
     var vars = ''
     var jvars = {}
-    $('.cc_sel').each(function() {
+    $('.cc_sel'+k).each(function() {
         name = $(this).attr('id').substring(4)
         val = $(this).prop('cname')
         iscust = $(this).prop('iscust')
         if (iscust) {
             vars += "&" + name + "=" + val
-            jvars[name] = val
+            jvars[name.substring(1)] = val
         }
     })
-    $('#querymapvars').val(JSON.stringify(jvars))
+    $('#'+k+cmapvars').val(JSON.stringify(jvars))
     return asstr?vars:jvars
 }
 
-function savequerymapvars(remove) {
-    getquerymapvars(true)
+function savecmapvars(k,remove) {
+    var cmapvars = $('#'+k+'cmapvars')
+    var cmapvarsq = $('#'+k+'cmapvarsq')
+    getcmapvars(k,true)
     $.ajax({
         dataType: 'json',
-        url: querymap_url,
-        data: {querymapvars: $('#querymapvars').val(), remove: remove}, 
+        url: cmap_url,
+        data: {cmapvars: cmapvars.val(), remove: remove}, 
         success: function (dt, tstatus) {
             var vars = ''
             var jvars = {}
             for (name in dt) {
-                vars += "&q" + name + "=" + dt[name]
+                vars += "&"+k+name+"="+dt[name]
                 jvars[name] = dt[name]
             }
-            $('#querymapvarsq').val(vars)
-            $('#querymapvars').val(JSON.stringify(jvars))
+            cmapvarsq.val(vars)
+            cmapvars.val(JSON.stringify(jvars))
         },
         async: false,
     })
@@ -111,17 +118,8 @@ function set_d(fld, init) {
         $('.' + fld).each(function () {
             $( this ).toggle()
         })
-        savedataviewvars()
+        savehebrewdatavars()
     })
-}
-
-function set_q(fld, init) {
-    if (init) {
-        $('#'+fld).addClass('ison')
-    }
-    else {
-        $('#'+fld).removeClass('ison')
-    }
 }
 
 function jsviewlink() {
@@ -136,8 +134,12 @@ function jsviewlink() {
     $("#yviewlink").click(function() {
         $("#yviewlink").hide()
         $("#xviewlink").show()
-        savequerymapvars()
-        $('#cviewlink').val(view_url + getdataviewvars(true) + $('#querymapvarsq').val() + getqueryviewvars(true))
+        var kinds = ['q','w']
+        for (i in kinds) {
+            k = kinds[i]
+            savecmapvars(k)
+        }
+        $('#cviewlink').val(view_url + gethebrewdatavars(true) + $('#cmapvarsq').val() + gethlviewvars('q',true) + gethlviewvars('w',true))
         $('#cviewlink').each(function() {
             $(this).show()
             $(this).select()
@@ -145,45 +147,55 @@ function jsviewlink() {
     })
 }
 
-function jsqueriesview(init) {
-    $('#h_queries').hide()
-    $('#get_queries').click(function(){
-        $('#get_queries').hide()
-        $('#h_queries').show()
-        $('#qbar').show()
-        savequeryviewvars()
+function jslistview(k,init) {
+    klist = (k == 'q')?'queries':'words'
+    hidelist = $('#h_'+klist)
+    showlist = $('#s_'+klist)
+    thelist = $('#'+k+'bar')
+    hidelist.hide()
+    showlist.click(function(){
+        showlist.hide()
+        hidelist.show()
+        thelist.show()
+        savehlviewvars(k)
     })
-    $('#h_queries').click(function(){
-        $('#h_queries').hide()
-        $('#get_queries').show()
-        $('#qbar').hide()
-        savequeryviewvars()
+    hidelist.click(function(){
+        hidelist.hide()
+        showlist.show()
+        thelist.hide()
+        savehlviewvars(k)
     })
     if (init == 1) {
-       $('#fetchqueries').click()
-       $('#get_queries').hide()
+        if (k == 'q') {
+            $('#fetchqueries').click()
+        }
+        showlist.click()
     }
 }
 
-function jsqueryview(qid) {
-    $('#l_' + qid).hide()
-    $('#d_' + qid).hide()
-    $('#l_' + qid).click(function() {
-        $('#l_' + qid).hide()
-        $('#h_' + qid).show()
-        $('#d_' + qid).hide()
+function jshlview(k,vid) {
+    var less = $('#l_'+k+vid) 
+    var more = $('#m_'+k+vid) 
+    var head = $('#d_'+k+vid) 
+    var desc = $('#d_'+k+vid) 
+    less.hide()
+    desc.hide()
+    less.click(function() {
+        less.hide()
+        head.show()
+        desc.hide()
     })
-    $('#m_' + qid).click(function() {
-        $('#l_' + qid).show()
-        $('#h_' + qid).hide()
-        $('#d_' + qid).show()
+    more.click(function() {
+        less.show()
+        head.hide()
+        desc.show()
     })
 }
 
-function jscolorpicker(qid, initc, monads) {
-    var sel = $('#sel_'+qid)
-    var selc = $('#selc_'+qid)
-    var picker = $('#picker_'+qid)
+function jscolorpicker(k, vid, initc, monads) {
+    var sel = $('#sel'+k+'_'+vid)
+    var selc = $('#selc'+k+'_'+vid)
+    var picker = $('#picker'+k+'_'+vid)
     picker.hide()
     sel.click(function() {
         picker.show()
@@ -195,22 +207,22 @@ function jscolorpicker(qid, initc, monads) {
             sel.prop('iscust', false)
             sel.prop('cname', sel.attr('defn'))
             sel.css('background-color', sel.attr('defc'))
-            change_highlight(monads, qid, qid)
+            change_highlight(k, monads, vid, vid)
         }
         else {
             sel.prop('iscust', true)
-            change_highlight(monads, qid, null)
+            change_highlight(k, monads, vid, null)
         }
         var iscust = sel.prop('iscust')
         selc.prop('checked', iscust)
     })
-    $('.cc.' + qid).click(function() {
+    $('.cc.'+k+vid).click(function() {
         picker.hide()
         sel.css('background-color', $(this).css('background-color'))
         sel.prop('cname', $(this).html())
         sel.prop('iscust', true)
         selc.prop('checked', true)
-        change_highlight(monads, qid, null)
+        change_highlight(k, monads, vid, null)
     })
     if (initc != '') {
         sel.css('background-color', initc)
@@ -221,128 +233,140 @@ function jscolorpicker(qid, initc, monads) {
     selc.prop('checked', iscust)
 }
 
-function jscolorpicker2() {
-    $('#picker_one').hide()
-    $('#sel_one').click(function() {
-        $('#picker_one').show()
+function jscolorpicker2(k) {
+    var sel = $('#sel'+k+'_one')
+    var picker = $('#picker'+k+'_one')
+    picker.hide()
+    sel.click(function() {
+        picker.show()
     })
-    $('.cc.one').click(function() {
+    $('.cc.'+k+'one').click(function() {
         var bcol = $(this).css('background-color')
-        $('#picker_one').hide()
-        $('#sel_one').css('background-color', bcol)
-        $('#sel_one').prop('cname', $(this).html())
-        change_highlights(null)
-        savequeryviewvars()
+        picker.hide()
+        sel.css('background-color', bcol)
+        sel.prop('cname', $(this).html())
+        change_highlights(k, null)
+        savehlviewvars(k)
     })
 }
 
-function colorinit2(initv, initn, initc) {
-    $('#sel_one').css('background-color', initc)
-    $('#sel_one').prop('cname', initn)
-    change_highlights(initv)
+function colorinit2(k, initv, initn, initc) {
+    var sel = $('#sel'+k+'_one')
+    sel.css('background-color', initc)
+    sel.prop('cname', initn)
+    change_highlights(k, initv)
 }
 
-function change_highlight(monads, qid, delqid) {
-    var qhlmy = $('#qhlmy')
-    var qhlmany = $('#qhlmany')
-    var sel = $('#sel_'+qid)
+function change_highlight(k, monads, vid, delvid) {
+    var sel = $('#sel'+k+'_'+vid)
+    var selo = $('#sel'+k+'_one')
+    var hlmy = $('#'+k+'hlmy')
+    var hlmany = $('#'+k+'hlmany')
     var defc = sel.attr('defc')
     var defn = sel.attr('defn')
     var iscust = sel.prop('iscust')
-    savequerymapvars(delqid)
-    if (!qhlmy || qhlmy.html() == undefined) {
-        add_highlights(monads, qid, null)
+    savecmapvars(k,delvid)
+    if (!hlmy || hlmy.html() == undefined) {
+        add_highlights(k, monads, vid, null)
     }
     else {
-        var qhlmyon = qhlmy.hasClass('ison') 
-        var qhlmanyon = qhlmany.hasClass('ison') 
-        if (qhlmanyon || qhlmyon) {
-            if (qhlmanyon) {
-                add_highlights(monads, qid, null)
+        var hlmyon = hlmy.hasClass('ison') 
+        var hlmanyon = hlmany.hasClass('ison') 
+        if (hlmanyon || hlmyon) {
+            if (hlmanyon) {
+                add_highlights(k, monads, vid, null)
             }
             else {
                 if (iscust) {
-                    add_highlights(monads, qid, null)
+                    add_highlights(k, monads, vid, null)
                 }
                 else {
-                    selclr = $('#sel_one').css('background-color')
-                    add_highlights(monads, qid, selclr)
+                    selclr = selo.css('background-color')
+                    add_highlights(k, monads, vid, selclr)
                 }
             }
         }
     }
 }
 
-function change_highlights(initv) {
+function change_highlights(k, initv) {
+    var klist = $('#' + ((k=='q')?'queries':'words') + ' li')
+    var sel = $('#sel'+k+'_one')
+    var hlradio = $('#'+k+'hlradio')
+    var hloff = $('#'+k+'hloff')
+    var hlone = $('#'+k+'hlone')
+    var hlmy = $('#'+k+'hlmy')
+    var hlmany = $('#'+k+'hlmany')
+    var hlinitv = $('#'+k+initv)
+    var hlreset = $('#'+k+'hldel')
     if (initv != null) {
-        $('.qhradio').removeClass('ison')
-        $('#'+initv).addClass('ison')
+        hlradio.removeClass('ison')
+        hlinitv.addClass('ison')
 
-        if ($('#qhlone').hasClass('ison') || $('#qhlmy').hasClass('ison')) {
-            $('#sel_one').show()
+        if (hlone.hasClass('ison') || hlmy.hasClass('ison')) {
+            sel.show()
         }
         else {
-            $('#sel_one').hide()
+            sel.hide()
         }
     }
 
-    selclr = $('#sel_one').css('background-color')
-    if ($('#qhloff').hasClass('ison')) {
-        $('#queries li').each(function(index, item) {
-            add_highlights($(item).attr('monads'), null, '#ffffff')
+    selclr = sel.css('background-color')
+    if (hloff.hasClass('ison')) {
+        klist.each(function(index, item) {
+            add_highlights(k, $(item).attr('monads'), null, '#ffffff')
         })
     }
-    else if ($('#qhlone').hasClass('ison')) {
-        $('#queries li').each(function(index, item) {
-            add_highlights($(item).attr('monads'), null, selclr)
+    else if (hlone.hasClass('ison')) {
+        klist.each(function(index, item) {
+            add_highlights(k, $(item).attr('monads'), null, selclr)
         })
     }
-    else if ($('#qhlmy').hasClass('ison')) {
-        savequerymapvars()
-        querymap = $.parseJSON($('#querymapvars').val())
-        $('#queries li').each(function(index, item) {
-            qid =  $(item).attr('qid')
-            add_highlights($(item).attr('monads'), qid, (qid in querymap)?null:selclr)
+    else if (hlmy.hasClass('ison')) {
+        savecmapvars(k)
+        cmap = $.parseJSON($('#cmapvars').val())
+        klist.each(function(index, item) {
+            vid =  $(item).attr('vid')
+            add_highlights(k, $(item).attr('monads'), vid, (vid in cmap)?null:selclr)
         })
     }
-    else if ($('#qhlmany').hasClass('ison')) {
-        $('#queries li').each(function(index, item) {
-            add_highlights($(item).attr('monads'), $(item).attr('qid'), null)
+    else if (hlmany.hasClass('ison')) {
+        klist.each(function(index, item) {
+            add_highlights(k, $(item).attr('monads'), $(item).attr('vid'), null)
         })
     }
-    else if ($('#qhldel').hasClass('ison')) {
-        savequerymapvars('all')
-        $('#qhldel').removeClass('ison')
-        $('#qhlmy').addClass('ison')
-        $('#queries li').each(function(index, item) {
-            qid = $(item).attr('qid')
-            var sel = $('#sel_'+qid)
+    else if (hlreset.hasClass('ison')) {
+        savecmapvars(k,'all')
+        hlreset.removeClass('ison')
+        hlmy.addClass('ison')
+        klist.each(function(index, item) {
+            vid = $(item).attr('vid')
+            var sel = $('#sel'+k+'_'+vid)
             sel.prop('iscust', false)
             sel.prop('cname', sel.attr('defn'))
             sel.css('background-color', sel.attr('defc'))
             selc.prop('checked', false)
-            add_highlights($(item).attr('monads'), qid, selclr)
+            add_highlights(k, $(item).attr('monads'), vid, selclr)
         })
     }
-    savequeryviewvars()
+    savehlviewvars(k)
 }
 
 function set_highlights() {
-    $('.qhradio').click(function() {
-        change_highlights($(this).attr('id'))
-    })
+    var kinds = ['q','w']
+    for (i in kinds) {
+        k = kinds[i]
+        $('.'+k+'hradio').click(function() {
+            change_highlights(k, $(this).attr('id'))
+        })
 }
 
-function add_highlights(monads, qid, clr) {
-    var mn = (monads == null)? $('#query_' + qid).attr('monads') : monads
+function add_highlights(k, monads, vid, clr) {
+    var mn = (monads == null)? $('#'+k+vid).attr('monads') : monads
     mn = $.parseJSON(mn)
 
-    qhc = (clr == null)? $('#sel_' + qid).css('background-color') : clr
+    hc = (clr == null)? $('#sel'+k+'_'+vid).css('background-color') : clr
     $.each(mn, function(index, item) {
-        $('span[m="' + item + '"]').css('background-color', qhc)
+        $('span[m="' + item + '"]').css('background-color', hc)
     })
 }
-
-$(document).ready(function () {
-    get_last_chapter_num()
-})

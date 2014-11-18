@@ -204,9 +204,14 @@ def browser():
         response.subtitle = "%s - Chapter %s" % (browse['book'].name,
                                                  browse['chapter'].chapter_num)
 
+    word_monads = []
+    if page_kind == 'passage':
+        word_monads = [('aap, noot')]
+
     return dict(forms.items()
                 + browse.items()
                 + queries.items()
+                + [('word_monads', word_monads)]
                 + [('page_kind', 'passage')]
     )
 

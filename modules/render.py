@@ -86,6 +86,32 @@ dnrows = 3
 dncols = 4
 ndefcolors = len(vdefaultcolors)
 
+def vdef(vid):
+    mod = vid % ndefcolors
+    return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
+
+def ccell(k,vid,c):
+    cc = vcolors[c]
+    cn = vcolornames[cc]
+    return '\t\t<td class="cc {k}{vid}" style="background-color: {c}">{n}</td>'.format(k=k,vid=vid,c=cc,n=cn)
+
+def crow(vid,r):
+    return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
+
+def ctable(k, vid):
+    return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(vid,r) for r in range(nrows)))
+
+def vsel(k, vid, initn, iscust):
+    defc = vdef(vid)
+    return '<table class="picked"><tr><td class="cc_selc{k}"><input type="checkbox" id="selc{k}_{vid}" name="selc{k}_{vid}"/></td><td class="cc_sel{k}" id="sel{k}_{vid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
+        k=k,vid=vid, n=initn, ic=iscust, dc=defc, dn=vcolornames[defc],
+    )
+
+def vsel2(k, vid, initn):
+    return '<table class="picked"><tr><td class="cc_sel{k}" id="sel{k}_{vid}" cname="{n}">&nbsp;</td></tr></table>\n'.format(
+        k=k, vid=vid, n=initn,
+    )
+
 class Viewsettings():
     def __init__(self, page_kind):
         request = current.request
@@ -99,7 +125,7 @@ class Viewsettings():
                 from_cookie = {}
                 if request.cookies.has_key(group+k):
                     try:
-                        from_cookie = json.loads(request.cookies['dataview'].value) 
+                        from_cookie = json.loads(request.cookies[group+k].value) 
                     except ValueError: pass
                 for x in settings[group][k]:
                     init = settings[group][k][x]
@@ -111,91 +137,51 @@ class Viewsettings():
                     else:
                         from_cookie[x] = 1 if vstate == True else 0 if vstate == False else vstate
                     self.state[group][k][x] = vstate
-        for x in cquery_map: self.query_map[x] = cquery_map[x]
-        for x in request.vars:
-            if x[0] == 'q' and x[1:].isdigit():
-                self.query_map[x[1:]] = request.vars[x]
-        for x in cword_map: self.word_map[x] = cword_map[x]
-        for x in request.vars:
-            if x[0] == 'w' and x[1:].isdigit():
-                self.word_map[x[1:]] = request.vars[x]
+                if group == 'cmap':
+                    for x in from_cookie: self.state[group][k][x] = from_cookie[x]
+                    for x in request.vars:
+                        if x[0] == k and x[1:].isdigit():
+                            vstate = request.vars[x]
+                            from_cookie[x[1:]] = vstate
+                            self.state[group][k][x[1:]] = vstate
 
-        response.cookies['dataview'] = json.dumps(cdata_view)
-        response.cookies['dataview']['expires'] = 30 * 24 * 3600
-        response.cookies['dataview']['path'] = '/'
-        if page_kind == 'passage':
-            response.cookies['queryview'] = json.dumps(cquery_view)
-            response.cookies['queryview']['expires'] = 30 * 24 * 3600
-            response.cookies['queryview']['path'] = '/'
-            response.cookies['wordview'] = json.dumps(cword_view)
-            response.cookies['wordview']['expires'] = 30 * 24 * 3600
-            response.cookies['wordview']['path'] = '/'
-        response.cookies['querymap'] = json.dumps(self.query_map)
-        response.cookies['querymap']['expires'] = 30 * 24 * 3600
-        response.cookies['querymap']['path'] = '/'
-        response.cookies['wordmap'] = json.dumps(self.word_map)
-        response.cookies['wordmap']['expires'] = 30 * 24 * 3600
-        response.cookies['wordmap']['path'] = '/'
+                response.cookies[group+k] = json.dumps(from_cookie)
+                response.cookies[group+k]['expires'] = 30 * 24 * 3600
+                response.cookies[group+k]['path'] = '/'
 
     def adjust_view(self):
-        adjustments = ['set_d("{}", {})\n'.format(x[0], 'true' if self.data_view[x[0]] else 'false') for x in datas]
+        adjustments = ['set_d("{}", {})\n'.format(x, 'true' if self.state['hebrewdata'][''][x] else 'false') for x in self.settings['hebrewdata']['']]
         if self.page_kind == 'passage':
-            qviewon = [x[0] for x in qviews if self.query_view[x[0]]]
-            thisison = qviewon[0] if len(qviewon) else self.initsettings['view']['q'] 
-            adjustments.extend(['colorinit2("{}","{}","{}")\n'.format(thisison, self.query_view[x[0]], vcolorcodes[self.query_view[x[0]]]) for x in qcols])
+            for k in self.settings['hlview']:
+                viewon = [x for x in self.settings['hlview'][k] if self.state['hlview'][k][x] and x.startswith('hl')]
+                thisison = viewon[0] if len(viewon) else hlviewinit[k] 
+                defcolname = self.state['hlview'][k]['sel_one']
+                defcolcode = vcolorcodes[defcolname] 
+                adjustments.append('colorinit2("{}","{}","{}","{}")\n'.format(k, thisison, defcolname, defcolcode]))
         if self.page_kind == 'passage':
-            adjustments.append('''$('#cviewlink').val(view_url + getqueryviewvars(false))''')
+            adjustments.append(
+                '''$('#cviewlink').val(view_url+''' +
+                '+'.join('gethlviewvars({},false))'.format(k) for k in self.settings['hlview'])
+            )
         else:
-            adjustments.append('''$('#cviewlink').val(view_url + getdataviewvars(false))''')
+            adjustments.append('''$('#cviewlink').val(view_url + gethebrewdatavars(false))''')
         return '\n'.join(adjustments)
 
-    @staticmethod
-    def _qdef(qid):
-        mod = qid % ndefcolors
-        return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
+    def _js(self, k, vid, initc, monads):
+        return 'jscolorpicker("{k}", {vid}, "{ic}", {mn})\n'.format(k=k, vid=vid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
 
-    @staticmethod
-    def _ccell(qid,c):
-        cc = vcolors[c]
-        cn = vcolornames[cc]
-        return '\t\t<td class="cc {qid}" style="background-color: {c}">{n}</td>'.format(qid=qid,c=cc,n=cn)
+    def _js2(self, k):
+        return 'jscolorpicker2("{k}")\n'.format(k=k)
 
-    @staticmethod
-    def _crow(qid,r):
-        return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(Viewsettings._ccell(qid,c) for c in range(r * ncols, (r + 1) * ncols)))
-
-    @staticmethod
-    def _ctable(qid):
-        return '<table class="picker" id="picker_{qid}">\n{cs}\n</table>\n'.format(qid=qid, cs='\n'.join(Viewsettings._crow(qid,r) for r in range(nrows)))
-
-    @staticmethod
-    def _qsel(qid, initn, iscust):
-        defc = Viewsettings._qdef(qid)
-        return '<table class="picked"><tr><td class="cc_selc"><input type="checkbox" id="selc_{qid}" name="selc_{qid}"/></td><td class="cc_sel" id="sel_{qid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
-            qid=qid, n=initn, ic=iscust, dc=defc, dn=vcolornames[defc],
-        )
-
-    @staticmethod
-    def _qsel2(qid, initn):
-        return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}" cname="{n}">&nbsp;</td></tr></table>\n'.format(
-            qid=qid, n=initn,
-        )
-
-    def _js(self, qid, initc, monads):
-        return 'jscolorpicker({qid}, "{ic}", {mn})\n'.format(qid=qid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
-
-    def _js2(self):
-        return 'jscolorpicker2()\n'
-
-    def colorpicker(self, qid, monads=None):
-        initn = self.query_map.get(str(qid), None)
+    def colorpicker(self, k, vid, monads=None):
+        initn = self.state['cmap'][k].get(str(vid), None)
         iscust = 'true' if initn != None else 'false' 
-        initc = vcolorcodes.get(initn, Viewsettings._qdef(qid))
+        initc = vcolorcodes.get(initn, vdef(vid))
         initn = vcolornames[initc]
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Viewsettings._qsel(qid, initn, iscust), p=Viewsettings._ctable(qid), j=self._js(qid, initc, monads))
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=vsel(k, vid, initn, iscust), p=ctable(k, vid), j=self._js(k, vid, initc, monads))
 
-    def colorpicker2(self):
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=Viewsettings._qsel2('one', 'choose...'), p=Viewsettings._ctable('one'), j=self._js2())
+    def colorpicker2(self, k):
+        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=vsel2(k, 'one', 'choose...'), p=ctable(k, 'one'), j=self._js2(k))
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>

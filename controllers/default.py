@@ -63,34 +63,34 @@ def help():
     response.subtitle = T("Help for using SHEBANQ")
     return dict()
 
-def save_dataview():
-    response.cookies['dataview'] = request.vars.dataviewvars
-    response.cookies['dataview']['expires'] = 30 * 24 * 3600
-    response.cookies['dataview']['path'] = '/'
+def save_hebrewdata():
+    response.cookies['hebrewdata'] = request.vars.hebrewdatavars
+    response.cookies['hebrewdata']['expires'] = 30 * 24 * 3600
+    response.cookies['hebrewdata']['path'] = '/'
     return ''
 
-def save_queryview():
-    response.cookies['queryview'] = request.vars.queryviewvars
-    response.cookies['queryview']['expires'] = 30 * 24 * 3600
-    response.cookies['queryview']['path'] = '/'
+def save_hlview():
+    response.cookies['hlview'] = request.vars.hlviewvars
+    response.cookies['hlview']['expires'] = 30 * 24 * 3600
+    response.cookies['hlview']['path'] = '/'
     return ''
 
-def save_querymap():
+def save_cmap():
     doremove = request.vars.remove 
     if doremove == 'all':
         new_map_json = json.dumps({})
     else:
-        new_map = json.loads(request.vars.querymapvars)
+        new_map = json.loads(request.vars.cmapvars)
         old_map = {}
-        if request.cookies.has_key('querymap'):
-            old_map = json.loads(request.cookies['querymap'].value)
+        if request.cookies.has_key('cmap'):
+            old_map = json.loads(request.cookies['cmap'].value)
         old_map.update(new_map)
         if doremove and doremove in old_map:
             del old_map[doremove]
         new_map_json = json.dumps(old_map)
-    response.cookies['querymap'] = new_map_json
-    response.cookies['querymap']['expires'] = 30 * 24 * 3600
-    response.cookies['querymap']['path'] = '/'
+    response.cookies['cmap'] = new_map_json
+    response.cookies['cmap']['expires'] = 30 * 24 * 3600
+    response.cookies['cmap']['path'] = '/'
     return new_map_json
 
 def user():
