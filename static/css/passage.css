@@ -1,7 +1,6 @@
 h1, h2 {
     display: inline-block;
 }
-
 #verses {
     direction:rtl;
     unicode-bidi:bidi-override;
@@ -25,50 +24,6 @@ h1, h2 {
 #verses_form .btn {
     vertical-align: top;
 }
-
-.highlight {
-    background: #FFFF00;
-}
-
-#highlighter_form input[type="text"] {
-    width: 95%;
-    padding-left: 2.5%;
-    padding-right: 2.5%;
-}
-#highlighter_form div {
-    display: block;
-}
-#highlighter_form label {
-    display: none;
-}
-
-#verse_word_highlighter_form input[type="text"] {
-    width: 95%;
-    padding-left: 2.5%;
-    padding-right: 2.5%;
-}
-#verse_word_highlighter_form div {
-    display: block;
-}
-#verse_word_highlighter_form label {
-    display: none;
-}
-#get_queries_form ul li {
-    margin: 0;
-    padding: 0;
-}
-#queries {
-    margin-left: 0;
-}
-#queries input[type="checkbox"] {
-    margin: -0.25em 0 0 0;
-}
-#queries dl dd {
-    margin-left: 0;
-}
-#queries dt {
-    font-weight: normal;
-}
 .qhradio.ison {
     font-weight: bold;
     background-color: #ffff88;
@@ -77,4 +32,56 @@ h1, h2 {
 .qhradio {
     font-weight: normal;
     background-color: #ffffff;
+}
+table.picked,table.picker,table.qlist {
+    display: inline-table;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+table.qlist {
+    display: inline-table;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+td.cc {
+    color: #000000;
+    font-size: 8pt;
+    width: 5em;
+    height: 18pt;
+    line-height: 10pt;
+    padding: 0;
+    margin: 0;
+    border: 2pt solid #ffffff;
+    text-align: center;
+    vertical-align: middle;
+}
+td.cc_sel {
+    color: #000000;
+    font-size: 8pt;
+    width: 1em;
+    height: 1em;
+    line-height: 0.5em;
+    padding: 0;
+    margin: 0;
+    border: 1pt solid #aaaaaa;
+    text-align: center;
+    vertical-align: middle;
+}
+td.cc_selc {
+    color: #000000;
+    font-size: 8pt;
+    height: 1em;
+    line-height: 0.5em;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+td.qname {
+    width: 6em;
+}
+td.qauth {
+    width: 7em;
 }

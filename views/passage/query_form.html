@@ -13,8 +13,8 @@
     }}
         <li id="query_{{=qid}}" qid="{{=qid}}" monads="{{ =q['json_monads'] }}">
             <div>{{=XML(query_settings.colorpicker(qid))}}
-                {{=A(qname_short, _href=URL('mql', 'display_query', vars=dict(id=qid)))}},
-                <a href="#" id="m_{{=qid}}">{{=pname_short}}</a>
+                <table class="qlist" id="h_{{=qid}}"><tr><td class="qauth">{{=A(pname_short, _href=URL('mql', 'display_query', vars=dict(id=qid)))}}</td>
+                <td class="qname"><a href="#" id="m_{{=qid}}">{{=qname_short}}</a></td></tr></table>
             </div>
             <div id="d_{{=qid}}">
                 <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>

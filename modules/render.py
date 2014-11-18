@@ -5,6 +5,8 @@ import collections
 import json
 import xml.etree.ElementTree as ET
 
+from gluon import current
+
 base_doc = 'http://shebanq-doc.readthedocs.org/en/latest/features/comments'
 
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
@@ -43,7 +45,9 @@ class Queries():
     dncols = 4
     ndefcolors = len(qdefaultcolors)
 
-    def __init__(self, page_kind, request, response):
+    def __init__(self, page_kind):
+        request = current.request
+        response = current.response
         if Queries.nrows * Queries.ncols != len(Queries.qcolors):
             print("Query settings: mismatch in number of colors: {} * {} != {}".format(Queries.nrows, Queries.ncols, len(Queries.qcolors)))
         if Queries.dnrows * Queries.dncols != len(Queries.qdefaultcolors):
@@ -63,11 +67,20 @@ class Queries():
         cquery_view = {}
         cquery_map = {}
         if request.cookies.has_key('dataview'):
-            cdata_view = json.loads(request.cookies['dataview'].value) 
+            try:
+                cdata_view = json.loads(request.cookies['dataview'].value) 
+            except ValueError:
+                cdata_view = {}
         if request.cookies.has_key('querymap'):
-            cquery_map = json.loads(request.cookies['querymap'].value) 
+            try:
+                cquery_map = json.loads(request.cookies['querymap'].value) 
+            except ValueError:
+                cquery_map = {}
         if page_kind == 'passage' and request.cookies.has_key('queryview'):
-            cquery_view = json.loads(request.cookies['queryview'].value) 
+            try:
+                cquery_view = json.loads(request.cookies['queryview'].value) 
+            except ValueError:
+                cquery_view = {}
         for (x, init) in datas:
             vstate = request.vars[x]
             vstate = None if vstate == None else vstate == '1'
@@ -145,7 +158,7 @@ class Queries():
     @staticmethod
     def _qsel(qid, initn, iscust):
         defc = Queries._qdef(qid)
-        return '<table class="picked"><tr><td class="cc_sel" id="sel_{qid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
+        return '<table class="picked"><tr><td class="cc_selc"><input type="checkbox" id="selc_{qid}" name="selc_{qid}"/></td><td class="cc_sel" id="sel_{qid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
             qid=qid, n=initn, ic=iscust, dc=defc, dn=Queries.qcolornames[defc],
         )
 

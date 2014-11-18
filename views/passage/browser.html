@@ -2,14 +2,12 @@
 {{ extend 'layout.html' }}
 
 {{ block head }}
-    <link type="text/css" rel="stylesheet" href="{{=URL('static', 'css/passage.css')}}" />
     <script type="text/javascript">
 var dataview_url = "{{=URL('default', 'save_dataview')}}"
 var queryview_url = "{{=URL('default', 'save_queryview')}}"
 var querymap_url = "{{=URL('default', 'save_querymap')}}"
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     </script>
-    <script src="{{=URL('static', 'js/passage.js')}}"></script>
 {{ end }}
 
 {{ include 'passage/browser_form.html' }}

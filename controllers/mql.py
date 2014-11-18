@@ -26,6 +26,7 @@ if 0:
     #
 
 
+from gluon.custom_import import track_changes; track_changes(True)
 import xml.etree.ElementTree as ET
 
 from render import Verses, Queries
@@ -198,7 +199,7 @@ def get_pagination(p, monad_sets, qid):
     return (
         nvt, cur_page,
         Verses(passage_db, 'query', verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None,
-        Queries('query', request, response),
+        Queries('query'),
     )
 
 
@@ -232,8 +233,7 @@ def display_query():
 
 @auth.requires(lambda: check_query_access_execute())
 def execute_query(record_id, with_publish=None):
-    from shemdros.client.api import MqlResource
-    from shemdros.client.api import RemoteException
+    from shemdros import MqlResource, RemoteException
     mql_form = get_mql_form(record_id)
     mql_record = db.queries[record_id]
     monad_sets = None
