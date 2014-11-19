@@ -53,7 +53,7 @@ class Configuration():
 config = Configuration()
 
 
-class MqlResource(object):
+class MqlResource():
 
     def __init__(self):
         self.url = URL()\

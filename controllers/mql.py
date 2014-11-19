@@ -20,16 +20,11 @@
 
 RESULT_PAGE_SIZE = 20
 
-if 0:
-    from . import *
-    # End of fake imports to satisfy the editor.
-    #
-
-
-from gluon.custom_import import track_changes; track_changes(True)
+#from gluon.custom_import import track_changes; track_changes(True)
 import xml.etree.ElementTree as ET
 
-from render import Verses, Viewsettings
+from render import Verses, Queries
+from shemdros import MqlResource, RemoteException
 
 def get_record_id():
     #print "get_record_id"
@@ -233,7 +228,6 @@ def display_query():
 
 @auth.requires(lambda: check_query_access_execute())
 def execute_query(record_id, with_publish=None):
-    from shemdros import MqlResource, RemoteException
     mql_form = get_mql_form(record_id)
     mql_record = db.queries[record_id]
     monad_sets = None
@@ -336,7 +330,6 @@ def pagelist(page, pages, spread):
     return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
 
 def parse_exception(message):
-    import xml.etree.ElementTree as ET
     try:
         root = ET.XML(message)
         result = root.find('.//http-status/code').text
