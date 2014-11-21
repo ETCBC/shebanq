@@ -63,39 +63,6 @@ def help():
     response.subtitle = T("Help for using SHEBANQ")
     return dict()
 
-def oldsave_viewsettings():
-    velems = request.vars.velems.split()
-    print("XXX {}".format(velems))
-    returndata = collections.defaultdict(lambda: {})
-    for velem in velems:
-        fields = velem.split(',')
-        if len(fields) != 4: continue
-        (group, k, remove, bi) = fields
-        new_map = {}
-        if remove != 'all':
-            try:
-                new_map = json.loads(request.vars[group+k])
-            except ValueError: pass
-            if bi == '1':
-                if request.cookies.has_key(group+k):
-                    try:
-                        old_map = json.loads(request.cookies[group+k].value)
-                    except ValueError: pass
-                    if group == 'hlview' and k == 'q':
-                        print('YYY {}'.format(old_map))
-                old_map.update(new_map)
-                new_map = old_map
-            if remove and remove in new_map:
-                del new_map[remove]
-        new_data_json = json.dumps(new_map)
-        if bi == '1':
-            returndata[group][k] = new_data_json
-        response.cookies[group+k] = new_data_json
-        response.cookies[group+k]['expires'] = 30 * 24 * 3600
-        response.cookies[group+k]['path'] = '/'
-    return json.dumps(returndata)
-
-
 def user():
     """
     exposes:

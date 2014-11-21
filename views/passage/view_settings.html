@@ -3,23 +3,27 @@
     <textarea readonly id="cviewlink"></textarea>
 {{if page_kind == 'passage':}}
     -
-    word colors:
-    <a href="#" id="whldel" class="whradio">reset</a>
-    <a href="#" id="whlmany" class="whradio">many</a>
-    <a href="#" id="whlmy" class="whradio">my own</a>
-    {{=XML(viewsettings.colorpicker('w', 'one', '2'))}}
-    <a href="#" id="whlone" class="whradio">one</a>
-    <a href="#" id="whloff" class="whradio">off</a>
-    -
-    query colors:
-    <a href="#" id="qhldel" class="qhradio">reset</a>
-    <a href="#" id="qhlmany" class="qhradio">many</a>
-    <a href="#" id="qhlmy" class="qhradio">my own</a>
-    {{=XML(viewsettings.colorpicker('q', 'one', '2'))}}
-    <a href="#" id="qhlone" class="qhradio">one</a>
-    <a href="#" id="qhloff" class="qhradio">off</a>
+    <table class="hlview">
+        <tr>
+            <td>word:</td>
+            <td><a href="#" id="whldel" class="whradio">reset</a></td>
+            <td><a href="#" id="whlmany" class="whradio">many</a></td>
+            <td><a href="#" id="whlmy" class="whradio">my own</a></td>
+            <td>{{=XML(viewsettings.colorpicker('w', 'one', '2'))}}</td>
+            <td><a href="#" id="whlone" class="whradio">one</a></td>
+            <td><a href="#" id="whloff" class="whradio">off</a></td>
+        </tr><tr>
+            <td>query:</td>
+            <td><a href="#" id="qhldel" class="qhradio">reset</a></td>
+            <td><a href="#" id="qhlmany" class="qhradio">many</a></td>
+            <td><a href="#" id="qhlmy" class="qhradio">my own</a></td>
+            <td>{{=XML(viewsettings.colorpicker('q', 'one', '2'))}}</td>
+            <td><a href="#" id="qhlone" class="qhradio">one</a></td>
+            <td><a href="#" id="qhloff" class="qhradio">off</a></td>
+        </tr>
+    </table>
 {{else:}}
-    {{=XML(viewsettings.colorpicker('q' if page_kind == 'query' else 'w', viewsettings.vid, ''))}}
+    {{=XML(viewsettings.colorpicker('q' if page_kind == 'query' else 'w', vid, ''))}}
 {{pass}}
     -
     <input type="checkbox" id="txt_p" name="txt_p"/>text

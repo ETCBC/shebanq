@@ -12,8 +12,9 @@
         ua = request.user_agent().browser.name
     }}
     <script type="text/javascript">
-var save_url = "{{=URL('default', 'save_viewsettings')}}"
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
+var thevid = {}
+var themonads = {}
     </script>
 {{verses = verse_data}}
                 <div>
@@ -66,7 +67,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
                     </ul>
                 </div>
 {{if verses != None:}}
-                <script type="text/javascript">{{=XML(viewsettings.adjust_view())}}</script>
+    <script type="text/javascript">{{=XML(jsrefresh)}}</script>
 {{pass}}
 {{pass}}
 

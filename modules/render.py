@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 import collections
-import json
+import json,urllib
 import xml.etree.ElementTree as ET
 
 from gluon import current
@@ -17,10 +17,10 @@ dnrows = 3
 dncols = 4
 
 vcolor_spec = '''
-    #ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1
-    #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1
-    #8888ff,blue,1 #66ccff,skye,1 #cc44ff,lilac,1 #ff00ff,magenta,1
-    #eeeeee,grey,0 #aaaaaa,gray,0 #000000,black,0 #ffffff,white,0
+    red,#ff0000,#ff0000,1 salmon,#ff6688,#ee7799,1 orange,#ffcc66,#eebb55,1 yellow,#ffff00,#dddd00,1
+    green,#00ff00,#00bb00,1 spring,#ddff77,#77dd44,1 tropical,#66ffcc,#55ddbb,1 turquoise,#00ffff,#00eeee,1
+    blue,#8888ff,#0000ff,1 skye,#66ccff,#55bbff,1 lilac,#cc88ff,#aa22ff,1 magenta,#ff00ff,#ee00ee,1
+    grey,#eeeeee,#eeeeee,0 gray,#aaaaaa,#aaaaaa,0 black,#000000,#000000,0 white,#ffffff,#ffffff,0
 '''
 
 field_names = '''
@@ -44,19 +44,22 @@ specs = dict(
         sn sn_n
         txt_p txt_il
     ''', {'': '''
-        1 1 0 0 1
-        1 0 1 0 0
-        1 1 1 1 1 1 1
-        1 1 1
-        1 1 1 1 1
-        1 1 1 1
-        1 1
-        1 0
+        v v x x v
+        v x v x x
+        v v v v v v v
+        v v v
+        v v v v v
+        v v v v
+        v v
+        v x
     '''}),
-    hlview=('''get active sel_one''', dict(q='0 hlmy grey', w='0 hlmy gray')),
+    hlview=('''get active sel_one''', dict(q='x hlmy grey', w='x hlmy gray')),
     cmap=('0', dict(q='white', w='black'))
 )
-style = dict(q='background-color', w='color')
+style = dict(
+    q=dict(prop='background-color', off='#ffffff'),
+    w=dict(prop='color', off='#000000'),
+)
 
 settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
 for group in specs:
@@ -68,14 +71,13 @@ for group in specs:
             settings[group][k][f] = initk[i]
 
 vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
-vcolors = [x[0] for x in vcolor_proto]
-vcolornames = dict((x[0], x[1]) for x in vcolor_proto)
-vcolorcodes = dict((x[1], x[0]) for x in vcolor_proto)
-vdefaultcolors = [x[1] for x in vcolor_proto if x[2] == '1']
+vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
+vcolornames = [x[0] for x in vcolor_proto]
+vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
-if nrows * ncols != len(vcolors):
-    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolors)))
+if nrows * ncols != len(vcolornames):
+    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolornames)))
 if dnrows * dncols != len(vdefaultcolors):
     print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
 
@@ -83,16 +85,9 @@ def vdef(vid):
     mod = vid % ndefcolors
     return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
 
-def ccell(k,vid,c):
-    cc = vcolors[c]
-    cn = vcolornames[cc]
-    return '\t\t<td class="cc {k}{vid}" style="{stl}: {c}">{n}</td>'.format(k=k,vid=vid,c=cc,n=cn,stl=style[k])
-
-def crow(k,vid,r):
-    return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
-
-def ctable(k, vid):
-    return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
+def ccell(k,vid,c): return '\t\t<td class="cc cc{k} {k}{vid}">{n}</td>'.format(k=k,vid=vid,n=vcolornames[c])
+def crow(k,vid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
+def ctable(k, vid): return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
 
 def vsel(k, vid, defn, typ):
     content = '&nbsp;' if k == 'q' else 'w'
@@ -103,9 +98,7 @@ def vsel(k, vid, defn, typ):
     return (tstart + selc + sel + tend).format (k=k,vid=vid, dn=defn, lab=content)
 
 class Viewsettings():
-    def __init__(self, page_kind, vid=None, monads=None):
-        self.vid = vid
-        self.monads = monads if monads != None else []
+    def __init__(self, page_kind):
         self.page_kind = page_kind
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
         for group in settings:
@@ -115,7 +108,7 @@ class Viewsettings():
                 from_cookie = {}
                 if current.request.cookies.has_key(group+k):
                     try:
-                        from_cookie = json.loads(current.request.cookies[group+k].value) 
+                        from_cookie = json.loads(urllib.unquote(current.request.cookies[group+k].value))
                     except ValueError: pass
                 if group == 'cmap':
                     for x in from_cookie: self.state[group][k][x] = from_cookie[x]
@@ -132,30 +125,26 @@ class Viewsettings():
                         from_cookie[x] = vstate
                         self.state[group][k][x] = vstate
 
-                current.response.cookies[group+k] = json.dumps(from_cookie)
+                current.response.cookies[group+k] = urllib.quote(json.dumps(from_cookie))
                 current.response.cookies[group+k]['expires'] = 30 * 24 * 3600
                 current.response.cookies[group+k]['path'] = '/'
 
     def adjust_view(self):
         return '''
-var vcolorcodes = {vcolorcodes}
+var vcolors = {vcolors}
 var viewstate = {initstate}
+var style = {style}
 var pagekind = '{pagekind}'
 var thebook = '{book}'
 var thechapter = {chapter}
-var thevid = {vid}
-var style = {style}
-var themonads = {monads}
 init_page()
 '''.format(
     initstate=json.dumps(self.state),
-    monads = json.dumps(self.monads),
-    vcolorcodes = json.dumps(vcolorcodes),
+    vcolors = json.dumps(vcolors),
     style = json.dumps(style),
     pagekind = self.page_kind,
     book = current.request.vars.book or '',
     chapter = current.request.vars.chapter or 0,
-    vid = self.vid or 0,
 )
 
     def colorpicker(self, k, vid, typ):
