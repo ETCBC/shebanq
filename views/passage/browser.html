@@ -3,9 +3,7 @@
 
 {{ block head }}
     <script type="text/javascript">
-var hebrewdata_url = "{{=URL('default', 'save_hebrewdata')}}"
-var hlview_url = "{{=URL('default', 'save_hlview')}}"
-var cmap_url = "{{=URL('default', 'save_cmap')}}"
+var save_url = "{{=URL('default', 'save_viewsettings')}}"
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     </script>
 {{ end }}
@@ -23,10 +21,6 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
             <div class="txt_p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
             <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
         {{ pass }}
-        <script type="text/javascript">
-{{=XML(viewsettings.adjust_view())}}
-set_highlights()
-        </script>
     {{ pass }}
 {{ pass }}
 
@@ -34,9 +28,8 @@ set_highlights()
 {{ block left_sidebar }}
 {{ if request.vars.chapter: }}
 <div>
-    <span id="s_words"><a href="#">show words</a></span>
-    <span id="h_words"><a href="#">hide words</a></span>
-    <script type="text/javascript">jslistview('w',{{= 1 if viewsettings.state['hlview']['w']['get'] and request.vars.chapter else 0}})</script>
+    <a id="s_words" href="#">show words</a>
+    <a id="h_words" href="#">hide words</a>
 </div>
 <div id='wbar'>
     {{include 'passage/word_form.html'}}
@@ -45,14 +38,17 @@ set_highlights()
     <span id="s_queries">{{=A(
             'get queries',
             _id='fetchqueries',
-            callback=URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, get_queries=1)),
+            callback=URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, qget=1)),
             target='qbar',
         )}}</span>
-    <span id="h_queries"><a href="#">hide queries</a></span>
-    <script type="text/javascript">jslistview('q',{{= 1 if viewsettings.state['hlview']['q']['get'] and request.vars.chapter else 0}})</script>
+    <a id="h_queries" href="#">hide queries</a>
 </div>
 <div id='qbar'>
     {{include 'passage/query_form.html'}}
 </div>
 {{ pass}}
 {{ end }}
+
+{{ if verses != None: }}
+        <script type="text/javascript">{{=XML(viewsettings.adjust_view())}}</script>
+{{ pass }}

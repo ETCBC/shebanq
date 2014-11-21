@@ -39,7 +39,7 @@ if 0:
 #only use this during development:
 # reload(clamdros)
 
-import json
+import collections,json
 
 def index():
     """
@@ -63,35 +63,38 @@ def help():
     response.subtitle = T("Help for using SHEBANQ")
     return dict()
 
-def save_hebrewdata():
-    response.cookies['hebrewdata'] = request.vars.hebrewdatavars
-    response.cookies['hebrewdata']['expires'] = 30 * 24 * 3600
-    response.cookies['hebrewdata']['path'] = '/'
-    return ''
+def oldsave_viewsettings():
+    velems = request.vars.velems.split()
+    print("XXX {}".format(velems))
+    returndata = collections.defaultdict(lambda: {})
+    for velem in velems:
+        fields = velem.split(',')
+        if len(fields) != 4: continue
+        (group, k, remove, bi) = fields
+        new_map = {}
+        if remove != 'all':
+            try:
+                new_map = json.loads(request.vars[group+k])
+            except ValueError: pass
+            if bi == '1':
+                if request.cookies.has_key(group+k):
+                    try:
+                        old_map = json.loads(request.cookies[group+k].value)
+                    except ValueError: pass
+                    if group == 'hlview' and k == 'q':
+                        print('YYY {}'.format(old_map))
+                old_map.update(new_map)
+                new_map = old_map
+            if remove and remove in new_map:
+                del new_map[remove]
+        new_data_json = json.dumps(new_map)
+        if bi == '1':
+            returndata[group][k] = new_data_json
+        response.cookies[group+k] = new_data_json
+        response.cookies[group+k]['expires'] = 30 * 24 * 3600
+        response.cookies[group+k]['path'] = '/'
+    return json.dumps(returndata)
 
-def save_hlview():
-    response.cookies['hlview'] = request.vars.hlviewvars
-    response.cookies['hlview']['expires'] = 30 * 24 * 3600
-    response.cookies['hlview']['path'] = '/'
-    return ''
-
-def save_cmap():
-    doremove = request.vars.remove 
-    if doremove == 'all':
-        new_map_json = json.dumps({})
-    else:
-        new_map = json.loads(request.vars.cmapvars)
-        old_map = {}
-        if request.cookies.has_key('cmap'):
-            old_map = json.loads(request.cookies['cmap'].value)
-        old_map.update(new_map)
-        if doremove and doremove in old_map:
-            del old_map[doremove]
-        new_map_json = json.dumps(old_map)
-    response.cookies['cmap'] = new_map_json
-    response.cookies['cmap']['expires'] = 30 * 24 * 3600
-    response.cookies['cmap']['path'] = '/'
-    return new_map_json
 
 def user():
     """

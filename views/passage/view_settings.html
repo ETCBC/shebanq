@@ -1,17 +1,13 @@
 <div class="sel">
     <a id="yviewlink" href="#">share link</a> <a id="xviewlink" href="#">done</a>
     <textarea readonly id="cviewlink"></textarea>
-    <input type="hidden" name="hebrewdatavars" id="hebrewdatavars"/>
-    <input type="hidden" name="hlviewvars" id="hlviewvars"/>
-    <input type="hidden" name="cmapvars" id="cmapvars"/>
-    <input type="hidden" name="cmapvarsq" id="cmapvarsq"/>
-    {{if page_kind == 'passage':}}
+{{if page_kind == 'passage':}}
     -
     word colors:
     <a href="#" id="whldel" class="whradio">reset</a>
     <a href="#" id="whlmany" class="whradio">many</a>
     <a href="#" id="whlmy" class="whradio">my own</a>
-    {{=XML(viewsettings.colorpicker2('w'))}}
+    {{=XML(viewsettings.colorpicker('w', 'one', '2'))}}
     <a href="#" id="whlone" class="whradio">one</a>
     <a href="#" id="whloff" class="whradio">off</a>
     -
@@ -19,17 +15,14 @@
     <a href="#" id="qhldel" class="qhradio">reset</a>
     <a href="#" id="qhlmany" class="qhradio">many</a>
     <a href="#" id="qhlmy" class="qhradio">my own</a>
-    {{=XML(viewsettings.colorpicker2('q'))}}
+    {{=XML(viewsettings.colorpicker('q', 'one', '2'))}}
     <a href="#" id="qhlone" class="qhradio">one</a>
     <a href="#" id="qhloff" class="qhradio">off</a>
-    {{else:}}
-    {{=XML(viewsettings.colorpicker('q', verses.qid, monads=verses.hl_query))}}
-    {{pass}}
+{{else:}}
+    {{=XML(viewsettings.colorpicker('q' if page_kind == 'query' else 'w', viewsettings.vid, ''))}}
+{{pass}}
     -
     <input type="checkbox" id="txt_p" name="txt_p"/>text
     <input type="checkbox" id="txt_il" name="txt_il"/>data
 </div>
-<script type="text/javascript">
-    jsviewlink()
-</script>
 <div class="txt_il">{{=XML(verses.this_legend)}}</div>

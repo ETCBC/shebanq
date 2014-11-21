@@ -14,7 +14,7 @@ You can investigate those queries and their results, and switch back and forth b
 </p>
 
 <h4>{{=T('Browse')}}</h4>
-<p>Use the {{=A(T("Browse"), _href=URL('passage', 'browser', vars=dict(get_queries=0)))}} menu.<br/>
+<p>Use the {{=A(T("Browse"), _href=URL('passage', 'browser', vars=dict(qget=0)))}} menu.<br/>
 Select book and chapter and click <i>View</i>.
 </p>
 
@@ -63,7 +63,7 @@ If you want to share your view with others, you can generate a link and send it 
 If they open that link in their browser, they will see eaxctly the customizations that you have defined for yourself.
 For example, if you want to read Exodus 6, with a query highlighted that shows all the verbs, and another one that shows all the
 proper names, follow this
-{{=A(T("link"), _href=URL('passage', 'browser', vars=dict(book='Exodus', chapter=6))+'&txt_p=1&txt_il=0&ht=1&hl=0&tt=0&tl=0&gl=1&wd1=1&wd1_subpos=0&wd1_pos=1&wd1_lang=0&wd1_n=0&wd2=0&wd2_gender=1&wd2_gnumber=1&wd2_person=1&wd2_state=1&wd2_tense=1&wd2_stem=1&sp=0&sp_rela=1&sp_n=1&ph=0&ph_det=1&ph_fun=1&ph_typ=1&ph_n=1&cl=1&cl_dom=1&cl_typ=1&cl_n=1&sn=1&sn_n=1&q401=spring&q402=salmon&qhloff=0&qhlone=0&qhlmy=1&qhlmany=0&qhldel=0&sel_one=grey&get_queries=1')}}.
+{{=A(T("link"), _href=URL('passage', 'browser', vars=dict(book='Exodus', chapter=6))+'&txt_p=1&txt_il=0&ht=1&hl=0&tt=0&tl=0&gl=1&wd1=1&wd1_subpos=0&wd1_pos=1&wd1_lang=0&wd1_n=0&wd2=0&wd2_gender=1&wd2_gnumber=1&wd2_person=1&wd2_state=1&wd2_tense=1&wd2_stem=1&sp=0&sp_rela=1&sp_n=1&ph=0&ph_det=1&ph_fun=1&ph_typ=1&ph_n=1&cl=1&cl_dom=1&cl_typ=1&cl_n=1&sn=1&sn_n=1&q401=spring&q402=salmon&qhloff=0&qhlone=0&qhlmy=1&qhlmany=0&qhldel=0&sel_one=grey&qget=1')}}.
 <br/><b>Warning:</b> if you click on such a link, sent by somebody else, it will override your own settings.
 It is a good idea to bookmark a link to your own view first, before clicking on link shared by someone else.
 </dd> 

@@ -39,7 +39,7 @@ table.picked,table.picker,table.qlist {
     margin: 0;
     border: 0;
 }
-table.qlist {
+table.qlist,table.wlist {
     display: inline-table;
     padding: 0;
     margin: 0;

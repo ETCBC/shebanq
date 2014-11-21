@@ -20,10 +20,10 @@
 
 RESULT_PAGE_SIZE = 20
 
-#from gluon.custom_import import track_changes; track_changes(True)
+from gluon.custom_import import track_changes; track_changes(True)
 import xml.etree.ElementTree as ET
 
-from render import Verses, Queries
+from render import Verses, Viewsettings
 from shemdros import MqlResource, RemoteException
 
 def get_record_id():
@@ -140,7 +140,7 @@ def normalize_ranges(ranges):
     if cur_end != None: result.append((cur_start, cur_end - 1))
     return result
 
-def get_pagination(p, monad_sets, qid):
+def get_pagination(p, monad_sets, vid):
     verse_boundaries = passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;')
     m = 0 # monad range index, walking through monad_sets
     v = 0 # verse id, walking through verse_boundaries
@@ -191,11 +191,9 @@ def get_pagination(p, monad_sets, qid):
             else:
                 v += 1
 
-    return (
-        nvt, cur_page,
-        Verses(passage_db, 'query', verse_ids=verse_ids, highlights=list(verse_monads), qid=qid) if p <= cur_page and len(verse_ids) else None,
-        Viewsettings('query'),
-    )
+    vsettings = Viewsettings('query', vid=vid, monads=list(verse_monads))
+    verses = Verses(passage_db, 'query', verse_ids=verse_ids) if p <= cur_page and len(verse_ids) else None
+    return (nvt, cur_page, verses, vsettings)
 
 
 def index():
@@ -219,7 +217,7 @@ def display_query():
     result_dict = dict(
         edit=False,
         exception=None,
-        qid=record_id,
+        vid=record_id,
         query=mql_record,
         person=person, project=project, organization=organization,
     )
@@ -238,7 +236,7 @@ def execute_query(record_id, with_publish=None):
     except RemoteException, e:
         response.flash = 'Exception while executing query: '
         return dict(
-            edit=True, form=mql_form, qid=record_id, query=mql_record,
+            edit=True, form=mql_form, vid=record_id, query=mql_record,
             exception=CODE(e.message), exception_message=CODE(parse_exception(e.response.text)),
             results=0,
             pages=0, page=0, pagelist=[],
@@ -274,7 +272,7 @@ def show_query(title):
         edit=True,
         form=mql_form,
         exception=None,
-        qid=record_id,
+        vid=record_id,
         query=mql_record,
     )
     result_dict.update(show_results(record_id))
@@ -298,7 +296,7 @@ def result_page():
     if record_id < 0:
         return dict(
             exception=None,
-            qid=record_id,
+            vid=record_id,
             results = 0,
             pages=0, page=0, pagelist=[],
             verse_data=[],
@@ -312,7 +310,7 @@ def result_page():
 
     return dict(
         exception=None,
-        qid=record_id,
+        vid=record_id,
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,

@@ -1,24 +1,18 @@
 {{ if word_monads: }}
     <ul id="words">
     {{ for w in word_monads:
-            vid = w['word'].id
-            wname = w['word'].name
-            fname = w['word'].created_by.first_name
-            lname = w['word'].created_by.last_name
-            pname = fname + ' ' + lname
-            desc = w['word'].description
+            vid = w['word']['id']
+            wentry = w['word']['entry']
+            wgloss = w['word']['gloss']
     }}
         <li id="w{{=vid}}" vid="{{=vid}}" monads="{{ =w['json_monads'] }}">
-            <div>{{=XML(viewsettings.colorpicker(vid))}}
-                <table class="wlist" id="h_w{{=vid}}"><tr><td class="wauth"></td>
-                <td class="wname"><a href="#" id="m_w{{=vid}}">{{=wname</a></td></tr></table>
+            <div>{{=XML(viewsettings.colorpicker('w',vid, ''))}}
+                <table class="wlist" id="h_w{{=vid}}"><tr><td class="wentry">{{=A(wentry, _href=URL('lexicon', 'display_word', vars=dict(id=vid)))}}</td>
+                <td class="wgloss"><a href="#" id="m_w{{=vid}}">{{=wgloss}}</a></td></tr></table>
             </div>
             <div id="d_w{{=vid}}">
-                <b>{{=wname}}</b> by <i>{{=pname}}</i><br/>
-                {{=desc}}<br/>
+                <b>{{=wentry}}</b> by <i>{{=wgloss}}</i><br/>
             </div>
-            <div><a href="#" id="l_w{{=vid}}">less</a></div>
-            <script type="text/javascript">jshlview('w',{{=vid}})</script>
         </li>
     {{ pass }}
     </ul>

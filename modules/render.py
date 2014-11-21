@@ -11,6 +11,11 @@ base_doc = 'http://shebanq-doc.readthedocs.org/en/latest/features/comments'
 
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
 
+nrows = 4
+ncols = 4
+dnrows = 3
+dncols = 4
+
 vcolor_spec = '''
     #ff0000,red,1 #ff6688,salmon,1 #ffcc66,orange,1 #ffff00,yellow,1
     #00ff00,green,1 #ccff66,spring,1 #66ffcc,tropical,1 #00ffff,turquoise,1
@@ -38,7 +43,7 @@ specs = dict(
         cl cl_dom cl_typ cl_n
         sn sn_n
         txt_p txt_il
-    ''', dict(''='''
+    ''', {'': '''
         1 1 0 0 1
         1 0 1 0 0
         1 1 1 1 1 1 1
@@ -47,44 +52,32 @@ specs = dict(
         1 1 1 1
         1 1
         1 0
-    ''')),
-    hlview=('''hloff hlone hlmy hlmany sel_one get''', dict(q='0 0 1 0 grey 0', w='0 0 1 0 gray 0')),
-    cmap=('', dict(q='', w=''))
+    '''}),
+    hlview=('''get active sel_one''', dict(q='0 hlmy grey', w='0 hlmy gray')),
+    cmap=('0', dict(q='white', w='black'))
 )
-settings = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+style = dict(q='background-color', w='color')
+
+settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
 for group in specs:
     (flds, init) = specs[group]
     flds = flds.strip().split()
     for k in init:
         initk = init[k].strip().split()
         for (i, f) in enumerate(flds):
-            v = initk[i]
-            settings[group][k][f] = True if v == '1' else False if v == '0' else v
-
-if nrows * ncols != len(vcolors):
-    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolors)))
-if dnrows * dncols != len(vdefaultcolors):
-    print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
-hlviewinit = collections.defaultdict(lambda {})
-settingsview = settings['hlview']
-for k in settingsview:
-    init = [x for x in settingsview[k] if settingsview[k][x] and x.startswith('hl')]
-    if len(init) != 1:
-        print("View settings: the initial view state is not uniquely defined: {} {}".format(k, init))
-        hlviewinit[k] = settingsview[k][-1][0]
-    else:
-        hlviewinit[k] = init[0]
+            settings[group][k][f] = initk[i]
 
 vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
 vcolors = [x[0] for x in vcolor_proto]
 vcolornames = dict((x[0], x[1]) for x in vcolor_proto)
 vcolorcodes = dict((x[1], x[0]) for x in vcolor_proto)
-vdefaultcolors = [x[0] for x in vcolor_proto if x[2] == '1']
-nrows = 4
-ncols = 4
-dnrows = 3
-dncols = 4
+vdefaultcolors = [x[1] for x in vcolor_proto if x[2] == '1']
 ndefcolors = len(vdefaultcolors)
+
+if nrows * ncols != len(vcolors):
+    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolors)))
+if dnrows * dncols != len(vdefaultcolors):
+    print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
 
 def vdef(vid):
     mod = vid % ndefcolors
@@ -93,95 +86,81 @@ def vdef(vid):
 def ccell(k,vid,c):
     cc = vcolors[c]
     cn = vcolornames[cc]
-    return '\t\t<td class="cc {k}{vid}" style="background-color: {c}">{n}</td>'.format(k=k,vid=vid,c=cc,n=cn)
+    return '\t\t<td class="cc {k}{vid}" style="{stl}: {c}">{n}</td>'.format(k=k,vid=vid,c=cc,n=cn,stl=style[k])
 
-def crow(vid,r):
+def crow(k,vid,r):
     return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
 
 def ctable(k, vid):
-    return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(vid,r) for r in range(nrows)))
+    return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
 
-def vsel(k, vid, initn, iscust):
-    defc = vdef(vid)
-    return '<table class="picked"><tr><td class="cc_selc{k}"><input type="checkbox" id="selc{k}_{vid}" name="selc{k}_{vid}"/></td><td class="cc_sel{k}" id="sel{k}_{vid}" defc="{dc}" defn="{dn}" cname="{n}" iscust="{ic}">&nbsp;</td></tr></table>\n'.format(
-        k=k,vid=vid, n=initn, ic=iscust, dc=defc, dn=vcolornames[defc],
-    )
-
-def vsel2(k, vid, initn):
-    return '<table class="picked"><tr><td class="cc_sel{k}" id="sel{k}_{vid}" cname="{n}">&nbsp;</td></tr></table>\n'.format(
-        k=k, vid=vid, n=initn,
-    )
+def vsel(k, vid, defn, typ):
+    content = '&nbsp;' if k == 'q' else 'w'
+    tstart = '<table class="picked"><tr>'
+    tend = '</tr></table>\n'
+    selc = '' if typ else '<td class="cc_selc{k}"><input type="checkbox" id="selc{k}_{vid}" name="selc{k}_{vid}"/></td>'
+    sel = '<td class="cc_sel{k}" id="sel{k}_{vid}" defn="{dn}">{lab}</td>'
+    return (tstart + selc + sel + tend).format (k=k,vid=vid, dn=defn, lab=content)
 
 class Viewsettings():
-    def __init__(self, page_kind):
-        request = current.request
-        response = current.response
-
+    def __init__(self, page_kind, vid=None, monads=None):
+        self.vid = vid
+        self.monads = monads if monads != None else []
         self.page_kind = page_kind
-        self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+        self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
         for group in settings:
-            if page_kind != 'passage' and group == 'hlview': continue
-            for k in settings[group]
+            self.state[group] = {}
+            for k in settings[group]:
+                self.state[group][k] = {}
                 from_cookie = {}
-                if request.cookies.has_key(group+k):
+                if current.request.cookies.has_key(group+k):
                     try:
-                        from_cookie = json.loads(request.cookies[group+k].value) 
+                        from_cookie = json.loads(current.request.cookies[group+k].value) 
                     except ValueError: pass
-                for x in settings[group][k]:
-                    init = settings[group][k][x]
-                    vstate = request.vars[k+x]
-                    vstate = None if vstate == None else True if vstate == '1' else False if vstate == '0' else vstate
-                    if vstate == None:
-                        cvstate = from_cookie.get(x, None) 
-                        vstate = init if cvstate == None else True if cvstate == '1' else False if cvstate == '0' else cvstate
-                    else:
-                        from_cookie[x] = 1 if vstate == True else 0 if vstate == False else vstate
-                    self.state[group][k][x] = vstate
                 if group == 'cmap':
                     for x in from_cookie: self.state[group][k][x] = from_cookie[x]
-                    for x in request.vars:
+                    for x in current.request.vars:
                         if x[0] == k and x[1:].isdigit():
-                            vstate = request.vars[x]
+                            vstate = current.request.vars[x]
                             from_cookie[x[1:]] = vstate
-                            self.state[group][k][x[1:]] = vstate
+                            self.state[group][k][x] = vstate
+                else:
+                    for x in settings[group][k]:
+                        init = settings[group][k][x]
+                        vstate = current.request.vars[k+x]
+                        if vstate == None: vstate = from_cookie.get(x, init) 
+                        from_cookie[x] = vstate
+                        self.state[group][k][x] = vstate
 
-                response.cookies[group+k] = json.dumps(from_cookie)
-                response.cookies[group+k]['expires'] = 30 * 24 * 3600
-                response.cookies[group+k]['path'] = '/'
+                current.response.cookies[group+k] = json.dumps(from_cookie)
+                current.response.cookies[group+k]['expires'] = 30 * 24 * 3600
+                current.response.cookies[group+k]['path'] = '/'
 
     def adjust_view(self):
-        adjustments = ['set_d("{}", {})\n'.format(x, 'true' if self.state['hebrewdata'][''][x] else 'false') for x in self.settings['hebrewdata']['']]
-        if self.page_kind == 'passage':
-            for k in self.settings['hlview']:
-                viewon = [x for x in self.settings['hlview'][k] if self.state['hlview'][k][x] and x.startswith('hl')]
-                thisison = viewon[0] if len(viewon) else hlviewinit[k] 
-                defcolname = self.state['hlview'][k]['sel_one']
-                defcolcode = vcolorcodes[defcolname] 
-                adjustments.append('colorinit2("{}","{}","{}","{}")\n'.format(k, thisison, defcolname, defcolcode]))
-        if self.page_kind == 'passage':
-            adjustments.append(
-                '''$('#cviewlink').val(view_url+''' +
-                '+'.join('gethlviewvars({},false))'.format(k) for k in self.settings['hlview'])
-            )
-        else:
-            adjustments.append('''$('#cviewlink').val(view_url + gethebrewdatavars(false))''')
-        return '\n'.join(adjustments)
+        return '''
+var vcolorcodes = {vcolorcodes}
+var viewstate = {initstate}
+var pagekind = '{pagekind}'
+var thebook = '{book}'
+var thechapter = {chapter}
+var thevid = {vid}
+var style = {style}
+var themonads = {monads}
+init_page()
+'''.format(
+    initstate=json.dumps(self.state),
+    monads = json.dumps(self.monads),
+    vcolorcodes = json.dumps(vcolorcodes),
+    style = json.dumps(style),
+    pagekind = self.page_kind,
+    book = current.request.vars.book or '',
+    chapter = current.request.vars.chapter or 0,
+    vid = self.vid or 0,
+)
 
-    def _js(self, k, vid, initc, monads):
-        return 'jscolorpicker("{k}", {vid}, "{ic}", {mn})\n'.format(k=k, vid=vid, ic=initc, mn='null' if monads == None else "'{}'".format(monads))
-
-    def _js2(self, k):
-        return 'jscolorpicker2("{k}")\n'.format(k=k)
-
-    def colorpicker(self, k, vid, monads=None):
-        initn = self.state['cmap'][k].get(str(vid), None)
-        iscust = 'true' if initn != None else 'false' 
-        initc = vcolorcodes.get(initn, vdef(vid))
-        initn = vcolornames[initc]
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=vsel(k, vid, initn, iscust), p=ctable(k, vid), j=self._js(k, vid, initc, monads))
-
-    def colorpicker2(self, k):
-        return '{s}{p}<script type="text/javascript">{j}</script>\n'.format(s=vsel2(k, 'one', 'choose...'), p=ctable(k, 'one'), j=self._js2(k))
+    def colorpicker(self, k, vid, typ):
+        defn = settings['hlview'][k]['sel_'+vid] if typ else vdef(vid)
+        return '{s}{p}\n'.format(s=vsel(k, vid, defn, typ), p=ctable(k, vid))
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
@@ -266,8 +245,7 @@ def h_esc(material, fill=True):
     return material
 
 class Verses():
-    def __init__(self, passage_db, page_kind, verse_ids=None, chapter=None, highlights=None, qid=None):
-        self.qid = qid
+    def __init__(self, passage_db, page_kind, verse_ids=None, chapter=None):
         self.page_kind = page_kind
         self.verses = []
         self.this_legend = legend_tpl.format(base_doc=base_doc)
@@ -277,7 +255,6 @@ class Verses():
         condition_pre = 'WHERE {{}} IN ({})'.format(verse_ids_str) if verse_ids != None else 'WHERE chapter_id = {}'.format(chapter) if chapter != None else ''
         condition = condition_pre.format(cfield)
         wcondition = condition_pre.format(cwfield)
-        self.hl_query = json.dumps(highlights if highlights != None else [])
 
         verse_info = passage_db.executesql('''
 SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse

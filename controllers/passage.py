@@ -1,4 +1,4 @@
-#from gluon.custom_import import track_changes; track_changes(True)
+from gluon.custom_import import track_changes; track_changes(True)
 
 import json
 from itertools import groupby
@@ -150,7 +150,7 @@ def group_MySQL(input):
                                                       for x in monads],
                                                      [])))))
         r.append({'query': query,
-                  'monadsets': monads,
+#                  'monadsets': monads,
                   'json_monads': json_monads})
     return r
 
@@ -197,16 +197,31 @@ def browser():
 
     browse = process_browser_form()
     viewsettings = Viewsettings('passage')
-    queries = query_form_generic(viewsettings=viewsettings) if viewsettings.query_view['qget'] and browse['chapter'] else dict(query_monads=[], viewsettings=viewsettings)
+    queries = query_form_generic(viewsettings=viewsettings) if viewsettings.state['hlview']['q']['get'] and browse['chapter'] else dict(query_monads=[], viewsettings=viewsettings)
 
     response.title = T("Browse")
     if 'verses' in browse and browse['verses']:
         response.subtitle = "%s - Chapter %s" % (browse['book'].name,
                                                  browse['chapter'].chapter_num)
 
-    word_monads = []
-    if page_kind == 'passage':
-        word_monads = [('aap, noot')]
+    word_monads = [
+        {
+            'word': {
+                'id': 1,
+                'entry': 'aap',
+                'gloss': 'AAP',
+            },
+            'json_monads': '[1, 3, 5, 7]',
+        },
+        {
+            'word': {
+                'id': 2,
+                'entry': 'noot',
+                'gloss': 'NOOT',
+            },
+            'json_monads': '[2, 4, 6, 8]',
+        },
+    ]
 
     return dict(forms.items()
                 + browse.items()
