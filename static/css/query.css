@@ -17,109 +17,76 @@ div.book-title {
 div.mql_form {
     background-color: #EEEEEE;
     padding: 10px 10px 10px 10px;
-   overflow: auto;
+    overflow: auto;
+    width: 100%;
+}
+.mql_form div.w2p_fl {
+    display: inline;
 }
 .mql_form div.w2p_fl label {
+    display: inline;
+    font-size: 90%;
     font-weight:bold;
 }
 .mql_form div.w2p_fw {
+    font-size: 90%;
+    display: inline;
 }
 .mql_form div.w2p_fc {
-    padding-left: 1em;
+    display: inline;
     font-size: 90%;
     color: grey;
 }
+#queries_name__row, #queries_is_published__row {
+    display: inline;
+}
+#queries_name {
+    width: 8em;
+}
+#queries_mql__label, #queries_description__label {
+    display: block;
+}
 #queries_mql, #queries_description {
-    width: 50em;
+    display: inline;
+    width: 17em;
+    height: 6em;
 }
-#mql_queries_mql, #mql_queries_description {
-    width: 50em;
+#queries_mql {
+    font-family: Menlo, Courier New, Courier, monospace;
 }
-#queries_description {
-    height: 4em;
+#queries_project__label, #queries_organization__label {
+    display: block;
 }
-#mql_queries_description {
-    height: 4em;
+#queries_project__reference-actions__wrapper, #queries_organization__reference-actions__wrapper {
+    display: inline;
 }
-#mql_queries_handler_name__row {
-    background-color: #EEEEEE;
-    width: 51em;
-}
-#mql_queries_handler_name__row div.w2p_fw div {
-    float: left;
-    margin-left: 23px;
-}
-#mql_queries_handler_name__row div.w2p_fl {
-    float: left;
-}
-#mql_queries_context_level__row div.w2p_fl, #mql_queries_context_marker__row div.w2p_fl {
-    float: left;
-    margin-right: 10px;
-}
-#mql_queries_context_level {
-    width: 2em;
-}
-#mql_queries_context_marker {
-    width: 7em;
-}
-#mql_queries_context_level__row, #mql_queries_context_marker__row {
-    clear: left;
+#queries_project, #queries_organization {
+    display: inline;
+    width: 10em;
 }
 #queries_created_on__label, #queries_created_by__label, #queries_modified_on__label, #queries_modified_by__label {
-    font-size: 100%;
-}
-#mql_queries_created_on__label, #mql_queries_created_by__label, #mql_queries_modified_on__label, #mql_queries_modified_by__label {
-    font-size: 100%;
-}
-#queries_created_on__row {
-    float:left;
     font-size: 90%;
 }
-#mql_queries_created_on__row {
-    float:left;
+#queries_created_on__row {
     font-size: 90%;
 }
 #queries_created_by__row {
-    float:left;
-    margin-left: 20px;
-    font-size: 90%;
-}
-#mql_queries_created_by__row {
-    float:left;
-    margin-left: 20px;
     font-size: 90%;
 }
 #queries_modified_on__row {
-    float: left;
-    margin-left: 20px;
-    font-size: 90%;
-}
-#mql_queries_modified_on__row {
-    float: left;
-    margin-left: 20px;
     font-size: 90%;
 }
 #queries_modified_by__row {
-    float: left;
-    margin-left: 20px;
-    font-size: 90%;
-}
-#mql_queries_modified_by__row {
-    float: left;
-    margin-left: 20px;
     font-size: 90%;
 }
 #submit_record__row {
-    padding-top: 20px;
-    clear: left;
 }
 button {
-    margin-right: 10px;
 }
 /* end mql form */
 
 div.query {
-    width: 50em;
+    width: 20em;
 }
 textarea.query {
     width: 100%;

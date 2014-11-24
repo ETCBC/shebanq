@@ -33,6 +33,14 @@ h1, h2 {
     font-weight: normal;
     background-color: #ffffff;
 }
+textarea.mql {
+    font-family: Menlo, Courier New, Courier, monospace;
+    background-color: white;
+    height: 10em;
+}
+textarea.small {
+    font-size: 90%;
+}
 table.picked {
     display: inline-table;
     padding: 0;

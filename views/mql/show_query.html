@@ -1,40 +1,30 @@
-<script type="text/javascript">
-var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
-var rpage_url = "{{=XML(URL('mql', 'result_page', host=True))}}"
-</script>
-
-{{include 'passage/view_settings.html'}}
-<div id='rlist'>
-    {{include 'mql/result_page.html'}}
-</div>
-<script type="text/javascript">{{=XML(viewsettings.refresh_verses())}}</script>
-
-{{ block left_sidebar }}
 <div class="mql_form" id="mform">
 {{if edit:}}
     {{=form}}
 {{else:}}
     <h2>{{=query.name}} ({{if query.is_published:}}public{{else:}}private{{pass}})</h2>
     <p>{{=query.description}}</p>
-    <pre>{{=query.mql}}</pre>
+    <textarea class="mql" readonly>{{=query.mql}}</textarea>
+    {{if auth.user.id == query.created_by:}}
+        <p>{{=A('Edit', _href=URL('mql', 'edit_query', vars=dict(id=query.id)))}}</p>
+    {{else:}}
+        <p>You cannot edit queries created by some one else.</p>
+    {{pass}}
     <p><i>By</i> <b>{{=person.first_name}} {{=person.last_name}}</b>,
     <i>affiliated with</i> <a target="_blank" href="{{=organization.website}}">{{=organization.name}}</a>,
     <i>for project</i> <a target="_blank" href="{{=project.website}}">{{=project.name}}</a>.</p>
-    <p><i>Created on</i> {{=query.created_on}}; <i>modified on</i>: {{=query.modified_on}}; <i>last executed on</i>: {{=query.executed_on}}.</p> 
+    <p><i>Created on</i> {{=query.created_on}};<br/><i>modified on</i>: {{=query.modified_on}};<br/><i>last executed on</i>: {{=query.executed_on}}.</p> 
 {{pass}}
 </div>
 
 <div>
-    <p>
-    {{if not query.executed_on:}}<span class='warning'>This query needs to be executed.</span>
+    <p>{{if not query.executed_on:}}<span class='warning'>This query needs to be executed.</span>
     {{elif query.executed_on < query.modified_on:}}<span class='error'>The stored query results are outdated.</span>
     {{else:}}<span class='info'>The stored query results are up to date.</span>
-    {{pass}}
-    {{=A('[ETCBC4 feature doc]', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}
-    {{=A('[MQL quick reference guide (pdf)]', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}
-    {{=A('[ETCBC4 transcription table (pdf)]', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}
-    </p>
+    {{pass}}</p>
+    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
+    <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
+    <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
-{{end}}
 
-{{include 'mql/window_adjust.html'}}
+

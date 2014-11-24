@@ -1,2 +1,9 @@
-{{extend 'layout.html'}}
+{{ left_sidebar_enabled = True }}
+{{ extend 'layout.html' }}
+{{ block head }}
+{{ end }}
+
+{{ block left_sidebar }}
 {{include 'mql/show_query.html'}}
+{{ end }}
+{{include 'mql/show_results.html'}}

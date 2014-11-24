@@ -83,13 +83,22 @@ def get_mql_form(record_id, readonly=False):
         )
     )
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
-                       showid=False, ignore_rw=False,
-                       labels={'mql': 'MQL Query', 'is_published': 'Public'},
-                       formstyle='divs',
-                       buttons=buttons
-                       )
+        #fields=['created_by', 'is_published', 'mql'],
+        fields=['name', 'is_published', 'description', 'mql', 'project', 'organization', 'created_on', 'created_by', 'modified_on', 'modified_by', 'executed_on'],
+        showid=False, ignore_rw=False,
+        labels=dict(
+            mql='MQL Query',
+            is_published='Public',
+            created_by='by',
+            modified_by='by',
+            created_on='created',
+            modified_on='modified',
+            executed_on='executed',
+        ),
+        formstyle='divs',
+        buttons=buttons
+    )
     return mql_form
-
 
 
 def handle_response(mql_form):
