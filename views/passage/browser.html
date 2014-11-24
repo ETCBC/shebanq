@@ -2,10 +2,10 @@
 {{ extend 'layout.html' }}
 
 {{ block head }}
-    <script type="text/javascript">
+<script type="text/javascript">
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
 var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, qget='v'), host=True))}}"
-    </script>
+</script>
 {{ end }}
 
 {{ include 'passage/browser_form.html' }}
@@ -22,6 +22,7 @@ var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars
             <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
         {{ pass }}
     {{ pass }}
+    <script type="text/javascript">{{=XML(viewsettings.refresh_verses())}}</script>
 {{ pass }}
 
 
@@ -44,6 +45,3 @@ var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars
 {{ pass}}
 {{ end }}
 
-{{ if verses != None: }}
-        <script type="text/javascript">{{=XML(viewsettings.adjust_view())}}</script>
-{{ pass }}

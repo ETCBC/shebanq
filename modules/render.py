@@ -61,113 +61,6 @@ style = dict(
     w=dict(prop='color', off='#000000'),
 )
 
-settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
-for group in specs:
-    (flds, init) = specs[group]
-    flds = flds.strip().split()
-    for k in init:
-        initk = init[k].strip().split()
-        for (i, f) in enumerate(flds):
-            settings[group][k][f] = initk[i]
-
-vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
-vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
-vcolornames = [x[0] for x in vcolor_proto]
-vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
-ndefcolors = len(vdefaultcolors)
-
-if nrows * ncols != len(vcolornames):
-    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolornames)))
-if dnrows * dncols != len(vdefaultcolors):
-    print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
-
-def vdef(vid):
-    mod = vid % ndefcolors
-    return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
-
-def ccell(k,vid,c): return '\t\t<td class="cc cc{k} {k}{vid}">{n}</td>'.format(k=k,vid=vid,n=vcolornames[c])
-def crow(k,vid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
-def ctable(k, vid): return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
-
-def vsel(k, vid, defn, typ):
-    content = '&nbsp;' if k == 'q' else 'w'
-    tstart = '<table class="picked"><tr>'
-    tend = '</tr></table>\n'
-    selc = '' if typ else '<td class="cc_selc{k}"><input type="checkbox" id="selc{k}_{vid}" name="selc{k}_{vid}"/></td>'
-    sel = '<td class="cc_sel{k}" id="sel{k}_{vid}" defn="{dn}">{lab}</td>'
-    return (tstart + selc + sel + tend).format (k=k,vid=vid, dn=defn, lab=content)
-
-class Viewsettings():
-    def __init__(self, page_kind, vid=None):
-        self.page_kind = page_kind
-        self.vid = vid
-        self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
-        for group in settings:
-            self.state[group] = {}
-            for k in settings[group]:
-                self.state[group][k] = {}
-                from_cookie = {}
-                if current.request.cookies.has_key(group+k):
-                    try:
-                        from_cookie = json.loads(urllib.unquote(current.request.cookies[group+k].value))
-                    except ValueError: pass
-                if group == 'cmap':
-                    for x in from_cookie: self.state[group][k][x] = from_cookie[x]
-                    for x in current.request.vars:
-                        if x[0] == k and x[1:].isdigit():
-                            vstate = current.request.vars[x]
-                            from_cookie[x[1:]] = vstate
-                            self.state[group][k][x] = vstate
-                else:
-                    for x in settings[group][k]:
-                        init = settings[group][k][x]
-                        vstate = current.request.vars[k+x]
-                        if vstate == None: vstate = from_cookie.get(x, init) 
-                        from_cookie[x] = vstate
-                        self.state[group][k][x] = vstate
-
-                current.response.cookies[group+k] = urllib.quote(json.dumps(from_cookie))
-                current.response.cookies[group+k]['expires'] = 30 * 24 * 3600
-                current.response.cookies[group+k]['path'] = '/'
-
-    def adjust_view(self):
-        return '''
-var vcolors = {vcolors}
-var viewstate = {initstate}
-var style = {style}
-var pagekind = '{pagekind}'
-var thebook = '{book}'
-var thechapter = {chapter}
-var thevid = {vid}
-init_page()
-'''.format(
-    initstate=json.dumps(self.state),
-    vcolors = json.dumps(vcolors),
-    style = json.dumps(style),
-    pagekind = self.page_kind,
-    book = current.request.vars.book or '',
-    chapter = current.request.vars.chapter or 0,
-    vid = 'null' if self.vid == None else self.vid,
-)
-
-    def colorpicker(self, k, vid, typ):
-        defn = settings['hlview'][k]['sel_'+vid] if typ else vdef(vid)
-        return '{s}{p}\n'.format(s=vsel(k, vid, defn, typ), p=ctable(k, vid))
-
-text_tpl = u'''<table class="il c">
-    <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
-    <tr class="il hl"><td class="il hl"><span class="hl">{word_vlex}</span></td></tr>
-    <tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
-    <tr class="il tl"><td class="il tl"><span class="tl">{word_lex}</span></td></tr>
-    <tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>
-    <tr class="il wd1"><td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td></tr>
-    <tr class="il wd2"><td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td></tr>
-    <tr class="il sp"><td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td></tr>
-    <tr class="il ph"><td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td></tr>
-    <tr class="il cl"><td class="il cl {clause_border}"><span class="il cl_dom">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td></tr>
-    <tr class="il sn"><td class="il sn {sentence_border}"><span class="n sn_n">{sentence_number}</span></td></tr>
-</table>'''
-
 legend_tpl = '''
 <table id="legend" class="il">
     <tr class="il l_ht"><td class="c l_ht"><input
@@ -226,6 +119,121 @@ legend_tpl = '''
 </table>
 '''
 
+settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
+for group in specs:
+    (flds, init) = specs[group]
+    flds = flds.strip().split()
+    for k in init:
+        initk = init[k].strip().split()
+        for (i, f) in enumerate(flds):
+            settings[group][k][f] = initk[i]
+
+vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
+vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
+vcolornames = [x[0] for x in vcolor_proto]
+vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
+ndefcolors = len(vdefaultcolors)
+
+if nrows * ncols != len(vcolornames):
+    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolornames)))
+if dnrows * dncols != len(vdefaultcolors):
+    print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
+
+def vdef(vid):
+    mod = vid % ndefcolors
+    return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
+
+def ccell(k,vid,c): return '\t\t<td class="cc cc{k} {k}{vid}">{n}</td>'.format(k=k,vid=vid,n=vcolornames[c])
+def crow(k,vid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
+def ctable(k, vid): return '<table class="picker" id="picker{k}_{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
+
+def vsel(k, vid, defn, typ):
+    content = '&nbsp;' if k == 'q' else 'w'
+    tstart = '<table class="picked"><tr>'
+    tend = '</tr></table>\n'
+    selc = '' if typ else '<td class="cc_selc{k}"><input type="checkbox" id="selc{k}_{vid}" name="selc{k}_{vid}"/></td>'
+    sel = '<td class="cc_sel{k}" id="sel{k}_{vid}" defn="{dn}">{lab}</td>'
+    return (tstart + selc + sel + tend).format (k=k,vid=vid, dn=defn, lab=content)
+
+class Viewsettings():
+    def __init__(self, page_kind, vid=None):
+        self.page_kind = page_kind
+        self.vid = vid
+        self.this_legend = legend_tpl.format(base_doc=base_doc)
+        self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
+        for group in settings:
+            self.state[group] = {}
+            for k in settings[group]:
+                self.state[group][k] = {}
+                from_cookie = {}
+                if current.request.cookies.has_key(group+k):
+                    try:
+                        from_cookie = json.loads(urllib.unquote(current.request.cookies[group+k].value))
+                    except ValueError: pass
+                if group == 'cmap':
+                    for x in from_cookie: self.state[group][k][x] = from_cookie[x]
+                    for x in current.request.vars:
+                        if x[0] == k and x[1:].isdigit():
+                            vstate = current.request.vars[x]
+                            from_cookie[x[1:]] = vstate
+                            self.state[group][k][x] = vstate
+                else:
+                    for x in settings[group][k]:
+                        init = settings[group][k][x]
+                        vstate = current.request.vars[k+x]
+                        if vstate == None: vstate = from_cookie.get(x, init) 
+                        from_cookie[x] = vstate
+                        self.state[group][k][x] = vstate
+
+                current.response.cookies[group+k] = urllib.quote(json.dumps(from_cookie))
+                current.response.cookies[group+k]['expires'] = 30 * 24 * 3600
+                current.response.cookies[group+k]['path'] = '/'
+
+    def legend(self): return self.this_legend
+
+    def init_view(self):
+        return '''
+var vcolors = {vcolors}
+var viewstate = {initstate}
+var style = {style}
+var pagekind = '{pagekind}'
+var thebook = '{book}'
+var thechapter = {chapter}
+var thevid = {vid}
+init_page()
+'''.format(
+    initstate=json.dumps(self.state),
+    vcolors = json.dumps(vcolors),
+    style = json.dumps(style),
+    pagekind = self.page_kind,
+    book = current.request.vars.book or '',
+    chapter = current.request.vars.chapter or 0,
+    vid = 'null' if self.vid == None else self.vid,
+)
+
+    def refresh_verses(self):
+        return '''
+refresh_verses()
+    '''
+
+    def colorpicker(self, k, vid, typ):
+        defn = settings['hlview'][k]['sel_'+vid] if typ else vdef(vid)
+        return '{s}{p}\n'.format(s=vsel(k, vid, defn, typ), p=ctable(k, vid))
+
+text_tpl = u'''<table class="il c">
+    <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
+    <tr class="il hl"><td class="il hl"><span class="hl">{word_vlex}</span></td></tr>
+    <tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
+    <tr class="il tl"><td class="il tl"><span class="tl">{word_lex}</span></td></tr>
+    <tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>
+    <tr class="il wd1"><td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td></tr>
+    <tr class="il wd2"><td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td></tr>
+    <tr class="il sp"><td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td></tr>
+    <tr class="il ph"><td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td></tr>
+    <tr class="il cl"><td class="il cl {clause_border}"><span class="il cl_dom">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td></tr>
+    <tr class="il sn"><td class="il sn {sentence_border}"><span class="n sn_n">{sentence_number}</span></td></tr>
+</table>'''
+
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
 
 def h_esc(material, fill=True):
@@ -240,7 +248,6 @@ class Verses():
     def __init__(self, passage_db, page_kind, verse_ids=None, chapter=None):
         self.page_kind = page_kind
         self.verses = []
-        self.this_legend = legend_tpl.format(base_doc=base_doc)
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
         cfield = 'verse.id'
         cwfield = 'word_verse.verse_id'
@@ -271,8 +278,6 @@ ORDER BY word_number;
         for v in verse_info:
             v_id = int(v[0])
             self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id])) 
-
-    def legend(self): return self.this_legend
 
 class Verse():
 

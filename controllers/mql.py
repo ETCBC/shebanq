@@ -27,14 +27,6 @@ import xml.etree.ElementTree as ET
 from render import Verses, Viewsettings
 from shemdros import MqlResource, RemoteException
 
-def refresh_view(monads):
-    return '''
-var themonads = {monads}
-init_subpage()
-'''.format(
-    monads=json.dumps(monads)
-)
-
 def get_record_id():
     #print "get_record_id"
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
@@ -201,7 +193,7 @@ def get_pagination(p, monad_sets, vid):
                 v += 1
 
     verses = Verses(passage_db, 'query', verse_ids=verse_ids) if p <= cur_page and len(verse_ids) else None
-    return (nvt, cur_page, verses, refresh_view(list(verse_monads)))
+    return (nvt, cur_page, verses, list(verse_monads))
 
 def index():
     redirect(URL('edit_query'))
@@ -227,6 +219,27 @@ def display_query():
         vid=record_id,
         query=mql_record,
         person=person, project=project, organization=organization,
+    )
+    result_dict.update(show_results(record_id))
+    return result_dict
+
+def show_query(title):
+    record_id = get_record_id()
+    if record_id is None:
+        record_id = 0
+    mql_form = get_mql_form(record_id)
+    handle_response(mql_form)
+    mql_record = db.queries[record_id]
+    query = mql_record.mql
+
+    response.title = T(title)
+
+    result_dict = dict(
+        edit=True,
+        form=mql_form,
+        exception=None,
+        vid=record_id,
+        query=mql_record,
     )
     result_dict.update(show_results(record_id))
     return result_dict
@@ -264,31 +277,10 @@ def private_query(record_id):
     redirect(URL('edit_query', vars=dict(id=record_id)))
     return show_query("Private Query")
 
-def show_query(title):
-    record_id = get_record_id()
-    if record_id is None:
-        record_id = 0
-    mql_form = get_mql_form(record_id)
-    handle_response(mql_form)
-    mql_record = db.queries[record_id]
-    query = mql_record.mql
-
-    response.title = T(title)
-
-    result_dict = dict(
-        edit=True,
-        form=mql_form,
-        exception=None,
-        vid=record_id,
-        query=mql_record,
-    )
-    result_dict.update(show_results(record_id))
-    return result_dict
-
 def show_results(record_id):
     page = response.vars.page if response.vars else 1
     monad_sets = load_monad_sets(record_id)
-    (nresults, npages, verse_data, jsrefresh) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, monads) = get_pagination(page, monad_sets, record_id)
     viewsettings = Viewsettings('query', vid=record_id)
     return dict(
         vid=record_id,
@@ -296,7 +288,7 @@ def show_results(record_id):
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
         viewsettings=viewsettings,
-        jsrefresh=jsrefresh,
+        monads=json.dumps(monads),
         page_kind='query',
     )
 
@@ -315,7 +307,7 @@ def result_page():
 
     monad_sets = load_monad_sets(record_id)
 
-    (nresults, npages, verse_data, jsrefresh) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, monads) = get_pagination(page, monad_sets, record_id)
 
     return dict(
         exception=None,
@@ -323,7 +315,7 @@ def result_page():
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
-        jsrefresh=jsrefresh,
+        monads=monads,
         page_kind='query',
     )
 

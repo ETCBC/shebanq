@@ -1,3 +1,4 @@
+<div id="rpresult">
 {{if exception is not None:}}
     <div class="exception">
         <div>The error message is printed below.</div>
@@ -11,60 +12,52 @@
     {{
         ua = request.user_agent().browser.name
     }}
-    <script type="text/javascript">
-var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
-    </script>
-{{verses = verse_data}}
-                <div>
-{{if page == 0:}}
-                    <p>No results retrieved yet</p>
-{{else:}}
-                    <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
-{{pass}}
-                </div>
-                <div class="monad_sets qresults" id="qresults">
-                    {{if verses != None:}}
-                        <div class="txt_il">{{=XML(verses.this_legend)}}</div>
-                        {{for verse in verses.verses:
-                            (book, chapter) = verse.chapter_link()
-                        }}
-                            <div class="book-title">{{=A(
-                                verse.citation_ref(),
-                                _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, qget='v'))
-                            )}}</div>
-                            <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
-                            <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>
-                        {{pass}}
-                    {{pass}}
-                </div>
-                <div class="pagination">
-                    <ul>
-                    {{if page <= 1:}}
-                        <li class="disabled"><a>«</a></li>
-                    {{else:}}
-                        <li>{{=A('«', callback=URL('mql', 'result_page', vars=dict(id=vid, page=page-1)), target='rlist')}}</li>
-                    {{pass}}
+    {{verses = verse_data}}
+    <div>
+    {{if page == 0:}}
+        <p>No results retrieved yet</p>
+    {{else:}}
+        <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
+    {{pass}}
+    </div>
+    <div class="monad_sets qresults" id="qresults">
+    {{if verses != None:}}
+        {{for verse in verses.verses:
+            (book, chapter) = verse.chapter_link()
+        }}
+                <div class="book-title">{{=A(
+                    verse.citation_ref(),
+                    _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, qget='v'))
+                )}}</div>
+                <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
+                <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>
+        {{pass}}
+    {{pass}}
+    </div>
+    <div class="pagination">
+        <input type="hidden" id="rpmonads" value="{{=monads}}"/>
+        <ul>
+    {{if page <= 1:}}
+            <li class="disabled"><a>«</a></li>
+    {{else:}}
+            <li>{{=A('«', _class='rpnav', _vid=vid, _page=page-1, _href='#')}}</li>
+    {{pass}}
 
-                    {{ 
-                        for p in pagelist:
-                    }} 
-                    {{if page == p:}}
-                        <li class="active"><a>{{=p}}</a></li>
-                    {{else:}}
-                        <li>{{=A(str(p), callback=URL('mql', 'result_page', vars=dict(id=vid, page=p)), target='rlist')}}</li>
-                    {{pass}}
-                    {{pass}}
+    {{for p in pagelist:}} 
+        {{if page == p:}}
+            <li class="active"><a>{{=p}}</a></li>
+        {{else:}}
+            <li>{{=A(str(p), _class='rpnav', _vid=vid, _page=p, _href='#')}}</li>
+        {{pass}}
+    {{pass}}
 
-                    {{if page >= pages:}}
-                        <li class="disabled"><a>»</a></li>
-                    {{else:}}
-                        <li>{{=A('»', callback=URL('mql', 'result_page', vars=dict(id=vid, page=page+1)), target='rlist')}}</li>
-                    {{pass}}
-                    </ul>
-                </div>
-{{if verses != None:}}
-    <script type="text/javascript">{{=XML(jsrefresh)}}</script>
+    {{if page >= pages:}}
+            <li class="disabled"><a>»</a></li>
+    {{else:}}
+            <li>{{=A('»', _class='rpnav', _vid=vid, _page=page+1, _href='#')}}</li>
+    {{pass}}
+        </ul>
+    </div>
 {{pass}}
-{{pass}}
+</div>
 
-{{include 'mql/window_adjust.html'}}

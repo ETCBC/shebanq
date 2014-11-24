@@ -30,7 +30,9 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
-var vcolors, viewstate, style, pagekind, view_url, thebook, thechapter, thevid, themonads, query_url, queriesfetched
+var vcolors, viewstate, style, pagekind, queriesfetched
+var thebook, thechapter, thevid, themonads
+var view_url, query_url, rpage_url
 
 function getvars() {
     var vars = ''
@@ -49,21 +51,51 @@ function savestate(group, k) {
 }
 
 function init_page() {
-    if (pagekind != 'passage' || thechapter != 0) {
-        init_hebrewdata()
-        init_pickers()
-        if (pagekind == 'passage') {
+    if (pagekind == 'passage') {
+        if (thechapter != 0) {
+            init_hebrewdata()
+            init_hlpickers()
             init_sidelists()
             init_hlview()
         }
-        init_viewlink()
+    }
+    else {
+        init_hebrewdata()
+        init_onepickers()
+    }
+    init_viewlink()
+}
+
+function refresh_verses() {
+    if (pagekind == 'passage') {
+        refresh_hebrewdata()
+        refresh_hlview()
+    }
+    else {
+        if (pagekind == 'query') {
+            refresh_pagenav()
+        }
+        refresh_oneview()
     }
 }
 
-function init_subpage() {
-    init_hebrewdata()
-    init_hlview()
-    init_viewlink()
+function refresh_pagenav() {
+    var pagelinks = $('.rpnav')
+    themonads = $.parseJSON($('#rpmonads').val())
+    refresh_hebrewdata()
+    pagelinks.each(function() {
+        refresh_thispagenav($(this))
+    })
+}
+
+function refresh_thispagenav(rp) {
+    var vid = rp.attr('vid')
+    var page = rp.attr('page')
+    rp.click(function() {
+        $('#rlist').load(rpage_url+'?id='+vid+'&page='+page+ '#rpresult', function (response, stats, xhr) {
+            refresh_verses()
+        }, 'html')
+    })
 }
 
 function init_hebrewdata() {
@@ -76,11 +108,6 @@ function init_hebrewdata() {
 function init_hebrewdatafield(fld, val) {
     var settings = viewstate['hebrewdata']['']
     $('#'+fld).prop('checked', val == 'v')
-    if (val == 'x') {
-        $('.'+fld).each(function () {
-            $(this).toggle()
-        })
-    }
     $('#'+fld).click(function() {
         $('.'+fld).each(function () {
             $(this).toggle()
@@ -90,23 +117,48 @@ function init_hebrewdatafield(fld, val) {
     })
 }
 
-function init_pickers() {
-    if (pagekind == 'passage') {
-        for (k in viewstate['hlview']) {
-            jscolorpicker2(k, 'one')
+function refresh_hebrewdata() {
+    var settings = viewstate['hebrewdata']['']
+    var do_text = settings['txt_p']
+    var do_data = settings['txt_il']
+    if (do_data == 'v') {
+        for (fld in settings) {
+            refresh_hebrewdatafield(fld, settings[fld])
         }
     }
     else {
-        k = (pagekind == 'query')?'q':'w'
-        jscolorpicker(k, thevid)
+        for (fld in {txt_p: 1, txt_il: 1}) {
+            refresh_hebrewdatafield(fld, settings[fld])
+        }
     }
 }
 
-function init_sidelists() {
-    if (pagekind == 'passage') {
-        for (k in viewstate['hlview']) {
-            init_sidelist(k)
+function refresh_hebrewdatafield(fld, val) {
+    var settings = viewstate['hebrewdata']['']
+    $('.'+fld).each(function (i) {
+        if (val == 'x') {
+            $(this).hide()
         }
+        else {
+            $(this).show()
+        }
+    })
+}
+
+function init_hlpickers() {
+    for (k in viewstate['hlview']) {
+        jscolorpicker2(k, 'one')
+    }
+}
+
+function init_onepickers() {
+    k = (pagekind == 'query')?'q':'w'
+    jscolorpicker(k, thevid)
+}
+
+function init_sidelists() {
+    for (k in viewstate['hlview']) {
+        init_sidelist(k)
     }
 }
 
@@ -121,11 +173,10 @@ function init_sidelist(k) {
     showlist.click(function(){
         if (k == 'q') {
             if (!queriesfetched) {
-                $.get(query_url, function (data, textstatus) {
-                    thelist.html(data)
+                thelist.load(query_url, function () {
                     queriesfetched = true
                     init_sidelistitems(k)
-                    init_hlview()
+                    refresh_hlview()
                 }, 'html')
             }
         }
@@ -174,16 +225,94 @@ function init_sidelistitem(k,vid) {
 }
 
 function init_hlview() {
-    if (pagekind == 'passage') {
-        for (k in viewstate['hlview']) {
-            init_highlight(k)
-            change_hlview(k)
-        }
+    for (k in viewstate['hlview']) {
+        init_highlight(k)
     }
-    else {
-        if (thevid) {
-            add_highlights((pagekind == 'query')?'q':'w', thevid, null)
-        }
+}
+
+function refresh_hlview() {
+    for (k in viewstate['hlview']) {
+        change_hlview(k)
+    }
+}
+
+function refresh_oneview() {
+    if (thevid) {
+        add_highlights((pagekind == 'query')?'q':'w', thevid, null)
+    }
+}
+
+function change_hlview(k, picked) {
+    var activen = viewstate['hlview'][k]['active']
+    var active = $('#'+k+activen)
+    var klist = $('#'+((k=='q')?'queries':'words')+' li')
+    var selo = $('#sel'+k+'_one')
+    var hlradio = $('.'+k+'hradio')
+    var hloff = $('#'+k+'hloff')
+    var hlone = $('#'+k+'hlone')
+    var hlcustom = $('#'+k+'hlcustom')
+    var hlmany = $('#'+k+'hlmany')
+    var hlreset = $('#'+k+'hlreset')
+    var stl = style[k]['prop']
+    var selclr = selo.css(stl)
+
+    if (picked && activen != 'hlcustom' && activen != 'hlone') {
+        viewstate['hlview'][k]['active'] = 'hlcustom'
+        activen = 'hlcustom'
+        active = $('#'+k+activen)
+    }
+    hlradio.removeClass('ison')
+    active.addClass('ison')
+
+    if (activen == 'hloff') {
+        klist.each(function(index, item) {
+            add_highlights(k, $(item).attr('vid'), style[k]['off'])
+        })
+    }
+    else if (activen == 'hlone') {
+        klist.each(function(index, item) {
+            add_highlights(k, $(item).attr('vid'), selclr)
+        })
+    }
+    else if (activen == 'hlcustom') {
+        var cmap = viewstate['cmap'][k]
+        klist.each(function(index, item) {
+            var vid =  $(item).attr('vid')
+            add_highlights(k, vid, (vid in cmap)?null:selclr)
+        })
+    }
+    else if (activen =='hlmany') {
+        klist.each(function(index, item) {
+            add_highlights(k, $(item).attr('vid'), null)
+        })
+    }
+    else if (activen == 'hlreset') {
+        hlreset.removeClass('ison')
+        hlcustom.addClass('ison')
+        var selclr2 = selo.attr('defn')
+        selo.css(stl, vcolors[selclr2][k])
+        viewstate['hlview'][k]['active'] = 'hlcustom'
+        viewstate['hlview'][k]['sel_one'] = selclr2
+        viewstate['cmap'][k] = {}
+        klist.each(function(index, item) {
+            var vid =  $(item).attr('vid')
+            var sel = $('#sel'+k+'_'+vid)
+            var selc = $('#selc'+k+'_'+vid)
+            var selclr = sel.attr('defn')
+            sel.css(stl, vcolors[selclr][k])
+            selc.prop('checked', false)
+            add_highlights(k, vid, vcolors[selclr2][k])
+        })
+        /*klist.each(function(index, item) {
+            var vid = $(item).attr('vid')
+            var sel = $('#sel'+k+'_'+vid)
+            var selc = $('#selc'+k+'_'+vid)
+            var selclr = vcolors[sel.attr('defn')][k]
+            sel.css(stl, selclr)
+            selc.prop('checked', false)
+            add_highlights(k, vid, selclr)
+        })
+        */
     }
 }
 
@@ -278,19 +407,19 @@ function jscolorpicker2(k, lab) {
 function change_highlight(k, vid) {
     var sel = $('#sel'+k+'_'+vid)
     var selo = $('#sel'+k+'_one')
-    var hlmy = $('#'+k+'hlmy')
+    var hlcustom = $('#'+k+'hlcustom')
     var hlmany = $('#'+k+'hlmany')
     var defc = sel.attr('defc')
     var defn = sel.attr('defn')
     var iscust = vid in viewstate['cmap'][k]
     var stl = style[k]['prop']
-    if (!hlmy || hlmy.html() == undefined) {
+    if (!hlcustom || hlcustom.html() == undefined) {
         add_highlights(k, vid, null)
     }
     else {
-        var hlmyon = hlmy.hasClass('ison') 
+        var hlcustomon = hlcustom.hasClass('ison') 
         var hlmanyon = hlmany.hasClass('ison') 
-        if (hlmanyon || hlmyon) {
+        if (hlmanyon || hlcustomon) {
             if (hlmanyon) {
                 add_highlights(k, vid, null)
             }
@@ -304,67 +433,6 @@ function change_highlight(k, vid) {
                 }
             }
         }
-    }
-}
-
-function change_hlview(k, picked) {
-    var activen = viewstate['hlview'][k]['active']
-    var active = $('#'+k+activen)
-    var klist = $('#'+((k=='q')?'queries':'words')+' li')
-    var sel = $('#sel'+k+'_one')
-    var hlradio = $('.'+k+'hradio')
-    var hloff = $('#'+k+'hloff')
-    var hlone = $('#'+k+'hlone')
-    var hlmy = $('#'+k+'hlmy')
-    var hlmany = $('#'+k+'hlmany')
-    var hlreset = $('#'+k+'hldel')
-    var stl = style[k]['prop']
-    var selclr = sel.css(stl)
-
-    if (picked && activen != 'hlmy' && activen != 'hlone') {
-        viewstate['hlview'][k]['active'] = 'hlmy'
-        activen = 'hlmy'
-        active = $('#'+k+activen)
-    }
-    hlradio.removeClass('ison')
-    active.addClass('ison')
-
-    if (activen == 'hloff') {
-        klist.each(function(index, item) {
-            add_highlights(k, $(item).attr('vid'), style[k]['off'])
-        })
-    }
-    else if (activen == 'hlone') {
-        klist.each(function(index, item) {
-            add_highlights(k, $(item).attr('vid'), selclr)
-        })
-    }
-    else if (activen == 'hlmy') {
-        var cmap = viewstate['cmap'][k]
-        klist.each(function(index, item) {
-            var vid =  $(item).attr('vid')
-            add_highlights(k, vid, (vid in cmap)?null:selclr)
-        })
-    }
-    else if (activen =='hlmany') {
-        klist.each(function(index, item) {
-            add_highlights(k, $(item).attr('vid'), null)
-        })
-    }
-    else if (activen == 'hlreset') {
-        hlreset.removeClass('ison')
-        hlmy.addClass('ison')
-        viewstate['hlview'][k]['active'] = 'hlone'
-        viewstate['hlview'][k]['sel_one'] = sel.attr('defn')
-        viewstate['cmap'][k] = {}
-        klist.each(function(index, item) {
-            vid = $(item).attr('vid')
-            var sel = $('#sel'+k+'_'+vid)
-            var selc = $('#selc'+k+'_'+vid)
-            sel.css(stl, vcolors[sel.attr('defn')][k])
-            selc.prop('checked', false)
-            add_highlights(k, vid, selclr)
-        })
     }
 }
 
