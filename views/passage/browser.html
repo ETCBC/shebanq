@@ -4,6 +4,7 @@
 {{ block head }}
     <script type="text/javascript">
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
+var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, qget='v'), host=True))}}"
     </script>
 {{ end }}
 
@@ -34,12 +35,7 @@ var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
     {{include 'passage/word_form.html'}}
 </div>
 <div>
-    <span id="s_queries">{{=A(
-            'get queries',
-            _id='fetchqueries',
-            callback=URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, qget=1)),
-            target='qbar',
-        )}}</span>
+    <a id="s_queries" href="#">show queries</a>
     <a id="h_queries" href="#">hide queries</a>
 </div>
 <div id='qbar'>

@@ -27,13 +27,11 @@ import xml.etree.ElementTree as ET
 from render import Verses, Viewsettings
 from shemdros import MqlResource, RemoteException
 
-def refresh_view(vid, monads):
+def refresh_view(monads):
     return '''
-var thevid = {vid}
 var themonads = {monads}
 init_subpage()
 '''.format(
-    vid=vid,
     monads=json.dumps(monads)
 )
 
@@ -202,9 +200,8 @@ def get_pagination(p, monad_sets, vid):
             else:
                 v += 1
 
-    vsettings = Viewsettings('query')
     verses = Verses(passage_db, 'query', verse_ids=verse_ids) if p <= cur_page and len(verse_ids) else None
-    return (nvt, cur_page, verses, vsettings, refresh_view(vid, list(verse_monads)))
+    return (nvt, cur_page, verses, refresh_view(list(verse_monads)))
 
 def index():
     redirect(URL('edit_query'))
@@ -291,7 +288,8 @@ def show_query(title):
 def show_results(record_id):
     page = response.vars.page if response.vars else 1
     monad_sets = load_monad_sets(record_id)
-    (nresults, npages, verse_data, viewsettings, jsrefresh) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, jsrefresh) = get_pagination(page, monad_sets, record_id)
+    viewsettings = Viewsettings('query', vid=record_id)
     return dict(
         vid=record_id,
         results=nresults,
@@ -312,13 +310,12 @@ def result_page():
             results = 0,
             pages=0, page=0, pagelist=[],
             verse_data=[],
-            viewsettings=None,
             page_kind='query',
         )
 
     monad_sets = load_monad_sets(record_id)
 
-    (nresults, npages, verse_data, viewsettings, jsrefresh) = get_pagination(page, monad_sets, record_id)
+    (nresults, npages, verse_data, jsrefresh) = get_pagination(page, monad_sets, record_id)
 
     return dict(
         exception=None,
@@ -326,7 +323,6 @@ def result_page():
         results=nresults,
         pages=npages, page=page, pagelist=pagelist(page, npages, 10),
         verse_data=verse_data,
-        viewsettings=viewsettings,
         jsrefresh=jsrefresh,
         page_kind='query',
     )

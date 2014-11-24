@@ -13,8 +13,6 @@
     }}
     <script type="text/javascript">
 var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
-var thevid = {}
-var themonads = {}
     </script>
 {{verses = verse_data}}
                 <div>
@@ -23,18 +21,16 @@ var themonads = {}
 {{else:}}
                     <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
 {{pass}}
-{{if verses != None:}}
-    {{include 'passage/view_settings.html'}}
-{{pass}}
                 </div>
                 <div class="monad_sets qresults" id="qresults">
                     {{if verses != None:}}
+                        <div class="txt_il">{{=XML(verses.this_legend)}}</div>
                         {{for verse in verses.verses:
                             (book, chapter) = verse.chapter_link()
                         }}
                             <div class="book-title">{{=A(
                                 verse.citation_ref(),
-                                _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, qget=1))
+                                _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, qget='v'))
                             )}}</div>
                             <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
                             <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>

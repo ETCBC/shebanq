@@ -8,7 +8,7 @@
             <td>word:</td>
             <td><a href="#" id="whldel" class="whradio">reset</a></td>
             <td><a href="#" id="whlmany" class="whradio">many</a></td>
-            <td><a href="#" id="whlmy" class="whradio">my own</a></td>
+            <td><a href="#" id="whlmy" class="whradio">custom</a></td>
             <td>{{=XML(viewsettings.colorpicker('w', 'one', '2'))}}</td>
             <td><a href="#" id="whlone" class="whradio">one</a></td>
             <td><a href="#" id="whloff" class="whradio">off</a></td>
@@ -16,7 +16,7 @@
             <td>query:</td>
             <td><a href="#" id="qhldel" class="qhradio">reset</a></td>
             <td><a href="#" id="qhlmany" class="qhradio">many</a></td>
-            <td><a href="#" id="qhlmy" class="qhradio">my own</a></td>
+            <td><a href="#" id="qhlmy" class="qhradio">custom</a></td>
             <td>{{=XML(viewsettings.colorpicker('q', 'one', '2'))}}</td>
             <td><a href="#" id="qhlone" class="qhradio">one</a></td>
             <td><a href="#" id="qhloff" class="qhradio">off</a></td>
@@ -29,4 +29,6 @@
     <input type="checkbox" id="txt_p" name="txt_p"/>text
     <input type="checkbox" id="txt_il" name="txt_il"/>data
 </div>
+{{if page_kind == 'passage':}}
 <div class="txt_il">{{=XML(verses.this_legend)}}</div>
+{{pass}}

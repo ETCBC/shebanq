@@ -30,7 +30,7 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
-var vcolors, viewstate, style, pagekind, view_url, thebook, thechapter, thevid, themonads
+var vcolors, viewstate, style, pagekind, view_url, thebook, thechapter, thevid, themonads, query_url, queriesfetched
 
 function getvars() {
     var vars = ''
@@ -52,8 +52,8 @@ function init_page() {
     if (pagekind != 'passage' || thechapter != 0) {
         init_hebrewdata()
         init_pickers()
-        init_sidelists()
         if (pagekind == 'passage') {
+            init_sidelists()
             init_hlview()
         }
         init_viewlink()
@@ -62,7 +62,6 @@ function init_page() {
 
 function init_subpage() {
     init_hebrewdata()
-    init_pickers()
     init_hlview()
     init_viewlink()
 }
@@ -116,11 +115,23 @@ function init_sidelist(k) {
     var hidelist = $('#h_'+klistn)
     var showlist = $('#s_'+klistn)
     var thelist = $('#'+k+'bar')
+    if (k == 'q') {
+        queriesfetched = false
+    }
     showlist.click(function(){
+        if (k == 'q') {
+            if (!queriesfetched) {
+                $.get(query_url, function (data, textstatus) {
+                    thelist.html(data)
+                    queriesfetched = true
+                    init_sidelistitems(k)
+                    init_hlview()
+                }, 'html')
+            }
+        }
         hidelist.show()
         thelist.show()
         showlist.hide()
-        init_sidelistitems(k)
         viewstate['hlview'][k]['get'] = 'v'
         savestate('hlview',k)
     })
@@ -132,11 +143,10 @@ function init_sidelist(k) {
         savestate('hlview',k)
     })
     if (viewstate['hlview'][k]['get'] == 'v') {
-        showlist.hide()
-        if (k == 'q') {
-            $('#fetchqueries').click()
+        showlist.click()
+        if (k != 'q') {
+            init_sidelistitems(k)
         }
-        init_sidelistitems(k)
     }
     else {
         hidelist.hide()
@@ -171,7 +181,9 @@ function init_hlview() {
         }
     }
     else {
-        add_highlights((pagekind == 'query')?'q':'w', thevid, null)
+        if (thevid) {
+            add_highlights((pagekind == 'query')?'q':'w', thevid, null)
+        }
     }
 }
 
@@ -254,7 +266,7 @@ function jscolorpicker2(k, lab) {
         picker.hide()
         sel.css(stl, $(this).css(stl))
         viewstate['hlview'][k]['sel_'+lab] = $(this).html()
-        change_hlview(k)
+        change_hlview(k, true)
         savestate('hlview',k)
     })
     var colorn = viewstate['hlview'][k]['sel_'+lab]
@@ -295,7 +307,7 @@ function change_highlight(k, vid) {
     }
 }
 
-function change_hlview(k) {
+function change_hlview(k, picked) {
     var activen = viewstate['hlview'][k]['active']
     var active = $('#'+k+activen)
     var klist = $('#'+((k=='q')?'queries':'words')+' li')
@@ -309,9 +321,13 @@ function change_hlview(k) {
     var stl = style[k]['prop']
     var selclr = sel.css(stl)
 
+    if (picked && activen != 'hlmy' && activen != 'hlone') {
+        viewstate['hlview'][k]['active'] = 'hlmy'
+        activen = 'hlmy'
+        active = $('#'+k+activen)
+    }
     hlradio.removeClass('ison')
     active.addClass('ison')
-    if (activen == 'hlone' || activen == 'hlmy') {sel.show()} else {sel.hide()}
 
     if (activen == 'hloff') {
         klist.each(function(index, item) {

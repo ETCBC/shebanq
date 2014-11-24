@@ -98,8 +98,9 @@ def vsel(k, vid, defn, typ):
     return (tstart + selc + sel + tend).format (k=k,vid=vid, dn=defn, lab=content)
 
 class Viewsettings():
-    def __init__(self, page_kind):
+    def __init__(self, page_kind, vid=None):
         self.page_kind = page_kind
+        self.vid = vid
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
         for group in settings:
             self.state[group] = {}
@@ -137,6 +138,7 @@ var style = {style}
 var pagekind = '{pagekind}'
 var thebook = '{book}'
 var thechapter = {chapter}
+var thevid = {vid}
 init_page()
 '''.format(
     initstate=json.dumps(self.state),
@@ -145,6 +147,7 @@ init_page()
     pagekind = self.page_kind,
     book = current.request.vars.book or '',
     chapter = current.request.vars.chapter or 0,
+    vid = 'null' if self.vid == None else self.vid,
 )
 
     def colorpicker(self, k, vid, typ):
