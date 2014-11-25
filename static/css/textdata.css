@@ -41,7 +41,6 @@ table.il {
     border-spacing: 1pt 0pt;
     border-top: 2pt solid #aaaaaa;
     border-bottom: 2pt solid #aaaaaa;
-    display: none;
 }
 table.c {
     width: 10em;
@@ -51,14 +50,12 @@ tr.il {
     padding-right: 0pt;
     margin-left: 0pt;
     margin-right: 0pt;
-    display: none;
 }
 td.il {
     padding-left: 4pt;
     padding-right: 4pt;
     margin-left: 0pt;
     margin-right: 0pt;
-    display: none;
 }
 td.c {
     text-align: center;
@@ -201,7 +198,6 @@ span.il {
     font-size: 10pt;
     color: #000000;
     line-height: 11pt;
-    display: none;
 }
 span.wd1_lang, span.l_wd1_lang {
     font-style: italic;

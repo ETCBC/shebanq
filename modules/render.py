@@ -195,7 +195,6 @@ class Viewsettings():
         return '''
 var vcolors = {vcolors}
 var viewstate = {initstate}
-console.log(viewstate)
 var style = {style}
 var pagekind = '{pagekind}'
 var thebook = '{book}'
@@ -271,6 +270,16 @@ INNER JOIN verse ON verse.id = word_verse.verse_id
 {}
 ORDER BY word_number;
 '''.format(','.join(field_names), wcondition), as_dict=True)
+
+        lex_ids = passage_db.executesql('''
+SELECT id, lan, entryid, entry, entry_heb, g_entry, g_entry_heb, root, nametype, gloss FROM lexicon
+WHERE id IN (
+    SELECT DISTINCT lexicon_id FROM word_verse
+    INNER JOIN verse ON verse.id = word_verse.verse_id
+    {}
+    ORDER BY lexicon_id
+);
+'''.format(wcondition))
 
         word_data = collections.defaultdict(lambda: [])
         for record in word_records:

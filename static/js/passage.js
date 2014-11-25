@@ -138,15 +138,8 @@ function refresh_hebrewdata() {
     var settings = viewstate['hebrewdata']['']
     var do_text = settings['txt_p']
     var do_data = settings['txt_il']
-    if (do_data == 'v') {
-        for (fld in settings) {
-            refresh_hebrewdatafield(fld, settings[fld])
-        }
-    }
-    else {
-        for (fld in {txt_p: 1, txt_il: 1}) {
-            refresh_hebrewdatafield(fld, settings[fld])
-        }
+    for (fld in settings) {
+        refresh_hebrewdatafield(fld, settings[fld])
     }
 }
 
@@ -401,7 +394,6 @@ function jscolorpicker(k, vid) {
         savestate('cmap', k)
     })
     var colorn = viewstate['cmap'][k][vid]
-    console.log("JSP "+k+vid+"colorn="+colorn+" colordef="+sel.attr('defn'))
     if (colorn == undefined) {colorn = sel.attr('defn')}
     $('.cc.'+k+vid).each(function() {$(this).css(stl, vcolors[$(this).html()][k])})
     sel.css(stl, vcolors[colorn][k])
