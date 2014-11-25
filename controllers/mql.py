@@ -28,7 +28,6 @@ from render import Verses, Viewsettings
 from shemdros import MqlResource, RemoteException
 
 def get_record_id():
-    #print "get_record_id"
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
     record_id = request.vars.id
     if request.vars.id is not None:
@@ -43,7 +42,6 @@ def get_record_id():
 
 @auth.requires_login()
 def check_query_access_write(record_id=get_record_id()):
-    #print "check_query_access_write"
     authorized = True
 
     if record_id is not None and record_id > 0:
@@ -73,19 +71,42 @@ def check_query_access_execute(record_id=get_record_id()):
 def get_mql_form(record_id, readonly=False):
     mql_record = db.queries[record_id]
     buttons = [
+        TAG.button('Reset', _type='reset', _name='button_reset'),
         TAG.button('Save', _type='submit', _name='button_save'),
         TAG.button('Execute', _type='submit', _name='button_execute'),
+        TAG.button('Done', _type='submit', _name='button_done'),
     ]
-    buttons.append(TAG.button(
-            'Make Private', _type='submit', _name='button_private'
-        ) if mql_record.is_published else TAG.button(
-            'Publish', _type='submit', _name='button_public'
-        )
-    )
+    edit_link = ''
+    if readonly:
+        if auth.user and auth.user.id == mql_record.created_by:
+            edit_link = A(
+                SPAN(_class='icon pen icon-pencil'),
+                SPAN('', _class='buttontext button', _title='Edit'),
+                _class='button btn',
+                _href=URL('mql', 'edit_query', vars=dict(id=record_id)),
+            ),
+            #A('Edit', _href=URL('mql', 'edit_query', vars=dict(id=record_id)))
+        else:
+            edit_link = 'You cannot edit queries created by some one else'
+
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
-        #fields=['created_by', 'is_published', 'mql'],
-        fields=['name', 'is_published', 'description', 'mql', 'project', 'organization', 'created_on', 'created_by', 'modified_on', 'modified_by', 'executed_on'],
+        fields=[
+            'project',
+            'organization',
+            'created_on',
+            'created_by',
+            'modified_on',
+            'modified_by',
+            'executed_on',
+            'name',
+            'is_published',
+            'description',
+            'mql',
+        ],
         showid=False, ignore_rw=False,
+        col3 = dict(
+            mql=edit_link,
+        ),
         labels=dict(
             mql='MQL Query',
             is_published='Public',
@@ -100,21 +121,26 @@ def get_mql_form(record_id, readonly=False):
     )
     return mql_form
 
+def fiddle_dates(old_mql, old_modified_on):
+    def _fiddle_dates(mql_form):
+        mql = mql_form.vars.mql
+        modified_on = mql_form.vars.modified_on
+        if mql == old_mql:
+            mql_form.vars.modified_on = old_modified_on
+    return _fiddle_dates
 
-def handle_response(mql_form):
-    #print "handle_response"
-    mql_form.process(keepvalues=True)
+def handle_response(mql_form, old_mql, old_modified_on):
+    mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on))
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
 
         if 'button_execute' in request.vars:
-            return execute_query(record_id, with_publish=False) 
-        elif 'button_public' in request.vars:
-            return execute_query(record_id, with_publish=True) 
-        elif 'button_private' in request.vars:
-            return private_query(record_id) 
+            return execute_query(record_id) 
 
-        redirect(URL('edit_query', vars=dict(id=record_id)))
+        if 'button_save' in request.vars:
+            redirect(URL('edit_query', vars=dict(id=record_id)))
+        else:
+            redirect(URL('display_query', vars=dict(id=record_id)))
 
 
     elif mql_form.errors:
@@ -210,12 +236,11 @@ def index():
 
 @auth.requires(lambda: check_query_access_write())
 def edit_query():
-    return show_query("Edit Query")
+    return show_query("Edit Query", False)
 
 def display_query():
+    return show_query("Display Query", True)
     record_id = get_record_id()
-    if record_id is None:
-        record_id = db(db.queries.created_by == auth.user).select().last() or 0
 
     mql_record = db.queries[record_id]
     person = auth.settings.table_user[mql_record.created_by]
@@ -232,19 +257,21 @@ def display_query():
     result_dict.update(show_results(record_id))
     return result_dict
 
-def show_query(title):
+def show_query(title, readonly=True):
     record_id = get_record_id()
     if record_id is None:
         record_id = 0
-    mql_form = get_mql_form(record_id)
-    handle_response(mql_form)
+    mql_form = get_mql_form(record_id, readonly=readonly)
+    old_mql = db.queries[record_id].mql
+    old_modified_on = db.queries[record_id].modified_on
+    handle_response(mql_form, old_mql, old_modified_on)
     mql_record = db.queries[record_id]
     query = mql_record.mql
 
     response.title = T(title)
 
     result_dict = dict(
-        edit=True,
+        readonly=readonly,
         form=mql_form,
         exception=None,
         vid=record_id,
@@ -254,8 +281,8 @@ def show_query(title):
     return result_dict
 
 @auth.requires(lambda: check_query_access_execute())
-def execute_query(record_id, with_publish=None):
-    mql_form = get_mql_form(record_id)
+def execute_query(record_id):
+    mql_form = get_mql_form(record_id, readonly=False)
     mql_record = db.queries[record_id]
     monad_sets = None
     mql = MqlResource()
@@ -275,16 +302,8 @@ def execute_query(record_id, with_publish=None):
         )
 
     mql_record.update_record(executed_on=request.now)
-    mql_record.update_record(is_published='T')
     redirect(URL('edit_query', vars=dict(id=record_id)))
-    return show_query("Query Published" if with_publish else "Query Executed")
-
-@auth.requires(lambda: check_query_access_write())
-def private_query(record_id):
-    mql_record = db.queries[record_id]
-    mql_record.update_record(is_published='F')
-    redirect(URL('edit_query', vars=dict(id=record_id)))
-    return show_query("Private Query")
+    return show_query("Query Executed", readonly=False)
 
 def show_results(record_id):
     page = response.vars.page if response.vars else 1
@@ -424,7 +443,6 @@ def public_queries():
 
 @auth.requires_login()
 def delete_multiple():
-    #print request.vars.id
     if request.vars.id is not None:
         for id in request.vars.id:
             db(db.queries.id == id).delete()

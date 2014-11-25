@@ -14,6 +14,7 @@ var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars
     ua = request.user_agent().browser.name
 }}
 
+<div id="presults">
 {{ if verses != None: }}
     {{if len(verses.verses) > 0: }}
         {{include 'passage/view_settings.html'}}
@@ -24,6 +25,7 @@ var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars
     {{ pass }}
     <script type="text/javascript">{{=XML(viewsettings.refresh_verses())}}</script>
 {{ pass }}
+</div>
 
 
 {{ block left_sidebar }}

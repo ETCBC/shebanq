@@ -66,6 +66,12 @@ function init_page() {
     init_viewlink()
 }
 
+function adjust_height() {
+    subtract = (pagekind == 'query')?350:(pagekind == 'word')?350:400
+    target = (pagekind == 'query')?$('#qresults'):(pagekind == 'word')?$('#wresults'):$('#presults')
+    target.css('height', (window.innerHeight - subtract)+'px')
+}
+
 function refresh_verses() {
     if (pagekind == 'passage') {
         refresh_hebrewdata()
@@ -77,6 +83,7 @@ function refresh_verses() {
         }
         refresh_oneview()
     }
+    adjust_height()
 }
 
 function refresh_pagenav() {
@@ -352,10 +359,17 @@ function jscolorpicker(k, vid) {
     var stl = style[k]['prop']
     picker.hide()
     sel.click(function() {
-        picker.show()
+        picker.dialog({
+            dialogClass: 'cpickerd',
+            closeOnEscape: true,
+            modal: true,
+            title: 'choose a color',
+            position: {my: 'right top', at: 'left top', of: selc},
+            width: '200px',
+        })
     })
     selc.click(function() {
-        picker.hide()
+        picker.dialog('close')
         var was_cust = vid in viewstate['cmap'][k]
         if (was_cust) {
             sel.css(stl, vcolors[sel.attr('defn')][k])
@@ -369,7 +383,7 @@ function jscolorpicker(k, vid) {
         savestate('cmap', k)
     })
     $('.cc.'+k+vid).click(function() {
-        picker.hide()
+        picker.dialog('close')
         sel.css(stl, $(this).css(stl))
         viewstate['cmap'][k][vid] = $(this).html()
         selc.prop('checked', true)
@@ -389,10 +403,17 @@ function jscolorpicker2(k, lab) {
     var stl = style[k]['prop']
     picker.hide()
     sel.click(function() {
-        picker.show()
+        picker.dialog({
+            dialogClass: 'cpickerd',
+            closeOnEscape: true,
+            modal: true,
+            title: 'choose a color',
+            position: {my: 'right top', at: 'left top', of: sel},
+            width: '200px',
+        })
     })
     $('.cc.'+k+lab).click(function() {
-        picker.hide()
+        picker.dialog('close')
         sel.css(stl, $(this).css(stl))
         viewstate['hlview'][k]['sel_'+lab] = $(this).html()
         change_hlview(k, true)

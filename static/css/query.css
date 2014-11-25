@@ -89,6 +89,7 @@ div.query {
     width: 20em;
 }
 textarea.query {
+    font-family: Menlo, Courier New, Courier, monospace;
     width: 100%;
 }
 .left_ {
@@ -103,7 +104,7 @@ label.radio {
 .pagination {
     text-align: center;
 }
-.qresults {
+#qresults,#wresults {
     overflow: auto;
 }
 span.error {

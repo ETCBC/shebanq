@@ -33,6 +33,15 @@ h1, h2 {
     font-weight: normal;
     background-color: #ffffff;
 }
+#presults {
+    overflow: auto;
+}
+.cpickerd .ui-dialog-titlebar {
+    font-weight: normal;
+    font-size: 90%;
+    height: 12pt;
+    line-height: 10pt;
+}
 textarea.mql {
     font-family: Menlo, Courier New, Courier, monospace;
     background-color: white;
