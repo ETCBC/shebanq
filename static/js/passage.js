@@ -36,10 +36,20 @@ var view_url, query_url, rpage_url
 
 function getvars() {
     var vars = ''
+    var sep = '?'
+    var comps = {id: thevid, book: thebook, chapter: thechapter}
+    for (name in comps) {
+        val = comps[name]
+        if (val) {
+            vars += sep+name+"="+val
+            sep = '&'
+        }
+    }
     for (group in viewstate) {
         for (k in viewstate[group]) {
             for (name in viewstate[group][k]) {
-                vars += '&'+k+name+'='+viewstate[group][k][name] 
+                vars += sep+k+name+'='+viewstate[group][k][name] 
+                sep = '&'
             }
         }
     }
@@ -391,6 +401,7 @@ function jscolorpicker(k, vid) {
         savestate('cmap', k)
     })
     var colorn = viewstate['cmap'][k][vid]
+    console.log("JSP "+k+vid+"colorn="+colorn+" colordef="+sel.attr('defn'))
     if (colorn == undefined) {colorn = sel.attr('defn')}
     $('.cc.'+k+vid).each(function() {$(this).css(stl, vcolors[$(this).html()][k])})
     sel.css(stl, vcolors[colorn][k])

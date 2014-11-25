@@ -3,7 +3,7 @@
 
 {{ block head }}
 <script type="text/javascript">
-var view_url = "{{=XML(URL(vars=request.vars, host=True))}}"
+var view_url = "{{=XML(URL(host=True))}}"
 var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, qget='v'), host=True))}}"
 </script>
 {{ end }}

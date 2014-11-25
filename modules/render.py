@@ -53,7 +53,7 @@ specs = dict(
         v v
         v x
     '''}),
-    hlview=('''get active sel_one''', dict(q='x hlmy grey', w='x hlmy gray')),
+    hlview=('''get active sel_one''', dict(q='x hlcustom grey', w='x hlcustom gray')),
     cmap=('0', dict(q='white', w='black'))
 )
 style = dict(
@@ -176,7 +176,7 @@ class Viewsettings():
                         if x[0] == k and x[1:].isdigit():
                             vstate = current.request.vars[x]
                             from_cookie[x[1:]] = vstate
-                            self.state[group][k][x] = vstate
+                            self.state[group][k][x[1:]] = vstate
                 else:
                     for x in settings[group][k]:
                         init = settings[group][k][x]
@@ -195,6 +195,7 @@ class Viewsettings():
         return '''
 var vcolors = {vcolors}
 var viewstate = {initstate}
+console.log(viewstate)
 var style = {style}
 var pagekind = '{pagekind}'
 var thebook = '{book}'
