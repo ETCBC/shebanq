@@ -52,9 +52,9 @@ response.google_analytics_id = None
 response.menu = [
     (T('Home'), False, URL('default', 'index'), []),
     (T('About'), False, URL('default', 'about'), []),
-    (T('My Queries'), False, URL('mql', 'my_queries'), []),
-    (T('Public Queries'), False, URL('mql', 'public_queries'), []),
-    (T('Browse'), False, URL('passage', 'browser'), []),
+    (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
+    (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
+    (T('Passage'), False, URL('hebrew', 'passage'), []),
     (T('Help'), False, URL('default', 'help'), []),
 ]
 

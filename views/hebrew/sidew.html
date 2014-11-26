@@ -1,0 +1,20 @@
+{{ if side_items: }}
+    <ul id="words">
+    {{  k = 'w'
+        for si in side_items:
+            vid = si['item']['id']
+            wentry = si['item']['entry']
+            wgloss = si['item']['gloss']
+    }}
+        <li id="{{='{}{}'.format(k,vid)}}" vid="{{=vid}}" monads="{{ =si['monads'] }}">
+            <div>{{=XML(viewsettings.colorpicker(k,vid,''))}}
+                <table class="wlist" id="h_w{{=vid}}"><tr><td class="wentry">{{=A(wentry, _href=URL('lexicon', 'display_word', vars=dict(id=vid)))}}</td>
+                <td class="wgloss"><a href="#" id="m_w{{=vid}}">{{=wgloss}}</a></td></tr></table>
+            </div>
+            <div id="d_w{{=vid}}">
+                <b>{{=wentry}}</b> by <i>{{=wgloss}}</i><br/>
+            </div>
+        </li>
+    {{ pass }}
+    </ul>
+{{ pass }}

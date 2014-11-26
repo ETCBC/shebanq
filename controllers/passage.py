@@ -139,6 +139,12 @@ def browser():
     books_data = passage_db.executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
     ''')
+
+
+#    return passage_db().select(passage_db.book.ALL,
+#                               cache=(cache.ram, 3600),
+#                               cacheable=True)
+
     books_order = [x[0] for x in books_data]
     books = dict(x for x in books_data)
     result = dict(

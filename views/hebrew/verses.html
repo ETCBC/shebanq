@@ -1,0 +1,11 @@
+{{
+    ua = request.user_agent().browser.name
+}}
+{{ if verses != None: }}
+    {{if len(verses.verses) > 0: }}
+        {{ for verse in verses.verses:}}
+            <div class="txt_p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
+            <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
+        {{ pass }}
+    {{ pass }}
+{{ pass }}

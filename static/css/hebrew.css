@@ -25,7 +25,6 @@ h1, h2 {
     display: inline;
 }
 #bookselect {
-    float: left;
     width: 10em;
     line-height: 1.5em;
     height: 2em;

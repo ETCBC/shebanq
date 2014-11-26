@@ -1,0 +1,15 @@
+<div class="mql_form" id="mform">
+{{=form}}
+</div>
+
+<div>
+    <p>{{if not query.executed_on:}}<span class='warning'>This query needs to be executed.</span>
+    {{elif query.executed_on < query.modified_on:}}<span class='error'>The stored query results are outdated.</span>
+    {{else:}}<span class='info'>The stored query results are up to date.</span>
+    {{pass}}</p>
+    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
+    <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
+    <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
+</div>
+
+

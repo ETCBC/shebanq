@@ -1,38 +1,11 @@
-function replace_select_options(selectBox, last_chapter_num) {
-    $(selectBox).empty()
-    for(var i=1; i<=last_chapter_num; i++){
-        $(selectBox)
-            .append($("<option></option>")
-            .attr("value", i)
-            .text(i))
-    }
-}
-
-function get_last_chapter_num() {
-    $("select#verses_form_Book").change(function () {
-        ajax('last_chapter_num', ['Book'], ':eval')
-    })
-
-    $(document).ajaxComplete(function(event, xhr, settings) {
-        if (settings.url === 'last_chapter_num') {
-            replace_select_options('#verses_form_Chapter', xhr.responseText)
-        }
-    })
-}
-
-
-$(document).ready(function () {
-    get_last_chapter_num()
-})
-
 $.cookie.raw = false
 $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
-var vcolors, viewstate, style, pagekind, queriesfetched
-var thebooks, thebook, thechapter, thevid, themonads
-var view_url, chapter_url, query_url, rpage_url
+var vcolors, viewstate, style, pagekind, side_fetched
+var thebooks, thebook, thechapter, thevid, themonads, theallmonads
+var view_url, chapter_url, side_url, rpage_url
 
 function getvars() {
     var vars = ''
@@ -64,8 +37,8 @@ function init_page() {
     if (pagekind == 'passage') {
         init_hebrewdata()
         init_hlpickers()
-        clear_sidelists()
         init_sidelists()
+        refresh_sidelists()
         init_hlview()
     }
     else {
@@ -92,6 +65,9 @@ function init_books() {
     if (thebook != null) {
         books.val(thebook)
     }
+    else {
+        $('#chapterselect_control').hide()
+    }
     books.change(function () {
         thebook = books.val()
         thechapter = null
@@ -108,8 +84,6 @@ function refresh_books() {
         $('.span12 > .page-header > h1 > small').html(thebook)
         ht = '<ul>'
         nchapters = thebooks[thebook]
-        //chapters.html('Book '+thebook+' has '+thebooks[thebook]+' chapters')
-        //chapters.html('<ul><li class="active"><a>aap</a></li><li>noot</li></ul>')
         for (chap = 1; chap <= nchapters; chap++) {
             if (thechapter == chap) {
                 ht += '<li class="active"><a class="chnav" href="#" chapter="'+chap+'">'+chap+'</a></li>'
@@ -124,18 +98,36 @@ function refresh_books() {
             var prnt = $(this).closest('li')
             var isloaded = prnt.hasClass('active')
             if (!isloaded) {
+                $('#chapterselect').dialog('close')
                 var newchapter = $(this).attr('chapter')
                 var oldchap = (thechapter == null)?null:$('a[chapter='+thechapter+']').closest('li')
                 var newchap = $(this).closest('li')
-                $('#presults').load(chapter_url+'?book='+thebook+'&chapter='+newchapter, function (response, stats, xhr) {
-                    if (oldchap) {oldchap.removeClass('active')}
-                    newchap.addClass('active')
+                $('#verses').load(chapter_url+'?book='+thebook+'&chapter='+newchapter, function (response, stats, xhr) {
                     thechapter = newchapter 
                     $('.span12 > .page-header > h1 > small').html(thebook+" "+thechapter)
+                    if (oldchap) {oldchap.removeClass('active')}
+                    newchap.addClass('active')
+                    refresh_verses()
                 }, 'html')
             }
         })
+        $('#chapterselect_control').click(function () {
+            present_chapters()
+        })
+        $('#chapterselect_control').show()
+        present_chapters()
     }
+}
+
+function present_chapters() {
+    $('#chapterselect').dialog({
+        dialogClass: 'chapters',
+        closeOnEscape: true,
+        modal: false,
+        title: 'choose chapter',
+        position: {my: 'right top', at: 'left top', of: $('#bookselect')},
+        width: '450px',
+    })
 }
 
 function adjust_height() {
@@ -147,7 +139,7 @@ function adjust_height() {
 function refresh_verses() {
     if (pagekind == 'passage') {
         refresh_hebrewdata()
-        clear_sidelists()
+        refresh_sidelists(true)
         refresh_hlview()
     }
     else {
@@ -245,16 +237,20 @@ function init_sidelists() {
     }
 }
 
-function clear_sidelists() {
+function refresh_sidelists(erase) {
+    side_fetched = {}
     for (k in viewstate['hlview']) {
-        clear_sidelist(k)
+        refresh_sidelist(k, erase)
     }
 }
 
-function fetchqueries(thelist) {
-    if (!queriesfetched && thechapter) {
-        thelist.load(query_url, {book: thebook, chapter: thechapter}, function () {
-            queriesfetched = true
+function fetch_sideitems(k, thelist) {
+    if (!side_fetched[k] && thechapter) {
+        console.log(thelist)
+        console.log('fetch'+k)
+        thelist.load(side_url+k, {book: thebook, chapter: thechapter}, function () {
+            console.log('fetched'+k)
+            side_fetched[k] = true
             init_sidelistitems(k)
             refresh_hlview()
         }, 'html')
@@ -262,17 +258,11 @@ function fetchqueries(thelist) {
 }
 
 function init_sidelist(k) {
-    var klistn = (k == 'q')?'queries':'words'
-    var hidelist = $('#h_'+klistn)
-    var showlist = $('#s_'+klistn)
-    var thelist = $('#'+k+'bar')
-    if (k == 'q') {
-        queriesfetched = false
-    }
+    var hidelist = $('#h_side_'+k)
+    var showlist = $('#s_side_'+k)
+    var thelist = $('#side_items_'+k)
     showlist.click(function(){
-        if (k == 'q') {
-            fetchqueries(thelist)
-        }
+        fetch_sideitems(k, thelist)
         hidelist.show()
         thelist.show()
         showlist.hide()
@@ -288,20 +278,17 @@ function init_sidelist(k) {
     })
 }
 
-function clear_sidelist(k) {
-    var klistn = (k == 'q')?'queries':'words'
-    var hidelist = $('#h_'+klistn)
-    var showlist = $('#s_'+klistn)
-    var thelist = $('#'+k+'bar')
-    thelist.html('')
-    if (k == 'q') {
-        queriesfetched = false
+function refresh_sidelist(k, erase) {
+    var hidelist = $('#h_side_'+k)
+    var showlist = $('#s_side_'+k)
+    var thelist = $('#side_items'+k)
+    if (erase) {
+        thelist.html('')
+        side_fetched[k] = false
     }
     if (viewstate['hlview'][k]['get'] == 'v') {
-        showlist.click()
-        if (k != 'q') {
-            init_sidelistitems(k)
-        }
+        fetch_sideitems(k, thelist)
+        showlist.hide()
     }
     else {
         hidelist.hide()
@@ -311,7 +298,6 @@ function clear_sidelist(k) {
 
 function init_sidelistitems(k) {
     var klist = $('#'+((k=='q')?'queries':'words')+' li')
-    console.log(klist)
     klist.each(function(index, item) {
         var vid = $(item).attr('vid')
         init_sidelistitem(k, vid)
