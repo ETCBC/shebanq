@@ -31,8 +31,8 @@ $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
 var vcolors, viewstate, style, pagekind, queriesfetched
-var thebook, thechapter, thevid, themonads
-var view_url, query_url, rpage_url
+var thebooks, thebook, thechapter, thevid, themonads
+var view_url, chapter_url, query_url, rpage_url
 
 function getvars() {
     var vars = ''
@@ -62,22 +62,84 @@ function savestate(group, k) {
 
 function init_page() {
     if (pagekind == 'passage') {
-        if (thechapter != 0) {
-            init_hebrewdata()
-            init_hlpickers()
-            init_sidelists()
-            init_hlview()
-        }
+        init_hebrewdata()
+        init_hlpickers()
+        clear_sidelists()
+        init_sidelists()
+        init_hlview()
     }
     else {
         init_hebrewdata()
         init_onepickers()
     }
     init_viewlink()
+    adjust_height()
+}
+
+function init_books() {
+    books = $('#bookselect')
+    books.append($("<option></option>")
+        .attr("value", null)
+        .text("choose a book ..")
+    )
+    for (i in thebooksorder) {
+        book =  thebooksorder[i]
+        books.append($("<option></option>")
+            .attr("value", book)
+            .text(book)
+        )
+    }
+    if (thebook != null) {
+        books.val(thebook)
+    }
+    books.change(function () {
+        thebook = books.val()
+        thechapter = null
+        refresh_books()
+    })
+}
+
+function refresh_books() {
+    chapters = $('#chapterselect')
+    if (thebook == null) {
+        chapters.html('')
+    }
+    else {
+        $('.span12 > .page-header > h1 > small').html(thebook)
+        ht = '<ul>'
+        nchapters = thebooks[thebook]
+        //chapters.html('Book '+thebook+' has '+thebooks[thebook]+' chapters')
+        //chapters.html('<ul><li class="active"><a>aap</a></li><li>noot</li></ul>')
+        for (chap = 1; chap <= nchapters; chap++) {
+            if (thechapter == chap) {
+                ht += '<li class="active"><a class="chnav" href="#" chapter="'+chap+'">'+chap+'</a></li>'
+            }
+            else {
+                ht += '<li><a class="chnav" href="#" chapter="'+chap+'">'+chap+'</a></li>'
+            }
+        }
+        ht += '</ul>'
+        chapters.html(ht)
+        $('.chnav').click(function() {
+            var prnt = $(this).closest('li')
+            var isloaded = prnt.hasClass('active')
+            if (!isloaded) {
+                var newchapter = $(this).attr('chapter')
+                var oldchap = (thechapter == null)?null:$('a[chapter='+thechapter+']').closest('li')
+                var newchap = $(this).closest('li')
+                $('#presults').load(chapter_url+'?book='+thebook+'&chapter='+newchapter, function (response, stats, xhr) {
+                    if (oldchap) {oldchap.removeClass('active')}
+                    newchap.addClass('active')
+                    thechapter = newchapter 
+                    $('.span12 > .page-header > h1 > small').html(thebook+" "+thechapter)
+                }, 'html')
+            }
+        })
+    }
 }
 
 function adjust_height() {
-    subtract = (pagekind == 'query')?350:(pagekind == 'word')?350:400
+    subtract = (pagekind == 'query')?250:(pagekind == 'word')?250:300
     target = (pagekind == 'query')?$('#qresults'):(pagekind == 'word')?$('#wresults'):$('#presults')
     target.css('height', (window.innerHeight - subtract)+'px')
 }
@@ -85,6 +147,7 @@ function adjust_height() {
 function refresh_verses() {
     if (pagekind == 'passage') {
         refresh_hebrewdata()
+        clear_sidelists()
         refresh_hlview()
     }
     else {
@@ -93,7 +156,6 @@ function refresh_verses() {
         }
         refresh_oneview()
     }
-    adjust_height()
 }
 
 function refresh_pagenav() {
@@ -120,6 +182,17 @@ function init_hebrewdata() {
     for (fld in settings) {
         init_hebrewdatafield(fld, settings[fld])
     }
+    $('#datalegend').hide()
+    $('#datalegend_control').click(function () {
+        $('#datalegend').dialog({
+            dialogClass: 'legend',
+            closeOnEscape: true,
+            modal: false,
+            title: 'choose data features',
+            position: {my: 'right top', at: 'left top', of: $('#yviewlink')},
+            width: '550px',
+        })
+    })
 }
 
 function init_hebrewdatafield(fld, val) {
@@ -172,6 +245,22 @@ function init_sidelists() {
     }
 }
 
+function clear_sidelists() {
+    for (k in viewstate['hlview']) {
+        clear_sidelist(k)
+    }
+}
+
+function fetchqueries(thelist) {
+    if (!queriesfetched && thechapter) {
+        thelist.load(query_url, {book: thebook, chapter: thechapter}, function () {
+            queriesfetched = true
+            init_sidelistitems(k)
+            refresh_hlview()
+        }, 'html')
+    }
+}
+
 function init_sidelist(k) {
     var klistn = (k == 'q')?'queries':'words'
     var hidelist = $('#h_'+klistn)
@@ -182,13 +271,7 @@ function init_sidelist(k) {
     }
     showlist.click(function(){
         if (k == 'q') {
-            if (!queriesfetched) {
-                thelist.load(query_url, function () {
-                    queriesfetched = true
-                    init_sidelistitems(k)
-                    refresh_hlview()
-                }, 'html')
-            }
+            fetchqueries(thelist)
         }
         hidelist.show()
         thelist.show()
@@ -203,6 +286,17 @@ function init_sidelist(k) {
         viewstate['hlview'][k]['get'] = 'x'
         savestate('hlview',k)
     })
+}
+
+function clear_sidelist(k) {
+    var klistn = (k == 'q')?'queries':'words'
+    var hidelist = $('#h_'+klistn)
+    var showlist = $('#s_'+klistn)
+    var thelist = $('#'+k+'bar')
+    thelist.html('')
+    if (k == 'q') {
+        queriesfetched = false
+    }
     if (viewstate['hlview'][k]['get'] == 'v') {
         showlist.click()
         if (k != 'q') {
@@ -217,6 +311,7 @@ function init_sidelist(k) {
 
 function init_sidelistitems(k) {
     var klist = $('#'+((k=='q')?'queries':'words')+' li')
+    console.log(klist)
     klist.each(function(index, item) {
         var vid = $(item).attr('vid')
         init_sidelistitem(k, vid)

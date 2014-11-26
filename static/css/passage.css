@@ -21,6 +21,18 @@ h1, h2 {
 #verses_form ul, #verses_form li, #verses_form div, #verses_form label {
     display: inline;
 }
+.passageselect {
+    display: inline;
+}
+#bookselect {
+    float: left;
+    width: 10em;
+    line-height: 1.5em;
+    height: 2em;
+}
+#chapterselect,#chapterselect ul, #chapterselect ul li {
+    display: inline;
+}
 #verses_form .btn {
     vertical-align: top;
 }

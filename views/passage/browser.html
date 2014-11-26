@@ -4,32 +4,31 @@
 {{ block head }}
 <script type="text/javascript">
 var view_url = "{{=XML(URL(host=True))}}"
-var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars.book, chapter=request.vars.chapter, qget='v'), host=True))}}"
+var chapter_url = "{{=XML(URL('passage', 'chapter_form', host=True))}}"
+var query_url = "{{=XML(URL('passage', 'query_form', host=True))}}"
+var thebooks = {{=XML(books)}}
+var thebooksorder = {{=XML(booksorder)}}
+var thebook = {{='null' if book == None else XML("'"+book+"'")}}
+var thechapter = {{='null' if chapter == None else chapter}}
 </script>
 {{ end }}
 
-{{ include 'passage/browser_form.html' }}
+<div class="passageselect"><select id="bookselect"></select></div>
+<div class="pagination" id="chapterselect"></div>
+<script type="text/javascript">
+init_books()
+refresh_books()
+</script>
 
-{{
-    ua = request.user_agent().browser.name
-}}
+
+{{include 'passage/view_settings.html'}}
 
 <div id="presults">
-{{ if verses != None: }}
-    {{if len(verses.verses) > 0: }}
-        {{include 'passage/view_settings.html'}}
-        {{ for verse in verses.verses:}}
-            <div class="txt_p"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.plain_text(ua))}}</div>
-            <div class="txt_il"><span class="vnum">{{=verse.verse_num}}&nbsp;</span>{{=XML(verse.rich_text(ua))}}</div>
-        {{ pass }}
-    {{ pass }}
-    <script type="text/javascript">{{=XML(viewsettings.refresh_verses())}}</script>
-{{ pass }}
+    {{include 'passage/chapter_form.html'}}
 </div>
 
 
 {{ block left_sidebar }}
-{{ if request.vars.chapter: }}
 <div>
     <a id="s_words" href="#">show words</a>
     <a id="h_words" href="#">hide words</a>
@@ -44,6 +43,5 @@ var query_url = "{{=XML(URL('passage', 'query_form', vars=dict(book=request.vars
 <div id='qbar'>
     {{include 'passage/query_form.html'}}
 </div>
-{{ pass}}
 {{ end }}
 

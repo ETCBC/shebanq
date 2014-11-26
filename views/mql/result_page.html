@@ -20,20 +20,6 @@
         <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
     {{pass}}
     </div>
-    <div class="monad_sets qresults" id="qresults">
-    {{if verses != None:}}
-        {{for verse in verses.verses:
-            (book, chapter) = verse.chapter_link()
-        }}
-                <div class="book-title">{{=A(
-                    verse.citation_ref(),
-                    _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, qget='v'))
-                )}}</div>
-                <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
-                <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>
-        {{pass}}
-    {{pass}}
-    </div>
     <div class="pagination">
         <input type="hidden" id="rpmonads" value="{{=monads}}"/>
         <ul>
@@ -57,6 +43,20 @@
             <li>{{=A('»', _class='rpnav', _vid=vid, _page=page+1, _href='#')}}</li>
     {{pass}}
         </ul>
+    </div>
+    <div class="monad_sets qresults" id="qresults">
+    {{if verses != None:}}
+        {{for verse in verses.verses:
+            (book, chapter) = verse.chapter_link()
+        }}
+                <div class="book-title">{{=A(
+                    verse.citation_ref(),
+                    _href=URL('passage', 'browser', vars=dict(book=book, chapter=chapter, qget='v'))
+                )}}</div>
+                <div class="txt_p">{{=XML(verse.plain_text(ua))}}</div>
+                <div class="txt_il">{{=XML(verse.rich_text(ua))}}</div>
+        {{pass}}
+    {{pass}}
     </div>
 {{pass}}
 </div>
