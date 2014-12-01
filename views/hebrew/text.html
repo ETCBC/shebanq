@@ -1,0 +1,75 @@
+{{ left_sidebar_enabled = True }}
+{{ extend 'layout.html' }}
+{{ block head }}
+<script type="text/javascript">
+var view_url = "{{=XML(URL(host=True))}}"
+var material_url = "{{=XML(URL('hebrew', 'material', host=True))}}"
+var side_url = "{{=XML(URL('hebrew', 'side', host=True))}}"
+var color_url = "{{=XML(URL('hebrew', 'sideview', host=True))}}"
+var thebooks = {{=XML(books)}}
+var thebooksorder = {{=XML(booksorder)}}
+</script>
+{{ end }}
+
+<div id="material">
+    <div id="material_heading">
+        <div id="viewlink">
+            <a id="viewlink_show" href="#">share link</a>
+            <a id="viewlink_hide" href="#">done</a>
+            <textarea readonly id="viewlink_content"></textarea>
+        </div>
+        <div id="select_passage">
+            <select id="select_book"></select>
+            <a id="select_control_chapter" href="#">Chapters ...</a>
+            <span id="select_contents_chapter"></span>
+        </div>
+        <div id="select_pages">
+            <a id="select_control_page" href="#">Pages ...</a>
+            <span id="select_contents_page"></span>
+        </div>
+        <div id="material_settings">
+            <a href="#" id="mtxt_p" class="mhradio">text</a>
+            <a href="#" id="mtxt_il" class="mhradio">data</a>
+            <a id="datalegend_control" href="#">legend</a>
+            <span id="datalegend" class="txt_il2">{{=XML(viewsettings.legend())}}</span>
+        </div>
+    </div>
+    <div id="material_message"></div>
+    <div id="material_txt_p"></div>
+    <div id="material_txt_il"></div>
+</div>
+
+
+{{ block left_sidebar }}
+<div id="side_bar_m">
+    <div id="side_settings_m">
+        <table class="hlsettings">
+            <tr><td id="colorpicker_m"></td></tr>
+        </table>
+    </div>
+    <div id="side_material_m" class="mql_form"></div>
+</div>
+{{ for (k, kk) in (('w', 'words'), ('q', 'queries')):
+}}
+<div id="side_bar_{{=k}}">
+    <a id="side_show_{{=k}}" href="#">show {{=kk}}</a>
+    <a id="side_hide_{{=k}}" href="#">hide {{=kk}}</a>
+    <div id="side_settings_{{=k}}">
+        <table class="hlsettings">
+            <tr>
+                <td><a href="#" id="{{=k}}hlreset" class="hradio_{{=k}}">reset</a></td>
+                <td><a href="#" id="{{=k}}hlmany" class="hradio_{{=k}}">many</a></td>
+                <td><a href="#" id="{{=k}}hlcustom" class="hradio_{{=k}}">custom</a></td>
+                <td>{{=XML(viewsettings.colorpicker('w', 'one', '2'))}}</td>
+                <td><a href="#" id="{{=k}}hlone" class="hradio_{{=k}}">one</a></td>
+                <td><a href="#" id="{{=k}}hloff" class="hradio_{{=k}}">off</a></td>
+            </tr>
+        </table>
+    </div>
+    <div id="side_material_{{=k}}"></div>
+</div>
+{{pass}}
+{{ end }}
+
+<script type="text/javascript">{{=XML(viewsettings.dynamics())}}</script>
+

@@ -54,7 +54,7 @@ response.menu = [
     (T('About'), False, URL('default', 'about'), []),
     (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
     (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
-    (T('Passage'), False, URL('hebrew', 'passage'), []),
+    (T('The Text'), False, URL('hebrew', 'text'), []),
     (T('Help'), False, URL('default', 'help'), []),
 ]
 
