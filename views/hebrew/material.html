@@ -1,3 +1,4 @@
+<div>
 <div id="material_message">
 {{if exception_message is not None:}}
     <div class="exception">{{=exception_message}}</div>
@@ -5,10 +6,10 @@
 {{if exception is not None:}}
     <div class="exception">Remote exception: {{=exception}}</div>
 {{pass}}
-{{if pagekind == 'm'}}
+{{if pagekind == 'm':}}
     <p>{{=results}} verses</p>
 {{elif pagekind == 'q':}}
-    {{if page == 0:}}
+    {{if pages == 0:}}
     <p>No query results</p>
     {{else:}}
     <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}<p>
@@ -20,11 +21,10 @@
     <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
     {{pass}}
 {{pass}}
-<div>
+</div>
 
 <div id="material_select">
 {{if pagekind != 'm':}}
-{{else:}}
     <span id="select_contents_page">
         <input type="hidden" id="rp_pages" value="{{=pages}}">
         <input type="hidden" id="rp_pagelist" value="{{=pagelist}}">
@@ -36,13 +36,14 @@
 {{ if material != None: }}
     {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}
-        tp = material.tp
+        {{ tp = material.tp }}
         {{ for verse in material.verses:}}
-            <div class="{{=tp}}"><span class="vnum">{{=verse.label()}}&nbsp;</span>{{=XML(verse.material(ua))}}</div>
+            <div class="{{=tp}}"><span class="vnum">{{=verse.label()}}</span>&nbsp;<span>{{=XML(verse.material(ua))}}</span></div>
         {{ pass }}
     {{ pass }}
 {{ else: }}
     No material found.
 {{ pass }}
+</div>
 </div>
 

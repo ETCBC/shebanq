@@ -83,6 +83,7 @@ var vcolors, viewstate, viewfluid, style, title, side_fetched, material_fetched
 var thebooks, themonads
 var view_url, material_url, side_url, rpage_url, color_url
 var page
+var subtract = 250
 
 
 // TOP LEVEL: DYNAMICS, PAGE, SKELETON
@@ -90,21 +91,40 @@ var page
 function dynamics() {
     viewfluid = {}
     page = new Page()
-    page.go('m', null, null, null, null)
+    page.go('m')
 }
 
 function Page() {
+    var settings = viewstate['material']['']
     this.skeleton = new Skeleton()
-    this.apply = function() {
-        this.skeleton.apply()
+    this.prev = {}
+    for (x in settings) {
+        this.prev[x] = null
     }
-    this.go = function(k, book, chapter, vid, pg) {
-        var settings = viewstate['material']['']
-        if (book != null) {settings['book'] = book}
-        if (chapter != null) {settings['chapter'] = chapter}
-        if (k != null) {settings['pagekind'] = k}
-        if (vid != null) {settings['pagekind'+'id'] = vid}
-        if (pg != null) {settings['page'] = pg}
+    this.apply = function() {
+        var pagekind = settings['pagekind']
+        var thechapter = settings['chapter']
+        this.skeleton.apply()
+        $('#thechapter').html((thechapter > 0)?thechapter:'')
+        if (pagekind == 'q') {
+            $('#side_bar_m').show()
+        }
+        else {
+            $('#side_bar_m').hide()
+        }
+        for (x in settings) {
+            this.prev[x] = settings[x]
+        }
+    }
+    this.go = function(pagekind) {
+        settings['pagekind'] = pagekind
+        if (
+            settings['pagekind'] != this.prev.pagekind ||
+            (this.prev.pagekind == 'm' && (settings['book'] != this.prev.book || settings['chapter'] != this.prev.chapter)) ||
+            (this.prev.pagekind != 'm' && (settings[pagekind+id] != this.prev.vid || settings['pg'] != this.prev.pg))
+        ) {
+            material_fetched = {'txt_p': false, 'txt_il': false}
+        }
         savestate('material','')
         this.apply()
     }
@@ -117,13 +137,15 @@ function Skeleton() {
         this.material.apply()
         //this.sidebars.apply()
     }
+    $('#material_txt_p').css('height', (window.innerHeight - subtract)+'px')
+    $('#material_txt_il').css('height', (2 * window.innerHeight - subtract)+'px')
 }
 
 // MATERIAL
 
 function Material() {
+    var js_this = this
     var pagekind = viewstate['material']['']['pagekind']
-    var subtract = style[pagekind]['subtract']
     this.name = 'material'
     this.hid = '#'+this.name
     this.cselect = $('#material_select')
@@ -156,18 +178,17 @@ function Material() {
             vars += '&rpage='+settings['rpage']
             do_fetch = settings[pagekind+'id'] >=0
         }
-        if (!do_fetch || material_fetched[tp]) {}
-        else {
+        if (do_fetch && !material_fetched[tp]) {
             this.message.msg('fetching data ...')
             $.get(material_url+vars, function(html) {
                 var response = $(html)
                 if (pagekind != 'm') {
-                    this.pselect.add(response)
+                    js_this.pselect.add(response)
                 }
-                this.message.add(response)
-                this.content.add(response)
+                js_this.message.add(response)
+                js_this.content.add(response)
                 material_fetched[tp] = true
-                this.process()
+                js_this.process()
             }, 'html')
         }
     }
@@ -179,7 +200,6 @@ function Material() {
             this.psettings.apply()
         }
     }
-    $(this.hid).css('height', (window.innerHeight - subtract)+'px')
     this.message.msg('choose a passage or a query or a word')
     material_fetched = {'txt_p': false, 'txt_il': false}
 }
@@ -262,7 +282,7 @@ function PSelect() {
             this.select.apply()
         }
         this.add = function(response) {
-            $(select).html(response.children(select))
+            $(select).html(response.children(select).html())
         }
     }
     else {
@@ -287,9 +307,8 @@ function SelectBook() {
     }
     this.content.change(function () {
         settings['book'] = js_this.content.val()
-        settings['chapter'] = 0
         savestate('material', '')
-        js_this.apply()
+        page.go('m', null, null, null, null)
     })
     this.gen_html = function() {
         var ht = '<option value="x">choose a book ...</option>'
@@ -341,7 +360,7 @@ function SelectItems(up) {
         }
         var ht = ''
         if (nitems != 0) {
-            ht = '<ul>'
+            ht = '<div class="pagination"><ul>'
             for (i in itemlist) {
                 item = itemlist[i]
                 if (theitem == item) {
@@ -351,27 +370,24 @@ function SelectItems(up) {
                     ht += '<li><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
                 }
             }
-            ht += '</ul>'
+            ht += '</ul></div>'
         }
         $(this.hid).html(ht)
         return nitems
     }
     this.add_item = function(item) {
         item.click(function() {
+            var settings = viewstate['material']['']
+            var pagekind = settings['pagekind']
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
                 var settings = viewstate['material']['']
-                var olditem = settings[js_this.key]
-                var newitem = $(this).attr(js_this.key)
-                var oldobj = (olditem == 0)?null:$('a['+js_this.key+'='+olditem+']').closest('li')
-                if ($(js_this.hid).dialog('isOpen')) {$(js_this.hid).dialog('close')}
-                if (oldobj) {oldobj.removeClass('active')}
-                newobj.addClass('active')
+                var newitem = $(this).attr('item')
                 settings[js_this.key] = newitem 
-                apply_material()
+                savestate('material', '')
+                page.go('m', null, null, null, null)
             }
-            savestate('material', '')
         })
     }
     this.apply = function() {
@@ -383,8 +399,8 @@ function SelectItems(up) {
             $(this.control).hide()
         }
         else {
-            $('.itemnnav').each(function() {
-                this.add_item($(this))
+            $('.itemnav').each(function() {
+                js_this.add_item($(this))
             })
             $(this.control).show()
         }
@@ -403,7 +419,7 @@ function MMessage() {
     this.name = 'material_message'
     this.hid = '#'+this.name
     this.add = function(response) {
-        $(this.hid).html(response.children(this.hid))
+        $(this.hid).html(response.children(this.hid).html())
     }
     this.msg = function(m) {
         $(this.hid).html(m)
@@ -427,7 +443,7 @@ function MContent() {
     }
     this.add = function(response) {
         this.select()
-        $(this.hid_yes).html(response.children(this.hid_content))
+        $(this.hid_yes).html(response.children(this.hid_content).html())
     }
     this.show = function() {
         this.select()
@@ -453,7 +469,7 @@ function MSettings(content) {
         var activen = $(this).attr('id').substring(1)
         settings['tp'] = activen 
         savestate('material','')
-        js_this.apply()
+        page.go('m')
     })
     legendc.click(function () {
         legend.dialog({
@@ -487,18 +503,17 @@ function MSettings(content) {
 
 function HebrewSettings() {
     var settings = viewstate['hebrewdata']['']
-    var hsettings = []
     for (fld in settings) {
-        hsettings.push(new HebrewSetting(fld, settings[fld]))
+        this[fld] = new HebrewSetting(fld)
     }
     this.apply = function() {
-        for (i in hsettings) {
-            hsettings[i].apply()
+        for (fld in settings) {
+            this[fld].apply()
         }
     }
 }
 
-function HebrewSetting(fld, val) {
+function HebrewSetting(fld) {
     var js_this = this
     var settings = viewstate['hebrewdata']['']
     this.name = fld
@@ -509,15 +524,17 @@ function HebrewSetting(fld, val) {
         js_this.applysetting()
     })
     this.apply = function() {
-        var val = viewstate['hebrewdata'][this.name]
+        var val = settings[this.name]
         $(this.hid).prop('checked', val == 'v')
         this.applysetting()
     }
     this.applysetting = function() {
-        $('.'+this.name).each(function () {
-            if (settings[this.name] == 'v') {$(this).show()}
-            else {$(this).hide()}
-        })
+        if (settings[this.name] == 'v') {
+            $('.'+this.name).each(function () {$(this).show()})
+        }
+        else {
+            $('.'+this.name).each(function () {$(this).hide()})
+        }
     }
 }
 

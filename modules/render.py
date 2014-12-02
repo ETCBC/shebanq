@@ -58,7 +58,7 @@ specs = dict(
 style = dict(
     q=dict(prop='background-color', off='#ffffff', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
     w=dict(prop='color', off='#000000', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
-    m=dict(subtract=300),
+    m=dict(subtract=250),
 )
 
 legend_tpl = '''
@@ -242,15 +242,13 @@ class Verses():
         condition = condition_pre.format(cfield)
         wcondition = condition_pre.format(cwfield)
 
-        verse_info = []
-        if tp == 'txt_p':
-            verse_info = passage_db.executesql('''
-SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num, verse.xml FROM verse
+        verse_info = passage_db.executesql('''
+SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num{} FROM verse
 INNER JOIN chapter ON verse.chapter_id=chapter.id
 INNER JOIN book ON chapter.book_id=book.id
 {}
 ORDER BY verse.id;
-'''.format(condition)) 
+'''.format(', verse.xml' if tp == 'txt_p' else '', condition)) 
 
         word_records = []
         if tp == 'txt_il':
@@ -268,7 +266,9 @@ ORDER BY word_number;
 
         for v in verse_info:
             v_id = int(v[0])
-            self.verses.append(Verse(v[1], v[2], v[3], v[4], word_data[v_id], tp=tp, pagekind=pagekind)) 
+            xml = v[4] if tp == 'txt_p' else ''
+            self.verses.append(Verse(v[1], v[2], v[3], xml, word_data[v_id], tp=tp, pagekind=pagekind)) 
+        print('there are {} verses'.format(len(self.verses)))
 
 class Verse():
 
@@ -292,7 +292,7 @@ class Verse():
         return (self.book_name, self.chapter_num)
 
     def label(self):
-        if pagekind == 'm': return self.verse_num
+        if self.pagekind == 'm': return self.verse_num
         else:
             (book, chapter, verse) = (self.book_name.replace('_', ' '), self.chapter_num, self.verse_num)
             return ("{} {}:{}".format(book, chapter, verse), book, chapter)
