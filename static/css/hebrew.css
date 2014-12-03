@@ -6,6 +6,9 @@
 .mastheader {
     display: none;
 }
+#side_bar_w,#side_bar_q,#side_bar_m {
+    width: 20em;
+}
 .github img {
     margin: 0 10pt 0 0;
 }
@@ -16,9 +19,9 @@ a.github {
     text-decoration: none;
 }
 .logos {
-    text-align: right;
-    margin-bottom: -80pt;
-    margin-top: 25pt;
+    text-align: center;
+    margin-bottom: -100pt;
+    margin-top: 12pt;
 }
 ul.text {
     list-style-type: disc;
@@ -30,10 +33,16 @@ ol.text {
 
 /* MATERIAL TITLE */
 
-#thechapter {
+#thechapter,#theitemlabel,#theitem,#thepage {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     font-weight: bold;
     font-size: x-large;
+}
+#material_heading {
+    text-align: right;
+}
+#material_message p {
+    text-align: right;
 }
 /* MATERIAL SELECT */
 
@@ -74,11 +83,12 @@ ol.text {
     font-size: small;
     color: #CCCCCC;
 }
-.vref {
+span.vref {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: grey;
     text-align: right;
+    display: block;
 }
 
 /* SIDEBAR ITEMS: BOTH */
@@ -131,7 +141,7 @@ table.picker,.qdesc {
 
 /* picker option cell */
 
-td.cc_q,td.cc_w {
+td.cq,td.cw {
     width: 5em;
     height: 1.5em;
     text-align: center;
@@ -139,14 +149,14 @@ td.cc_q,td.cc_w {
     padding: 0;
     margin: 0;
 }
-td.cc_q {
+td.cq {
     color: #000000;
-    font-size: small;
+    font-size: x-small;
     border: 2pt solid #ffffff;
 }
-td.cc_w {
+td.cw {
     background-color: #fafafa;
-    font-size: medium;
+    font-size: x-small;
     font-weight: bold;
     border: 2pt solid #aaaaaa;
 }
@@ -262,12 +272,6 @@ div.mql_form {
 
 /* HEBREW DATA */
 
-#material_heading {
-    text-align: left;
-}
-#material_message p {
-    text-align: right;
-}
 .txt_p {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
@@ -417,7 +421,7 @@ span.ht, span.l_ht {
     color: #000000;
     line-height: 1.5;
 }
-span.hl, span.l_hl {
+.i_hl,span.hl, span.l_hl {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     color: #0000ff;
@@ -433,7 +437,7 @@ span.tl, span.l_tl {
     font-size: small;
     color: #0000ff;
 }
-span.gl, span.l_gl {
+.i_gl, span.gl, span.l_gl {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: #dd0000;

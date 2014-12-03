@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gluon.custom_import import track_changes; track_changes(True)
-import json
+import collections, json
 import xml.etree.ElementTree as ET
 from itertools import groupby
 
@@ -90,7 +90,7 @@ where
     ), as_dict=True)
 
 def get_lexemes(chapter):
-    lexeme_data = db.executesql('''
+    lexeme_data = passage_db.executesql('''
 select
     anchor, lexicon_id
 from
@@ -102,7 +102,7 @@ where
          chapter_first_m=chapter.first_m,
     ))
     grouped = collections.defaultdict(lambda: [])
-    for lex in lexeme_data:
+    for x in lexeme_data:
         grouped[x[1]].append(x[0])
     r = []
     for lex_id in grouped:
@@ -110,10 +110,8 @@ where
         r.append({'item': lexeme, 'monads': json.dumps(grouped[lex_id])})
     return r
 
-def side_q(): return side_list('q')
-def side_w(): return side_list('w')
-
-def side_list(k):
+def sidem():
+    k = request.vars.k
     (book, chapter) = getpassage()
     viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
     if k == 'q':
@@ -124,6 +122,7 @@ def side_list(k):
     return dict(
         viewsettings=viewsettings,
         side_items=side_items,
+        k=k,
     )
 
 def sideview():
@@ -151,7 +150,7 @@ def material():
         )
     else:
         vid = int(request.vars.id) if request.vars else None
-        rpage = int(request.vars.rpage) if request.vars.rpage else 1
+        page = int(request.vars.page) if request.vars.page else 1
         if vid == None:
             exception_message = "No {} selected".format('query' if pagekind == 'q' else 'w')
             return dict(
@@ -162,11 +161,12 @@ def material():
                 vid=vid,
                 pages=0,
                 page=0,
-                pagelist=[],
+                pagelist=json.dumps([]),
                 material=None,
             )
         monad_sets = load_monad_sets(vid) if pagekind == 'q' else load_word_occurrences(vid)
-        (nresults, npages, verse_data, monads) = get_pagination(rpage, monad_sets, vid)
+        (nresults, npages, verses, monads) = get_pagination(page, monad_sets, vid)
+        material = Verses(passage_db, 'q', verses, tp=tp)
         return dict(
             pagekind=pagekind,
             exception_message=None,
@@ -174,9 +174,10 @@ def material():
             results=nresults,
             vid=vid,
             pages=npages,
-            page=rpage,
-            pagelist=pagelist(rpage, npages, 10),
+            page=page,
+            pagelist=json.dumps(pagelist(page, npages, 10)),
             material=material,
+            monads=json.dumps(monads),
         )
     return result
 
@@ -239,10 +240,10 @@ def check_query_access_execute(record_id=get_record_id()):
 def get_mql_form(record_id, readonly=False):
     mql_record = db.queries[record_id]
     buttons = [
-        TAG.button('Reset', _type='reset', _name='button_reset'),
-        TAG.button('Save', _type='submit', _name='button_save'),
-        TAG.button('Execute', _type='submit', _name='button_execute'),
-        TAG.button('Done', _type='submit', _name='button_done'),
+        TAG.button('Reset', _class="smb", _type='reset', _name='button_reset'),
+        TAG.button('Save', _class="smb", _type='submit', _name='button_save'),
+        TAG.button('Execute', _class="smb", _type='submit', _name='button_execute'),
+        TAG.button('Done', _class="smb", _type='submit', _name='button_done'),
     ]
     edit_link = ''
     if readonly:
@@ -251,12 +252,11 @@ def get_mql_form(record_id, readonly=False):
                 SPAN(_class='icon pen icon-pencil'),
                 SPAN('', _class='buttontext button', _title='Edit'),
                 _class='button btn',
-                _href=URL('mql', 'edit_query', vars=dict(id=record_id)),
+                _href=URL('hebrew', 'sideqe', vars=dict(pagekind='q', id=record_id)),
+                cid=request.cid,
             ),
-            #A('Edit', _href=URL('mql', 'edit_query', vars=dict(id=record_id)))
         else:
             edit_link = 'You cannot edit queries created by some one else'
-
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
         fields=[
             'project',
@@ -285,8 +285,16 @@ def get_mql_form(record_id, readonly=False):
             executed_on='executed',
         ),
         formstyle='divs',
-        buttons=buttons
+        buttons=buttons,
     )
+    extra = DIV(
+        INPUT(_id='button_reset', _name='button_reset',value=False,_type='hidden'),
+        INPUT(_id='button_save', _name='button_save',value=False,_type='hidden'),
+        INPUT(_id='button_execute', _name='button_execute',value=False,_type='hidden'),
+        INPUT(_id='button_done', _name='button_done',value=False,_type='hidden'),
+    )
+    if not readonly:
+        mql_form[0].insert(-1,extra)
     return mql_form
 
 def fiddle_dates(old_mql, old_modified_on):
@@ -301,16 +309,12 @@ def handle_response(mql_form, old_mql, old_modified_on):
     mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on))
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
-
-        if 'button_execute' in request.vars:
+        if request.vars.button_execute == 'true':
             return execute_query(record_id) 
-
-        if 'button_save' in request.vars:
-            redirect(URL('edit_query', vars=dict(id=record_id)))
-        else:
-            redirect(URL('display_query', vars=dict(id=record_id)))
-
-
+        if request.vars.button_save == 'true':
+            pass
+        if request.vars.button_done == 'true':
+            redirect(URL('hebrew', 'sideq', vars=dict(pagekind='q', id=record_id)))
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
 
@@ -395,43 +399,30 @@ def get_pagination(p, monad_sets, vid):
             else:
                 v += 1
 
-    verses = Verses(passage_db, 'query', verse_ids=verse_ids) if p <= cur_page and len(verse_ids) else None
+    verses = verse_ids if p <= cur_page and len(verse_ids) else None
     return (nvt, cur_page, verses, list(verse_monads))
 
 
 @auth.requires(lambda: check_query_access_write())
-def edit_query():
+def sideqe():
     return show_query("Edit Query", False)
 
-def display_query():
+def sideq():
     return show_query("Display Query", True)
-    record_id = get_record_id()
-
-    mql_record = db.queries[record_id]
-    person = auth.settings.table_user[mql_record.created_by]
-    project = db.project[mql_record.project]
-    organization = db.organization[mql_record.organization]
-
-    result_dict = dict(
-        edit=False,
-        exception=None,
-        vid=record_id,
-        query=mql_record,
-        person=person, project=project, organization=organization,
-    )
-    result_dict.update(show_results(record_id))
-    return result_dict
 
 def show_query(title, readonly=True):
+    response.headers['web2py-component-flash']=None
     record_id = get_record_id()
-    if record_id is None:
+    if record_id:
+        old_mql = db.queries[record_id].mql
+        old_modified_on = db.queries[record_id].modified_on
+    else:
         record_id = 0
+        old_mql = ''
+        old_modified_on = 0
     mql_form = get_mql_form(record_id, readonly=readonly)
-    old_mql = db.queries[record_id].mql
-    old_modified_on = db.queries[record_id].modified_on
     handle_response(mql_form, old_mql, old_modified_on)
     mql_record = db.queries[record_id]
-    query = mql_record.mql
 
     response.title = T(title)
 
@@ -442,7 +433,6 @@ def show_query(title, readonly=True):
         vid=record_id,
         query=mql_record,
     )
-    result_dict.update(show_results(record_id))
     return result_dict
 
 @auth.requires(lambda: check_query_access_execute())
@@ -468,23 +458,8 @@ def execute_query(record_id):
         )
 
     mql_record.update_record(executed_on=request.now)
-    redirect(URL('edit_query', vars=dict(id=record_id)))
+    #redirect(URL('hebrew', 'text.html', vars=dict(pagekind='q', id=record_id)))
     return show_query("Query Executed", readonly=False)
-
-def show_results(record_id):
-    page = response.vars.page if response.vars else 1
-    monad_sets = load_monad_sets(record_id)
-    (nresults, npages, verse_data, monads) = get_pagination(page, monad_sets, record_id)
-    viewsettings = Viewsettings('query', vid=record_id)
-    return dict(
-        vid=record_id,
-        results=nresults,
-        pages=npages, pagelist=pagelist(page, npages, 10),
-        verse_data=verse_data,
-        viewsettings=viewsettings,
-        monads=json.dumps(monads),
-        pagekind='q',
-    )
 
 def pagelist(page, pages, spread):
     factor = 1
@@ -506,6 +481,14 @@ def parse_exception(message):
     except:
         return "<Unparsable result>"
 
+
+def sideqm():
+    vid = request.vars.id
+    return dict(load=LOAD('hebrew', 'sideq', extension='load',
+        vars=dict(pagekind='q', id=vid),
+        ajax=False, target='querybody', 
+        content='fetching query',
+    ))
 
 @auth.requires_login()
 def my_queries():
@@ -531,7 +514,7 @@ def my_queries():
                     SPAN(_class='icon info-sign icon-info-sign'),
                     SPAN('', _class='buttontext button', _title='View'),
                     _class='button btn',
-                    _href=URL('mql', 'display_query', vars=dict(id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(pagekind='q', id=row.id)),
                 ) 
             ),
             dict(
@@ -540,7 +523,7 @@ def my_queries():
                     SPAN(_class='icon pen icon-pencil'),
                     SPAN('', _class='buttontext button', _title='Edit'),
                     _class='button btn',
-                    _href=URL('mql', 'edit_query', vars=dict(id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(pagekind='q', id=row.id)),
                 ),
             ),
         ],

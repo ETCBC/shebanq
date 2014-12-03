@@ -1,0 +1,4 @@
+{{ include 'hebrew/sideq.load' }}
+<script type="text/javascript">
+activate_buttons()
+</script>

@@ -81,7 +81,7 @@ $.cookie.defaults.path = '/'
 
 var vcolors, viewstate, viewfluid, style, title, side_fetched, material_fetched
 var thebooks, themonads
-var view_url, material_url, side_url, rpage_url, color_url
+var view_url, material_url, item_url, side_url, color_url
 var page
 var subtract = 250
 
@@ -91,11 +91,12 @@ var subtract = 250
 function dynamics() {
     viewfluid = {}
     page = new Page()
-    page.go('m')
+    page.go()
 }
 
 function Page() {
     var settings = viewstate['material']['']
+    var vsettings = viewstate['highlights']
     this.skeleton = new Skeleton()
     this.prev = {}
     for (x in settings) {
@@ -103,27 +104,25 @@ function Page() {
     }
     this.apply = function() {
         var pagekind = settings['pagekind']
+        var otherpagekind = (pagekind == 'w')?'q':(pagekind == 'q')?'w':''
         var thechapter = settings['chapter']
+        var thepage = settings['page']
         this.skeleton.apply()
+        $('#theitemlabel').html((pagekind == 'm')?'':style[pagekind]['Tag'])
         $('#thechapter').html((thechapter > 0)?thechapter:'')
-        if (pagekind == 'q') {
-            $('#side_bar_m').show()
-        }
-        else {
-            $('#side_bar_m').hide()
-        }
+        $('#thepage').html((thepage > 0)?'page '+thepage:'')
         for (x in settings) {
             this.prev[x] = settings[x]
         }
     }
-    this.go = function(pagekind) {
-        settings['pagekind'] = pagekind
+    this.go = function() {
+        var pagekind = settings['pagekind']
         if (
-            settings['pagekind'] != this.prev.pagekind ||
-            (this.prev.pagekind == 'm' && (settings['book'] != this.prev.book || settings['chapter'] != this.prev.chapter)) ||
-            (this.prev.pagekind != 'm' && (settings[pagekind+id] != this.prev.vid || settings['pg'] != this.prev.pg))
+            settings['pagekind'] != this.prev['pagekind'] ||
+            (this.prev['pagekind'] == 'm' && (settings['book'] != this.prev['book'] || settings['chapter'] != this.prev['chapter'])) ||
+            (this.prev['pagekind'] != 'm' && (settings[pagekind+'id'] != this.prev['vid'] || settings['page'] != this.prev['page']))
         ) {
-            material_fetched = {'txt_p': false, 'txt_il': false}
+            material_fetched = {txt_p: false, txt_il: false}
         }
         savestate('material','')
         this.apply()
@@ -132,10 +131,10 @@ function Page() {
 
 function Skeleton() {
     this.material = new Material()
-    //this.sidebars = new Sidebars()
+    this.sidebars = new Sidebars()
     this.apply = function() {
         this.material.apply()
-        //this.sidebars.apply()
+        this.sidebars.apply()
     }
     $('#material_txt_p').css('height', (window.innerHeight - subtract)+'px')
     $('#material_txt_il').css('height', (2 * window.innerHeight - subtract)+'px')
@@ -166,7 +165,7 @@ function Material() {
         var settings = viewstate['material']['']
         var pagekind = settings['pagekind']
         var tp = settings['tp']
-        vars = '?pagekind='+pagekind
+        var vars = '?pagekind='+pagekind
         vars += '&tp='+tp
         if (pagekind == 'm') {
             vars += '&book='+settings['book']
@@ -175,16 +174,14 @@ function Material() {
         }
         else {
             vars += '&id='+settings[pagekind+'id']
-            vars += '&rpage='+settings['rpage']
+            vars += '&page='+settings['page']
             do_fetch = settings[pagekind+'id'] >=0
         }
         if (do_fetch && !material_fetched[tp]) {
             this.message.msg('fetching data ...')
             $.get(material_url+vars, function(html) {
                 var response = $(html)
-                if (pagekind != 'm') {
-                    js_this.pselect.add(response)
-                }
+                js_this.pselect.add(response)
                 js_this.message.add(response)
                 js_this.content.add(response)
                 material_fetched[tp] = true
@@ -196,20 +193,20 @@ function Material() {
         var settings = viewstate['material']['']
         var pagekind = settings['pagekind']
         this.msettings.apply()
+        page.skeleton.sidebars.after_material_fetch()
         if (pagekind != 'm') {
-            this.psettings.apply()
+            this.pselect.apply()
+            $('a.vref').click(function() {
+                settings['book'] = $(this).attr('book')
+                settings['chapter'] = $(this).attr('chapter')
+                settings['pagekind'] = 'm'
+                savestate('material', '')
+                page.go('m')
+            })
         }
     }
     this.message.msg('choose a passage or a query or a word')
-    material_fetched = {'txt_p': false, 'txt_il': false}
 }
-
-/*
-            $('.verseref').click(function() {
-                goto_page('m', $(this).attr('book'), $(this).attr('chapter'), null, null)
-                savestate('material', '')
-            })
-*/
 
 // VIEWLINK
 
@@ -249,45 +246,45 @@ function Viewlink() {
 
 // MATERIAL: SELECTION
 
-function MSelect() {
+function MSelect() { // for book and chapter selection
     var settings = viewstate['material']['']
-    var pagekind = settings['pagekind']
     var select = '#select_contents_chapter'
     this.name = 'select_passage'
     this.hid = '#'+this.name
-    if (pagekind == 'm') {
-        this.up = new SelectBook()
-        this.select = new SelectItems(this.up)
-        this.apply = function() {
+    this.up = new SelectBook()
+    this.select = new SelectItems(this.up, 'chapter')
+    this.apply = function() {
+        var pagekind = settings['pagekind']
+        if (pagekind == 'm') {
             this.up.apply()
-            this.select.apply()
+            $(this.hid).show()
         }
-    }
-    else {
-        this.apply = function() {
+        else {
             $(this.hid).hide()
         }
     }
 }
 
-function PSelect() {
+function PSelect() { // for result page selection
     var settings = viewstate['material']['']
-    var pagekind = settings['pagekind']
     var select = '#select_contents_page'
     this.name = 'select_pages'
     this.hid = '#'+this.name
-    if (pagekind != 'm') {
-        this.select = new SelectItems(null)
-        this.apply = function() {
+    this.select = new SelectItems(null, 'page')
+    this.apply = function() {
+        var pagekind = settings['pagekind']
+        if (pagekind != 'm') {
             this.select.apply()
+            $(this.hid).show()
         }
-        this.add = function(response) {
-            $(select).html(response.children(select).html())
+        else {
+            $(this.hid).hide()
         }
     }
-    else {
-        this.apply = function() {
-            $(this.hid).hide()
+    this.add = function(response) {
+        var pagekind = settings['pagekind']
+        if (pagekind != 'm') {
+            $(select).html(response.find(select).html())
         }
     }
 }
@@ -298,17 +295,22 @@ function SelectBook() {
     this.name = 'select_book'
     this.hid = '#'+this.name
     this.content = $(this.hid)
+    this.selected = null
     this.apply = function () {
         var thebook = settings['book']
         this.content.show()
         this.content.val(thebook)
-        this.chapters.gen_html('chapter')
-        this.chapters.apply()
+        if (this.selected != thebook) {
+            this.chapters.gen_html()
+            this.chapters.apply()
+        }
+        this.selected = thebook
     }
     this.content.change(function () {
         settings['book'] = js_this.content.val()
+        settings['pagekind'] = 'm'
         savestate('material', '')
-        page.go('m', null, null, null, null)
+        page.go()
     })
     this.gen_html = function() {
         var ht = '<option value="x">choose a book ...</option>'
@@ -322,11 +324,11 @@ function SelectBook() {
     this.content.val(settings['book'])
 }
 
-function SelectItems(up) {
+function SelectItems(up, key) { // both for chapters and for result pages
     var js_this = this
     var settings = viewstate['material']['']
-    var pagekind = settings['pagekind']
-    this.key = (pagekind == 'm')?'chapter':'page'
+    this.key = key
+    this.tag = (key == 'chapter')?'passage':'pages'
     this.up = up
     this.name = 'select_contents_'+this.key
     this.hid = '#'+this.name
@@ -341,7 +343,7 @@ function SelectItems(up) {
             closeOnEscape: true,
             modal: false,
             title: 'choose '+js_this.key,
-            position: {my: 'right top', at: 'left top', of: $(js_this.up.hid)},
+            position: {my: 'right top', at: 'left top', of: $('#select_'+js_this.tag)},
             width: '450px',
         })
     }
@@ -354,48 +356,55 @@ function SelectItems(up) {
             for  (i = 0; i < nitems; i++) {itemlist[i] = i+1}
         }
         else { // 'page'
-            var theitem = settings['pg']
+            var theitem = settings['page']
             var nitems = $('#rp_pages').val()
-            var itemlist = $('#rp_pagelist').val()
+            var itemlist = []
+            if (nitems) {
+                itemlist = $.parseJSON($('#rp_pagelist').val())
+            }
         }
         var ht = ''
-        if (nitems != 0) {
-            ht = '<div class="pagination"><ul>'
-            for (i in itemlist) {
-                item = itemlist[i]
-                if (theitem == item) {
-                    ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+        if (nitems != undefined) {
+            if (nitems != 0) {
+                ht = '<div class="pagination"><ul>'
+                for (i in itemlist) {
+                    item = itemlist[i]
+                    if (theitem == item) {
+                        ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+                    }
+                    else {
+                        ht += '<li><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+                    }
                 }
-                else {
-                    ht += '<li><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
-                }
+                ht += '</ul></div>'
             }
-            ht += '</ul></div>'
+            $(this.hid).html(ht)
         }
-        $(this.hid).html(ht)
         return nitems
     }
     this.add_item = function(item) {
         item.click(function() {
             var settings = viewstate['material']['']
-            var pagekind = settings['pagekind']
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
-                var settings = viewstate['material']['']
                 var newitem = $(this).attr('item')
                 settings[js_this.key] = newitem 
                 savestate('material', '')
-                page.go('m', null, null, null, null)
+                page.go()
             }
         })
     }
     this.apply = function() {
-        var nitems = 0
-        if ($(this.hid).html() != '') {
-            nitems = this.gen_html() 
+        var pagekind = settings['pagekind']
+        var showit = false
+        if (pagekind != 'm' && this.key == 'page') {
+            showit = this.gen_html() > 0 
         }
-        if (nitems == 0) {
+        else if (pagekind == 'm' && this.key == 'chapter') {
+            showit = true
+        }
+        if (!showit) {
             $(this.control).hide()
         }
         else {
@@ -426,7 +435,7 @@ function MMessage() {
     }
 }
 
-function MContent() {
+function MContent() { // the actual Hebrew content, either plain text or interlinear data
     var settings = viewstate['material']['']
     var tps = {txt_p: 'txt_il', txt_il: 'txt_p'}
     this.name_text = 'material_text'
@@ -452,7 +461,7 @@ function MContent() {
     }
 }
 
-// MATERIAL SETTINGS (for the highlight color and the data to show)
+// MATERIAL SETTINGS (for choosing between plain text and interlnear data)
 
 function MSettings(content) {
     var js_this = this
@@ -468,8 +477,9 @@ function MSettings(content) {
     $('.mhradio').click(function() {
         var activen = $(this).attr('id').substring(1)
         settings['tp'] = activen 
+        settings['pagekind'] = 'm'
         savestate('material','')
-        page.go('m')
+        page.go()
     })
     legendc.click(function () {
         legend.dialog({
@@ -499,7 +509,7 @@ function MSettings(content) {
     }
 }
 
-// HEBREW DATA
+// HEBREW DATA (which fields to show if interlinear text is displayed)
 
 function HebrewSettings() {
     var settings = viewstate['hebrewdata']['']
@@ -540,95 +550,230 @@ function HebrewSetting(fld) {
 
 // SIDEBARS
 
-function SSettings(k) {
-    this.name = 'side_settings_'+k
-    this.hid = '#'+this.name
-}
-
 function Sidebars() {
-    this.m = Sidebar('m')
-    for (k in viewstate['highlights']) {
-        this.k = Sidebar(k)
+    var vsettings = viewstate['highlights']
+    this.m = new Sidebar('m')
+    for (k in vsettings) {
+        this['m'+k] = new Sidebar('m', k)
+        this[k+'m'] = new Sidebar(k, 'm')
     }
+    side_fetched = {}
     this.apply = function() {
+        for (k in vsettings) {
+            this['m'+k].apply()
+            this[k+'m'].apply()
+        }
+    }
+    this.after_material_fetch = function() {
+        for (k in vsettings) {
+            delete side_fetched['m'+k]
+        }
+    }
+    this.after_item_fetch = function() {
+        for (k in vsettings) {
+            delete side_fetched[k+'m']
+        }
     }
 }
 
-function Sidebar(k) {
-    this.name = 'side_bar_'+k
+function Sidebar(pagekind, k) {
+    var js_this = this
+    this.pagekind = pagekind
+    this.k = k
+    this.name = 'side_bar_'+this.pagekind+this.k
     this.hid = '#'+this.name
-    this.kind = k
-    this.settings = new Settings(k)
+    var msettings = viewstate['material']['']
+    var vsettings = (this.k == 'm')?{}:viewstate['highlights'][this.k]
+    var thebar = $(this.hid)
+    var thelist = $('#side_material_'+this.pagekind+this.k)
+    var hide = $('#side_hide_'+this.pagekind+this.k)
+    var show = $('#side_show_'+this.pagekind+this.k)
+    this.ssettings = new SSettings(this.pagekind, this.k)
+    this.content = new SContent(this.pagekind, this.k, this.ssettings)
     this.apply = function() {
+        var currentpagekind = msettings['pagekind']
+        if (currentpagekind != this.pagekind) {
+            thebar.hide()
+        }
+        else {
+            thebar.show()
+            if (vsettings['get'] == 'x') {
+                thelist.hide()
+                hide.hide()
+                show.show()
+            }
+            else {
+                thelist.show()
+                hide.show()
+                show.hide()
+            }
+        }
+        this.content.apply()
+    }
+    show.click(function(){
+        vsettings['get'] = 'v'
+        savestate('highlights',js_this.k)
+        js_this.apply()
+    })
+    hide.click(function(){
+        vsettings['get'] = 'x'
+        savestate('highlights',js_this.k)
+        js_this.apply()
+    })
+}
+
+function SSettings(pagekind, k) {
+    var js_this = this
+    this.pagekind = pagekind
+    this.k = k
+    var viewlist = $('#side_settings_'+this.pagekind+this.k)
+    this.name = 'side_settings_'+this.pagekind+this.k
+    this.hid = '#'+this.name
+    this.apply = function() {
+    }
+    this.apply_item = function(vid) {
+        this.jscolorpicker(vid)
+    }
+    this.jscolorpicker = function(vid) {
+        var sel = $('#sel_'+this.k+vid)
+        var selc = $('#selc_'+this.k+vid)
+        var picker = $('#picker_'+this.k+vid)
+        var stl = style[this.k]['prop']
+        var colorn = viewstate['colormap'][this.k][vid]
+        picker.hide()
+        sel.click(function() {
+            picker.dialog({
+                dialogClass: 'picker_dialog',
+                closeOnEscape: true,
+                modal: true,
+                title: 'choose a color',
+                position: {my: 'right top', at: 'left top', of: selc},
+                width: '200px',
+            })
+        })
+        selc.click(function() {
+            var was_cust = vid in viewstate['colormap'][js_this.k]
+            if (picker.dialog('isOpen')) {picker.dialog('close')}
+            if (was_cust) {
+                sel.css(stl, vcolors[sel.attr('defn')][js_this.k])
+                delete viewstate['colormap'][js_this.k][vid]
+            }
+            else {
+                viewstate['colormap'][js_this.k][vid] = sel.attr('defn')
+            }
+            selc.prop('checked', vid in viewstate['colormap'][js_this.k])
+            xapply_highlight(js_this.k, vid)
+            savestate('colormap', js_this.k)
+        })
+        $('.c'+this.k+'.'+this.k+vid).click(function() {
+            if (picker.dialog('isOpen')) {picker.dialog('close')}
+            sel.css(stl, $(this).css(stl))
+            viewstate['colormap'][js_this.k][vid] = $(this).html()
+            selc.prop('checked', true)
+            xapply_highlight(js_this.k, vid)
+            savestate('colormap', js_this.k)
+        })
+        if (colorn == undefined) {colorn = sel.attr('defn')}
+        $('.c'+this.k+'.'+this.k+vid).each(function() {$(this).css(stl, vcolors[$(this).html()][js_this.k])})
+        sel.css(stl, vcolors[colorn][this.k])
+        selc.prop('checked', vid in viewstate['colormap'][this.k])
     }
 }
 
-function SContents() {
-    this.name = 'side_material_'+k
+function SContent(pagekind, k, ssettings) {
+    var js_this = this
+    this.pagekind = pagekind
+    this.k = k
+    var msettings = viewstate['material']['']
+    var vsettings = (this.k == 'm')?{}:viewstate['highlights'][this.k]
+    var thebar = $(this.hid)
+    var thelist = $('#side_material_'+this.pagekind+this.k)
+    var hide = $('#side_hide_'+this.pagekind+this.k)
+    var show = $('#side_show_'+this.pagekind+this.k)
+    this.name = 'side_material_'+this.pagekind+this.k
     this.hid = '#'+this.name
+    this.ssettings = ssettings
+    this.msg = function(m) {
+        $(this.hid).html(m)
+    }
+    this.fetch = function() {
+        var thebook = msettings['book']
+        var thechapter = msettings['chapter']
+        var vars = '?pagekind='+this.pagekind+'&k='+this.k
+        var do_fetch = false
+        var extra = ''
+        if (this.pagekind == 'm') {
+            vars += '&book='+msettings['book']
+            vars += '&chapter='+msettings['chapter']
+            do_fetch = msettings['book'] != 'x' && msettings['chapter'] > 0
+            extra = 'm'
+        }
+        else {
+            vars += '&id='+msettings[this.pagekind+'id']
+            do_fetch = msettings[this.pagekind+'id'] >=0
+            extra = this.pagekind+'m'
+        }
+        if (do_fetch && !side_fetched[this.pagekind+this.k]) {
+            this.msg('fetching '+style[this.k]['tags']+' ...')
+            if (this.pagekind == 'm') {
+                thelist.load(side_url+extra+vars, function () {
+                    side_fetched[js_this.pagekind+js_this.k] = true
+                    js_this.process()
+                }, 'html')
+            }
+            else {
+                $.get(side_url+extra+vars, function (html) {
+                    thelist.html(html)
+                    side_fetched[js_this.pagekind+js_this.k] = true
+                    js_this.process()
+                }, 'html')
+
+            }
+        }
+    }
+    this.sidelistitems = function() {
+        var klist = $('#side_list_'+this.k+' li')
+        klist.each(function() {
+            var vid = $(this).attr('vid')
+            js_this.sidelistitem(vid)
+            js_this.ssettings.apply_item(vid)
+        })
+    }
+    this.sidelistitem = function(vid) {
+        var more = $('#m_'+this.k+vid) 
+        var head = $('#h_'+this.k+vid) 
+        var desc = $('#d_'+this.k+vid) 
+        var item = $('#item_'+this.k+vid) 
+        desc.hide()
+        more.click(function() {
+            desc.toggle()
+        })
+        item.click(function() {
+            var msettings = viewstate['material']['']
+            var k = js_this.k
+            msettings['pagekind'] = k
+            msettings[k+'id'] = $(this).attr('vid')
+            msettings['page'] = 1
+            page.go()
+        })
+    }
+    this.process = function() {
+        page.skeleton.sidebars.after_item_fetch()
+        this.ssettings.apply()
+        this.sidelistitems()
+        $('#theitem').html($('#itemtag').val()+':')
+                //apply_highlightsettings()
+    }
+    this.apply = function() {
+        var currentpagekind = msettings['pagekind']
+        if (currentpagekind == this.pagekind && (this.pagekind != 'm' || vsettings['get'] == 'v')) {
+            this.fetch()
+        }
+    }
 }
 
 // SIDELIST CONTROLS
 
-function setup_sidelists() {
-    for (k in viewstate['highlights']) {
-        setup_sidelist(k)
-    }
-}
-
-function setup_sidelist(k) {
-    var hidelist = $('#side_hide_'+k)
-    var showlist = $('#side_show_'+k)
-    var viewlist = $('#side_settings_'+k)
-    var thelist = $('#side_material_'+k)
-    showlist.click(function(){
-        viewstate['highlights'][k]['get'] = 'v'
-        savestate('highlights',k)
-        fetch_sideitems(k, thelist)
-        hidelist.show()
-        thelist.show()
-        viewlist.show()
-        showlist.hide()
-    })
-    hidelist.click(function(){
-        viewstate['highlights'][k]['get'] = 'x'
-        savestate('highlights',k)
-        showlist.show()
-        thelist.hide()
-        viewlist.hide()
-        hidelist.hide()
-    })
-}
-
-function apply_sidelists() {
-    side_fetched = {}
-    for (k in viewstate['highlights']) {
-        apply_sidelist(k)
-    }
-}
-
-function apply_sidelist(k) {
-    var hidelist = $('#side_hide_'+k)
-    var showlist = $('#side_show_'+k)
-    var viewlist = $('#side_settings_'+k)
-    var thelist = $('#side_material_'+k)
-    thelist.html('')
-    side_fetched[k] = false
-    if (viewstate['highlights'][k]['get'] == 'v') {
-        fetch_sideitems(k, thelist)
-        showlist.hide()
-    }
-    else {
-        hidelist.hide()
-        thelist.hide()
-        viewlist.hide()
-    }
-}
-
-function hide_sidelist(k) {
-    side = $('#side_material_'+k)
-    side.hide()
-}
 
 function apply_sideview(k, vid) {
     $('#colorpicker_m').load(color_url+'?k='+k+'&vid='+vid, function (response, stats, xhr) {
@@ -638,40 +783,6 @@ function apply_sideview(k, vid) {
 }
 
 // SIDELIST MATERIAL
-
-function fetch_sideitems(k, thelist) {
-    var settings = viewstate['material']['']
-    var thebook = settings['book']
-    var thechapter = settings['chapter']
-    var viewlist = $('#side_settings_'+k)
-    if (!side_fetched[k] && thechapter) {
-        thelist.load(side_url+k, {book: thebook, chapter: thechapter}, function () {
-            side_fetched[k] = true
-            viewlist.show()
-            setup_sidelistitems(k)
-            apply_highlightsettings()
-        }, 'html')
-    }
-}
-
-function setup_sidelistitems(k) {
-    var klist = $('#side_list_'+k+' li')
-    klist.each(function(index, item) {
-        var vid = $(item).attr('vid')
-        setup_sidelistitem(k, vid)
-        jscolorpicker(k, vid)
-    })
-}
-
-function setup_sidelistitem(k,vid) {
-    var more = $('#m_'+k+vid) 
-    var head = $('#h_'+k+vid) 
-    var desc = $('#d_'+k+vid) 
-    desc.hide()
-    more.click(function() {
-        desc.toggle()
-    })
-}
 
 // HIGHLIGHTS
 
@@ -836,51 +947,6 @@ function setup_hlpickers() {
     }
 }
 
-function jscolorpicker(k, vid) {
-    var sel = $('#sel_'+k+vid)
-    var selc = $('#selc_'+k+vid)
-    var picker = $('#picker_'+k+vid)
-    var stl = style[k]['prop']
-    var colorn = viewstate['colormap'][k][vid]
-    picker.hide()
-    sel.click(function() {
-        picker.dialog({
-            dialogClass: 'picker_dialog',
-            closeOnEscape: true,
-            modal: true,
-            title: 'choose a color',
-            position: {my: 'right top', at: 'left top', of: selc},
-            width: '200px',
-        })
-    })
-    selc.click(function() {
-        var was_cust = vid in viewstate['colormap'][k]
-        if (picker.dialog('isOpen')) {picker.dialog('close')}
-        if (was_cust) {
-            sel.css(stl, vcolors[sel.attr('defn')][k])
-            delete viewstate['colormap'][k][vid]
-        }
-        else {
-            viewstate['colormap'][k][vid] = sel.attr('defn')
-        }
-        selc.prop('checked', vid in viewstate['colormap'][k])
-        xapply_highlight(k, vid)
-        savestate('colormap', k)
-    })
-    $('.cc.'+k+vid).click(function() {
-        if (picker.dialog('isOpen')) {picker.dialog('close')}
-        sel.css(stl, $(this).css(stl))
-        viewstate['colormap'][k][vid] = $(this).html()
-        selc.prop('checked', true)
-        xapply_highlight(k, vid)
-        savestate('colormap', k)
-    })
-    if (colorn == undefined) {colorn = sel.attr('defn')}
-    $('.cc.'+k+vid).each(function() {$(this).css(stl, vcolors[$(this).html()][k])})
-    sel.css(stl, vcolors[colorn][k])
-    selc.prop('checked', vid in viewstate['colormap'][k])
-}
-
 function jscolorpicker2(k, lab) {
     var sel = $('#sel_'+k+lab)
     var picker = $('#picker_'+k+lab)
@@ -897,7 +963,7 @@ function jscolorpicker2(k, lab) {
             width: '200px',
         })
     })
-    $('.cc.'+k+lab).click(function() {
+    $('.c'+k+'.'+k+lab).click(function() {
         if (picker.dialog('isOpen')) {picker.dialog('close')}
         sel.css(stl, $(this).css(stl))
         viewstate['highlights'][k]['sel_'+lab] = $(this).html()
@@ -905,7 +971,7 @@ function jscolorpicker2(k, lab) {
         savestate('highlights',k)
     })
     if (colorn == undefined) {colorn = sel.attr('defn')}
-    $('.cc.'+k+lab).each(function() {$(this).css(stl, vcolors[$(this).html()][k])})
+    $('.c'+k+'.'+k+lab).each(function() {$(this).css(stl, vcolors[$(this).html()][k])})
     sel.css(stl, vcolors[colorn][k])
 }
 
@@ -927,3 +993,15 @@ function getvars() {
 
 function savestate(group, k) {$.cookie(group+k, viewstate[group][k])}
 
+function activate_buttons() {
+    $('.smb').each(function() {
+        $(this).click(function() {
+            $('.smb').each(function() {
+                var name = $(this).attr('name')
+                $('#'+name).val(false)
+            })
+            var name = $(this).attr('name')
+            $('#'+name).val(true)
+        })
+    })
+}

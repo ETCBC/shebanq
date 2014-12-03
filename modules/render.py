@@ -34,7 +34,7 @@ field_names = '''
 '''.strip().split()
 
 specs = dict(
-    material=('''book chapter qid wid rpage pagekind tp''', {'': '''x 0 -1 -1 -1 m txt_p'''}),
+    material=('''book chapter qid wid page pagekind tp''', {'': '''x 0 -1 -1 -1 m txt_p'''}),
     hebrewdata=('''
         ht hl tt tl gl
         wd1 wd1_subpos wd1_pos wd1_lang wd1_n
@@ -58,7 +58,7 @@ specs = dict(
 style = dict(
     q=dict(prop='background-color', off='#ffffff', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
     w=dict(prop='color', off='#000000', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
-    m=dict(subtract=250),
+    m=dict(subtract=250, Tag='Item', tag='item', Tags='Items', tags='items'),
 )
 
 legend_tpl = '''
@@ -143,7 +143,7 @@ def vdef(vid):
     mod = vid % ndefcolors
     return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
 
-def ccell(k,vid,c): return '\t\t<td class="cc {k}{vid}">{n}</td>'.format(k=k,vid=vid,n=vcolornames[c])
+def ccell(k,vid,c): return '\t\t<td class="c{k} {k}{vid}">{n}</td>'.format(k=k,vid=vid,n=vcolornames[c])
 def crow(k,vid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
 def ctable(k, vid): return '<table class="picker" id="picker_{k}{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
 
@@ -268,7 +268,6 @@ ORDER BY word_number;
             v_id = int(v[0])
             xml = v[4] if tp == 'txt_p' else ''
             self.verses.append(Verse(v[1], v[2], v[3], xml, word_data[v_id], tp=tp, pagekind=pagekind)) 
-        print('there are {} verses'.format(len(self.verses)))
 
 class Verse():
 
@@ -285,9 +284,6 @@ class Verse():
     def to_string(self):
         return "{}\n{}".format(self.citation_ref(), self.text)
 
-    def citation_ref(self):
-        return "{} {}:{}".format(self.book_name.replace('_', ' '), self.chapter_num, self.verse_num)
-
     def chapter_link(self):
         return (self.book_name, self.chapter_num)
 
@@ -298,7 +294,7 @@ class Verse():
             return ("{} {}:{}".format(book, chapter, verse), book, chapter)
 
     def get_words(self):
-        if (len(self.words) is 0):
+        if (len(self.words) == 0):
             root = ET.fromstring(u'<verse>{}</verse>'.format(self.xml).encode('utf-8'))
             for child in root:
                 monad_id = int(child.attrib['m'])

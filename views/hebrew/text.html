@@ -4,6 +4,7 @@
 <script type="text/javascript">
 var view_url = "{{=XML(URL(host=True))}}"
 var material_url = "{{=XML(URL('hebrew', 'material', host=True))}}"
+var item_url = "{{=XML(URL('hebrew', 'item', host=True))}}"
 var side_url = "{{=XML(URL('hebrew', 'side', host=True))}}"
 var color_url = "{{=XML(URL('hebrew', 'sideview', host=True))}}"
 var thebooks = {{=XML(books)}}
@@ -25,6 +26,9 @@ var thebooksorder = {{=XML(booksorder)}}
             <span id="select_contents_chapter"></span>
         </div>
         <div id="select_pages">
+            <span id="theitemlabel"></span>
+            <span id="theitem"></span>
+            <span id="thepage"></span>
             <a id="select_control_page" href="#">other pages ...</a>
             <span id="select_contents_page"></span>
         </div>
@@ -42,20 +46,21 @@ var thebooksorder = {{=XML(booksorder)}}
 
 
 {{ block left_sidebar }}
-<div id="side_bar_m">
-    <div id="side_settings_m">
+{{ for (k, tag, tags) in (('w', 'word', 'words'), ('q', 'query', 'queries')):
+}}
+<div id="side_bar_{{=k}}m">
+    <div id="side_settings_{{=k}}m">
         <table class="hlsettings">
-            <tr><td id="colorpicker_m"></td></tr>
+            <tr><td id="colorpicker_{{=k}}m"></td></tr>
         </table>
     </div>
-    <div id="side_material_m" class="mql_form"></div>
+    <div id="side_material_{{=k}}m" class="mql_form"></div>
+
 </div>
-{{ for (k, kk) in (('w', 'words'), ('q', 'queries')):
-}}
-<div id="side_bar_{{=k}}">
-    <a id="side_show_{{=k}}" href="#">show {{=kk}}</a>
-    <a id="side_hide_{{=k}}" href="#">hide {{=kk}}</a>
-    <div id="side_settings_{{=k}}">
+<div id="side_bar_m{{=k}}">
+    <a id="side_show_m{{=k}}" href="#">show {{=tags}}</a>
+    <a id="side_hide_m{{=k}}" href="#">hide {{=tags}}</a>
+    <div id="side_settings_m{{=k}}">
         <table class="hlsettings">
             <tr>
                 <td><a href="#" id="{{=k}}hlreset" class="hradio_{{=k}}">reset</a></td>
@@ -67,7 +72,7 @@ var thebooksorder = {{=XML(booksorder)}}
             </tr>
         </table>
     </div>
-    <div id="side_material_{{=k}}"></div>
+    <div id="side_material_m{{=k}}"></div>
 </div>
 {{pass}}
 {{ end }}

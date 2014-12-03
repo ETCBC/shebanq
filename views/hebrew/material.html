@@ -12,13 +12,13 @@
     {{if pages == 0:}}
     <p>No query results</p>
     {{else:}}
-    <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}<p>
+    <p>{{=pages}} pages with {{=results}} verse{{='s' if results != 1 else ''}}<p>
     {{pass}}
 {{elif pagekind == 'w':}}
     {{if page == 0:}}
     <p>No word occurrences.</p>
     {{else:}}
-    <p>Page {{=page}} of {{=pages}} with {{=results}} verse{{='s' if results != 1 else ''}}</p>
+    <p>{{=pages}} pages with {{=results}} verse{{='s' if results != 1 else ''}}</p>
     {{pass}}
 {{pass}}
 </div>
@@ -36,9 +36,18 @@
 {{ if material != None: }}
     {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}
-        {{ tp = material.tp }}
-        {{ for verse in material.verses:}}
-            <div class="{{=tp}}"><span class="vnum">{{=verse.label()}}</span>&nbsp;<span>{{=XML(verse.material(ua))}}</span></div>
+        {{tp = material.tp}}
+        {{for verse in material.verses:}}
+            <div class="{{=tp}}">
+            {{if material.pagekind == 'm':}}
+                <span class="vnum">{{=verse.label()}}</span>
+            {{else:
+                (label, book, chapter) = verse.label()
+            }}
+                <span class="vref"><a href="#" book="{{=book}}" chapter="{{=chapter}}" class="vref">{{=label}}</a></span>
+            {{pass}}
+                <span>{{=XML(verse.material(ua))}}</span>
+            </div>
         {{ pass }}
     {{ pass }}
 {{ else: }}

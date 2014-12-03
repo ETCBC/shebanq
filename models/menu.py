@@ -55,8 +55,20 @@ response.menu = [
     (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
     (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
     (T('The Text'), False, URL('hebrew', 'text'), []),
-    (T('Help'), False, URL('default', 'help'), []),
+    (T('Help'), False, '', (
+        ('SHEBANQ', False, URL('default', 'help'), []),
+        (A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html'), False, None, []),
+        (A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf')), False, None, []),
+        (A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf')), False, None, []),
+        )
+    ),
+    ('Github', False, '', (
+        (A('ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, []),
+        (A('Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, []),
+        ),
+    ),
 ]
+            #<a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">
 
 DEVELOPMENT_MENU = False
 

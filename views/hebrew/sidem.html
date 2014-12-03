@@ -1,0 +1,51 @@
+{{if side_items:}}
+<ul id="side_list_{{=k}}">
+    {{for si in side_items:
+        vid = si['item'].id
+        if k == 'q':
+            qname = si['item'].name
+            fname = si['item'].created_by.first_name
+            lname = si['item'].created_by.last_name
+            pname = fname + ' ' + lname
+            desc = si['item'].description
+            mql = si['item'].mql
+            qname_short = qname if len(qname) < 10 else qname[0:10]+'..'
+            pname_short = pname if len(pname) < 12 else pname[0:12]+'..'
+            title = '{} by {} {}'.format(qname, fname, lname)
+            clinktext = pname_short
+            dlinktext = qname_short
+            cclass = 'qauth'
+            dclass = 'qname'
+            eclass = 'qdesc'
+        elif k == 'w':
+            wentry = si['item']['entry']
+            wgloss = si['item']['gloss']
+            vc = si['item']['g_entry_heb']
+            title = wentry
+            clinktext = vc
+            dlinktext = wgloss
+            cclass = 'i_hl'
+            dclass = 'i_gl'
+            eclass = 'wdesc'
+        pass
+    }}
+    <li id="{{='{}{}'.format(k,vid)}}" vid="{{=vid}}" title="{{=title}}" monads="{{=si['monads']}}">
+        <div>{{=XML(viewsettings.colorpicker(k,vid, ''))}}
+            <table class="item_{{=k}}" id="h_{{=k}}{{=vid}}"><tr>
+            <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _vid=vid, _id='item_{}{}'.format(k, vid))}}</td>
+            <td class="{{=dclass}}">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(k, vid))}}</td>
+        </tr></table>
+        </div>
+        <div id="d_{{=k}}{{=vid}}" class="{{=eclass}}">
+        {{if k == 'q':}}
+            <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
+            {{=desc}}<br/>
+            <textarea class="mql small" readonly>{{=XML(mql)}}</textarea>
+        {{else:}}
+            <b>{{=wentry}}</b> ~ <i>{{=wgloss}}</i><br/>
+        {{pass}}
+        </div>
+    </li>
+    {{pass}}
+</ul>
+{{ pass }}

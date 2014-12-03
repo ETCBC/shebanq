@@ -97,14 +97,6 @@
   <div class="container">
     <div class="logos row">
         <div class="span12">
-            <a target="_blank" href="http://www.godgeleerdheid.vu.nl/etcbc" title="VU ETCBC"><img src="{{=URL('static', 'images/VU-ETCBC-small.png')}}" width="100px"/></a>
-            <a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">
-                <img src="{{=URL('static', 'images/github_mark_arrow.gif')}}"/>
-            </a>
-            <a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY"><img src="{{=URL('static', 'images/etcbc4easy-small.png')}}" /></a>
-            <a target="_blank" href="https://github.com/Dans-labs" title="View DANS Labs on Github" class="github">
-                <img src="{{=URL('static', 'images/github_mark_arrow.gif')}}"/>
-            </a>
         </div>
     </div>
     <!-- Masthead ================================================== -->
@@ -156,6 +148,22 @@
                 <div id="poweredBy" class="pull-right">
                     {{=T('funded by')}}
                     <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>
+                </div>
+                <div class="pull-left">
+                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    <a target="_blank" title="VU ETCBC"
+                        href="http://www.godgeleerdheid.vu.nl/etcbc"><img
+                            src="{{=URL('static', 'images/VU-ETCBC-small.png')}}"
+                            width="100px"
+                    /></a>
+                </div>
+                <div class="pull-right">
+                    <a target="_blank" title="ETCBC4 Dataset in DANS EASY"
+                        href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71"><img
+                            src="{{=URL('static', 'images/etcbc4easy-small.png')}}"
+                            width="100px"
+                    /></a>
+                    &nbsp; &nbsp; &nbsp; &nbsp;
                 </div>
                 {{end}}
             </div>
