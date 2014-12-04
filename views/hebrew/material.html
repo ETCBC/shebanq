@@ -33,6 +33,7 @@
 </div>
 
 <div id="material_content">
+    <input type="hidden" id="themonads" value="{{=monads}}"/>
 {{ if material != None: }}
     {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}

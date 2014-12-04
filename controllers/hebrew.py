@@ -125,16 +125,6 @@ def sidem():
         k=k,
     )
 
-def sideview():
-    viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
-    k = request.vars.k
-    vid = request.vars.vid
-    return dict(
-        viewsettings=viewsettings,
-        k=k,
-        vid=vid,
-    )
-
 def material():
     pagekind = request.vars.pagekind
     tp = request.vars.tp
@@ -147,32 +137,34 @@ def material():
             exception=None,
             results=len(material.verses) if material else 0,
             material=material,
+            monads=json.dumps([]),
         )
     else:
-        vid = int(request.vars.id) if request.vars else None
+        iid = int(request.vars.id) if request.vars else None
         page = int(request.vars.page) if request.vars.page else 1
-        if vid == None:
+        if iid == None:
             exception_message = "No {} selected".format('query' if pagekind == 'q' else 'w')
             return dict(
                 pagekind=pagekind,
                 exception_message=exception_message,
                 exception=None,
                 results=0,
-                vid=vid,
+                iid=iid,
                 pages=0,
                 page=0,
                 pagelist=json.dumps([]),
                 material=None,
+                monads=json.dumps([]),
             )
-        monad_sets = load_monad_sets(vid) if pagekind == 'q' else load_word_occurrences(vid)
-        (nresults, npages, verses, monads) = get_pagination(page, monad_sets, vid)
+        monad_sets = load_monad_sets(iid) if pagekind == 'q' else load_word_occurrences(iid)
+        (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
         material = Verses(passage_db, 'q', verses, tp=tp)
         return dict(
             pagekind=pagekind,
             exception_message=None,
             exception=None,
             results=nresults,
-            vid=vid,
+            iid=iid,
             pages=npages,
             page=page,
             pagelist=json.dumps(pagelist(page, npages, 10)),
@@ -259,6 +251,8 @@ def get_mql_form(record_id, readonly=False):
             edit_link = 'You cannot edit queries created by some one else'
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
         fields=[
+            'is_published',
+            'name',
             'project',
             'organization',
             'created_on',
@@ -266,8 +260,6 @@ def get_mql_form(record_id, readonly=False):
             'modified_on',
             'modified_by',
             'executed_on',
-            'name',
-            'is_published',
             'description',
             'mql',
         ],
@@ -297,6 +289,39 @@ def get_mql_form(record_id, readonly=False):
         mql_form[0].insert(-1,extra)
     return mql_form
 
+def get_word_form(record_id):
+    word_record = passage_db.lexicon[record_id]
+    word_form = SQLFORM(passage_db.lexicon, record=record_id, readonly=True,
+        fields=[
+            'g_entry_heb',
+            'g_entry',
+            'entry_heb',
+            'entry',
+            'entryid',
+            'pos',
+            'subpos',
+            'nametype',
+            'root',
+            'lan',
+            'gloss',
+        ],
+        showid=False, ignore_rw=False,
+        labels=dict(
+            g_entry_heb='Vocalized Lexeme',
+            g_entry='Vocalized Lexeme (trans)',
+            entry_heb='Consonantal',
+            entry='Consonantal (trans)',
+            entryid='With disambiguation',
+            pos='part-of-speech',
+            subpos='lexical set',
+            nametype='proper noun category',
+            lan='Language',
+            gloss='gloss',
+        ),
+        formstyle='table3cols',
+    )
+    return word_form
+
 def fiddle_dates(old_mql, old_modified_on):
     def _fiddle_dates(mql_form):
         mql = mql_form.vars.mql
@@ -305,7 +330,7 @@ def fiddle_dates(old_mql, old_modified_on):
             mql_form.vars.modified_on = old_modified_on
     return _fiddle_dates
 
-def handle_response(mql_form, old_mql, old_modified_on):
+def handle_response_mql(mql_form, old_mql, old_modified_on):
     mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on))
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
@@ -318,6 +343,12 @@ def handle_response(mql_form, old_mql, old_modified_on):
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
 
+def handle_response_word(word_form):
+    word_form.process(keepvalues=True)
+    if word_form.accepted:
+        pass
+    elif word_form.errors:
+        response.flash = 'form has errors, see details'
 
 def store_monad_sets(record_id, monad_sets):
     db.executesql('DELETE FROM monadsets WHERE query_id=' + str(record_id) + ';')
@@ -328,10 +359,23 @@ def store_monad_sets(record_id, monad_sets):
 def load_monad_sets(record_id):
     return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(record_id) + ';')
 
-def normalize_ranges(ranges):
+def load_word_occurrences(lexeme_id):
+    monads = passage_db.executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
+    return collapse_into_ranges(monads)
+
+def collapse_into_ranges(monads):
     covered = set()
-    for (start, end) in ranges:
-        for i in range(start, end + 1): covered.add(i)
+    for (start,) in monads:
+        covered.add(start)
+    return normalize_ranges(None, fromset=covered)
+    
+def normalize_ranges(ranges, fromset=None):
+    covered = set()
+    if fromset != None:
+        covered = fromset
+    else:
+        for (start, end) in ranges:
+            for i in range(start, end + 1): covered.add(i)
     cur_start = None
     cur_end = None
     result = []
@@ -348,7 +392,7 @@ def normalize_ranges(ranges):
     if cur_end != None: result.append((cur_start, cur_end - 1))
     return result
 
-def get_pagination(p, monad_sets, vid):
+def get_pagination(p, monad_sets, iid):
     verse_boundaries = passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;')
     m = 0 # monad range index, walking through monad_sets
     v = 0 # verse id, walking through verse_boundaries
@@ -410,6 +454,9 @@ def sideqe():
 def sideq():
     return show_query("Display Query", True)
 
+def sidew():
+    return show_word("Display Lexeme")
+
 def show_query(title, readonly=True):
     response.headers['web2py-component-flash']=None
     record_id = get_record_id()
@@ -421,7 +468,7 @@ def show_query(title, readonly=True):
         old_mql = ''
         old_modified_on = 0
     mql_form = get_mql_form(record_id, readonly=readonly)
-    handle_response(mql_form, old_mql, old_modified_on)
+    handle_response_mql(mql_form, old_mql, old_modified_on)
     mql_record = db.queries[record_id]
 
     response.title = T(title)
@@ -430,8 +477,25 @@ def show_query(title, readonly=True):
         readonly=readonly,
         form=mql_form,
         exception=None,
-        vid=record_id,
+        iid=record_id,
         query=mql_record,
+    )
+    return result_dict
+
+def show_word(title):
+    response.headers['web2py-component-flash']=None
+    record_id = get_record_id()
+    word_form = get_word_form(record_id)
+    handle_response_word(word_form)
+    word_record = passage_db.lexicon[record_id]
+
+    response.title = T(title)
+
+    result_dict = dict(
+        readonly=True,
+        form=word_form,
+        iid=record_id,
+        word=word_record,
     )
     return result_dict
 
@@ -447,7 +511,7 @@ def execute_query(record_id):
     except RemoteException, e:
         response.flash = 'Exception while executing query: '
         return dict(
-            edit=True, form=mql_form, vid=record_id, query=mql_record,
+            edit=True, form=mql_form, iid=record_id, query=mql_record,
             exception=CODE(e.message),
             exception_message=CODE(parse_exception(e.response.text)),
             results=0,
@@ -483,11 +547,19 @@ def parse_exception(message):
 
 
 def sideqm():
-    vid = request.vars.id
+    iid = request.vars.id
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(pagekind='q', id=vid),
+        vars=dict(pagekind='q', id=iid),
         ajax=False, target='querybody', 
         content='fetching query',
+    ))
+
+def sidewm():
+    iid = request.vars.id
+    return dict(load=LOAD('hebrew', 'sidew', extension='load',
+        vars=dict(pagekind='w', id=iid),
+        ajax=False, target='wordbody', 
+        content='fetching words',
     ))
 
 @auth.requires_login()

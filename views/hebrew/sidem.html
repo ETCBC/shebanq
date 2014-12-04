@@ -1,7 +1,7 @@
 {{if side_items:}}
 <ul id="side_list_{{=k}}">
     {{for si in side_items:
-        vid = si['item'].id
+        iid = si['item'].id
         if k == 'q':
             qname = si['item'].name
             fname = si['item'].created_by.first_name
@@ -29,14 +29,14 @@
             eclass = 'wdesc'
         pass
     }}
-    <li id="{{='{}{}'.format(k,vid)}}" vid="{{=vid}}" title="{{=title}}" monads="{{=si['monads']}}">
-        <div>{{=XML(viewsettings.colorpicker(k,vid, ''))}}
-            <table class="item_{{=k}}" id="h_{{=k}}{{=vid}}"><tr>
-            <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _vid=vid, _id='item_{}{}'.format(k, vid))}}</td>
-            <td class="{{=dclass}}">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(k, vid))}}</td>
+    <li id="{{='{}{}'.format(k,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
+        <div>{{=XML(viewsettings.colorpicker(k,iid, ''))}}
+            <table class="item_{{=k}}" id="h_{{=k}}{{=iid}}"><tr>
+            <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _iid=iid, _id='item_{}{}'.format(k, iid))}}</td>
+            <td class="{{=dclass}}">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(k, iid))}}</td>
         </tr></table>
         </div>
-        <div id="d_{{=k}}{{=vid}}" class="{{=eclass}}">
+        <div id="d_{{=k}}{{=iid}}" class="{{=eclass}}">
         {{if k == 'q':}}
             <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
             {{=desc}}<br/>

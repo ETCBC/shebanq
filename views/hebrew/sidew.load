@@ -1,0 +1,12 @@
+<div class="word_form" id="wform">
+{{=form}}
+</div>
+{{if word:}}
+    <input type="hidden" id="itemtag" value="{{=word.g_entry_heb}} identified by {{=word.entryid}}"/>
+{{else:}}
+    <p>This lexeme does not exist.</p>
+{{pass}}
+    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
+    <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
+    <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
+</div>

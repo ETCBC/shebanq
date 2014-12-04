@@ -56,8 +56,8 @@ specs = dict(
     colormap=('0', dict(q='white', w='black')),
 )
 style = dict(
-    q=dict(prop='background-color', off='#ffffff', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
-    w=dict(prop='color', off='#000000', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
+    q=dict(prop='background-color', default='gray', off='#ffffff', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
+    w=dict(prop='color', default='grey', off='#000000', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
     m=dict(subtract=250, Tag='Item', tag='item', Tags='Items', tags='items'),
 )
 
@@ -139,21 +139,17 @@ if nrows * ncols != len(vcolornames):
 if dnrows * dncols != len(vdefaultcolors):
     print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
 
-def vdef(vid):
-    mod = vid % ndefcolors
-    return vdefaultcolors[dncols * (mod % dnrows) + int(mod / dnrows)]
+def ccell(k,iid,c): return '\t\t<td class="c{k} {k}{iid}">{n}</td>'.format(k=k,iid=iid,n=vcolornames[c])
+def crow(k,iid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,iid,c) for c in range(r * ncols, (r + 1) * ncols)))
+def ctable(k, iid): return '<table class="picker" id="picker_{k}{iid}">\n{cs}\n</table>\n'.format(k=k,iid=iid, cs='\n'.join(crow(k,iid,r) for r in range(nrows)))
 
-def ccell(k,vid,c): return '\t\t<td class="c{k} {k}{vid}">{n}</td>'.format(k=k,vid=vid,n=vcolornames[c])
-def crow(k,vid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,vid,c) for c in range(r * ncols, (r + 1) * ncols)))
-def ctable(k, vid): return '<table class="picker" id="picker_{k}{vid}">\n{cs}\n</table>\n'.format(k=k,vid=vid, cs='\n'.join(crow(k,vid,r) for r in range(nrows)))
-
-def vsel(k, vid, defn, typ):
+def vsel(k, iid, typ):
     content = '&nbsp;' if k == 'q' else 'w'
     tstart = '<table class="picked"><tr>'
     tend = '</tr></table>\n'
-    selc = '' if typ else '<td class="cc_selc_{k}"><input type="checkbox" id="selc_{k}{vid}" name="selc_{k}{vid}"/></td>'
-    sel = '<td class="cc_sel_{k}" id="sel_{k}{vid}" defn="{dn}">{lab}</td>'
-    return (tstart + selc + sel + tend).format (k=k,vid=vid, dn=defn, lab=content)
+    selc = '' if typ else '<td class="cc_selc_{k}"><input type="checkbox" id="selc_{k}{iid}" name="selc_{k}{iid}"/></td>'
+    sel = '<td class="cc_sel_{k}" id="sel_{k}{iid}"">{lab}</td>'
+    return (tstart + selc + sel + tend).format (k=k,iid=iid, lab=content)
 
 class Viewsettings():
     def __init__(self):
@@ -193,18 +189,23 @@ class Viewsettings():
         book_proto = current.request.vars.book
         return '''
 var vcolors = {vcolors}
+var vdefaultcolors = {vdefaultcolors}
+var dncols = {dncols}
+var dnrows = {dnrows}
 var viewstate = {initstate}
 var style = {style}
 dynamics()
 '''.format(
+    vdefaultcolors=json.dumps(vdefaultcolors),
     initstate=json.dumps(self.state),
     vcolors = json.dumps(vcolors),
     style = json.dumps(style),
+    dncols =dncols,
+    dnrows =dnrows,
 )
 
-    def colorpicker(self, k, vid, typ):
-        defn = settings['highlights'][k]['sel_'+vid] if typ else vdef(vid)
-        return '{s}{p}\n'.format(s=vsel(k, vid, defn, typ), p=ctable(k, vid))
+    def colorpicker(self, k, iid, typ):
+        return '{s}{p}\n'.format(s=vsel(k, iid, typ), p=ctable(k, iid))
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>

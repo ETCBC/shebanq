@@ -6,37 +6,36 @@ var view_url = "{{=XML(URL(host=True))}}"
 var material_url = "{{=XML(URL('hebrew', 'material', host=True))}}"
 var item_url = "{{=XML(URL('hebrew', 'item', host=True))}}"
 var side_url = "{{=XML(URL('hebrew', 'side', host=True))}}"
-var color_url = "{{=XML(URL('hebrew', 'sideview', host=True))}}"
 var thebooks = {{=XML(books)}}
 var thebooksorder = {{=XML(booksorder)}}
 </script>
 {{ end }}
 
 <div id="material">
-    <div id="material_heading">
-        <div id="viewlink">
-            <a id="viewlink_show" href="#">share link</a>
-            <a id="viewlink_hide" href="#">done</a>
-            <textarea readonly id="viewlink_content"></textarea>
-        </div>
+    <div id="material_heading" class="pnl2">
         <div id="select_passage">
             <select id="select_book"></select>
             <span id="thechapter"></span>
-            <a id="select_control_chapter" href="#">other chapters ...</a>
+            <a id="select_control_chapter" class="ctrl" href="#">other chapters ...</a>
             <span id="select_contents_chapter"></span>
         </div>
         <div id="select_pages">
             <span id="theitemlabel"></span>
             <span id="theitem"></span>
             <span id="thepage"></span>
-            <a id="select_control_page" href="#">other pages ...</a>
+            <a id="select_control_page" class="ctrl" href="#">other pages ...</a>
             <span id="select_contents_page"></span>
         </div>
         <div id="material_settings">
-            <a href="#" id="mtxt_p" class="mhradio">text</a>
-            <a href="#" id="mtxt_il" class="mhradio">data</a>
-            <a id="datalegend_control" href="#">legend</a>
+            <a href="#" id="mtxt_p" class="ctrl mhradio">text</a>
+            <a href="#" id="mtxt_il" class="ctrl mhradio">data</a>
+            <a id="datalegend_control" class="ctrl" href="#">legend</a>
             <span id="datalegend" class="txt_il2">{{=XML(viewsettings.legend())}}</span>
+        </div>
+        <div id="viewlink">
+            <a id="viewlink_show" class="ctrl" href="#">share link</a>
+            <a id="viewlink_hide" class="ctrl" href="#">done</a>
+            <textarea readonly id="viewlink_content"></textarea>
         </div>
     </div>
     <div id="material_message"></div>
@@ -51,28 +50,33 @@ var thebooksorder = {{=XML(booksorder)}}
 <div id="side_bar_{{=k}}m">
     <div id="side_settings_{{=k}}m">
         <table class="hlsettings">
-            <tr><td id="colorpicker_{{=k}}m"></td></tr>
+            <tr>
+                <td id="colorpicker_{{=k}}m"></td>
+                <td>{{=XML(viewsettings.colorpicker(k, 'me', ''))}}</td>
+            </tr>
         </table>
     </div>
     <div id="side_material_{{=k}}m" class="mql_form"></div>
 
 </div>
 <div id="side_bar_m{{=k}}">
-    <a id="side_show_m{{=k}}" href="#">show {{=tags}}</a>
-    <a id="side_hide_m{{=k}}" href="#">hide {{=tags}}</a>
-    <div id="side_settings_m{{=k}}">
+    <p><a id="side_show_m{{=k}}" class="ctrll" href="#">show {{=tags}}</a>
+    <a id="side_hide_m{{=k}}" class="ctrll" href="#">hide {{=tags}}</a>
+    </p>
+    <div id="side_settings_m{{=k}}" class="pnl"">
         <table class="hlsettings">
             <tr>
-                <td><a href="#" id="{{=k}}hlreset" class="hradio_{{=k}}">reset</a></td>
-                <td><a href="#" id="{{=k}}hlmany" class="hradio_{{=k}}">many</a></td>
-                <td><a href="#" id="{{=k}}hlcustom" class="hradio_{{=k}}">custom</a></td>
-                <td>{{=XML(viewsettings.colorpicker('w', 'one', '2'))}}</td>
-                <td><a href="#" id="{{=k}}hlone" class="hradio_{{=k}}">one</a></td>
-                <td><a href="#" id="{{=k}}hloff" class="hradio_{{=k}}">off</a></td>
+                <td><a href="#" id="{{=k}}hlreset" class="ctrl {{=k}}hradio">reset</a></td>
+                <td><a href="#" id="{{=k}}hlmany" class="ctrl {{=k}}hradio">many</a></td>
+                <td><a href="#" id="{{=k}}hlcustom" class="ctrl {{=k}}hradio">custom</a></td>
+                <td>{{=XML(viewsettings.colorpicker(k, 'one', '2'))}}</td>
+                <td><a href="#" id="{{=k}}hlone" class="ctrl {{=k}}hradio">one</a></td>
+                <td><a href="#" id="{{=k}}hloff" class="ctrl {{=k}}hradio">off</a></td>
             </tr>
         </table>
     </div>
-    <div id="side_material_m{{=k}}"></div>
+    <div id="side_material_m{{=k}}" class="pnll"></div>
+    <hr>
 </div>
 {{pass}}
 {{ end }}
