@@ -6,15 +6,15 @@
 {{if exception is not None:}}
     <div class="exception">Remote exception: {{=exception}}</div>
 {{pass}}
-{{if pagekind == 'm':}}
+{{if mr == 'm':}}
     <p>{{=results}} verses</p>
-{{elif pagekind == 'q':}}
+{{elif qw == 'q':}}
     {{if pages == 0:}}
     <p>No query results</p>
     {{else:}}
     <p>{{=pages}} pages with {{=results}} verse{{='s' if results != 1 else ''}}<p>
     {{pass}}
-{{elif pagekind == 'w':}}
+{{elif qw == 'w':}}
     {{if page == 0:}}
     <p>No word occurrences.</p>
     {{else:}}
@@ -24,7 +24,7 @@
 </div>
 
 <div id="material_select">
-{{if pagekind != 'm':}}
+{{if mr == 'r':}}
     <span id="select_contents_page">
         <input type="hidden" id="rp_pages" value="{{=pages}}">
         <input type="hidden" id="rp_pagelist" value="{{=pagelist}}">
@@ -40,7 +40,7 @@
         {{tp = material.tp}}
         {{for verse in material.verses:}}
             <div class="{{=tp}}">
-            {{if material.pagekind == 'm':}}
+            {{if material.mr == 'm':}}
                 <span class="vnum">{{=verse.label()}}</span>
             {{else:
                 (label, book, chapter) = verse.label()

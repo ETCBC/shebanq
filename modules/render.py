@@ -34,7 +34,7 @@ field_names = '''
 '''.strip().split()
 
 specs = dict(
-    material=('''book chapter qid wid page pagekind tp''', {'': '''x 0 -1 -1 -1 m txt_p'''}),
+    material=('''book chapter iid page mr qw tp''', {'': '''x 0 -1 -1 m q txt_p'''}),
     hebrewdata=('''
         ht hl tt tl gl
         wd1 wd1_subpos wd1_pos wd1_lang wd1_n
@@ -56,8 +56,8 @@ specs = dict(
     colormap=('0', dict(q='white', w='black')),
 )
 style = dict(
-    q=dict(prop='background-color', default='gray', off='#ffffff', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
-    w=dict(prop='color', default='grey', off='#000000', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
+    q=dict(prop='background-color', default='grey', off='white', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
+    w=dict(prop='color', default='gray', off='black', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
     m=dict(subtract=250, Tag='Item', tag='item', Tags='Items', tags='items'),
 )
 
@@ -123,10 +123,10 @@ settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
 for group in specs:
     (flds, init) = specs[group]
     flds = flds.strip().split()
-    for k in init:
-        initk = init[k].strip().split()
+    for qw in init:
+        initk = init[qw].strip().split()
         for (i, f) in enumerate(flds):
-            settings[group][k][f] = initk[i]
+            settings[group][qw][f] = initk[i]
 
 vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
 vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
@@ -139,17 +139,15 @@ if nrows * ncols != len(vcolornames):
 if dnrows * dncols != len(vdefaultcolors):
     print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
 
-def ccell(k,iid,c): return '\t\t<td class="c{k} {k}{iid}">{n}</td>'.format(k=k,iid=iid,n=vcolornames[c])
-def crow(k,iid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(k,iid,c) for c in range(r * ncols, (r + 1) * ncols)))
-def ctable(k, iid): return '<table class="picker" id="picker_{k}{iid}">\n{cs}\n</table>\n'.format(k=k,iid=iid, cs='\n'.join(crow(k,iid,r) for r in range(nrows)))
+def ccell(qw,iid,c): return '\t\t<td class="c{qw} {qw}{iid}">{n}</td>'.format(qw=qw,iid=iid,n=vcolornames[c])
+def crow(qw,iid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(qw,iid,c) for c in range(r * ncols, (r + 1) * ncols)))
+def ctable(qw, iid): return '<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'.format(qw=qw,iid=iid, cs='\n'.join(crow(qw,iid,r) for r in range(nrows)))
 
-def vsel(k, iid, typ):
-    content = '&nbsp;' if k == 'q' else 'w'
-    tstart = '<table class="picked"><tr>'
-    tend = '</tr></table>\n'
-    selc = '' if typ else '<td class="cc_selc_{k}"><input type="checkbox" id="selc_{k}{iid}" name="selc_{k}{iid}"/></td>'
-    sel = '<td class="cc_sel_{k}" id="sel_{k}{iid}"">{lab}</td>'
-    return (tstart + selc + sel + tend).format (k=k,iid=iid, lab=content)
+def vsel(qw, iid, typ):
+    content = '&nbsp;' if qw == 'q' else 'w'
+    selc = '' if typ else '<span class="pickedc cc_selc_{qw}"><input type="checkbox" id="selc_{qw}{iid}" name="selc_{qw}{iid}"/></span>&nbsp;'
+    sel = '<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}">{lab}</span>'
+    return (selc + sel).format (qw=qw,iid=iid, lab=content)
 
 class Viewsettings():
     def __init__(self):
@@ -157,31 +155,31 @@ class Viewsettings():
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
         for group in settings:
             self.state[group] = {}
-            for k in settings[group]:
-                self.state[group][k] = {}
+            for qw in settings[group]:
+                self.state[group][qw] = {}
                 from_cookie = {}
-                if current.request.cookies.has_key(group+k):
+                if current.request.cookies.has_key(group+qw):
                     try:
-                        from_cookie = json.loads(urllib.unquote(current.request.cookies[group+k].value))
+                        from_cookie = json.loads(urllib.unquote(current.request.cookies[group+qw].value))
                     except ValueError: pass
                 if group == 'colormap':
-                    for x in from_cookie: self.state[group][k][x] = from_cookie[x]
+                    for x in from_cookie: self.state[group][qw][x] = from_cookie[x]
                     for x in current.request.vars:
-                        if x[0] == k and x[1:].isdigit():
+                        if x.isdigit():
                             vstate = current.request.vars[x]
-                            from_cookie[x[1:]] = vstate
-                            self.state[group][k][x[1:]] = vstate
+                            from_cookie[x] = vstate
+                            self.state[group][qw][x] = vstate
                 else:
-                    for x in settings[group][k]:
-                        init = settings[group][k][x]
-                        vstate = current.request.vars[k+x]
+                    for x in settings[group][qw]:
+                        init = settings[group][qw][x]
+                        vstate = current.request.vars[x]
                         if vstate == None: vstate = from_cookie.get(x, init) 
                         from_cookie[x] = vstate
-                        self.state[group][k][x] = vstate
+                        self.state[group][qw][x] = vstate
 
-                current.response.cookies[group+k] = urllib.quote(json.dumps(from_cookie))
-                current.response.cookies[group+k]['expires'] = 30 * 24 * 3600
-                current.response.cookies[group+k]['path'] = '/'
+                current.response.cookies[group+qw] = urllib.quote(json.dumps(from_cookie))
+                current.response.cookies[group+qw]['expires'] = 30 * 24 * 3600
+                current.response.cookies[group+qw]['path'] = '/'
 
     def legend(self): return self.this_legend
 
@@ -192,7 +190,7 @@ var vcolors = {vcolors}
 var vdefaultcolors = {vdefaultcolors}
 var dncols = {dncols}
 var dnrows = {dnrows}
-var viewstate = {initstate}
+var viewinit = {initstate}
 var style = {style}
 dynamics()
 '''.format(
@@ -204,14 +202,14 @@ dynamics()
     dnrows =dnrows,
 )
 
-    def colorpicker(self, k, iid, typ):
-        return '{s}{p}\n'.format(s=vsel(k, iid, typ), p=ctable(k, iid))
+    def colorpicker(self, qw, iid, typ):
+        return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
-    <tr class="il hl"><td class="il hl"><span class="hl">{word_vlex}</span></td></tr>
+    <tr class="il hl"><td class="il hl"><span l="{lexicon_id}" class="hl">{word_vlex}</span></td></tr>
     <tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
-    <tr class="il tl"><td class="il tl"><span class="tl">{word_lex}</span></td></tr>
+    <tr class="il tl"><td class="il tl"><span l="{lexicon_id}" class="tl">{word_lex}</span></td></tr>
     <tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>
     <tr class="il wd1"><td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td></tr>
     <tr class="il wd2"><td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td></tr>
@@ -232,8 +230,8 @@ def h_esc(material, fill=True):
     return material
 
 class Verses():
-    def __init__(self, passage_db, pagekind, verse_ids=None, chapter=None, tp=None):
-        self.pagekind = pagekind
+    def __init__(self, passage_db, mr, verse_ids=None, chapter=None, tp=None):
+        self.mr = mr
         self.tp = tp
         self.verses = []
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -254,7 +252,7 @@ ORDER BY verse.id;
         word_records = []
         if tp == 'txt_il':
             word_records = passage_db.executesql('''
-SELECT {}, verse_id FROM word
+SELECT {}, verse_id, lexicon_id FROM word
 INNER JOIN word_verse ON word_number = word_verse.anchor
 INNER JOIN verse ON verse.id = word_verse.verse_id
 {}
@@ -268,13 +266,13 @@ ORDER BY word_number;
         for v in verse_info:
             v_id = int(v[0])
             xml = v[4] if tp == 'txt_p' else ''
-            self.verses.append(Verse(v[1], v[2], v[3], xml, word_data[v_id], tp=tp, pagekind=pagekind)) 
+            self.verses.append(Verse(v[1], v[2], v[3], xml, word_data[v_id], tp=tp, mr=mr)) 
 
 class Verse():
 
-    def __init__(self, book_name, chapter_num, verse_num, xml, word_data, tp=None, pagekind=None):
+    def __init__(self, book_name, chapter_num, verse_num, xml, word_data, tp=None, mr=None):
         self.tp = tp
-        self.pagekind = pagekind
+        self.mr = mr
         self.book_name = book_name
         self.chapter_num = chapter_num
         self.verse_num = verse_num
@@ -289,7 +287,7 @@ class Verse():
         return (self.book_name, self.chapter_num)
 
     def label(self):
-        if self.pagekind == 'm': return self.verse_num
+        if self.mr == 'm': return self.verse_num
         else:
             (book, chapter, verse) = (self.book_name.replace('_', ' '), self.chapter_num, self.verse_num)
             return ("{} {}:{}".format(book, chapter, verse), book, chapter)
@@ -299,10 +297,10 @@ class Verse():
             root = ET.fromstring(u'<verse>{}</verse>'.format(self.xml).encode('utf-8'))
             for child in root:
                 monad_id = int(child.attrib['m'])
+                lex_id = int(child.attrib['l'])
                 text = '' if child.text is None else child.text
                 trailer = child.get('t', '')
-                word = Word(monad_id, text, trailer)
-                self.words.append(word)
+                self.words.append((monad_id, lex_id, text, trailer))
         return self.words
 
     def material(self, user_agent):
@@ -312,8 +310,8 @@ class Verse():
     def _plain_text(self, user_agent):
         material = []
         for word in self.get_words():
-            atext = adapted_text(word.text, user_agent)
-            material.append(u'''<span m="{}">{}</span>{}'''.format(word.monad_id, atext, word.trailer))
+            atext = adapted_text(word[2], user_agent)
+            material.append(u'''<span m="{}" l="{}">{}</span>{}'''.format(word[0], word[1], atext, word[3]))
         return ''.join(material)
 
     def _rich_text(self, user_agent):
@@ -321,15 +319,4 @@ class Verse():
         for word in self.word_data:
             material.append(text_tpl.format(**word))
         return ''.join(material)
-
-
-class Word():
-
-    def __init__(self, monad_id, text, trailer):
-        self.monad_id = monad_id
-        self.text = text
-        self.trailer = trailer
-
-    def to_string(self):
-        return "id:" + str(self.monad_id) + " text:" + self.text + " trailer:" + self.trailer
 

@@ -54,9 +54,9 @@ def group_MySQL(input):
     sorted_input = sorted(input, key=lambda x: x['query_id'])
     groups = groupby(sorted_input, key=lambda x: x['query_id'])
     r = []
-    for k, v in groups:
-        query = db.queries(k)
-        monads = [(m['first_m'], m['last_m']) for m in v]
+    for key, val in groups:
+        query = db.queries(key)
+        monads = [(m['first_m'], m['last_m']) for m in val]
         json_monads = json.dumps(sorted(list(set(sum([range(x[0], x[1] + 1) for x in monads], [])))))
         r.append({'item': query, 'monads': json_monads})
     return r
@@ -111,10 +111,10 @@ where
     return r
 
 def sidem():
-    k = request.vars.k
+    qw = request.vars.qw
     (book, chapter) = getpassage()
     viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
-    if k == 'q':
+    if qw == 'q':
         monadsets = get_monadsets_MySQL(chapter)
         side_items = group_MySQL(monadsets)
     else:
@@ -122,30 +122,33 @@ def sidem():
     return dict(
         viewsettings=viewsettings,
         side_items=side_items,
-        k=k,
+        qw=qw,
     )
 
 def material():
-    pagekind = request.vars.pagekind
+    mr = request.vars.mr
+    qw = request.vars.qw
     tp = request.vars.tp
-    if pagekind == 'm':
+    if mr == 'm':
         (book, chapter) = getpassage()
         material = Verses(passage_db, 'm', chapter=chapter.id, tp=tp) if chapter else None
         result = dict(
-            pagekind=pagekind,
+            mr=mr,
+            qw=qw,
             exception_message="No chapter selected" if not chapter else None,
             exception=None,
             results=len(material.verses) if material else 0,
             material=material,
             monads=json.dumps([]),
         )
-    else:
+    elif mr == 'r':
         iid = int(request.vars.id) if request.vars else None
         page = int(request.vars.page) if request.vars.page else 1
         if iid == None:
-            exception_message = "No {} selected".format('query' if pagekind == 'q' else 'w')
+            exception_message = "No {} selected".format('query' if qw == 'q' else 'word')
             return dict(
-                pagekind=pagekind,
+                mr=mr,
+                qw=qw,
                 exception_message=exception_message,
                 exception=None,
                 results=0,
@@ -156,11 +159,12 @@ def material():
                 material=None,
                 monads=json.dumps([]),
             )
-        monad_sets = load_monad_sets(iid) if pagekind == 'q' else load_word_occurrences(iid)
+        monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
         (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
         material = Verses(passage_db, 'q', verses, tp=tp)
         return dict(
-            pagekind=pagekind,
+            mr=mr,
+            qw=qw,
             exception_message=None,
             exception=None,
             results=nresults,
@@ -244,7 +248,7 @@ def get_mql_form(record_id, readonly=False):
                 SPAN(_class='icon pen icon-pencil'),
                 SPAN('', _class='buttontext button', _title='Edit'),
                 _class='button btn',
-                _href=URL('hebrew', 'sideqe', vars=dict(pagekind='q', id=record_id)),
+                _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', id=record_id)),
                 cid=request.cid,
             ),
         else:
@@ -339,7 +343,7 @@ def handle_response_mql(mql_form, old_mql, old_modified_on):
         if request.vars.button_save == 'true':
             pass
         if request.vars.button_done == 'true':
-            redirect(URL('hebrew', 'sideq', vars=dict(pagekind='q', id=record_id)))
+            redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', id=record_id)))
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
 
@@ -518,11 +522,11 @@ def execute_query(record_id):
             pages=0, page=0, pagelist=[],
             verse_data=[],
             viewsettings=None,
-            pagekind='q',
+            mr='r',
+            qw='q',
         )
 
     mql_record.update_record(executed_on=request.now)
-    #redirect(URL('hebrew', 'text.html', vars=dict(pagekind='q', id=record_id)))
     return show_query("Query Executed", readonly=False)
 
 def pagelist(page, pages, spread):
@@ -549,7 +553,7 @@ def parse_exception(message):
 def sideqm():
     iid = request.vars.id
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(pagekind='q', id=iid),
+        vars=dict(mr='r', qw='q', id=iid),
         ajax=False, target='querybody', 
         content='fetching query',
     ))
@@ -557,7 +561,7 @@ def sideqm():
 def sidewm():
     iid = request.vars.id
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
-        vars=dict(pagekind='w', id=iid),
+        vars=dict(mr='r', qw='w', id=iid),
         ajax=False, target='wordbody', 
         content='fetching words',
     ))
@@ -586,7 +590,7 @@ def my_queries():
                     SPAN(_class='icon info-sign icon-info-sign'),
                     SPAN('', _class='buttontext button', _title='View'),
                     _class='button btn',
-                    _href=URL('hebrew', 'text', vars=dict(pagekind='q', id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', id=row.id)),
                 ) 
             ),
             dict(
@@ -595,7 +599,7 @@ def my_queries():
                     SPAN(_class='icon pen icon-pencil'),
                     SPAN('', _class='buttontext button', _title='Edit'),
                     _class='button btn',
-                    _href=URL('hebrew', 'text', vars=dict(pagekind='q', id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', id=row.id)),
                 ),
             ),
         ],
@@ -629,7 +633,7 @@ def public_queries():
                 header='View',
                 body=lambda row: A(
                     row.name,
-                    _href=URL('mql', 'display_query', vars=dict(id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', id=row.id)),
                 ) 
             ),
         ],

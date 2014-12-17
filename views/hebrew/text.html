@@ -13,29 +13,32 @@ var thebooksorder = {{=XML(booksorder)}}
 
 <div id="material">
     <div id="material_heading" class="pnl2">
+        <div id="to_passage">
+            <span><a id="to_passage_control" class="ctrl" href="#">passage ...</a></span>
+        </div>
         <div id="select_passage">
-            <select id="select_book"></select>
+            <span><select id="select_book"></select></span>
             <span id="thechapter"></span>
-            <a id="select_control_chapter" class="ctrl" href="#">other chapters ...</a>
+            <span><a id="select_control_chapter" class="ctrl" href="#">other chapters ...</a></span>
             <span id="select_contents_chapter"></span>
         </div>
         <div id="select_pages">
             <span id="theitemlabel"></span>
             <span id="theitem"></span>
             <span id="thepage"></span>
-            <a id="select_control_page" class="ctrl" href="#">other pages ...</a>
+            <span><a id="select_control_page" class="ctrl" href="#">other pages ...</a></span>
             <span id="select_contents_page"></span>
         </div>
         <div id="material_settings">
-            <a href="#" id="mtxt_p" class="ctrl mhradio">text</a>
-            <a href="#" id="mtxt_il" class="ctrl mhradio">data</a>
-            <a id="datalegend_control" class="ctrl" href="#">legend</a>
+            <span><a href="#" id="mtxt_p" class="ctrl mhradio">text</a></span>
+            <span><a href="#" id="mtxt_il" class="ctrl mhradio">data</a></span>
+            <span><a id="datalegend_control" class="ctrl" href="#">legend</a></span>
             <span id="datalegend" class="txt_il2">{{=XML(viewsettings.legend())}}</span>
         </div>
         <div id="viewlink">
-            <a id="viewlink_show" class="ctrl" href="#">share link</a>
-            <a id="viewlink_hide" class="ctrl" href="#">done</a>
-            <textarea readonly id="viewlink_content"></textarea>
+            <span><a id="viewlink_show" class="ctrl" href="#">share link</a>
+            <span><a id="viewlink_hide" class="ctrl" href="#">done</a></span>
+            <span><textarea readonly id="viewlink_content"></textarea></span>
         </div>
     </div>
     <div id="material_message"></div>
@@ -45,37 +48,35 @@ var thebooksorder = {{=XML(booksorder)}}
 
 
 {{ block left_sidebar }}
-{{ for (k, tag, tags) in (('w', 'word', 'words'), ('q', 'query', 'queries')):
+{{ for (qw, tag, tags) in (('w', 'word', 'words'), ('q', 'query', 'queries')):
 }}
-<div id="side_bar_{{=k}}m">
-    <div id="side_settings_{{=k}}m">
+<div id="side_bar_r{{=qw}}">
+    <div id="side_settings_r{{=qw}}">
         <table class="hlsettings">
             <tr>
-                <td id="colorpicker_{{=k}}m"></td>
-                <td>{{=XML(viewsettings.colorpicker(k, 'me', ''))}}</td>
+                <td id="colorpicker_i{{=qw}}"></td>
+                <td>{{=XML(viewsettings.colorpicker(qw, 'me', ''))}}</td>
             </tr>
         </table>
     </div>
-    <div id="side_material_{{=k}}m" class="mql_form"></div>
-
+    <div id="side_material_r{{=qw}}" class="mql_form"></div>
 </div>
-<div id="side_bar_m{{=k}}">
-    <p><a id="side_show_m{{=k}}" class="ctrll" href="#">show {{=tags}}</a>
-    <a id="side_hide_m{{=k}}" class="ctrll" href="#">hide {{=tags}}</a>
-    </p>
-    <div id="side_settings_m{{=k}}" class="pnl"">
+<div id="side_bar_m{{=qw}}">
+    <a id="side_show_m{{=qw}}" class="ctrll" href="#">show {{=tags}}</a>
+    <a id="side_hide_m{{=qw}}" class="ctrll" href="#">hide {{=tags}}</a>
+    <div id="side_settings_m{{=qw}}" class="pnl">
         <table class="hlsettings">
             <tr>
-                <td><a href="#" id="{{=k}}hlreset" class="ctrl {{=k}}hradio">reset</a></td>
-                <td><a href="#" id="{{=k}}hlmany" class="ctrl {{=k}}hradio">many</a></td>
-                <td><a href="#" id="{{=k}}hlcustom" class="ctrl {{=k}}hradio">custom</a></td>
-                <td>{{=XML(viewsettings.colorpicker(k, 'one', '2'))}}</td>
-                <td><a href="#" id="{{=k}}hlone" class="ctrl {{=k}}hradio">one</a></td>
-                <td><a href="#" id="{{=k}}hloff" class="ctrl {{=k}}hradio">off</a></td>
+                <td><a href="#" id="{{=qw}}hlreset" class="ctrl {{=qw}}hradio">X</a></td>
+                <td><a href="#" id="{{=qw}}hlmany" class="ctrl {{=qw}}hradio">all</a></td>
+                <td><a href="#" id="{{=qw}}hlcustom" class="ctrl {{=qw}}hradio">my</a></td>
+                <td>{{=XML(viewsettings.colorpicker(qw, 'one', '2'))}}</td>
+                <td><a href="#" id="{{=qw}}hlone" class="ctrl {{=qw}}hradio">one</a></td>
+                <td><a href="#" id="{{=qw}}hloff" class="ctrl {{=qw}}hradio">off</a></td>
             </tr>
         </table>
     </div>
-    <div id="side_material_m{{=k}}" class="pnll"></div>
+    <div id="side_material_m{{=qw}}" class="pnll"></div>
     <hr>
 </div>
 {{pass}}

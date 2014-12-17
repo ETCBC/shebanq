@@ -1,43 +1,44 @@
 {{if side_items:}}
-<ul id="side_list_{{=k}}">
+<ul id="side_list_{{=qw}}">
     {{for si in side_items:
         iid = si['item'].id
-        if k == 'q':
+        if qw == 'q':
             qname = si['item'].name
             fname = si['item'].created_by.first_name
             lname = si['item'].created_by.last_name
             pname = fname + ' ' + lname
             desc = si['item'].description
             mql = si['item'].mql
-            qname_short = qname if len(qname) < 10 else qname[0:10]+'..'
-            pname_short = pname if len(pname) < 12 else pname[0:12]+'..'
+            qname_short = qname if len(qname) < 7 else qname[0:7]+'..'
+            pname_short = pname if len(pname) < 11 else pname[0:11]+'..'
             title = '{} by {} {}'.format(qname, fname, lname)
             clinktext = pname_short
             dlinktext = qname_short
             cclass = 'qauth'
             dclass = 'qname'
             eclass = 'qdesc'
-        elif k == 'w':
-            wentry = si['item']['entry']
+        elif qw == 'w':
+            wentry = si['item']['entryid']
             wgloss = si['item']['gloss']
             vc = si['item']['g_entry_heb']
+            entry_heb = si['item']['entry_heb']
             title = wentry
-            clinktext = vc
+            clinktext = vc if vc else entry_heb
             dlinktext = wgloss
             cclass = 'i_hl'
             dclass = 'i_gl'
             eclass = 'wdesc'
         pass
     }}
-    <li id="{{='{}{}'.format(k,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
-        <div>{{=XML(viewsettings.colorpicker(k,iid, ''))}}
-            <table class="item_{{=k}}" id="h_{{=k}}{{=iid}}"><tr>
-            <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _iid=iid, _id='item_{}{}'.format(k, iid))}}</td>
-            <td class="{{=dclass}}">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(k, iid))}}</td>
+    <li id="{{='{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
+        <div>{{=XML(viewsettings.colorpicker(qw,iid, ''))}}
+            <table class="item_{{=qw}}" id="h_{{=qw}}{{=iid}}"><tr>
+            <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _iid=iid, _id='item_{}{}'.format(qw, iid))}}</td>
+            <td><span class="ctrl">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(qw, iid))}}</span></td>
         </tr></table>
         </div>
-        <div id="d_{{=k}}{{=iid}}" class="{{=eclass}}">
-        {{if k == 'q':}}
+        <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
+        {{if qw == 'q':}}
             <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
             {{=desc}}<br/>
             <textarea class="mql small" readonly>{{=XML(mql)}}</textarea>

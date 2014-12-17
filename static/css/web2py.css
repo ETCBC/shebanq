@@ -31,7 +31,7 @@ textarea {width:100%}
 video {width:400px}
 audio {width:200px}
 [type="text"], [type="password"], select {
-  margin-right: 5px; width: 300px;
+  margin-right: 5px; width: 100%; max-width: 270pt;
 }
 .hidden {display:none;visibility:visible}
 .right {float:right; text-align:right}

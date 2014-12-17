@@ -6,9 +6,6 @@
 .mastheader {
     display: none;
 }
-#side_bar_wm,#side_bar_qm,#side_bar_mq,#side_bar_mw {
-    width: 20em;
-}
 .github img {
     margin: 0 10pt 0 0;
 }
@@ -39,23 +36,34 @@ ol.text {
     font-size: x-large;
 }
 #material_heading {
-    text-align: right;
+    text-align: center;
 }
 #material_message p {
-    text-align: right;
+    text-align: left;
 }
 /* MATERIAL SELECT */
 
+#to_passage {
+    display: inline;
+}
 #select_book {
     width: 10em;
     height: 2em;
     display: inline;
+    vertical-align: text-bottom;
+    margin-bottom: -4pt;
+}
+#thechapter, #thechapterlabel, #theitem, #thepage {
+    display: inline;
+    vertical-align: text-bottom;
 }
 #select_iid, #select_chapter,#select_chapter ul, #select_chapter ul li {
     display: inline;
+    vertical-align: text-bottom;
 }
 #select_passage,#select_pages,#select_contents_chapter,#select_contents_page,#select_contents_chapter ul,#select_contents_page ul, #select_contents_chapter ul li, #select_contents_page ul li {
     display: inline;
+    vertical-align: text-bottom;
 }
 
 /* MATERIAL VIEW */
@@ -68,6 +76,20 @@ ol.text {
 
 .pagination {
     text-align: center;
+}
+.pagination ul li {
+    padding: 0pt;
+}
+.itemnav {
+    border-radius: 6pt;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
+    padding: 0pt;
+    font-size: small;
+    margin: 0pt;
+}
+.active .itemnav {
+    font-weight: bold;
 }
 #qresults,#wresults {
     overflow: auto;
@@ -101,69 +123,74 @@ table.item_w,table.item_q {
     margin: 0;
     border: 0;
 }
+table.item_w td,table.item_q td {
+    vertical-align: text-bottom;
+}
 
 /* VIEW SETTINGS */
 
 .qhradio.ison,.whradio.ison,.mhradio.ison {
-    font-weight: bold;
-    background-color: #ffff88;
-    color: #0000ff;
+    font-weight: normal;
+    background-color: #dddddd;
+    color: #000066;
 }
 .qhradio,.whradio,.mhradio {
     font-weight: normal;
     background-color: #ffffff;
+    color: #aaaaaa;
 }
 
 table.hlsettings {
-    display: table;
+    display: inline-table;
     padding: 0;
     margin: 0;
     border: 0;
+    text-align: center;
 }
 
 /* CONTROLS */
 
 .ctrl {
     border-radius: 6pt;
-    border: 1pt solid #aaaaaa;
-    background-color: #eeeeee;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
     padding: 2pt;
 }
 .ctrll {
-    border-radius: 4pt;
-    border: 2pt solid #aaaaaa;
-    background-color: #eeeeee;
+    border-radius: 8pt;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
     display: block;
     text-align: center;
-    width: 20em;
-    padding: 3pt;
+    padding: 2pt;
 }
 .pnl {
     border-radius: 12pt;
-    border: 3pt solid #aaaaaa;
-    background-color: #eeeeee;
-    width: 19em;
-    padding: 5pt;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
+    padding: 2pt;
+    text-align: center;
 }
-.pnll, #side_bar_qm, #side_bar_wm {
+.pnll, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw {
     border-radius: 12pt;
-    border: 3pt solid #eeeeee;
-    background-color: #fafafa;
-    width: 100%;
-    padding: 3pt;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
+    padding: 2pt;
+    margin-bottom: 10pt;
+}
+.pnl2 {
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
+    padding: 2pt;
+    border-radius: 12pt;
+    text-align: center;
 }
 #material {
     border-radius: 16pt;
-    border: 3pt solid #eeeeee;
-    background-color: #fafafa;
-    padding: 3pt;
-}
-.pnl2 {
-    border: 3pt solid #aaaaaa;
-    background-color: #eeeeee;
-    padding: 4pt;
-    border-radius: 12pt;
-    /* width: 35em; */
+    border: 1pt solid #dde6dd;
+    background-color: #ffffff;
+    padding: 2pt;
+    text-align: center;
 }
 
 
@@ -173,12 +200,6 @@ table.hlsettings {
     font-weight: normal;
     font-size: small;
     height: 1em;
-}
-table.picked {
-    display: inline-table;
-    padding: 0;
-    margin: 0;
-    border: 0;
 }
 table.picker,.qdesc {
     display: none;
@@ -211,24 +232,24 @@ td.cw {
 
 /* picker selected cell */
 
-td.cc_sel_q,td.cc_selc_q,td.cc_sel_w,td.cc_selc_w {
-    width: 12pt;
-    height: 12pt;
-    padding: 0;
-    margin: 0;
+.pickedc {
+    vertical-align: text-bottom;
+}
+.picked {
+    border-radius: 3pt;
+    border: 1pt solid #aaaaaa;
     text-align: center;
     vertical-align: middle;
+    padding-left: 4pt;
+    padding-right: 4pt;
 }
-td.cc_sel_q {
+.picked.cc_sel_q {
     color: #000000;
-    font-size: small;
-    border: 1pt solid #aaaaaa;
 }
-td.cc_sel_w {
+.picked.cc_sel_w {
     background-color: #fafafa;
-    font-size: medium;
+    font-size: large;
     font-weight: bold;
-    border: 1pt solid #aaaaaa;
 }
 
 /* SIDEBAR ITEMS: QUERY */
@@ -237,7 +258,7 @@ textarea.mql {
     font-family: Menlo, Courier New, Courier, monospace;
     background-color: white;
     height: 10em;
-    margin-left: -1em;
+    margin-left: 0em;
 }
 textarea.small {
     font-size: small;
@@ -252,9 +273,8 @@ td.qauth {
 /* QUERY FORM */
 
 div.mql_form,div.word_form {
-    padding: 1em 1em 1em 1em;
+    padding: 1pt;
     overflow: auto;
-    width: 100%;
 }
 .mql_form div.w2p_fl, {
     display: inline;
@@ -288,7 +308,6 @@ div.mql_form,div.word_form {
 }
 #queries_mql, #queries_description {
     display: inline;
-    width: 20em;
     height: 6em;
 }
 #queries_mql {
@@ -493,17 +512,17 @@ span.ht, span.l_ht {
     color: #000000;
     line-height: 1.5;
 }
-.i_hl,span.hl, span.l_hl, #lexicon_g_entry_heb__row .w2p_fw, #lexicon_entry_heb__row .w2p_fw {
+span.hl, span.l_hl {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
-    color: #0000ff;
+    color: #000000;
     line-height: 1.5;
 }
-span.l_hl {
+.i_hl,#lexicon_g_entry_heb__row .w2p_fw, #lexicon_entry_heb__row .w2p_fw {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
-    font-size: medium;
-    color: #0000ff;
-    line-height: 1.0;
+    font-size: large;
+    color: #000000;
+    line-height: 1.2;
 }
 span.tt, span.l_tt {
     font-family: Menlo, Courier New, Courier, monospace;
@@ -513,7 +532,7 @@ span.tt, span.l_tt {
 span.tl, span.l_tl, #lexicon_g_entry__row .w2p_fw, #lexicon_entry__row .w2p_fw, , #lexicon_root__row .w2p_fw {
     font-family: Menlo, Courier New, Courier, monospace;
     font-size: small;
-    color: #0000ff;
+    color: #000000;
 }
 #lexicon_entryid__row .w2p_fw {
     font-family: Menlo, Courier New, Courier, monospace;

@@ -3,55 +3,60 @@
 Application workflow:
 
 There is a skeleton page, filled with HTML.
+A page is a selection of the skeleton.
+A page is an object with data and methods.
+
+There are two pages:
+
+    m: material (showing verses of a chapter)
+    r: results  (showing verses of a result page)
+
+An m-page has different sidebars from an r-page.
+
 The skeleton has the following parts:
 
 A. Sidebar with
-    w: viewsettings plus a list of word items
-    q: viewsettings plus a list of query items
-    m: viewsettings plus the metadata of an individual query
+    m-w: viewsettings plus a list of word items
+    m-q: viewsettings plus a list of query items
+    r-w: viewsettings plus the metadata of an individual word
+    r-q: viewsettings plus the metadata of an individual query
+
 B. Main part with
     heading
-    material selector (either book/chapter, or resultpages)
-    m: viewsettings (share link plus text/data selector)
-    material (either the verses of a passage or the verses of the resultpage of a query)
+    material selector (m: book/chapter, r: resultpages)
+    settings (text/data selector)
+    share link
+    material (either the verses of a passage or the verses of the resultpage of a query or word)
 
-There is a dictionary viewstate, in which the current viewsettings are being maintained.
-Viewstate is divided in groups, each group is serialized to a cookie with every change made by the user.
+The page object has a member viewstate, in which the current viewsettings are being maintained.
+Viewstate is divided in groups, each group is serialized to a cookie.
 Viewstate is initialized from the querystring and/or the cookies, where the querystring wins.
+Whenever a user clicks, the viewstate is changed and saved in the corresponding cookie.
 
-Depending on user actions, parts of the skeleton are loaded with HTML, through AJAX calls.
+Depending on user actions, parts of the skeleton are loaded with HTML, through AJAX calls with methods that
+perform actions when the data has been loaded.
 
 The application goes through the following stages:
 
-setup_ functions:
-    insert the action items into the skeleton or a new load of html that has come from the server
-    Does not change the viewstate, does not look at the viewstate
+init functions:
+    Decorate the fixed parts of the skeleton with jquery actions.
+    Do not change the viewstate, does not look at the viewstate.
 
-apply_ functions:
-    looks at the viewstate and adapts the display of the page, this might entail ajax actions
-    does not change the viewstate
+click functions (events): change the viewstate.
 
-The skeleton can be used to structure several kinds of pages:
+apply functions:
+    Look at the viewstate and adapt the display of the page, this might entail ajax actions.
+    Do not change the viewstate.
 
-passage page
-    The sidebar contains A-w and A-q, but not A-m
-    The main part B contains a verse list from a passage (a chapter)
-    A-w and A-q are lists of relevant words (lexemes) and queries.
+process functions:
+    Very much like init functions, but only for content that has been loaded through later AJAX calls
 
-query page
-    The sidebar contains A-m, but not A-w and A-q
-    The main part B contains a page with a verse list of verses containing a result of the query.
-    A-m shows the metadata of the query, and the query can be edited in place. 
-
-word page
-    The sidebar contains A-m, but not A-w and A-q
-    The main part B contains a page with a verse list of verses containing an occurrence of a word (lexeme).
-    A-m shows the metadata of the query, and the query can be edited in place. 
-
-The cookies are
+The cookies are:
 
 material
-    the current book, chapter, query id, word id, pagekind (m=material, q=query, w=word),
+    the current book, chapter, result page, item id,
+    qw (q=query, w=word, tells whether the item in question is a query or a word),
+    mr (m=material, r=result of query or word search),
     tp (text-or-data setting: whether the material is shown as plain text (txt_p) or as interlinear data (txt_il))
 
 hebrewdata
@@ -68,7 +73,7 @@ highlights
     get (whether or not to retrieve the side list of relevant items)
 
 colormap
-    mappings between queries and colors and between words and colors, based on the id of queries and words
+    mappings between queries and colors (q) and between words and colors (w), based on the id of queries and words
 
 */
 
@@ -79,70 +84,209 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
-var vcolors, vdefaultcolors, dncols, dnrows
-var viewstate, viewfluid, style, title, side_fetched, material_fetched
-var thebooks
-var view_url, material_url, item_url, side_url
-var page
-var subtract = 250
-
+var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
+var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
+var view_url, material_url, item_url, side_url // urls from which to fetch additional material through AJAX, the values come from the server
+var wb      // holds the one and only page object
+var subtract = 250 // the canvas holding the material gets a height equal to the window height minus this amount
 
 // TOP LEVEL: DYNAMICS, PAGE, SKELETON
 
-function dynamics() {
+function dynamics() { // top level function, called when the page has loaded
     viewfluid = {}
-    page = new Page()
-    page.go()
+    wb = new Page(new ViewState(viewinit))
+    wb.init()
+    wb.go()
 }
 
-function Page() {
-    this.mstate = viewstate['material']['']
-    this.skeleton = new Skeleton()
-    this.prev = {}
-    for (x in this.mstate) {
-        this.prev[x] = null
-    }
-    this.apply = function() {
-        var pagekind = this.mstate['pagekind']
-        var otherpagekind = (pagekind == 'w')?'q':(pagekind == 'q')?'w':''
-        var thechapter = this.mstate['chapter']
-        var thepage = this.mstate['page']
-        this.skeleton.apply()
-        $('#theitemlabel').html((pagekind == 'm')?'':style[pagekind]['Tag'])
-        $('#thechapter').html((thechapter > 0)?thechapter:'')
-        $('#thepage').html((thepage > 0)?'page '+thepage:'')
-        for (x in this.mstate) {
-            this.prev[x] = this.mstate[x]
-        }
-    }
-    this.go = function() {
-        var pagekind = this.mstate['pagekind']
-        if (
-            this.mstate['pagekind'] != this.prev['pagekind'] ||
-            (this.prev['pagekind'] == 'm' && (this.mstate['book'] != this.prev['book'] || this.mstate['chapter'] != this.prev['chapter'])) ||
-            (this.prev['pagekind'] != 'm' && (this.mstate[pagekind+'id'] != this.prev['iid'] || this.mstate['page'] != this.prev['page']))
-        ) {
-            material_fetched = {txt_p: false, txt_il: false}
-        }
-        savestate('material','')
-        this.apply()
-    }
-}
+function Page(vs) {
+    this.vs = vs    // the viewstate
 
-function Skeleton() {
-    this.material = new Material()
-    this.sidebars = new Sidebars()
-    this.apply = function() {
+    this.init = function() { // dress up the skeleton, initialize state variables
+        this.material = new Material()
+        this.sidebars = new Sidebars()
+        $('#material_txt_p').css('height', (window.innerHeight - subtract)+'px')
+        $('#material_txt_il').css('height', (2 * window.innerHeight - subtract)+'px')
+        this.listsettings = {}
+        for (var qw in {q: 1, w: 1}) {
+            this.listsettings[qw] = new ListSettings(qw)
+            this.picker2[qw] = this.listsettings[qw].picker2
+        }
+        this.prev = {}
+        for (var x in this.vs.mstate()) {
+            this.prev[x] = null
+        }
+        material_fetched = {txt_p: false, txt_il: false}
+    }
+    this.apply = function() { // apply the viewstate: hide and show material as prescribed by the viewstate
         this.material.apply()
         this.sidebars.apply()
+        var chapter = this.vs.chapter()
+        var page = this.vs.page()
+        $('#theitemlabel').html((this.mr == 'm')?'':style[this.qw]['Tag'])
+        $('#thechapter').html((chapter > 0)?chapter:'')
+        $('#thepage').html((page > 0)?'page '+page:'')
+        for (var x in this.vs.mstate()) {
+            this.prev[x] = this.vs.mstate()[x]
+        }
     }
-    $('#material_txt_p').css('height', (window.innerHeight - subtract)+'px')
-    $('#material_txt_il').css('height', (2 * window.innerHeight - subtract)+'px')
+    this.go = function() { // go to another page view, check whether initial content has to be loaded
+        this.mr = this.vs.mr()
+        this.qw = this.vs.qw()
+        this.iid = this.vs.iid()
+        if (
+            this.mr != this.prev['mr'] || this.qw != this.prev['qw'] ||
+            (this.mr == 'm' && (this.vs.book() != this.prev['book'] || this.vs.chapter() != this.prev['chapter'])) ||
+            (this.mr == 'r' && (this.iid != this.prev['iid'] || this.vs.page() != this.prev['page']))
+        ) {
+            material_fetched = {txt_p: false, txt_il: false}
+            side_fetched = {}
+        }
+        this.apply()
+    }
+
+/*
+
+the origin must be an object which has a member indicating the type of origin.
+
+1: a color picker 1 from an item in a list
+1a: the color picker 1 on an item page
+2: a color picker 2 on a list page
+3: a button of the list view settings
+4: a click on a word in the text
+5: when the data or text representation is loaded
+
+*/
+    this.highlight2 = function(origin) { // all highlighting goes through this function
+        var that = this
+        var qw = origin.qw
+        var active = wb.vs.active(qw)
+        if (active == 'hlreset') {
+            this.vs.cstatexx(qw)
+            this.vs.hstatesv(qw, {active: 'hlcustom', sel_one: defcolor(qw, null)})
+            this.listsettings[qw].apply()
+            return
+        }
+        var hlradio = $('.'+qw+'hradio')
+        var activeo = $('#'+qw+active)
+        hlradio.removeClass('ison')
+        activeo.addClass('ison')
+        var cmap = this.vs.colormap(qw)
+
+        var paintings = {}
+
+        if (origin.code == '1a') { // highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
+            if (active != 'hlcustom') {
+                this.vs.hstatesv(qw, {active: 'hlcustom'})
+            }
+            var iid = origin.iid
+            var paint = cmap[iid] || defcolor(null, iid)
+            if (qw == 'q') {
+                $($.parseJSON($('#themonads').val())).each(function(i, m) {
+                    paintings[m] = paint
+                })
+            }
+            else {
+                paintings[iid] = paint
+            }
+            this.paint(qw, paintings)
+            return
+        }
+
+        // all other cases: highlights on an m-page, responding to a user action
+        var selclr = wb.vs.sel_one(qw)
+        var custitems = {}
+        var plainitems = {}
+
+        if (qw == 'q') { // Queries: highlight customised items with priority over uncustomised items
+            $('#side_list_'+qw+' li').each(function() {
+                var iid = $(this).attr('iid')
+                var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
+                if (wb.vs.iscolor(qw, iid)) {
+                    custitems[iid] = monads
+                }
+                else {
+                    plainitems[iid] = monads
+                }
+            })
+        }
+        else { // Words: they are disjoint, no priority needed
+            $('#side_list_'+qw+' li').each(function() {
+                var iid = $(this).attr('iid')
+                if (wb.vs.iscolor(qw, iid)) {
+                    custitems[iid] = 1
+                }
+                else {
+                    plainitems[iid] = 1
+                }
+                var all = $('#'+qw+iid)
+                if (active == 'hlmany' || wb.vs.iscolor(qw, iid)) {
+                    all.show()
+                }
+                else {
+                    all.hide()
+                }
+            })
+        }
+        var chunks = [custitems, plainitems]
+
+        var cselect = function(iid) {
+            if (active == 'hloff') {paint = style[qw]['off']}
+            else if (active == 'hlone') {paint = selclr}
+            else if (active == 'hlmany') {paint = defcolor(null, iid)}
+            else if (active == 'hlcustom') {paint = cmap[iid] || selclr}
+            else {paint = selclr}
+            return paint
+        }
+
+        if (qw == 'q') { // Queries: compute the monads to be painted
+            for (var c = 0; c < 2; c++ ) {
+                var chunk = chunks[c]
+                for (var iid in chunk) {
+                    var color = cselect(iid)
+                    var monads = chunk[iid]
+                    for (var m in monads) {
+                        monad = monads[m]
+                        if (!(monad in paintings)) {
+                            paintings[monad] = color;
+                        }
+                    }
+                }
+            }
+        }
+        else { // Words: gather the lexem_ids to be painted
+            for (var c = 0; c < 2; c++ ) {
+                var chunk = chunks[c]
+                for (var iid in chunk) {
+                    var color = style[qw]['off']
+                    if (c == 0) { // do not color the plain items when dealing with words (as opposed to queries)
+                        color = cselect(iid)
+                    }
+                    paintings[iid] = color
+                }
+            }
+        }
+        this.paint(qw, paintings)
+    }
+
+    this.paint = function(qw, paintings) { // Execute a series of computed paint instructions
+        var stl = style[qw]['prop']
+        var container = '#material_'+wb.vs.tp()
+        var att = (qw == 'q')?'m':'l'
+        for (var item in paintings) {
+            var color = paintings[item]
+            $(container+' span['+att+'="'+item+'"]').css(stl, vcolors[color][qw])
+        }
+    }
+
+    this.picker2 = {}
+    this.picker1 = {q: {}, w: {}}               // will collect the two Colorpicker1 objects, indexed as q w 
+    this.picker1list = {q: {}, w: {}}           // will collect the two lists of Colorpicker1 objects, index as q w and then by iid
 }
 
 // VIEWLINK
 
-function Viewlink() {
+function Viewlink() { // Construct a link to the present page view in a textarea
     var that = this
     this.name = 'viewlink'
     this.hid = '#'+this.name
@@ -157,7 +301,7 @@ function Viewlink() {
             hide.show()
             show.hide()
             content.show()
-            content.val(view_url+getvars())
+            content.val(view_url+wb.vs.getvars())
             content.select()
         }
         else {
@@ -178,10 +322,8 @@ function Viewlink() {
 
 // MATERIAL
 
-function Material() {
+function Material() { // Object correponding to everything that controls the material in the main part (not in the side bars)
     var that = this
-    this.mstate = viewstate['material']['']
-    var pagekind = this.mstate['pagekind']
     this.name = 'material'
     this.hid = '#'+this.name
     this.cselect = $('#material_select')
@@ -191,53 +333,80 @@ function Material() {
     this.message = new MMessage()
     this.content = new MContent()
     this.msettings = new MSettings(this.content)
-    this.apply = function() {
-        this.viewlink.apply()
-        this.msettings.apply()
-        this.mselect.apply()
-        this.pselect.apply()
+    this.adapt = function() {
         this.fetch()
     }
-    this.fetch = function() {
-        var pagekind = this.mstate['pagekind']
-        var tp = this.mstate['tp']
-        var vars = '?pagekind='+pagekind
-        vars += '&tp='+tp
-        if (pagekind == 'm') {
-            vars += '&book='+this.mstate['book']
-            vars += '&chapter='+this.mstate['chapter']
-            do_fetch = this.mstate['book'] != 'x' && this.mstate['chapter'] > 0
+    this.apply = function() {
+        this.viewlink.apply()
+        this.mselect.apply()
+        this.pselect.apply()
+        this.msettings.apply()
+    }
+    this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
+        var vars = '?mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
+        if (wb.mr == 'm') {
+            vars += '&book='+wb.vs.book()
+            vars += '&chapter='+wb.vs.chapter()
+            do_fetch = wb.vs.book() != 'x' && wb.vs.chapter() > 0
         }
         else {
-            vars += '&id='+this.mstate[pagekind+'id']
-            vars += '&page='+this.mstate['page']
-            do_fetch = this.mstate[pagekind+'id'] >=0
+            vars += '&id='+wb.iid
+            vars += '&page='+wb.vs.page()
+            do_fetch = wb.iid >=0
         }
-        if (do_fetch && !material_fetched[tp]) {
+        if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
             $.get(material_url+vars, function(html) {
                 var response = $(html)
                 that.pselect.add(response)
                 that.message.add(response)
                 that.content.add(response)
-                material_fetched[tp] = true
+                material_fetched[wb.vs.tp()] = true
                 that.process()
             }, 'html')
         }
+        else {
+            wb.highlight2({code: '5', qw: 'w'})
+        }
     }
-    this.process = function() {
-        var pagekind = this.mstate['pagekind']
-        this.msettings.apply()
-        page.skeleton.sidebars.after_material_fetch()
-        if (pagekind != 'm') {
+    this.process = function() { // process new material obtained by an AJAX call
+        wb.sidebars.after_material_fetch()
+        if (wb.mr == 'r') {
             this.pselect.apply()
             $('a.vref').click(function() {
-                that.mstate['book'] = $(this).attr('book')
-                that.mstate['chapter'] = $(this).attr('chapter')
-                that.mstate['pagekind'] = 'm'
-                savestate('material', '')
-                page.go('m')
+                wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
+                wb.go('m')
             })
+        }
+        else {
+            this.add_word_actions()
+        }
+        if (wb.vs.tp() == 'txt_il') {
+            this.msettings.hebrewsettings.apply()
+        }
+    }
+    this.add_word_actions = function() { // Make words clickable, so that they show up in the sidebar
+        $('#material_'+wb.vs.tp()+' span[l]').click(function() {
+            var iid = $(this).attr('l')
+            var qw = 'w'
+            var all = $('#'+qw+iid)
+            if (wb.vs.iscolor(qw, iid)) {
+                wb.vs.cstatex(qw, iid)
+                all.hide()
+            }
+            else {
+                wb.vs.cstatesv(qw, {[iid]: defcolor(null, iid)})
+                all.show()
+            }
+            var active = wb.vs.active(qw)
+            if (active != 'hlcustom') {
+                wb.vs.hstatesv(qw, {active: 'hlcustom'})
+            }
+            wb.picker1list['w'][iid].apply(false)
+            wb.highlight2({code: '4', qw: qw})
+        })
+        if (material_fetched['txt_p'] && material_fetched['txt_il']) {
+            wb.highlight2({code: '5', qw: 'w'})
         }
     }
     this.message.msg('choose a passage or a query or a word')
@@ -246,33 +415,36 @@ function Material() {
 // MATERIAL: SELECTION
 
 function MSelect() { // for book and chapter selection
-    this.mstate = viewstate['material']['']
-    var select = '#select_contents_chapter'
     this.name = 'select_passage'
     this.hid = '#'+this.name
     this.up = new SelectBook()
     this.select = new SelectItems(this.up, 'chapter')
+    var to_passage = $('#to_passage')
     this.apply = function() {
-        var pagekind = this.mstate['pagekind']
-        if (pagekind == 'm') {
+        if (wb.mr == 'm') {
             this.up.apply()
+            this.select.apply()
             $(this.hid).show()
+            $(to_passage).hide()
         }
         else {
             $(this.hid).hide()
+            $(to_passage).show()
         }
     }
+    $(to_passage).click(function() {
+        wb.vs.mstatesv({mr: 'm'})
+        wb.go()
+    })
 }
 
 function PSelect() { // for result page selection
-    this.mstate = viewstate['material']['']
     var select = '#select_contents_page'
     this.name = 'select_pages'
     this.hid = '#'+this.name
     this.select = new SelectItems(null, 'page')
     this.apply = function() {
-        var pagekind = this.mstate['pagekind']
-        if (pagekind != 'm') {
+        if (wb.mr == 'r') {
             this.select.apply()
             $(this.hid).show()
         }
@@ -281,22 +453,20 @@ function PSelect() { // for result page selection
         }
     }
     this.add = function(response) {
-        var pagekind = this.mstate['pagekind']
-        if (pagekind != 'm') {
+        if (wb.mr == 'r') {
             $(select).html(response.find(select).html())
         }
     }
 }
 
-function SelectBook() {
+function SelectBook() { // book selection
     var that = this
-    this.mstate = viewstate['material']['']
     this.name = 'select_book'
     this.hid = '#'+this.name
     this.content = $(this.hid)
     this.selected = null
     this.apply = function () {
-        var thebook = this.mstate['book']
+        var thebook = wb.vs.book()
         this.content.show()
         this.content.val(thebook)
         if (this.selected != thebook) {
@@ -306,26 +476,23 @@ function SelectBook() {
         this.selected = thebook
     }
     this.content.change(function () {
-        that.mstate['book'] = that.content.val()
-        that.mstate['pagekind'] = 'm'
-        savestate('material', '')
-        page.go()
+        wb.vs.mstatesv({book: that.content.val(), chapter: 1, mr: 'm'})
+        wb.go()
     })
     this.gen_html = function() {
         var ht = '<option value="x">choose a book ...</option>'
-        for (i in thebooksorder) {
+        for (var i in thebooksorder) {
             book =  thebooksorder[i]
             ht += '<option value="'+book+'">'+book+'</option>'
         }
         this.content.append($(ht))
     }
     this.gen_html()
-    this.content.val(this.mstate['book'])
+    this.content.val(wb.vs.book())
 }
 
 function SelectItems(up, key) { // both for chapters and for result pages
     var that = this
-    this.mstate = viewstate['material']['']
     this.key = key
     this.tag = (key == 'chapter')?'passage':'pages'
     this.up = up
@@ -342,20 +509,20 @@ function SelectItems(up, key) { // both for chapters and for result pages
             closeOnEscape: true,
             modal: false,
             title: 'choose '+that.key,
-            position: {my: 'right top', at: 'left top', of: $('#select_'+that.tag)},
-            width: '450px',
+            position: {my: 'right top', at: 'left top', of: $('#material')},
+            width: '270px',
         })
     }
-    this.gen_html = function() {
+    this.gen_html = function() { // generate a new page selector
         if (this.key == 'chapter') {
-            var thebook = this.mstate['book']
-            var theitem = this.mstate['chapter']
+            var thebook = wb.vs.book()
+            var theitem = wb.vs.chapter()
             var nitems = (thebook != 'x')?thebooks[thebook]:0
             var itemlist = new Array(nitems)
             for  (i = 0; i < nitems; i++) {itemlist[i] = i+1}
         }
         else { // 'page'
-            var theitem = this.mstate['page']
+            var theitem = wb.vs.page()
             var nitems = $('#rp_pages').val()
             var itemlist = []
             if (nitems) {
@@ -366,7 +533,7 @@ function SelectItems(up, key) { // both for chapters and for result pages
         if (nitems != undefined) {
             if (nitems != 0) {
                 ht = '<div class="pagination"><ul>'
-                for (i in itemlist) {
+                for (var i in itemlist) {
                     item = itemlist[i]
                     if (theitem == item) {
                         ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
@@ -383,26 +550,24 @@ function SelectItems(up, key) { // both for chapters and for result pages
     }
     this.add_item = function(item) {
         item.click(function() {
-            if ($(that.hid).dialog('instance') && $(that.hid).dialog('isOpen')) {$(that.hid).dialog('close')}
+            //if ($(that.hid).dialog('instance') && $(that.hid).dialog('isOpen')) {$(that.hid).dialog('close')}
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
-                var newitem = $(this).attr('item')
-                that.mstate[that.key] = newitem 
-                savestate('material', '')
-                page.go()
+                wb.vs.mstatesv({[that.key]:  $(this).attr('item')})
+                wb.go()
             }
         })
     }
     this.apply = function() {
-        var pagekind = this.mstate['pagekind']
         var showit = false
-        if (pagekind != 'm' && this.key == 'page') {
+        /* if (wb.mr == 'r' && this.key == 'page') {
             showit = this.gen_html() > 0 
         }
-        else if (pagekind == 'm' && this.key == 'chapter') {
+        else if (wb.mr == 'm' && this.key == 'chapter') {
             showit = true
-        }
+        } */
+        showit = this.gen_html() > 0 
         if (!showit) {
             $(this.control).hide()
         }
@@ -416,7 +581,6 @@ function SelectItems(up, key) { // both for chapters and for result pages
     }
     $(this.control).click(function () {
         $(that.hid).dialog('open')
-        savestate('material', '')
     })
 }
 
@@ -434,7 +598,6 @@ function MMessage() { // diagnostic output
 }
 
 function MContent() { // the actual Hebrew content, either plain text or interlinear data
-    this.mstate = viewstate['material']['']
     var tps = {txt_p: 'txt_il', txt_il: 'txt_p'}
     this.name_text = 'material_text'
     this.name_data = 'material_data'
@@ -442,9 +605,8 @@ function MContent() { // the actual Hebrew content, either plain text or interli
     this.hid_data = '#'+this.name_data
     this.hid_content = '#material_content'
     this.select = function() {
-        var tp = this.mstate['tp']
-        this.name_yes = 'material_'+tp
-        this.name_no = 'material_'+tps[tp]
+        this.name_yes = 'material_'+wb.vs.tp()
+        this.name_no = 'material_'+tps[wb.vs.tp()]
         this.hid_yes = '#'+this.name_yes
         this.hid_no = '#'+this.name_no
     }
@@ -459,11 +621,10 @@ function MContent() { // the actual Hebrew content, either plain text or interli
     }
 }
 
-// MATERIAL SETTINGS (for choosing between plain text and interlnear data)
+// MATERIAL SETTINGS (for choosing between plain text and interlinear data)
 
 function MSettings(content) {
     var that = this
-    this.mstate = viewstate['material']['']
     var hltext = $('#mtxt_p')
     var hldata = $('#mtxt_il')
     var legend = $('#datalegend')
@@ -472,13 +633,6 @@ function MSettings(content) {
     this.hid = '#'+this.name
     this.content = content
     this.hebrewsettings = new HebrewSettings()
-    $('.mhradio').click(function() {
-        var activen = $(this).attr('id').substring(1)
-        that.mstate['tp'] = activen 
-        that.mstate['pagekind'] = 'm'
-        savestate('material','')
-        page.go()
-    })
     legendc.click(function () {
         legend.dialog({
             dialogClass: 'legend',
@@ -490,31 +644,33 @@ function MSettings(content) {
         })
     })
     this.apply = function() {
-        var tp = this.mstate['tp']
         var hlradio = $('.mhradio')
         hlradio.removeClass('ison')
-        $('#m'+tp).addClass('ison')
+        $('#m'+wb.vs.tp()).addClass('ison')
         this.content.show()
-        if (tp == 'txt_il') {
+        if (wb.vs.tp() == 'txt_il') {
             legendc.show()
-            this.hebrewsettings.apply()
         }
         else {
             legend.hide()
             legendc.hide()
         }
+        wb.material.adapt()
     }
+    $('.mhradio').click(function() {
+        wb.vs.mstatesv({tp: $(this).attr('id').substring(1)})
+        that.apply()
+    })
 }
 
 // HEBREW DATA (which fields to show if interlinear text is displayed)
 
 function HebrewSettings() {
-    this.dstate = viewstate['hebrewdata']['']
-    for (fld in this.dstate) {
+    for (var fld in wb.vs.hdata()) {
         this[fld] = new HebrewSetting(fld)
     }
     this.apply = function() {
-        for (fld in this.dstate) {
+        for (var fld in wb.vs.hdata()) {
             this[fld].apply()
         }
     }
@@ -522,21 +678,19 @@ function HebrewSettings() {
 
 function HebrewSetting(fld) {
     var that = this
-    this.dstate = viewstate['hebrewdata']['']
     this.name = fld
     this.hid = '#'+this.name
     $(this.hid).click(function() {
-        that.dstate[fld] = $(this).prop('checked')?'v':'x'
-        savestate('hebrewdata')
+        wb.vs.dstatesv({[fld]: $(this).prop('checked')?'v':'x'})
         that.applysetting()
     })
     this.apply = function() {
-        var val = this.dstate[this.name]
+        var val = wb.vs.hdata()[this.name]
         $(this.hid).prop('checked', val == 'v')
         this.applysetting()
     }
     this.applysetting = function() {
-        if (this.dstate[this.name] == 'v') {
+        if (wb.vs.hdata()[this.name] == 'v') {
             $('.'+this.name).each(function () {$(this).show()})
         }
         else {
@@ -549,148 +703,161 @@ function HebrewSetting(fld) {
 
 /*
 
-The main material kan be three kinds (pagekind)
+The main material kan be three kinds (mr)
 
 m = material: chapters from books
-q = query results
-w = word results
+r = query/word results
 
-There are four kinds of sidebars, indicated by two letters, of which the first indicates the pagekind
+There are four kinds of sidebars, indicated by two letters, of which the first indicates the mr
 
 mq = list of queries relevant to main material
 mw = list of words relevant to main material
-qm = display of query record, the main material are the query results
-qw = display of word record, the main material are the word results
+rq = display of query record, the main material are the query results
+rw = display of word record, the main material are the word results
 
 */
 
 function Sidebars() { // TOP LEVEL: all four kinds of sidebars
-    this.hstate_all = viewstate['highlights']
-    for (k in this.hstate_all) {
-        this['m'+k] = new Sidebar('m', k)
-        this[k+'m'] = new Sidebar(k, 'm')
+    this.sidebar = {}
+    for (var mr in {m: 1, r: 1}) {
+        for (var qw in {q: 1, w: 1}) {
+            this.sidebar[mr+qw] = new Sidebar(mr, qw)
+        }
     }
     side_fetched = {}
     this.apply = function() {
-        for (k in this.hstate_all) {
-            this['m'+k].apply()
-            this[k+'m'].apply()
+        for (var mr in {m: 1, r: 1}) {
+            for (var qw in {q: 1, w: 1}) {
+                this.sidebar[mr+qw].apply()
+            }
         }
     }
     this.after_material_fetch = function() {
-        for (k in this.hstate_all) {
-            delete side_fetched['m'+k]
+        for (var qw in {q: 1, w: 1}) {
+            delete side_fetched['m'+qw]
         }
     }
     this.after_item_fetch = function() {
-        for (k in this.hstate_all) {
-            delete side_fetched[k+'m']
+        for (var qw in {q: 1, w: 1}) {
+            delete side_fetched['r'+qw]
         }
     }
 }
 
 // SPECIFIC sidebars, the [mqw][mqw] type is frozen into the object
 
-function Sidebar(pagekind, k) {
+function Sidebar(mr, qw) {
     var that = this
-    this.pagekind = pagekind
-    this.k = k
-    this.name = 'side_bar_'+this.pagekind+this.k
+    this.mr = mr
+    this.qw = qw
+    this.name = 'side_bar_'+mr+qw
     this.hid = '#'+this.name
-    this.mstate = viewstate['material']['']
-    this.hstate = (this.k == 'm')?{}:viewstate['highlights'][this.k]
     var thebar = $(this.hid)
-    var thelist = $('#side_material_'+this.pagekind+this.k)
-    var theset = $('#side_settings_'+this.pagekind+this.k)
-    var hide = $('#side_hide_'+this.pagekind+this.k)
-    var show = $('#side_show_'+this.pagekind+this.k)
-    this.ssettings = new SSettings(this.pagekind, this.k)
-    this.content = new SContent(this.pagekind, this.k, this.ssettings)
+    var thelist = $('#side_material_'+mr+qw)
+    var theset = $('#side_settings_'+mr+qw)
+    var hide = $('#side_hide_'+mr+qw)
+    var show = $('#side_show_'+mr+qw)
+    this.content = new SContent(mr, qw)
     this.apply = function() {
-        var currentpagekind = this.mstate['pagekind']
-        if (currentpagekind != this.pagekind) {
+        if ((this.mr != wb.mr) || (this.mr == 'r' && this.qw != wb.qw)) {
             thebar.hide()
         }
         else {
             thebar.show()
-            if (this.hstate['get'] == 'x') {
-                thelist.hide()
-                theset.hide()
-                hide.hide()
-                show.show()
+            theset.show()
+            if (this.mr == 'm') {
+                if (wb.vs.get(this.qw) == 'x') {
+                    thelist.hide()
+                    theset.hide()
+                    hide.hide()
+                    show.show()
+                }
+                else {
+                    thelist.show()
+                    theset.show()
+                    hide.show()
+                    show.hide()
+                }
             }
             else {
-                thelist.show()
-                theset.show()
-                hide.show()
+                hide.hide()
                 show.hide()
             }
+            this.content.apply()
         }
-        this.content.apply()
     }
-    if (this.pagekind == 'm') {
-        show.click(function(){
-            that.hstate['get'] = 'v'
-            savestate('highlights',that.k)
-            that.apply()
-        })
-        hide.click(function(){
-            that.hstate['get'] = 'x'
-            savestate('highlights',that.k)
-            that.apply()
-        })
-    }
+    show.click(function(){
+        wb.vs.hstatesv(that.qw, {get: 'v'})
+        that.apply()
+    })
+    hide.click(function(){
+        wb.vs.hstatesv(that.qw, {get: 'x'})
+        that.apply()
+    })
 }
 
 // SIDELIST MATERIAL
 
-function SContent(pagekind, k, ssettings) {
+function SContent(mr, qw) {
     var that = this
-    this.pagekind = pagekind
-    this.k = k
-    this.ik = (this.pagekind == 'm')?this.k:this.pagekind
-    this.mstate = viewstate['material']['']
-    this.hstate = (this.pagekind != 'm')?{}:viewstate['highlights'][this.k]
+    this.mr = mr
+    this.qw = qw
+    this.other_mr = (this.mr == 'm')?'r':'m'
     var thebar = $(this.hid)
-    var thelist = $('#side_material_'+this.pagekind+this.k)
-    var hide = $('#side_hide_'+this.pagekind+this.k)
-    var show = $('#side_show_'+this.pagekind+this.k)
-    this.name = 'side_material_'+this.pagekind+this.k
+    var thelist = $('#side_material_'+mr+qw)
+    var hide = $('#side_hide_'+mr+qw)
+    var show = $('#side_show_'+mr+qw)
+    this.name = 'side_material_'+mr+qw
     this.hid = '#'+this.name
-    this.ssettings = ssettings
-    this.colorpickers = []
     this.msg = function(m) {
         $(this.hid).html(m)
     }
+    this.process = function() {
+        wb.sidebars.after_item_fetch()
+        this.sidelistitems()
+        if (this.mr == 'm') {
+            wb.listsettings[this.qw].apply()
+        }
+        else {
+            wb.picker1[this.qw].adapt(wb.iid, true)
+        }
+
+        $('#theitem').html($('#itemtag').val()+':')
+    }
+    this.apply = function() {
+        if (wb.mr == this.mr && (this.mr == 'r' || wb.vs.get(this.qw) == 'v')) {
+            this.fetch()
+        }
+    }
     this.fetch = function() {
-        var thebook = this.mstate['book']
-        var thechapter = this.mstate['chapter']
-        var vars = '?pagekind='+this.pagekind+'&k='+this.k
+        var thebook = wb.vs.book()
+        var thechapter = wb.vs.chapter()
+        var vars = '?mr='+this.mr+'&qw='+this.qw
         var do_fetch = false
         var extra = ''
-        if (this.pagekind == 'm') {
-            vars += '&book='+this.mstate['book']
-            vars += '&chapter='+this.mstate['chapter']
-            do_fetch = this.mstate['book'] != 'x' && this.mstate['chapter'] > 0
+        if (this.mr == 'm') {
+            vars += '&book='+wb.vs.book()
+            vars += '&chapter='+wb.vs.chapter()
+            do_fetch = wb.vs.book() != 'x' && wb.vs.chapter() > 0
             extra = 'm'
         }
         else {
-            vars += '&id='+this.mstate[this.pagekind+'id']
-            do_fetch = this.mstate[this.pagekind+'id'] >=0
-            extra = this.pagekind+'m'
+            vars += '&id='+wb.iid
+            do_fetch = wb.iid >=0
+            extra = this.qw+'m'
         }
-        if (do_fetch && !side_fetched[this.pagekind+this.k]) {
-            this.msg('fetching '+style[this.k]['tags']+' ...')
-            if (this.pagekind == 'm') {
+        if (do_fetch && !side_fetched[this.mr+this.qw]) {
+            this.msg('fetching '+style[this.qw]['tags']+' ...')
+            if (this.mr == 'm') {
                 thelist.load(side_url+extra+vars, function () {
-                    side_fetched[that.pagekind+that.k] = true
+                    side_fetched[that.mr+that.qw] = true
                     that.process()
                 }, 'html')
             }
             else {
                 $.get(side_url+extra+vars, function (html) {
                     thelist.html(html)
-                    side_fetched[that.pagekind+that.k] = true
+                    side_fetched[that.mr+that.qw] = true
                     that.process()
                 }, 'html')
 
@@ -698,43 +865,39 @@ function SContent(pagekind, k, ssettings) {
         }
     }
     this.sidelistitems = function() {
-        if (this.pagekind == 'm') {
-            var klist = $('#side_list_'+this.k+' li')
-            klist.each(function() {
+        if (this.mr == 'm') {
+            wb.picker1list[that.qw] = {}
+            var qwlist = $('#side_list_'+this.qw+' li')
+            qwlist.each(function() {
                 var iid = $(this).attr('iid') 
                 that.sidelistitem(iid)
-                that.colorpickers.push(new Colorpicker(that.ssettings, that.ik, iid, null))
+                wb.picker1list[that.qw][iid] = new Colorpicker1(that.qw, iid, false, false)
             })
         }
     }
     this.sidelistitem = function(iid) {
-        var more = $('#m_'+this.k+iid) 
-        var head = $('#h_'+this.k+iid) 
-        var desc = $('#d_'+this.k+iid) 
-        var item = $('#item_'+this.k+iid) 
+        var more = $('#m_'+this.qw+iid) 
+        var head = $('#h_'+this.qw+iid) 
+        var desc = $('#d_'+this.qw+iid) 
+        var item = $('#item_'+this.qw+iid) 
+        var all = $('#'+this.qw+iid)
         desc.hide()
         more.click(function() {
             desc.toggle()
         })
         item.click(function() {
-            var k = that.k
-            that.mstate['pagekind'] = k
-            that.mstate[k+'id'] = $(this).attr('iid')
-            that.mstate['page'] = 1
-            page.go()
+            var qw = that.qw
+            wb.vs.mstatesv({mr: that.other_mr, qw: qw, iid: $(this).attr('iid'), page: 1})
+            wb.go()
         })
-    }
-    this.process = function() {
-        page.skeleton.sidebars.after_item_fetch()
-        this.ssettings.apply()
-        this.sidelistitems()
-        $('#theitem').html($('#itemtag').val()+':')
-    }
-    this.apply = function() {
-        var currentpagekind = this.mstate['pagekind']
-        if (currentpagekind == this.pagekind && (this.pagekind != 'm' || this.hstate['get'] == 'v')) {
-            this.fetch()
+        if (this.qw == 'w') {
+            if (!wb.vs.iscolor(this.qw, iid)) {
+                all.hide()
+            }
         }
+    }
+    if (this.mr == 'r') {
+        wb.picker1[this.qw] = new Colorpicker1(this.qw, null, true, false)
     }
 }
 
@@ -773,170 +936,63 @@ By using the share link, the user can preserve color settings in a notebook, or 
 
 */
 
-function SSettings(pagekind, k) { // the view controls belonging to the sidebar as a whole
+function ListSettings(qw) { // the view controls belonging to a side bar with a list of items
     var that = this
-    this.pagekind = pagekind
-    this.k = k
-    this.ik = (this.pagekind == 'm')?this.k:this.pagekind
-    this.mstate = viewstate['material']['']
-    this.hstate = viewstate['highlights'][this.k]
-    this.cstate_all = viewstate['colormap']
-    this.cstate = this.cstate_all[this.ik]
-    var viewlist = $('#side_settings_'+this.pagekind+this.k)
-    this.name = 'side_settings_'+this.pagekind+this.k
-    this.hid = '#'+this.name
-    this.iid = this.mstate[this.pagekind+'id']
+    this.qw = qw
+    var hlradio = $('.'+qw+'hradio')
+
     this.apply = function() {
-        var currentpagekind = this.mstate['pagekind']
-        if (currentpagekind == this.pagekind) { 
-            if (this.pagekind == 'm') {
-                this.highlights()
+        if (wb.vs.get(this.qw) == 'v') {
+            for (var iid in wb.picker1list[this.qw]) {
+                wb.picker1list[this.qw][iid].apply(false)
             }
-            else {
-                this.picker = new Colorpicker(this, this.ik, this.iid, 'me')
-                this.paint()
-            }
+            wb.picker2[this.qw].apply(true)
         }
     }
-    this.highlights = function(picked) {
-        var that = this
-        var activen = this.hstate['active']
-        var active = $('#'+this.k+activen)
-        var klist = $('#side_list_'+this.k+' li')
-        var selo = $('#sel_'+this.k+'one')
-        var hlradio = $('.'+this.k+'hradio')
-        var hloff = $('#'+this.k+'hloff')
-        var hlone = $('#'+this.k+'hlone')
-        var hlcustom = $('#'+this.k+'hlcustom')
-        var hlmany = $('#'+this.k+'hlmany')
-        var hlreset = $('#'+this.k+'hlreset')
-        var stl = style[this.k]['prop']
-        var selclr = selo.css(stl)
-
-        if (picked && activen != 'hlcustom' && activen != 'hlone') {
-            this.hstate['active'] = 'hlcustom'
-            activen = 'hlcustom'
-            active = $('#'+this.k+activen)
-        }
-        hlradio.removeClass('ison')
-        active.addClass('ison')
-
-        if (activen == 'hloff') {
-            klist.each(function(index, item) {
-                that.paint($(item).attr('iid'), style[that.k]['off'])
-            })
-        }
-        else if (activen == 'hlone') {
-            klist.each(function(index, item) {
-                that.paint($(item).attr('iid'), selclr)
-            })
-        }
-        else if (activen == 'hlcustom') {
-            klist.each(function(index, item) {
-                var iid =  $(item).attr('iid')
-                if (!(iid in that.cstate)) {
-                    that.paint(iid, selclr)
-                }
-            })
-            klist.each(function(index, item) {
-                var iid =  $(item).attr('iid')
-                if (iid in that.cstate) {
-                    that.paint(iid, that.cstate[iid])
-                }
-            })
-        }
-        else if (activen =='hlmany') {
-            klist.each(function(index, item) {
-                that.paint($(item).attr('iid'), null)
-            })
-        }
-        else if (activen == 'hlreset') {
-            var selclr2 = defcolor(this.ik, null)
-            hlreset.removeClass('ison')
-            hlcustom.addClass('ison')
-            selo.css(stl, vcolors[selclr2][this.k])
-            this.hstate['active'] = 'hlcustom'
-            this.hstate['sel_one'] = selclr2
-            this.cstate_all[this.ik] = {}
-            klist.each(function(index, item) {
-                var iid =  $(item).attr('iid')
-                var sel = $('#sel_'+that.k+iid)
-                var selc = $('#selc_'+that.k+iid)
-                var selclr = defcolor(that.ik, null)
-                sel.css(stl, vcolors[selclr][that.k])
-                selc.prop('checked', false)
-                that.paint(iid, vcolors[selclr2][that.k])
-            })
-        }
-    }
-    this.highlight = function(iid) {
-        var iid = iid || this.iid
-        var sel = $('#sel_'+this.k+iid)
-        var selo = $('#sel_'+this.k+'one')
-        var hlcustom = $('#'+this.k+'hlcustom')
-        var hlmany = $('#'+this.k+'hlmany')
-        var defc = sel.attr('defc')
-        var iscust = iid in this.cstate
-        var stl = style[this.k]['prop']
-        var hlcustomon = hlcustom.hasClass('ison') 
-        var hlmanyon = hlmany.hasClass('ison') 
-        if (hlmanyon || hlcustomon) {
-            if (hlmanyon) {
-                this.paint(iid, defcolor('m', iid))
-            }
-            else {
-                if (iscust) {
-                    this.paint(iid, this.cstate[iid])
-                }
-                else {
-                    selclr = selo.css(stl)
-                    this.paint(iid, selclr)
-                }
-            }
-        }
-    }
-    this.paint = function(iid, clr) {
-        var iid = iid || this.iid
-        var monads = (this.pagekind == 'm')? $.parseJSON($('#'+this.ik+iid).attr('monads')) : $.parseJSON($('#themonads').val())
-        var stl = style[this.ik]['prop']
-        var hc = clr
-        if (hc == null) {
-            cid = (this.pagekind == 'm')?iid:'me'
-            hc =  $('#sel_'+this.ik+cid).css(stl)
-        }
-        $.each(monads, function(index, item) {
-            $('span[m="'+item+'"]').css(stl, hc)
-        })
-    }
-
-    if (this.pagekind == 'm') {
-        this.picker = new Colorpicker2(this, this.k)
-        $('.'+this.k+'hradio').click(function() {
-            that.hstate['active'] = $(this).attr('id').substring(1)
-            savestate('highlights', that.k)
-            that.apply()
-        })
-    }
+    this.picker2 = new Colorpicker2(this.qw, false)
+    hlradio.click(function() {
+        wb.vs.hstatesv(that.qw, {active: $(this).attr('id').substring(1)})
+        wb.highlight2({code: '3', qw: that.qw})
+    })
 }
 
-function Colorpicker(ssettings, ik, iid, rid) {
+function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker associated with individual items
+/*
+    These pickers show up
+        in lists of items (in mq and mw sidebars) and
+        near individual items (in qm and wm sidebars)
+
+    They also have a checkbox, stating whether the color counts as customized.
+    Customized colors are held in a global colormap, which is saved in a cookie upon every picking action.
+
+    All actions are processed by the highlight2 (!) method of the associated Settings object.
+*/
     var that = this
-    this.ssettings = ssettings
-    this.ik = ik
-    this.cstate_all = viewstate['colormap']
-    this.cstate = this.cstate_all[this.ik]
-    if (rid == null) {rid = iid}
+    this.code = is_item?'1a':'1'
+    this.qw = qw
     this.iid = iid
-    this.rid = rid
-    var sel = $('#sel_'+this.ik+rid)
-    var selc = $('#selc_'+this.ik+rid)
-    this.picker = $('#picker_'+this.ik+rid)
-    var stl = style[this.ik]['prop']
-    this.colorn = this.cstate[this.iid] || defcolor('m', this.iid)
+    var is_item = is_item
+    var pointer = is_item?'me':iid
+    var stl = style[this.qw]['prop']
+    var sel = $('#sel_'+this.qw+pointer)
+    var selc = $('#selc_'+this.qw+pointer)
+    var picker = $('#picker_'+this.qw+pointer)
    
-    this.picker.hide()
+    this.adapt = function(iid, do_highlight) {
+        this.iid = iid
+        this.apply(do_highlight)
+    }
+    this.apply = function(do_highlight) {
+        var color = wb.vs.color(this.qw, this.iid) || defcolor(null, this.iid)
+        sel.css(stl, vcolors[color][this.qw])                  // apply state to the selected cell
+        selc.prop('checked', wb.vs.iscolor(this.qw, this.iid))                   // apply state to the checkbox
+        if (do_highlight) {
+            wb.highlight2(this)
+        }
+    }
+
     sel.click(function() {
-        that.picker.dialog({
+        picker.dialog({
             dialogClass: 'picker_dialog',
             closeOnEscape: true,
             modal: true,
@@ -945,48 +1001,61 @@ function Colorpicker(ssettings, ik, iid, rid) {
             width: '200px',
         })
     })
-    selc.click(function() {
-        var was_cust = that.iid in that.cstate
-        if (that.picker.dialog('instance') && that.picker.dialog('isOpen')) {that.picker.dialog('close')}
+    selc.click(function() {                 // process a click on the selectbox of the picker
+        var was_cust = wb.vs.iscolor(that.qw, that.iid)
+        if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
         if (was_cust) {
-            sel.css(stl, vcolors[that.colorn][that.ik])
-            delete that.cstate[that.iid]
+            wb.vs.cstatex(that.qw, that.iid)
         }
         else {
-            that.cstate[that.iid] = defcolor('m', that.iid)
+            wb.vs.cstatesv(that.qw, {[that.iid]: defcolor(null, that.iid)})
+            if (wb.vs.active(that.qw) != 'hlcustom') {
+                wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
+            }
         }
-        selc.prop('checked', that.iid in that.cstate)
-        that.ssettings.highlight(that.iid)
-        savestate('colormap', that.ik)
+        that.apply(true)
     })
-    $('.c'+this.ik+'.'+this.ik+rid).click(function() {
-        if (that.picker.dialog('instance') && that.picker.dialog('isOpen')) {that.picker.dialog('close')}
-        sel.css(stl, $(this).css(stl))
-        that.cstate[that.iid] = $(this).html()
-        selc.prop('checked', true)
-        that.ssettings.highlight(that.iid)
-        savestate('colormap', that.ik)
+    $('.c'+this.qw+'.'+this.qw+pointer).click(function() { // process a click on a colored cell of the picker
+        if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
+        wb.vs.cstatesv(that.qw, {[that.iid]: $(this).html()})
+        wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
+        that.apply(true)
     })
-    $('.c'+this.ik+'.'+this.ik+rid).each(function() {
-        $(this).css(stl, vcolors[$(this).html()][that.ik])
+    picker.hide()
+    $('.c'+this.qw+'.'+this.qw+pointer).each(function() { //initialize the individual color cells in the picker
+        $(this).css(stl, vcolors[$(this).html()][that.qw])
     })
-    sel.css(stl, vcolors[this.colorn][this.ik])
-    selc.prop('checked', this.iid in this.cstate)
+    this.apply(do_highlight)
 }
 
-function Colorpicker2(ssettings, k) {
+function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the view settings in a sidebar
+/*
+    These pickers show up at the top of the individual sidebars, only on mq and mw sidebars.
+    They are used to control the uniform color with which the results are to be painted.
+    They can be configured for dealing with background or foreground painting.
+    The paint actions depend on the mode of coloring that the user has selected in settings.
+    So the paint logic is more involved.
+    But there is no associated checkbox.
+    The selected color is stored in the highlight settings, which are synchronized in a cookie. 
+
+    All actions are processed by the highlight2 method of the associated Settings object.
+*/
     var that = this
-    this.ssettings = ssettings
-    this.k = k
-    this.hstate = viewstate['highlights'][this.k]
-    var lab = 'one'
-    var sel = $('#sel_'+this.k+lab)
-    this.picker = $('#picker_'+this.k+lab)
-    var stl = style[this.k]['prop']
-    var colorn = this.hstate['sel_'+lab] || defcolor(this.k, null)
-    this.picker.hide()
+    this.code = '2'
+    this.qw = qw
+    var stl = style[this.qw]['prop']
+    var sel = $('#sel_'+this.qw+'one')
+    var picker = $('#picker_'+this.qw+'one')
+    
+    this.apply = function(do_highlight) {
+        var color = wb.vs.sel_one(this.qw) || defcolor(this.qw, null)
+        sel.css(stl, vcolors[color][this.qw]) // apply state to the selected cell
+        if (do_highlight) {
+            wb.highlight2(this)
+        }
+    }
     sel.click(function() {
-        that.picker.dialog({
+        picker.dialog({
             dialogClass: 'picker_dialog',
             closeOnEscape: true,
             modal: true,
@@ -995,47 +1064,100 @@ function Colorpicker2(ssettings, k) {
             width: '200px',
         })
     })
-    $('.c'+this.k+'.'+this.k+lab).click(function() {
-        if (that.picker.dialog('instance') && that.picker.dialog('isOpen')) {that.picker.dialog('close')}
-        sel.css(stl, $(this).css(stl))
-        that.hstate['sel_'+lab] = $(this).html()
-        that.ssettings.highlights(true)
-        savestate('highlights',that.k)
+    $('.c'+this.qw+'.'+this.qw+'one').click(function() { // process a click on a colored cell of the picker
+        if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
+        var current_active = wb.vs.active(that.qw)
+        if (current_active != 'hlone' && current_active != 'hlcustom') {
+            wb.vs.hstatesv(that.qw, {active: 'hlcustom', sel_one: $(this).html()})
+        }
+        else {
+            wb.vs.hstatesv(that.qw, {sel_one: $(this).html()})
+        }
+        that.apply(true)
     })
-    $('.c'+this.k+'.'+this.k+lab).each(function() {
-        $(this).css(stl, vcolors[$(this).html()][that.k])
+    picker.hide()
+    $('.c'+this.qw+'.'+this.qw+'one').each(function() { //initialize the individual color cells in the picker
+        $(this).css(stl, vcolors[$(this).html()][that.qw])
     })
-    sel.css(stl, vcolors[colorn][this.k])
+    this.apply(do_highlight)
 }
 
-function defcolor(k, iid) {
-    if (k == 'm') {
+function defcolor(qw, iid) {// compute the default color
+/*
+    The data for the computation comes from the server and is stored in the javascript global variables
+        vdefaultcolors
+        dncols, dnrows
+*/
+    if (qw == null) {
         var mod = iid % vdefaultcolors.length
         result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
     }
     else {
-        result = style[k]['default']
+        result = style[qw]['default']
     }
     return result
 }
 
-// SAVING STATE
+// VIEW STATE
 
-function getvars() {
-    var vars = ''
-    var sep = '?'
-    for (group in viewstate) {
-        for (k in viewstate[group]) {
-            for (name in viewstate[group][k]) {
-                vars += sep+k+name+'='+viewstate[group][k][name] 
-                sep = '&'
+function ViewState(init) {
+    this.data = init
+
+    this.getvars = function() {
+        var vars = ''
+        var sep = '?'
+        for (var group in this.data) {
+            for (var qw in this.data[group]) {
+                for (var name in this.data[group][qw]) {
+                    vars += sep+qw+name+'='+this.data[group][qw][name] 
+                    sep = '&'
+                }
             }
         }
+        return vars
     }
-    return vars
-}
 
-function savestate(group, k) {$.cookie(group+k, viewstate[group][k])}
+    this.delsv = function(group, qw, name) {
+        delete this.data[group][qw][name]
+        $.cookie(group+qw, this.data[group][qw])
+    }
+
+    this.setsv = function(group, qw, values) {
+        for (var mb in values) {
+            this.data[group][qw][mb] = values[mb]
+        }
+        $.cookie(group+qw, this.data[group][qw])
+    }
+
+    this.resetsv = function(group, qw) {
+        for (var mb in this.data[group][qw]) {
+            delete this.data[group][qw][mb]
+        }
+        $.cookie(group+qw, this.data[group][qw])
+    }
+    this.mstatesv = function(values) { this.setsv('material', '', values) }
+    this.dstatesv = function(values) { this.setsv('hebrewdata', '', values) }
+    this.hstatesv = function(qw, values) { this.setsv('highlights', qw, values) }
+    this.cstatesv = function(qw, values) { this.setsv('colormap', qw, values) }
+    this.cstatex = function(qw, name) { this.delsv('colormap', qw, name) }
+    this.cstatexx = function(qw) { this.resetsv('colormap', qw) }
+
+    this.mstate =function() {return this.data['material']['']}
+    this.hdata =function() {return this.data['hebrewdata']['']}
+    this.mr = function() {return this.data['material']['']['mr']}
+    this.qw = function() {return this.data['material']['']['qw']}
+    this.tp = function() {return this.data['material']['']['tp']}
+    this.iid = function() {return this.data['material']['']['iid']}
+    this.book = function() {return this.data['material']['']['book']}
+    this.chapter = function() {return this.data['material']['']['chapter']}
+    this.page = function() {return this.data['material']['']['page']}
+    this.get = function(qw) {return this.data['highlights'][qw]['get']}
+    this.active = function(qw) {return this.data['highlights'][qw]['active']}
+    this.sel_one = function(qw) {return this.data['highlights'][qw]['sel_one']}
+    this.colormap = function(qw) {return this.data['colormap'][qw]}
+    this.color = function(qw, id) {return this.data['colormap'][qw][id]}
+    this.iscolor = function(qw, cl) {return cl in this.data['colormap'][qw]} 
+}
 
 /*
 
