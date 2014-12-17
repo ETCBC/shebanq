@@ -395,7 +395,9 @@ function Material() { // Object correponding to everything that controls the mat
                 all.hide()
             }
             else {
-                wb.vs.cstatesv(qw, {[iid]: defcolor(null, iid)})
+                vals = {}
+                vals[iid] = defcolor(null, iid)
+                wb.vs.cstatesv(qw, vals)
                 all.show()
             }
             var active = wb.vs.active(qw)
@@ -554,7 +556,9 @@ function SelectItems(up, key) { // both for chapters and for result pages
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
-                wb.vs.mstatesv({[that.key]:  $(this).attr('item')})
+                vals = {}
+                vals[that.key] = $(this).attr('item')
+                wb.vs.mstatesv(vals)
                 wb.go()
             }
         })
@@ -681,7 +685,9 @@ function HebrewSetting(fld) {
     this.name = fld
     this.hid = '#'+this.name
     $(this.hid).click(function() {
-        wb.vs.dstatesv({[fld]: $(this).prop('checked')?'v':'x'})
+        vals = {}
+        vals[fld] = $(this).prop('checked')?'v':'x'
+        wb.vs.dstatesv(vals)
         that.applysetting()
     })
     this.apply = function() {
@@ -1008,7 +1014,9 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
             wb.vs.cstatex(that.qw, that.iid)
         }
         else {
-            wb.vs.cstatesv(that.qw, {[that.iid]: defcolor(null, that.iid)})
+            vals = {}
+            vals[that.iid] = defcolor(null, that.iid)
+            wb.vs.cstatesv(that.qw, vals)
             if (wb.vs.active(that.qw) != 'hlcustom') {
                 wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
             }
@@ -1017,7 +1025,9 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
     })
     $('.c'+this.qw+'.'+this.qw+pointer).click(function() { // process a click on a colored cell of the picker
         if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
-        wb.vs.cstatesv(that.qw, {[that.iid]: $(this).html()})
+        vals = {}
+        vals[that.iid] = $(this).html()
+        wb.vs.cstatesv(that.qw, vals)
         wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
         that.apply(true)
     })

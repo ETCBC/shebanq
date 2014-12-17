@@ -165,15 +165,19 @@ class Viewsettings():
                 if group == 'colormap':
                     for x in from_cookie: self.state[group][qw][x] = from_cookie[x]
                     for x in current.request.vars:
-                        if x.isdigit():
+                        xid = x[1:]
+                        if xid.isdigit():
                             vstate = current.request.vars[x]
-                            from_cookie[x] = vstate
-                            self.state[group][qw][x] = vstate
+                            from_cookie[xid] = vstate
+                            self.state[group][qw][xid] = vstate
                 else:
                     for x in settings[group][qw]:
+                        if group == 'highlights' and qw == 'q': print('{}'.format(x))
                         init = settings[group][qw][x]
-                        vstate = current.request.vars[x]
+                        vstate = current.request.vars[qw+x]
+                        if group == 'highlights' and qw == 'q': print('\t{} (request)'.format(vstate))
                         if vstate == None: vstate = from_cookie.get(x, init) 
+                        if group == 'highlights' and qw == 'q': print('\t{} (cookie)'.format(vstate))
                         from_cookie[x] = vstate
                         self.state[group][qw][x] = vstate
 
