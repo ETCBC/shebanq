@@ -54,19 +54,18 @@ response.menu = [
     (T('About'), False, URL('default', 'about'), []),
     (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
     (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
-    (T('The Text'), False, URL('hebrew', 'text'), []),
+    (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Help'), False, '', (
         ('SHEBANQ', False, URL('default', 'help'), []),
         (A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html'), False, None, []),
         (A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf')), False, None, []),
         (A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf')), False, None, []),
-        )
-    ),
-    ('Github', False, '', (
-        (A('ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, []),
-        (A('Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, []),
-        ),
-    ),
+    )),
+    ('Sources', False, '', (
+        (A('Data Archive: DANS', _href='https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:58245', _target='_blank'), False, None, []),
+        (A('Github: ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, []),
+        (A('Github: Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, []),
+    )),
 ]
             #<a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">
 

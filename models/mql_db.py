@@ -33,20 +33,20 @@ class IS_MQL_QUERY(Validator):
         if empty:
             return value, 'Enter a query'
 
-        words = ['select', 'all', 'objects', 'where']
-        missing_words = []
-        l_value = value.lower()
-        pos = 0
-        for word in words:
-            pos = l_value.find(word, pos, len(l_value))
-            if pos < 0:
-                missing_words.append(word)
+        #words = ['select', 'all', 'objects', 'where']
+        #missing_words = []
+        #l_value = value.lower()
+        #pos = 0
+        #for word in words:
+        #    pos = l_value.find(word, pos, len(l_value))
+        #    if pos < 0:
+        #        missing_words.append(word)
 
-        if len(missing_words) == len(words):
-            value = 'SELECT ALL OBJECTS WHERE\n' + value
+        #if len(missing_words) == len(words):
+        #    value = 'SELECT ALL OBJECTS WHERE\n' + value
 
-        if 0 < len(missing_words) < len(words):
-            return value, 'The query is invalid. Missing or misplaced key words: ' + str(missing_words)
+        #if 0 < len(missing_words) < len(words):
+        #    return value, 'The query is invalid. Missing or misplaced key words: ' + str(missing_words)
 
         return value, None
 
@@ -78,7 +78,7 @@ signature = db.Table(db, 'auth_signature',
                            update=request.now, default=request.now,
                            writable=False, readable=True),
                      Field('executed_on', 'datetime',
-                           default=request.now,
+                           #default=request.now,
                            writable=False, readable=True),
                      Field('modified_by', auth.settings.table_user,
                            default=auth.user_id, update=auth.user_id,

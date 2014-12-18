@@ -86,9 +86,10 @@ $.cookie.defaults.path = '/'
 
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
-var view_url, material_url, item_url, side_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, side_url // urls from which to fetch additional material through AJAX, the values come from the server
+var ignore // flag indicating whether cookies should be ignored initially
 var wb      // holds the one and only page object
-var subtract = 250 // the canvas holding the material gets a height equal to the window height minus this amount
+var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 
 // TOP LEVEL: DYNAMICS, PAGE, SKELETON
 
@@ -301,7 +302,7 @@ function Viewlink() { // Construct a link to the present page view in a textarea
             hide.show()
             show.hide()
             content.show()
-            content.val(view_url+wb.vs.getvars())
+            content.val(view_url+wb.vs.getvars()+'&ignore=v')
             content.select()
         }
         else {
@@ -350,13 +351,13 @@ function Material() { // Object correponding to everything that controls the mat
             do_fetch = wb.vs.book() != 'x' && wb.vs.chapter() > 0
         }
         else {
-            vars += '&id='+wb.iid
+            vars += '&iid='+wb.iid
             vars += '&page='+wb.vs.page()
             do_fetch = wb.iid >=0
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
-            $.get(material_url+vars, function(html) {
+            $.get(material_url+vars+'&ignore='+ignore, function(html) {
                 var response = $(html)
                 that.pselect.add(response)
                 that.message.add(response)
@@ -373,6 +374,7 @@ function Material() { // Object correponding to everything that controls the mat
         wb.sidebars.after_material_fetch()
         if (wb.mr == 'r') {
             this.pselect.apply()
+            wb.picker1[wb.qw].adapt(wb.iid, true)
             $('a.vref').click(function() {
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
                 wb.go('m')
@@ -401,7 +403,7 @@ function Material() { // Object correponding to everything that controls the mat
                 all.show()
             }
             var active = wb.vs.active(qw)
-            if (active != 'hlcustom') {
+            if (active != 'hlcustom' && active != 'hlmany') {
                 wb.vs.hstatesv(qw, {active: 'hlcustom'})
             }
             wb.picker1list['w'][iid].apply(false)
@@ -421,23 +423,16 @@ function MSelect() { // for book and chapter selection
     this.hid = '#'+this.name
     this.up = new SelectBook()
     this.select = new SelectItems(this.up, 'chapter')
-    var to_passage = $('#to_passage')
     this.apply = function() {
         if (wb.mr == 'm') {
             this.up.apply()
             this.select.apply()
             $(this.hid).show()
-            $(to_passage).hide()
         }
         else {
             $(this.hid).hide()
-            $(to_passage).show()
         }
     }
-    $(to_passage).click(function() {
-        wb.vs.mstatesv({mr: 'm'})
-        wb.go()
-    })
 }
 
 function PSelect() { // for result page selection
@@ -565,12 +560,6 @@ function SelectItems(up, key) { // both for chapters and for result pages
     }
     this.apply = function() {
         var showit = false
-        /* if (wb.mr == 'r' && this.key == 'page') {
-            showit = this.gen_html() > 0 
-        }
-        else if (wb.mr == 'm' && this.key == 'chapter') {
-            showit = true
-        } */
         showit = this.gen_html() > 0 
         if (!showit) {
             $(this.control).hide()
@@ -825,7 +814,7 @@ function SContent(mr, qw) {
             wb.listsettings[this.qw].apply()
         }
         else {
-            wb.picker1[this.qw].adapt(wb.iid, true)
+            //wb.picker1[this.qw].adapt(wb.iid, true)
         }
 
         $('#theitem').html($('#itemtag').val()+':')
@@ -848,20 +837,20 @@ function SContent(mr, qw) {
             extra = 'm'
         }
         else {
-            vars += '&id='+wb.iid
+            vars += '&iid='+wb.iid
             do_fetch = wb.iid >=0
             extra = this.qw+'m'
         }
         if (do_fetch && !side_fetched[this.mr+this.qw]) {
             this.msg('fetching '+style[this.qw]['tags']+' ...')
             if (this.mr == 'm') {
-                thelist.load(side_url+extra+vars, function () {
+                thelist.load(side_url+extra+vars+'&ignore='+ignore, function () {
                     side_fetched[that.mr+that.qw] = true
                     that.process()
                 }, 'html')
             }
             else {
-                $.get(side_url+extra+vars, function (html) {
+                $.get(side_url+extra+vars+'&ignore='+ignore, function (html) {
                     thelist.html(html)
                     side_fetched[that.mr+that.qw] = true
                     that.process()
@@ -1017,7 +1006,8 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
             vals = {}
             vals[that.iid] = defcolor(null, that.iid)
             wb.vs.cstatesv(that.qw, vals)
-            if (wb.vs.active(that.qw) != 'hlcustom') {
+            var active = wb.vs.active(that.qw)
+            if (active != 'hlcustom' && active != 'hlmany') {
                 wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
             }
         }
@@ -1188,4 +1178,6 @@ function activate_buttons() {
             $('#'+name).val(true)
         })
     })
+    material_fetched = {txt_p: false, txt_il: false}
+    wb.material.apply()
 }

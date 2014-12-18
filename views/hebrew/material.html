@@ -6,19 +6,23 @@
 {{if exception is not None:}}
     <div class="exception">Remote exception: {{=exception}}</div>
 {{pass}}
+{{
+pagelb = 'pages' if pages != 1 else 'page'
+verselb = 'verses' if results != 1 else 'verse'
+}}
 {{if mr == 'm':}}
     <p>{{=results}} verses</p>
 {{elif qw == 'q':}}
     {{if pages == 0:}}
     <p>No query results</p>
     {{else:}}
-    <p>{{=pages}} pages with {{=results}} verse{{='s' if results != 1 else ''}}<p>
+    <p>{{=pages}} {{=pagelb}} with {{=results}} {{=verselb}}<p>
     {{pass}}
 {{elif qw == 'w':}}
     {{if page == 0:}}
     <p>No word occurrences.</p>
     {{else:}}
-    <p>{{=pages}} pages with {{=results}} verse{{='s' if results != 1 else ''}}</p>
+    <p>{{=pages}} {{=pagelb}} with {{=results}} {{=verselb}}</p>
     {{pass}}
 {{pass}}
 </div>

@@ -4,7 +4,6 @@
 <script type="text/javascript">
 var view_url = "{{=XML(URL(host=True))}}"
 var material_url = "{{=XML(URL('hebrew', 'material', host=True))}}"
-var item_url = "{{=XML(URL('hebrew', 'item', host=True))}}"
 var side_url = "{{=XML(URL('hebrew', 'side', host=True))}}"
 var thebooks = {{=XML(books)}}
 var thebooksorder = {{=XML(booksorder)}}
@@ -13,9 +12,6 @@ var thebooksorder = {{=XML(booksorder)}}
 
 <div id="material">
     <div id="material_heading" class="pnl2">
-        <div id="to_passage">
-            <span><a id="to_passage_control" class="ctrl" href="#">passage ...</a></span>
-        </div>
         <div id="select_passage">
             <span><select id="select_book"></select></span>
             <span id="thechapter"></span>

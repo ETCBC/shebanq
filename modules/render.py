@@ -153,12 +153,13 @@ class Viewsettings():
     def __init__(self):
         self.this_legend = legend_tpl.format(base_doc=base_doc)
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
+        self.ignore = 'v' if 'ignore' in current.request.vars and current.request.vars['ignore'] == 'v' else 'x'
         for group in settings:
             self.state[group] = {}
             for qw in settings[group]:
                 self.state[group][qw] = {}
                 from_cookie = {}
-                if current.request.cookies.has_key(group+qw):
+                if self.ignore == 'x' and current.request.cookies.has_key(group+qw):
                     try:
                         from_cookie = json.loads(urllib.unquote(current.request.cookies[group+qw].value))
                     except ValueError: pass
@@ -172,12 +173,9 @@ class Viewsettings():
                             self.state[group][qw][xid] = vstate
                 else:
                     for x in settings[group][qw]:
-                        if group == 'highlights' and qw == 'q': print('{}'.format(x))
                         init = settings[group][qw][x]
                         vstate = current.request.vars[qw+x]
-                        if group == 'highlights' and qw == 'q': print('\t{} (request)'.format(vstate))
-                        if vstate == None: vstate = from_cookie.get(x, init) 
-                        if group == 'highlights' and qw == 'q': print('\t{} (cookie)'.format(vstate))
+                        if vstate == None and self.ignore == 'x': vstate = from_cookie.get(x, init) 
                         from_cookie[x] = vstate
                         self.state[group][qw][x] = vstate
 
@@ -196,14 +194,16 @@ var dncols = {dncols}
 var dnrows = {dnrows}
 var viewinit = {initstate}
 var style = {style}
+var ignore = {ignore}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
     initstate=json.dumps(self.state),
     vcolors = json.dumps(vcolors),
     style = json.dumps(style),
-    dncols =dncols,
-    dnrows =dnrows,
+    dncols = dncols,
+    dnrows = dnrows,
+    ignore = "'"+self.ignore+"'",
 )
 
     def colorpicker(self, qw, iid, typ):
@@ -238,6 +238,7 @@ class Verses():
         self.mr = mr
         self.tp = tp
         self.verses = []
+        if self.mr == 'r' and (verse_ids == None or len(verse_ids) == 0): return
         verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
         cfield = 'verse.id'
         cwfield = 'word_verse.verse_id'
@@ -293,8 +294,9 @@ class Verse():
     def label(self):
         if self.mr == 'm': return self.verse_num
         else:
-            (book, chapter, verse) = (self.book_name.replace('_', ' '), self.chapter_num, self.verse_num)
-            return ("{} {}:{}".format(book, chapter, verse), book, chapter)
+            (book, chapter, verse) = (self.book_name, self.chapter_num, self.verse_num)
+            pretty_book = book.replace('_', ' ')
+            return ("{} {}:{}".format(pretty_book, chapter, verse), book, chapter)
 
     def get_words(self):
         if (len(self.words) == 0):

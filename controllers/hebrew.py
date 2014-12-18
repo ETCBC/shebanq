@@ -131,18 +131,19 @@ def material():
     tp = request.vars.tp
     if mr == 'm':
         (book, chapter) = getpassage()
-        material = Verses(passage_db, 'm', chapter=chapter.id, tp=tp) if chapter else None
+        material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter else None
         result = dict(
             mr=mr,
             qw=qw,
             exception_message="No chapter selected" if not chapter else None,
             exception=None,
             results=len(material.verses) if material else 0,
+            pages=1,
             material=material,
             monads=json.dumps([]),
         )
     elif mr == 'r':
-        iid = int(request.vars.id) if request.vars else None
+        iid = int(request.vars.iid) if request.vars else None
         page = int(request.vars.page) if request.vars.page else 1
         if iid == None:
             exception_message = "No {} selected".format('query' if qw == 'q' else 'word')
@@ -161,7 +162,7 @@ def material():
             )
         monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
         (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
-        material = Verses(passage_db, 'q', verses, tp=tp)
+        material = Verses(passage_db, mr, verses, tp=tp)
         return dict(
             mr=mr,
             qw=qw,
@@ -182,7 +183,6 @@ def text():
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
     ''')
 
-
     books_order = [x[0] for x in books_data]
     books = dict(x for x in books_data)
     viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
@@ -194,12 +194,12 @@ select name, max(chapter_num) from chapter inner join book on chapter.book_id = 
 
 def get_record_id():
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
-    record_id = request.vars.id
-    if request.vars.id is not None:
-        if type(request.vars.id) == list:
-            record_id = int(request.vars.id[0])
-        elif request.vars.id.isdigit():
-            record_id = int(request.vars.id)
+    record_id = request.vars.iid
+    if request.vars.iid is not None:
+        if type(request.vars.iid) == list:
+            record_id = int(request.vars.iid[0])
+        elif request.vars.iid.isdigit():
+            record_id = int(request.vars.iid)
         else:
             raise HTTP(404, "get_record_id: Object not found in database: " + str(record_id))
     return record_id
@@ -248,7 +248,7 @@ def get_mql_form(record_id, readonly=False):
                 SPAN(_class='icon pen icon-pencil'),
                 SPAN('', _class='buttontext button', _title='Edit'),
                 _class='button btn',
-                _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', id=record_id)),
+                _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=record_id)),
                 cid=request.cid,
             ),
         else:
@@ -343,7 +343,7 @@ def handle_response_mql(mql_form, old_mql, old_modified_on):
         if request.vars.button_save == 'true':
             pass
         if request.vars.button_done == 'true':
-            redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', id=record_id)))
+            redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', iid=record_id)))
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
 
@@ -448,7 +448,7 @@ def get_pagination(p, monad_sets, iid):
                 v += 1
 
     verses = verse_ids if p <= cur_page and len(verse_ids) else None
-    return (nvt, cur_page, verses, list(verse_monads))
+    return (nvt, cur_page if nvt else 0, verses, list(verse_monads))
 
 
 @auth.requires(lambda: check_query_access_write())
@@ -551,17 +551,17 @@ def parse_exception(message):
 
 
 def sideqm():
-    iid = request.vars.id
+    iid = request.vars.iid
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(mr='r', qw='q', id=iid),
+        vars=dict(mr='r', qw='q', iid=iid),
         ajax=False, target='querybody', 
         content='fetching query',
     ))
 
 def sidewm():
-    iid = request.vars.id
+    iid = request.vars.iid
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
-        vars=dict(mr='r', qw='w', id=iid),
+        vars=dict(mr='r', qw='w', iid=iid),
         ajax=False, target='wordbody', 
         content='fetching words',
     ))
@@ -585,23 +585,23 @@ def my_queries():
         create=True,
         links=[
             dict(
-                header='view',
+                header='view/edit',
                 body=lambda row: A(
                     SPAN(_class='icon info-sign icon-info-sign'),
                     SPAN('', _class='buttontext button', _title='View'),
                     _class='button btn',
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
                 ) 
             ),
-            dict(
-                header='edit',
-                body=lambda row: A(
-                    SPAN(_class='icon pen icon-pencil'),
-                    SPAN('', _class='buttontext button', _title='Edit'),
-                    _class='button btn',
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', id=row.id)),
-                ),
-            ),
+            #dict(
+            #    header='edit',
+            #    body=lambda row: A(
+            #        SPAN(_class='icon pen icon-pencil'),
+            #        SPAN('', _class='buttontext button', _title='Edit'),
+            #        _class='button btn',
+            #        _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=row.id)),
+            #    ),
+            #),
         ],
         showbuttontext=False,
         paginate=20,
@@ -633,7 +633,7 @@ def public_queries():
                 header='View',
                 body=lambda row: A(
                     row.name,
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', id=row.id)),
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
                 ) 
             ),
         ],

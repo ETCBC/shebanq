@@ -8,56 +8,68 @@
 {{pass}}
 
 <h4>{{=T('Usage')}}</h4>
-<p>You can <i>browse chapters in the Hebrew Bible</i> and <i>perform advanced queries in the Hebrew database</i>.
-When you read a chapter, you may encounter queries with results in the chapter you are reading.
-You can investigate those queries and their results, and switch back and forth between chapter and query results.
+<p>You can <i>browse chapters in the Hebrew Bible</i> and <i>perform advanced queries in the Hebrew database</i>.</p>
+<p>When you read a chapter, you may encounter queries with results in the chapter you are reading.
+These queries are shown in the sidebar, to the left of the material.
+You can investigate those queries and their results, and switch back and forth between chapter and query results.</p>
+<p>You can also click on every word in order to mark all occurrences of that word in the passage you are reading.
+The words show up in the sidebar, and from there you can get to all occurrences of a word throughout the whole Hebrew Bible.</p>
+<p>You can assign colors to words and queries: query results are highlighted by coloring the back-gound of words.
+Word occurrences are highlighted by coloring the letters themselves.</p>
 </p>
 
-<h4>{{=T('Browse')}}</h4>
-<p>Use the {{=A(T("Browse"), _href=URL('passage', 'browser', vars=dict(qget='x')))}} menu.<br/>
-Select book and chapter and click <i>View</i>.
-</p>
+<h4>{{=T('The Text')}}</h4>
+<p>Use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu to choose a book and a chapter.</p>
+<p>The dialog to select a chapter stays in view, until you click it away or press <code>&lt;Esc&gt;</code>.</p>
 
-<h4>{{=T('Get queries')}}</h4>
-<p><img src="{{=URL('static', 'images/getqueries.png')}}"/></p>
-<p>Click <i>get queries</i> to show the list of queries with results in this chapter.
-The list will appear in the left margin.
-You can also hide the queries again.
-Once the queries have appeared, you can have their results highlighted in the present chapter.
-See <i>Adjusting the view</i> for ways in which you can have the data presented.
+<h4>{{=T('Queries and Words')}}</h4>
+<p><img src="{{=URL('static', 'images/help-mainscreen.png')}}"/></p>
+<p>The sidebar contains information related to the chapter you are reading.</p>
+<p>Click <i>show words</i> to get access to a list of all words that occur in this chapter.</p>
+<p>Click <i>show queries</i> to show the list of queries with results in this chapter.
+Initially, the list will be empty, but when you click on words in the text, they will show up here.</p>
+<p>See <i>Adjusting the view</i> for ways in which you can have the data presented.</p>
 </p>
 
 <h4>{{=T('Adjusting the view')}}</h4>
-<p>There are many ways to get to the information you need, to highlight the relevant bits and to hide the rest.
-</p>
-<p><img src="{{=URL('static', 'images/viewsettings.png')}}"/></p>
-<p>Directly above the text is a row of <i>view controls</i>.</p>
-<p><img src="{{=URL('static', 'images/viewdetail.png')}}"/></p>
-<p>Going from right to left there are switches for
+<p>There are many ways to get to the information you need, to highlight the relevant bits and to hide the rest.</p>
+<p><img src="{{=URL('static', 'images/help-viewsettings.png')}}"/></p>
+<h5>Text or data</h5>
+<p>Above the text itself there is a control for how the main text is displayed:</p>
 <dl>
-<dt>data and text</dt>
-<dd>The <i>data</i> switch enables you to few the underlying data with the text.
+<dt>text</dt>
+<dd>This displays just the plain Hebrew text.</dd>
+<dt>data</dt>
+<dd>This displays the underlying data with the text.
 It is an interlinear display of word-level features and features at the levels of subphrase, phrase, clause and sentence.
-A legenda of this extra data is provided on top of the passage.
-It can be used to hide the bits of information that are not relevant to you.
+<p><img src="{{=URL('static', 'images/help-datalegend.png')}}"/></p>
+A legend of this extra data can be called up, which can be used to customize the bits of information that you want to have shown.
 By clicking on the name of a data feature you are taken to a documentation page that explains the feature.
 </dd>
-<dt>query colors</dt>
-<dd>A set of controls for adjusting the way queries are highlighted:
-<dl>
-<dt>off</dt><dd>click this to remove all query highlights immediatel;y</dd>
-<dt>one</dt><dd>all queries are highlighted with the same color, which can be selected by clicking the color picker to the left;</dd>
-<dd>my own</dt><dd>all queries are highlighted with the same color, as <i>one</i> has been clicked, except for colors that 
-you have expressly customized. You customize a query color by clicking on the color picker next to the query and selecting a color.
-Alternatively, you can customize a query color by double clicking its color picker. In that case the color does not change, but counts
-as customized. Double clicking an already customized color will uncustomize it.
-Customized colors are recognizable by a different styling of their color pickers;</dd>
-<dt>many</dt><dd>assigns fixed default colors to the queries. Queries will be highlighted using this default color,
-except for the customized ones, which will be highlighted in the colors you have assigned to them;</dd>
-<dt>reset</dt><dd>uncustomize all query colors, so you can start with a clean slate.</dd>
 </dl>
-</dd>
-<dt>share link</dt><dd>all view settings (including custom query colors) that you have adjusted will
+<h5>Highlighting</h5>
+<p>The words and queries in the sidebar can be used to highlight corresponding words in the main text.
+Directly above each list in the sidebar is a row of <i>view controls</i>.</p>
+<p>Going from right to left there are switches for:</p>
+<dl>
+<dt>off</dt><dd>switch off all highlighting</dd>
+<dt>one</dt><dd>highlight everything with the same color, which can be selected by clicking the color picker to the left;</dd>
+<dd>my</dt><dd>highlighted uncustomised queries/words with the same color, as if <i>one</i> has been clicked, and 
+use customised colors otherwise. 
+You customize a color by clicking on the color picker next to the query/word and selecting a color.
+Alternatively, you can customize a query color by clicking the select box next to its color picker.
+In that case the color does not change, but counts as customized.
+Words are treated different from queries: only <i>customized</i> words show up in the list.
+And in order to customize a word, you just click a word in the text. Clicking it again will uncustomize it.</dd>
+<dt>many</dt><dd>assigns fixed default colors to the queries/words. Everything will be highlighted using this default color,
+except for the customized ones, which will be highlighted in the colors you have assigned to them.
+For words, this control enables you to view the full list of words.</dd>
+<dt>X</dt><dd>reset: uncustomize all colors, so you can start with a clean slate.</dd>
+</dl>
+<p>If you want to share your customized view on a passage, you can create a link, copy it to your clipboard,
+and send it to others, or bookmark it yourself:</p>
+<dl>
+<dt>share link</dt><dd>all view settings (including custom query/word colors) that you have adjusted will
 be remembered by your browser (in a couple of <i>cookies</i>).
 If you want to share your view with others, you can generate a link and send it to others.
 If they open that link in their browser, they will see eaxctly the customizations that you have defined for yourself.
@@ -65,10 +77,45 @@ For example, if you want to read Exodus 6, with a query highlighted that shows a
 proper names, follow this
 {{=A(T("link"), _href=URL('passage', 'browser', vars=dict(book='Exodus', chapter=6))+'&txt_p=v&txt_il=x&ht=v&hl=x&tt=x&tl=x&gl=v&wdv=v&wdv_subpos=x&wdv_pos=v&wd1_lang=x&wd1_n=x&wd2=x&wd2_gender=v&wd2_gnumber=v&wd2_person=v&wd2_state=v&wd2_tense=v&wd2_stem=v&sp=x&sp_rela=v&sp_n=v&ph=x&ph_det=v&ph_fun=v&ph_typ=v&ph_n=v&cl=v&cl_dom=v&cl_typ=v&cl_n=v&sn=v&sn_n=v&q401=spring&q402=salmon&qhloff=x&qhlone=x&qhlmy=v&qhlmany=x&qhldel=x&sel_one=grey&qget=v')}}.
 <br/><b>Warning:</b> if you click on such a link, sent by somebody else, it will override your own settings.
-It is a good idea to bookmark a link to your own view first, before clicking on link shared by someone else.
+It is a good idea to bookmark a link to your own view first, before clicking on a link shared by someone else.
 </dd> 
 </dl>
-</p>
+
+<h5>List view</h5>
+The sidebar lists offer compact views on the relevant words and lists. You get more information by clicking on the item:
+it will bring you to the corresponding query or word page, where you have access to all information about that item, 
+including its results throughout the whole Hebrew Bible.
+<p><img src="{{=URL('static', 'images/help-expand.png')}}"/></p>
+Alternatively, you can just click on the the second part of a list item in the sidebar: the item will expand to show you a bit more information.
+It will collapse by clicking the same bit again.
+
+<h4>{{=T('Working with queries')}}</h4>
+<p>You can view the queries of others, but you can also create your own queries, execute them, and save them.</p>
+
+<h5>Viewing Public Queries</h5>
+<p>The menu <i>Public Queries</i> shows you a list of all public queries in SHEBANQ.
+Some of them you may encounter in the sidebar next to passages where they have results.<p>
+<p>Some queries are <i>outdated</i>, meaning that the query has been saved again after its last execution.
+There is no guarantee that the results of outdated queries match the body of the query.
+Outdated queries are not shown in the sidebars, but they do show up in the list of public queries.</p>
+
+<h5>My queries</h5>
+<p>The menu <i>My Queries</i> shows you a list of all queries that you have created yourself.<p>
+<p>From this list you can view, edit and delete your queries.</p>
+<p><img src="{{=URL('static', 'images/help-create.png')}}"/></p>
+<p>To create a new query, press the plus icon top right.</p>
+<p><b>Hint</b>: fill in the details of the query, but do not run it from here. Instead, save it, go back to <i>My Queries</i>,
+navigate to the new query, and edit it from there, as shown below.</p>
+<p>By clicking <img src="{{=URL('static', 'images/help-icon-i.png')}}"/> you are taken to the page for this query,
+where you can view all its details.
+<p>Below the field that displays the query body, there is an edit icon
+by which you can edit your query.</p>
+<p><img src="{{=URL('static', 'images/help-edit.png')}}"/></p>
+<p>By checking the <i>Public</i> checkbox, you indicate that this query may show up in the list of Public Queries and in the sidebar next to
+chapters that contain results of this query./<p>
+<p>When you edit your query, a timestamp will be added. This stamp contains the point in time that the query <i>body</i> was last changed.
+If you merely edit the description or other metadata, this timestamp will not be changed. This timestamp is used to
+determined whether your query results are up to date or outdated. Outdated queries will not show up in the sidebar.</p>
 
 {{block right_sidebar}}
     {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
