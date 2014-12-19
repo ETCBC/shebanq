@@ -171,7 +171,7 @@ table.hlsettings {
     padding: 2pt;
     text-align: center;
 }
-.pnll, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw {
+.pnll, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
     border-radius: 12pt;
     border: 1pt solid #dde6dd;
     background-color: #eef1ee;
@@ -219,15 +219,19 @@ td.cq,td.cw {
     margin: 0;
 }
 td.cq {
-    color: #000000;
-    font-size: x-small;
     border: 2pt solid #ffffff;
+}
+td.cq a {
+    color: #000000;
+    font-size: small;
 }
 td.cw {
     background-color: #fafafa;
-    font-size: x-small;
-    font-weight: bold;
     border: 2pt solid #aaaaaa;
+}
+td.cw a {
+    font-size: small;
+    font-weight: bold;
 }
 
 /* picker selected cell */
@@ -612,4 +616,9 @@ span.warning {
 }
 span.info {
     background-color: #aaffaa;
+}
+
+/* DIALOGS */
+.pnll .ui-dialog-titlebar-close {
+  display: none;
 }

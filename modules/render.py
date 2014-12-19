@@ -139,14 +139,14 @@ if nrows * ncols != len(vcolornames):
 if dnrows * dncols != len(vdefaultcolors):
     print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
 
-def ccell(qw,iid,c): return '\t\t<td class="c{qw} {qw}{iid}">{n}</td>'.format(qw=qw,iid=iid,n=vcolornames[c])
+def ccell(qw,iid,c): return '\t\t<td class="c{qw} {qw}{iid}"><a href="#">{n}</a></td>'.format(qw=qw,iid=iid,n=vcolornames[c])
 def crow(qw,iid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(qw,iid,c) for c in range(r * ncols, (r + 1) * ncols)))
 def ctable(qw, iid): return '<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'.format(qw=qw,iid=iid, cs='\n'.join(crow(qw,iid,r) for r in range(nrows)))
 
 def vsel(qw, iid, typ):
     content = '&nbsp;' if qw == 'q' else 'w'
     selc = '' if typ else '<span class="pickedc cc_selc_{qw}"><input type="checkbox" id="selc_{qw}{iid}" name="selc_{qw}{iid}"/></span>&nbsp;'
-    sel = '<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}">{lab}</span>'
+    sel = '<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}"><a href="#">{lab}</a></span>'
     return (selc + sel).format (qw=qw,iid=iid, lab=content)
 
 def legend(): return legend_tpl.format(base_doc=base_doc)

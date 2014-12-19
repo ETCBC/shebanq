@@ -494,7 +494,6 @@ function SelectItems(up, key) { // both for chapters and for result pages
     var that = this
     this.key = key
     this.other_key = (key == 'chapter')?'page':'chapter'
-    this.tag = (key == 'chapter')?'passage':'pages'
     this.up = up
     this.name = 'select_contents_'+this.key
     this.other_name = 'select_contents_'+this.other_key
@@ -977,6 +976,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
     var pointer = is_item?'me':iid
     var stl = style[this.qw]['prop']
     var sel = $('#sel_'+this.qw+pointer)
+    var selw = $('#sel_'+this.qw+pointer+'>a')
     var selc = $('#selc_'+this.qw+pointer)
     var picker = $('#picker_'+this.qw+pointer)
    
@@ -986,7 +986,8 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
     }
     this.apply = function(do_highlight) {
         var color = wb.vs.color(this.qw, this.iid) || defcolor(null, this.iid)
-        sel.css(stl, vcolors[color][this.qw])                  // apply state to the selected cell
+        var target = (this.qw == 'q')?sel:selw
+        target.css(stl, vcolors[color][this.qw])                  // apply state to the selected cell
         selc.prop('checked', wb.vs.iscolor(this.qw, this.iid))                   // apply state to the checkbox
         if (do_highlight) {
             wb.highlight2(this)
@@ -1020,7 +1021,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         }
         that.apply(true)
     })
-    $('.c'+this.qw+'.'+this.qw+pointer).click(function() { // process a click on a colored cell of the picker
+    $('.c'+this.qw+'.'+this.qw+pointer+'>a').click(function() { // process a click on a colored cell of the picker
         if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
         vals = {}
         vals[that.iid] = $(this).html()
@@ -1029,8 +1030,9 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         that.apply(true)
     })
     picker.hide()
-    $('.c'+this.qw+'.'+this.qw+pointer).each(function() { //initialize the individual color cells in the picker
-        $(this).css(stl, vcolors[$(this).html()][that.qw])
+    $('.c'+this.qw+'.'+this.qw+pointer+'>a').each(function() { //initialize the individual color cells in the picker
+        var target = (that.qw == 'q')?$(this).closest('td'):$(this)
+        target.css(stl, vcolors[$(this).html()][that.qw])
     })
     this.apply(do_highlight)
 }
@@ -1052,11 +1054,13 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
     this.qw = qw
     var stl = style[this.qw]['prop']
     var sel = $('#sel_'+this.qw+'one')
+    var selw = $('#sel_'+this.qw+'one>a')
     var picker = $('#picker_'+this.qw+'one')
     
     this.apply = function(do_highlight) {
         var color = wb.vs.sel_one(this.qw) || defcolor(this.qw, null)
-        sel.css(stl, vcolors[color][this.qw]) // apply state to the selected cell
+        target = (this.qw == 'q')?sel:selw
+        target.css(stl, vcolors[color][this.qw]) // apply state to the selected cell
         if (do_highlight) {
             wb.highlight2(this)
         }
@@ -1071,7 +1075,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
             width: '200px',
         })
     })
-    $('.c'+this.qw+'.'+this.qw+'one').click(function() { // process a click on a colored cell of the picker
+    $('.c'+this.qw+'.'+this.qw+'one>a').click(function() { // process a click on a colored cell of the picker
         if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
         var current_active = wb.vs.active(that.qw)
         if (current_active != 'hlone' && current_active != 'hlcustom') {
@@ -1083,8 +1087,9 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
         that.apply(true)
     })
     picker.hide()
-    $('.c'+this.qw+'.'+this.qw+'one').each(function() { //initialize the individual color cells in the picker
-        $(this).css(stl, vcolors[$(this).html()][that.qw])
+    $('.c'+this.qw+'.'+this.qw+'one>a').each(function() { //initialize the individual color cells in the picker
+        target = (that.qw == 'q')?$(this).closest('td'):$(this)
+        target.css(stl, vcolors[$(this).html()][that.qw])
     })
     this.apply(do_highlight)
 }
@@ -1184,8 +1189,27 @@ function activate_buttons() {
             })
             var name = $(this).attr('name')
             $('#'+name).val(true)
+            /*
+            if (name == 'button_done') {
+                body = $('#side_material_rq')
+                if (body.dialog('instance')) {body.dialog('destroy')}
+            }
+            */
         })
     })
     material_fetched = {txt_p: false, txt_il: false}
     wb.material.apply()
+    /*
+    body = $('#side_material_rq')
+    body.dialog({
+        autoOpen: false,
+        dialogClass: 'pnll',
+        closeOnEscape: false,
+        modal: false,
+        title: 'edit query',
+        position: {my: 'left top', at: 'left bottom', of: $('#side_settings_rq')},
+        width: '540px',
+    })
+    body.dialog('open')
+    */
 }

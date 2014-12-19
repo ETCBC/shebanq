@@ -63,6 +63,8 @@
     (left_sidebar_enabled and 1 or 0)+(right_sidebar_enabled and 1 or 0)]
   }}
 
+  <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
+  <script src="{{=URL('static','js/web2py_bootstrap.js')}}"></script>
   <script src="{{=URL('static','js/jquery-ui.min.js')}}"></script>
   <script src="{{=URL('static','js/jquery.cookie.js')}}"></script>
   <script src="{{=URL('static', 'js/hebrew.js')}}"></script>
@@ -174,8 +176,6 @@
 
   <!-- The javascript =============================================
        (Placed at the end of the document so the pages load faster) -->
-  <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
-  <script src="{{=URL('static','js/web2py_bootstrap.js')}}"></script>
   <!--[if lt IE 7 ]>
       <script src="{{=URL('static','js/dd_belatedpng.js')}}"></script>
       <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
