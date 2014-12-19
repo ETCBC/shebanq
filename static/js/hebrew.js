@@ -1189,17 +1189,14 @@ function activate_buttons() {
             })
             var name = $(this).attr('name')
             $('#'+name).val(true)
-            /*
             if (name == 'button_done') {
                 body = $('#side_material_rq')
                 if (body.dialog('instance')) {body.dialog('destroy')}
             }
-            */
         })
     })
     material_fetched = {txt_p: false, txt_il: false}
     wb.material.apply()
-    /*
     body = $('#side_material_rq')
     body.dialog({
         autoOpen: false,
@@ -1211,5 +1208,4 @@ function activate_buttons() {
         width: '540px',
     })
     body.dialog('open')
-    */
 }
