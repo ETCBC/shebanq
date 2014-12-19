@@ -2,7 +2,7 @@
 {{=form}}
 </div>
 {{if word:}}
-    <input type="hidden" id="itemtag" value="{{=word.g_entry_heb}} identified by {{=word.entryid}}"/>
+    <input type="hidden" id="itemtag" value="{{=word.g_entry_heb}} identified by {{=h_esc(word.entryid)}}"/>
 {{else:}}
     <p>This lexeme does not exist.</p>
 {{pass}}

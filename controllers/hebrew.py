@@ -6,7 +6,7 @@ import collections, json
 import xml.etree.ElementTree as ET
 from itertools import groupby
 
-from render import Verses, Viewsettings, legend, colorpicker
+from render import Verses, Viewsettings, legend, colorpicker, h_esc
 from shemdros import MqlResource, RemoteException
 RESULT_PAGE_SIZE = 20
 EXPIRE = 0
