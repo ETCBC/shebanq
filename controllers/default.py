@@ -9,13 +9,18 @@ def index():
     return dict()
 
 def about():
-    response.title = T("SHEBANQ")
+    response.title = T("SHEBANQ - about")
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
 def help():
-    response.title = T("SHEBANQ")
+    response.title = T("SHEBANQ - help")
     response.subtitle = T("Help for using SHEBANQ")
+    return dict()
+
+def news():
+    response.title = T("SHEBANQ - news")
+    response.subtitle = T("Release notes of SHEBANQ")
     return dict()
 
 def user():

@@ -1,0 +1,53 @@
+{{ left_sidebar_enabled = False }}
+{{ right_sidebar_enabled = False }}
+{{ ('message' in globals()) }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<h4>{{=T('News')}}</h4>
+<h5>2014-12-19</h5>
+<p>A major update of the SHEBANQ website, featuring</p>
+<dl>
+<dt>lexemes can be highlighted</dt>
+<dd><ul>
+<li>just by clicking on words in the text</li>
+<li>they show up in the side list, like queries</li>
+<li>all occurrences of each particular lexeme are shown on result pages, like query results</li>
+</ul></dd>
+<dt>more economic layout</dt>
+<dd><ul>
+<li>the full vertical space is for the main text</li>
+<li>the list of queries in the sidebar as much more compact, outdated queries do not show up</li>
+<li>more information about the query can be pulled open right in the sidebar</li>
+<li>the selectors for chapters and result pages do not take up valuable space: you can click them away or move them around</li>
+<li>editing and running queries happens in the same window, the trial and error process is easier</li>
+</ul></dd>
+<dt>better help</dt>
+<dd><ul>
+<li>a new user guide</li>
+<li>links to documentation and data- and code sources in the menu bar</li>
+</ul></dd>
+<dt>better machinery</dt>
+<dd><ul>
+<li>less traffic between server and client</li>
+<li>the highlighting process feels more responsive</li>
+</ul></dd>
+<dt>many bug fixes</dt>
+<dd><ul>
+<li>removal of quite a few unnecessary detours and duplicated actions</li>
+</ul></dd>
+</dl>
+
+{{block right_sidebar}}
+    {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
+
+    <h6>{{=T("Don't know what to do?")}}</h6>
+    <ul class="text">
+      <li>{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
+      <li><a href="http://web2py.com">web2py.com</a></li>
+      <li><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>
+    </ul>
+{{end}}

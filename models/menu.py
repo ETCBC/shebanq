@@ -57,6 +57,7 @@ response.menu = [
     (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Help'), False, '', (
         ('SHEBANQ user guide', False, URL('default', 'help'), []),
+        ('Release notes', False, URL('default', 'news'), []),
         (A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf')), False, None, []),
         (A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html'), False, None, []),
         (A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf')), False, None, []),
