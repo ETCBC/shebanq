@@ -1,6 +1,12 @@
 {{if side_items:}}
 <ul id="side_list_{{=qw}}">
-    {{for si in side_items:
+    {{
+    if qw == 'q':
+        sortkey = lambda x: (x['item'].created_by.last_name, x['item'].created_by.first_name, x['item'].name)
+    else:
+        sortkey = lambda x: x['item'].entry_heb
+    pass
+    for si in sorted(side_items, key=sortkey):
         iid = si['item'].id
         if qw == 'q':
             qname = si['item'].name
