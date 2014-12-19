@@ -62,7 +62,7 @@ response.menu = [
         (A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf')), False, None, []),
     )),
     ('Sources', False, '', (
-        (A('Data Archive: DANS', _href='https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:58245', _target='_blank'), False, None, []),
+        (A('Data Archive: DANS', _href='http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71', _target='_blank'), False, None, []),
         (A('Github: ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, []),
         (A('Github: Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, []),
     )),
