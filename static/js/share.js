@@ -32,6 +32,13 @@ jQuery(function(){
         jQuery('#socialdrawer img').hide();
 	// hover
 	st.click(function(){
+        var shebanq_url = encodeURIComponent(view_url+wb.vs.getvars()+'&pref=alt')
+	    var twit = 'http://twitter.com/home?status='+title+'%20';
+	    var facebook = 'http://www.facebook.com/sharer.php?u=';
+	    var gplus = 'https://plus.google.com/share?url=';
+        $('#twit').attr('href', twit+shebanq_url)
+        $('#facebook').attr('href', facebook+shebanq_url)
+        $('#gplus').attr('href', gplus+shebanq_url)
 		jQuery(this).animate({height:'40px', width:'160px', opacity: 0.95}, 300);
 		jQuery('#socialdrawer img').show();
 	    });
