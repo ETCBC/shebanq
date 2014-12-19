@@ -29,7 +29,7 @@ var thebooksorder = {{=XML(booksorder)}}
             <span><a href="#" id="mtxt_p" class="ctrl mhradio">text</a></span>
             <span><a href="#" id="mtxt_il" class="ctrl mhradio">data</a></span>
             <span><a id="datalegend_control" class="ctrl" href="#">legend</a></span>
-            <span id="datalegend" class="txt_il2">{{=XML(viewsettings.legend())}}</span>
+            <span id="datalegend" class="txt_il2">{{=XML(legend())}}</span>
         </div>
         <div id="viewlink">
             <span><a id="viewlink_show" class="ctrl" href="#">share link</a>
@@ -51,7 +51,7 @@ var thebooksorder = {{=XML(booksorder)}}
         <table class="hlsettings">
             <tr>
                 <td id="colorpicker_i{{=qw}}"></td>
-                <td>{{=XML(viewsettings.colorpicker(qw, 'me', ''))}}</td>
+                <td>{{=XML(colorpicker(qw, 'me', ''))}}</td>
             </tr>
         </table>
     </div>
@@ -66,7 +66,7 @@ var thebooksorder = {{=XML(booksorder)}}
                 <td><a href="#" id="{{=qw}}hlreset" class="ctrl {{=qw}}hradio">X</a></td>
                 <td><a href="#" id="{{=qw}}hlmany" class="ctrl {{=qw}}hradio">all</a></td>
                 <td><a href="#" id="{{=qw}}hlcustom" class="ctrl {{=qw}}hradio">my</a></td>
-                <td>{{=XML(viewsettings.colorpicker(qw, 'one', '2'))}}</td>
+                <td>{{=XML(colorpicker(qw, 'one', '2'))}}</td>
                 <td><a href="#" id="{{=qw}}hlone" class="ctrl {{=qw}}hradio">one</a></td>
                 <td><a href="#" id="{{=qw}}hloff" class="ctrl {{=qw}}hradio">off</a></td>
             </tr>

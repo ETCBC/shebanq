@@ -87,7 +87,7 @@ $.cookie.defaults.path = '/'
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
 var view_url, material_url, side_url // urls from which to fetch additional material through AJAX, the values come from the server
-var ignore // flag indicating whether cookies should be ignored initially
+var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 
@@ -95,7 +95,7 @@ var subtract = 150 // the canvas holding the material gets a height equal to the
 
 function dynamics() { // top level function, called when the page has loaded
     viewfluid = {}
-    wb = new Page(new ViewState(viewinit))
+    wb = new Page(new ViewState(viewinit, pref))
     wb.init()
     wb.go()
 }
@@ -161,6 +161,7 @@ the origin must be an object which has a member indicating the type of origin.
     this.highlight2 = function(origin) { // all highlighting goes through this function
         var that = this
         var qw = origin.qw
+        var code = origin.code
         var active = wb.vs.active(qw)
         if (active == 'hlreset') {
             this.vs.cstatexx(qw)
@@ -176,7 +177,7 @@ the origin must be an object which has a member indicating the type of origin.
 
         var paintings = {}
 
-        if (origin.code == '1a') { // highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
+        if (code == '1a') { // highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
             if (active != 'hlcustom') {
                 this.vs.hstatesv(qw, {active: 'hlcustom'})
             }
@@ -302,7 +303,7 @@ function Viewlink() { // Construct a link to the present page view in a textarea
             hide.show()
             show.hide()
             content.show()
-            content.val(view_url+wb.vs.getvars()+'&ignore=v')
+            content.val(view_url+wb.vs.getvars()+'&pref=alt')
             content.select()
         }
         else {
@@ -357,7 +358,7 @@ function Material() { // Object correponding to everything that controls the mat
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
-            $.get(material_url+vars+'&ignore='+ignore, function(html) {
+            $.get(material_url+vars, function(html) {
                 var response = $(html)
                 that.pselect.add(response)
                 that.message.add(response)
@@ -410,6 +411,7 @@ function Material() { // Object correponding to everything that controls the mat
             wb.highlight2({code: '4', qw: qw})
         })
         if (material_fetched['txt_p'] && material_fetched['txt_il']) {
+            wb.highlight2({code: '5', qw: 'q'})
             wb.highlight2({code: '5', qw: 'w'})
         }
     }
@@ -491,15 +493,20 @@ function SelectBook() { // book selection
 function SelectItems(up, key) { // both for chapters and for result pages
     var that = this
     this.key = key
+    this.other_key = (key == 'chapter')?'page':'chapter'
     this.tag = (key == 'chapter')?'passage':'pages'
     this.up = up
     this.name = 'select_contents_'+this.key
+    this.other_name = 'select_contents_'+this.other_key
     this.hid = '#'+this.name
+    this.other_hid = '#'+this.other_name
     this.control = '#select_control_'+this.key
     if (this.up) {
         this.up.chapters = this
     }
     this.present = function() {
+        other = $(this.other_hid)
+        if (other && other.dialog('instance') && other.dialog('isOpen')) {other.dialog('close')}
         $(this.hid).dialog({
             autoOpen: false,
             dialogClass: 'items',
@@ -547,7 +554,6 @@ function SelectItems(up, key) { // both for chapters and for result pages
     }
     this.add_item = function(item) {
         item.click(function() {
-            //if ($(that.hid).dialog('instance') && $(that.hid).dialog('isOpen')) {$(that.hid).dialog('close')}
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
@@ -642,6 +648,7 @@ function MSettings(content) {
         $('#m'+wb.vs.tp()).addClass('ison')
         this.content.show()
         if (wb.vs.tp() == 'txt_il') {
+            legend.hide()
             legendc.show()
         }
         else {
@@ -844,13 +851,13 @@ function SContent(mr, qw) {
         if (do_fetch && !side_fetched[this.mr+this.qw]) {
             this.msg('fetching '+style[this.qw]['tags']+' ...')
             if (this.mr == 'm') {
-                thelist.load(side_url+extra+vars+'&ignore='+ignore, function () {
+                thelist.load(side_url+extra+vars, function () {
                     side_fetched[that.mr+that.qw] = true
                     that.process()
                 }, 'html')
             }
             else {
-                $.get(side_url+extra+vars+'&ignore='+ignore, function (html) {
+                $.get(side_url+extra+vars, function (html) {
                     thelist.html(html)
                     side_fetched[that.mr+that.qw] = true
                     that.process()
@@ -1100,8 +1107,9 @@ function defcolor(qw, iid) {// compute the default color
 
 // VIEW STATE
 
-function ViewState(init) {
+function ViewState(init, pref) {
     this.data = init
+    this.pref = pref
 
     this.getvars = function() {
         var vars = ''
@@ -1119,21 +1127,21 @@ function ViewState(init) {
 
     this.delsv = function(group, qw, name) {
         delete this.data[group][qw][name]
-        $.cookie(group+qw, this.data[group][qw])
+        $.cookie(this.pref+group+qw, this.data[group][qw])
     }
 
     this.setsv = function(group, qw, values) {
         for (var mb in values) {
             this.data[group][qw][mb] = values[mb]
         }
-        $.cookie(group+qw, this.data[group][qw])
+        $.cookie(this.pref+group+qw, this.data[group][qw])
     }
 
     this.resetsv = function(group, qw) {
         for (var mb in this.data[group][qw]) {
             delete this.data[group][qw][mb]
         }
-        $.cookie(group+qw, this.data[group][qw])
+        $.cookie(this.pref+group+qw, this.data[group][qw])
     }
     this.mstatesv = function(values) { this.setsv('material', '', values) }
     this.dstatesv = function(values) { this.setsv('hebrewdata', '', values) }

@@ -31,7 +31,7 @@
         pass
     }}
     <li id="{{='{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
-        <div>{{=XML(viewsettings.colorpicker(qw,iid, ''))}}
+        <div>{{=XML(colorpicker(qw,iid, ''))}}
             <table class="item_{{=qw}}" id="h_{{=qw}}{{=iid}}"><tr>
             <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _iid=iid, _id='item_{}{}'.format(qw, iid))}}</td>
             <td><span class="ctrl">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(qw, iid))}}</span></td>

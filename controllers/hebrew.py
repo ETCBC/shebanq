@@ -6,9 +6,8 @@ import collections, json
 import xml.etree.ElementTree as ET
 from itertools import groupby
 
-from render import Verses, Viewsettings
+from render import Verses, Viewsettings, legend, colorpicker
 from shemdros import MqlResource, RemoteException
-
 RESULT_PAGE_SIZE = 20
 EXPIRE = 0
 
@@ -113,14 +112,13 @@ where
 def sidem():
     qw = request.vars.qw
     (book, chapter) = getpassage()
-    viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
     if qw == 'q':
         monadsets = get_monadsets_MySQL(chapter)
         side_items = group_MySQL(monadsets)
     else:
         side_items = get_lexemes(chapter)
     return dict(
-        viewsettings=viewsettings,
+        colorpicker=colorpicker,
         side_items=side_items,
         qw=qw,
     )
@@ -188,20 +186,22 @@ select name, max(chapter_num) from chapter inner join book on chapter.book_id = 
     viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
     return dict(
         viewsettings=viewsettings,
+        colorpicker=colorpicker,
+        legend=legend,
         booksorder=json.dumps(books_order),
         books=json.dumps(books),
     )
 
-def get_record_id():
+def get_record_id(no_controller=True):
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
     record_id = request.vars.iid
     if request.vars.iid is not None:
         if type(request.vars.iid) == list:
             record_id = int(request.vars.iid[0])
-        elif request.vars.iid.isdigit():
-            record_id = int(request.vars.iid)
+#        elif request.vars.iid.isdigit():
         else:
-            raise HTTP(404, "get_record_id: Object not found in database: " + str(record_id))
+            record_id = int(request.vars.iid)
+#            raise HTTP(404, "get_record_id: Object not found in database: " + str(record_id))
     return record_id
 
 
@@ -223,7 +223,7 @@ def check_query_access_write(record_id=get_record_id()):
 def check_query_access_execute(record_id=get_record_id()):
     authorized = False
 
-    if record_id is not None:
+    if record_id is not None and record_id > 0:
         mql_record = db.queries[record_id]
         if mql_record is None:
             raise HTTP(404, "No execute access. Object not found in database. record_id=" + str(record_id))
@@ -521,7 +521,6 @@ def execute_query(record_id):
             results=0,
             pages=0, page=0, pagelist=[],
             verse_data=[],
-            viewsettings=None,
             mr='r',
             qw='q',
         )

@@ -149,20 +149,25 @@ def vsel(qw, iid, typ):
     sel = '<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}">{lab}</span>'
     return (selc + sel).format (qw=qw,iid=iid, lab=content)
 
+def legend(): return legend_tpl.format(base_doc=base_doc)
+def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
+
 class Viewsettings():
     def __init__(self):
-        self.this_legend = legend_tpl.format(base_doc=base_doc)
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
-        self.ignore = 'v' if 'ignore' in current.request.vars and current.request.vars['ignore'] == 'v' else 'x'
+        self.pref = 'my'
+        if 'pref' in current.request.vars:
+            self.pref = current.request.vars['pref']
         for group in settings:
             self.state[group] = {}
             for qw in settings[group]:
                 self.state[group][qw] = {}
                 from_cookie = {}
-                if self.ignore == 'x' and current.request.cookies.has_key(group+qw):
-                    try:
-                        from_cookie = json.loads(urllib.unquote(current.request.cookies[group+qw].value))
-                    except ValueError: pass
+                if current.request.cookies.has_key(self.pref+group+qw):
+                    if self.pref == 'my':
+                        try:
+                            from_cookie = json.loads(urllib.unquote(current.request.cookies[self.pref+group+qw].value))
+                        except ValueError: pass
                 if group == 'colormap':
                     for x in from_cookie: self.state[group][qw][x] = from_cookie[x]
                     for x in current.request.vars:
@@ -175,15 +180,14 @@ class Viewsettings():
                     for x in settings[group][qw]:
                         init = settings[group][qw][x]
                         vstate = current.request.vars[qw+x]
-                        if vstate == None and self.ignore == 'x': vstate = from_cookie.get(x, init) 
+                        if vstate == None: vstate = from_cookie.get(x, init) 
                         from_cookie[x] = vstate
                         self.state[group][qw][x] = vstate
 
-                current.response.cookies[group+qw] = urllib.quote(json.dumps(from_cookie))
-                current.response.cookies[group+qw]['expires'] = 30 * 24 * 3600
-                current.response.cookies[group+qw]['path'] = '/'
+                current.response.cookies[self.pref+group+qw] = urllib.quote(json.dumps(from_cookie))
+                current.response.cookies[self.pref+group+qw]['expires'] = 30 * 24 * 3600
+                current.response.cookies[self.pref+group+qw]['path'] = '/'
 
-    def legend(self): return self.this_legend
 
     def dynamics(self):
         book_proto = current.request.vars.book
@@ -194,20 +198,17 @@ var dncols = {dncols}
 var dnrows = {dnrows}
 var viewinit = {initstate}
 var style = {style}
-var ignore = {ignore}
+var pref = {pref}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
     initstate=json.dumps(self.state),
     vcolors = json.dumps(vcolors),
     style = json.dumps(style),
+    pref = '"{}"'.format(self.pref),
     dncols = dncols,
     dnrows = dnrows,
-    ignore = "'"+self.ignore+"'",
 )
-
-    def colorpicker(self, qw, iid, typ):
-        return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
