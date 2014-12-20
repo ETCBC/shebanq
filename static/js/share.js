@@ -22,7 +22,7 @@ jQuery(function(){
 	var twit = 'http://twitter.com/home?status='+title+'%20'+url;
 	var facebook = 'http://www.facebook.com/sharer.php?u='+url;
 	var gplus = 'https://plus.google.com/share?url='+url;
-	var tbar = '<div id="socialdrawer"><span>Share<br/></span><div id="sicons"><a target="_blank" href="'+twit+'" id="twit" title="Share on twitter"><img src="'+path+'/twitter.png"  alt="Share on Twitter" width="32" height="32" /></a><a target="_blank" href="'+facebook+'" id="facebook" title="Share on Facebook"><img src="'+path+'/facebook.png"  alt="Share on facebook" width="32" height="32" /></a><a target="_blank" href="'+gplus+'" id="gplus" title="Share on Google Plus"><img src="'+path+'/gplus-32.png"  alt="Share on Google Plus" width="32" height="32" /></a></div></div>';	
+	var tbar = '<div id="socialdrawer"><span>Share<br/></span><div id="sicons"><a lnk="" href="#" id="clip" title="copy to clpboard">copy</a>&nbsp;<a target="_blank" href="'+twit+'" id="twit" title="Share on twitter"><img src="'+path+'/twitter.png"  alt="Share on Twitter" width="32" height="32" /></a><a target="_blank" href="'+facebook+'" id="facebook" title="Share on Facebook"><img src="'+path+'/facebook.png"  alt="Share on facebook" width="32" height="32" /></a><a target="_blank" href="'+gplus+'" id="gplus" title="Share on Google Plus"><img src="'+path+'/gplus-32.png"  alt="Share on Google Plus" width="32" height="32" /></a></div></div>';	
 	// Add the share tool bar.
 	jQuery('body').append(tbar); 
 	var st = jQuery('#socialdrawer');
@@ -31,15 +31,20 @@ jQuery(function(){
 	jQuery('#socialdrawer span').css({'float':'left','margin':'2px 3px','text-shadow':' 1px 1px 1px #FFF','color':'#444','font-size':'12px','line-height':'1em'});
         jQuery('#socialdrawer img').hide();
 	// hover
+    $('#clip').click(function() {
+        window.alert($(this).attr('lnk'))
+    })
 	st.click(function(){
-        var shebanq_url = encodeURIComponent(view_url+wb.vs.getvars()+'&pref=alt')
+        var shebanq_url_raw = view_url+wb.vs.getvars()+'&pref=alt'
+        var shebanq_url = encodeURIComponent(shebanq_url_raw)
 	    var twit = 'http://twitter.com/home?status='+title+'%20';
 	    var facebook = 'http://www.facebook.com/sharer.php?u=';
 	    var gplus = 'https://plus.google.com/share?url=';
+        $('#clip').attr('lnk', shebanq_url_raw)
         $('#twit').attr('href', twit+shebanq_url)
         $('#facebook').attr('href', facebook+shebanq_url)
         $('#gplus').attr('href', gplus+shebanq_url)
-		jQuery(this).animate({height:'40px', width:'160px', opacity: 0.95}, 300);
+		jQuery(this).animate({height:'40px', width:'260px', opacity: 0.95}, 300);
 		jQuery('#socialdrawer img').show();
 	    });
 	//leave
