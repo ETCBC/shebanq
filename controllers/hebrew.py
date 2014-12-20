@@ -176,6 +176,14 @@ def material():
         )
     return result
 
+def query():
+    request.vars['mr'] = 'r'
+    request.vars['qw'] = 'q'
+    request.vars['tp'] = 'txt_p'
+    request.vars['iid'] = request.vars.id
+    return text()
+    #redirect(URL('hebrew', 'text', vars=dict(mr='r', qw='q', tp='txt_p', iid=request.vars.id)))
+
 def text():
     books_data = passage_db.executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
@@ -453,10 +461,10 @@ def get_pagination(p, monad_sets, iid):
 
 @auth.requires(lambda: check_query_access_write())
 def sideqe():
-    return show_query("Edit Query", False)
+    return show_query("Edit Query", readonly=False)
 
 def sideq():
-    return show_query("Display Query", True)
+    return show_query("Display Query", readonly=True)
 
 def sidew():
     return show_word("Display Lexeme")

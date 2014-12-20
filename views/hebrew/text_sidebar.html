@@ -1,0 +1,32 @@
+{{ for (qw, tag, tags) in (('w', 'word', 'words'), ('q', 'query', 'queries')):
+}}
+<div id="side_bar_r{{=qw}}">
+    <div id="side_settings_r{{=qw}}">
+        <table class="hlsettings">
+            <tr>
+                <td id="colorpicker_i{{=qw}}"></td>
+                <td>{{=XML(colorpicker(qw, 'me', ''))}}</td>
+            </tr>
+        </table>
+    </div>
+    <div id="side_material_r{{=qw}}" class="mql_form"></div>
+</div>
+<div id="side_bar_m{{=qw}}">
+    <a id="side_show_m{{=qw}}" class="ctrll" href="#">show {{=tags}}</a>
+    <a id="side_hide_m{{=qw}}" class="ctrll" href="#">hide {{=tags}}</a>
+    <div id="side_settings_m{{=qw}}" class="pnl">
+        <table class="hlsettings">
+            <tr>
+                <td><a href="#" id="{{=qw}}hlreset" class="ctrl {{=qw}}hradio">X</a></td>
+                <td><a href="#" id="{{=qw}}hlmany" class="ctrl {{=qw}}hradio">all</a></td>
+                <td><a href="#" id="{{=qw}}hlcustom" class="ctrl {{=qw}}hradio">my</a></td>
+                <td>{{=XML(colorpicker(qw, 'one', '2'))}}</td>
+                <td><a href="#" id="{{=qw}}hlone" class="ctrl {{=qw}}hradio">one</a></td>
+                <td><a href="#" id="{{=qw}}hloff" class="ctrl {{=qw}}hradio">off</a></td>
+            </tr>
+        </table>
+    </div>
+    <div id="side_material_m{{=qw}}" class="pnll"></div>
+    <hr>
+</div>
+{{pass}}
