@@ -64,8 +64,17 @@ response.menu = [
     )),
     ('Sources', False, '', (
         (A('Data Archive: DANS', _href='http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71', _target='_blank'), False, None, []),
-        (A('Github: ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, []),
-        (A('Github: Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, []),
+        (A('Github: ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, (
+            (A('shebanq-doc', _href='https://github.com/ETCBC/shebanq-doc', _target='_blank'), False, None, []),
+            (A('laf-fabric', _href='https://github.com/ETCBC/laf-fabric', _target='_blank'), False, None, []),
+            (A('laf-fabric-nbs', _href='https://github.com/ETCBC/laf-fabric-nbs', _target='_blank'), False, None, []),
+        )),
+        (A('Github: Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, (
+            (A('shebanq', _href='https://github.com/Dans-labs/shebanq', _target='_blank'), False, None, []),
+            (A('shemdros', _href='https://github.com/Dans-labs/shemdros', _target='_blank'), False, None, []),
+            (A('annotation-paradigm', _href='https://github.com/Dans-labs/annotation-paradigm', _target='_blank'), False, None, []),
+        )),
+        (A('Emdros', _href='http://emdros.org', _target='_blank'), False, None, []),
     )),
 ]
             #<a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">

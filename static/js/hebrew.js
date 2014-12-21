@@ -286,42 +286,6 @@ the origin must be an object which has a member indicating the type of origin.
     this.picker1list = {q: {}, w: {}}           // will collect the two lists of Colorpicker1 objects, index as q w and then by iid
 }
 
-// VIEWLINK
-
-function Viewlink() { // Construct a link to the present page view in a textarea
-    var that = this
-    this.name = 'viewlink'
-    this.hid = '#'+this.name
-    viewfluid = {}
-    viewfluid[this.name] = 'x'
-    var hide = $(this.hid+'_hide')
-    var show = $(this.hid+'_show')
-    var content = $(this.hid+'_content')
-    this.apply = function() {
-        var setting = viewfluid[this.name]
-        if (setting == 'v') {
-            hide.show()
-            show.hide()
-            content.show()
-            content.val(view_url+wb.vs.getvars()+'&pref=alt')
-            content.select()
-        }
-        else {
-            hide.hide()
-            show.show()
-            content.hide()
-        }
-    }
-    hide.click(function() {
-        viewfluid[that.name] = 'x'
-        that.apply()
-    })
-    show.click(function() {
-        viewfluid[that.name] = 'v'
-        that.apply()
-    })
-}
-
 // MATERIAL
 
 function Material() { // Object correponding to everything that controls the material in the main part (not in the side bars)
@@ -329,7 +293,6 @@ function Material() { // Object correponding to everything that controls the mat
     this.name = 'material'
     this.hid = '#'+this.name
     this.cselect = $('#material_select')
-    this.viewlink = new Viewlink()
     this.mselect = new MSelect()
     this.pselect = new PSelect()
     this.message = new MMessage()
@@ -339,7 +302,6 @@ function Material() { // Object correponding to everything that controls the mat
         this.fetch()
     }
     this.apply = function() {
-        this.viewlink.apply()
         this.mselect.apply()
         this.pselect.apply()
         this.msettings.apply()

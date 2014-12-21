@@ -182,7 +182,13 @@ def query():
     request.vars['tp'] = 'txt_p'
     request.vars['iid'] = request.vars.id
     return text()
-    #redirect(URL('hebrew', 'text', vars=dict(mr='r', qw='q', tp='txt_p', iid=request.vars.id)))
+
+def word():
+    request.vars['mr'] = 'r'
+    request.vars['qw'] = 'w'
+    request.vars['tp'] = 'txt_p'
+    request.vars['iid'] = request.vars.id
+    return text()
 
 def text():
     books_data = passage_db.executesql('''
