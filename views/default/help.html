@@ -14,7 +14,7 @@ These queries are shown in the sidebar, to the left of the material.
 You can investigate those queries and their results, and switch back and forth between chapter and query results.</p>
 <p>You can also click on every word in order to mark all occurrences of that word in the passage you are reading.
 The words show up in the sidebar, and from there you can get to all occurrences of a word throughout the whole Hebrew Bible.</p>
-<p>You can assign colors to words and queries: query results are highlighted by coloring the back-gound of words.
+<p>You can assign colors to words and queries: query results are highlighted by coloring the backgound of words.
 Word occurrences are highlighted by coloring the letters themselves.</p>
 </p>
 
@@ -66,26 +66,9 @@ except for the customized ones, which will be highlighted in the colors you have
 For words, this control enables you to view the full list of words.</dd>
 <dt>X</dt><dd>reset: uncustomize all colors, so you can start with a clean slate.</dd>
 </dl>
-<p>If you want to share your customized view on a passage, you can create a link, copy it to your clipboard,
-and send it to others, or bookmark it yourself:</p>
-<dl>
-<dt>share link</dt><dd>all view settings (including custom query/word colors) that you have adjusted will
-be remembered by your browser (in a couple of <i>cookies</i>).
-If you want to share your view with others, you can generate a link and send it to others.
-If they open that link in their browser, they will see eaxctly the customizations that you have defined for yourself.
-For example, if you want to read a passage with a query highlighted that shows all the verbs, and another one that shows all the
-proper names, follow this view on
-{{=A(T("Exodus 6"), _target='_blank', _href=URL('hebrew', 'text')+'?qactive=hlcustom&qsel_one=grey&qget=v&wactive=hlcustom&wsel_one=gray&wget=v&chapter=6&qw=q&tp=txt_p&iid=13&book=Exodus&mr=m&page=1&q401=skye&q402=orange&sn_n=v&sp_n=v&cl=v&wd1_lang=x&wd1_subpos=x&wd2_person=v&cl_dom=v&sp_rela=v&gl=v&ph_fun=v&ph_typ=v&cl_typ=v&tt=x&wd2=v&wd1=v&tl=x&wd2_gender=v&ph=v&wd1_pos=v&ph_det=v&wd2_stem=v&wd2_state=v&ht=v&ph_n=v&hl=v&cl_n=v&wd2_gnumber=v&sp=v&wd2_tense=v&wd1_n=x&sn=v&pref=alt')}}.
-<br/><b>Note:</b> if you click on such a link, sent by somebody else, it will not override your own settings.
-If you want to return to your own settings, use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu.
-<br/><b>Hint:</b> you can also share through twitter, facebook and google-plus by means of the <i>share drawer</i>, in the lower-right corner 
-of the window.
-By clicking the icon you will create a new message with the same link pasted in it.
-</dd> 
-</dl>
 
 <h5>List view</h5>
-The sidebar lists offer compact views on the relevant words and lists. You get more information by clicking on the item:
+The sidebar lists offer compact views on the relevant words and queries. You get more information by clicking on the item:
 it will bring you to the corresponding query or word page, where you have access to all information about that item, 
 including its results throughout the whole Hebrew Bible.
 <p><img src="{{=URL('static', 'images/help-expand.png')}}"/></p>
@@ -124,6 +107,33 @@ determined whether your query results are up to date or outdated. Outdated queri
 The controls are here, but do not work.
 As a workaround, go to the <i>My Queries</i> menu, press the plus icon, and enter new projects and organizations, and then go back to your query.
 Sorry about this!</p>
+
+<h4>{{=T('Citation and sharing')}}</h4>
+<p>You can cite individual queries and words by means of an <i>url</i>:</p>
+<dl>
+<dt>query</dt>
+<dd><code>http://shebanq.ancient-data.org?mr=m&qw=q&iid=</code><i>id-of-query</i></dd>
+<dt>word</dt>
+<dd><code>http://shebanq.ancient-data.org?mr=m&qw=w&iid=</code><i>id-of-word</i></dd>
+</dl>
+<p><img src="{{=URL('static', 'images/help-cite.png')}}"/></p>
+<p>You can generate these links if you are on a page that describes an individual query or word.</p>
+<p>You can also generate a <i>url</i> that reproduces your customized view on a passage, query or word including all colors you have assigned to queries and words.
+Your customizations are stored in your browser, in a few <i>cookies</i>.
+Hence if you go to the same page in another browser, you will probably see different colors.
+However, you can share these links through mail or twitter, or bookmark them yourself for usage in another browser, e.g. on your tablet.
+Try for example {{=A(T("Exodus 6"), _target='_blank', _href=URL('hebrew', 'text')+'?qactive=hlcustom&qsel_one=grey&qget=v&wactive=hlcustom&wsel_one=gray&wget=v&chapter=6&qw=q&tp=txt_p&iid=13&book=Exodus&mr=m&page=1&q401=skye&q402=orange&sn_n=v&sp_n=v&cl=v&wd1_lang=x&wd1_subpos=x&wd2_person=v&cl_dom=v&sp_rela=v&gl=v&ph_fun=v&ph_typ=v&cl_typ=v&tt=x&wd2=v&wd1=v&tl=x&wd2_gender=v&ph=v&wd1_pos=v&ph_det=v&wd2_stem=v&wd2_state=v&ht=v&ph_n=v&hl=v&cl_n=v&wd2_gnumber=v&sp=v&wd2_tense=v&wd1_n=x&sn=v&pref=alt')}}.
+If you receive a link to a view from somebody else and click on it, it will not destroy your previous settings. 
+If you want to return to your own settings, use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu.
+Then you will return to the passage, query or word you were on before clicking the shared link, and you see your own colors again.
+</p>
+<p>In order to generate those links, click the <i>Cite</i> drawer at the bottom right of the page.
+If you are on the page of an individual query or word, you get the option to cite that query or word.
+In any case, you get the option to generate a link to your customized view.
+The link will pop up in a window, and the only thing to do is to copy it to your clipboard (<code>Cmd-C</code> or <code>Ctrl-C</code>) and click <i>OK</i> or press
+<code>Enter</code>.
+Alternatively, you can click the Twitter icon, to start a tweet with the link to your view already pasted in.
+</p>
 
 {{block right_sidebar}}
     {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
