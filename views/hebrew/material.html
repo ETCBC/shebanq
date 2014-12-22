@@ -12,17 +12,23 @@ verselb = 'verses' if results != 1 else 'verse'
 }}
 {{if mr == 'm':}}
     <p>{{=results}} verses</p>
-{{elif qw == 'q':}}
-    {{if pages == 0:}}
+{{else:}}
+    {{if qw == 'q':}}
+        {{if pages == 0:}}
     <p>No query results</p>
-    {{else:}}
+        {{elif page > pages:}}
+    <p>No result page {{=page}} (only {{=pages}} result {{=pagelb}})</p>
+        {{else:}}
     <p>{{=pages}} {{=pagelb}} with {{=results}} {{=verselb}}<p>
-    {{pass}}
-{{elif qw == 'w':}}
-    {{if page == 0:}}
+        {{pass}}
+    {{elif qw == 'w':}}
+        {{if page == 0:}}
     <p>No word occurrences.</p>
-    {{else:}}
+        {{elif page > pages:}}
+    <p>No result page {{=page}} (only {{=pages}} result {{=pagelb}})</p>
+        {{else:}}
     <p>{{=pages}} {{=pagelb}} with {{=results}} {{=verselb}}</p>
+        {{pass}}
     {{pass}}
 {{pass}}
 </div>

@@ -118,8 +118,12 @@ function Page(vs) {
             this.prev[x] = null
         }
         material_fetched = {txt_p: false, txt_il: false}
+        this.vs.addHist()
     }
     this.apply = function() { // apply the viewstate: hide and show material as prescribed by the viewstate
+        this.mr = this.vs.mr()
+        this.qw = this.vs.qw()
+        this.iid = this.vs.iid()
         this.material.apply()
         this.sidebars.apply()
         var chapter = this.vs.chapter()
@@ -340,6 +344,7 @@ function Material() { // Object correponding to everything that controls the mat
             wb.picker1[wb.qw].adapt(wb.iid, true)
             $('a.vref').click(function() {
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
+                wb.vs.addHist()
                 wb.go('m')
             })
         }
@@ -371,6 +376,7 @@ function Material() { // Object correponding to everything that controls the mat
             }
             wb.picker1list['w'][iid].apply(false)
             wb.highlight2({code: '4', qw: qw})
+            wb.vs.addHist()
         })
         if (material_fetched['txt_p'] && material_fetched['txt_il']) {
             wb.highlight2({code: '5', qw: 'q'})
@@ -438,6 +444,7 @@ function SelectBook() { // book selection
     }
     this.content.change(function () {
         wb.vs.mstatesv({book: that.content.val(), chapter: 1, mr: 'm'})
+        wb.vs.addHist()
         wb.go()
     })
     this.gen_html = function() {
@@ -521,6 +528,7 @@ function SelectItems(up, key) { // both for chapters and for result pages
                 vals = {}
                 vals[that.key] = $(this).attr('item')
                 wb.vs.mstatesv(vals)
+                wb.vs.addHist()
                 wb.go()
             }
         })
@@ -620,6 +628,7 @@ function MSettings(content) {
     }
     $('.mhradio').click(function() {
         wb.vs.mstatesv({tp: $(this).attr('id').substring(1)})
+        wb.vs.addHist()
         that.apply()
     })
 }
@@ -645,6 +654,7 @@ function HebrewSetting(fld) {
         vals = {}
         vals[fld] = $(this).prop('checked')?'v':'x'
         wb.vs.dstatesv(vals)
+        wb.vs.addHist()
         that.applysetting()
     })
     this.apply = function() {
@@ -751,10 +761,12 @@ function Sidebar(mr, qw) {
     }
     show.click(function(){
         wb.vs.hstatesv(that.qw, {get: 'v'})
+        wb.vs.addHist()
         that.apply()
     })
     hide.click(function(){
         wb.vs.hstatesv(that.qw, {get: 'x'})
+        wb.vs.addHist()
         that.apply()
     })
 }
@@ -851,6 +863,7 @@ function SContent(mr, qw) {
         item.click(function() {
             var qw = that.qw
             wb.vs.mstatesv({mr: that.other_mr, qw: qw, iid: $(this).attr('iid'), page: 1})
+            wb.vs.addHist()
             wb.go()
         })
         if (this.qw == 'w') {
@@ -915,6 +928,7 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
     this.picker2 = new Colorpicker2(this.qw, false)
     hlradio.click(function() {
         wb.vs.hstatesv(that.qw, {active: $(this).attr('id').substring(1)})
+        wb.vs.addHist()
         wb.highlight2({code: '3', qw: that.qw})
     })
 }
@@ -981,6 +995,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
                 wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
             }
         }
+        wb.vs.addHist()
         that.apply(true)
     })
     $('.c'+this.qw+'.'+this.qw+pointer+'>a').click(function() { // process a click on a colored cell of the picker
@@ -989,6 +1004,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         vals[that.iid] = $(this).html()
         wb.vs.cstatesv(that.qw, vals)
         wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
+        wb.vs.addHist()
         that.apply(true)
     })
     picker.hide()
@@ -1046,6 +1062,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
         else {
             wb.vs.hstatesv(that.qw, {sel_one: $(this).html()})
         }
+        wb.vs.addHist()
         that.apply(true)
     })
     picker.hide()
@@ -1074,6 +1091,11 @@ function defcolor(qw, iid) {// compute the default color
 
 // VIEW STATE
 
+//$(window).bind('popstate',  
+window.onpopstate = function(ev) {
+        wb.vs.apply(ev)
+}
+
 function ViewState(init, pref) {
     this.data = init
     this.pref = pref
@@ -1091,7 +1113,17 @@ function ViewState(init, pref) {
         }
         return vars
     }
-
+    this.addHist = function() {
+        //history.pushState({n: history.length, d: this.data}, '', view_url+this.getvars())
+        //console.log('PUSHED '+history.length)
+    }
+    this.apply = function(ev) {
+        /*if (ev.state != null) {
+            this.data = ev.state.d
+            wb.go(true)
+            console.log('POPPED '+ev.state.n)
+        }*/
+    }
     this.delsv = function(group, qw, name) {
         delete this.data[group][qw][name]
         $.cookie(this.pref+group+qw, this.data[group][qw])
