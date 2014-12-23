@@ -106,8 +106,11 @@ function Page(vs) {
     this.init = function() { // dress up the skeleton, initialize state variables
         this.material = new Material()
         this.sidebars = new Sidebars()
-        $('#material_txt_p').css('height', (window.innerHeight - subtract)+'px')
-        $('#material_txt_il').css('height', (2 * window.innerHeight - subtract)+'px')
+        var standard_height = window.innerHeight - subtract
+        $('#material_txt_p').css('height', standard_height+'px')
+        $('#material_txt_il').css('height', (2 * standard_height)+'px')
+        $('#side_material_mq').css('max-height', (0.85 * standard_height)+'px')
+        $('#side_material_mw').css('max-height', (0.85 * standard_height)+'px')
         this.listsettings = {}
         for (var qw in {q: 1, w: 1}) {
             this.listsettings[qw] = new ListSettings(qw)

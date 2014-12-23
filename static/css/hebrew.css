@@ -171,12 +171,21 @@ table.hlsettings {
     padding: 2pt;
     text-align: center;
 }
+#side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
+    border-radius: 12pt;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
+    padding: 2pt;
+    margin-bottom: 8pt;
+}
+#side_material_mq,#side_material_mw {
+    overflow: auto;
+}
 .pnll, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
     border-radius: 12pt;
     border: 1pt solid #dde6dd;
     background-color: #eef1ee;
     padding: 2pt;
-    margin-bottom: 10pt;
 }
 .pnl2 {
     border: 1pt solid #dde6dd;
