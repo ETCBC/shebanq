@@ -19,10 +19,7 @@ jQuery(function(){
 	var url = encodeURIComponent(window.location.href);
 	var host =  window.location.hostname;
 	var title = escape(jQuery('title').text());
-	var twit = 'http://twitter.com/home?status='+title+'%20'+url;
-	var facebook = 'http://www.facebook.com/sharer.php?u='+url;
-	var gplus = 'https://plus.google.com/share?url='+url;
-	var tbar = '<div id="socialdrawer"><span>Cite<br/>&nbsp;&nbsp;</span><div id="sicons"><a lnk="" href="#" id="clipquery" title="citation link for this query">query</a><a lnk="" href="#" id="clipword" title="citation link for this word">word</a>&nbsp;&nbsp;<a lnk="" href="#" id="clipview" title="link to this view">page view</a>&nbsp;<a class="sicon" target="_blank" href="'+twit+'" id="twit" title="Share on twitter"><img src="'+path+'/twitter.png"  alt="Share view on Twitter" width="32" height="32" /></a></div></div>';	
+	var tbar = '<div id="socialdrawer"><span>Cite<br/>&nbsp;&nbsp;</span><div id="sicons"><a lnk="" href="#" id="clipquery" title="citation link for this query">query</a><a lnk="" href="#" id="clipword" title="citation link for this word">word</a>&nbsp;&nbsp;<a lnk="" href="#" id="clipview" title="link to this view">page view</a>&nbsp;<a class="sicon" target="_blank" href="#" id="twit" title="share this view on twitter"><img src="'+path+'/twitter.png"  alt="share this view on twitter" width="32" height="32" /></a></div></div>';	
 	// Add the share tool bar.
 	jQuery('body').append(tbar); 
 	var st = jQuery('#socialdrawer');
@@ -42,7 +39,7 @@ jQuery(function(){
             $('#clipquery').hide()
             $('#clipword').hide()
         }
-        else {
+        else if (wb.mr == 'r') {
             if (wb.qw == 'q') {
                 var quote_url = view_url+'?mr=r&qw=q&iid='+wb.iid
                 $('#clipquery').attr('lnk', quote_url)
@@ -58,8 +55,8 @@ jQuery(function(){
         }
         $('#clipview').attr('lnk', shebanq_url_raw)
         $('#twit').attr('href', twit+shebanq_url)
-		jQuery(this).animate({height:'40px', width:'200px', opacity: 0.95}, 300);
-		jQuery('#socialdrawer img').show();
+        jQuery(this).animate({height:'40px', width:'200px', opacity: 0.95}, 300);
+        jQuery('#socialdrawer img').show();
     });
 	//leave
 	st.mouseleave(function(){ 

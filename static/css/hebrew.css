@@ -626,6 +626,9 @@ span.warning {
 span.info {
     background-color: #aaffaa;
 }
+.copyright {
+    font-size: small;
+}
 
 /* DIALOGS */
 .pnll .ui-dialog-titlebar-close {

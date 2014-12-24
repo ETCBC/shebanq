@@ -90,6 +90,8 @@ var view_url, material_url, side_url // urls from which to fetch additional mate
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
+var from_push = false
+var add_hist = true
 
 // TOP LEVEL: DYNAMICS, PAGE, SKELETON
 
@@ -121,7 +123,6 @@ function Page(vs) {
             this.prev[x] = null
         }
         material_fetched = {txt_p: false, txt_il: false}
-        this.vs.addHist()
     }
     this.apply = function() { // apply the viewstate: hide and show material as prescribed by the viewstate
         this.mr = this.vs.mr()
@@ -348,7 +349,7 @@ function Material() { // Object correponding to everything that controls the mat
             $('a.vref').click(function() {
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
                 wb.vs.addHist()
-                wb.go('m')
+                wb.go()
             })
         }
         else {
@@ -377,7 +378,9 @@ function Material() { // Object correponding to everything that controls the mat
             if (active != 'hlcustom' && active != 'hlmany') {
                 wb.vs.hstatesv(qw, {active: 'hlcustom'})
             }
-            wb.picker1list['w'][iid].apply(false)
+            if (wb.vs.get('w') == 'v') {
+                wb.picker1list['w'][iid].apply(false)
+            }
             wb.highlight2({code: '4', qw: qw})
             wb.vs.addHist()
         })
@@ -1095,9 +1098,17 @@ function defcolor(qw, iid) {// compute the default color
 // VIEW STATE
 
 //$(window).bind('popstate',  
-window.onpopstate = function(ev) {
+/*window.onstatechange = function(ev) {
         wb.vs.apply(ev)
-}
+}*/
+
+History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+        if (!from_push) {
+            var state = History.getState(); // Note: We are using History.getState() instead of event.state
+            wb.vs.apply(state)
+        }
+})
+
 
 function ViewState(init, pref) {
     this.data = init
@@ -1117,15 +1128,13 @@ function ViewState(init, pref) {
         return vars
     }
     this.addHist = function() {
-        //history.pushState({n: history.length, d: this.data}, '', view_url+this.getvars())
-        //console.log('PUSHED '+history.length)
+        from_push = true
+        History.pushState(this.data, '', view_url+this.getvars())
+        from_push = false
     }
-    this.apply = function(ev) {
-        /*if (ev.state != null) {
-            this.data = ev.state.d
-            wb.go(true)
-            console.log('POPPED '+ev.state.n)
-        }*/
+    this.apply = function(state, load_it) {
+        this.data = state.data
+        wb.go()
     }
     this.delsv = function(group, qw, name) {
         delete this.data[group][qw][name]
@@ -1167,6 +1176,8 @@ function ViewState(init, pref) {
     this.colormap = function(qw) {return this.data['colormap'][qw]}
     this.color = function(qw, id) {return this.data['colormap'][qw][id]}
     this.iscolor = function(qw, cl) {return cl in this.data['colormap'][qw]} 
+
+    this.addHist()
 }
 
 /*

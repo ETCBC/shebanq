@@ -51,11 +51,13 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('default', 'index'), []),
-    (T('About'), False, URL('default', 'about'), []),
-    (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
-    (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
+    ('Queries', False, '', (
+        (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
+        (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
+    )),
     (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Help'), False, '', (
+        ('About', False, URL('default', 'about'), []),
         ('SHEBANQ user guide', False, URL('default', 'help'), []),
         ('Release notes', False, URL('default', 'news'), []),
         (A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf')), False, None, []),

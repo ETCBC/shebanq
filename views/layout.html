@@ -67,6 +67,7 @@
   <script src="{{=URL('static','js/web2py_bootstrap.js')}}"></script>
   <script src="{{=URL('static','js/jquery-ui.min.js')}}"></script>
   <script src="{{=URL('static','js/jquery.cookie.js')}}"></script>
+  <script src="{{=URL('static', 'js/history.js/scripts/bundled/html4+html5/native.history.js')}}"></script>
   <script src="{{=URL('static', 'js/hebrew.js')}}"></script>
   <noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
   {{block head}}{{end}}
@@ -149,9 +150,8 @@
                 <div class="copyright pull-left">SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</div>
                 <div id="poweredBy" class="pull-right">
                     {{=T('funded by')}}
-                    <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>
-                    and
-                    <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a>
+                    <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>,
+                    <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a>.
                 </div>
                 <div class="pull-left">
                     &nbsp; &nbsp; &nbsp; &nbsp;
@@ -160,6 +160,8 @@
                             src="{{=URL('static', 'images/VU-ETCBC-small.png')}}"
                             width="100px"
                     /></a>
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0"
+                        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
                 </div>
                 <div class="pull-right">
                     <a target="_blank" title="ETCBC4 Dataset in DANS EASY"
@@ -190,7 +192,6 @@
     'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'} 
   });</script>
   {{pass}}
-  <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
 </body>
 </html>
 

@@ -7,6 +7,12 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
+<h4>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</h4>
+This is a tool, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>
+for working with the Hebrew Bible.
+It is powered by the ETCBC <i>database</i>, formerly known as WIVU, and it facilitates powerful syntactical queries.
+SHEBANQ lets you define, execute, save and publish such queries.
+
 <h4>{{=T('Get started')}}</h4>
 <p>Just have a look at the
 {{=A(T("shibboleth query"), _href=URL('hebrew', 'query', vars=dict(id=18, page=1)))}}
@@ -48,6 +54,12 @@ In this way they are become a valuable resource for fellow Hebrew readers.
 See for example the 
 {{=A(T('P"Alef verbs'), _href=URL('hebrew', 'query', vars=dict(id=30)))}}
 (by Oliver Glanz).
+
+<h4>{{=T('For gurus')}}</h4>
+You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
+Consult the <i>Sources</i> menu. 
+There is already one application for ETCBC data-processing, that might jump-start your own new workflows.
+Best of all: the license is such that nothing stands in your way, as long as you stay non-commercial.
 
 {{block right_sidebar}}
     {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
