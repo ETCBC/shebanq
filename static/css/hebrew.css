@@ -127,6 +127,10 @@ table.item_w td,table.item_q td {
     vertical-align: text-bottom;
 }
 
+.pnll ul {
+    margin: 0pt;
+}
+
 /* VIEW SETTINGS */
 
 .qhradio.ison,.whradio.ison,.mhradio.ison {
@@ -201,7 +205,6 @@ table.hlsettings {
     padding: 2pt;
     text-align: center;
 }
-
 
 /* COLOR PICKERS */
 
