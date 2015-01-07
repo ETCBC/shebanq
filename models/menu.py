@@ -60,23 +60,23 @@ response.menu = [
         ('About', False, URL('default', 'about'), []),
         ('SHEBANQ user guide', False, URL('default', 'help'), []),
         ('Release notes', False, URL('default', 'news'), []),
-        (A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf')), False, None, []),
-        (A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html'), False, None, []),
-        (A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf')), False, None, []),
+        ('MQL quick reference guide (pdf)', False, URL('static', 'docs/MQL-QuickRef.pdf'), []),
+        ('ETCBC4 feature doc', False, 'http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html', []),
+        ('ETCBC4 transcription table (pdf)', False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),
     )),
-    ('Sources', False, '', (
-        (A('Data Archive: DANS', _href='http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71', _target='_blank'), False, None, []),
-        (A('Github: ETCBC', _href='https://github.com/ETCBC', _target='_blank'), False, None, (
-            (A('shebanq-doc', _href='https://github.com/ETCBC/shebanq-doc', _target='_blank'), False, None, []),
-            (A('laf-fabric', _href='https://github.com/ETCBC/laf-fabric', _target='_blank'), False, None, []),
-            (A('laf-fabric-nbs', _href='https://github.com/ETCBC/laf-fabric-nbs', _target='_blank'), False, None, []),
+    (T('Sources'), False, '', (
+        ('Data Archive: DANS', False, 'http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71', []),
+        ('Github: ETCBC', False, 'https://github.com/ETCBC', (
+            ('shebanq-doc', False, 'https://github.com/ETCBC/shebanq-doc', []),
+            ('laf-fabric', False, 'https://github.com/ETCBC/laf-fabric', []),
+            ('laf-fabric-nbs', False, 'https://github.com/ETCBC/laf-fabric-nbs', []),
         )),
-        (A('Github: Dans-Labs', _href='https://github.com/Dans-labs', _target='_blank'), False, None, (
-            (A('shebanq', _href='https://github.com/Dans-labs/shebanq', _target='_blank'), False, None, []),
-            (A('shemdros', _href='https://github.com/Dans-labs/shemdros', _target='_blank'), False, None, []),
-            (A('annotation-paradigm', _href='https://github.com/Dans-labs/annotation-paradigm', _target='_blank'), False, None, []),
+        ('Github: Dans-Labs', False, 'https://github.com/Dans-labs', (
+            ('shebanq', False, 'https://github.com/Dans-labs/shebanq', []),
+            ('shemdros', False, 'https://github.com/Dans-labs/shemdros', []),
+            ('annotation-paradigm', False, 'https://github.com/Dans-labs/annotation-paradigm', []),
         )),
-        (A('Emdros', _href='http://emdros.org', _target='_blank'), False, None, []),
+        ('Emdros', False, 'http://emdros.org', []),
     )),
 ]
             #<a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">

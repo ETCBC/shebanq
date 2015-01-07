@@ -110,6 +110,7 @@ where
     return r
 
 def sidem():
+    session.forget(response)
     qw = request.vars.qw
     (book, chapter) = getpassage()
     if qw == 'q':
@@ -124,6 +125,7 @@ def sidem():
     )
 
 def material():
+    session.forget(response)
     mr = request.vars.mr
     qw = request.vars.qw
     tp = request.vars.tp
@@ -191,6 +193,7 @@ def word():
     return text()
 
 def text():
+    session.forget(response)
     books_data = passage_db.executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
     ''')
@@ -470,9 +473,11 @@ def sideqe():
     return show_query("Edit Query", readonly=False)
 
 def sideq():
+    session.forget(response)
     return show_query("Display Query", readonly=True)
 
 def sidew():
+    session.forget(response)
     return show_word("Display Lexeme")
 
 def show_query(title, readonly=True):
@@ -564,6 +569,7 @@ def parse_exception(message):
 
 
 def sideqm():
+    session.forget(response)
     iid = request.vars.iid
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
         vars=dict(mr='r', qw='q', iid=iid),
@@ -572,6 +578,7 @@ def sideqm():
     ))
 
 def sidewm():
+    session.forget(response)
     iid = request.vars.iid
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
         vars=dict(mr='r', qw='w', iid=iid),
@@ -662,21 +669,24 @@ def delete_multiple():
         for id in request.vars.id:
             db(db.queries.id == id).delete()
 
-    session.flash = "deleted " + str(request.vars.id)
+    response.flash = "deleted " + str(request.vars.id)
     redirect(URL('my_queries'))
 
 
 def index():
+    session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the ETCBC4 database")
     return dict()
 
 def about():
+    session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
 def help():
+    session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Help for using SHEBANQ")
     return dict()

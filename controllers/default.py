@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gluon.custom_import import track_changes; track_changes(True)
+session.forget(response)
 
 def index():
     response.title = T("SHEBANQ")
