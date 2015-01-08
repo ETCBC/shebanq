@@ -2,24 +2,27 @@
 # -*- coding: utf-8 -*-
 
 from gluon.custom_import import track_changes; track_changes(True)
-session.forget(response)
 
 def index():
+    session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the ETCBC4 database")
     return dict()
 
 def about():
+    session.forget(response)
     response.title = T("SHEBANQ - about")
     response.subtitle = T("About the ETCBC4 database")
     return dict()
 
 def help():
+    session.forget(response)
     response.title = T("SHEBANQ - help")
     response.subtitle = T("Help for using SHEBANQ")
     return dict()
 
 def news():
+    session.forget(response)
     response.title = T("SHEBANQ - news")
     response.subtitle = T("Release notes of SHEBANQ")
     return dict()
