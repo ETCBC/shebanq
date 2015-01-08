@@ -76,7 +76,7 @@ response.generic_patterns = ['*'] if request.is_local else []
 #########################################################################
 
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate
-auth = Auth(db, secure=False) # secure=True should enforce https for auth
+auth = Auth(db, secure=True) # secure=True should enforce https for auth
 crud, service, plugins = Crud(db), Service(), PluginManager()
 
 ## create all tables needed by auth if not custom tables
