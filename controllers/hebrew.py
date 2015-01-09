@@ -470,6 +470,7 @@ def get_pagination(p, monad_sets, iid):
 
 @auth.requires(lambda: check_query_access_write())
 def sideqe():
+    request.requires_https()
     return show_query("Edit Query", readonly=False)
 
 def sideq():
@@ -588,6 +589,7 @@ def sidewm():
 
 @auth.requires_login()
 def my_queries():
+    request.requires_https()
     grid = SQLFORM.grid(
         db.queries.created_by == auth.user,
         fields=[db.queries.name, db.queries.is_published,
@@ -665,85 +667,11 @@ def public_queries():
 
 @auth.requires_login()
 def delete_multiple():
+    request.requires_https()
     if request.vars.id is not None:
         for id in request.vars.id:
             db(db.queries.id == id).delete()
 
     response.flash = "deleted " + str(request.vars.id)
     redirect(URL('my_queries'))
-
-
-def index():
-    session.forget(response)
-    response.title = T("SHEBANQ")
-    response.subtitle = T("Query the Hebrew Bible through the ETCBC4 database")
-    return dict()
-
-def about():
-    session.forget(response)
-    response.title = T("SHEBANQ")
-    response.subtitle = T("About the ETCBC4 database")
-    return dict()
-
-def help():
-    session.forget(response)
-    response.title = T("SHEBANQ")
-    response.subtitle = T("Help for using SHEBANQ")
-    return dict()
-
-def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/manage_users (requires membership in
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    """
-
-    response.title = T("User Profile")
-    return dict(form=auth())
-
-@cache.action()
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
-
-
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
-
-
-@auth.requires_signature()
-def data():
-    """
-    http://..../[app]/default/data/tables
-    http://..../[app]/default/data/create/[table]
-    http://..../[app]/default/data/read/[table]/[id]
-    http://..../[app]/default/data/update/[table]/[id]
-    http://..../[app]/default/data/delete/[table]/[id]
-    http://..../[app]/default/data/select/[table]
-    http://..../[app]/default/data/search/[table]
-    but URLs must be signed, i.e. linked with
-      A('table',_href=URL('data/tables',user_signature=True))
-    or with the signed load operator
-      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
-    """
-    return dict(form=crud())
-
 

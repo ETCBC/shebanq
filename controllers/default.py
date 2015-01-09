@@ -21,6 +21,12 @@ def help():
     response.subtitle = T("Help for using SHEBANQ")
     return dict()
 
+def sources():
+    session.forget(response)
+    response.title = T("SHEBANQ - sources")
+    response.subtitle = T("Sources for recreating SHEBANQ")
+    return dict()
+
 def news():
     session.forget(response)
     response.title = T("SHEBANQ - news")
@@ -43,6 +49,7 @@ def user():
     to decorate functions that need access control
     """
 
+    request.requires_https()
     response.title = T("User Profile")
     return dict(form=auth())
 

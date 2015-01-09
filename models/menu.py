@@ -29,7 +29,7 @@ if 0:
 
 response.logo = A(B('SHEBANQ'),
                   _class="brand",
-                  _href="http://annotation-paradigm.readthedocs.org/en/latest/queries-as-annotations/history.html",
+                  _href="http://arxiv.org/abs/1501.01866",
                   _target="_blank")
 
 #response.title = request.application.replace('_',' ').title()
@@ -64,22 +64,8 @@ response.menu = [
         ('ETCBC4 feature doc', False, 'http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html', []),
         ('ETCBC4 transcription table (pdf)', False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),
     )),
-    (T('Sources'), False, '', (
-        ('Data Archive: DANS', False, 'http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71', []),
-        ('Github: ETCBC', False, 'https://github.com/ETCBC', (
-            ('shebanq-doc', False, 'https://github.com/ETCBC/shebanq-doc', []),
-            ('laf-fabric', False, 'https://github.com/ETCBC/laf-fabric', []),
-            ('laf-fabric-nbs', False, 'https://github.com/ETCBC/laf-fabric-nbs', []),
-        )),
-        ('Github: Dans-Labs', False, 'https://github.com/Dans-labs', (
-            ('shebanq', False, 'https://github.com/Dans-labs/shebanq', []),
-            ('shemdros', False, 'https://github.com/Dans-labs/shemdros', []),
-            ('annotation-paradigm', False, 'https://github.com/Dans-labs/annotation-paradigm', []),
-        )),
-        ('Emdros', False, 'http://emdros.org', []),
-    )),
+    (T('Sources'), False, URL('default', 'sources'), []),
 ]
-            #<a target="_blank" href="https://github.com/ETCBC" title="VU ETCBC on Github" class="github">
 
 DEVELOPMENT_MENU = False
 

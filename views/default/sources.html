@@ -1,0 +1,57 @@
+{{ left_sidebar_enabled = False }}
+{{ right_sidebar_enabled = False }}
+{{ ('message' in globals()) }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<h4>{{=T('Sources')}}</h4>
+<p>The creators of the linguistic annotations that drive SHEBANQ, the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>, 
+want to facilitate optimal access to their data by researchers. All operations that are needed for the scholarly process are allowed.
+Here are the locations of the data, code and documentation.
+All materials are open source.</p>
+
+<p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
+In practice, it is not completely straightforward.
+We are working on a complete installation recipe for an Ubuntu server.
+The document is not yet finished, but if you are interested, here is the
+<a target="_blank" href="{{=URL('static', 'docs/ShebanqInstallUbuntu.pdf')}}">current installation document</a>.</p>
+
+<dl>
+    <dt><a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71">Data at DANS</a></dt>
+    <dd><a target="_blank" href="http://www.dans.knaw.nl">DANS</a> is a national research data archive in the Netherlands. Its repository is called 
+        <a target="_blank" href="http://easy.dans.knaw.nl">EASY</a>, and there, among many other data sets you find the Hebrew Text Database of the ETCBC.</dd>
+    <dt><a target="_blank" href="https://github.com/ETCBC">ETCBC</a></dt>
+    <dd>The ETCBC organization on Github has several repositories related to its Hebrew Text Database.
+        <dl>
+            <dt><a target="_blank" href="https://shebanq-doc.readthedocs.org">shebanq-doc</a></dt>
+            <dd>Feature-by-feature documentation of the Hebrew Text Database. Here you find the meaning of the linguistic annotations to the text.</dd>
+            <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric">LAF-Fabric</a></dt>
+            <dd>The Hebrew Text Database is archived in the <a target="_blank" href="http://www.iso.org/iso/catalogue_detail.htm?csnumber=37326">LAF format</a>.
+            LAF-Fabric is a data preprocessing tool that can handle LAF.
+            It is a Python package. On top of it there are packages specialized in the peculiarities of the ETCBC data.</dd>
+            <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric-nbs">LAF-Fabric notebooks</a></dt>
+            <dd>A recommended way to do data processing with the ETCBC data is through the
+            <a target="_blank" href="http://ipython.org/ipython-doc/stable/notebook/notebook.html">IPython Notebook</a>.
+            In a notebook you can describe, document and execute Python code. Such notebooks can easily be shared through github and
+            <a target="_blank" href="http://nbviewer.ipython.org">NBviewer</a>. This a repository full of such notebooks, showing a wide range of things that can be accomplished.</dd>
+        </dl>
+    </dd>
+    <dt><a target="_blank" href="https://github.com/Dans-labs">DANS-Labs</a></dt>
+    <dd>The DANS-labs organization on Github has several repositories related to the ETCBC Hebrew Text Database.
+        <dl>
+            <dt><a target="_blank" href="https://github.com/Dans-labs/shebanq">SHEBANQ</a></dt>
+            <dd>This is the code that drives the SHEBANQ website. It is based on <a target="_blank" href="http://web2py.com">web2py</a>,
+            whose <a target="_blank" href="https://github.com/web2py">code</a> is also on Github.</dd>
+            <dt><a target="_blank" href="https://github.com/Dans-labs/shemdros">SHEMDROS</a></dt>
+            <dd>The web service that accepts MQL queries, sends them to an <a target="_blank" href="http://emdros.org">EMDROS</a> engine and collects the results.
+            Written in JAVA, runs under <a target="_blank" href="http://tomcat.apache.org">Apache tomcat</a>.</dd>
+            <dt><a target="_blank" href=""></a></dt>
+            <dd></dd>
+        </dl>
+    </dd>
+    <dt><a target="_blank" href="http://emdros.org">EMDROS</a></dt>
+    <dd>The engine that performs MQL queries against an Emdros text database. Written in C++.</dd>
+</dl>
