@@ -63,8 +63,8 @@ response.menu = [
         ('MQL quick reference guide (pdf)', False, URL('static', 'docs/MQL-QuickRef.pdf'), []),
         ('ETCBC4 feature doc', False, 'http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html', []),
         ('ETCBC4 transcription table (pdf)', False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),
+        (T('Sources'), False, URL('default', 'sources'), []),
     )),
-    (T('Sources'), False, URL('default', 'sources'), []),
 ]
 
 DEVELOPMENT_MENU = False
