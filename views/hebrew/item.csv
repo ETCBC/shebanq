@@ -1,0 +1,5 @@
+{{
+    response.headers['Content-Type'] = 'application/vnd.ms-excel'
+    response.headers['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+    response.write(data, escape=False)
+}}

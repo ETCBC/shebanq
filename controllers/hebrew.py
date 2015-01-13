@@ -11,6 +11,21 @@ from shemdros import MqlResource, RemoteException
 RESULT_PAGE_SIZE = 20
 EXPIRE = 0
 
+def csv(data):
+    result = []
+    if data != None:
+        for row in data:
+            prow = [str(x) for x in row]
+            trow = ['"{}"'.format(x.replace('"','""')) if '"' in x or '\n' in x or '\r' in x or ',' in x else x for x in prow]
+            result.append(','.join(trow))
+    return '\n'.join(result)
+
+def item():
+    return dict(filename='query.csv', data=csv((
+        (1,2,3,4),
+        ('a','b', 'c', 'd"e'),
+    )))
+
 def getpassage(no_controller=True):
     book_name = request.vars.book or None
     chapter_num = request.vars.chapter or None
