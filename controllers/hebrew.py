@@ -6,25 +6,60 @@ import collections, json
 import xml.etree.ElementTree as ET
 from itertools import groupby
 
-from render import Verses, Viewsettings, legend, colorpicker, h_esc
+from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_fields
 from shemdros import MqlResource, RemoteException
 RESULT_PAGE_SIZE = 20
 EXPIRE = 0
 
-def csv(data):
+def csv(data): # converts an data structure of rows and fields into a csv string, with proper quotations and escapes
     result = []
     if data != None:
         for row in data:
-            prow = [str(x) for x in row]
-            trow = ['"{}"'.format(x.replace('"','""')) if '"' in x or '\n' in x or '\r' in x or ',' in x else x for x in prow]
-            result.append(','.join(trow))
-    return '\n'.join(result)
+            prow = [unicode(x) for x in row]
+            trow = [u'"{}"'.format(x.replace('"','""')) if '"' in x or '\n' in x or '\r' in x or ',' in x else x for x in prow]
+            result.append(u','.join(trow))
+    return u'\n'.join(result)
 
-def item():
-    return dict(filename='query.csv', data=csv((
-        (1,2,3,4),
-        ('a','b', 'c', 'd"e'),
-    )))
+def item(): # controller to produce a csv file of query results or lexeme occurrences, where fields are specified in the current legend
+    iid = request.vars.iid
+    qw = request.vars.qw
+    filename = '{}_{}.csv'.format('query' if qw == 'q' else 'word', iid)
+    hfields = get_fields()
+    head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
+    monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+    monads = flatten(monad_sets)
+    data = []
+    if len(monads):
+        sql = '''
+select 
+    book.name, chapter.chapter_num, verse.verse_num,
+    {hflist}
+from word
+inner join word_verse on
+    word_verse.anchor = word.word_number
+inner join verse on
+    verse.id = word_verse.verse_id
+inner join chapter on
+    verse.chapter_id = chapter.id
+inner join book on
+    chapter.book_id = book.id
+where
+    word.word_number in ({monads})
+order by
+    word.word_number
+'''.format(
+            hflist=', '.join('word.{}'.format(hf[0]) for hf in hfields),
+            monads=','.join(monads),
+        )
+        data = passage_db.executesql(sql)
+    return dict(filename=filename, data=csv((head_row,)+data))
+
+def flatten(msets):
+    result = set()
+    for (b,e) in msets:
+        for m in range(b, e+1):
+            result.add(str(m))
+    return list(sorted(result))
 
 def getpassage(no_controller=True):
     book_name = request.vars.book or None
@@ -393,7 +428,7 @@ def store_monad_sets(record_id, monad_sets):
         db.monadsets.insert(query_id=record_id, first_m=monad_set[0], last_m=monad_set[1])
 
 def load_monad_sets(record_id):
-    return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(record_id) + ';')
+    return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(record_id) + ' ORDER BY first_m;')
 
 def load_word_occurrences(lexeme_id):
     monads = passage_db.executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))

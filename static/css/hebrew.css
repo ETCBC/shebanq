@@ -135,12 +135,12 @@ table.item_w td,table.item_q td {
 
 .qhradio.ison,.whradio.ison,.mhradio.ison {
     font-weight: normal;
-    background-color: #dddddd;
-    color: #000066;
+    background-color: #888888;
+    color: #ffff00;
 }
 .qhradio,.whradio,.mhradio {
     font-weight: normal;
-    background-color: #ffffff;
+    background-color: #fafffa;
     color: #aaaaaa;
 }
 
@@ -157,7 +157,7 @@ table.hlsettings {
 .ctrl {
     border-radius: 6pt;
     border: 1pt solid #dde6dd;
-    background-color: #eef1ee;
+    background-color: #fafffa;
     padding: 2pt;
 }
 .ctrll {

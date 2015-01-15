@@ -16,7 +16,7 @@ You can investigate those queries and their results, and switch back and forth b
 The words show up in the sidebar, and from there you can get to all occurrences of a word throughout the whole Hebrew Bible.</p>
 <p>You can assign colors to words and queries: query results are highlighted by coloring the backgound of words.
 Word occurrences are highlighted by coloring the letters themselves.</p>
-</p>
+<p>You can export the results of a query or the occurrences of a lexeme as a csv file.</p>
 
 <h4>{{=T('The Text')}}</h4>
 <p>Use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu to choose a book and a chapter.</p>
@@ -134,6 +134,30 @@ The link will pop up in a window, and the only thing to do is to copy it to your
 <code>Enter</code>.
 Alternatively, you can click the Twitter icon, to start a tweet with the link to your view already pasted in.
 </p>
+
+<h4>{{=T('Exporting lists')}}</h4>
+<p>You can export the result list of a query and the list of occurrences of a lexeme.</p>
+<p><img src="{{=URL('static', 'images/help-export.png')}}"/></p>
+<p>If you press the <i>csv</i> button at the top of the query or word description, SHEBANQ collects all results of it, not only those of the page currently shown.
+It produces a comma separated file, where each row corresponds with an individual result. Each row contains three columns indicating the passage: book name, chapter number
+and verse number.
+The selection of other columns depends on your view settings.</p>
+<p>If you are looking at the plain text, there will be just two other columns: one for the word number and one for the word itself.
+The word number is a unique sequence number for word occurrences throughout the whole bible.
+The word itself is given in Hebrew Unicode characters. The material between this word and the next word is appended as well.
+Usually that will be a space, but it can also be the empty string, or punctuation and additional signs.</p>
+<p>If you are looking at the data view, you will see the features that you have selected by means of the legend.</p>
+<p><b>Hint 1</b> Opening the csv file in <i>Excel</i> might be disappointing.
+The encoding of the csv exports of SHEBANQ is UNICODE/utf-8, and somehow it is difficult to tell Excel to use 
+this encoding. If you are working on the Mac, you will almost surely see garbage. The Mac app <i>Numbers</i> opens the csv file correctly.
+<i>OpenOffice</i> is by far the most versatile on Windows, Mac and Linux and is recommended.</p>
+<p><b>Hint 2</b> The field separation character is <code>,</code> . It might be the case that the regional settings on your computer specify an other character, such as <code>;</code>
+as field separation character.
+In that case you have to tell your program, after opening, to use the comma instead.
+Again, OpenOffice is recommended, because it lets you make the choice quickly before proceeding.</p>
+<p><b>Hint 3</b> You may want to apply a Hebrew font such as <i>Ezra SIL</i> or <i>SBL Hebrew</i> to the columns that contain Hebrew text
+(or to all columns for that matter).<p>
+<p><img src="{{=URL('static', 'images/help-csv.png')}}"/></p>
 
 <h4>{{=T('Problems?')}}</h4>
 If you encounter problems, e.g <i>exception while executing query</i>, please report it to <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a>.

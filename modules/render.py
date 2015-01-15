@@ -33,6 +33,25 @@ field_names = '''
     sentence_border sentence_number
 '''.strip().split()
 
+hebrewdata_lines_spec = '''
+    ht:ht=word_heb=text-h
+    hl:hl=word_vlex=lexeme
+    tt:tt=word_tran=text-t
+    tl:tl=word_lex=lexeme-h
+    gl:gl=word_gloss=gloss
+    wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
+    wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
+    sp:sp_rela=subphrase_rela=relation,sp_n=subphrase_number=subphrase#
+    ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_n=phrase_number=phrase#
+    cl:cl_dom=clause_txt=domain,cl_typ=clause_typ=type-cl,cl_n=clause_number=clause#
+    sn:sn_n=sentence_number=sentence#
+'''.strip().split()
+hebrewdata_lines = []
+for item in hebrewdata_lines_spec:
+    (line, fieldspec) = item.split(':')
+    fields = [x.split('=') for x in fieldspec.split(',')]
+    hebrewdata_lines.append((line, tuple(fields)))
+
 specs = dict(
     material=('''book chapter iid page mr qw tp''', {'': '''x 0 -1 -1 m q txt_p'''}),
     hebrewdata=('''
@@ -60,6 +79,17 @@ style = dict(
     w=dict(prop='color', default='gray', off='black', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
     m=dict(subtract=250, Tag='Item', tag='item', Tags='Items', tags='items'),
 )
+
+csv_fields_items = '''
+    ht,word_heb hl,word_vlex tt,word_tran tl,word_lex gl,word_gloss
+    wd1_subpos,word_subpos wd1_pos,word_pos wd1_lang,word_lang wd1_n,word_number
+    wd2_gender,word_gender wd2_gnumber,word_gnumber wd2_person,word_person wd2_state,word_state wd2_tense,word_tense wd2_stem,word_stem
+    sp_rela,subphrase_rela sp_n,subphrase_number
+    ph_det,phrase_det ph_fun,phrase_function ph_typ,phrase_typ ph_n,phrase_number
+    cl_dom,clause_txt cl_typ,clause_typ cl_n,clause_number
+    sn_n,sentence_number
+'''.strip().split()
+csv_fields = [x.split(',') for x in csv_fields_items]
 
 legend_tpl = '''
 <table id="legend" class="il">
@@ -152,6 +182,18 @@ def vsel(qw, iid, typ):
 def legend(): return legend_tpl.format(base_doc=base_doc)
 def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
+def get_fields():
+    if current.request.vars.tp == 'txt_p':
+        return [('word_number', 'monad'), ('word_heb', 'text')]
+    else:
+        hfields = []
+        for (line, fields) in hebrewdata_lines:
+            if current.request.vars[line] == 'v':
+                for (f, name, pretty_name) in fields:
+                    if current.request.vars[f]:
+                        hfields.append((name, pretty_name))
+        return hfields
+    
 class Viewsettings():
     def __init__(self):
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))

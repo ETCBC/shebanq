@@ -86,7 +86,7 @@ $.cookie.defaults.path = '/'
 
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
-var view_url, material_url, side_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, side_url, item_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
@@ -612,7 +612,7 @@ function MSettings(content) {
             dialogClass: 'legend',
             closeOnEscape: true,
             modal: false,
-            title: 'choose data features',
+            title: 'legend',
             position: {my: 'right top', at: 'left top', of: $(that.hid)},
             width: '550px',
         })
@@ -629,6 +629,9 @@ function MSettings(content) {
         else {
             legend.hide()
             legendc.hide()
+        }
+        if (wb.vs.mr() == 'r') {
+            $('#csv_lnk'+wb.vs.qw()).attr('href', wb.vs.csv_url())
         }
         wb.material.adapt()
     }
@@ -674,6 +677,9 @@ function HebrewSetting(fld) {
         }
         else {
             $('.'+this.name).each(function () {$(this).hide()})
+        }
+        if (wb.vs.mr() == 'r') {
+            $('#csv_lnk'+wb.vs.qw()).attr('href', wb.vs.csv_url())
         }
     }
 }
@@ -800,7 +806,9 @@ function SContent(mr, qw) {
             wb.listsettings[this.qw].apply()
         }
         else {
-            //wb.picker1[this.qw].adapt(wb.iid, true)
+            if (this.mr == 'r') {
+                $('#csv_lnk'+this.qw).attr('href', wb.vs.csv_url())
+            }
         }
 
         $('#theitem').html($('#itemtag').val()+':')
@@ -1126,6 +1134,9 @@ function ViewState(init, pref) {
             }
         }
         return vars
+    }
+    this.csv_url = function() {
+        return item_url+this.getvars()
     }
     this.addHist = function() {
         from_push = true
