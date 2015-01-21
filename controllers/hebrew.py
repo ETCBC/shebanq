@@ -7,7 +7,9 @@ import xml.etree.ElementTree as ET
 from itertools import groupby
 
 from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_fields
-from shemdros import MqlResource, RemoteException
+from mql import mql
+#from shemdros import MqlResource, RemoteException
+
 RESULT_PAGE_SIZE = 20
 EXPIRE = 0
 
@@ -421,11 +423,32 @@ def handle_response_word(word_form):
     elif word_form.errors:
         response.flash = 'form has errors, see details'
 
-def store_monad_sets(record_id, monad_sets):
+def store_monad_sets(record_id, rows):
     db.executesql('DELETE FROM monadsets WHERE query_id=' + str(record_id) + ';')
-    #db.monadsets.delete(record_id)
-    for monad_set in monad_sets:
-        db.monadsets.insert(query_id=record_id, first_m=monad_set[0], last_m=monad_set[1])
+    nrows = len(rows)
+    if nrows == 0: return
+
+    limit_row = 10000
+    start = '''
+insert into monadsets (query_id, first_m, last_m) values
+'''
+    query = ''
+    r = 0
+    while r < nrows:
+        if query != '':
+            db.executesql(query)
+            query = ''
+        query += start
+        s = min(r + limit_row, len(rows))
+        row = rows[r]
+        query += '({},{},{})'.format(record_id, row[0], row[1])
+        if r + 1 < nrows:
+            for row in rows[r + 1:s]: 
+                query += ',({},{},{})'.format(record_id, row[0], row[1])
+        r = s
+    if query != '':
+        db.executesql(query)
+        query = ''
 
 def load_monad_sets(record_id):
     return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(record_id) + ' ORDER BY first_m;')
@@ -520,7 +543,7 @@ def get_pagination(p, monad_sets, iid):
 
 @auth.requires(lambda: check_query_access_write())
 def sideqe():
-    request.requires_https()
+    if not request.is_local: request.requires_https()
     return show_query("Edit Query", readonly=False)
 
 def sideq():
@@ -574,7 +597,7 @@ def show_word(title):
     return result_dict
 
 @auth.requires(lambda: check_query_access_execute())
-def execute_query(record_id):
+def old_execute_query(record_id):
     mql_form = get_mql_form(record_id, readonly=False)
     mql_record = db.queries[record_id]
     monad_sets = None
@@ -588,6 +611,29 @@ def execute_query(record_id):
             edit=True, form=mql_form, iid=record_id, query=mql_record,
             exception=CODE(e.message),
             exception_message=CODE(parse_exception(e.response.text)),
+            results=0,
+            pages=0, page=0, pagelist=[],
+            verse_data=[],
+            mr='r',
+            qw='q',
+        )
+
+    mql_record.update_record(executed_on=request.now)
+    return show_query("Query Executed", readonly=False)
+
+@auth.requires(lambda: check_query_access_execute())
+def execute_query(record_id):
+    mql_form = get_mql_form(record_id, readonly=False)
+    mql_record = db.queries[record_id]
+    (good, result) = mql(mql_record.mql) 
+    if good:
+        store_monad_sets(record_id, result)
+    else:
+        response.flash = 'Exception while executing query: '
+        return dict(
+            edit=True, form=mql_form, iid=record_id, query=mql_record,
+            exception=CODE(e.message),
+            exception_message=CODE(result),
             results=0,
             pages=0, page=0, pagelist=[],
             verse_data=[],
@@ -639,7 +685,7 @@ def sidewm():
 
 @auth.requires_login()
 def my_queries():
-    request.requires_https()
+    if not request.is_local: request.requires_https()
     grid = SQLFORM.grid(
         db.queries.created_by == auth.user,
         fields=[db.queries.name, db.queries.is_published,
@@ -717,7 +763,7 @@ def public_queries():
 
 @auth.requires_login()
 def delete_multiple():
-    request.requires_https()
+    if not request.is_local: request.requires_https()
     if request.vars.id is not None:
         for id in request.vars.id:
             db(db.queries.id == id).delete()
