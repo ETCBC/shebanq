@@ -8,6 +8,18 @@
 {{pass}}
 
 <h4>{{=T('News')}}</h4>
+<h5>2015-01-21</h5>
+<p>A minor update of the SHEBANQ website with:</p>
+<dl>
+<dt>performance improvements</dt>
+<dd>Executing queries is faster, because the storing of query results has been implemented better.</dd>
+<dt>mainainability improved</dt>
+<dd>A major hoop has been removed concerning query execution. Before this change, a query was sent to a tomcat service,
+that talked through Java bindings with Emdros. Now, Shebanq, which is written in Python, talks directly through Python
+bindings with Emdros. This will help future additions of functionality greatly, and it makes Shebanq much easier to
+install and maintain. It seems that the performance benefits for individual queries.
+It remains to be seen how performance will keep up when doing many concurrent queries.</dd>
+</dl>
 <h5>2015-01-15</h5>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
