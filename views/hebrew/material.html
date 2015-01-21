@@ -3,9 +3,6 @@
 {{if exception_message is not None:}}
     <div class="exception">{{=exception_message}}</div>
 {{pass}}
-{{if exception is not None:}}
-    <div class="exception">Remote exception: {{=exception}}</div>
-{{pass}}
 {{
 pagelb = 'pages' if pages != 1 else 'page'
 verselb = 'verses' if results != 1 else 'verse'

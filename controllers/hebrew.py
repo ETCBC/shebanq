@@ -188,7 +188,6 @@ def material():
             mr=mr,
             qw=qw,
             exception_message="No chapter selected" if not chapter else None,
-            exception=None,
             results=len(material.verses) if material else 0,
             pages=1,
             material=material,
@@ -203,7 +202,6 @@ def material():
                 mr=mr,
                 qw=qw,
                 exception_message=exception_message,
-                exception=None,
                 results=0,
                 iid=iid,
                 pages=0,
@@ -219,7 +217,6 @@ def material():
             mr=mr,
             qw=qw,
             exception_message=None,
-            exception=None,
             results=nresults,
             iid=iid,
             pages=npages,
@@ -573,7 +570,6 @@ def show_query(title, readonly=True):
     result_dict = dict(
         readonly=readonly,
         form=mql_form,
-        exception=None,
         iid=record_id,
         query=mql_record,
     )
@@ -597,31 +593,6 @@ def show_word(title):
     return result_dict
 
 @auth.requires(lambda: check_query_access_execute())
-def old_execute_query(record_id):
-    mql_form = get_mql_form(record_id, readonly=False)
-    mql_record = db.queries[record_id]
-    monad_sets = None
-    mql = MqlResource()
-    try:
-        monad_sets = mql.list_monad_set(mql_record.mql)
-        store_monad_sets(record_id, normalize_ranges(monad_sets))
-    except RemoteException, e:
-        response.flash = 'Exception while executing query: '
-        return dict(
-            edit=True, form=mql_form, iid=record_id, query=mql_record,
-            exception=CODE(e.message),
-            exception_message=CODE(parse_exception(e.response.text)),
-            results=0,
-            pages=0, page=0, pagelist=[],
-            verse_data=[],
-            mr='r',
-            qw='q',
-        )
-
-    mql_record.update_record(executed_on=request.now)
-    return show_query("Query Executed", readonly=False)
-
-@auth.requires(lambda: check_query_access_execute())
 def execute_query(record_id):
     mql_form = get_mql_form(record_id, readonly=False)
     mql_record = db.queries[record_id]
@@ -632,7 +603,6 @@ def execute_query(record_id):
         response.flash = 'Exception while executing query: '
         return dict(
             edit=True, form=mql_form, iid=record_id, query=mql_record,
-            exception=CODE('Exception while executing query'),
             exception_message=CODE(result),
             results=0,
             pages=0, page=0, pagelist=[],
@@ -652,18 +622,6 @@ def pagelist(page, pages, spread):
         filtered_pages |= {page_base + int((i - spread / 2) * factor) for i in range(2 * int(spread / 2) + 1)} 
         factor *= spread
     return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
-
-def parse_exception(message):
-    try:
-        root = ET.XML(message)
-        result = root.find('.//http-status/code').text
-        result += ' '
-        result += root.find('.//http-status/reason').text
-        result += root.find('.//exception/message').text
-        return result
-    except:
-        return "<Unparsable result>"
-
 
 def sideqm():
     session.forget(response)

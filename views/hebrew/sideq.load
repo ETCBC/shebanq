@@ -3,6 +3,7 @@
 </div>
 <div>
 {{if query:}}
+    <div class="exception">{{=}}</div>
     <input type="hidden" id="itemtag" value="{{=query.name}} by {{=query.created_by.first_name}} {{=query.created_by.last_name}}"/>
     <p>{{if not query.executed_on:}}<span class='warning'>This query needs to be executed.</span>
     {{elif query.executed_on < query.modified_on:}}<span class='error'>The stored query results are outdated.</span>
