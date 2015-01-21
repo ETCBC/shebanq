@@ -402,6 +402,7 @@ def fiddle_dates(old_mql, old_modified_on):
 
 def handle_response_mql(mql_form, old_mql, old_modified_on):
     mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on))
+    result = None
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
         if request.vars.button_execute == 'true':
@@ -412,6 +413,7 @@ def handle_response_mql(mql_form, old_mql, old_modified_on):
             redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', iid=record_id)))
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
+    return None
 
 def handle_response_word(word_form):
     word_form.process(keepvalues=True)
@@ -551,7 +553,7 @@ def sidew():
     session.forget(response)
     return show_word("Display Lexeme")
 
-def show_query(title, readonly=True):
+def show_query(title, readonly=True, exception=None):
     response.headers['web2py-component-flash']=None
     record_id = get_record_id()
     if record_id:
@@ -562,18 +564,20 @@ def show_query(title, readonly=True):
         old_mql = ''
         old_modified_on = 0
     mql_form = get_mql_form(record_id, readonly=readonly)
-    handle_response_mql(mql_form, old_mql, old_modified_on)
+    xresult = handle_response_mql(mql_form, old_mql, old_modified_on)
+    if xresult != None:
+        (title, exception) = xresult
     mql_record = db.queries[record_id]
 
     response.title = T(title)
 
-    result_dict = dict(
+    return dict(
         readonly=readonly,
         form=mql_form,
         iid=record_id,
         query=mql_record,
+        exception_message=exception,
     )
-    return result_dict
 
 def show_word(title):
     response.headers['web2py-component-flash']=None
@@ -589,6 +593,7 @@ def show_word(title):
         form=word_form,
         iid=record_id,
         word=word_record,
+        exception_message=None,
     )
     return result_dict
 
@@ -599,20 +604,12 @@ def execute_query(record_id):
     (good, result) = mql(mql_record.mql) 
     if good:
         store_monad_sets(record_id, result)
+        mql_record.update_record(executed_on=request.now)
+        exception = None
     else:
         response.flash = 'Exception while executing query: '
-        return dict(
-            edit=True, form=mql_form, iid=record_id, query=mql_record,
-            exception_message=CODE(result),
-            results=0,
-            pages=0, page=0, pagelist=[],
-            verse_data=[],
-            mr='r',
-            qw='q',
-        )
-
-    mql_record.update_record(executed_on=request.now)
-    return show_query("Query Executed", readonly=False)
+        exception = CODE(result)
+    return ("Query Executed", exception)
 
 def pagelist(page, pages, spread):
     factor = 1
