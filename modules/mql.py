@@ -25,7 +25,8 @@ def to_monadsets(setstr):
     return [[int(y) for y in x.lstrip().split('-')] if '-' in x else [int(x), int(x)] for x in comps]
 
 def mql(query):
-    env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, "localhost", usr, pwd, db)
+    env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, "localhost", usr, pwd, db, EmdrosPy.kMySQL)
+    print 'BE={}'.format(env.getBackendName())
     compiler_result = 0
     good = env.executeString(sanitize(query) , compiler_result, 0, 0)[1]
     if not good:
