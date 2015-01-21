@@ -632,7 +632,7 @@ def execute_query(record_id):
         response.flash = 'Exception while executing query: '
         return dict(
             edit=True, form=mql_form, iid=record_id, query=mql_record,
-            exception=CODE(e.message),
+            exception=CODE('Exception while executing query'),
             exception_message=CODE(result),
             results=0,
             pages=0, page=0, pagelist=[],
