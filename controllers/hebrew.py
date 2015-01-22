@@ -402,7 +402,6 @@ def fiddle_dates(old_mql, old_modified_on):
 
 def handle_response_mql(mql_form, old_mql, old_modified_on):
     mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on))
-    result = None
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
         if request.vars.button_execute == 'true':
@@ -410,9 +409,13 @@ def handle_response_mql(mql_form, old_mql, old_modified_on):
         if request.vars.button_save == 'true':
             pass
         if request.vars.button_done == 'true':
-            redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', iid=record_id)))
+            print "DONE"
+            return True
+            #redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', iid=record_id)))
     elif mql_form.errors:
         response.flash = 'form has errors, see details'
+    else:
+        print 'NOT ACCEPTED'
     return None
 
 def handle_response_word(word_form):
@@ -543,17 +546,17 @@ def get_pagination(p, monad_sets, iid):
 @auth.requires(lambda: check_query_access_write())
 def sideqe():
     if not request.is_local: request.requires_https()
-    return show_query("Edit Query", readonly=False)
+    return show_query(readonly=False)
 
 def sideq():
     session.forget(response)
-    return show_query("Display Query", readonly=True)
+    return show_query(readonly=True)
 
 def sidew():
     session.forget(response)
-    return show_word("Display Lexeme")
+    return show_word()
 
-def show_query(title, readonly=True, exception=None):
+def show_query(readonly=True, exception=None):
     response.headers['web2py-component-flash']=None
     record_id = get_record_id()
     if record_id:
@@ -565,12 +568,15 @@ def show_query(title, readonly=True, exception=None):
         old_modified_on = 0
     mql_form = get_mql_form(record_id, readonly=readonly)
     xresult = handle_response_mql(mql_form, old_mql, old_modified_on)
-    if xresult != None:
-        (title, exception) = xresult
+    print "ShowQuery0 xresult={}".format(xresult)
+    if xresult == True:
+        readonly = True
+        print "ShowQuery1 readonly={}".format(readonly)
+    elif xresult != None:
+        exception = xresult
     mql_record = db.queries[record_id]
 
-    response.title = T(title)
-
+    print "ShowQuery2 readonly={}".format(readonly)
     return dict(
         readonly=readonly,
         form=mql_form,
@@ -579,14 +585,12 @@ def show_query(title, readonly=True, exception=None):
         exception_message=exception,
     )
 
-def show_word(title):
+def show_word(no_controller=True):
     response.headers['web2py-component-flash']=None
     record_id = get_record_id()
     word_form = get_word_form(record_id)
     handle_response_word(word_form)
     word_record = passage_db.lexicon[record_id]
-
-    response.title = T(title)
 
     result_dict = dict(
         readonly=True,
@@ -609,7 +613,7 @@ def execute_query(record_id):
     else:
         response.flash = 'error in query (see below execute button)'
         exception = CODE(result)
-    return ("Query Executed", exception)
+    return exception
 
 def pagelist(page, pages, spread):
     factor = 1
@@ -653,12 +657,12 @@ def my_queries():
             'queries.modified_on': 'Modified',
         },
         selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
-        editable=False,
+        editable=True,
         details=False,
         create=True,
         links=[
             dict(
-                header='view/edit',
+                header='view',
                 body=lambda row: A(
                     SPAN(_class='icon info-sign icon-info-sign'),
                     SPAN('', _class='buttontext button', _title='View'),
@@ -714,7 +718,6 @@ def public_queries():
         csv=False,
     )
     return locals()
-
 
 @auth.requires_login()
 def delete_multiple():

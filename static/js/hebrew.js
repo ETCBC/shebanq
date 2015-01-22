@@ -92,6 +92,9 @@ var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 var from_push = false
 var add_hist = true
+var orig_side_width, orig_main_width
+var edit_side_width = '55%'
+var edit_main_width = '40%'
 
 // TOP LEVEL: DYNAMICS, PAGE, SKELETON
 
@@ -113,6 +116,8 @@ function Page(vs) {
         $('#material_txt_il').css('height', (2 * standard_height)+'px')
         $('#side_material_mq').css('max-height', (0.85 * standard_height)+'px')
         $('#side_material_mw').css('max-height', (0.85 * standard_height)+'px')
+        orig_side_width = $('.span3').css('width')
+        orig_main_width = $('.span9').css('width')
         this.listsettings = {}
         for (var qw in {q: 1, w: 1}) {
             this.listsettings[qw] = new ListSettings(qw)
@@ -1209,14 +1214,18 @@ function activate_buttons() {
             var name = $(this).attr('name')
             $('#'+name).val(true)
             if (name == 'button_done') {
-                body = $('#side_material_rq')
-                if (body.dialog('instance')) {body.dialog('destroy')}
+                //body = $('#side_material_rq')
+                //if (body.dialog('instance')) {body.dialog('destroy')}
+                $('.span3').css('width', orig_side_width)
+                $('.span9').css('width', orig_main_width)
             }
         })
     })
     material_fetched = {txt_p: false, txt_il: false}
     wb.material.apply()
-    body = $('#side_material_rq')
+    $('.span3').css('width', edit_side_width)
+    $('.span9').css('width', edit_main_width)
+    /*body = $('#side_material_rq')
     body.dialog({
         autoOpen: false,
         dialogClass: 'pnll',
@@ -1226,5 +1235,5 @@ function activate_buttons() {
         position: {my: 'left top', at: 'left bottom', of: $('#side_settings_rq')},
         width: '540px',
     })
-    body.dialog('open')
+    body.dialog('open')*/
 }

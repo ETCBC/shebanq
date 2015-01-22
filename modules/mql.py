@@ -26,7 +26,7 @@ def to_monadsets(setstr):
 
 def mql(query):
     env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, "localhost", usr, pwd, db, EmdrosPy.kMySQL)
-    print 'BE={}'.format(env.getBackendName())
+    #print 'BE={}'.format(env.getBackendName())
     compiler_result = 0
     good = env.executeString(sanitize(query) , compiler_result, 0, 0)[1]
     if not good:

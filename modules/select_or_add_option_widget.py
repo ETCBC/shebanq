@@ -33,7 +33,7 @@ class SELECT_OR_ADD_OPTION(object):  # and even EDIT
             if action == 'edit':
                 extra_args.append(value)
             # create a div that will load the specified controller via ajax
-            form_loader_div = DIV(LOAD(c=self.controller, f=self.function, args=extra_args, ajax=True), _id=my_select_id + "_" + action + "_dialog-form", _title=action + ": " + self.referenced_table)
+            form_loader_div = DIV(LOAD(c=self.controller, f=self.function, args=extra_args, ajax=False, ajax_trap=False), _id=my_select_id + "_" + action + "_dialog-form", _title=action + ": " + self.referenced_table)
             # generate the "add/edit" button that will appear next the options widget and open our dialog
             action_button = A([SPAN(_class=style_icons[action]), SPAN(_class="buttontext button")], _title=T(action), _id=my_select_id + "_option_%s_trigger" % action, _class="button btn", _style="vertical-align:top")
             # create javascript for creating and opening the dialog
