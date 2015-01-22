@@ -607,7 +607,7 @@ def execute_query(record_id):
         mql_record.update_record(executed_on=request.now)
         exception = None
     else:
-        response.flash = 'Exception while executing query: '
+        response.flash = 'error in query (see below execute button)'
         exception = CODE(result)
     return ("Query Executed", exception)
 
