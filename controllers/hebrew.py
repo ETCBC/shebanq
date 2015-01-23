@@ -429,7 +429,7 @@ def handle_response_mql(mql_form, old_mql, old_modified_on):
         if request.vars.button_save == 'true':
             (kind, msg) = ('ok', 'saved')
         if request.vars.button_done == 'true':
-            redirect(URL('hebrew', 'sideqm', vars=dict(mr='r', qw='q', iid=record_id)))
+            redirect(URL('hebrew', 'sideqm', vars=dict(mr='r', qw='q', iid=record_id), extension=''))
     elif mql_form.errors:
         (kind, msg) = ('error', 'make corrections as indicated above')
     return (readonly, kind, msg)
