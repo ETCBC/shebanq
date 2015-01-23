@@ -322,11 +322,13 @@ div.mql_form,div.word_form {
 #queries_mql__label, #queries_description__label {
     display: block;
 }
-#queries_mql, #queries_description {
+#queries_description {
     display: inline;
     height: 6em;
 }
 #queries_mql {
+    display: inline;
+    height: 12em;
     font-family: Menlo, Courier New, Courier, monospace;
 }
 #queries_project__label, #queries_organization__label {
@@ -528,13 +530,19 @@ span.ht, span.l_ht {
     color: #000000;
     line-height: 1.5;
 }
-span.hl, span.l_hl {
+span.hl_hlv, span.l_hl_hlv {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     color: #000000;
     line-height: 1.5;
 }
-.i_hl,#lexicon_g_entry_heb__row .w2p_fw, #lexicon_entry_heb__row .w2p_fw {
+span.hl_hlc, span.l_hl_hlc {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    color: #000000;
+    line-height: 1.5;
+}
+.i_hl,#lexicon_g_entry_heb__row .w2p_fw, #lexicon_entry_heb__row .w2p_fw, #lexicon_entryid_heb__row .w2p_fw {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: large;
     color: #000000;
@@ -565,11 +573,6 @@ span.n {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: #888888;
-}
-span.il {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: small;
-    color: #000000;
 }
 span.wd1_lang, span.l_wd1_lang, #lexicon_lan__row .w2p_fw {
     font-style: italic;
@@ -632,7 +635,16 @@ span.info {
 .copyright {
     font-size: small;
 }
-
+div.msg_ok {
+    background-color: #aaffaa;
+    font-weight: bold;
+    font-size: large;
+}
+div.msg_error {
+    background-color: #ffaaaa;
+    font-weight: bold;
+    font-size: large;
+}
 /* DIALOGS */
 .pnll .ui-dialog-titlebar-close {
   display: none;

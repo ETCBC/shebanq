@@ -24,7 +24,7 @@ vcolor_spec = '''
 '''
 
 field_names = '''
-    word_heb word_vlex word_tran word_lex word_gloss
+    word_heb word_vlex word_clex word_tran word_lex word_gloss
     word_subpos word_pos word_lang word_number
     word_gender word_gnumber word_person word_state word_tense word_stem
     subphrase_border subphrase_number subphrase_rela
@@ -35,9 +35,9 @@ field_names = '''
 
 hebrewdata_lines_spec = '''
     ht:ht=word_heb=text-h
-    hl:hl=word_vlex=lexeme
+    hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
     tt:tt=word_tran=text-t
-    tl:tl=word_lex=lexeme-h
+    tl:tl=word_lex=lexeme-t
     gl:gl=word_gloss=gloss
     wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
@@ -55,7 +55,11 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=('''book chapter iid page mr qw tp''', {'': '''x 0 -1 -1 m q txt_p'''}),
     hebrewdata=('''
-        ht hl tt tl gl
+        ht
+        hl hl_hlv hl_hlc
+        tt
+        tl
+        gl
         wd1 wd1_subpos wd1_pos wd1_lang wd1_n
         wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
         sp sp_rela sp_n
@@ -63,7 +67,11 @@ specs = dict(
         cl cl_dom cl_typ cl_n
         sn sn_n
     ''', {'': '''
-        v v x x v
+        v
+        v x v
+        x
+        x
+        v
         v x v x x
         v v v v v v v
         v v v
@@ -81,7 +89,7 @@ style = dict(
 )
 
 csv_fields_items = '''
-    ht,word_heb hl,word_vlex tt,word_tran tl,word_lex gl,word_gloss
+    ht,word_heb hlv,word_vlex hlc,word_clex, tt,word_tran tl,word_lex gl,word_gloss
     wd1_subpos,word_subpos wd1_pos,word_pos wd1_lang,word_lang wd1_n,word_number
     wd2_gender,word_gender wd2_gnumber,word_gnumber wd2_person,word_person wd2_state,word_state wd2_tense,word_tense wd2_stem,word_stem
     sp_rela,subphrase_rela sp_n,subphrase_number
@@ -95,10 +103,12 @@ legend_tpl = '''
 <table id="legend" class="il">
     <tr class="il l_ht"><td class="c l_ht"><input
     type="checkbox" id="ht" name="ht"/></td><td
-    class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text כתף</span></a></td></tr>
+    class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text דְּבַ֥ר</span></a></td></tr>
     <tr class="il l_hl"><td class="c l_hl"><input
     type="checkbox" id="hl" name="hl"/></td><td
-    class="il l_hl"><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span class="l_hl">lexeme דבר</span></a></td></tr>
+    class="il l_hl">lexeme<input type="checkbox" id="hl_hlv" name="hl_hlv"/><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span
+    class="il l_hl_hlv">דָּבָר</span></a>&nbsp;<input type="checkbox" id="hl_hlc" name="hl_hlc"/><a target="_blank" href="{base_doc}/lex_utf8.html"><span
+    class="il l_hl_hlc">דבר/</span></a></td></tr>
     <tr class="il l_tt"><td class="c l_tt"><input
     type="checkbox" id="tt" name="tt"/></td><td
     class="il l_tt"><a target="_blank" href="{base_doc}/g_word.html"><span class="l_tt">text</span></a></td></tr>
@@ -254,7 +264,7 @@ dynamics()
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
-    <tr class="il hl"><td class="il hl"><span l="{lexicon_id}" class="hl">{word_vlex}</span></td></tr>
+    <tr class="il hl"><td class="il hl"><span l="{lexicon_id}" class="il hl_hlv">{word_vlex}</span>&nbsp;<span l="{lexicon_id}" class="il hl_hlc">{word_clex}</span></td></tr>
     <tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
     <tr class="il tl"><td class="il tl"><span l="{lexicon_id}" class="tl">{word_lex}</span></td></tr>
     <tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>

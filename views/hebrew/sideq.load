@@ -1,8 +1,8 @@
 <div class="mql_form" id="mform">
 {{=form}}
 </div>
-{{if exception_message != None:}}
-    <div class="exception">{{=exception_message}}</div>
+{{if msg != None:}}
+    <div class="msg_{{=kind}}">{{=msg}}</div>
 {{pass}}
 <div>
 {{if query:}}

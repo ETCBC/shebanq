@@ -1,7 +1,7 @@
 <div>
 <div id="material_message">
-{{if exception_message is not None:}}
-    <div class="exception">{{=exception_message}}</div>
+{{if msg is not None:}}
+    <div class="exception">{{=msg}}</div>
 {{pass}}
 {{
 pagelb = 'pages' if pages != 1 else 'page'

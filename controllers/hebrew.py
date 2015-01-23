@@ -187,7 +187,7 @@ def material():
         result = dict(
             mr=mr,
             qw=qw,
-            exception_message="No chapter selected" if not chapter else None,
+            msg="No chapter selected" if not chapter else None,
             results=len(material.verses) if material else 0,
             pages=1,
             material=material,
@@ -197,11 +197,11 @@ def material():
         iid = int(request.vars.iid) if request.vars else None
         page = int(request.vars.page) if request.vars.page else 1
         if iid == None:
-            exception_message = "No {} selected".format('query' if qw == 'q' else 'word')
+            msg = "No {} selected".format('query' if qw == 'q' else 'word')
             return dict(
                 mr=mr,
                 qw=qw,
-                exception_message=exception_message,
+                msg=msg,
                 results=0,
                 iid=iid,
                 pages=0,
@@ -216,7 +216,7 @@ def material():
         return dict(
             mr=mr,
             qw=qw,
-            exception_message=None,
+            msg=None,
             results=nresults,
             iid=iid,
             pages=npages,
@@ -307,18 +307,27 @@ def get_mql_form(record_id, readonly=False):
         TAG.button('Execute', _class="smb", _type='submit', _name='button_execute'),
         TAG.button('Done', _class="smb", _type='submit', _name='button_done'),
     ]
-    edit_link = ''
-    if readonly:
-        if auth.user and auth.user.id == mql_record.created_by:
-            edit_link = A(
+    qedit_link = ''
+    medit_link = ''
+    if auth.user and auth.user.id == mql_record.created_by:
+        if readonly:
+            qedit_link = A(
                 SPAN(_class='icon pen icon-pencil'),
-                SPAN('', _class='buttontext button', _title='Edit'),
+                SPAN('Edit query', _class='buttontext button', _title='Edit query'),
                 _class='button btn',
                 _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=record_id)),
                 cid=request.cid,
-            ),
-        else:
-            edit_link = 'You cannot edit queries created by some one else'
+            )
+        medit_link = A(
+            SPAN(_class='icon pen icon-pencil'),
+            SPAN('', _class='buttontext button', _title='Edit all fields'),
+            SPAN('Edit info', _class='buttontext button', _title='Edit all info fields'),
+            _class='button btn',
+            _href=URL('hebrew', 'my_queries', extension='', args=['edit', 'queries', record_id], user_signature=True),
+        )
+    else:
+        qedit_link = 'You cannot edit queries created by some one else'
+        medit_link = ''
     mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
         fields=[
             'is_published',
@@ -332,10 +341,16 @@ def get_mql_form(record_id, readonly=False):
             'executed_on',
             'description',
             'mql',
+        ] if readonly else [
+            'is_published',
+            'name',
+            'description',
+            'mql',
         ],
         showid=False, ignore_rw=False,
         col3 = dict(
-            mql=edit_link,
+            mql=qedit_link,
+            name=medit_link,
         ),
         labels=dict(
             mql='MQL Query',
@@ -367,6 +382,7 @@ def get_word_form(record_id):
             'g_entry',
             'entry_heb',
             'entry',
+            'entryid_heb',
             'entryid',
             'pos',
             'subpos',
@@ -377,15 +393,16 @@ def get_word_form(record_id):
         ],
         showid=False, ignore_rw=False,
         labels=dict(
-            g_entry_heb='Vocalized Lexeme',
-            g_entry='Vocalized Lexeme (trans)',
-            entry_heb='Consonantal',
-            entry='Consonantal (trans)',
-            entryid='With disambiguation',
+            g_entry_heb='vocalized-hebrew',
+            g_entry='vocalized-translit',
+            entry_heb='consonantal-hebrew',
+            entry='consonantal-translit',
+            entryid_heb='disambiguated-hebrew',
+            entryid='disambiguated-translit',
             pos='part-of-speech',
             subpos='lexical set',
             nametype='proper noun category',
-            lan='Language',
+            lan='language',
             gloss='gloss',
         ),
         formstyle='table3cols',
@@ -401,22 +418,21 @@ def fiddle_dates(old_mql, old_modified_on):
     return _fiddle_dates
 
 def handle_response_mql(mql_form, old_mql, old_modified_on):
-    mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on))
+    readonly = None
+    msg = None
+    kind = None
+    mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on), onsuccess=lambda f:None, onfailure=lambda f: None)
     if mql_form.accepted:
         record_id = str(mql_form.vars.id)
         if request.vars.button_execute == 'true':
-            return execute_query(record_id) 
+            (kind, msg) = execute_query(record_id) 
         if request.vars.button_save == 'true':
-            pass
+            (kind, msg) = ('ok', 'saved')
         if request.vars.button_done == 'true':
-            print "DONE"
-            return True
-            #redirect(URL('hebrew', 'sideq', vars=dict(mr='r', qw='q', iid=record_id)))
+            redirect(URL('hebrew', 'sideqm', vars=dict(mr='r', qw='q', iid=record_id)))
     elif mql_form.errors:
-        response.flash = 'form has errors, see details'
-    else:
-        print 'NOT ACCEPTED'
-    return None
+        (kind, msg) = ('error', 'make corrections as indicated above')
+    return (readonly, kind, msg)
 
 def handle_response_word(word_form):
     word_form.process(keepvalues=True)
@@ -543,6 +559,24 @@ def get_pagination(p, monad_sets, iid):
     return (nvt, cur_page if nvt else 0, verses, list(verse_monads))
 
 
+def sideqm():
+    session.forget(response)
+    iid = request.vars.iid
+    return dict(load=LOAD('hebrew', 'sideq', extension='load',
+        vars=dict(mr='r', qw='q', iid=iid),
+        ajax=False, ajax_trap=True, target='querybody', 
+        content='fetching query',
+    ))
+
+def sidewm():
+    session.forget(response)
+    iid = request.vars.iid
+    return dict(load=LOAD('hebrew', 'sidew', extension='load',
+        vars=dict(mr='r', qw='w', iid=iid),
+        ajax=False, ajax_trap=True, target='wordbody', 
+        content='fetching words',
+    ))
+
 @auth.requires(lambda: check_query_access_write())
 def sideqe():
     if not request.is_local: request.requires_https()
@@ -556,7 +590,7 @@ def sidew():
     session.forget(response)
     return show_word()
 
-def show_query(readonly=True, exception=None):
+def show_query(readonly=True, kind=None, msg=None):
     response.headers['web2py-component-flash']=None
     record_id = get_record_id()
     if record_id:
@@ -567,22 +601,19 @@ def show_query(readonly=True, exception=None):
         old_mql = ''
         old_modified_on = 0
     mql_form = get_mql_form(record_id, readonly=readonly)
-    xresult = handle_response_mql(mql_form, old_mql, old_modified_on)
-    print "ShowQuery0 xresult={}".format(xresult)
-    if xresult == True:
-        readonly = True
-        print "ShowQuery1 readonly={}".format(readonly)
-    elif xresult != None:
-        exception = xresult
+    (thisreadonly, thiskind, thismsg) = handle_response_mql(mql_form, old_mql, old_modified_on)
+    if thisreadonly != None: readonly = thisreadonly
+    if thiskind != None: kind = thiskind
+    if thismsg != None: msg = thismsg
     mql_record = db.queries[record_id]
 
-    print "ShowQuery2 readonly={}".format(readonly)
     return dict(
         readonly=readonly,
+        kind=kind,
+        msg=msg,
         form=mql_form,
         iid=record_id,
         query=mql_record,
-        exception_message=exception,
     )
 
 def show_word(no_controller=True):
@@ -597,7 +628,7 @@ def show_word(no_controller=True):
         form=word_form,
         iid=record_id,
         word=word_record,
-        exception_message=None,
+        msg=None,
     )
     return result_dict
 
@@ -609,11 +640,10 @@ def execute_query(record_id):
     if good:
         store_monad_sets(record_id, result)
         mql_record.update_record(executed_on=request.now)
-        exception = None
+        (kind, msg) = ('ok', 'Query executed')
     else:
-        response.flash = 'error in query (see below execute button)'
-        exception = CODE(result)
-    return exception
+        (kind, msg) = ('error', CODE(result))
+    return (kind, msg)
 
 def pagelist(page, pages, spread):
     factor = 1
@@ -623,24 +653,6 @@ def pagelist(page, pages, spread):
         filtered_pages |= {page_base + int((i - spread / 2) * factor) for i in range(2 * int(spread / 2) + 1)} 
         factor *= spread
     return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
-
-def sideqm():
-    session.forget(response)
-    iid = request.vars.iid
-    return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(mr='r', qw='q', iid=iid),
-        ajax=False, target='querybody', 
-        content='fetching query',
-    ))
-
-def sidewm():
-    session.forget(response)
-    iid = request.vars.iid
-    return dict(load=LOAD('hebrew', 'sidew', extension='load',
-        vars=dict(mr='r', qw='w', iid=iid),
-        ajax=False, target='wordbody', 
-        content='fetching words',
-    ))
 
 @auth.requires_login()
 def my_queries():

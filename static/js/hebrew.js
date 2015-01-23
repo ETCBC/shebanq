@@ -96,7 +96,7 @@ var orig_side_width, orig_main_width
 var edit_side_width = '55%'
 var edit_main_width = '40%'
 
-// TOP LEVEL: DYNAMICS, PAGE, SKELETON
+// TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
 function dynamics() { // top level function, called when the page has loaded
     viewfluid = {}
@@ -105,19 +105,39 @@ function dynamics() { // top level function, called when the page has loaded
     wb.go()
 }
 
+function set_height() {
+    var standard_height = window.innerHeight - subtract
+    $('#material_txt_p').css('height', standard_height+'px')
+    $('#material_txt_il').css('height', (2 * standard_height)+'px')
+    $('#side_material_mq').css('max-height', (0.85 * standard_height)+'px')
+    $('#side_material_mw').css('max-height', (0.85 * standard_height)+'px')
+}
+
+function get_width() {
+    orig_side_width = $('.span3').css('width')
+    orig_main_width = $('.span9').css('width')
+}
+
+function set_main_width() {
+    if (orig_side_width != $('.span3').css('width')) {
+        $('.span3').css('width', orig_side_width)
+        $('.span9').css('width', orig_main_width)
+    }
+}
+
+function set_edit_width() {
+    $('.span3').css('width', edit_side_width)
+    $('.span9').css('width', edit_main_width)
+}
+
 function Page(vs) {
     this.vs = vs    // the viewstate
 
     this.init = function() { // dress up the skeleton, initialize state variables
         this.material = new Material()
         this.sidebars = new Sidebars()
-        var standard_height = window.innerHeight - subtract
-        $('#material_txt_p').css('height', standard_height+'px')
-        $('#material_txt_il').css('height', (2 * standard_height)+'px')
-        $('#side_material_mq').css('max-height', (0.85 * standard_height)+'px')
-        $('#side_material_mw').css('max-height', (0.85 * standard_height)+'px')
-        orig_side_width = $('.span3').css('width')
-        orig_main_width = $('.span9').css('width')
+        set_height()
+        get_width()
         this.listsettings = {}
         for (var qw in {q: 1, w: 1}) {
             this.listsettings[qw] = new ListSettings(qw)
@@ -156,6 +176,7 @@ function Page(vs) {
             material_fetched = {txt_p: false, txt_il: false}
             side_fetched = {}
         }
+        set_main_width()
         this.apply()
     }
 
@@ -1216,15 +1237,13 @@ function activate_buttons() {
             if (name == 'button_done') {
                 //body = $('#side_material_rq')
                 //if (body.dialog('instance')) {body.dialog('destroy')}
-                $('.span3').css('width', orig_side_width)
-                $('.span9').css('width', orig_main_width)
+                set_main_width()
             }
         })
     })
     material_fetched = {txt_p: false, txt_il: false}
     wb.material.apply()
-    $('.span3').css('width', edit_side_width)
-    $('.span9').css('width', edit_main_width)
+    set_edit_width()
     /*body = $('#side_material_rq')
     body.dialog({
         autoOpen: false,

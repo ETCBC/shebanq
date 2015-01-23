@@ -1,6 +1,4 @@
 {{ include 'hebrew/sideq.load' }}
-{{=readonly}}
-{{print 'readonly={}'.format(readonly)}}
 {{if not readonly:}}
 <script type="text/javascript">
 activate_buttons()
