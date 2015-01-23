@@ -89,22 +89,26 @@ Outdated queries are not shown in the sidebars, but they do show up in the list 
 <p>The menu <i>My Queries</i> shows you a list of all queries that you have created yourself.<p>
 <p>From this list you can view, edit and delete your queries.</p>
 <p><img src="{{=URL('static', 'images/help-create.png')}}"/></p>
-<p>To create a new query, press the plus icon top right.</p>
+<p>To create a new query, press the plus icon top right (red circle).</p>
 <p><b>Hint 1</b>: fill in the details of the query, but do not run it from here. Instead, save it, go back to <i>My Queries</i>,
 navigate to the new query, and edit it from there, as shown below.</p>
-<p>By clicking <img src="{{=URL('static', 'images/help-icon-i.png')}}"/> you are taken to the page for this query,
-where you can view all its details.
-<p>Next to the name field is an edit icon by which you can edit the information about your query, including the query itself.
-However, the recommended way of editing the body of your query is as follows.</p>
-<p><img src="{{=URL('static', 'images/help-edit-info.png')}}"/></p>
-<p>Below the field that displays the query body, there is an edit icon
-by which you can edit and run your query.</p>
-<p><img src="{{=URL('static', 'images/help-edit-query.png')}}"/></p>
+<p>By clicking the info icon (green circle) you are taken to the page for this query,
+where you can view its results and all its details. From here you can also edit the query instruction and run the query.</p>
+<p>By clicking the edit icon (orange circle) you can edit the information about that query.</p>
+
+<h5>Developing a query</h5>
+<p>You can develop a query from its dedicated page.</p>
+<p><img src="{{=URL('static', 'images/help-query.png')}}"/></p>
+<p>Next to the name field is an <i>Edit info</i> icon (orange circle) by which you can edit the information about your query, including the query itself.
+However, the recommended way of editing the body of your query is by clicking the <i>Edit query</i> icon.
+The page will make space for your query, you can edit and run it in a quick cycle from there.</p>
+<p>And, when you are at it, take the opportunity to provide a decent description of your query for the benefit of others.</p>
+<p><img src="{{=URL('static', 'images/help-edit_query.png')}}"/></p>
 <p>By checking the <i>Public</i> checkbox, you indicate that this query may show up in the list of Public Queries and in the sidebar next to
-chapters that contain results of this query./<p>
+chapters that contain results of this query.</p>
 <p>When you edit your query, a timestamp will be added. This stamp contains the point in time that the query <i>body</i> was last changed.
-If you merely edit the description or other metadata, this timestamp will not be changed. This timestamp is used to
-determined whether your query results are up to date or outdated. Outdated queries will not show up in the sidebar.</p>
+If you merely edit the description or other metadata, this timestamp will not be changed. The timestamp is used to
+determine whether your query results are up to date or outdated. Outdated queries will not show up in the sidebar.</p>
 
 <h4>{{=T('Citation and sharing')}}</h4>
 <p>You can cite individual queries and words by means of an <i>url</i>:</p>
@@ -115,8 +119,16 @@ determined whether your query results are up to date or outdated. Outdated queri
 <dd><code>http://shebanq.ancient-data.org?mr=m&qw=w&iid=</code><i>id-of-word</i></dd>
 </dl>
 <p><img src="{{=URL('static', 'images/help-cite.png')}}"/></p>
-<p>You can generate these links if you are on a page that describes an individual query or word.</p>
-<p>You can also generate a <i>url</i> that reproduces your customized view on a passage, query or word including all colors you have assigned to queries and words.
+<p>You can generate these links and more if you are on a page that describes an individual query or word. You find them at the bottom right of
+the window, in the <i>Cite</i> drawer.
+If you are on the page of an individual query or word, you get the option to cite that query or word.
+In any case, you get the option to generate a link to your customized view.
+The link will pop up in a window, and the only thing to do is to copy it to your clipboard (<code>Cmd-C</code> or <code>Ctrl-C</code>) and click <i>OK</i> or press
+<code>Enter</code>.
+Alternatively, you can click the Twitter icon, to start a tweet with the link to your view already pasted in.
+</p>
+<p>Besides a link to your query you can generate a <i>url</i> that reproduces your customized view on a passage,
+query or word including all colors you have assigned to queries and words.
 Your customizations are stored in your browser, in a few <i>cookies</i>.
 Hence if you go to the same page in another browser, you will probably see different colors.
 However, you can share these links through mail or twitter, or bookmark them yourself for usage in another browser, e.g. on your tablet.
@@ -124,13 +136,6 @@ Try for example {{=A(T("Exodus 6"), _target='_blank', _href=URL('hebrew', 'text'
 If you receive a link to a view from somebody else and click on it, it will not destroy your previous settings. 
 If you want to return to your own settings, use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu.
 Then you will return to the passage, query or word you were on before clicking the shared link, and you see your own colors again.
-</p>
-<p>In order to generate those links, click the <i>Cite</i> drawer at the bottom right of the page.
-If you are on the page of an individual query or word, you get the option to cite that query or word.
-In any case, you get the option to generate a link to your customized view.
-The link will pop up in a window, and the only thing to do is to copy it to your clipboard (<code>Cmd-C</code> or <code>Ctrl-C</code>) and click <i>OK</i> or press
-<code>Enter</code>.
-Alternatively, you can click the Twitter icon, to start a tweet with the link to your view already pasted in.
 </p>
 
 <h4>{{=T('Exporting lists')}}</h4>
