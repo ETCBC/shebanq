@@ -106,7 +106,7 @@ legend_tpl = '''
     class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text דְּבַ֥ר</span></a></td></tr>
     <tr class="il l_hl"><td class="c l_hl"><input
     type="checkbox" id="hl" name="hl"/></td><td
-    class="il l_hl">lexeme<input type="checkbox" id="hl_hlv" name="hl_hlv"/><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span
+    class="il l_hl"><span class="il l_hl_hlv">lexeme</span>&nbsp;&nbsp;<input type="checkbox" id="hl_hlv" name="hl_hlv"/><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span
     class="il l_hl_hlv">דָּבָר</span></a>&nbsp;<input type="checkbox" id="hl_hlc" name="hl_hlc"/><a target="_blank" href="{base_doc}/lex_utf8.html"><span
     class="il l_hl_hlc">דבר/</span></a></td></tr>
     <tr class="il l_tt"><td class="c l_tt"><input
