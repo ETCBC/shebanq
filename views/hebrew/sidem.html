@@ -26,8 +26,10 @@
         elif qw == 'w':
             wentry = si['item']['entryid']
             wgloss = si['item']['gloss']
+            pos = si['item']['pos']
             vc = si['item']['g_entry_heb']
             entry_heb = si['item']['entry_heb']
+            entryid_heb = si['item']['entryid_heb']
             title = wentry
             clinktext = vc if vc else entry_heb
             dlinktext = wgloss
@@ -49,7 +51,11 @@
             {{=desc}}<br/>
             <textarea class="mql small" readonly>{{=XML(mql)}}</textarea>
         {{else:}}
-            <b>{{=wentry}}</b> ~ <i>{{=wgloss}}</i><br/>
+            <p class="txt_il">
+            &nbsp;<span class="wd1_pos">{{=pos}}</span>&nbsp;
+            &nbsp;<span class={{=cclass}}>{{=entryid_heb}}</span>&nbsp;
+            &nbsp;<span class={{=cclass}}>{{=wentry}}</span>&nbsp;
+            </p>
         {{pass}}
         </div>
     </li>
