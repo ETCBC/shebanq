@@ -2,16 +2,21 @@
 
 Application workflow:
 
-There is a skeleton page, filled with HTML.
-A page is a selection of the skeleton.
-A page is an object with data and methods.
+There is a skeleton page, which has a main area and a left sidebar.
+The skeleton is filled with static html, with certain divs in it that
+will be filled on demand by means of ajax calls.
 
-There are two pages:
+An actual page is composed by selectively showing and hiding parts of the skeleton and by filling
+divs through ajax calls.
+
+A page is represented by a javascript object with data and methods.
+
+There are two kinds of pages:
 
     m: material (showing verses of a chapter)
     r: results  (showing verses of a result page)
 
-An m-page has different sidebars from an r-page.
+An m-page has different sidebars than an r-page.
 
 The skeleton has the following parts:
 
@@ -25,13 +30,15 @@ B. Main part with
     heading
     material selector (m: book/chapter, r: resultpages)
     settings (text/data selector)
-    share link
     material (either the verses of a passage or the verses of the resultpage of a query or word)
+    share link
 
-The page object has a member viewstate, in which the current viewsettings are being maintained.
+There is a viewstate, an object that maintains the viewsettings that can be modified by the user.
+The viewstate object is a member of the page object.
 Viewstate is divided in groups, each group is serialized to a cookie.
-Viewstate is initialized from the querystring and/or the cookies, where the querystring wins.
-Whenever a user clicks, the viewstate is changed and saved in the corresponding cookie.
+Viewstate is initialized from the querystring and/or the cookies.
+When querystring and cookie conflict, the querystring wins.
+Whenever a user clicks, the viewstate is changed and immediately saved in the corresponding cookie.
 
 Depending on user actions, parts of the skeleton are loaded with HTML, through AJAX calls with methods that
 perform actions when the data has been loaded.
@@ -40,27 +47,28 @@ The application goes through the following stages:
 
 init functions:
     Decorate the fixed parts of the skeleton with jquery actions.
-    Do not change the viewstate, does not look at the viewstate.
+    Do not change the viewstate, do not look at the viewstate.
 
-click functions (events): change the viewstate.
+click functions (events):
+    Change the viewstate in response to user actions.
 
 apply functions:
     Look at the viewstate and adapt the display of the page, this might entail ajax actions.
     Do not change the viewstate.
 
 process functions:
-    Very much like init functions, but only for content that has been loaded through later AJAX calls
+    Very much like init functions, but only for content that has been loaded through later AJAX calls.
 
 The cookies are:
 
 material
     the current book, chapter, result page, item id,
     qw (q=query, w=word, tells whether the item in question is a query or a word),
-    mr (m=material, r=result of query or word search),
+    mr (m=material, r=result of query or word search, corresponds to the two kinds of pages),
     tp (text-or-data setting: whether the material is shown as plain text (txt_p) or as interlinear data (txt_il))
 
 hebrewdata
-    a list of switches controlling which fields are shown in the data view
+    a list of switches controlling which fields are shown in the interlinear data view
 
 highlights
     groups of settings controlling the highlight colors
@@ -69,11 +77,20 @@ highlights
 
     Both groups contain the same settings:
     active (which is the active setting: hloff, hlone, hlcustom, hlmany)
-    sel_one (the color if all queries are highlighted with one color)
+    sel_one (the color if all queries/words are highlighted with one color)
     get (whether or not to retrieve the side list of relevant items)
 
 colormap
     mappings between queries and colors (q) and between words and colors (w), based on the id of queries and words
+
+Window layout
+
+All variable content is placed in divs with fixed height and scroll bars.
+So the contents of sidebars and main area can be scrolled independently.
+So the main parts of the page are always in view, at fairly stable places.
+
+When editing a query it is important to make room for the query body.
+When editing is happening, the sidebar will be widened at the expense of the main area.
 
 */
 
@@ -92,9 +109,9 @@ var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 var from_push = false
 var add_hist = true
-var orig_side_width, orig_main_width
-var edit_side_width = '55%'
-var edit_main_width = '40%'
+var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
+var edit_side_width = '55%' // the desired width of the sidebar when editing a query body
+var edit_main_width = '40%' // the desired width of the main area when editing a query body
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -105,32 +122,32 @@ function dynamics() { // top level function, called when the page has loaded
     wb.go()
 }
 
-function set_height() {
+function set_height() { // the heights of the sidebars are set, depending on the height of the window
     var standard_height = window.innerHeight - subtract
     $('#material_txt_p').css('height', standard_height+'px')
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
-    $('#side_material_mq').css('max-height', (0.85 * standard_height)+'px')
-    $('#side_material_mw').css('max-height', (0.85 * standard_height)+'px')
+    $('#side_material_mq').css('max-height', (0.75 * standard_height)+'px')
+    $('#side_material_mw').css('max-height', (0.75 * standard_height)+'px')
 }
 
-function get_width() {
+function get_width() { // save the orginal widths of sidebar and main area
     orig_side_width = $('.span3').css('width')
     orig_main_width = $('.span9').css('width')
 }
 
-function set_main_width() {
+function reset_main_width() { // restore the orginal widths of sidebar and main area
     if (orig_side_width != $('.span3').css('width')) {
         $('.span3').css('width', orig_side_width)
         $('.span9').css('width', orig_main_width)
     }
 }
 
-function set_edit_width() {
+function set_edit_width() { // switch to increased sidebar width
     $('.span3').css('width', edit_side_width)
     $('.span9').css('width', edit_main_width)
 }
 
-function Page(vs) {
+function Page(vs) { // the one and only page object
     this.vs = vs    // the viewstate
 
     this.init = function() { // dress up the skeleton, initialize state variables
@@ -176,13 +193,13 @@ function Page(vs) {
             material_fetched = {txt_p: false, txt_il: false}
             side_fetched = {}
         }
-        set_main_width()
+        reset_main_width()
         this.apply()
     }
 
 /*
 
-the origin must be an object which has a member indicating the type of origin.
+the origin must be an object which has a member indicating the type of origin and the kind of page.
 
 1: a color picker 1 from an item in a list
 1a: the color picker 1 on an item page
@@ -192,12 +209,15 @@ the origin must be an object which has a member indicating the type of origin.
 5: when the data or text representation is loaded
 
 */
-    this.highlight2 = function(origin) { // all highlighting goes through this function
+    this.highlight2 = function(origin) { /* all highlighting goes through this function
+        highlighting is holistic: when the user changes a view settings, all highlights have to be reevaluated.
+        The only reduction is that word highlighting is completely orthogonal to query result highlighting.
+    */
         var that = this
         var qw = origin.qw
         var code = origin.code
         var active = wb.vs.active(qw)
-        if (active == 'hlreset') {
+        if (active == 'hlreset') { // all viewsettings for either queries or words are restored to 'factory' settings
             this.vs.cstatexx(qw)
             this.vs.hstatesv(qw, {active: 'hlcustom', sel_one: defcolor(qw, null)})
             this.listsettings[qw].apply()
@@ -211,7 +231,15 @@ the origin must be an object which has a member indicating the type of origin.
 
         var paintings = {}
 
-        if (code == '1a') { // highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
+        /* first we are going to compute what to paint, resulting in a list of paint instructions.
+        Then we apply the paint instructions in one batch.
+        */
+
+        /* computing the paint instructions */
+
+        if (code == '1a') { /* highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
+                This is simple coloring, using a single color.
+            */
             if (active != 'hlcustom') {
                 this.vs.hstatesv(qw, {active: 'hlcustom'})
             }
@@ -229,12 +257,19 @@ the origin must be an object which has a member indicating the type of origin.
             return
         }
 
-        // all other cases: highlights on an m-page, responding to a user action
+        /* all other cases: highlights on an m-page, responding to a user action
+            This is complex coloring, using multiple colors.
+            First we determine which monads need to be highlighted.
+        */
         var selclr = wb.vs.sel_one(qw)
         var custitems = {}
         var plainitems = {}
 
-        if (qw == 'q') { // Queries: highlight customised items with priority over uncustomised items
+        if (qw == 'q') { /* Queries: highlight customised items with priority over uncustomised items
+                If a word belongs to several query results, the last-applied coloring determines the color that the user sees.
+                We want to promote the customised colors over the non-customized ones, so we compute customized coloring after 
+                uncustomized coloring.
+            */
             $('#side_list_'+qw+' li').each(function() {
                 var iid = $(this).attr('iid')
                 var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
@@ -266,16 +301,23 @@ the origin must be an object which has a member indicating the type of origin.
         }
         var chunks = [custitems, plainitems]
 
-        var cselect = function(iid) {
-            if (active == 'hloff') {paint = style[qw]['off']}
-            else if (active == 'hlone') {paint = selclr}
-            else if (active == 'hlmany') {paint = defcolor(null, iid)}
-            else if (active == 'hlcustom') {paint = cmap[iid] || selclr}
-            else {paint = selclr}
+        var cselect = function(iid) { // assigns a color to an individual monad, based on the viewsettings
+            if (active == 'hloff') {paint = style[qw]['off']} /*
+                viewsetting says: do not color any item */
+            else if (active == 'hlone') {paint = selclr} /*
+                viewsetting says: color every applicable item with the same color */
+            else if (active == 'hlmany') {paint = cmap[iid] || defcolor(null, iid)} /*
+                viewsetting says:
+                color every item with customized color (if customized) else with query/word-dependent default color */
+            else if (active == 'hlcustom') {paint = cmap[iid] || selclr} /*
+                viewsetting says:
+                color every item with customized color (if customized) else with a single chosen color */
+            else {paint = selclr} /*
+                but this should not occur */
             return paint
         }
 
-        if (qw == 'q') { // Queries: compute the monads to be painted
+        if (qw == 'q') { // Queries: compute the monads to be painted and the colors needed for it
             for (var c = 0; c < 2; c++ ) {
                 var chunk = chunks[c]
                 for (var iid in chunk) {
@@ -290,7 +332,7 @@ the origin must be an object which has a member indicating the type of origin.
                 }
             }
         }
-        else { // Words: gather the lexem_ids to be painted
+        else { // Words: gather the lexeme_ids to be painted and the colors needed for it
             for (var c = 0; c < 2; c++ ) {
                 var chunk = chunks[c]
                 for (var iid in chunk) {
@@ -302,6 +344,7 @@ the origin must be an object which has a member indicating the type of origin.
                 }
             }
         }
+        /* finally, the computed colors are applied */
         this.paint(qw, paintings)
     }
 
@@ -322,7 +365,7 @@ the origin must be an object which has a member indicating the type of origin.
 
 // MATERIAL
 
-function Material() { // Object correponding to everything that controls the material in the main part (not in the side bars)
+function Material() { // Object corresponding to everything that controls the material in the main part (not in the side bars)
     var that = this
     this.name = 'material'
     this.hid = '#'+this.name
@@ -335,7 +378,7 @@ function Material() { // Object correponding to everything that controls the mat
     this.adapt = function() {
         this.fetch()
     }
-    this.apply = function() {
+    this.apply = function() { // apply viewsettings to current material
         this.mselect.apply()
         this.pselect.apply()
         this.msettings.apply()
@@ -425,7 +468,7 @@ function MSelect() { // for book and chapter selection
     this.hid = '#'+this.name
     this.up = new SelectBook()
     this.select = new SelectItems(this.up, 'chapter')
-    this.apply = function() {
+    this.apply = function() { // apply material viewsettings to current material
         if (wb.mr == 'm') {
             this.up.apply()
             this.select.apply()
@@ -442,7 +485,7 @@ function PSelect() { // for result page selection
     this.name = 'select_pages'
     this.hid = '#'+this.name
     this.select = new SelectItems(null, 'page')
-    this.apply = function() {
+    this.apply = function() { // apply result page selection: fill in headings on the page
         if (wb.mr == 'r') {
             this.select.apply()
             $(this.hid).show()
@@ -451,7 +494,7 @@ function PSelect() { // for result page selection
             $(this.hid).hide()
         }
     }
-    this.add = function(response) {
+    this.add = function(response) { // add the content portion of the response to the content portion of the page
         if (wb.mr == 'r') {
             $(select).html(response.find(select).html())
         }
@@ -513,7 +556,6 @@ function SelectItems(up, key) { // both for chapters and for result pages
             closeOnEscape: true,
             modal: false,
             title: 'choose '+that.key,
-            position: {my: 'right top', at: 'left top', of: $('#material')},
             width: '270px',
         })
     }
@@ -635,12 +677,12 @@ function MSettings(content) {
     this.hebrewsettings = new HebrewSettings()
     legendc.click(function () {
         legend.dialog({
+            autoOpen: true,
             dialogClass: 'legend',
             closeOnEscape: true,
             modal: false,
             title: 'legend',
-            position: {my: 'right top', at: 'left top', of: $(that.hid)},
-            width: '550px',
+            width: '450px',
         })
     })
     this.apply = function() {
@@ -714,7 +756,7 @@ function HebrewSetting(fld) {
 
 /*
 
-The main material kan be three kinds (mr)
+The main material kan be two kinds (mr)
 
 m = material: chapters from books
 r = query/word results
@@ -725,6 +767,31 @@ mq = list of queries relevant to main material
 mw = list of words relevant to main material
 rq = display of query record, the main material are the query results
 rw = display of word record, the main material are the word results
+
+The list sidebars (m) have a color picker for selecting a uniform highlight color,
+plus controls for deciding whether no, uniform, custom, or many colors will be used.
+
+The record-side bars (r) only have a single color picker, for 
+choosing the color associated with the item (a query or a word).
+
+When items are displayed in the list sidebars, they each have a color picker that
+is identical to the one used for that item in the record sidebar.
+
+The colorpickers for choosing an associated item color, consist of a checkbox and a proper colorpicker.
+The checkbox indicates whether the color is customized. 
+A color gets customized when the user selects an other color than the default one, or by checking the box.
+
+When the user has chosen custom colors, all highlights will be done with the uniform color, except
+the customized ones.
+
+Queries are highlighted by background color, words by foreground colors.
+Although the names for background and foreground colors are identical, their actual values are not.
+Foreground colors are darkened, background colors are lightened.
+This is done for better visibility.
+
+All color asscociations are preserved in cookies, one for queries, and one for words.
+Nowhere else are they stored, but they can be exported as a (lomg) link.
+By using the share link, the user can preserve color settings in a notebook, or mail them to colleagues.
 
 */
 
@@ -755,9 +822,9 @@ function Sidebars() { // TOP LEVEL: all four kinds of sidebars
     }
 }
 
-// SPECIFIC sidebars, the [mqw][mqw] type is frozen into the object
+// SPECIFIC sidebars, the [mr][qw] type is frozen into the object
 
-function Sidebar(mr, qw) {
+function Sidebar(mr, qw) { // the individual sidebar, parametrized with qr and mw to specify one of the four kinds
     var that = this
     this.mr = mr
     this.qw = qw
@@ -811,7 +878,7 @@ function Sidebar(mr, qw) {
 
 // SIDELIST MATERIAL
 
-function SContent(mr, qw) {
+function SContent(mr, qw) { // the contents of an individual sidebar
     var that = this
     this.mr = mr
     this.qw = qw
@@ -879,7 +946,7 @@ function SContent(mr, qw) {
             }
         }
     }
-    this.sidelistitems = function() {
+    this.sidelistitems = function() { // the list of items in an m-sidebar
         if (this.mr == 'm') {
             wb.picker1list[that.qw] = {}
             var qwlist = $('#side_list_'+this.qw+' li')
@@ -890,7 +957,7 @@ function SContent(mr, qw) {
             })
         }
     }
-    this.sidelistitem = function(iid) {
+    this.sidelistitem = function(iid) { // individual item in an m-sidebar
         var more = $('#m_'+this.qw+iid) 
         var head = $('#h_'+this.qw+iid) 
         var desc = $('#d_'+this.qw+iid) 
@@ -919,39 +986,6 @@ function SContent(mr, qw) {
 
 // SIDELIST VIEW SETTINGS
 
-/*
-
-There are two kinds of side bars:
-
-mq, mw: lists of items (queries or words)
-qm, wm: one record of a query or a word
-
-The list sidebars have a color picker for selecting a uniform highlight color,
-plus controls for deciding whether no, uniform, custom, or many colors will be used.
-
-The one-record-side bars only have a single color picker, for 
-choosing the color associated with the item (a query or a word).
-
-When items are displayed in the list sidebars, they each have a color picker that
-is identical to the one used for the record.
-
-The colorpickers for choosing an associated item color, consist of a checkbox and a proper colorpicker.
-The checkbox indicates whether the color is customized. 
-A color gets customized when the user selects an other color than the default one, or by checking the box.
-
-When the user has chosen custom colors, all highlights will be done with the uniform color, except
-his customized ones.
-
-Queries are highlighted by background color, word by foreground colors.
-Although the names for background and foreground colors are identical, their actual values are not.
-Foreground colors are darkened, background colors are lightened.
-
-All color asscociations are preserved in cookies, one for queries, and one for words.
-Nowhere else are they stored.
-By using the share link, the user can preserve color settings in a notebook, or mail them to colleaugues.
-
-*/
-
 function ListSettings(qw) { // the view controls belonging to a side bar with a list of items
     var that = this
     this.qw = qw
@@ -977,7 +1011,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
 /*
     These pickers show up
         in lists of items (in mq and mw sidebars) and
-        near individual items (in qm and wm sidebars)
+        near individual items (in rq and rw sidebars)
 
     They also have a checkbox, stating whether the color counts as customized.
     Customized colors are held in a global colormap, which is saved in a cookie upon every picking action.
@@ -1235,24 +1269,11 @@ function activate_buttons() {
             var name = $(this).attr('name')
             $('#'+name).val(true)
             if (name == 'button_done') {
-                //body = $('#side_material_rq')
-                //if (body.dialog('instance')) {body.dialog('destroy')}
-                set_main_width()
+                reset_main_width()
             }
         })
     })
     material_fetched = {txt_p: false, txt_il: false}
     wb.material.apply()
     set_edit_width()
-    /*body = $('#side_material_rq')
-    body.dialog({
-        autoOpen: false,
-        dialogClass: 'pnll',
-        closeOnEscape: false,
-        modal: false,
-        title: 'edit query',
-        position: {my: 'left top', at: 'left bottom', of: $('#side_settings_rq')},
-        width: '540px',
-    })
-    body.dialog('open')*/
 }
