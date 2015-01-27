@@ -31,12 +31,16 @@ if 0:
 ## if SSL/HTTPS is properly configured and you want all HTTP requests to
 ## be redirected to HTTPS, uncomment the line below:
 #request.requires_https()
+
 from get_db_config import config
 
 db = DAL('mysql://%s:%s@%s/%s' % (config['shebanq_user'],
                                   config['shebanq_passwd'],
                                   config['shebanq_host'],
-                                  'shebanq'), migrate_enabled=False)
+                                  'shebanq'), migrate=False) # here do not say: migrate_enabled=False
+# because this db will contain the session table, which may have to be created.
+# Indeed, we store sessions in the database:
+session.connect(request, response, db=db)
 
 #db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
 
@@ -48,7 +52,7 @@ db = DAL('mysql://%s:%s@%s/%s' % (config['shebanq_user'],
 #     ## connect to Google BigTable (optional 'google:datastore://namespace')
 #     db = DAL('google:datastore')
 #     ## store sessions and tickets there
-#     session.connect(request, response, db=db)
+#session.connect(request, response, db=db)
 #     ## or store session in Memcache, Redis, etc.
 #     ## from gluon.contrib.memdb import MEMDB
 #     ## from google.appengine.api.memcache import Client
