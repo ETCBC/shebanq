@@ -37,7 +37,10 @@ from get_db_config import config
 db = DAL('mysql://%s:%s@%s/%s' % (config['shebanq_user'],
                                   config['shebanq_passwd'],
                                   config['shebanq_host'],
-                                  'shebanq'), migrate=False) # here do not say: migrate_enabled=False
+                                  'shebanq'),
+                                  migrate_enabled=False, # if session table already exists
+                                  #migrate=False, # if session table does not yet exist
+                                  ) 
 # because this db will contain the session table, which may have to be created.
 # Indeed, we store sessions in the database:
 session.connect(request, response, db=db)
