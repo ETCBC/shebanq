@@ -1,15 +1,13 @@
-from get_db_config import Configuration
+from get_db_config import config
 import re
-
-config = Configuration()
 
 '''Passage dabatase'''
 passage_db = DAL('mysql://{}:{}@{}/{}'.format(
-    config.passage_user,
-    config.passage_passwd,
-    config.passage_host,
-    config.passage_db,
-))
+    config['shebanq_user'],
+    config['shebanq_passwd'],
+    config['shebanq_host'],
+    'passage',
+), migrate_enabled=False)
 
 '''Book table'''
 passage_db.define_table('book',
@@ -17,7 +15,6 @@ passage_db.define_table('book',
     Field('name', 'string'),
     Field('first_m', 'integer'),
     Field('last_m', 'integer'),
-    migrate=False,
 )
 
 '''Virtual field 'number of chapters' adds the chapter count to each book.'''
@@ -33,7 +30,6 @@ passage_db.define_table('chapter',
     Field('chapter_num', 'integer'),
     Field('first_m', 'integer'),
     Field('last_m', 'integer'),
-    migrate=False,
 )
 
 '''Virtual method 'monads' adds a list of all monads to each chapter.'''
@@ -50,7 +46,6 @@ passage_db.define_table('verse',
     Field('xml', 'string'),
     Field('first_m', 'integer'),
     Field('last_m', 'integer'),
-    migrate=False,
 )
 
 '''Virtual method 'monads' adds a list of all monads to each verse.'''
@@ -62,7 +57,6 @@ passage_db.verse.monads = Field.Method(
 passage_db.define_table('word_verse',
     Field('anchor', 'integer'),
     Field('verse_id', 'reference verse'),
-    migrate=False,
 )
 
 '''Lexicon table'''
@@ -80,6 +74,5 @@ passage_db.define_table('lexicon',
     Field('nametype', 'string'),
     Field('subpos', 'string'),
     Field('gloss', 'string'),
-    migrate=False,
 )
 

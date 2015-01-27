@@ -31,15 +31,12 @@ if 0:
 ## if SSL/HTTPS is properly configured and you want all HTTP requests to
 ## be redirected to HTTPS, uncomment the line below:
 #request.requires_https()
-from get_db_config import Configuration
+from get_db_config import config
 
-
-config = Configuration()
-
-db = DAL('mysql://%s:%s@%s/%s' % (config.shebanq_user,
-                                  config.shebanq_passwd,
-                                  config.shebanq_host,
-                                  config.shebanq_db))
+db = DAL('mysql://%s:%s@%s/%s' % (config['shebanq_user'],
+                                  config['shebanq_passwd'],
+                                  config['shebanq_host'],
+                                  'shebanq'), migrate_enabled=False)
 
 #db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
 

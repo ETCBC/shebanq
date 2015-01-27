@@ -1,13 +1,9 @@
 import sys
 sys.path.append('/opt/emdros/lib/emdros')
 import EmdrosPy
+from get_db_config import config
 
-usr='shemdros'
 db='etcbc4'
-pwd=''
-config_path = '/opt/emdros/cfg/mql.cfg'
-with open(config_path) as p:
-    pwd = p.read().rstrip('\n')
 
 def sanitize(query):
     comps = query.split('/*')
@@ -25,7 +21,7 @@ def to_monadsets(setstr):
     return [[int(y) for y in x.lstrip().split('-')] if '-' in x else [int(x), int(x)] for x in comps]
 
 def mql(query):
-    env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, "localhost", usr, pwd, db, EmdrosPy.kMySQL)
+    env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, config['shebanq_host'], config['shebanq_user'], config['shebanq_passwd'], db, EmdrosPy.kMySQL)
     #print 'BE={}'.format(env.getBackendName())
     compiler_result = 0
     good = env.executeString(sanitize(query) , compiler_result, 0, 0)[1]
