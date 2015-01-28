@@ -698,9 +698,7 @@ function MSettings(content) {
             legend.hide()
             legendc.hide()
         }
-        if (wb.vs.mr() == 'r') {
-            $('#csv_lnk'+wb.vs.qw()).attr('href', wb.vs.csv_url())
-        }
+        set_csv(wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         wb.material.adapt()
     }
     $('.mhradio').click(function() {
@@ -746,9 +744,7 @@ function HebrewSetting(fld) {
         else {
             $('.'+this.name).each(function () {$(this).hide()})
         }
-        if (wb.vs.mr() == 'r') {
-            $('#csv_lnk'+wb.vs.qw()).attr('href', wb.vs.csv_url())
-        }
+        set_csv(wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
     }
 }
 
@@ -899,9 +895,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             wb.listsettings[this.qw].apply()
         }
         else {
-            if (this.mr == 'r') {
-                $('#csv_lnk'+this.qw).attr('href', wb.vs.csv_url())
-            }
+            set_csv(mr, qw, wb.vs.iid())
         }
 
         $('#theitem').html($('#itemtag').val()+':')
@@ -1005,6 +999,13 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
         wb.vs.addHist()
         wb.highlight2({code: '3', qw: that.qw})
     })
+}
+
+function set_csv(mr, qw, iid) {
+    if (mr == 'r') {
+        $('#csv_lnk'+qw).attr('href', wb.vs.csv_url())
+        $('#csvitemdesc'+qw).html(style[qw]['tag']+'_'+iid+'.csv')
+    }
 }
 
 function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker associated with individual items

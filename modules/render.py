@@ -89,7 +89,7 @@ style = dict(
 )
 
 csv_fields_items = '''
-    ht,word_heb hlv,word_vlex hlc,word_clex, tt,word_tran tl,word_lex gl,word_gloss
+    ht,word_heb hl_hlv,word_vlex hl_hlc,word_clex, tt,word_tran tl,word_lex gl,word_gloss
     wd1_subpos,word_subpos wd1_pos,word_pos wd1_lang,word_lang wd1_n,word_number
     wd2_gender,word_gender wd2_gnumber,word_gnumber wd2_person,word_person wd2_state,word_state wd2_tense,word_tense wd2_stem,word_stem
     sp_rela,subphrase_rela sp_n,subphrase_number
@@ -194,15 +194,15 @@ def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=
 
 def get_fields():
     if current.request.vars.tp == 'txt_p':
-        return [('word_number', 'monad'), ('word_heb', 'text')]
+        hfields = [('word_number', 'monad'), ('word_heb', 'text')]
     else:
         hfields = []
         for (line, fields) in hebrewdata_lines:
             if current.request.vars[line] == 'v':
                 for (f, name, pretty_name) in fields:
-                    if current.request.vars[f]:
+                    if current.request.vars[f] == 'v':
                         hfields.append((name, pretty_name))
-        return hfields
+    return hfields
     
 class Viewsettings():
     def __init__(self):
