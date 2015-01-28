@@ -1002,9 +1002,7 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
 }
 
 function set_csv(mr, qw, iid) {
-    console.log('CALL set_csv('+mr+','+qw+','+iid)
     if (mr == 'r') {
-        console.log('DONE')
         $('#csv_lnk'+qw).attr('href', wb.vs.csv_url())
         $('#csvitemdesc'+qw).html(style[qw]['tag']+'_'+iid+'.csv')
     }
