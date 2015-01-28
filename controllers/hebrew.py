@@ -11,7 +11,118 @@ from mql import mql
 #from shemdros import MqlResource, RemoteException
 
 RESULT_PAGE_SIZE = 20
-EXPIRE = None
+
+def text():
+    session.forget(response)
+    books_data = cache.ram(
+        'books',
+        lambda:passage_db.executesql('''
+select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
+    '''),
+        time_expire=None,
+    )
+
+    books_order = [x[0] for x in books_data]
+    books = dict(x for x in books_data)
+    return dict(
+        viewsettings=Viewsettings(),
+        colorpicker=colorpicker,
+        legend=legend,
+        booksorder=json.dumps(books_order),
+        books=json.dumps(books),
+    )
+
+def material():
+    session.forget(response)
+    mr = request.vars.mr
+    qw = request.vars.qw
+    tp = request.vars.tp
+    if mr == 'm':
+        (book, chapter) = getpassage()
+        material = cache.ram(
+            'verse_material_{}_{}'.format(chapter.id, tp),
+            lambda:(Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None),
+            time_expire=None,
+        )
+        result = dict(
+            mr=mr,
+            qw=qw,
+            msg="No chapter selected" if not chapter else None,
+            results=len(material.verses) if material else 0,
+            pages=1,
+            material=material,
+            monads=json.dumps([]),
+        )
+    elif mr == 'r':
+        iid = int(request.vars.iid) if request.vars else None
+        page = int(request.vars.page) if request.vars.page else 1
+        if iid == None:
+            msg = "No {} selected".format('query' if qw == 'q' else 'word')
+            return dict(
+                mr=mr,
+                qw=qw,
+                msg=msg,
+                results=0,
+                iid=iid,
+                pages=0,
+                page=0,
+                pagelist=json.dumps([]),
+                material=None,
+                monads=json.dumps([]),
+            )
+        monad_sets = cache.ram(
+            'monad_sets_{}_{}'.format(qw, iid),
+            lambda:(load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)),
+            time_expire=None,
+        )
+        (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
+        material = Verses(passage_db, mr, verses, tp=tp)
+        return dict(
+            mr=mr,
+            qw=qw,
+            msg=None,
+            results=nresults,
+            iid=iid,
+            pages=npages,
+            page=page,
+            pagelist=json.dumps(pagelist(page, npages, 10)),
+            material=material,
+            monads=json.dumps(monads),
+        )
+    return result
+
+def sidem():
+    session.forget(response)
+    qw = request.vars.qw
+    (book, chapter) = getpassage()
+    if qw == 'q':
+        monadsets = get_monadsets_MySQL(chapter)
+        side_items = group_MySQL(monadsets)
+    else:
+        side_items = cache.ram(
+            'lexemes_{}'.format(chapter.id),
+            lambda:get_lexemes(chapter),
+            time_expire=None,
+        )
+    return dict(
+        colorpicker=colorpicker,
+        side_items=side_items,
+        qw=qw,
+    )
+
+def query():
+    request.vars['mr'] = 'r'
+    request.vars['qw'] = 'q'
+    request.vars['tp'] = 'txt_p'
+    request.vars['iid'] = request.vars.iid
+    return text()
+
+def word():
+    request.vars['mr'] = 'r'
+    request.vars['qw'] = 'w'
+    request.vars['tp'] = 'txt_p'
+    request.vars['iid'] = request.vars.iid
+    return text()
 
 def csv(data): # converts an data structure of rows and fields into a csv string, with proper quotations and escapes
     result = []
@@ -28,7 +139,11 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     filename = '{}_{}.csv'.format('query' if qw == 'q' else 'word', iid)
     hfields = get_fields()
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-    monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+    monad_sets = cache.ram(
+        'monad_sets_{}_{}'.format(qw, iid),
+        lambda:(load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)),
+        time_expire=None,
+    )
     monads = flatten(monad_sets)
     data = []
     if len(monads):
@@ -55,6 +170,188 @@ order by
         )
         data = passage_db.executesql(sql)
     return dict(filename=filename, data=csv((head_row,)+data))
+
+def sideqm():
+    session.forget(response)
+    iid = request.vars.iid
+    return dict(load=LOAD('hebrew', 'sideq', extension='load',
+        vars=dict(mr='r', qw='q', iid=iid),
+        ajax=False, ajax_trap=True, target='querybody', 
+        content='fetching query',
+    ))
+
+def sidewm():
+    session.forget(response)
+    iid = request.vars.iid
+    return dict(load=LOAD('hebrew', 'sidew', extension='load',
+        vars=dict(mr='r', qw='w', iid=iid),
+        ajax=False, ajax_trap=True, target='wordbody', 
+        content='fetching words',
+    ))
+
+@auth.requires(lambda: check_query_access_write())
+def sideqe():
+    if not request.is_local: request.requires_https()
+    return show_query(readonly=False)
+
+def sideq():
+    session.forget(response)
+    return show_query(readonly=True)
+
+def sidew():
+    session.forget(response)
+    return show_word()
+
+@auth.requires_login()
+def my_queries():
+    if not request.is_local: request.requires_https()
+    grid = SQLFORM.grid(
+        db.queries.created_by == auth.user,
+        fields=[db.queries.name, db.queries.is_published,
+                db.queries.modified_on, db.queries.executed_on],
+        orderby=~db.queries.modified_on,
+        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
+        headers={
+            'queries.is_published': 'Public',
+            'queries.executed_on': 'Last Run',
+            'queries.modified_on': 'Modified',
+        },
+        selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
+        editable=True,
+        details=False,
+        create=True,
+        links=[
+            dict(
+                header='view',
+                body=lambda row: A(
+                    SPAN(_class='icon info-sign icon-info-sign'),
+                    SPAN('', _class='buttontext button', _title='View'),
+                    _class='button btn',
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
+                ) 
+            ),
+            #dict(
+            #    header='edit',
+            #    body=lambda row: A(
+            #        SPAN(_class='icon pen icon-pencil'),
+            #        SPAN('', _class='buttontext button', _title='Edit'),
+            #        _class='button btn',
+            #        _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=row.id)),
+            #    ),
+            #),
+        ],
+        showbuttontext=False,
+        paginate=20,
+        csv=False,
+    )
+
+    if 1 in grid:
+        grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
+    return locals()
+
+def public_queries():
+    grid = SQLFORM.grid(
+        db.queries.is_published == True,
+        fields=[db.queries.id, db.queries.name ,db.queries.modified_by, db.queries.created_on,
+                db.queries.modified_on, db.queries.executed_on],
+        orderby=~db.queries.modified_on,
+        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
+        headers={
+            'queries.executed_on': 'Last Run',
+            'queries.modified_on': 'Modified',
+        },
+        editable=False,
+        deletable=False,
+        details=False,
+        create=False,
+        links_placement='left',
+        links=[
+            dict(
+                header='View',
+                body=lambda row: A(
+                    row.name,
+                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
+                ) 
+            ),
+        ],
+        paginate=20,
+        csv=False,
+    )
+    return locals()
+
+@auth.requires_login()
+def delete_multiple():
+    if not request.is_local: request.requires_https()
+    if request.vars.id is not None:
+        for id in request.vars.id:
+            db(db.queries.id == id).delete()
+
+    response.flash = "deleted " + str(request.vars.id)
+    redirect(URL('my_queries'))
+
+def show_query(readonly=True, kind=None, msg=None):
+    response.headers['web2py-component-flash']=None
+    iid = get_iid()
+    if iid:
+        old_mql = db.queries[iid].mql
+        old_modified_on = db.queries[iid].modified_on
+    else:
+        iid = 0
+        old_mql = ''
+        old_modified_on = 0
+    mql_form = get_mql_form(iid, readonly=readonly)
+    (thisreadonly, thiskind, thismsg) = handle_response_mql(mql_form, old_mql, old_modified_on)
+    if thisreadonly != None: readonly = thisreadonly
+    if thiskind != None: kind = thiskind
+    if thismsg != None: msg = thismsg
+    mql_record = db.queries[iid]
+
+    return dict(
+        readonly=readonly,
+        kind=kind,
+        msg=msg,
+        form=mql_form,
+        iid=iid,
+        query=mql_record,
+    )
+
+def show_word(no_controller=True):
+    response.headers['web2py-component-flash']=None
+    iid = get_iid()
+    word_form = get_word_form(iid)
+    handle_response_word(word_form)
+    word_record = passage_db.lexicon[iid]
+
+    result_dict = dict(
+        readonly=True,
+        form=word_form,
+        iid=iid,
+        word=word_record,
+        msg=None,
+    )
+    return result_dict
+
+@auth.requires(lambda: check_query_access_execute())
+def execute_query(iid):
+    mql_form = get_mql_form(iid, readonly=False)
+    mql_record = db.queries[iid]
+    (good, result) = mql(mql_record.mql) 
+    if good:
+        store_monad_sets(iid, result)
+        mql_record.update_record(executed_on=request.now)
+        (kind, msg) = ('ok', 'Query executed')
+    else:
+        (kind, msg) = ('error', CODE(result))
+    return (kind, msg)
+
+def pagelist(page, pages, spread):
+    factor = 1
+    filtered_pages = {1, page, pages}
+    while factor <= pages:
+        page_base = factor * int(page / factor)
+        filtered_pages |= {page_base + int((i - spread / 2) * factor) for i in range(2 * int(spread / 2) + 1)} 
+        factor *= spread
+    return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
 
 def flatten(msets):
     result = set()
@@ -161,125 +458,25 @@ where
         r.append({'item': lexeme, 'monads': json.dumps(grouped[lex_id])})
     return r
 
-def sidem():
-    session.forget(response)
-    qw = request.vars.qw
-    (book, chapter) = getpassage()
-    if qw == 'q':
-        monadsets = get_monadsets_MySQL(chapter)
-        side_items = group_MySQL(monadsets)
-    else:
-        side_items = get_lexemes(chapter)
-    return dict(
-        colorpicker=colorpicker,
-        side_items=side_items,
-        qw=qw,
-    )
-
-def material():
-    session.forget(response)
-    mr = request.vars.mr
-    qw = request.vars.qw
-    tp = request.vars.tp
-    if mr == 'm':
-        (book, chapter) = getpassage()
-        material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter else None
-        result = dict(
-            mr=mr,
-            qw=qw,
-            msg="No chapter selected" if not chapter else None,
-            results=len(material.verses) if material else 0,
-            pages=1,
-            material=material,
-            monads=json.dumps([]),
-        )
-    elif mr == 'r':
-        iid = int(request.vars.iid) if request.vars else None
-        page = int(request.vars.page) if request.vars.page else 1
-        if iid == None:
-            msg = "No {} selected".format('query' if qw == 'q' else 'word')
-            return dict(
-                mr=mr,
-                qw=qw,
-                msg=msg,
-                results=0,
-                iid=iid,
-                pages=0,
-                page=0,
-                pagelist=json.dumps([]),
-                material=None,
-                monads=json.dumps([]),
-            )
-        monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
-        (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
-        material = Verses(passage_db, mr, verses, tp=tp)
-        return dict(
-            mr=mr,
-            qw=qw,
-            msg=None,
-            results=nresults,
-            iid=iid,
-            pages=npages,
-            page=page,
-            pagelist=json.dumps(pagelist(page, npages, 10)),
-            material=material,
-            monads=json.dumps(monads),
-        )
-    return result
-
-def query():
-    request.vars['mr'] = 'r'
-    request.vars['qw'] = 'q'
-    request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.id
-    return text()
-
-def word():
-    request.vars['mr'] = 'r'
-    request.vars['qw'] = 'w'
-    request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.id
-    return text()
-
-@cache.action(time_expire=3600*24, cache_model=cache.ram, quick='VP')
-def text():
-    session.forget(response)
-    books_data = cache.ram('books', lambda:passage_db.executesql('''
-select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
-    '''), time_expire=EXPIRE)
-
-    books_order = [x[0] for x in books_data]
-    books = dict(x for x in books_data)
-    #viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
-    return dict(
-        viewsettings=Viewsettings(),
-        colorpicker=colorpicker,
-        legend=legend,
-        booksorder=json.dumps(books_order),
-        books=json.dumps(books),
-    )
-
-def get_record_id(no_controller=True):
+def get_iid(no_controller=True):
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
-    record_id = request.vars.iid
+    iid = request.vars.iid
     if request.vars.iid is not None:
         if type(request.vars.iid) == list:
-            record_id = int(request.vars.iid[0])
-#        elif request.vars.iid.isdigit():
+            iid = int(request.vars.iid[0])
         else:
-            record_id = int(request.vars.iid)
-#            raise HTTP(404, "get_record_id: Object not found in database: " + str(record_id))
-    return record_id
+            iid = int(request.vars.iid)
+    return iid
 
 
 @auth.requires_login()
-def check_query_access_write(record_id=get_record_id()):
+def check_query_access_write(iid=get_iid()):
     authorized = True
 
-    if record_id is not None and record_id > 0:
-        mql_record = db.queries[record_id]
+    if iid is not None and iid > 0:
+        mql_record = db.queries[iid]
         if mql_record is None:
-            raise HTTP(404, "No write access. Object not found in database. record_id=" + str(record_id))
+            raise HTTP(404, "No write access. Object not found in database. iid=" + str(iid))
         if mql_record.created_by != auth.user.id:
             authorized = False
 
@@ -287,21 +484,21 @@ def check_query_access_write(record_id=get_record_id()):
 
 
 @auth.requires_login()
-def check_query_access_execute(record_id=get_record_id()):
+def check_query_access_execute(iid=get_iid()):
     authorized = False
 
-    if record_id is not None and record_id > 0:
-        mql_record = db.queries[record_id]
+    if iid is not None and iid > 0:
+        mql_record = db.queries[iid]
         if mql_record is None:
-            raise HTTP(404, "No execute access. Object not found in database. record_id=" + str(record_id))
+            raise HTTP(404, "No execute access. Object not found in database. iid=" + str(iid))
         if mql_record.created_by == auth.user.id:
             authorized = True
 
     return authorized
 
 
-def get_mql_form(record_id, readonly=False):
-    mql_record = db.queries[record_id]
+def get_mql_form(iid, readonly=False):
+    mql_record = db.queries[iid]
     buttons = [
         TAG.button('Reset', _class="smb", _type='reset', _name='button_reset'),
         TAG.button('Save', _class="smb", _type='submit', _name='button_save'),
@@ -316,7 +513,7 @@ def get_mql_form(record_id, readonly=False):
                 SPAN(_class='icon pen icon-pencil'),
                 SPAN('Edit query', _class='buttontext button', _title='Edit query'),
                 _class='button btn',
-                _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=record_id)),
+                _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=iid)),
                 cid=request.cid,
             )
         medit_link = A(
@@ -324,12 +521,12 @@ def get_mql_form(record_id, readonly=False):
             SPAN('', _class='buttontext button', _title='Edit all fields'),
             SPAN('Edit info', _class='buttontext button', _title='Edit all info fields'),
             _class='button btn',
-            _href=URL('hebrew', 'my_queries', extension='', args=['edit', 'queries', record_id], user_signature=True),
+            _href=URL('hebrew', 'my_queries', extension='', args=['edit', 'queries', iid], user_signature=True),
         )
     else:
         qedit_link = 'You cannot edit queries created by some one else'
         medit_link = ''
-    mql_form = SQLFORM(db.queries, record=record_id, readonly=readonly,
+    mql_form = SQLFORM(db.queries, record=iid, readonly=readonly,
         fields=[
             'is_published',
             'name',
@@ -375,9 +572,9 @@ def get_mql_form(record_id, readonly=False):
         mql_form[0].insert(-1,extra)
     return mql_form
 
-def get_word_form(record_id):
-    word_record = passage_db.lexicon[record_id]
-    word_form = SQLFORM(passage_db.lexicon, record=record_id, readonly=True,
+def get_word_form(iid):
+    word_record = passage_db.lexicon[iid]
+    word_form = SQLFORM(passage_db.lexicon, record=iid, readonly=True,
         fields=[
             'g_entry_heb',
             'g_entry',
@@ -424,13 +621,13 @@ def handle_response_mql(mql_form, old_mql, old_modified_on):
     kind = None
     mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on), onsuccess=lambda f:None, onfailure=lambda f: None)
     if mql_form.accepted:
-        record_id = str(mql_form.vars.id)
+        iid = str(mql_form.vars.id)
         if request.vars.button_execute == 'true':
-            (kind, msg) = execute_query(record_id) 
+            (kind, msg) = execute_query(iid) 
         if request.vars.button_save == 'true':
             (kind, msg) = ('ok', 'saved')
         if request.vars.button_done == 'true':
-            redirect(URL('hebrew', 'sideqm', vars=dict(mr='r', qw='q', iid=record_id), extension=''))
+            redirect(URL('hebrew', 'sideqm', vars=dict(mr='r', qw='q', iid=iid), extension=''))
     elif mql_form.errors:
         (kind, msg) = ('error', 'make corrections as indicated above')
     return (readonly, kind, msg)
@@ -442,8 +639,12 @@ def handle_response_word(word_form):
     elif word_form.errors:
         response.flash = 'form has errors, see details'
 
-def store_monad_sets(record_id, rows):
-    db.executesql('DELETE FROM monadsets WHERE query_id=' + str(record_id) + ';')
+def store_monad_sets(iid, rows):
+    cache.ram(
+        'monad_sets_q_{}'.format(iid),
+        None,
+    )
+    db.executesql('DELETE FROM monadsets WHERE query_id=' + str(iid) + ';')
     nrows = len(rows)
     if nrows == 0: return
 
@@ -460,17 +661,17 @@ insert into monadsets (query_id, first_m, last_m) values
         query += start
         s = min(r + limit_row, len(rows))
         row = rows[r]
-        query += '({},{},{})'.format(record_id, row[0], row[1])
+        query += '({},{},{})'.format(iid, row[0], row[1])
         if r + 1 < nrows:
             for row in rows[r + 1:s]: 
-                query += ',({},{},{})'.format(record_id, row[0], row[1])
+                query += ',({},{},{})'.format(iid, row[0], row[1])
         r = s
     if query != '':
         db.executesql(query)
         query = ''
 
-def load_monad_sets(record_id):
-    return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(record_id) + ' ORDER BY first_m;')
+def load_monad_sets(iid):
+    return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
 
 def load_word_occurrences(lexeme_id):
     monads = passage_db.executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
@@ -559,186 +760,4 @@ def get_pagination(p, monad_sets, iid):
     verses = verse_ids if p <= cur_page and len(verse_ids) else None
     return (nvt, cur_page if nvt else 0, verses, list(verse_monads))
 
-
-def sideqm():
-    session.forget(response)
-    iid = request.vars.iid
-    return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(mr='r', qw='q', iid=iid),
-        ajax=False, ajax_trap=True, target='querybody', 
-        content='fetching query',
-    ))
-
-def sidewm():
-    session.forget(response)
-    iid = request.vars.iid
-    return dict(load=LOAD('hebrew', 'sidew', extension='load',
-        vars=dict(mr='r', qw='w', iid=iid),
-        ajax=False, ajax_trap=True, target='wordbody', 
-        content='fetching words',
-    ))
-
-@auth.requires(lambda: check_query_access_write())
-def sideqe():
-    if not request.is_local: request.requires_https()
-    return show_query(readonly=False)
-
-def sideq():
-    session.forget(response)
-    return show_query(readonly=True)
-
-def sidew():
-    session.forget(response)
-    return show_word()
-
-def show_query(readonly=True, kind=None, msg=None):
-    response.headers['web2py-component-flash']=None
-    record_id = get_record_id()
-    if record_id:
-        old_mql = db.queries[record_id].mql
-        old_modified_on = db.queries[record_id].modified_on
-    else:
-        record_id = 0
-        old_mql = ''
-        old_modified_on = 0
-    mql_form = get_mql_form(record_id, readonly=readonly)
-    (thisreadonly, thiskind, thismsg) = handle_response_mql(mql_form, old_mql, old_modified_on)
-    if thisreadonly != None: readonly = thisreadonly
-    if thiskind != None: kind = thiskind
-    if thismsg != None: msg = thismsg
-    mql_record = db.queries[record_id]
-
-    return dict(
-        readonly=readonly,
-        kind=kind,
-        msg=msg,
-        form=mql_form,
-        iid=record_id,
-        query=mql_record,
-    )
-
-def show_word(no_controller=True):
-    response.headers['web2py-component-flash']=None
-    record_id = get_record_id()
-    word_form = get_word_form(record_id)
-    handle_response_word(word_form)
-    word_record = passage_db.lexicon[record_id]
-
-    result_dict = dict(
-        readonly=True,
-        form=word_form,
-        iid=record_id,
-        word=word_record,
-        msg=None,
-    )
-    return result_dict
-
-@auth.requires(lambda: check_query_access_execute())
-def execute_query(record_id):
-    mql_form = get_mql_form(record_id, readonly=False)
-    mql_record = db.queries[record_id]
-    (good, result) = mql(mql_record.mql) 
-    if good:
-        store_monad_sets(record_id, result)
-        mql_record.update_record(executed_on=request.now)
-        (kind, msg) = ('ok', 'Query executed')
-    else:
-        (kind, msg) = ('error', CODE(result))
-    return (kind, msg)
-
-def pagelist(page, pages, spread):
-    factor = 1
-    filtered_pages = {1, page, pages}
-    while factor <= pages:
-        page_base = factor * int(page / factor)
-        filtered_pages |= {page_base + int((i - spread / 2) * factor) for i in range(2 * int(spread / 2) + 1)} 
-        factor *= spread
-    return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
-
-@auth.requires_login()
-def my_queries():
-    if not request.is_local: request.requires_https()
-    grid = SQLFORM.grid(
-        db.queries.created_by == auth.user,
-        fields=[db.queries.name, db.queries.is_published,
-                db.queries.modified_on, db.queries.executed_on],
-        orderby=~db.queries.modified_on,
-        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
-        headers={
-            'queries.is_published': 'Public',
-            'queries.executed_on': 'Last Run',
-            'queries.modified_on': 'Modified',
-        },
-        selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
-        editable=True,
-        details=False,
-        create=True,
-        links=[
-            dict(
-                header='view',
-                body=lambda row: A(
-                    SPAN(_class='icon info-sign icon-info-sign'),
-                    SPAN('', _class='buttontext button', _title='View'),
-                    _class='button btn',
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
-                ) 
-            ),
-            #dict(
-            #    header='edit',
-            #    body=lambda row: A(
-            #        SPAN(_class='icon pen icon-pencil'),
-            #        SPAN('', _class='buttontext button', _title='Edit'),
-            #        _class='button btn',
-            #        _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=row.id)),
-            #    ),
-            #),
-        ],
-        showbuttontext=False,
-        paginate=20,
-        csv=False,
-    )
-
-    if 1 in grid:
-        grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
-    return locals()
-
-def public_queries():
-    grid = SQLFORM.grid(
-        db.queries.is_published == True,
-        fields=[db.queries.id, db.queries.name ,db.queries.modified_by, db.queries.created_on,
-                db.queries.modified_on, db.queries.executed_on],
-        orderby=~db.queries.modified_on,
-        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
-        headers={
-            'queries.executed_on': 'Last Run',
-            'queries.modified_on': 'Modified',
-        },
-        editable=False,
-        deletable=False,
-        details=False,
-        create=False,
-        links_placement='left',
-        links=[
-            dict(
-                header='View',
-                body=lambda row: A(
-                    row.name,
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
-                ) 
-            ),
-        ],
-        paginate=20,
-        csv=False,
-    )
-    return locals()
-
-@auth.requires_login()
-def delete_multiple():
-    if not request.is_local: request.requires_https()
-    if request.vars.id is not None:
-        for id in request.vars.id:
-            db(db.queries.id == id).delete()
-
-    response.flash = "deleted " + str(request.vars.id)
-    redirect(URL('my_queries'))
 
