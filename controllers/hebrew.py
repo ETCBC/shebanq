@@ -11,7 +11,7 @@ from mql import mql
 #from shemdros import MqlResource, RemoteException
 
 RESULT_PAGE_SIZE = 20
-EXPIRE = 0
+EXPIRE = None
 
 def csv(data): # converts an data structure of rows and fields into a csv string, with proper quotations and escapes
     result = []
@@ -241,17 +241,18 @@ def word():
     request.vars['iid'] = request.vars.id
     return text()
 
+@cache.action(time_expire=3600*24, cache_model=cache.ram, quick='VP')
 def text():
     session.forget(response)
-    books_data = passage_db.executesql('''
+    books_data = cache.ram('books', lambda:passage_db.executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
-    ''')
+    '''), time_expire=EXPIRE)
 
     books_order = [x[0] for x in books_data]
     books = dict(x for x in books_data)
-    viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
+    #viewsettings = cache.ram('viewsettings', Viewsettings, time_expire=EXPIRE)
     return dict(
-        viewsettings=viewsettings,
+        viewsettings=Viewsettings(),
         colorpicker=colorpicker,
         legend=legend,
         booksorder=json.dumps(books_order),
