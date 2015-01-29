@@ -8,7 +8,6 @@ from itertools import groupby
 
 from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_fields
 from mql import mql
-#from shemdros import MqlResource, RemoteException
 
 # Note on caching
 #
@@ -73,9 +72,10 @@ def material():
     tp = request.vars.tp
     iid = int(request.vars.iid) if request.vars.iid else None
     page = int(request.vars.page) if request.vars.page else 1
-    #print 'CACHE ACCES: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
+    mrrep = 'm' if mr == 'm' else qw
+    #print 'CACHE ACCES: verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return cache.ram(
-        'verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        'verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
         lambda: material_c(mr, qw, bk, iid, ch, page, tp), time_expire=None,
     )
 
