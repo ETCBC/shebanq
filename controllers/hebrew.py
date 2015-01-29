@@ -102,6 +102,7 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
         result = dict(
             mr=mr,
             qw=qw,
+            hits=0,
             msg="No chapter selected" if not chapter else None,
             results=len(material.verses) if material else 0,
             pages=1,
@@ -141,6 +142,8 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
                 material=material,
                 monads=json.dumps(monads),
             )
+    else:
+        result = dict()
     #print 'RECOMPUTED: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return response.render(result)
 

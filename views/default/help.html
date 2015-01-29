@@ -99,16 +99,17 @@ where you can view its results and all its details. From here you can also edit 
 <h5>Developing a query</h5>
 <p>You can develop a query from its dedicated page.</p>
 <p><img src="{{=URL('static', 'images/help-query.png')}}"/></p>
-<p>Next to the name field is an <i>Edit info</i> icon (orange circle) by which you can edit the information about your query, including the query itself.
-However, the recommended way of editing the body of your query is by clicking the <i>Edit query</i> icon.
-The page will make space for your query, you can edit and run it in a quick cycle from there.</p>
+<p>There are two edit buttons, the upper one is best for editing metadata, and the lower one is best for editing your query body,
+because it takes you to a screen from where you can repeatedly save en execute your query and inspect the results.</p> 
+<p>When you execute your query, messages will appear right below the <i>Execute</i> button.
+The query will be saved as well.
+If you have changed your query <i>body</i>, saved it, but not executed it, you will get an indication that the currently stored results are outdated.</p>
+<p><b>Hint 2</b>: Queries with outdated results will not show up in the sidebar!</p>
 <p>And, when you are at it, take the opportunity to provide a decent description of your query for the benefit of others.</p>
 <p><img src="{{=URL('static', 'images/help-edit_query.png')}}"/></p>
 <p>By checking the <i>Public</i> checkbox, you indicate that this query may show up in the list of Public Queries and in the sidebar next to
 chapters that contain results of this query.</p>
-<p>When you edit your query, a timestamp will be added. This stamp contains the point in time that the query <i>body</i> was last changed.
-If you merely edit the description or other metadata, this timestamp will not be changed. The timestamp is used to
-determine whether your query results are up to date or outdated. Outdated queries will not show up in the sidebar.</p>
+<p><b>Hint 3</b>: You can export all query results as a comma separated file. More about that below.</p>
 
 <h4>{{=T('Citation and sharing')}}</h4>
 <p>You can cite individual queries and words by means of an <i>url</i>:</p>
