@@ -10,10 +10,42 @@ from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_fields
 from mql import mql
 #from shemdros import MqlResource, RemoteException
 
+# Note on caching
+#
+# We use web2py caching for verse material and for item lists (word lists and query lists).
+#
+# see: http://web2py.com/books/default/chapter/29/04/the-core#cache
+#
+# We also cache the list of bible books and all the static pages.
+# We do not (yet) deliberately manage browser caching.
+# We use the lower-level mechanisms of web2py: cache.ram, and refrain from decorating controllers with @cache or @cache.action,
+# because we have to be selective on which request vars are important for keying the cached items.
+ 
+# For verse material and item lists we cache the rendered view. So we do use response.render(result).
+#
+# Note that what the user sees, is the effect of the javascript in hebrew.js on the html produced by rendered view.
+# So the cached data only has to be indexed by those request vars that select content: mr, qw, book, chapter, item id (iid) and (result) page.
+# I think this strikes a nice balance:
+# (a) these chunks of html are equal for all users that visit such a page, regardless of their view settings
+# (b) these chunks of html are relatively small, only the material of one page.
+# It is tempting to cache the SQL queries, but they fetch large amounts of data, of which only a tiny portion
+# shows up. So it uses a lot of space.
+# If a user examines a query with 1000 pages of results, it is unlikely that she will visit all of them, so it is not worthwhile
+# to keep the results of the one big query in cache all the time.
+# On the other hand, many users look at the first page of query results, and py caching individual pages, the number of times
+# that the big query is exececuted is reduced significantly.
+#
+# Note on correctness: 
+# If a user executes a query, the list of queries associated with a chapter has to be recomputed for all chapters.
+# This means that ALL cached query lists of ALL chapters have to be cleared.
+# So if users are active with executing queries, the caching of query lists is not very useful.
+# But for those periods where nobody executes a query, all users benefit from better response times. 
+
 RESULT_PAGE_SIZE = 20
 
 def text():
     session.forget(response)
+    #print "CACHE ACCESS books"
     books_data = cache.ram(
         'books',
         lambda:passage_db.executesql('''
@@ -36,14 +68,22 @@ def material():
     session.forget(response)
     mr = request.vars.mr
     qw = request.vars.qw
+    bk = request.vars.book
+    ch = request.vars.chapter
     tp = request.vars.tp
+    iid = int(request.vars.iid) if request.vars.iid else None
+    page = int(request.vars.page) if request.vars.page else 1
+    #print 'CACHE ACCES: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
+    return cache.ram(
+        'verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        lambda: material_c(mr, qw, bk, iid, ch, page, tp), time_expire=None,
+    )
+
+def material_c(mr, qw, bk, iid, ch, page, tp):
+    #print 'RECOMPUTING: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     if mr == 'm':
         (book, chapter) = getpassage()
-        material = cache.ram(
-            'verse_material_{}_{}'.format(chapter.id, tp),
-            lambda:(Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None),
-            time_expire=None,
-        )
+        material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None
         result = dict(
             mr=mr,
             qw=qw,
@@ -54,11 +94,9 @@ def material():
             monads=json.dumps([]),
         )
     elif mr == 'r':
-        iid = int(request.vars.iid) if request.vars else None
-        page = int(request.vars.page) if request.vars.page else 1
         if iid == None:
             msg = "No {} selected".format('query' if qw == 'q' else 'word')
-            return dict(
+            result = dict(
                 mr=mr,
                 qw=qw,
                 msg=msg,
@@ -70,45 +108,48 @@ def material():
                 material=None,
                 monads=json.dumps([]),
             )
-        monad_sets = cache.ram(
-            'monad_sets_{}_{}'.format(qw, iid),
-            lambda:(load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)),
-            time_expire=None,
-        )
-        (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
-        material = Verses(passage_db, mr, verses, tp=tp)
-        return dict(
-            mr=mr,
-            qw=qw,
-            msg=None,
-            results=nresults,
-            iid=iid,
-            pages=npages,
-            page=page,
-            pagelist=json.dumps(pagelist(page, npages, 10)),
-            material=material,
-            monads=json.dumps(monads),
-        )
-    return result
+        else:
+            monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+            (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
+            material = Verses(passage_db, mr, verses, tp=tp)
+            result = dict(
+                mr=mr,
+                qw=qw,
+                msg=None,
+                results=nresults,
+                iid=iid,
+                pages=npages,
+                page=page,
+                pagelist=json.dumps(pagelist(page, npages, 10)),
+                material=material,
+                monads=json.dumps(monads),
+            )
+    #print 'RECOMPUTED: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
+    return response.render(result)
 
 def sidem():
     session.forget(response)
     qw = request.vars.qw
+    bk = request.vars.book
+    ch = request.vars.chapter
+    #print 'CACHE ACCES: items_{}:{}_{}'.format(qw, bk, ch)
+    return cache.ram('items_{}:{}_{}'.format(qw, bk, ch), lambda:sidem_c(qw, bk, ch), time_expire=None)
+
+def sidem_c(qw, bk, ch):
+    #print 'RECOMPUTING: items_{}:{}_{}'.format(qw, bk, ch)
     (book, chapter) = getpassage()
     if qw == 'q':
         monadsets = get_monadsets_MySQL(chapter)
         side_items = group_MySQL(monadsets)
     else:
-        side_items = cache.ram(
-            'lexemes_{}'.format(chapter.id),
-            lambda:get_lexemes(chapter),
-            time_expire=None,
-        )
-    return dict(
+        side_items = get_lexemes(chapter)
+    result = dict(
         colorpicker=colorpicker,
         side_items=side_items,
         qw=qw,
     )
+    #print 'RECOMPUTED: items_{}:{}_{}'.format(qw, bk, ch)
+    return response.render(result)
 
 def query():
     request.vars['mr'] = 'r'
@@ -139,11 +180,7 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     filename = '{}_{}.csv'.format('query' if qw == 'q' else 'word', iid)
     hfields = get_fields()
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-    monad_sets = cache.ram(
-        'monad_sets_{}_{}'.format(qw, iid),
-        lambda:(load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)),
-        time_expire=None,
-    )
+    monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
     monads = flatten(monad_sets)
     data = []
     if len(monads):
@@ -640,11 +677,13 @@ def handle_response_word(word_form):
         response.flash = 'form has errors, see details'
 
 def store_monad_sets(iid, rows):
-    cache.ram(
-        'monad_sets_q_{}'.format(iid),
-        None,
-    )
     db.executesql('DELETE FROM monadsets WHERE query_id=' + str(iid) + ';')
+    #print 'CACHE CLEAR: ^verses_q:{}_'.format(iid)
+    #print 'CACHE CLEAR: ^items_q:'
+    # Here we clear stuff that will become invalid because of a (re)execution of a query
+    # and the deleting of previous results and the storing of new results.
+    cache.ram.clear(regex=r'^verses_q:{}_'.format(iid))
+    cache.ram.clear(r'^items_q:')
     nrows = len(rows)
     if nrows == 0: return
 
