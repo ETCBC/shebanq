@@ -39,17 +39,23 @@ from mql import mql
 # This means that ALL cached query lists of ALL chapters have to be cleared.
 # So if users are active with executing queries, the caching of query lists is not very useful.
 # But for those periods where nobody executes a query, all users benefit from better response times. 
+# We cache in ram, but also on disk, in order to retain the cache across restarting the webserver
 
 RESULT_PAGE_SIZE = 20
 
 def text():
     session.forget(response)
     #print "CACHE ACCESS books"
+    ckey = 'books'
     books_data = cache.ram(
-        'books',
-        lambda:passage_db.executesql('''
+        ckey,
+        lambda:cache.disk(
+            ckey,
+            lambda:passage_db.executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
-    '''),
+'''),
+            time_expire=None,
+        ),
         time_expire=None,
     )
 
@@ -74,9 +80,15 @@ def material():
     page = int(request.vars.page) if request.vars.page else 1
     mrrep = 'm' if mr == 'm' else qw
     #print 'CACHE ACCES: verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
+    ckey = 'verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return cache.ram(
-        'verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
-        lambda: material_c(mr, qw, bk, iid, ch, page, tp), time_expire=None,
+        ckey,
+        lambda: cache.disk(
+            ckey,
+            lambda: material_c(mr, qw, bk, iid, ch, page, tp),
+            time_expire=None,
+        ),
+        time_expire=None,
     )
 
 def material_c(mr, qw, bk, iid, ch, page, tp):
@@ -133,7 +145,16 @@ def sidem():
     bk = request.vars.book
     ch = request.vars.chapter
     #print 'CACHE ACCES: items_{}:{}_{}'.format(qw, bk, ch)
-    return cache.ram('items_{}:{}_{}'.format(qw, bk, ch), lambda:sidem_c(qw, bk, ch), time_expire=None)
+    ckey = 'items_{}:{}_{}'.format(qw, bk, ch)
+    return cache.ram(
+        ckey,
+        lambda: cache.disk(
+            ckey,
+            lambda: sidem_c(qw, bk, ch),
+            time_expire=None,
+        ),
+        time_expire=None,
+    )
 
 def sidem_c(qw, bk, ch):
     #print 'RECOMPUTING: items_{}:{}_{}'.format(qw, bk, ch)
@@ -682,8 +703,12 @@ def store_monad_sets(iid, rows):
     #print 'CACHE CLEAR: ^items_q:'
     # Here we clear stuff that will become invalid because of a (re)execution of a query
     # and the deleting of previous results and the storing of new results.
-    cache.ram.clear(regex=r'^verses_q:{}_'.format(iid))
-    cache.ram.clear(r'^items_q:')
+    ckeys = r'^verses_q:{}_'.format(iid)
+    cache.ram.clear(regex=ckeys)
+    cache.disk.clear(regex=ckeys)
+    ckeys = r'^items_q:'
+    cache.ram.clear(regex=ckeys)
+    cache.disk.clear(regex=ckeys)
     nrows = len(rows)
     if nrows == 0: return
 
