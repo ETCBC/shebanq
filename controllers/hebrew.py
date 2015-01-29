@@ -15,7 +15,10 @@ from mql import mql
 #
 # see: http://web2py.com/books/default/chapter/29/04/the-core#cache
 #
-# We also cache the list of bible books and all the static pages.
+# We also cache
+# - the list of bible books
+# - the table of all verse boundaries
+# - all the static pages.
 # We do not (yet) deliberately manage browser caching.
 # We use the lower-level mechanisms of web2py: cache.ram, and refrain from decorating controllers with @cache or @cache.action,
 # because we have to be selective on which request vars are important for keying the cached items.
@@ -112,6 +115,7 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
                 mr=mr,
                 qw=qw,
                 msg=msg,
+                hits=0,
                 results=0,
                 iid=iid,
                 pages=0,
@@ -121,13 +125,14 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
                 monads=json.dumps([]),
             )
         else:
-            monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+            (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
             (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
             material = Verses(passage_db, mr, verses, tp=tp)
             result = dict(
                 mr=mr,
                 qw=qw,
                 msg=None,
+                hits=nmonads,
                 results=nresults,
                 iid=iid,
                 pages=npages,
@@ -201,7 +206,7 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     filename = '{}_{}.csv'.format('query' if qw == 'q' else 'word', iid)
     hfields = get_fields()
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-    monad_sets = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+    (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
     monads = flatten(monad_sets)
     data = []
     if len(monads):
@@ -735,7 +740,8 @@ insert into monadsets (query_id, first_m, last_m) values
         query = ''
 
 def load_monad_sets(iid):
-    return db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
+    monadsets = db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
+    return normalize_ranges(monadsets)
 
 def load_word_occurrences(lexeme_id):
     monads = passage_db.executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
@@ -768,10 +774,19 @@ def normalize_ranges(ranges, fromset=None):
             cur_end = i + 1
         else: cur_end = i + 1
     if cur_end != None: result.append((cur_start, cur_end - 1))
-    return result
+    return (len(covered), result)
 
 def get_pagination(p, monad_sets, iid):
-    verse_boundaries = passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;')
+    ckey = 'verse_boundaries'
+    verse_boundaries = cache.ram(
+        ckey,
+        lambda: cache.disk(
+            ckey,
+            lambda: passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;'),
+            time_expire=None,
+        ),
+        time_expire=None,
+    )
     m = 0 # monad range index, walking through monad_sets
     v = 0 # verse id, walking through verse_boundaries
     nvp = 0 # number of verses added to current page

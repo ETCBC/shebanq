@@ -6,6 +6,8 @@
 {{
 pagelb = 'pages' if pages != 1 else 'page'
 verselb = 'verses' if results != 1 else 'verse'
+hitlb = 'hits' if hits != 1 else 'hit'
+occlb = 'occurrences' if hits != 1 else 'occurrence'
 }}
 {{if mr == 'm':}}
     <p>{{=results}} verses</p>
@@ -16,7 +18,7 @@ verselb = 'verses' if results != 1 else 'verse'
         {{elif page > pages:}}
     <p>No result page {{=page}} (only {{=pages}} result {{=pagelb}})</p>
         {{else:}}
-    <p>{{=pages}} {{=pagelb}} with {{=results}} {{=verselb}}<p>
+    <p>{{=hits}} {{=hitlb}} in {{=results}} {{=verselb}} on {{=pages}} {{=pagelb}}<p>
         {{pass}}
     {{elif qw == 'w':}}
         {{if page == 0:}}
@@ -24,7 +26,7 @@ verselb = 'verses' if results != 1 else 'verse'
         {{elif page > pages:}}
     <p>No result page {{=page}} (only {{=pages}} result {{=pagelb}})</p>
         {{else:}}
-    <p>{{=pages}} {{=pagelb}} with {{=results}} {{=verselb}}</p>
+    <p>{{=hits}} {{=occlb}} in {{=results}} {{=verselb}} on {{=pages}} {{=pagelb}}<p>
         {{pass}}
     {{pass}}
 {{pass}}
