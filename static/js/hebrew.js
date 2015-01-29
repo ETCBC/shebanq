@@ -240,9 +240,9 @@ the origin must be an object which has a member indicating the type of origin an
         if (code == '1a') { /* highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
                 This is simple coloring, using a single color.
             */
-            if (active != 'hlcustom') {
+            /*if (active != 'hlcustom') {
                 this.vs.hstatesv(qw, {active: 'hlcustom'})
-            }
+            }*/
             var iid = origin.iid
             var paint = cmap[iid] || defcolor(null, iid)
             if (qw == 'q') {
