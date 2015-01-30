@@ -16,6 +16,16 @@ ncols = 4
 dnrows = 3
 dncols = 4
 
+ccolor_spec = '''
+     0,z0
+     1,z1
+     2,z2
+     5,z3
+    10,z4
+    20,z5
+    21,z6
+'''
+
 vcolor_spec = '''
     red,#ff0000,#ff0000,1 salmon,#ff6688,#ee7799,1 orange,#ffcc66,#eebb55,1 yellow,#ffff00,#dddd00,1
     green,#00ff00,#00bb00,1 spring,#ddff77,#77dd44,1 tropical,#66ffcc,#55ddbb,1 turquoise,#00ffff,#00eeee,1
@@ -174,6 +184,17 @@ vcolornames = [x[0] for x in vcolor_proto]
 vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
+def make_ccolors():
+    ccolor_proto = [tuple(cc.split(',')) for cc in ccolor_spec.strip().split()]
+    ccolors = []
+    prevl = 0 
+    for (l,z) in ccolor_proto:
+        newl = int(l) + 1
+        for i in range(prevl, newl):
+            ccolors.append(z)
+        prevl = newl 
+    return ccolors
+
 if nrows * ncols != len(vcolornames):
     print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolornames)))
 if dnrows * dncols != len(vdefaultcolors):
@@ -245,6 +266,7 @@ class Viewsettings():
         book_proto = current.request.vars.book
         return '''
 var vcolors = {vcolors}
+var ccolors = {ccolors}
 var vdefaultcolors = {vdefaultcolors}
 var dncols = {dncols}
 var dnrows = {dnrows}
@@ -256,6 +278,7 @@ dynamics()
     vdefaultcolors=json.dumps(vdefaultcolors),
     initstate=json.dumps(self.state),
     vcolors = json.dumps(vcolors),
+    ccolors = json.dumps(make_ccolors()),
     style = json.dumps(style),
     pref = '"{}"'.format(self.pref),
     dncols = dncols,

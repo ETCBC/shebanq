@@ -5,35 +5,35 @@ from gluon.custom_import import track_changes; track_changes(True)
 
 EXPIRE = 3600*24*30
 
-@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='VP')
+@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
 def index():
     session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the ETCBC4 database")
     return response.render(dict())
 
-@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='VP')
+@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
 def about():
     session.forget(response)
     response.title = T("SHEBANQ - about")
     response.subtitle = T("About the ETCBC4 database")
     return response.render(dict())
 
-@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='VP')
+@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
 def help():
     session.forget(response)
     response.title = T("SHEBANQ - help")
     response.subtitle = T("Help for using SHEBANQ")
     return response.render(dict())
 
-@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='VP')
+@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
 def sources():
     session.forget(response)
     response.title = T("SHEBANQ - sources")
     response.subtitle = T("Sources for recreating SHEBANQ")
     return response.render(dict())
 
-@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='VP')
+@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
 def news():
     session.forget(response)
     response.title = T("SHEBANQ - news")

@@ -46,24 +46,15 @@ from mql import mql
 
 RESULT_PAGE_SIZE = 20
 
+def from_cache(ckey, func, expire):
+    #print "CACHE ACCESS {}".format(ckey)
+    return cache.ram(ckey, lambda:cache.disk(ckey, func, time_expire=expire), time_expire=expire)
+
 def text():
     session.forget(response)
     #print "CACHE ACCESS books"
-    ckey = 'books'
-    books_data = cache.ram(
-        ckey,
-        lambda:cache.disk(
-            ckey,
-            lambda:passage_db.executesql('''
-select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
-'''),
-            time_expire=None,
-        ),
-        time_expire=None,
-    )
+    (books, books_order) = from_cache('books', get_books, None)
 
-    books_order = [x[0] for x in books_data]
-    books = dict(x for x in books_data)
     return dict(
         viewsettings=Viewsettings(),
         colorpicker=colorpicker,
@@ -71,6 +62,16 @@ select name, max(chapter_num) from chapter inner join book on chapter.book_id = 
         booksorder=json.dumps(books_order),
         books=json.dumps(books),
     )
+
+def get_books(no_controller=True): # get book information: number of chapters per book
+    #print "RECOMPUTING books"
+    ckey = 'books'
+    books_data = passage_db.executesql('''
+select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
+''')
+    books_order = [x[0] for x in books_data]
+    books = dict(x for x in books_data)
+    return (books, books_order)
 
 def material():
     session.forget(response)
@@ -82,16 +83,11 @@ def material():
     iid = int(request.vars.iid) if request.vars.iid else None
     page = int(request.vars.page) if request.vars.page else 1
     mrrep = 'm' if mr == 'm' else qw
-    #print 'CACHE ACCES: verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
-    ckey = 'verses_{}:{}_{}:{}'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
-    return cache.ram(
-        ckey,
-        lambda: cache.disk(
-            ckey,
-            lambda: material_c(mr, qw, bk, iid, ch, page, tp),
-            time_expire=None,
-        ),
-        time_expire=None,
+    ckey = 'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
+    return from_cache(
+        'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        lambda: material_c(mr, qw, bk, iid, ch, page, tp),
+        None,
     )
 
 def material_c(mr, qw, bk, iid, ch, page, tp):
@@ -122,12 +118,19 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
                 pages=0,
                 page=0,
                 pagelist=json.dumps([]),
+                chart=json.dumps({}),
+                chart_order=json.dumps([]),
                 material=None,
                 monads=json.dumps([]),
             )
         else:
             (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
             (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
+            (chart, chart_order) = from_cache(
+                'chart_{}:{}:'.format(qw, iid),
+                lambda: get_chart(monad_sets),
+                None,
+            )
             material = Verses(passage_db, mr, verses, tp=tp)
             result = dict(
                 mr=mr,
@@ -139,6 +142,8 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
                 pages=npages,
                 page=page,
                 pagelist=json.dumps(pagelist(page, npages, 10)),
+                chart=chart,
+                chart_order=chart_order,
                 material=material,
                 monads=json.dumps(monads),
             )
@@ -152,24 +157,18 @@ def sidem():
     qw = request.vars.qw
     bk = request.vars.book
     ch = request.vars.chapter
-    #print 'CACHE ACCES: items_{}:{}_{}'.format(qw, bk, ch)
-    ckey = 'items_{}:{}_{}'.format(qw, bk, ch)
-    return cache.ram(
-        ckey,
-        lambda: cache.disk(
-            ckey,
-            lambda: sidem_c(qw, bk, ch),
-            time_expire=None,
-        ),
-        time_expire=None,
+    return from_cache(
+        'items_{}:{}_{}:'.format(qw, bk, ch),
+        lambda: sidem_c(qw, bk, ch),
+        None,
     )
 
 def sidem_c(qw, bk, ch):
     #print 'RECOMPUTING: items_{}:{}_{}'.format(qw, bk, ch)
     (book, chapter) = getpassage()
     if qw == 'q':
-        monadsets = get_monadsets_MySQL(chapter)
-        side_items = group_MySQL(monadsets)
+        monad_sets = get_monadsets_MySQL(chapter)
+        side_items = group_MySQL(monad_sets)
     else:
         side_items = get_lexemes(chapter)
     result = dict(
@@ -717,6 +716,9 @@ def store_monad_sets(iid, rows):
     ckeys = r'^items_q:'
     cache.ram.clear(regex=ckeys)
     cache.disk.clear(regex=ckeys)
+    ckeys = r'^chart_q:{}:'.format(iid)
+    cache.ram.clear(regex=ckeys)
+    cache.disk.clear(regex=ckeys)
     nrows = len(rows)
     if nrows == 0: return
 
@@ -743,8 +745,8 @@ insert into monadsets (query_id, first_m, last_m) values
         query = ''
 
 def load_monad_sets(iid):
-    monadsets = db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
-    return normalize_ranges(monadsets)
+    monad_sets = db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
+    return normalize_ranges(monad_sets)
 
 def load_word_occurrences(lexeme_id):
     monads = passage_db.executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
@@ -780,15 +782,10 @@ def normalize_ranges(ranges, fromset=None):
     return (len(covered), result)
 
 def get_pagination(p, monad_sets, iid):
-    ckey = 'verse_boundaries'
-    verse_boundaries = cache.ram(
-        ckey,
-        lambda: cache.disk(
-            ckey,
-            lambda: passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;'),
-            time_expire=None,
-        ),
-        time_expire=None,
+    verse_boundaries = from_cache(
+        'verse_boundaries',
+        lambda: passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;'),
+        None,
     )
     m = 0 # monad range index, walking through monad_sets
     v = 0 # verse id, walking through verse_boundaries
@@ -841,5 +838,42 @@ def get_pagination(p, monad_sets, iid):
 
     verses = verse_ids if p <= cur_page and len(verse_ids) else None
     return (nvt, cur_page if nvt else 0, verses, list(verse_monads))
+
+def get_chart(monad_sets): # get data for a chart of the monadset: organized by book and chapter
+    monads = flatten(monad_sets)
+    data = []
+    chart = {}
+    chart_order = []
+    if len(monads):
+        sql = '''
+select 
+    book.name, chapter.chapter_num
+from word
+inner join word_verse on
+    word_verse.anchor = word.word_number
+inner join verse on
+    verse.id = word_verse.verse_id
+inner join chapter on
+    verse.chapter_id = chapter.id
+inner join book on
+    chapter.book_id = book.id
+where
+    word.word_number in ({monads})
+order by
+    word.word_number
+'''.format(
+            monads=','.join(monads),
+        )
+        data = passage_db.executesql(sql)
+        (books, books_order) = from_cache('books', lambda: get_books(), None)
+        for (b, ch) in data:
+            if b not in chart:
+                chart[b] = [0 for c in range(books[b])]
+            chart[b][int(ch)-1] += 1
+        for b in books_order:
+            if b in chart:
+                chart_order.append(b)
+
+    return (json.dumps(chart), json.dumps(chart_order))
 
 

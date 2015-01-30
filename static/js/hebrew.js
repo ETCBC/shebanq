@@ -112,6 +112,8 @@ var add_hist = true
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
 var edit_side_width = '55%' // the desired width of the sidebar when editing a query body
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
+var chart_width = '360px'
+var chart_cols = 40
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -366,9 +368,9 @@ function Material() { // Object corresponding to everything that controls the ma
     var that = this
     this.name = 'material'
     this.hid = '#'+this.name
-    this.cselect = $('#material_select')
     this.mselect = new MSelect()
     this.pselect = new PSelect()
+    this.cselect = new CSelect()
     this.message = new MMessage()
     this.content = new MContent()
     this.msettings = new MSettings(this.content)
@@ -378,6 +380,7 @@ function Material() { // Object corresponding to everything that controls the ma
     this.apply = function() { // apply viewsettings to current material
         this.mselect.apply()
         this.pselect.apply()
+        this.cselect.apply()
         this.msettings.apply()
     }
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
@@ -397,6 +400,7 @@ function Material() { // Object corresponding to everything that controls the ma
             $.get(material_url+vars, function(html) {
                 var response = $(html)
                 that.pselect.add(response)
+                that.cselect.add(response)
                 that.message.add(response)
                 that.content.add(response)
                 material_fetched[wb.vs.tp()] = true
@@ -411,6 +415,7 @@ function Material() { // Object corresponding to everything that controls the ma
         wb.sidebars.after_material_fetch()
         if (wb.mr == 'r') {
             this.pselect.apply()
+            this.cselect.apply()
             wb.picker1[wb.qw].adapt(wb.iid, true)
             $('a.vref').click(function() {
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
@@ -498,6 +503,27 @@ function PSelect() { // for result page selection
     }
 }
 
+function CSelect() { // for chart selection
+    var select = '#select_contents_chart'
+    this.name = 'select_chart'
+    this.hid = '#'+this.name
+    this.select = new SelectChart()
+    this.apply = function() { // apply result page selection: fill in headings on the page
+        if (wb.mr == 'r') {
+            this.select.apply()
+            $(this.hid).show()
+        }
+        else {
+            $(this.hid).hide()
+        }
+    }
+    this.add = function(response) { // add the content portion of the response to the content portion of the page
+        if (wb.mr == 'r') {
+            $(select).html(response.find(select).html())
+        }
+    }
+}
+
 function SelectBook() { // book selection
     var that = this
     this.name = 'select_book'
@@ -545,8 +571,7 @@ function SelectItems(up, key) { // both for chapters and for result pages
         this.up.chapters = this
     }
     this.present = function() {
-        other = $(this.other_hid)
-        if (other && other.dialog('instance') && other.dialog('isOpen')) {other.dialog('close')}
+        close_dialog($(this.other_hid))
         $(this.hid).dialog({
             autoOpen: false,
             dialogClass: 'items',
@@ -613,6 +638,114 @@ function SelectItems(up, key) { // both for chapters and for result pages
         else {
             $('.itemnav').each(function() {
                 that.add_item($(this))
+            })
+            $(this.control).show()
+        }
+        this.present()
+    }
+    $(this.control).click(function () {
+        $(that.hid).dialog('open')
+    })
+}
+function SelectChart() { // for the chart of results
+    var that = this
+    this.key = 'chart'
+    this.name = 'select_contents_'+this.key
+    this.hid = '#'+this.name
+    this.control = '#select_control_'+this.key
+    this.present = function() {
+        $(this.hid).dialog({
+            autoOpen: false,
+            dialogClass: 'items',
+            closeOnEscape: true,
+            modal: false,
+            title: that.key+' for '+style[wb.qw]['tag'],
+            width: chart_width,
+            position: { my: "right top", at: "left top", of: $('#material') }
+        })
+    }
+    this.gen_html = function() { // generate a new chart
+        nbooks = 0
+        var booklist = $('#r_chartorder').val()
+        var bookdata = $('#r_chart').val()
+        if (booklist) {
+            booklist = $.parseJSON(booklist)
+            bookdata = $.parseJSON(bookdata)
+            nbooks = booklist.length
+        }
+        else {
+            booklist = []
+            bookdata = {}
+        }
+        qw = wb.qw
+        var ht = ''
+        ht += '<p><a id="theitemc" title="back to '+style[qw]['tag']+'" href="#">back</a></p>'
+        ht += '<table class="chart">'
+        var ccl = ccolors.length
+        for (var b in booklist) {
+            var book = booklist[b]
+            chapters = bookdata[book]
+            ht += '<tr><td class="bnm">'+book+'</td><td class="chp"><table class="chp"><tr>'
+            l = 0
+            for (var i=0; i < chapters.length; i++) {
+                if (l == chart_cols) {
+                    ht += '</tr><tr>'
+                    l = 0
+                }
+                chnum = i + 1
+                chres = chapters[i]
+                chres_select = (chres >= ccl)?ccl-1:chres
+                z = ccolors[chres_select]
+                ht += '<td class="'+z+'"><a title="'+chnum+': '+chres+'" class="cnav" href="#" b='+book+' ch="'+chnum+'">&nbsp;</a></td>'
+                l++
+            }
+            ht += '</tr></table></td></tr>'
+        }
+        ht += '</table>'
+        $(this.hid).html(ht)
+        return nbooks
+    }
+    this.add_item = function(item) {
+        var iid = wb.iid
+        var qw = wb.qw
+        item.click(function() {
+            vals = {}
+            vals['book'] = $(this).attr('b')
+            vals['chapter'] = $(this).attr('ch')
+            vals['mr'] = 'm'
+            wb.vs.mstatesv(vals)
+            wb.vs.hstatesv('q', {sel_one: 'white', active: 'hlcustom'})
+            wb.vs.hstatesv('w', {sel_one: 'black', active: 'hlcustom'})
+            var thiscolor = wb.vs.colormap(qw)[iid] || defcolor(null, iid)
+            wb.vs.cstatexx('q')
+            wb.vs.cstatexx('w')
+            vals = {}
+            vals[iid] = thiscolor
+            wb.vs.cstatesv(qw, vals)
+            wb.vs.addHist()
+            wb.go()
+        })
+    }
+    this.apply = function() {
+        var showit = false
+        showit = this.gen_html() > 0 
+        if (!showit) {
+            $(this.control).hide()
+        }
+        else {
+            $('.cnav').each(function() {
+                that.add_item($(this))
+            })
+            var iid = wb.iid
+            var qw = wb.qw
+            $('#theitemc').click(function() {
+                vals = {}
+                vals['iid'] = iid
+                vals['mr'] = 'r'
+                vals['qw'] = qw
+                wb.vs.mstatesv(vals)
+                wb.vs.addHist()
+                wb.go()
             })
             $(this.control).show()
         }
@@ -896,6 +1029,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
 
         $('#theitem').html($('#itemtag').val()+':')
+        $('#theitemc').html('Back to '+style[qw]['tag']+' '+$('#itemtag').val())
     }
     this.apply = function() {
         if (wb.mr == this.mr && (this.mr == 'r' || wb.vs.get(this.qw) == 'v')) {
@@ -1054,7 +1188,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
     })
     selc.click(function() {                 // process a click on the selectbox of the picker
         var was_cust = wb.vs.iscolor(that.qw, that.iid)
-        if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
+        close_dialog(picker)
         if (was_cust) {
             wb.vs.cstatex(that.qw, that.iid)
         }
@@ -1071,7 +1205,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         that.apply(true)
     })
     $('.c'+this.qw+'.'+this.qw+pointer+'>a').click(function() { // process a click on a colored cell of the picker
-        if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
+        close_dialog(picker)
         vals = {}
         vals[that.iid] = $(this).html()
         wb.vs.cstatesv(that.qw, vals)
@@ -1126,7 +1260,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
         })
     })
     $('.c'+this.qw+'.'+this.qw+'one>a').click(function() { // process a click on a colored cell of the picker
-        if (picker.dialog('instance') && picker.dialog('isOpen')) {picker.dialog('close')}
+        close_dialog(picker)
         var current_active = wb.vs.active(that.qw)
         if (current_active != 'hlone' && current_active != 'hlcustom') {
             wb.vs.hstatesv(that.qw, {active: 'hlcustom', sel_one: $(this).html()})
@@ -1275,3 +1409,8 @@ function activate_buttons() {
     wb.material.apply()
     set_edit_width()
 }
+
+function close_dialog(dia) {
+    if (dia && dia.dialog('instance') && dia.dialog('isOpen')) {dia.dialog('close')}
+}
+

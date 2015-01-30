@@ -7,7 +7,7 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<h4>{{=T('Usage')}}</h4>
+<h4>Usage</h4>
 <p>You can <i>browse chapters in the Hebrew Bible</i> and <i>perform advanced queries in the Hebrew database</i>.</p>
 <p>When you read a chapter, you may encounter queries with results in the chapter you are reading.
 These queries are shown in the sidebar, to the left of the material.
@@ -18,20 +18,21 @@ The words show up in the sidebar, and from there you can get to all occurrences 
 Word occurrences are highlighted by coloring the letters themselves.</p>
 <p>You can export the results of a query or the occurrences of a lexeme as a csv file.</p>
 
-<h4>{{=T('The Text')}}</h4>
+<h4>The Text</h4>
 <p>Use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu to choose a book and a chapter.</p>
 <p>The dialog to select a chapter stays in view, until you click it away or press <code>&lt;Esc&gt;</code>.</p>
 
-<h4>{{=T('Queries and Words')}}</h4>
+<h4>Queries and Words</h4>
 <p><img src="{{=URL('static', 'images/help-mainscreen.png')}}"/></p>
 <p>The sidebar contains information related to the chapter you are reading.</p>
 <p>Click <i>show words</i> to get access to a list of all words that occur in this chapter.</p>
 <p>Initially, the list will be empty, but when you click on words in the text, they will show up here.</p>
+<p>By clicking <i>all</i> (see below) you can see the list of all words in the chapter.</p>
 <p>Click <i>show queries</i> to show the list of queries with results in this chapter.
 <p>See <i>Adjusting the view</i> for ways in which you can have the data presented.</p>
 </p>
 
-<h4>{{=T('Adjusting the view')}}</h4>
+<h4>Adjusting the view</h4>
 <p>There are many ways to get to the information you need, to highlight the relevant bits and to hide the rest.</p>
 <p><img src="{{=URL('static', 'images/help-viewsettings.png')}}"/></p>
 <h5>Text or data</h5>
@@ -47,6 +48,7 @@ A legend of this extra data can be called up, which can be used to customize the
 By clicking on the name of a data feature you are taken to a documentation page that explains the feature.
 </dd>
 </dl>
+
 <h5>Highlighting</h5>
 <p>The words and queries in the sidebar can be used to highlight corresponding words in the main text.
 Directly above each list in the sidebar is a row of <i>view controls</i>.</p>
@@ -68,14 +70,34 @@ For words, this control enables you to view the full list of words.</dd>
 </dl>
 
 <h5>List view</h5>
-The sidebar lists offer compact views on the relevant words and queries. You get more information by clicking on the item:
+<p>The sidebar lists offer compact views on the relevant words and queries. You get more information by clicking on the item:
 it will bring you to the corresponding query or word page, where you have access to all information about that item, 
-including its results throughout the whole Hebrew Bible.
+including its results throughout the whole Hebrew Bible.</p>
 <p><img src="{{=URL('static', 'images/help-expand.png')}}"/></p>
-Alternatively, you can just click on the the second part of a list item in the sidebar: the item will expand to show you a bit more information.
-It will collapse by clicking the same bit again.
+<p>Alternatively, you can just click on the the second part of a list item in the sidebar: the item will expand to show you a bit more information.
+It will collapse by clicking the same bit again.</p>
 
-<h4>{{=T('Working with queries')}}</h4>
+<h5>Item view</h5>
+<p>Every word and every query has its own <i>item</i> page. It shows you the metadata of that item and its results or occurrences.</p>
+<p>Using <i>other pages</i>, you can page through all results.</p>
+<p>Using <i>chart</i>, you get a graphical, clickable overview of all results throughout the bible, visualized by book and chapter.</p>
+<p><img src="{{=URL('static', 'images/help-chart.png')}}"/></p>
+<p>Every cell of the chart corresponds to a chapter, and the color indicates how many results there are in that chapter, see the list below.</p>
+<p>By hovering over a cell, you see the chapter number and the number of results in that chapter.</p>
+<p>By clicking on a chapter, your are led to that chapter, where you can see the results in the context of a whole chapter.
+You can always go back to the original query page or word page by using the link at the top of the chart.</p>
+<table>
+<tr><th>color</th><th># results</th></tr>
+<tr><td class="z0">&nbsp</td><td>0</td></tr>
+<tr><td class="z1">&nbsp</td><td>1</td></tr>
+<tr><td class="z2">&nbsp</td><td>2</td></tr>
+<tr><td class="z3">&nbsp</td><td>3-5</td></tr>
+<tr><td class="z4">&nbsp</td><td>6-10</td></tr>
+<tr><td class="z5">&nbsp</td><td>11-20</td></tr>
+<tr><td class="z6">&nbsp</td><td>&lt;20</td></tr>
+</table>
+
+<h4>Working with queries</h4>
 <p>You can view the queries of others, but you can also create your own queries, execute them, and save them.</p>
 
 <h5>Viewing Public Queries</h5>
@@ -111,7 +133,7 @@ If you have changed your query <i>body</i>, saved it, but not executed it, you w
 chapters that contain results of this query.</p>
 <p><b>Hint 3</b>: You can export all query results as a comma separated file. More about that below.</p>
 
-<h4>{{=T('Citation and sharing')}}</h4>
+<h4>Citation and sharing</h4>
 <p>You can cite individual queries and words by means of an <i>url</i>:</p>
 <dl>
 <dt>query</dt>
@@ -139,7 +161,7 @@ If you want to return to your own settings, use the {{=A(T("The Text"), _href=UR
 Then you will return to the passage, query or word you were on before clicking the shared link, and you see your own colors again.
 </p>
 
-<h4>{{=T('Exporting lists')}}</h4>
+<h4>Exporting lists</h4>
 <p>You can export the result list of a query and the list of occurrences of a lexeme.</p>
 <p><img src="{{=URL('static', 'images/help-export.png')}}"/></p>
 <p>If you press the <i>csv</i> button at the top of the query or word description, SHEBANQ collects all results of it, not only those of the page currently shown.
@@ -163,16 +185,5 @@ Again, OpenOffice is recommended, because it lets you make the choice quickly be
 (or to all columns for that matter).<p>
 <p><img src="{{=URL('static', 'images/help-csv.png')}}"/></p>
 
-<h4>{{=T('Problems?')}}</h4>
+<h4>Problems?</h4>
 If you encounter problems, e.g <i>exception while executing query</i>, please report it to <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a>.
-
-{{block right_sidebar}}
-    {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
-
-    <h6>{{=T("Don't know what to do?")}}</h6>
-    <ul class="text">
-      <li>{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
-      <li><a href="http://web2py.com">web2py.com</a></li>
-      <li><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>
-    </ul>
-{{end}}
