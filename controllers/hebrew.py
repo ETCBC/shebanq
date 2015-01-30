@@ -866,13 +866,19 @@ order by
         )
         data = passage_db.executesql(sql)
         (books, books_order) = from_cache('books', lambda: get_books(), None)
-        for (b, ch) in data:
-            if b not in chart:
-                chart[b] = [0 for c in range(books[b])]
-            chart[b][int(ch)-1] += 1
+        #for (b, ch) in data:
+        #    if b not in chart:
+        #        chart[b] = [0 for c in range(books[b])]
+        #    chart[b][int(ch)-1] += 1
+        #for b in books_order:
+        #    if b in chart:
+        #        chart_order.append(b)
+
         for b in books_order:
-            if b in chart:
-                chart_order.append(b)
+            chart[b] = [0 for c in range(books[b])]
+            chart_order.append(b)
+        for (b, ch) in data:
+            chart[b][int(ch)-1] += 1
 
     return (json.dumps(chart), json.dumps(chart_order))
 
