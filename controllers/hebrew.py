@@ -525,12 +525,12 @@ where
 
 def get_iid(no_controller=True):
     # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
-    iid = request.vars.iid
-    if request.vars.iid is not None:
-        if type(request.vars.iid) == list:
-            iid = int(request.vars.iid[0])
+    iid = request.vars.id or request.vars.iid
+    if iid is not None:
+        if type(iid) == list:
+            iid = int(iid[0])
         else:
-            iid = int(request.vars.iid)
+            iid = int(iid)
     return iid
 
 
