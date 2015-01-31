@@ -183,14 +183,14 @@ def query():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'q'
     request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.iid
+    request.vars['iid'] = request.vars.id
     return text()
 
 def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.iid
+    request.vars['iid'] = request.vars.id
     return text()
 
 def csv(data): # converts an data structure of rows and fields into a csv string, with proper quotations and escapes
@@ -866,13 +866,6 @@ order by
         )
         data = passage_db.executesql(sql)
         (books, books_order) = from_cache('books', lambda: get_books(), None)
-        #for (b, ch) in data:
-        #    if b not in chart:
-        #        chart[b] = [0 for c in range(books[b])]
-        #    chart[b][int(ch)-1] += 1
-        #for b in books_order:
-        #    if b in chart:
-        #        chart_order.append(b)
 
         for b in books_order:
             chart[b] = [0 for c in range(books[b])]
