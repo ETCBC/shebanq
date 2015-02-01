@@ -661,7 +661,7 @@ function SelectChart() { // for the chart of results
             modal: false,
             title: that.key+' for '+style[wb.qw]['tag'],
             width: chart_width,
-            position: { my: "right top", at: "left top", of: $('#material') }
+            position: { my: "left top", at: "left top", of: window }
         })
     }
     this.gen_html = function() { // generate a new chart
