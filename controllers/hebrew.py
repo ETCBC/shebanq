@@ -267,6 +267,37 @@ def sidew():
     session.forget(response)
     return show_word()
 
+def dictionary():
+    lan = request.vars.lan
+    letter = request.vars.letter
+    if lan == None: lan = 'hbo'
+    if letter == None: letter = 1488 
+    else: letter = int(letter)
+    return from_cache(
+        'dictionary_page_{}_{}:'.format(lan, letter),
+        lambda: dictionary_page(lan, letter),
+        None,
+    )
+
+def dictionary_page(lan=None, letter=None):
+    (letters, words) = from_cache('dictionary_data', lambda: get_dictionary_data(), None)
+    return response.render(dict(lan=lan, letter=letter, letters=letters, words=words[lan][letter]))
+
+def get_dictionary_data():
+    ddata = passage_db.executesql('''
+select id, entry_heb, entryid_heb, lan, gloss from lexicon
+order by lan, entryid_heb
+''')
+    letters = dict(arc=[], hbo=[])
+    words = dict(arc={}, hbo={})
+    for (id, e, eid, lan, gloss) in ddata:
+        letter = ord(e[0])
+        if letter not in words[lan]:
+            letters[lan].append(letter)
+            words[lan][letter] = []
+        words[lan][letter].append((e, id, eid, gloss))
+    return (letters, words)
+
 @auth.requires_login()
 def my_queries():
     if not request.is_local: request.requires_https()

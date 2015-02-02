@@ -55,6 +55,7 @@ response.menu = [
         (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
         (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
     )),
+    (T('Words'), False, URL('hebrew', 'dictionary'), []),
     (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Help'), False, '', (
         ('About', False, URL('default', 'about'), []),

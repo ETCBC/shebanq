@@ -18,18 +18,34 @@ The words show up in the sidebar, and from there you can get to all occurrences 
 Word occurrences are highlighted by coloring the letters themselves.</p>
 <p>You can export the results of a query or the occurrences of a lexeme as a csv file.</p>
 
+<h4><a name="queries_and_words">Queries and words</a></h4>
+<p><img src="{{=URL('static', 'images/help-query-menu.png')}}"/></p>
+<p>You can view a list of the queries that users have created in SHEBANQ by using the menu item <i>Queries</i>.
+They are divided in <i>public queries</i> and <i>my queries</i>.
+See <a href="#working_with_queries">Working with Queries</a> for more information.</p>
+<p><img src="{{=URL('static', 'images/help-word-menu.png')}}"/></p>
+<p>You can view a inventory (a.k.a. lexicon) of the words that occur in the Hebrew Bible by using the menu item <i>Words</i>.
+The lexicon is divided in one for Hebrew words (hbo) and one for Aramaic words (arc).
+When you click on a word, you are taken to an item page dedicated to that word, where you can get more information about it.
+From there you can get an overview of all occurrences of that word in the Hebrew Bible.
+See <a href="#item_view">Item View</a> for more information.</p>
+ 
 <h4><a name="the_text">The Text</a></h4>
-<p>Use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu to choose a book and a chapter.</p>
-<p>The dialog to select a chapter stays in view, until you click it away or press <code>&lt;Esc&gt;</code>.</p>
+<p>Use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu to show the text of the bible.
+If you have used SHEBANQ before in the same browser, you will be lead to the view where you left off last time.</p>
+<p>You will either see a chapter in the Hebrew Bible, or a list of verses in which the results of the currently selected query occur,
+or the occurrences of the currenlty selected word.</p>
+<p>There are also dialogs to navigate to other chapter and other pages with results; they stay in view until you dismiss them.
+They can be dismissed by pressing <code>&lt;Esc&gt;</code>.</p>
 
 <h4><a name="queries_and_words">Queries and Words</a></h4>
 <p><img src="{{=URL('static', 'images/help-mainscreen.png')}}"/></p>
 <p>The sidebar contains information related to the chapter you are reading.</p>
 <p>Click <i>show words</i> to get access to a list of all words that occur in this chapter.</p>
 <p>Initially, the list will be empty, but when you click on words in the text, they will show up here.</p>
-<p>By clicking <i>all</i> (see below) you can see the list of all words in the chapter.</p>
+<p>By clicking <i>all</i> (see <a href="#highlighting">Highlighting</a>) you can see the list of all words in the chapter.</p>
 <p>Click <i>show queries</i> to show the list of queries with results in this chapter.
-<p>See <i>Adjusting the view</i> for ways in which you can have the data presented.</p>
+<p>See <a href="#adjusting_the_view">Adjusting the view</a> for ways in which you can have the data presented.</p>
 </p>
 
 <h4><a name="adjusting_the_view">Adjusting the view</a></h4>
@@ -63,7 +79,7 @@ Alternatively, you can customize a query color by clicking the select box next t
 In that case the color does not change, but counts as customized.
 Words are treated differently from queries: only <i>customized</i> words show up in the list.
 And in order to customize a word, you just click a word in the text. Clicking it again will uncustomize it.</dd>
-<dt>many</dt><dd>assigns fixed default colors to the queries/words. Everything will be highlighted using this default color,
+<dt>all</dt><dd>assigns fixed default colors to the queries/words. Everything will be highlighted using this default color,
 except for the customized ones, which will be highlighted in the colors you have assigned to them.
 For words, this control enables you to view the full list of words.</dd>
 <dt>X</dt><dd>reset: uncustomize all colors, so you can start with a clean slate.</dd>

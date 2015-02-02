@@ -133,16 +133,25 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.dletter.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio {
+.qhradio,.whradio,.mhradio,.dletter {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
 }
+.isoff {
+    background-color: #fafffa;
+    color: #aaaaaa;
+}
+.ison {
+    background-color: #888888;
+    color: #ffff00;
+}
+
 
 table.hlsettings {
     display: inline-table;
@@ -610,6 +619,50 @@ span.ph_det, span.l_ph_det {
 }
 span.cl_typ, span.l_cl_typ {
     font-weight: bold;
+}
+
+/* DICTIONARY */
+
+.dict {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    text-align: right;
+    font-size: large;
+}
+td.d {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    text-align: right;
+    width: 100px;
+}
+a.d {
+    color: #000000;
+}
+p.d {
+    text-align: right;
+}
+.dletterh {
+    text-align: right;
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: xx-large;
+    margin-bottom: 0pt;
+    margin-top: 0pt;
+}
+.dletter {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: 0pt;
+    margin-top: 0pt;
+}
+.dlanh {
+    text-align: right;
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+}
+span.dgl {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: x-small;
+    color: #dd0000;
 }
 
 /* CHART */
