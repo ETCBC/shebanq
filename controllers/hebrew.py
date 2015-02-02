@@ -46,13 +46,17 @@ from mql import mql
 
 RESULT_PAGE_SIZE = 20
 
+CACHING = True
+
 def from_cache(ckey, func, expire):
-    #print "CACHE ACCESS {}".format(ckey)
-    return cache.ram(ckey, lambda:cache.disk(ckey, func, time_expire=expire), time_expire=expire)
+    if CACHING:
+        result = cache.ram(ckey, lambda:cache.disk(ckey, func, time_expire=expire), time_expire=expire)
+    else:
+        result = func()
+    return result
 
 def text():
     session.forget(response)
-    #print "CACHE ACCESS books"
     (books, books_order) = from_cache('books', get_books, None)
 
     return dict(
@@ -64,7 +68,6 @@ def text():
     )
 
 def get_books(no_controller=True): # get book information: number of chapters per book
-    #print "RECOMPUTING books"
     ckey = 'books'
     books_data = passage_db.executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
@@ -91,7 +94,6 @@ def material():
     )
 
 def material_c(mr, qw, bk, iid, ch, page, tp):
-    #print 'RECOMPUTING: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     if mr == 'm':
         (book, chapter) = getpassage()
         material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None
@@ -149,7 +151,6 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
             )
     else:
         result = dict()
-    #print 'RECOMPUTED: verses_{}:{}_{}:{}'.format(mr, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return response.render(result)
 
 def sidem():
@@ -164,7 +165,6 @@ def sidem():
     )
 
 def sidem_c(qw, bk, ch):
-    #print 'RECOMPUTING: items_{}:{}_{}'.format(qw, bk, ch)
     (book, chapter) = getpassage()
     if qw == 'q':
         monad_sets = get_monadsets_MySQL(chapter)
@@ -176,21 +176,20 @@ def sidem_c(qw, bk, ch):
         side_items=side_items,
         qw=qw,
     )
-    #print 'RECOMPUTED: items_{}:{}_{}'.format(qw, bk, ch)
     return response.render(result)
 
 def query():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'q'
     request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.id
+    request.vars['iid'] = request.vars.id or request.vars.iid
     return text()
 
 def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.id
+    request.vars['iid'] = request.vars.id or request.vars.iid
     return text()
 
 def csv(data): # converts an data structure of rows and fields into a csv string, with proper quotations and escapes
@@ -238,7 +237,7 @@ order by
 
 def sideqm():
     session.forget(response)
-    iid = request.vars.iid
+    iid = request.vars.iid or request.vars.id
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
         vars=dict(mr='r', qw='q', iid=iid),
         ajax=False, ajax_trap=True, target='querybody', 
@@ -247,7 +246,7 @@ def sideqm():
 
 def sidewm():
     session.forget(response)
-    iid = request.vars.iid
+    iid = request.vars.iid or request.vars.id
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
         vars=dict(mr='r', qw='w', iid=iid),
         ajax=False, ajax_trap=True, target='wordbody', 
@@ -326,15 +325,6 @@ def my_queries():
                     _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
                 ) 
             ),
-            #dict(
-            #    header='edit',
-            #    body=lambda row: A(
-            #        SPAN(_class='icon pen icon-pencil'),
-            #        SPAN('', _class='buttontext button', _title='Edit'),
-            #        _class='button btn',
-            #        _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=row.id)),
-            #    ),
-            #),
         ],
         showbuttontext=False,
         paginate=20,
@@ -572,7 +562,7 @@ def check_query_access_write(iid=get_iid()):
     if iid is not None and iid > 0:
         mql_record = db.queries[iid]
         if mql_record is None:
-            raise HTTP(404, "No write access. Object not found in database. iid=" + str(iid))
+            raise HTTP(404, "No write access. Object not found in database. id=" + str(iid))
         if mql_record.created_by != auth.user.id:
             authorized = False
 
@@ -586,7 +576,7 @@ def check_query_access_execute(iid=get_iid()):
     if iid is not None and iid > 0:
         mql_record = db.queries[iid]
         if mql_record is None:
-            raise HTTP(404, "No execute access. Object not found in database. iid=" + str(iid))
+            raise HTTP(404, "No execute access. Object not found in database. id=" + str(iid))
         if mql_record.created_by == auth.user.id:
             authorized = True
 
@@ -737,8 +727,6 @@ def handle_response_word(word_form):
 
 def store_monad_sets(iid, rows):
     db.executesql('DELETE FROM monadsets WHERE query_id=' + str(iid) + ';')
-    #print 'CACHE CLEAR: ^verses_q:{}_'.format(iid)
-    #print 'CACHE CLEAR: ^items_q:'
     # Here we clear stuff that will become invalid because of a (re)execution of a query
     # and the deleting of previous results and the storing of new results.
     ckeys = r'^verses_q:{}_'.format(iid)

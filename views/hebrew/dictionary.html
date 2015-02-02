@@ -8,7 +8,7 @@ this_language = 'Hebrew' if lan == 'hbo' else 'Aramaic'
 other_language = 'Hebrew' if other_lan == 'hbo' else 'Aramaic'
 gletter = unichr(int(letter))
 rows = 12
-cols = 6
+cols = 5
 tsize = rows * cols
 wsize = len(words)
 ntables = int(wsize / tsize) + (1 if wsize % tsize != 0 else 0)
@@ -52,7 +52,11 @@ for t in tables:
                 nc += 1
                 (word, id, wordid, gloss) = c
 }}
-        <td class="d">{{=A(word, _class='d', _title=u'{} {}'.format(wordid, gloss), _href=URL('hebrew', 'word', vars=dict(mr='r', qw='w', id=id)))}}</td>
+        <td class="d">
+            <a gi="{{=id}}" class="dgl" href="#">{{=gloss or '??'}}</a>
+            <a wi="{{=id}}" class="d" href="{{=URL('hebrew', 'word', vars=dict(mr='r', qw='w', id=id))}}">{{=word}}</a>
+            <a wii="{{=id}}" class="d" href="{{=URL('hebrew', 'word', vars=dict(mr='r', qw='w', id=id))}}">{{=wordid}}</a>
+        </td>
             {{pass}}
         {{pass}}
     </tr>
@@ -84,4 +88,13 @@ for t in tables:
 </td>
 </tr></table>
 {{ end }}
+
+<script type="text/javascript">
+$('[wii]').hide()
+$('[gi]').click(function() {
+    var i = $(this).attr('gi')
+    $('[wi="'+i+'"]').toggle()
+    $('[wii="'+i+'"]').toggle()
+})
+</script>
 

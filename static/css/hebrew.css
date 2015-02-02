@@ -631,10 +631,13 @@ span.cl_typ, span.l_cl_typ {
 td.d {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     text-align: right;
-    width: 100px;
+    width: 140px;
+    margin-bottom: 0pt;
+    margin-top: 0pt;
 }
 a.d {
     color: #000000;
+    text-align: right;
 }
 p.d {
     text-align: right;
@@ -659,7 +662,7 @@ p.d {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     font-weight: bold;
 }
-span.dgl {
+.dgl {
     font-family: Verdana, Arial, sans-serif;
     font-size: x-small;
     color: #dd0000;

@@ -51,12 +51,12 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('default', 'index'), []),
+    (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
+    (T('Words'), False, URL('hebrew', 'dictionary'), []),
     ('Queries', False, '', (
         (T('My Queries'), False, URL('hebrew', 'my_queries'), []),
         (T('Public Queries'), False, URL('hebrew', 'public_queries'), []),
     )),
-    (T('Words'), False, URL('hebrew', 'dictionary'), []),
-    (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Help'), False, '', (
         ('About', False, URL('default', 'about'), []),
         ('SHEBANQ user guide', False, URL('default', 'help'), []),
