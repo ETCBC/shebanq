@@ -475,7 +475,7 @@ td.gl, td.l_gl {
     border-left: 1pt solid #aaaaaa;
     border-right: 1pt solid #aaaaaa;
 }
-td.wd1, td.wd2, td.l_wd1, td.l_wd2 {
+td.wd1, td.wd2, td.wd3, td.l_wd1, td.l_wd2, td.l_wd3 {
     text-align: right;
     direction: ltr;
     height: 12pt;
@@ -583,8 +583,10 @@ span.n {
     font-size: small;
     color: #888888;
 }
-span.wd1_lang, span.l_wd1_lang, #lexicon_lan__row .w2p_fw {
+span.a {
     font-style: italic;
+}
+span.wd1_lang, span.l_wd1_lang, #lexicon_lan__row .w2p_fw {
     font-size: small;
     color: #0000ff;
 }
@@ -607,6 +609,12 @@ span.wd2_person, span.l_wd2_person {
     font-weight: bold;
     color: #aaaa00;
 }
+span.wd3_nme, span.wd3_prs, span.wd3_uvf, span.l_wd3_nme, span.l_wd3_prs, span.l_wd3_uvf  {
+    color: #22aa00;
+}
+span.wd3_pfm, span.wd3_vbe, span.wd3_vbs, span.l_wd3_pfm, span.l_wd3_vbe, span.l_wd3_vbs  {
+    color: #0044aa;
+}
 span.wd2_stem, span.l_wd2_stem {
     font-weight: bold;
 }
@@ -614,7 +622,6 @@ span.ph_typ, span.l_ph_typ {
     font-weight: bold;
 }
 span.ph_det, span.l_ph_det {
-    font-style: italic;
     font-size: small;
 }
 span.cl_typ, span.l_cl_typ {

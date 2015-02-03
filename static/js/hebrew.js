@@ -812,7 +812,7 @@ function MSettings(content) {
             closeOnEscape: true,
             modal: false,
             title: 'legend',
-            width: '450px',
+            width: '600px',
         })
     })
     this.apply = function() {

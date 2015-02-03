@@ -37,10 +37,11 @@ field_names = '''
     word_heb word_vlex word_clex word_tran word_lex word_gloss
     word_subpos word_pos word_lang word_number
     word_gender word_gnumber word_person word_state word_tense word_stem
+    word_nme word_pfm word_prs word_uvf word_vbe word_vbs
     subphrase_border subphrase_number subphrase_rela
-    phrase_border phrase_number phrase_function phrase_typ phrase_det
-    clause_border clause_number clause_typ clause_txt
-    sentence_border sentence_number
+    phrase_border phrase_number phrase_atom_number phrase_rela phrase_atom_rela phrase_function phrase_typ phrase_det
+    clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_rela clause_typ clause_txt
+    sentence_border sentence_number sentence_atom_number
 '''.strip().split()
 
 hebrewdata_lines_spec = '''
@@ -51,10 +52,11 @@ hebrewdata_lines_spec = '''
     gl:gl=word_gloss=gloss
     wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
-    sp:sp_rela=subphrase_rela=relation,sp_n=subphrase_number=subphrase#
-    ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_n=phrase_number=phrase#
-    cl:cl_dom=clause_txt=domain,cl_typ=clause_typ=type-cl,cl_n=clause_number=clause#
-    sn:sn_n=sentence_number=sentence#
+    wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
+    sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
+    ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_rela=phrase_rela=rela,ph_arela=phrase_atom_rela=rela_a,ph_an=phrase_atom_number=phrase_a#,ph_n=phrase_number=phrase#
+    cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
+    sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
 '''.strip().split()
 hebrewdata_lines = []
 for item in hebrewdata_lines_spec:
@@ -72,10 +74,11 @@ specs = dict(
         gl
         wd1 wd1_subpos wd1_pos wd1_lang wd1_n
         wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
+        wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
         sp sp_rela sp_n
-        ph ph_det ph_fun ph_typ ph_n
-        cl cl_dom cl_typ cl_n
-        sn sn_n
+        ph ph_det ph_fun ph_typ ph_rela ph_arela ph_an ph_n
+        cl cl_txt cl_typ cl_rela cl_tab cl_code cl_an cl_n
+        sn sn_an sn_n
     ''', {'': '''
         v
         v x v
@@ -84,10 +87,11 @@ specs = dict(
         v
         v x v x x
         v v v v v v v
+        x x x v x v x
         v v v
-        v v v v v
-        v v v v
-        v v
+        v v v x x v v v
+        v v v v v v v v
+        v v v
     '''}),
     highlights=('''get active sel_one''', dict(q='x hlcustom grey', w='x hlcustom gray')),
     colormap=('0', dict(q='white', w='black')),
@@ -98,76 +102,189 @@ style = dict(
     m=dict(subtract=250, Tag='Item', tag='item', Tags='Items', tags='items'),
 )
 
-csv_fields_items = '''
-    ht,word_heb hl_hlv,word_vlex hl_hlc,word_clex, tt,word_tran tl,word_lex gl,word_gloss
-    wd1_subpos,word_subpos wd1_pos,word_pos wd1_lang,word_lang wd1_n,word_number
-    wd2_gender,word_gender wd2_gnumber,word_gnumber wd2_person,word_person wd2_state,word_state wd2_tense,word_tense wd2_stem,word_stem
-    sp_rela,subphrase_rela sp_n,subphrase_number
-    ph_det,phrase_det ph_fun,phrase_function ph_typ,phrase_typ ph_n,phrase_number
-    cl_dom,clause_txt cl_typ,clause_typ cl_n,clause_number
-    sn_n,sentence_number
-'''.strip().split()
-csv_fields = [x.split(',') for x in csv_fields_items]
-
 legend_tpl = '''
 <table id="legend" class="il">
-    <tr class="il l_ht"><td class="c l_ht"><input
-    type="checkbox" id="ht" name="ht"/></td><td
-    class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text דְּבַ֥ר</span></a></td></tr>
-    <tr class="il l_hl"><td class="c l_hl"><input
-    type="checkbox" id="hl" name="hl"/></td><td
-    class="il l_hl"><span class="il l_hl_hlv">lexeme</span>&nbsp;&nbsp;<input type="checkbox" id="hl_hlv" name="hl_hlv"/><a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span
-    class="il l_hl_hlv">דָּבָר</span></a>&nbsp;<input type="checkbox" id="hl_hlc" name="hl_hlc"/><a target="_blank" href="{base_doc}/lex_utf8.html"><span
-    class="il l_hl_hlc">דבר/</span></a></td></tr>
-    <tr class="il l_tt"><td class="c l_tt"><input
-    type="checkbox" id="tt" name="tt"/></td><td
-    class="il l_tt"><a target="_blank" href="{base_doc}/g_word.html"><span class="l_tt">text</span></a></td></tr>
-    <tr class="il l_tl"><td class="c l_tl"><input
-    type="checkbox" id="tl" name="tl"/></td><td
-    class="il l_tl"><a target="_blank" href="{base_doc}/g_lex.html"><span class="l_tl">lexeme</span></a></td></tr>
-    <tr class="il l_gl"><td class="c l_gl"><input
-    type="checkbox" id="gl" name="gl"/></td><td
-    class="il l_gl"><a target="_blank" href="{base_doc}/gloss.html"><span class="l_gl">gloss</span></a></td></tr>
-    <tr class="il l_wd1"><td class="c l_wd1"><input
-    type="checkbox" id="wd1" name="wd1"/></td><td
-    class="il l_wd1"><input type="checkbox" id="wd1_subpos" name="wd1_subpos"/><a target="_blank" href="{base_doc}/ls.html"><span
-    class="il l_wd1_subpos">lexical set</span></a>&nbsp;<input type="checkbox" id="wd1_pos" name="wd1_pos"/><a target="_blank" href="{base_doc}/sp.html"><span
-    class="il l_wd1_pos">part-of-speech</span></a>&nbsp;<input type="checkbox" id="wd1_lang" name="wd1_lang"/><a target="_blank" href="{base_doc}/language.html"><span
-    class="il l_wd1_lang">language</span></a>&nbsp;<input type="checkbox" id="wd1_n" name="wd1_n"/><a target="_blank" href="{base_doc}/number.html"><span
-    class="n l_wd1_n">monad#</span></a></td></tr>
-    <tr class="il l_wd2"><td class="c l_wd2"><input
-    type="checkbox" id="wd2" name="wd2"/></td><td
-    class="il l_wd2"><input type="checkbox" id="wd2_gender" name="wd2_gender"/><a target="_blank" href="{base_doc}/gn.html"><span
-    class="il l_wd2_gender">gender</span></a>&nbsp;<input type="checkbox" id="wd2_gnumber" name="wd2_gnumber"/><a target="_blank" href="{base_doc}/nu.html"><span
-    class="il l_wd2_gnumber">number</span></a>&nbsp;<input type="checkbox" id="wd2_person" name="wd2_person"/><a target="_blank" href="{base_doc}/ps.html"><span
-    class="il l_wd2_person">person</span></a>&nbsp;<input type="checkbox" id="wd2_state" name="wd2_state"/><a target="_blank" href="{base_doc}/st.html"><span
-    class="il l_wd2_state">state</span></a>&nbsp;<input type="checkbox" id="wd2_tense" name="wd2_tense"/><a target="_blank" href="{base_doc}/vt.html"><span
-    class="il l_wd2_tense">tense</span></a>&nbsp;<input type="checkbox" id="wd2_stem" name="wd2_stem"/><a target="_blank" href="{base_doc}/vs.html"><span
-    class="il l_wd2_stem">verbal stem</span></a></td></tr>
-    <tr class="il l_sp"><td class="c l_sp"><input
-    type="checkbox" id="sp" name="sp"/></td><td
-    class="il l_sp"><input type="checkbox" id="sp_rela" name="sp_rela"/><a target="_blank" href="{base_doc}/rela.html"><span
-    class="il l_sp_rela">relation</span></a>&nbsp;<input type="checkbox" id="sp_n" name="sp_n"/><a target="_blank" href="{base_doc}/number.html"><span
-    class="n l_sp_n">subphrase#</span></a></td></tr>
-    <tr class="il l_ph"><td class="c l_ph"><input
-    type="checkbox" id="ph" name="ph"/></td><td
-    class="il l_ph"><input type="checkbox" id="ph_det" name="ph_det"/><a target="_blank" href="{base_doc}/det.html"><span
-    class="il l_ph_det">determination</span></a>&nbsp;<input type="checkbox" id="ph_fun" name="ph_fun"/><a target="_blank" href="{base_doc}/function.html"><span
-    class="il l_ph_fun">function</span></a>&nbsp;<input type="checkbox" id="ph_typ" name="ph_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
-    class="il l_ph_typ">type</span></a>&nbsp;<input type="checkbox" id="ph_n" name="ph_n"/><a target="_blank" href="{base_doc}/number.html"><span
-    class="n l_ph_n">phrase#</span></a></td></tr>
-    <tr class="il l_cl"><td class="c l_cl"><input
-    type="checkbox" id="cl" name="cl"/></td><td
-    class="il l_cl"><input type="checkbox" id="cl_dom" name="cl_dom"/><a target="_blank" href="{base_doc}/domain.html"><span
-    class="il l_cl_dom">domain</span></a>&nbsp;<input type="checkbox" id="cl_typ" name="cl_typ"/><a target="_blank" href="{base_doc}/typ.html"><span
-    class="il l_cl_typ">type</span></a>&nbsp;<input type="checkbox" id="cl_n" name="cl_n"/><a target="_blank" href="{base_doc}/number.html"><span
-    class="n l_cl_n">clause#</span></a></td></tr>
-    <tr class="il l_sn"><td class="c l_sn"><input
-    type="checkbox" id="sn" name="sn"/></td><td
-    class="il l_sn"><input type="checkbox" id="sn_n" name="sn_n"/><a target="_blank" href="{base_doc}/number.html"><span
-    class="n l_sn_n">sentence#</span></a></td></tr>
+    <tr class="il l_ht">
+        <td class="c l_ht"><input type="checkbox" id="ht" name="ht"/></td>
+        <td class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text דְּבַ֥ר</span></a></td>
+    </tr>
+
+    <tr class="il l_hl">
+        <td class="c l_hl"><input type="checkbox" id="hl" name="hl"/></td>
+        <td class="il l_hl">
+            <span class="il l_hl_hlv">lexeme</span>&nbsp;&nbsp;
+            <input type="checkbox" id="hl_hlv" name="hl_hlv"/>
+                <a target="_blank" href="{base_doc}/vocalized_lexeme.html"><span class="il l_hl_hlv">דָּבָר</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="hl_hlc" name="hl_hlc"/>
+                <a target="_blank" href="{base_doc}/lex_utf8.html"><span class="il l_hl_hlc">דבר/</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_tt">
+        <td class="c l_tt"><input type="checkbox" id="tt" name="tt"/></td>
+        <td class="il l_tt"><a target="_blank" href="{base_doc}/g_word.html"><span class="l_tt">text</span></a></td>
+    </tr>
+
+    <tr class="il l_tl">
+        <td class="c l_tl"><input type="checkbox" id="tl" name="tl"/></td>
+        <td class="il l_tl"><a target="_blank" href="{base_doc}/g_lex.html"><span class="l_tl">lexeme</span></a></td>
+    </tr>
+
+    <tr class="il l_gl">
+        <td class="c l_gl"><input type="checkbox" id="gl" name="gl"/></td>
+        <td class="il l_gl"><a target="_blank" href="{base_doc}/gloss.html"><span class="l_gl">gloss</span></a></td>
+    </tr>
+
+    <tr class="il l_wd1">
+        <td class="c l_wd1"><input type="checkbox" id="wd1" name="wd1"/></td>
+        <td class="il l_wd1">
+            <input type="checkbox" id="wd1_subpos" name="wd1_subpos"/>
+                <a target="_blank" href="{base_doc}/ls.html"><span class="il l_wd1_subpos">lexical set</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd1_pos" name="wd1_pos"/>
+                <a target="_blank" href="{base_doc}/sp.html"><span class="il l_wd1_pos">part-of-speech</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd1_lang" name="wd1_lang"/>
+                <a target="_blank" href="{base_doc}/language.html"><span class="il l_wd1_lang">language</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd1_n" name="wd1_n"/>
+                <a target="_blank" href="{base_doc}/monads.html"><span class="n l_wd1_n">monad#</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_wd2">
+        <td class="c l_wd2"><input type="checkbox" id="wd2" name="wd2"/></td>
+        <td class="il l_wd2">
+            <input type="checkbox" id="wd2_gender" name="wd2_gender"/>
+                <a target="_blank" href="{base_doc}/gn.html"><span class="il l_wd2_gender">gender</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd2_gnumber" name="wd2_gnumber"/>
+                <a target="_blank" href="{base_doc}/nu.html"><span class="il l_wd2_gnumber">number</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd2_person" name="wd2_person"/>
+                <a target="_blank" href="{base_doc}/ps.html"><span class="il l_wd2_person">person</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd2_state" name="wd2_state"/>
+                <a target="_blank" href="{base_doc}/st.html"><span class="il l_wd2_state">state</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd2_tense" name="wd2_tense"/>
+                <a target="_blank" href="{base_doc}/vt.html"><span class="il l_wd2_tense">tense</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd2_stem" name="wd2_stem"/>
+                <a target="_blank" href="{base_doc}/vs.html"><span class="il l_wd2_stem">verbal stem</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_wd3">
+        <td class="c l_wd3"><input type="checkbox" id="wd3" name="wd3"/></td>
+        <td class="il l_wd3">
+            <input type="checkbox" id="wd3_nme" name="wd3_nme"/>
+                <a target="_blank" href="{base_doc}/nme.html"><span class="il l_wd3_nme">nme</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd3_pfm" name="wd3_pfm"/>
+                <a target="_blank" href="{base_doc}/pfm.html"><span class="il l_wd3_pfm">pfm</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd3_prs" name="wd3_prs"/>
+                <a target="_blank" href="{base_doc}/prs.html"><span class="il l_wd3_prs">prs</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd3_uvf" name="wd3_uvf"/>
+                <a target="_blank" href="{base_doc}/uvf.html"><span class="il l_wd3_uvf">uvf</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd3_vbe" name="wd3_vbe"/>
+                <a target="_blank" href="{base_doc}/vbe.html"><span class="il l_wd3_vbe">vbe</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd3_vbs" name="wd3_vbs"/>
+                <a target="_blank" href="{base_doc}/vbs.html"><span class="il l_wd3_vbs">vbs</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_sp">
+        <td class="c l_sp"><input type="checkbox" id="sp" name="sp"/></td>
+        <td class="il l_sp">
+            <input type="checkbox" id="sp_rela" name="sp_rela"/>
+                <a target="_blank" href="{base_doc}/rela.html"><span class="il l_sp_rela">rela</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="sp_n" name="sp_n"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n l_sp_n">subphrase#</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_ph">
+        <td class="c l_ph"><input type="checkbox" id="ph" name="ph"/></td>
+        <td class="il l_ph">
+            <input type="checkbox" id="ph_det" name="ph_det"/>
+                <a target="_blank" href="{base_doc}/det.html"><span class="il l_ph_det">determination</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="ph_fun" name="ph_fun"/>
+                <a target="_blank" href="{base_doc}/function.html"><span class="il l_ph_fun">function</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="ph_typ" name="ph_typ"/>
+                <a target="_blank" href="{base_doc}/typ.html"><span class="il l_ph_typ">type</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="ph_rela" name="ph_rela"/>
+                <a target="_blank" href="{base_doc}/rela.html"><span class="il l_ph_rela">rela</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="ph_arela" name="ph_arela"/>
+                <a target="_blank" href="{base_doc}/rela.html"><span class="a il l_ph_arela">rela_a</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="ph_an" name="ph_an"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n a il l_ph_an">phrase_a#</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="ph_n" name="ph_n"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n l_ph_n">phrase#</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_cl">
+        <td class="c l_cl"><input type="checkbox" id="cl" name="cl"/></td>
+        <td class="il l_cl">
+            <input type="checkbox" id="cl_txt" name="cl_txt"/>
+                <a target="_blank" href="{base_doc}/txt.html"><span class="il l_cl_txt">txt</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_typ" name="cl_typ"/>
+                <a target="_blank" href="{base_doc}/typ.html"><span class="il l_cl_typ">type</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_rela" name="cl_rela"/>
+                <a target="_blank" href="{base_doc}/rela.html"><span class="il l_cl_rela">rela</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_tab" name="cl_tab"/>
+                <a target="_blank" href="{base_doc}/tab.html"><span class="il a l_cl_tab">tab</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_code" name="cl_code"/>
+                <a target="_blank" href="{base_doc}/code.html"><span class="il a l_cl_code">code</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_an" name="cl_an"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n a il l_cl_an">clause_a#</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_n" name="cl_n"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n l_cl_n">clause#</span></a>
+        </td>
+    </tr>
+
+    <tr class="il l_sn">
+        <td class="c l_sn"><input type="checkbox" id="sn" name="sn"/></td>
+        <td class="il l_sn">
+            <input type="checkbox" id="sn_an" name="sn_an"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n a il l_sn_an">sentence_a#</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="sn_n" name="sn_n"/>
+                <a target="_blank" href="{base_doc}/number.html"><span class="n l_sn_n">sentence#</span></a>
+        </td>
+    </tr>
 </table>
 '''
+
+text_tpl = u'''<table class="il c">
+    <tr class="il ht">
+        <td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td>
+    </tr>
+    <tr class="il hl">
+        <td class="il hl"><span l="{lexicon_id}" class="il hl_hlv">{word_vlex}</span>&nbsp;&nbsp;<span l="{lexicon_id}" class="il hl_hlc">{word_clex}</span></td>
+    </tr>
+    <tr class="il tt">
+        <td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td>
+    </tr>
+    <tr class="il tl">
+        <td class="il tl"><span l="{lexicon_id}" class="tl">{word_lex}</span></td>
+    </tr>
+    <tr class="il gl">
+        <td class="il gl"><span class="gl">{word_gloss}</span></td>
+    </tr>
+    <tr class="il wd1">
+        <td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td>
+    </tr>
+    <tr class="il wd2">
+        <td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td>
+    </tr>
+    <tr class="il wd3">
+        <td class="il wd3"><span class="il wd3_nme">{word_nme}</span>&nbsp;<span class="il wd3_pfm">{word_pfm}</span>&nbsp;<span class="il wd3_prs">{word_prs}</span>&nbsp;<span class="il wd3_uvf">{word_uvf}</span>&nbsp;<span class="il wd3_vbe">{word_vbe}</span>&nbsp;<span class="il wd3_vbs">{word_vbs}</span></td>
+    </tr>
+    <tr class="il sp">
+        <td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td>
+    </tr>
+    <tr class="il ph">
+        <td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="il ph_rela">{phrase_rela}</span>&nbsp;<span class="a il ph_arela">{phrase_atom_rela}</span>&nbsp;<span class="n a ph_an">{phrase_atom_number}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td>
+    </tr>
+    <tr class="il cl">
+        <td class="il cl {clause_border}"><span class="il cl_txt">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="il cl_rela">{clause_rela}</span>&nbsp;<span class="a cl_tab">{clause_atom_tab}</span>&nbsp;<span class="a cl_code">{clause_atom_code}</span>&nbsp;<span class="n a cl_an">{clause_atom_number}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td>
+    </tr>
+    <tr class="il sn">
+        <td class="il sn {sentence_border}"><span class="n a sn_an">{sentence_atom_number}</span>&nbsp;<span class="n sn_n">{sentence_number}</span></td>
+    </tr>
+</table>'''
 
 settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
 for group in specs:
@@ -284,20 +401,6 @@ dynamics()
     dncols = dncols,
     dnrows = dnrows,
 )
-
-text_tpl = u'''<table class="il c">
-    <tr class="il ht"><td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td></tr>
-    <tr class="il hl"><td class="il hl"><span l="{lexicon_id}" class="il hl_hlv">{word_vlex}</span>&nbsp;<span l="{lexicon_id}" class="il hl_hlc">{word_clex}</span></td></tr>
-    <tr class="il tt"><td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td></tr>
-    <tr class="il tl"><td class="il tl"><span l="{lexicon_id}" class="tl">{word_lex}</span></td></tr>
-    <tr class="il gl"><td class="il gl"><span class="gl">{word_gloss}</span></td></tr>
-    <tr class="il wd1"><td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td></tr>
-    <tr class="il wd2"><td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td></tr>
-    <tr class="il sp"><td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td></tr>
-    <tr class="il ph"><td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td></tr>
-    <tr class="il cl"><td class="il cl {clause_border}"><span class="il cl_dom">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td></tr>
-    <tr class="il sn"><td class="il sn {sentence_border}"><span class="n sn_n">{sentence_number}</span></td></tr>
-</table>'''
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
 
