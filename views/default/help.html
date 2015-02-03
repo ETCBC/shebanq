@@ -3,258 +3,82 @@
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
 
-{{if 'message' in globals():}}
-<h3>{{=message}}</h3>
-{{pass}}
-
 <hr/>
-<h1><a name="usage">Usage</a></h1>
-<p>SHEBANQ helps you do research in the Hebrew Bible.
-Syntactic search is a craft which can be learned by looking at good examples, reading documentation, and trying out yourself.
-We offer you tools for the following functions:</p>
+<h1><a name="usage">Summary</a></h1>
 <dl>
-<dt>read the text, view the data:</dt>
-<dd>the Hebrew Bible in the Leningrad version,
-and then coded into the
-<a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>4 database,
-and then
-<a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71">archived</a>
-at <a target="_blank" href="http://www.dans.knaw.nl">DANS</a>.</dd>
-<dt>look up words:</dt>
-<dd>see all occurrences in verse and chapter context.</dd>
-<dt>query for syntactical patterns:</dt>
-<dd>see all results in verse and chapter context.</dd>
-<dt>share queries:</dt>
-<dd><ul>
-<li>create, save, publish, share queries;</li>
-<li>refer to published queries by means of permanent urls;</li>
-<li>view and study other people's queries.</li>
-</ul></dd>
-<dt>export data:</dt>
-<dd>export the results of queries and the occurrences of words as spreadsheet files, including their underlying data.</dd>
-<dt>consult documentation:</dt>
-<dd>look up the meanings of the syntactic features as constructed by the 
-<a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>.
+<dt><a href="#the_text">The Text</a></dt>
+<dt><a href="#words">Words</a></dt>
+<dt><a href="#queries">Queries</a></dt>
+<dt><a href="#data">Data</a></dt>
+<dt><a href="#context_view">Context View</a></dt>
+<dt><a href="#word_highlights">Word Highlights</a></dt>
+<dt><a href="#query_highlights">Query Highlights</a></dt>
+<dt><a href="#single_word_view">Single Word View</a></dt>
+<dt><a href="#single_query_view">Single Query View</a></dt>
+<dt><a href="#working_with_queries">Working with Queries</a></dt>
+<dt><a href="#executing_queries">Executing Queries</a></dt>
+<dt><a href="#charts">Charts</a></dt>
+<dt><a href="#export_data">Export Data</a></dt>
+<dt><a href="#citation">Citation</a></dt>
+<dt><a href="#support">Support</a></dt>
 </dl>
-<h1><a name="presentation">Presentation</a></h1>
-<p>SHEBANQ tries to put all the information you need at your finger tips.</p>
-<p>When you read a chapter, you may encounter queries with results in the chapter you are reading.
-These queries are shown in the sidebar, to the left of the material.
-You can investigate them, see their results, and switch back and forth between chapter and results.</p>
-<p>You can also click on any word in the text, by which all occurrences get marked.
-These words then show up in the sidebar.
-You can read extra information about them, see their occurrences, and switch back and forth between chapter and occurrences.</p>
-<p>You can assign colors to words and queries:</p>
-<ul>
-<li><i>query results</i> are highlighted by coloring the <i>background of words</i>;</li>
-<li><i>word occurrences</i> are highlighted by coloring the <i>ink of the letters</i>.</li>
-</ul>
 
-<hr/>
-<h1><a name="queries_and_words">Queries and Words</a></h1>
-<p><img src="{{=URL('static', 'images/help-query-menu.png')}}"/></p>
-<p>You can view a list of the queries that users have created in SHEBANQ by using the menu item <i>Queries</i>.
-They are divided in <i>public queries</i> and <i>my queries</i>.
-See <a href="#working_with_queries">Working with Queries</a> for more information.</p>
-<p><img src="{{=URL('static', 'images/help-word-menu.png')}}"/></p>
-<p>You can view a inventory (a.k.a. lexicon) of the words that occur in the Hebrew Bible by using the menu item <i>Words</i>.
-The lexicon is divided in one for Hebrew words (<code>hbo</code>) and one for Aramaic words (<code>arc</code>).</p>
-When you click on a word or query, you are taken to an item page dedicated to it.
-From here you can get to the metadataq and the results/occurrences.
-See <a href="#item_view">Item View</a> for more information.</p>
- 
 <hr/>
 <h1><a name="the_text">The Text</a></h1>
-<p>Use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu to show the text of the bible.
-If you have used SHEBANQ before in the same browser, you will be lead to the view where you left off last time.</p>
-<p>You will either see a chapter in the Hebrew Bible, or a list of verses in which the results of the currently selected query occur,
-or the occurrences of the currenty selected word.</p>
-<p>There are also dialogs to navigate to other chapters and result pages; they stay in view until you dismiss them.
-They can be dismissed by pressing <code>&lt;Esc&gt;</code>.</p>
+<p><img src="{{=URL('static', 'images/help/help.001.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="queries_and_words_in_context">Queries and Words in context</a></h1>
-<p><img src="{{=URL('static', 'images/help-mainscreen.png')}}"/></p>
-<p>The sidebar contains information related to the chapter you are reading.</p>
-<p>Click <i>show words</i> to get access to a list of all words that occur in this chapter.</p>
-<p>Initially, the list will be hidden, but when you click on words in the text, they will show up here.</p>
-<p>By clicking <i>all</i> (see <a href="#highlighting">Highlighting</a>) you can see unhide all words at once.</p>
-<p>Click <i>show queries</i> to show the list of queries with results in this chapter.
-<p>See <a href="#adjusting_the_view">Adjusting the view</a> for ways in which you can have the data presented.</p>
-</p>
+<h1><a name="words">Words</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.002.jpg')}}"/></p>
+ 
+<hr/>
+<h1><a name="queries">Queries</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.003.jpg')}}"/></p>
+ 
+<hr/>
+<h1><a name="data">Data</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.004.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="adjusting_the_view">Adjusting the view</a></h1>
-<p>There are many ways to get to the information you need.
-You can highlight the relevant bits and hide the rest.</p>
-<p><img src="{{=URL('static', 'images/help-viewsettings.png')}}"/></p>
-<h2><a name="text_or_data">Text or data</a></h2>
-<p>Above the text itself there is a control for how the main text is displayed:</p>
-<dl>
-<dt>text</dt>
-<dd>This displays just the plain Hebrew text.</dd>
-<dt>data</dt>
-<dd>This displays the underlying data of the text.
-It is an interlinear display of word-level features and features at the levels of subphrase, phrase, clause and sentence.
-<p><img src="{{=URL('static', 'images/help-datalegend.png')}}"/></p>
-A legend of this extra data can be called up, which can be used to customize the bits of information that you want to have shown.
-By clicking on the name of a data feature you are taken to a <i>documentation page</i> that explains the feature.
-</dd>
-</dl>
+<h1><a name="context_view">Context View</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.005.jpg')}}"/></p>
 
 <hr/>
-<h2><a name="highlighting">Highlighting</a></h2>
-<p>The words and queries in the sidebar can be used to highlight corresponding words in the main text.
-Directly above each list in the sidebar is a row of <i>view controls</i>.</p>
-<p>Going from right to left there are switches for:</p>
-<dl>
-<dt>off</dt><dd>switch off all highlighting</dd>
-<dt>one</dt><dd>highlight everything with the same color, which can be selected by clicking the color picker to the left;</dd>
-<dt>my</dt><dd>highlight uncustomized queries/words with the same color, as if <i>one</i> has been clicked, and 
-use customized colors otherwise. 
-You customize a color by clicking on the color picker next to the query/word and selecting a color.
-Alternatively, you can customize a query color by clicking the select box next to its color picker.
-In that case the color does not change, but counts as customized.
-Words are treated differently from queries: only <i>customized</i> words show up in the list.
-And in order to customize a word, you just click a word in the text. Clicking it again will uncustomize it.</dd>
-<dt>all</dt><dd>assigns fixed default colors to the queries/words. Everything will be highlighted using this default color,
-except for the customized ones, which will be highlighted in the colors you have assigned to them.
-For words, this control enables you to view the full list of words.</dd>
-<dt>X</dt><dd>reset: uncustomize all colors, so you can start with a clean slate.</dd>
-</dl>
+<h1><a name="word_highlights">Word Highlights</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.006.jpg')}}"/></p>
 
 <hr/>
-<h2><a name="list_view">List view</a></h2>
-<p>The sidebar lists offer compact views on the relevant words and queries. You get more information by clicking on the item:
-it will bring you to the corresponding query or word page, where you have access to all information about that item, 
-including its results throughout the whole Hebrew Bible.</p>
-<p><img src="{{=URL('static', 'images/help-expand.png')}}"/></p>
-<p>Alternatively, you can just click on the the second part of a list item in the sidebar: the item will expand to show you a bit more information.
-It will collapse by clicking the same bit again.</p>
+<h1><a name="query_highlights">Query Highlights</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.007.jpg')}}"/></p>
 
 <hr/>
-<h2><a name="item_view">Item view</a></h2>
-<p>Every word and every query has its own <i>item</i> page. It shows you the metadata of that item and its results or occurrences.</p>
-<p>Using <i>other pages</i>, you can page through all results.</p>
-<p>Using <i>chart</i>, you get a graphical, clickable overview of all results throughout the bible, visualized by book and chapter.</p>
-<p><img src="{{=URL('static', 'images/help-chart.png')}}"/></p>
-<p>Every cell of the chart corresponds to a chapter, and the color indicates how many results there are in that chapter, see the list below.</p>
-<p>By hovering over a cell, you see the chapter number and the number of results in that chapter.</p>
-<p>By clicking on a chapter, your are led to that chapter, where you can see the results in the context of a whole chapter.
-You can always go back to the original query page or word page by using the link at the top of the chart.</p>
-<table>
-<tr><th>color</th><th># results</th></tr>
-<tr><td class="z0">&nbsp</td><td>0</td></tr>
-<tr><td class="z1">&nbsp</td><td>1</td></tr>
-<tr><td class="z2">&nbsp</td><td>2</td></tr>
-<tr><td class="z3">&nbsp</td><td>3-5</td></tr>
-<tr><td class="z4">&nbsp</td><td>6-10</td></tr>
-<tr><td class="z5">&nbsp</td><td>11-20</td></tr>
-<tr><td class="z6">&nbsp</td><td>&lt;20</td></tr>
-</table>
+<h1><a name="single_word_view">Single Word View</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.008.jpg')}}"/></p>
+
+<hr/>
+<h1><a name="single_query_view">Single Query View</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.009.jpg')}}"/></p>
 
 <hr/>
 <h1><a name="working_with_queries">Working with queries</a></h1>
-<p>You can view the queries of others, but you can also create your own queries, execute them, and save them.</p>
-
-<h2><a name="viewing_public_queries">Viewing Public Queries</a></h2>
-<p>The menu <i>Public Queries</i> shows you a list of all public queries in SHEBANQ.
-Some of them you may encounter in the sidebar next to passages where they have results.<p>
-<p>Some queries are <i>outdated</i>, meaning that the query has been saved again after its last execution.
-There is no guarantee that the results of outdated queries match the body of the query.
-Outdated queries are not shown in the sidebars, but they do show up in the list of public queries.</p>
+<p><img src="{{=URL('static', 'images/help/help.010.jpg')}}"/></p>
 
 <hr/>
-<h2><a name="my_queries">My queries</a></h2>
-<p>The menu <i>My Queries</i> shows you a list of all queries that you have created yourself.<p>
-<p>From this list you can view, edit and delete your queries.</p>
-<p><img src="{{=URL('static', 'images/help-create.png')}}"/></p>
-<p>To create a new query, press the plus icon top right (red circle).</p>
-<p><b>Hint 1</b>: fill in the details of the query, but do not run it from here. Instead, save it, go back to <i>My Queries</i>,
-navigate to the new query, and edit it from there, as shown below.</p>
-<p>By clicking the info icon (green circle) you are taken to the page for this query,
-where you can view its results and all its details. From here you can also edit the query instruction and run the query.</p>
-<p>By clicking the edit icon (orange circle) you can edit the information about that query.</p>
+<h1><a name="executing_queries">Executing queries</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.011.jpg')}}"/></p>
 
 <hr/>
-<h2><a name="developing_a_query">Developing a query</a></h2>
-<p>You can develop a query from its dedicated page.</p>
-<p><img src="{{=URL('static', 'images/help-query.png')}}"/></p>
-<p>There are two edit buttons, the upper one is best for editing metadata, and the lower one is best for editing your query body,
-because it takes you to a screen from where you can repeatedly save en execute your query and inspect the results.</p> 
-<p>When you execute your query, messages will appear right below the <i>Execute</i> button.
-The query will be saved as well.
-If you have changed your query <i>body</i>, saved it, but not executed it, you will get an indication that the currently stored results are outdated.</p>
-<p><b>Hint 2</b>: Queries with outdated results will not show up in the sidebar!</p>
-<p>And, when you are at it, take the opportunity to provide a decent description of your query for the benefit of others.</p>
-<p><img src="{{=URL('static', 'images/help-edit_query.png')}}"/></p>
-<p>By checking the <i>Public</i> checkbox, you indicate that this query may show up in the list of Public Queries and in the sidebar next to
-chapters that contain results of this query.</p>
-<p><b>Hint 3</b>: You can export all query results as a comma separated file. More about that below.</p>
+<h1><a name="charts">Charts</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.012.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="citation_and_sharing">Citation and sharing</a></h1>
-<p>You can cite individual queries and words by means of an <i>url</i>:</p>
-<dl>
-<dt>query</dt>
-<dd><code>http://shebanq.ancient-data.org?mr=m&qw=q&id=</code><i>id-of-query</i></dd>
-<dt>word</dt>
-<dd><code>http://shebanq.ancient-data.org?mr=m&qw=w&id=</code><i>id-of-word</i></dd>
-</dl>
-<p><img src="{{=URL('static', 'images/help-cite.png')}}"/></p>
-<p>You can generate these links and more if you are on a page that describes an individual query or word. You find them at the bottom right of
-the window, in the <i>Cite</i> drawer.
-If you are on the page of an individual query or word, you get the option to cite that query or word.
-In any case, you get the option to generate a link to your customized view.
-The link will pop up in a window, and the only thing to do is to copy it to your clipboard (<code>Cmd-C</code> or <code>Ctrl-C</code>) and click <i>OK</i> or press
-<code>Enter</code>.
-Alternatively, you can click the Twitter icon, to start a tweet with the link to your view already pasted in.
-</p>
-<p>Besides a link to your query you can generate a <i>url</i> that reproduces your customized view on a passage,
-query or word including all colors you have assigned to queries and words.
-Your customizations are stored in your browser, in a few <i>cookies</i>.
-Hence if you go to the same page in another browser, you will probably see different colors.
-However, you can share these links through mail or twitter, or bookmark them yourself for usage in another browser, e.g. on your tablet.
-Try for example {{=A(T("Exodus 6"), _target='_blank', _href=URL('hebrew', 'text')+'?qactive=hlcustom&qsel_one=grey&qget=v&wactive=hlcustom&wsel_one=gray&wget=v&chapter=6&qw=q&tp=txt_p&iid=13&book=Exodus&mr=m&page=1&q401=skye&q402=orange&sn_n=v&sp_n=v&cl=v&wd1_lang=x&wd1_subpos=x&wd2_person=v&cl_dom=v&sp_rela=v&gl=v&ph_fun=v&ph_typ=v&cl_typ=v&tt=x&wd2=v&wd1=v&tl=x&wd2_gender=v&ph=v&wd1_pos=v&ph_det=v&wd2_stem=v&wd2_state=v&ht=v&ph_n=v&hl=v&cl_n=v&wd2_gnumber=v&sp=v&wd2_tense=v&wd1_n=x&sn=v&pref=alt')}}.
-If you receive a link to a view from somebody else and click on it, it will not destroy your previous settings. 
-If you want to return to your own settings, use the {{=A(T("The Text"), _href=URL('hebrew', 'text', ))}} menu.
-Then you will return to the passage, query or word you were on before clicking the shared link, and you see your own colors again.
-</p>
+<h1><a name="export_data">Export Data</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.013.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="exporting_lists">Exporting lists</a></h1>
-<p>You can export the result list of a query and the list of occurrences of a lexeme.</p>
-<p><img src="{{=URL('static', 'images/help-export.png')}}"/></p>
-<p>If you press the <i>csv</i> button at the top of the query or word description, SHEBANQ collects all results of it, not only those of the page currently shown.
-It produces a comma separated file, where each row corresponds with an individual result. Each row contains three columns indicating the passage: book name, chapter number
-and verse number.
-The selection of other columns depends on your view settings.</p>
-<p>If you are looking at the plain text, there will be just two other columns: one for the word number and one for the word itself.
-The word number is a unique sequence number for word occurrences throughout the whole bible.
-The word itself is given in Hebrew Unicode characters. The material between this word and the next word is appended as well.
-Usually that will be a space, but it can also be the empty string, or punctuation and additional signs.</p>
-<p>If you are looking at the data view, you will see the features that you have selected by means of the legend.</p>
-<p><b>Hint 1</b> Opening the csv file in <i>Excel</i> might be disappointing.
-The encoding of the csv exports of SHEBANQ is UNICODE/utf-8, and somehow it is difficult to tell Excel to use 
-this encoding. If you are working on the Mac, you will almost surely see garbage. The Mac app <i>Numbers</i> opens the csv file correctly.
-<i>OpenOffice</i> is by far the most versatile on Windows, Mac and Linux and is recommended.</p>
-<p><b>Hint 2</b> The field separation character is <code>,</code> . It might be the case that the regional settings on your computer specify an other character, such as <code>;</code>
-as field separation character.
-In that case you have to tell your program, after opening, to use the comma instead.
-Again, OpenOffice is recommended, because it lets you make the choice quickly before proceeding.</p>
-<p><b>Hint 3</b> You may want to apply a Hebrew font such as <i>Ezra SIL</i> or <i>SBL Hebrew</i> to the columns that contain Hebrew text
-(or to all columns for that matter).<p>
-<p><b>Hint 4</b> If you need to take sentence structure into account, the number columns for words, subphrases, phrase(-atom)s, clause(-atom)s, and
-sentence(-atom)s are particularly useful. Moreover the feature
-<a target="_blank" href="http://shebanq-doc.readthedocs.org/en/latest/features/comments/tab.html">tab</a>
-indicates nesting depth and the feature 
-<a target="_blank" href="http://shebanq-doc.readthedocs.org/en/latest/features/comments/code.html">code</a>
-comprises a wealth of syntactical information in just three digits.
-If your interest is more morphological, checkout the
-<a target="_blank" href="http://shebanq-doc.readthedocs.org/en/latest/texts/wordgrammar.html">morpheme features</a>.
-</p>
-<p><img src="{{=URL('static', 'images/help-csv.png')}}"/></p>
+<h1><a name="citation">Citation</a></h1>
+<p><img src="{{=URL('static', 'images/help/help.014.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="problems?">Problems?</a></h1>
-If you encounter problems, e.g <i>exception while executing query</i>, please report it to <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a>.
+<h1><a name="support">Support</a></h1>
+<p>Please report to <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a>.</p>
