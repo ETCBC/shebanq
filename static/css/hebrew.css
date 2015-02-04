@@ -288,6 +288,22 @@ textarea.mql {
 textarea.small {
     font-size: small;
 }
+textarea.mql_dia {
+    font-family: Menlo, Courier New, Courier, monospace;
+    background-color: white;
+    margin-left: 0em;
+    font-size: medium;
+}
+p.fullcp {
+    text-align: right;
+    margin-top: -0.5em;
+    margin-bottom: -0em;
+}
+p.fullcpx {
+    text-align: right;
+    margin-top: -2em;
+    margin-bottom: -1em;
+}
 td.qname {
     width: 6em;
 }

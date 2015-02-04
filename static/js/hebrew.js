@@ -107,6 +107,8 @@ var view_url, query_url, word_url, material_url, side_url, item_url // urls from
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
+var standard_height // height of canvas
+var mql_small_height = '10em' // height of mql query body in sidebar
 var from_push = false
 var add_hist = true
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
@@ -125,7 +127,7 @@ function dynamics() { // top level function, called when the page has loaded
 }
 
 function set_height() { // the heights of the sidebars are set, depending on the height of the window
-    var standard_height = window.innerHeight - subtract
+    standard_height = window.innerHeight - subtract
     $('#material_txt_p').css('height', standard_height+'px')
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
     $('#side_material_mq').css('max-height', (0.75 * standard_height)+'px')
@@ -1030,6 +1032,53 @@ function SContent(mr, qw) { // the contents of an individual sidebar
 
         $('#theitem').html($('#itemtag').val()+':')
         $('#theitemc').html('Back to '+style[qw]['tag']+' '+$('#itemtag').val())
+        if (this.mr == 'm') {
+            $('.fullc').click(function() {
+                var thisiid = $(this).attr('iid')
+                var area = $('#area_'+thisiid)
+                area.removeClass('mql small')
+                area.addClass('mql_dia')
+                area.css('height', standard_height)
+                var dia = $('#bigq_'+thisiid).dialog({
+                    dialogClass: 'mql_dialog',
+                    closeOnEscape: true,
+                    close: function() {
+                        dia.dialog('destroy')
+                        var area = $('#area_'+thisiid)
+                        area.removeClass('mql_dia')
+                        area.addClass('mql small')
+                        area.css('height', mql_small_height)
+                    },
+                    modal: false,
+                    title: 'mql query body',
+                    position: {my: 'left top', at: 'left top', of: window},
+                    width: '600px',
+                })
+            })
+        }
+        else {
+            $('.fullc').click(function() {
+                var area = $('textarea.mql')
+                area.removeClass('mql')
+                area.addClass('mql_dia')
+                area.css('height', standard_height)
+                var dia = area.closest('div').dialog({
+                    dialogClass: 'mql_dialog',
+                    closeOnEscape: true,
+                    close: function() {
+                        dia.dialog('destroy')
+                        var area = $('textarea.mql_dia')
+                        area.removeClass('mql_dia')
+                        area.addClass('mql')
+                        area.css('height', mql_small_height)
+                    },
+                    modal: false,
+                    title: 'mql query body',
+                    position: {my: 'left top', at: 'left top', of: window},
+                    width: '600px',
+                })
+            })
+        }
     }
     this.apply = function() {
         if (wb.mr == this.mr && (this.mr == 'r' || wb.vs.get(this.qw) == 'v')) {

@@ -613,6 +613,12 @@ def get_mql_form(iid, readonly=False):
         )
     else:
         qedit_link = 'You cannot edit queries created by some one else'
+        qedit_link = P(A(
+            SPAN(_class='icon resize-full icon-resize-full'),
+            _class='ctrl fullc fullcp',
+            _href='#',
+            _id='readq_{}'.format(iid),
+        ), _class='fullcpx')
         medit_link = ''
     mql_form = SQLFORM(db.queries, record=iid, readonly=readonly,
         fields=[

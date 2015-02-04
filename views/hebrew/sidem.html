@@ -47,9 +47,12 @@
         </div>
         <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
         {{if qw == 'q':}}
-            <b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
-            {{=desc}}<br/>
-            <textarea class="mql small" readonly>{{=XML(mql)}}</textarea>
+            <p><b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
+            {{=desc}}</p>
+            <div id="bigq_{{=iid}}" class="bigq">
+                <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
+            </div>
+            <p class="fullcp"><a id="bigqf_{{=iid}}" iid="{{=iid}}" class="ctrl fullc" href="#"><span class="icon resize-full icon-resize-full"></span></a></p>
         {{else:}}
             <p class="txt_il">
             &nbsp;<span class="wd1_pos">{{=pos}}</span>&nbsp;
