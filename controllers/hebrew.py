@@ -183,6 +183,7 @@ def query():
     request.vars['qw'] = 'q'
     request.vars['tp'] = 'txt_p'
     request.vars['iid'] = request.vars.id or request.vars.iid
+    request.vars['page'] = 1
     return text()
 
 def word():
@@ -190,6 +191,7 @@ def word():
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
     request.vars['iid'] = request.vars.id or request.vars.iid
+    request.vars['page'] = 1
     return text()
 
 def csv(data): # converts an data structure of rows and fields into a csv string, with proper quotations and escapes
