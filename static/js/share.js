@@ -41,13 +41,13 @@ jQuery(function(){
         }
         else if (wb.mr == 'r') {
             if (wb.qw == 'q') {
-                var quote_url = view_url+'?mr=r&qw=q&id='+wb.iid
+                var quote_url = query_url+'?id='+wb.iid
                 $('#clipquery').attr('lnk', quote_url)
                 $('#clipquery').show()
                 $('#clipword').hide()
             }
             else {
-                var quote_url = view_url+'?mr=r&qw=w&id='+wb.iid
+                var quote_url = word_url+'?id='+wb.iid
                 $('#clipword').attr('lnk', quote_url)
                 $('#clipquery').hide()
                 $('#clipword').show()

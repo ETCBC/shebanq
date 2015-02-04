@@ -103,7 +103,7 @@ $.cookie.defaults.path = '/'
 
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
-var view_url, material_url, side_url, item_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, query_url, word_url, material_url, side_url, item_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
