@@ -1030,9 +1030,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             set_csv(mr, qw, wb.vs.iid())
         }
 
-        $('#theitem').html($('#itemtag').val()+':')
-        $('#theitemc').html('Back to '+style[qw]['tag']+' '+$('#itemtag').val())
-        if (this.mr == 'm') {
+        $('#theitem').html($('#itemtag').val()+':')                              // fill in the title of the query/word above the verse material
+        $('#theitemc').html('Back to '+style[qw]['tag']+' '+$('#itemtag').val()) // fill in the Back to query/word line in a chart
+        if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
             $('.fullc').click(function() {
                 var thisiid = $(this).attr('iid')
                 var area = $('#area_'+thisiid)
@@ -1056,7 +1056,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 })
             })
         }
-        else {
+        else { // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
             $('.fullc').click(function() {
                 var area = $('textarea.mql')
                 area.removeClass('mql')

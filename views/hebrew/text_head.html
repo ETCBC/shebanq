@@ -1,6 +1,6 @@
 <script type="text/javascript">
-var query_url = "{{=XML(URL('hebrew','query','',host=True))}}"
-var word_url = "{{=XML(URL('hebrew','word','',host=True))}}"
+var query_url = "{{=XML(URL('hebrew','query','',host=True).replace('https://','http://'))}}"
+var word_url = "{{=XML(URL('hebrew','word','',host=True).replace('https://','http://'))}}"
 var view_url = "{{=XML(URL('hebrew', 'text', host=True))}}"
 var material_url = "{{=XML(URL('hebrew', 'material', host=True))}}"
 var side_url = "{{=XML(URL('hebrew', 'side', host=True))}}"
