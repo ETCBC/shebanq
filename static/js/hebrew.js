@@ -110,6 +110,7 @@ var wb      // holds the one and only page object
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 var standard_height // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
+var mql_width = '97%' // height of mql query body in sidebar and in dialog
 var from_push = false
 var add_hist = true
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
@@ -1037,9 +1038,6 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             $('.fullc').click(function() {
                 var thisiid = $(this).attr('iid')
                 var area = $('#area_'+thisiid)
-                area.removeClass('mql small')
-                area.addClass('mql_dia')
-                area.css('height', standard_height)
                 var dia = $('#bigq_'+thisiid).dialog({
                     dialogClass: 'mql_dialog',
                     closeOnEscape: true,
@@ -1055,14 +1053,14 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                     position: {my: 'left top', at: 'left top', of: window},
                     width: '600px',
                 })
+                area.removeClass('mql small')
+                area.addClass('mql_dia')
+                area.css('height', standard_height)
             })
         }
         else { // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
             $('.fullc').click(function() {
                 var area = $('textarea.mql')
-                area.removeClass('mql')
-                area.addClass('mql_dia')
-                area.css('height', standard_height)
                 var dia = area.closest('div').dialog({
                     dialogClass: 'mql_dialog',
                     closeOnEscape: true,
@@ -1078,6 +1076,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                     position: {my: 'left top', at: 'left top', of: window},
                     width: '600px',
                 })
+                area.removeClass('mql')
+                area.addClass('mql_dia')
+                area.css('height', standard_height)
             })
         }
     }
