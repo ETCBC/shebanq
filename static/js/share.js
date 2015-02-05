@@ -32,7 +32,7 @@ jQuery(function(){
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
     })
 	st.click(function(){
-        var shebanq_url_raw = view_url+wb.vs.getvars()+'&pref=alt'
+        var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
         var shebanq_url = encodeURIComponent(shebanq_url_raw)
 	    var twit = 'http://twitter.com/home?status='+title+'%20';
         if (wb.mr == 'm') {
