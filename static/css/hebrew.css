@@ -283,6 +283,7 @@ textarea.mql {
     font-family: Menlo, Courier New, Courier, monospace;
     background-color: white;
     height: 10em;
+    width: 95%;
     margin-left: 0em;
 }
 textarea.small {
@@ -293,6 +294,7 @@ textarea.mql_dia {
     background-color: white;
     margin-left: 0em;
     font-size: medium;
+    width: 95%;
 }
 p.fullcp {
     text-align: right;
