@@ -23,7 +23,8 @@ ccolor_spec = '''
      5,z3
     10,z4
     20,z5
-    21,z6
+    50,z6
+    51,z7
 '''
 
 vcolor_spec = '''

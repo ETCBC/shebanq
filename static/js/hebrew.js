@@ -101,23 +101,29 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
+/* state variables */
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
+var wb      // holds the one and only page object
+
+/* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
 var view_url, material_url, side_url, item_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
-var wb      // holds the one and only page object
+
+/* fixed dimensions, measures, heights, widths, etc */
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 var standard_height // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
 var mql_width = '97%' // height of mql query body in sidebar and in dialog
-var from_push = false
-var add_hist = true
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
 var edit_side_width = '55%' // the desired width of the sidebar when editing a query body
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
-var chart_width = '360px'
-var chart_cols = 40
+var chart_width = '400px' // dialog width for charts
+var chart_cols = 30 // number of chapters in a row in a chart
+
+/* history (making back buttons work, setting the window location to reflect the view state */
+var from_push = false // variable used in maintaining the history
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -574,6 +580,22 @@ function SelectItems(up, key) { // both for chapters and for result pages
     if (this.up) {
         this.up.chapters = this
     }
+    this.prev = $('#prev_'+this.key)
+    this.next = $('#next_'+this.key)
+    this.prev.click(function() {
+        vals = {}
+        vals[that.key] = $(this).attr('contents')
+        wb.vs.mstatesv(vals)
+        wb.vs.addHist()
+        wb.go()
+    })
+    this.next.click(function() {
+        vals = {}
+        vals[that.key] = $(this).attr('contents')
+        wb.vs.mstatesv(vals)
+        wb.vs.addHist()
+        wb.go()
+    })
     this.present = function() {
         close_dialog($(this.other_hid))
         $(this.hid).dialog({
@@ -590,12 +612,14 @@ function SelectItems(up, key) { // both for chapters and for result pages
             var thebook = wb.vs.book()
             var theitem = wb.vs.chapter()
             var nitems = (thebook != 'x')?thebooks[thebook]:0
+            this.lastitem = nitems
             var itemlist = new Array(nitems)
             for  (i = 0; i < nitems; i++) {itemlist[i] = i+1}
         }
         else { // 'page'
             var theitem = wb.vs.page()
             var nitems = $('#rp_pages').val()
+            this.lastitem = nitems
             var itemlist = []
             if (nitems) {
                 itemlist = $.parseJSON($('#rp_pagelist').val())
@@ -644,6 +668,21 @@ function SelectItems(up, key) { // both for chapters and for result pages
                 that.add_item($(this))
             })
             $(this.control).show()
+            thisitem = parseInt(this.key == 'page'?wb.vs.page():wb.vs.chapter())
+            if (thisitem == undefined || thisitem == 1) {
+                this.prev.hide()
+            }
+            else {
+                this.prev.attr('contents', '' + (thisitem - 1))
+                this.prev.show()
+            }
+            if (thisitem == undefined || thisitem == this.lastitem) {
+                this.next.hide()
+            }
+            else {
+                this.next.attr('contents', '' + (thisitem + 1))
+                this.next.show()
+            }
         }
         this.present()
     }
@@ -688,19 +727,26 @@ function SelectChart() { // for the chart of results
         var ccl = ccolors.length
         for (var b in booklist) {
             var book = booklist[b]
-            chapters = bookdata[book]
+            var blocks = bookdata[book]
             ht += '<tr><td class="bnm">'+book+'</td><td class="chp"><table class="chp"><tr>'
             l = 0
-            for (var i=0; i < chapters.length; i++) {
+            for (var i=0; i < blocks.length; i++) {
                 if (l == chart_cols) {
                     ht += '</tr><tr>'
                     l = 0
                 }
-                chnum = i + 1
-                chres = chapters[i]
-                chres_select = (chres >= ccl)?ccl-1:chres
-                z = ccolors[chres_select]
-                ht += '<td class="'+z+'"><a title="'+chnum+': '+chres+'" class="cnav" href="#" b='+book+' ch="'+chnum+'">&nbsp;</a></td>'
+                var block_info = blocks[i]
+                var chnum = block_info[0]
+                var ch_range = block_info[1]+'-'+block_info[2]
+                var blres = block_info[3]
+                var blsize = block_info[4]
+                blres_select = (blres >= ccl)?ccl-1:blres
+                z = ccolors[blres_select]
+                s = ''
+                if (blsize < 25) {s = 's1'}
+                else if (blsize < 75) {s = 's5'}
+
+                ht += '<td class="'+z+' '+s+'"><a title="'+ch_range+': '+blres+'" class="cnav" href="#" b='+book+' ch="'+chnum+'">&nbsp;</a></td>'
                 l++
             }
             ht += '</tr></table></td></tr>'

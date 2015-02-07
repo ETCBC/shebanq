@@ -716,20 +716,24 @@ td.chp {
 }
 table.chp td {
     border: 1pt solid #dde6dd;
-    width: 6px;
+    width: 8px;
     height: 6px;
     line-height: 5px;
     text-align: center;
     padding: 0;
     margin: 0;
 }
+table.chp td.s5 {width: 4px;}
+table.chp td.s1 {width: 2px;}
+
 td.z0 {background-color: #ffffff;}
 td.z1 {background-color: #00ff00;}
 td.z2 {background-color: #ffff00;}
 td.z3 {background-color: #ffcc66;}
 td.z4 {background-color: #ff0000;}
 td.z5 {background-color: #ff00ff;}
-td.z6 {background-color: #000000;}
+td.z6 {background-color: #8800ee;}
+td.z7 {background-color: #000000;}
 
 /* GENERIC */
 

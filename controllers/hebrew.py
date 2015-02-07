@@ -45,6 +45,7 @@ from mql import mql
 # We cache in ram, but also on disk, in order to retain the cache across restarting the webserver
 
 RESULT_PAGE_SIZE = 20
+BLOCK_SIZE = 500
 
 CACHING = True
 
@@ -75,6 +76,70 @@ select name, max(chapter_num) from chapter inner join book on chapter.book_id = 
     books_order = [x[0] for x in books_data]
     books = dict(x for x in books_data)
     return (books, books_order)
+
+def get_blocks(no_controller = True): # get block info: for each monad: to which block it belongs, for each block: book and chapter number of first word.
+# possibly there are gaps between books.
+    book_monads = passage_db.executesql('''
+select name, first_m, last_m from book
+''')
+    chapter_monads = passage_db.executesql('''
+select chapter_num, first_m, last_m from chapter
+''')
+    m = -1
+    cur_blk_f = None
+    cur_blk_size = 0
+    cur_bk_index = 0
+    cur_ch_index = 0
+    (cur_bk, cur_bk_f, cur_bk_l) = book_monads[cur_bk_index]
+    (cur_ch, cur_ch_f, cur_ch_l) = chapter_monads[cur_ch_index]
+    blocks = []
+    block_mapping = {}
+
+    def get_curpos_info(n):
+        (cur_ch, cur_ch_f, cur_ch_l) = chapter_monads[cur_ch_index]
+        chapter_len = cur_ch_l - cur_ch_f + 1
+        fraction = float(n - cur_ch_f) / chapter_len
+        rep = '{}.Z'.format(cur_ch) if n == cur_ch_l else '{}.z'.format(cur_ch) if round(10* fraction) == 10 else '{:0.1f}'.format(cur_ch+fraction)
+        return (cur_ch, rep)
+
+    while True:
+        m += 1
+        if m > cur_bk_l:
+            size = round((float(cur_blk_size) / BLOCK_SIZE) * 100)
+            blocks.append((cur_bk, cur_blk_f, get_curpos_info(m-1), size))
+            cur_blk_size = 0
+            cur_bk_index += 1
+            if cur_bk_index >= len(book_monads):
+                break
+            else:
+                (cur_bk, cur_bk_f, cur_bk_l) = book_monads[cur_bk_index]
+                cur_ch_index += 1
+                (cur_ch, cur_ch_f, cur_ch_l) = chapter_monads[cur_ch_index]
+                cur_blk_f = get_curpos_info(m)
+        if cur_blk_size == BLOCK_SIZE:
+            blocks.append((cur_bk, cur_blk_f, get_curpos_info(m-1), 100))
+            cur_blk_size = 0
+        if m > cur_ch_l:
+            cur_ch_index += 1
+            if cur_ch_index >= len(chapter_monads):
+                break
+            else:
+                (cur_ch, cur_ch_f, cur_ch_l) = chapter_monads[cur_ch_index]
+        if m < cur_bk_f: continue
+        if m < cur_ch_f: continue
+        if cur_blk_size == 0:
+            cur_blk_f = get_curpos_info(m)
+        block_mapping[m] = len(blocks)
+        cur_blk_size += 1
+    #h = open('/Users/dirk/Downloads/blocks.txt', 'w')
+    #for (b, cf, cl, s) in blocks:
+    #    h.write('{} >{} ({}-{}) {}%\n'.format(b, cf[0], cf[1], cl[1], s))
+    #h.close()
+    #h = open('/Users/dirk/Downloads/block_mapping.txt', 'w')
+    #for m in sorted(block_mapping):
+    #    h.write('{} {}\n'.format(m, block_mapping[m]))
+    #h.close()
+    return (blocks, block_mapping)
 
 def material():
     session.forget(response)
@@ -232,7 +297,7 @@ order by
     word.word_number
 '''.format(
             hflist=', '.join('word.{}'.format(hf[0]) for hf in hfields),
-            monads=','.join(monads),
+            monads=','.join(str(x) for x in monads),
         )
         data = passage_db.executesql(sql)
     return dict(filename=filename, data=csv((head_row,)+data))
@@ -445,7 +510,7 @@ def flatten(msets):
     result = set()
     for (b,e) in msets:
         for m in range(b, e+1):
-            result.add(str(m))
+            result.add(m)
     return list(sorted(result))
 
 def getpassage(no_controller=True):
@@ -866,40 +931,30 @@ def get_pagination(p, monad_sets, iid):
     verses = verse_ids if p <= cur_page and len(verse_ids) else None
     return (nvt, cur_page if nvt else 0, verses, list(verse_monads))
 
-def get_chart(monad_sets): # get data for a chart of the monadset: organized by book and chapter
+def get_chart(monad_sets): # get data for a chart of the monadset: organized by book and block
+# return a dict keyed by book, with values lists of blocks 
+# (chapter num, start point, end point, number of results, size)
+
     monads = flatten(monad_sets)
     data = []
     chart = {}
     chart_order = []
     if len(monads):
-        sql = '''
-select 
-    book.name, chapter.chapter_num
-from word
-inner join word_verse on
-    word_verse.anchor = word.word_number
-inner join verse on
-    verse.id = word_verse.verse_id
-inner join chapter on
-    verse.chapter_id = chapter.id
-inner join book on
-    chapter.book_id = book.id
-where
-    word.word_number in ({monads})
-order by
-    word.word_number
-'''.format(
-            monads=','.join(monads),
-        )
-        data = passage_db.executesql(sql)
         (books, books_order) = from_cache('books', lambda: get_books(), None)
+        (blocks, block_mapping) = from_cache('blocks', lambda: get_blocks(), None)
+        results = {}
 
-        for b in books_order:
-            chart[b] = [0 for c in range(books[b])]
-            chart_order.append(b)
-        for (b, ch) in data:
-            chart[b][int(ch)-1] += 1
+        for bl in range(len(blocks)):
+            results[bl] = 0
+        for bk in books_order:
+            chart[bk] = []
+            chart_order.append(bk)
+        for m in monads:
+            results[block_mapping[m]] += 1
+        for bl in range(len(blocks)):
+            (bk, ch_start, ch_end, size) = blocks[bl]
+            r = results[bl]
+            chart[bk].append((ch_start[0], ch_start[1], ch_end[1], r, size))
 
     return (json.dumps(chart), json.dumps(chart_order))
-
 
