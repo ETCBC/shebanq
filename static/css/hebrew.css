@@ -30,13 +30,15 @@ ol.text {
 
 /* MATERIAL TITLE */
 
-#thechapter,#theitemlabel,#theitem,#thepage {
+#theitemlabel,#theitem {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     font-weight: bold;
     font-size: x-large;
 }
-#material_heading {
-    text-align: center;
+#thechapter,#thepage {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: bold;
+    font-size: x-large;
 }
 #material_message p {
     text-align: left;
@@ -205,7 +207,7 @@ table.hlsettings {
     background-color: #eef1ee;
     padding: 2pt;
     border-radius: 12pt;
-    text-align: center;
+    text-align: right;
 }
 #material {
     border-radius: 16pt;

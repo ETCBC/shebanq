@@ -98,9 +98,9 @@ specs = dict(
     colormap=('0', dict(q='white', w='black')),
 )
 style = dict(
-    q=dict(prop='background-color', default='grey', off='white', subtract=250, Tag='Query', tag='query', Tags='Queries', tags='queries'),
-    w=dict(prop='color', default='gray', off='black', subtract=250, Tag='Word', tag='word', Tags='Words', tags='words'),
-    m=dict(subtract=250, Tag='Item', tag='item', Tags='Items', tags='items'),
+    q=dict(prop='background-color', default='grey', off='white', subtract=250, T='Q', t='q', Tag='Query', tag='query', Tags='Queries', tags='queries'),
+    w=dict(prop='color', default='gray', off='black', subtract=250, T='W', t='w', Tag='Word', tag='word', Tags='Words', tags='words'),
+    m=dict(subtract=250, T='I', t='i', Tag='Item', tag='item', Tags='Items', tags='items'),
 )
 
 legend_tpl = '''

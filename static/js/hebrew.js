@@ -186,9 +186,10 @@ function Page(vs) { // the one and only page object
         this.sidebars.apply()
         var chapter = this.vs.chapter()
         var page = this.vs.page()
-        $('#theitemlabel').html((this.mr == 'm')?'':style[this.qw]['Tag'])
+        //$('#theitemlabel').html((this.mr == 'm')?'':style[this.qw]['Tag'])
+        $('#theitemlabel').html('')
         $('#thechapter').html((chapter > 0)?chapter:'')
-        $('#thepage').html((page > 0)?'page '+page:'')
+        $('#thepage').html((page > 0)?''+page:'')
         for (var x in this.vs.mstate()) {
             this.prev[x] = this.vs.mstate()[x]
         }
@@ -1078,7 +1079,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             set_csv(mr, qw, wb.vs.iid())
         }
 
-        $('#theitem').html($('#itemtag').val()+':')                              // fill in the title of the query/word above the verse material
+        $('#theitem').html($('#itemtag').val()+' ')                              // fill in the title of the query/word above the verse material
         $('#theitemc').html('Back to '+style[qw]['tag']+' '+$('#itemtag').val()) // fill in the Back to query/word line in a chart
         if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
             $('.fullc').click(function() {
