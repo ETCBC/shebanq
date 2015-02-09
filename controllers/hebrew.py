@@ -148,17 +148,18 @@ def material():
     bk = request.vars.book
     ch = request.vars.chapter
     tp = request.vars.tp
+    do_chart = request.vars.chart
     iid = int(request.vars.iid) if request.vars.iid else None
     page = int(request.vars.page) if request.vars.page else 1
     mrrep = 'm' if mr == 'm' else qw
     ckey = 'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return from_cache(
         'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
-        lambda: material_c(mr, qw, bk, iid, ch, page, tp),
+        lambda: material_c(mr, qw, bk, iid, ch, page, tp, do_chart),
         None,
     )
 
-def material_c(mr, qw, bk, iid, ch, page, tp):
+def material_c(mr, qw, bk, iid, ch, page, tp, do_chart):
     if mr == 'm':
         (book, chapter) = getpassage()
         material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None
@@ -197,7 +198,7 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
                 'chart_{}:{}:'.format(qw, iid),
                 lambda: get_chart(monad_sets),
                 None,
-            )
+            ) if do_chart == 'v' else (json.dumps({}), json.dumps([]))
             material = Verses(passage_db, mr, verses, tp=tp)
             result = dict(
                 mr=mr,

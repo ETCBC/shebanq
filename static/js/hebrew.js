@@ -179,35 +179,15 @@ function Page(vs) { // the one and only page object
         material_fetched = {txt_p: false, txt_il: false}
     }
     this.apply = function() { // apply the viewstate: hide and show material as prescribed by the viewstate
-        this.mr = this.vs.mr()
-        this.qw = this.vs.qw()
-        this.iid = this.vs.iid()
         this.material.apply()
         this.sidebars.apply()
-        var chapter = this.vs.chapter()
-        var page = this.vs.page()
-        //$('#theitemlabel').html((this.mr == 'm')?'':style[this.qw]['Tag'])
-        $('#theitemlabel').html('')
-        $('#thechapter').html((chapter > 0)?chapter:'')
-        $('#thepage').html((page > 0)?''+page:'')
-        for (var x in this.vs.mstate()) {
-            this.prev[x] = this.vs.mstate()[x]
-        }
     }
     this.go = function() { // go to another page view, check whether initial content has to be loaded
-        this.mr = this.vs.mr()
-        this.qw = this.vs.qw()
-        this.iid = this.vs.iid()
-        if (
-            this.mr != this.prev['mr'] || this.qw != this.prev['qw'] ||
-            (this.mr == 'm' && (this.vs.book() != this.prev['book'] || this.vs.chapter() != this.prev['chapter'])) ||
-            (this.mr == 'r' && (this.iid != this.prev['iid'] || this.vs.page() != this.prev['page']))
-        ) {
-            material_fetched = {txt_p: false, txt_il: false}
-            side_fetched = {}
-        }
         reset_main_width()
         this.apply()
+    }
+    this.go_material = function() { // load other material, whilst keeping the sidebars the same
+        this.material.apply()
     }
 
 /*
@@ -389,10 +369,30 @@ function Material() { // Object corresponding to everything that controls the ma
         this.fetch()
     }
     this.apply = function() { // apply viewsettings to current material
+        wb.mr = wb.vs.mr()
+        wb.qw = wb.vs.qw()
+        wb.iid = wb.vs.iid()
+        if (
+            wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] ||
+            (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
+            (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page']))
+        ) {
+            material_fetched = {txt_p: false, txt_il: false}
+        }
         this.mselect.apply()
         this.pselect.apply()
-        this.cselect.apply()
         this.msettings.apply()
+        //this.cselect.apply()
+        var book = wb.vs.book()
+        var chapter = wb.vs.chapter()
+        var page = wb.vs.page()
+        $('#theitemlabel').html('')
+        $('#thebook').html((book != 'x')?book:'book')
+        $('#thechapter').html((chapter > 0)?chapter:'chapter')
+        $('#thepage').html((page > 0)?''+page:'')
+        for (var x in wb.vs.mstate()) {
+            wb.prev[x] = wb.vs.mstate()[x]
+        }
     }
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
         var vars = '?mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
@@ -408,7 +408,11 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
-            $.get(material_url+vars, function(html) {
+            this.cselect.fetch_chart = false
+            if (wb.prev['iid'] != wb.iid || wb.prev['qw'] != wb.qw) {
+                this.cselect.fetch_chart = true
+            }
+            $.get(material_url+vars+(this.cselect.fetch_chart?'&chart=v':''), function(html) {
                 var response = $(html)
                 that.pselect.add(response)
                 that.cselect.add(response)
@@ -479,11 +483,11 @@ function Material() { // Object corresponding to everything that controls the ma
 function MSelect() { // for book and chapter selection
     this.name = 'select_passage'
     this.hid = '#'+this.name
-    this.up = new SelectBook()
-    this.select = new SelectItems(this.up, 'chapter')
+    this.book = new SelectBook()
+    this.select = new SelectItems('chapter')
     this.apply = function() { // apply material viewsettings to current material
         if (wb.mr == 'm') {
-            this.up.apply()
+            this.book.apply()
             this.select.apply()
             $(this.hid).show()
         }
@@ -497,7 +501,7 @@ function PSelect() { // for result page selection
     var select = '#select_contents_page'
     this.name = 'select_pages'
     this.hid = '#'+this.name
-    this.select = new SelectItems(null, 'page')
+    this.select = new SelectItems('page')
     this.apply = function() { // apply result page selection: fill in headings on the page
         if (wb.mr == 'r') {
             this.select.apply()
@@ -521,7 +525,9 @@ function CSelect() { // for chart selection
     this.select = new SelectChart()
     this.apply = function() { // apply result page selection: fill in headings on the page
         if (wb.mr == 'r') {
-            this.select.apply()
+            if (this.fetch_chart) {
+                this.select.apply()
+            }
             $(this.hid).show()
         }
         else {
@@ -530,57 +536,84 @@ function CSelect() { // for chart selection
     }
     this.add = function(response) { // add the content portion of the response to the content portion of the page
         if (wb.mr == 'r') {
-            $(select).html(response.find(select).html())
+            if (this.fetch_chart) {
+                $(select).html(response.find(select).html())
+            }
         }
     }
 }
 
 function SelectBook() { // book selection
     var that = this
-    this.name = 'select_book'
+    this.name = 'select_contents_book'
     this.hid = '#'+this.name
-    this.content = $(this.hid)
-    this.selected = null
-    this.apply = function () {
+    this.control = '#select_control_book'
+    this.present = function() {
+        $(this.hid).dialog({
+            autoOpen: false,
+            dialogClass: 'items',
+            closeOnEscape: true,
+            modal: false,
+            title: 'choose book',
+            width: '460px',
+        })
+    }
+    this.gen_html = function() { // generate a new book selector
         var thebook = wb.vs.book()
-        this.content.show()
-        this.content.val(thebook)
-        if (this.selected != thebook) {
-            this.chapters.gen_html()
-            this.chapters.apply()
-        }
-        this.selected = thebook
-    }
-    this.content.change(function () {
-        wb.vs.mstatesv({book: that.content.val(), chapter: 1, mr: 'm'})
-        wb.vs.addHist()
-        wb.go()
-    })
-    this.gen_html = function() {
-        var ht = '<option value="x">choose a book ...</option>'
+        var nitems = thebooksorder.length
+        this.lastitem = nitems
+        var ht = ''
+        ht += '<div class="pagination"><ul>'
         for (var i in thebooksorder) {
-            book =  thebooksorder[i]
-            ht += '<option value="'+book+'">'+book+'</option>'
+            item = thebooksorder[i]
+            if (thebook == item) {
+                ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+            }
+            else {
+                ht += '<li><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+            }
         }
-        this.content.append($(ht))
+        ht += '</ul></div>'
+        $(this.hid).html(ht)
+        return nitems
     }
-    this.gen_html()
-    this.content.val(wb.vs.book())
+    this.add_item = function(item) {
+        item.click(function() {
+            var newobj = $(this).closest('li')
+            var isloaded = newobj.hasClass('active')
+            if (!isloaded) {
+                vals = {}
+                vals['book'] = $(this).attr('item')
+                vals['chapter'] = '1'
+                wb.vs.mstatesv(vals)
+                wb.vs.addHist()
+                wb.go()
+            }
+        })
+    }
+    this.apply = function() {
+        var showit = false
+        this.gen_html()
+        $('#select_contents_book .itemnav').each(function() {
+            that.add_item($(this))
+        })
+        $(this.control).show()
+        this.present()
+    }
+    $(this.control).click(function () {
+        $(that.hid).dialog('open')
+    })
 }
 
-function SelectItems(up, key) { // both for chapters and for result pages
+function SelectItems(key) { // both for chapters and for result pages
     var that = this
     this.key = key
     this.other_key = (key == 'chapter')?'page':'chapter'
-    this.up = up
     this.name = 'select_contents_'+this.key
     this.other_name = 'select_contents_'+this.other_key
     this.hid = '#'+this.name
     this.other_hid = '#'+this.other_name
     this.control = '#select_control_'+this.key
-    if (this.up) {
-        this.up.chapters = this
-    }
     this.prev = $('#prev_'+this.key)
     this.next = $('#next_'+this.key)
     this.prev.click(function() {
@@ -588,14 +621,14 @@ function SelectItems(up, key) { // both for chapters and for result pages
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
-        wb.go()
+        wb.go_material()
     })
     this.next.click(function() {
         vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
-        wb.go()
+        wb.go_material()
     })
     this.present = function() {
         close_dialog($(this.other_hid))
@@ -654,7 +687,7 @@ function SelectItems(up, key) { // both for chapters and for result pages
                 vals[that.key] = $(this).attr('item')
                 wb.vs.mstatesv(vals)
                 wb.vs.addHist()
-                wb.go()
+                wb.go_material()
             }
         })
     }
@@ -665,7 +698,7 @@ function SelectItems(up, key) { // both for chapters and for result pages
             $(this.control).hide()
         }
         else {
-            $('.itemnav').each(function() {
+            $('#select_contents_'+this.key+' .itemnav').each(function() {
                 that.add_item($(this))
             })
             $(this.control).show()
@@ -693,17 +726,16 @@ function SelectItems(up, key) { // both for chapters and for result pages
 }
 function SelectChart() { // for the chart of results
     var that = this
-    this.key = 'chart'
-    this.name = 'select_contents_'+this.key
+    this.name = 'select_contents_chart'
     this.hid = '#'+this.name
-    this.control = '#select_control_'+this.key
+    this.control = '#select_control_chart'
     this.present = function() {
         $(this.hid).dialog({
             autoOpen: false,
             dialogClass: 'items',
             closeOnEscape: true,
             modal: false,
-            title: that.key+' for '+style[wb.qw]['tag'],
+            title: 'chart for '+style[wb.qw]['tag'],
             width: chart_width,
             position: { my: "left top", at: "left top", of: window }
         })
@@ -778,28 +810,22 @@ function SelectChart() { // for the chart of results
         })
     }
     this.apply = function() {
-        var showit = false
-        showit = this.gen_html() > 0 
-        if (!showit) {
-            $(this.control).hide()
-        }
-        else {
-            $('.cnav').each(function() {
-                that.add_item($(this))
-            })
-            var iid = wb.iid
-            var qw = wb.qw
-            $('#theitemc').click(function() {
-                vals = {}
-                vals['iid'] = iid
-                vals['mr'] = 'r'
-                vals['qw'] = qw
-                wb.vs.mstatesv(vals)
-                wb.vs.addHist()
-                wb.go()
-            })
-            $(this.control).show()
-        }
+        this.gen_html()
+        $('.cnav').each(function() {
+            that.add_item($(this))
+        })
+        var iid = wb.iid
+        var qw = wb.qw
+        $('#theitemc').click(function() {
+            vals = {}
+            vals['iid'] = iid
+            vals['mr'] = 'r'
+            vals['qw'] = qw
+            wb.vs.mstatesv(vals)
+            wb.vs.addHist()
+            wb.go()
+        })
+        $(this.control).show()
         this.present()
     }
     $(this.control).click(function () {

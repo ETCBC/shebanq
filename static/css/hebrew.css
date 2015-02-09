@@ -35,10 +35,12 @@ ol.text {
     font-weight: bold;
     font-size: x-large;
 }
-#thechapter,#thepage {
+#thebook,#thechapter,#thepage {
     font-family: Verdana, Arial, sans-serif;
     font-weight: bold;
     font-size: x-large;
+    display: inline;
+    vertical-align: text-bottom;
 }
 #material_message p {
     text-align: left;
@@ -55,15 +57,11 @@ ol.text {
     vertical-align: text-bottom;
     margin-bottom: -4pt;
 }
-#thechapter, #thechapterlabel, #theitem, #thepage {
+#select_iid, #select_book,#select_chapter,#select_book ul,#select_chapter ul, #select_book ul li #select_chapter ul li {
     display: inline;
     vertical-align: text-bottom;
 }
-#select_iid, #select_chapter,#select_chapter ul, #select_chapter ul li {
-    display: inline;
-    vertical-align: text-bottom;
-}
-#select_passage,#select_pages,#select_contents_chapter,#select_contents_page,#select_contents_chapter ul,#select_contents_page ul, #select_contents_chapter ul li, #select_contents_page ul li {
+#select_passage,#select_pages,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
     display: inline;
     vertical-align: text-bottom;
 }
@@ -81,6 +79,9 @@ ol.text {
 }
 .pagination ul li {
     padding: 0pt;
+}
+#select_contents_book .pagination ul li a {
+    width: 95px;
 }
 .itemnav {
     border-radius: 6pt;
