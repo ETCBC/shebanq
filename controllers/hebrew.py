@@ -154,7 +154,7 @@ def material():
     mrrep = 'm' if mr == 'm' else qw
     ckey = 'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return from_cache(
-        'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        'verses_{}:{}_{}:{}{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp, '+chart' if do_chart == 'v' else ''),
         lambda: material_c(mr, qw, bk, iid, ch, page, tp, do_chart),
         None,
     )
