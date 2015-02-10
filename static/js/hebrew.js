@@ -412,6 +412,7 @@ function Material() { // Object corresponding to everything that controls the ma
             if (wb.prev['iid'] != wb.iid || wb.prev['qw'] != wb.qw) {
                 this.cselect.fetch_chart = true
             }
+            wb.sidebars.after_material_fetch()
             $.get(material_url+vars+(this.cselect.fetch_chart?'&chart=v':''), function(html) {
                 var response = $(html)
                 that.pselect.add(response)
@@ -427,7 +428,6 @@ function Material() { // Object corresponding to everything that controls the ma
         }
     }
     this.process = function() { // process new material obtained by an AJAX call
-        wb.sidebars.after_material_fetch()
         if (wb.mr == 'r') {
             this.pselect.apply()
             this.cselect.apply()
@@ -616,19 +616,27 @@ function SelectItems(key) { // both for chapters and for result pages
     this.control = '#select_control_'+this.key
     this.prev = $('#prev_'+this.key)
     this.next = $('#next_'+this.key)
+    this.go = function() {
+        if (this.key == 'chapter') {
+            wb.go()
+        }
+        else {
+            wb.go_material()
+        }
+    }
     this.prev.click(function() {
         vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
-        wb.go_material()
+        that.go()
     })
     this.next.click(function() {
         vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
-        wb.go_material()
+        that.go()
     })
     this.present = function() {
         close_dialog($(this.other_hid))
@@ -687,7 +695,7 @@ function SelectItems(key) { // both for chapters and for result pages
                 vals[that.key] = $(this).attr('item')
                 wb.vs.mstatesv(vals)
                 wb.vs.addHist()
-                wb.go_material()
+                that.go()
             }
         })
     }
@@ -1025,12 +1033,12 @@ function Sidebars() { // TOP LEVEL: all four kinds of sidebars
     }
     this.after_material_fetch = function() {
         for (var qw in {q: 1, w: 1}) {
-            delete side_fetched['m'+qw]
+            side_fetched['m'+qw] = false
         }
     }
     this.after_item_fetch = function() {
         for (var qw in {q: 1, w: 1}) {
-            delete side_fetched['r'+qw]
+            side_fetched['r'+qw] = false
         }
     }
 }
