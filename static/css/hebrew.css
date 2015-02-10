@@ -35,6 +35,11 @@ ol.text {
     font-weight: bold;
     font-size: x-large;
 }
+#theitemc {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: medium;
+}
 #thebook,#thechapter,#thepage {
     font-family: Verdana, Arial, sans-serif;
     font-weight: bold;
