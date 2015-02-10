@@ -47,7 +47,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = False
+CACHING = True
 
 def from_cache(ckey, func, expire):
     if CACHING:

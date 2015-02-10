@@ -711,11 +711,9 @@ function CSelect(qw) { // for chart selection
     })
     this.apply = function() {
         if (that.loaded != wb.iid) {
-            console.log('generating chart')
             this.fetch()
         }
         else {
-            console.log('showing chart')
             this.show()
         }
     }
