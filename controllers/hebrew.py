@@ -47,7 +47,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = True
+CACHING = False
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -148,17 +148,16 @@ def material():
     bk = request.vars.book
     ch = request.vars.chapter
     tp = request.vars.tp
-    do_chart = request.vars.chart
     iid = int(request.vars.iid) if request.vars.iid else None
     page = int(request.vars.page) if request.vars.page else 1
     mrrep = 'm' if mr == 'm' else qw
     return from_cache(
-        'verses_{}:{}_{}:{}{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp, '+chart' if do_chart == 'v' else ''),
-        lambda: material_c(mr, qw, bk, iid, ch, page, tp, do_chart),
+        'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        lambda: material_c(mr, qw, bk, iid, ch, page, tp),
         None,
     )
 
-def material_c(mr, qw, bk, iid, ch, page, tp, do_chart):
+def material_c(mr, qw, bk, iid, ch, page, tp):
     if mr == 'm':
         (book, chapter) = getpassage()
         material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None
@@ -185,19 +184,12 @@ def material_c(mr, qw, bk, iid, ch, page, tp, do_chart):
                 pages=0,
                 page=0,
                 pagelist=json.dumps([]),
-                chart=json.dumps({}),
-                chart_order=json.dumps([]),
                 material=None,
                 monads=json.dumps([]),
             )
         else:
             (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
             (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
-            (chart, chart_order) = from_cache(
-                'chart_{}:{}:'.format(qw, iid),
-                lambda: get_chart(monad_sets),
-                None,
-            ) if do_chart == 'v' else (json.dumps({}), json.dumps([]))
             material = Verses(passage_db, mr, verses, tp=tp)
             result = dict(
                 mr=mr,
@@ -209,8 +201,6 @@ def material_c(mr, qw, bk, iid, ch, page, tp, do_chart):
                 pages=npages,
                 page=page,
                 pagelist=json.dumps(pagelist(page, npages, 10)),
-                chart=chart,
-                chart_order=chart_order,
                 material=material,
                 monads=json.dumps(monads),
             )
@@ -301,6 +291,21 @@ order by
         )
         data = passage_db.executesql(sql)
     return dict(filename=filename, data=csv((head_row,)+data))
+
+def chart(): # controller to produce a chart of query results or lexeme occurrences
+    iid = request.vars.iid
+    qw = request.vars.qw
+    return from_cache(
+        'chart_{}:{}:'.format(qw, iid),
+        lambda: chart_c(qw, iid),
+        None,
+    )
+
+def chart_c(qw, iid): 
+    (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+    result = get_chart(monad_sets)
+    result.update(qw=qw)
+    return response.render(result)
 
 def sideqm():
     session.forget(response)
@@ -956,5 +961,5 @@ def get_chart(monad_sets): # get data for a chart of the monadset: organized by 
             r = results[bl]
             chart[bk].append((ch_start[0], ch_start[1], ch_end[1], r, size))
 
-    return (json.dumps(chart), json.dumps(chart_order))
+    return dict(chart=json.dumps(chart), chart_order=json.dumps(chart_order))
 

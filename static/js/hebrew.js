@@ -108,7 +108,7 @@ var wb      // holds the one and only page object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, side_url, item_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, side_url, item_url, chart_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -361,7 +361,6 @@ function Material() { // Object corresponding to everything that controls the ma
     this.hid = '#'+this.name
     this.mselect = new MSelect()
     this.pselect = new PSelect()
-    this.cselect = new CSelect()
     this.message = new MMessage()
     this.content = new MContent()
     this.msettings = new MSettings(this.content)
@@ -382,7 +381,6 @@ function Material() { // Object corresponding to everything that controls the ma
         this.mselect.apply()
         this.pselect.apply()
         this.msettings.apply()
-        //this.cselect.apply()
         var book = wb.vs.book()
         var chapter = wb.vs.chapter()
         var page = wb.vs.page()
@@ -408,15 +406,10 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
-            this.cselect.fetch_chart = false
-            if (wb.prev['iid'] != wb.iid || wb.prev['qw'] != wb.qw) {
-                this.cselect.fetch_chart = true
-            }
             wb.sidebars.after_material_fetch()
-            $.get(material_url+vars+(this.cselect.fetch_chart?'&chart=v':''), function(html) {
+            $.get(material_url+vars, function(html) {
                 var response = $(html)
                 that.pselect.add(response)
-                that.cselect.add(response)
                 that.message.add(response)
                 that.content.add(response)
                 material_fetched[wb.vs.tp()] = true
@@ -430,7 +423,6 @@ function Material() { // Object corresponding to everything that controls the ma
     this.process = function() { // process new material obtained by an AJAX call
         if (wb.mr == 'r') {
             this.pselect.apply()
-            this.cselect.apply()
             wb.picker1[wb.qw].adapt(wb.iid, true)
             $('a.vref').click(function() {
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
@@ -514,31 +506,6 @@ function PSelect() { // for result page selection
     this.add = function(response) { // add the content portion of the response to the content portion of the page
         if (wb.mr == 'r') {
             $(select).html(response.find(select).html())
-        }
-    }
-}
-
-function CSelect() { // for chart selection
-    var select = '#select_contents_chart'
-    this.name = 'select_chart'
-    this.hid = '#'+this.name
-    this.select = new SelectChart()
-    this.apply = function() { // apply result page selection: fill in headings on the page
-        if (wb.mr == 'r') {
-            if (this.fetch_chart) {
-                this.select.apply()
-            }
-            $(this.hid).show()
-        }
-        else {
-            $(this.hid).hide()
-        }
-    }
-    this.add = function(response) { // add the content portion of the response to the content portion of the page
-        if (wb.mr == 'r') {
-            if (this.fetch_chart) {
-                $(select).html(response.find(select).html())
-            }
         }
     }
 }
@@ -732,26 +699,72 @@ function SelectItems(key) { // both for chapters and for result pages
         $(that.hid).dialog('open')
     })
 }
-function SelectChart() { // for the chart of results
+
+function CSelect(qw) { // for chart selection
     var that = this
-    this.name = 'select_contents_chart'
-    this.hid = '#'+this.name
-    this.control = '#select_control_chart'
+    this.qw = qw
+    this.control = '#select_control_chart'+qw
+    this.select = '#select_contents_chart'+qw
+    this.loaded = null
+    $(this.control).click(function() {
+        that.apply()
+    })
+    this.apply = function() {
+        if (that.loaded != wb.iid) {
+            console.log('generating chart')
+            this.fetch()
+        }
+        else {
+            console.log('showing chart')
+            this.show()
+        }
+    }
+    this.fetch = function() {
+        vars = '?qw='+this.qw+'&iid='+wb.iid
+        $(this.select).load(chart_url+vars, function () {
+            that.loaded = wb.iid
+            that.process()
+        }, 'html')
+    }
+    this.process = function() {
+        this.gen_html()
+        $('.cnav').each(function() {
+            that.add_item($(this))
+        })
+        var iid = wb.iid
+        $('#theitemc').click(function() {
+            vals = {}
+            vals['iid'] = iid
+            vals['mr'] = 'r'
+            vals['qw'] = that.qw
+            wb.vs.mstatesv(vals)
+            wb.vs.addHist()
+            wb.go()
+        })
+        $('#theitemc').html('Back to '+$('#theitem').html()) // fill in the Back to query/word line in a chart
+        this.present()
+        this.show()
+    }
+
     this.present = function() {
-        $(this.hid).dialog({
+        $(this.select).dialog({
             autoOpen: false,
             dialogClass: 'items',
             closeOnEscape: true,
             modal: false,
-            title: 'chart for '+style[wb.qw]['tag'],
+            title: 'chart for '+style[that.qw]['tag'],
             width: chart_width,
             position: { my: "left top", at: "left top", of: window }
         })
     }
+    this.show = function() {
+        $(this.select).dialog('open')
+    }
+
     this.gen_html = function() { // generate a new chart
         nbooks = 0
-        var booklist = $('#r_chartorder').val()
-        var bookdata = $('#r_chart').val()
+        var booklist = $('#r_chartorder'+this.qw).val()
+        var bookdata = $('#r_chart'+this.qw).val()
         if (booklist) {
             booklist = $.parseJSON(booklist)
             bookdata = $.parseJSON(bookdata)
@@ -761,9 +774,8 @@ function SelectChart() { // for the chart of results
             booklist = []
             bookdata = {}
         }
-        qw = wb.qw
         var ht = ''
-        ht += '<p><a id="theitemc" title="back to '+style[qw]['tag']+'" href="#">back</a></p>'
+        ht += '<p><a id="theitemc" title="back to '+style[this.qw]['tag']+'" href="#">back</a></p>'
         ht += '<table class="chart">'
         var ccl = ccolors.length
         for (var b in booklist) {
@@ -803,12 +815,11 @@ function SelectChart() { // for the chart of results
             ht += '</tr></table></td></tr>'
         }
         ht += '</table>'
-        $(this.hid).html(ht)
+        $(this.select).html(ht)
         return nbooks
     }
     this.add_item = function(item) {
         var iid = wb.iid
-        var qw = wb.qw
         item.click(function() {
             vals = {}
             vals['book'] = $(this).attr('b')
@@ -817,38 +828,16 @@ function SelectChart() { // for the chart of results
             wb.vs.mstatesv(vals)
             wb.vs.hstatesv('q', {sel_one: 'white', active: 'hlcustom'})
             wb.vs.hstatesv('w', {sel_one: 'black', active: 'hlcustom'})
-            var thiscolor = wb.vs.colormap(qw)[iid] || defcolor(null, iid)
+            var thiscolor = wb.vs.colormap(that.qw)[iid] || defcolor(null, iid)
             wb.vs.cstatexx('q')
             wb.vs.cstatexx('w')
             vals = {}
             vals[iid] = thiscolor
-            wb.vs.cstatesv(qw, vals)
+            wb.vs.cstatesv(that.qw, vals)
             wb.vs.addHist()
             wb.go()
         })
     }
-    this.apply = function() {
-        this.gen_html()
-        $('.cnav').each(function() {
-            that.add_item($(this))
-        })
-        var iid = wb.iid
-        var qw = wb.qw
-        $('#theitemc').click(function() {
-            vals = {}
-            vals['iid'] = iid
-            vals['mr'] = 'r'
-            vals['qw'] = qw
-            wb.vs.mstatesv(vals)
-            wb.vs.addHist()
-            wb.go()
-        })
-        $(this.control).show()
-        this.present()
-    }
-    $(this.control).click(function () {
-        $(that.hid).dialog('open')
-    })
 }
 
 // MATERIAL (messages when retrieving, storing the contents)
@@ -1057,6 +1046,9 @@ function Sidebar(mr, qw) { // the individual sidebar, parametrized with qr and m
     var hide = $('#side_hide_'+mr+qw)
     var show = $('#side_show_'+mr+qw)
     this.content = new SContent(mr, qw)
+    if (mr == 'r') {
+        this.cselect = new CSelect(qw)
+    }
     this.apply = function() {
         if ((this.mr != wb.mr) || (this.mr == 'r' && this.qw != wb.qw)) {
             thebar.hide()
@@ -1124,7 +1116,6 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
 
         $('#theitem').html($('#itemtag').val()+' ')                              // fill in the title of the query/word above the verse material
-        $('#theitemc').html('Back to '+style[qw]['tag']+' '+$('#itemtag').val()) // fill in the Back to query/word line in a chart
         if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
             $('.fullc').click(function() {
                 var thisiid = $(this).attr('iid')
@@ -1277,7 +1268,7 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
 function set_csv(mr, qw, iid) {
     if (mr == 'r') {
         $('#csv_lnk'+qw).attr('href', wb.vs.csv_url())
-        $('#csvitemdesc'+qw).html(style[qw]['tag']+'_'+iid+'.csv')
+        $('#csvitemdesc'+qw).html(style[qw]['t']+iid+'.csv')
     }
 }
 
