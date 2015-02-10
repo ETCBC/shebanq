@@ -775,11 +775,21 @@ function SelectChart() { // for the chart of results
                 var blsize = block_info[4]
                 blres_select = (blres >= ccl)?ccl-1:blres
                 z = ccolors[blres_select]
-                s = ''
-                if (blsize < 25) {s = 's1'}
-                else if (blsize < 75) {s = 's5'}
-
-                ht += '<td class="'+z+' '+s+'"><a title="'+ch_range+': '+blres+'" class="cnav" href="#" b='+book+' ch="'+chnum+'">&nbsp;</a></td>'
+                s = '&nbsp;'
+                sz = ''
+                sc = ''
+                if (blsize < 25) {
+                    s = '='
+                    sc = 's1'
+                }
+                else if (blsize < 75) {
+                    s = '-'
+                    sc = 's5'
+                }
+                if (blsize < 100) {
+                    sz = ' ('+blsize+'%)' 
+                }
+                ht += '<td class="'+z+'"><a title="'+ch_range+sz+': '+blres+'" class="cnav '+sc+'" href="#" b='+book+' ch="'+chnum+'">'+s+'</a></td>'
                 l++
             }
             ht += '</tr></table></td></tr>'

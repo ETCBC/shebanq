@@ -152,7 +152,6 @@ def material():
     iid = int(request.vars.iid) if request.vars.iid else None
     page = int(request.vars.page) if request.vars.page else 1
     mrrep = 'm' if mr == 'm' else qw
-    ckey = 'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp)
     return from_cache(
         'verses_{}:{}_{}:{}{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp, '+chart' if do_chart == 'v' else ''),
         lambda: material_c(mr, qw, bk, iid, ch, page, tp, do_chart),
