@@ -34,6 +34,12 @@ vcolor_spec = '''
     grey,#eeeeee,#eeeeee,0 gray,#aaaaaa,#aaaaaa,0 black,#000000,#000000,0 white,#ffffff,#ffffff,0
 '''
 
+vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
+vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
+vcolornames = [x[0] for x in vcolor_proto]
+vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
+ndefcolors = len(vdefaultcolors)
+
 field_names = '''
     word_heb word_vlex word_clex word_tran word_lex word_gloss
     word_subpos word_pos word_lang word_number
@@ -354,12 +360,6 @@ def get_request_val(group, qw, f, default=True):
     fref = '0' if group == 'colormap' else f
     d = settings[group][qw][fref] if default else None
     return validation[group][qw][fref](d, x)
-
-vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
-vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
-vcolornames = [x[0] for x in vcolor_proto]
-vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
-ndefcolors = len(vdefaultcolors)
 
 def make_ccolors():
     ccolor_proto = [tuple(cc.split(',')) for cc in ccolor_spec.strip().split()]
