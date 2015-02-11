@@ -289,9 +289,9 @@ td.cw a {
 
 textarea.mql {
     font-family: Menlo, Courier New, Courier, monospace;
+    font-size: small;
     background-color: white;
     height: 10em;
-    width: 97%;
     margin-left: 0em;
 }
 textarea.small {
@@ -301,8 +301,7 @@ textarea.mql_dia {
     font-family: Menlo, Courier New, Courier, monospace;
     background-color: white;
     margin-left: 0em;
-    font-size: medium;
-    width: 97%;
+    font-size: small;
 }
 p.fullcp {
     text-align: right;

@@ -66,7 +66,11 @@ for item in hebrewdata_lines_spec:
     hebrewdata_lines.append((line, tuple(fields)))
 
 specs = dict(
-    material=('''book chapter iid page mr qw tp''', {'': '''x 0 -1 -1 m q txt_p'''}),
+    material=(
+        '''book chapter iid page mr qw tp''',
+        '''alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_il''',
+        {'': '''Genesis 1 -1 1 m q txt_p'''},
+    ),
     hebrewdata=('''
         ht
         hl hl_hlv hl_hlc
@@ -80,6 +84,19 @@ specs = dict(
         ph ph_det ph_fun ph_typ ph_rela ph_arela ph_an ph_n
         cl cl_txt cl_typ cl_rela cl_tab cl_code cl_an cl_n
         sn sn_an sn_n
+    ''','''
+        bool
+        bool bool bool
+        bool
+        bool
+        bool
+        bool bool bool bool bool
+        bool bool bool bool bool bool bool
+        bool bool bool bool bool bool bool
+        bool bool bool
+        bool bool bool bool bool bool bool bool
+        bool bool bool bool bool bool bool bool
+        bool bool bool
     ''', {'': '''
         v
         v x v
@@ -94,9 +111,23 @@ specs = dict(
         v v v v v v v v
         v v v
     '''}),
-    highlights=('''get active sel_one''', dict(q='x hlcustom grey', w='x hlcustom gray')),
-    colormap=('0', dict(q='white', w='black')),
+    highlights=(
+        '''get active sel_one''',
+        '''bool enum:hloff,hlone,hlcustom,hlmany enum:color''',
+        dict(q='x hlcustom grey', w='x hlcustom gray'),
+    ),
+    colormap=(
+        '0',
+        '''enum:color''',
+        dict(q='white', w='black'),
+    ),
+    rest=(
+        '''pref lan letter''',
+        '''alnum:30 enum:hbo,arc int:1-100000''',
+        {'': '''my hbo 1488'''},
+    )
 )
+
 style = dict(
     q=dict(prop='background-color', default='grey', off='white', subtract=250, T='Q', t='q', Tag='Query', tag='query', Tags='Queries', tags='queries'),
     w=dict(prop='color', default='gray', off='black', subtract=250, T='W', t='w', Tag='Word', tag='word', Tags='Words', tags='words'),
@@ -287,14 +318,42 @@ text_tpl = u'''<table class="il c">
     </tr>
 </table>'''
 
+def vcompile(tp):
+    if tp == 'bool':
+        return lambda d, x: x if x in {'x', 'v'} else d
+    (t, v) = tp.split(':')
+    if t == 'alnum':
+        return lambda d, x: x if x != None and len(x) < int(v) and x.replace('_','').replace(' ','').isalnum() else d
+    elif t == 'int':
+        (lowest, highest) = v.split('-')
+        return lambda d, x: int(x) if x != None and str(x).isdigit() and int(x) >= int(lowest) and int(x) <= int(highest) else int(d) if d != None else d
+    elif t == 'enum':
+        vals = set(vcolors.keys()) if v == 'color' else set(v.split(','))
+        return lambda d, x: x if x != None and x in vals else d 
+
 settings = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
+validation = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
+
 for group in specs:
-    (flds, init) = specs[group]
+    (flds, types, init) = specs[group]
     flds = flds.strip().split()
+    types = types.strip().split()
+    valtype = [vcompile(tp) for tp in types]
     for qw in init:
         initk = init[qw].strip().split()
         for (i, f) in enumerate(flds):
             settings[group][qw][f] = initk[i]
+            validation[group][qw][f] = valtype[i]
+
+def get_request_val(group, qw, f, default=True):
+    rvar = qw+f
+    if rvar == 'iid':
+        x = current.request.vars.id or current.request.vars.iid
+    else:
+        x = current.request.vars.get(rvar, None)
+    fref = '0' if group == 'colormap' else f
+    d = settings[group][qw][fref] if default else None
+    return validation[group][qw][fref](d, x)
 
 vcolor_proto = [tuple(vc.split(',')) for vc in vcolor_spec.strip().split()]
 vdefaultcolors = [x[0] for x in vcolor_proto if x[3] == '1']
@@ -332,23 +391,21 @@ def legend(): return legend_tpl.format(base_doc=base_doc)
 def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
 def get_fields():
-    if current.request.vars.tp == 'txt_p':
+    if get_request_val('material', '', 'tp') == 'txt_p':
         hfields = [('word_number', 'monad'), ('word_heb', 'text')]
     else:
         hfields = []
         for (line, fields) in hebrewdata_lines:
-            if current.request.vars[line] == 'v':
+            if get_request_val('hebrewdata', '', line) == 'v':
                 for (f, name, pretty_name) in fields:
-                    if current.request.vars[f] == 'v':
+                    if get_request_val('hebrewdata', '', f) == 'v':
                         hfields.append((name, pretty_name))
     return hfields
     
 class Viewsettings():
     def __init__(self):
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
-        self.pref = 'my'
-        if 'pref' in current.request.vars:
-            self.pref = current.request.vars['pref']
+        self.pref = get_request_val('rest', '', 'pref')
         for group in settings:
             self.state[group] = {}
             for qw in settings[group]:
@@ -360,20 +417,26 @@ class Viewsettings():
                             from_cookie = json.loads(urllib.unquote(current.request.cookies[self.pref+group+qw].value))
                         except ValueError: pass
                 if group == 'colormap':
-                    for x in from_cookie: self.state[group][qw][x] = from_cookie[x]
-                    for x in current.request.vars:
-                        xid = x[1:]
-                        if xid.isdigit():
-                            vstate = current.request.vars[x]
-                            from_cookie[xid] = vstate
-                            self.state[group][qw][xid] = vstate
-                else:
-                    for x in settings[group][qw]:
-                        init = settings[group][qw][x]
-                        vstate = current.request.vars[qw+x]
-                        if vstate == None: vstate = from_cookie.get(x, init) 
-                        from_cookie[x] = vstate
-                        self.state[group][qw][x] = vstate
+                    for fid in from_cookie:
+                        if len(fid) <= 7 and fid.isdigit():
+                            vstate = validation[group][qw]['0'](None, from_cookie[fid])
+                        if vstate != None:
+                            self.state[group][qw][fid] = vstate
+                    for f in current.request.vars:
+                        fid = f[1:]
+                        if len(fid) <= 7 and fid.isdigit():
+                            vstate = get_request_val(group, qw, f, default=False)
+                            if vstate != None:
+                                from_cookie[fid] = vstate
+                                self.state[group][qw][fid] = vstate
+                elif group != 'rest':
+                    for f in settings[group][qw]:
+                        init = settings[group][qw][f]
+                        vstate = validation[group][qw][f](init, from_cookie.get(f, None))
+                        vstater = get_request_val(group, qw, f, default=False)
+                        if vstater != None: vstate = vstater
+                        from_cookie[f] = vstate
+                        self.state[group][qw][f] = vstate
 
                 current.response.cookies[self.pref+group+qw] = urllib.quote(json.dumps(from_cookie))
                 current.response.cookies[self.pref+group+qw]['expires'] = 30 * 24 * 3600
@@ -381,7 +444,7 @@ class Viewsettings():
 
 
     def dynamics(self):
-        book_proto = current.request.vars.book
+        book_proto = get_request_val('material', '', 'book')
         return '''
 var vcolors = {vcolors}
 var ccolors = {ccolors}

@@ -115,7 +115,9 @@ var pref    // prefix for the cookie names, in order to distinguish settings by 
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 var standard_height // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
-var mql_width = '97%' // height of mql query body in sidebar and in dialog
+var mql_small_width = '97%' // height of mql query body in sidebar and in dialog
+var mql_big_width_dia = '600px' // height of mql query body in sidebar and in dialog
+var mql_big_width = '560px' // height of mql query body in sidebar and in dialog
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
 var edit_side_width = '55%' // the desired width of the sidebar when editing a query body
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
@@ -1127,6 +1129,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                         area.removeClass('mql_dia')
                         area.addClass('mql small')
                         area.css('height', mql_small_height)
+                        area.css('width', mql_small_width)
                     },
                     modal: false,
                     title: 'mql query body',
@@ -1136,6 +1139,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 area.removeClass('mql small')
                 area.addClass('mql_dia')
                 area.css('height', standard_height)
+                area.css('width', mql_big_width)
             })
         }
         else { // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
@@ -1150,15 +1154,17 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                         area.removeClass('mql_dia')
                         area.addClass('mql')
                         area.css('height', mql_small_height)
+                        area.css('width', mql_small_width)
                     },
                     modal: false,
                     title: 'mql query body',
                     position: {my: 'left top', at: 'left top', of: window},
-                    width: '600px',
+                    width: mql_big_width_dia,
                 })
                 area.removeClass('mql')
                 area.addClass('mql_dia')
                 area.css('height', standard_height)
+                area.css('width', mql_big_width)
             })
         }
     }
@@ -1185,7 +1191,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             extra = this.qw+'m'
         }
         if (do_fetch && !side_fetched[this.mr+this.qw]) {
-            this.msg('fetching '+style[this.qw]['tags']+' ...')
+            this.msg('fetching '+style[this.qw]['tag'+(this.mr=='m'?'s':'')]+' ...')
             if (this.mr == 'm') {
                 thelist.load(side_url+extra+vars, function () {
                     side_fetched[that.mr+that.qw] = true

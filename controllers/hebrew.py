@@ -6,7 +6,7 @@ import collections, json
 import xml.etree.ElementTree as ET
 from itertools import groupby
 
-from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_fields
+from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style
 from mql import mql
 
 # Note on caching
@@ -47,7 +47,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = True
+CACHING = False
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -143,13 +143,29 @@ select chapter_num, first_m, last_m from chapter
 
 def material():
     session.forget(response)
-    mr = request.vars.mr
-    qw = request.vars.qw
-    bk = request.vars.book
-    ch = request.vars.chapter
-    tp = request.vars.tp
-    iid = int(request.vars.iid) if request.vars.iid else None
-    page = int(request.vars.page) if request.vars.page else 1
+    mr = get_request_val('material', '', 'mr')
+    qw = get_request_val('material', '', 'qw')
+    bk = get_request_val('material', '', 'book')
+    ch = get_request_val('material', '', 'chapter')
+    tp = get_request_val('material', '', 'tp')
+    iid = get_request_val('material', '', 'iid')
+    authorized = query_access_read(iid=iid)
+    if not authorized:
+        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
+        return dict(
+            mr=mr,
+            qw=qw,
+            msg=msg,
+            hits=0,
+            results=0,
+            iid=iid,
+            pages=0,
+            page=0,
+            pagelist=json.dumps([]),
+            material=None,
+            monads=json.dumps([]),
+        )
+    page = get_request_val('material', '', 'page')
     mrrep = 'm' if mr == 'm' else qw
     return from_cache(
         'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
@@ -165,7 +181,7 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
             mr=mr,
             qw=qw,
             hits=0,
-            msg="No chapter selected" if not chapter else None,
+            msg="{} {} does not exist".format(bk, ch) if not chapter else None,
             results=len(material.verses) if material else 0,
             pages=1,
             material=material,
@@ -210,9 +226,9 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
 
 def sidem():
     session.forget(response)
-    qw = request.vars.qw
-    bk = request.vars.book
-    ch = request.vars.chapter
+    qw = get_request_val('material', '', 'qw')
+    bk = get_request_val('material', '', 'book')
+    ch = get_request_val('material', '', 'chapter')
     return from_cache(
         'items_{}:{}_{}:'.format(qw, bk, ch),
         lambda: sidem_c(qw, bk, ch),
@@ -221,23 +237,30 @@ def sidem():
 
 def sidem_c(qw, bk, ch):
     (book, chapter) = getpassage()
-    if qw == 'q':
-        monad_sets = get_monadsets_MySQL(chapter)
-        side_items = group_MySQL(monad_sets)
+    if chapter == None:
+        result = dict(
+            colorpicker=colorpicker,
+            side_items=[],
+            qw=qw,
+        )
     else:
-        side_items = get_lexemes(chapter)
-    result = dict(
-        colorpicker=colorpicker,
-        side_items=side_items,
-        qw=qw,
-    )
+        if qw == 'q':
+            monad_sets = get_monadsets_MySQL(chapter)
+            side_items = group_MySQL(monad_sets)
+        else:
+            side_items = get_lexemes(chapter)
+        result = dict(
+            colorpicker=colorpicker,
+            side_items=side_items,
+            qw=qw,
+        )
     return response.render(result)
 
 def query():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'q'
     request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.id or request.vars.iid
+    request.vars['iid'] = get_request_val('material', '', 'iid')
     request.vars['page'] = 1
     return text()
 
@@ -245,7 +268,7 @@ def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = request.vars.id or request.vars.iid
+    request.vars['iid'] = get_request_val('material', '', 'iid')
     request.vars['page'] = 1
     return text()
 
@@ -259,9 +282,13 @@ def csv(data): # converts an data structure of rows and fields into a csv string
     return u'\n'.join(result)
 
 def item(): # controller to produce a csv file of query results or lexeme occurrences, where fields are specified in the current legend
-    iid = request.vars.iid
-    qw = request.vars.qw
-    filename = '{}_{}.csv'.format('query' if qw == 'q' else 'word', iid)
+    iid = get_request_val('material', '', 'iid')
+    qw = get_request_val('material', '', 'qw')
+    filename = '{}{}.csv'.format(style[qw]['t'], iid)
+    authorized = query_access_read(iid=iid)
+    if not authorized:
+        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
+        return dict(filename=filename, data=msg)
     hfields = get_fields()
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
     (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
@@ -293,8 +320,14 @@ order by
     return dict(filename=filename, data=csv((head_row,)+data))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
-    iid = request.vars.iid
-    qw = request.vars.qw
+    iid = get_request_val('material', '', 'iid')
+    qw = get_request_val('material', '', 'qw')
+    authorized = query_access_read(iid=iid)
+    if not authorized:
+        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
+        result = get_chart([])
+        result.update(qw=qw)
+        return result()
     return from_cache(
         'chart_{}:{}:'.format(qw, iid),
         lambda: chart_c(qw, iid),
@@ -309,20 +342,28 @@ def chart_c(qw, iid):
 
 def sideqm():
     session.forget(response)
-    iid = request.vars.iid or request.vars.id
+    iid = get_request_val('material', '', 'iid')
+    authorized = query_access_read(iid=iid)
+    msg = 'fetching query'
+    if not authorized:
+        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
         vars=dict(mr='r', qw='q', iid=iid),
         ajax=False, ajax_trap=True, target='querybody', 
-        content='fetching query',
+        content=msg,
     ))
 
 def sidewm():
     session.forget(response)
-    iid = request.vars.iid or request.vars.id
+    iid = get_request_val('material', '', 'iid')
+    authorized = query_access_read(iid=iid)
+    msg = 'fetching word'
+    if not authorized:
+        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
         vars=dict(mr='r', qw='w', iid=iid),
         ajax=False, ajax_trap=True, target='wordbody', 
-        content='fetching words',
+        content=msg,
     ))
 
 @auth.requires(lambda: check_query_access_write())
@@ -339,11 +380,8 @@ def sidew():
     return show_word()
 
 def dictionary():
-    lan = request.vars.lan
-    letter = request.vars.letter
-    if lan == None: lan = 'hbo'
-    if letter == None: letter = 1488 
-    else: letter = int(letter)
+    lan = get_request_val('rest', '', 'lan')
+    letter = get_request_val('rest', '', 'letter')
     return from_cache(
         'dictionary_page_{}_{}:'.format(lan, letter),
         lambda: dictionary_page(lan, letter),
@@ -352,7 +390,7 @@ def dictionary():
 
 def dictionary_page(lan=None, letter=None):
     (letters, words) = from_cache('dictionary_data', lambda: get_dictionary_data(), None)
-    return response.render(dict(lan=lan, letter=letter, letters=letters, words=words[lan][letter]))
+    return response.render(dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, [])))
 
 def get_dictionary_data():
     ddata = passage_db.executesql('''
@@ -437,19 +475,30 @@ def public_queries():
     )
     return locals()
 
-@auth.requires_login()
+@auth.requires(lambda: check_query_access_write())
 def delete_multiple():
     if not request.is_local: request.requires_https()
-    if request.vars.id is not None:
-        for id in request.vars.id:
-            db(db.queries.id == id).delete()
+    iid = get_request_val('material', '', 'iid')
+    if iid is not None:
+        db(db.queries.id == iid).delete()
 
-    response.flash = "deleted " + str(request.vars.id)
+    response.flash = "deleted " + str(iid)
     redirect(URL('my_queries'))
 
 def show_query(readonly=True, kind=None, msg=None):
     response.headers['web2py-component-flash']=None
-    iid = get_iid()
+    iid = get_request_val('material', '', 'iid')
+    authorized = query_access_read(iid=iid)
+    if not authorized:
+        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
+        return dict(
+            readonly=True,
+            kind=kind,
+            msg=msg,
+            form=None,
+            iid=iid,
+            query=None,
+        )
     if iid:
         old_mql = db.queries[iid].mql
         old_modified_on = db.queries[iid].modified_on
@@ -475,7 +524,7 @@ def show_query(readonly=True, kind=None, msg=None):
 
 def show_word(no_controller=True):
     response.headers['web2py-component-flash']=None
-    iid = get_iid()
+    iid = get_request_val('material', '', 'iid')
     word_form = get_word_form(iid)
     handle_response_word(word_form)
     word_record = passage_db.lexicon[iid]
@@ -519,14 +568,8 @@ def flatten(msets):
     return list(sorted(result))
 
 def getpassage(no_controller=True):
-    book_name = request.vars.book or None
-    chapter_num = request.vars.chapter or None
-    book = None
-    chapter = None
-    if book_name:
-        book = passage_db.book(name=book_name)
-    if chapter_num != None and book:
-        chapter = passage_db.chapter(chapter_num=chapter_num, book_id=book.id)
+    book = passage_db.book(name=get_request_val('material', '', 'book'))
+    chapter = passage_db.chapter(chapter_num=get_request_val('material', '', 'chapter'), book_id=book.id) if book else None
     return (book, chapter)
 
 def group_MySQL(input):
@@ -616,33 +659,30 @@ where
         r.append({'item': lexeme, 'monads': json.dumps(grouped[lex_id])})
     return r
 
-def get_iid(no_controller=True):
-    # web2py returns hidden id and (if present) id in URL, so id can be None, str or list(str)
-    iid = request.vars.id or request.vars.iid
-    if iid is not None:
-        if type(iid) == list:
-            iid = int(iid[0])
-        else:
-            iid = int(iid)
-    return iid
 
+def query_access_read(iid=get_request_val('material', '', 'tp')):
+    authorized = None
+    if get_request_val('material', '', 'mr') == 'm' or get_request_val('material', '', 'qw') == 'w':
+        authorized = True
+    elif iid != None and iid > 0:
+        mql_record = db.queries[iid]
+        if mql_record != None:
+            authorized = mql_record.is_published or (auth.user != None and mql_record.created_by == auth.user.id)
+    return authorized
 
 @auth.requires_login()
-def check_query_access_write(iid=get_iid()):
+def check_query_access_write(iid=get_request_val('material', '', 'iid')):
     authorized = True
-
     if iid is not None and iid > 0:
         mql_record = db.queries[iid]
         if mql_record is None:
             raise HTTP(404, "No write access. Object not found in database. id=" + str(iid))
         if mql_record.created_by != auth.user.id:
             authorized = False
-
     return authorized
 
-
 @auth.requires_login()
-def check_query_access_execute(iid=get_iid()):
+def check_query_access_execute(iid=get_request_val('material', '', 'iid')):
     authorized = False
 
     if iid is not None and iid > 0:
