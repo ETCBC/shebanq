@@ -47,7 +47,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = False
+CACHING = True
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -500,14 +500,16 @@ def show_query(readonly=True, kind=None, msg=None):
             query=None,
         )
     if iid:
+        old_pub = db.queries[iid].is_published
         old_mql = db.queries[iid].mql
         old_modified_on = db.queries[iid].modified_on
     else:
         iid = 0
+        old_pub = False
         old_mql = ''
         old_modified_on = 0
     mql_form = get_mql_form(iid, readonly=readonly)
-    (thisreadonly, thiskind, thismsg) = handle_response_mql(mql_form, old_mql, old_modified_on)
+    (thisreadonly, thiskind, thismsg) = handle_response_mql(mql_form, old_pub, old_mql, old_modified_on)
     if thisreadonly != None: readonly = thisreadonly
     if thiskind != None: kind = thiskind
     if thismsg != None: msg = thismsg
@@ -716,8 +718,8 @@ def get_mql_form(iid, readonly=False):
             )
         medit_link = A(
             SPAN(_class='icon pen icon-pencil'),
-            SPAN('', _class='buttontext button', _title='Edit all fields'),
-            SPAN('Edit info', _class='buttontext button', _title='Edit all info fields'),
+            SPAN('', _class='buttontext button', _title='Edit info fields'),
+            SPAN('Edit info', _class='buttontext button', _title='Edit info fields'),
             _class='button btn',
             _href=URL('hebrew', 'my_queries', extension='', args=['edit', 'queries', iid], user_signature=True),
         )
@@ -749,7 +751,7 @@ def get_mql_form(iid, readonly=False):
             'description',
             'mql',
         ],
-        showid=False, ignore_rw=False,
+        showid=False, ignore_rw=True,
         col3 = dict(
             mql=qedit_link,
             name=medit_link,
@@ -811,19 +813,24 @@ def get_word_form(iid):
     )
     return word_form
 
-def fiddle_dates(old_mql, old_modified_on):
+def fiddle_dates(old_pub, old_mql, old_modified_on):
     def _fiddle_dates(mql_form):
+        pub = mql_form.vars.is_published
         mql = mql_form.vars.mql
         modified_on = mql_form.vars.modified_on
         if mql == old_mql:
             mql_form.vars.modified_on = old_modified_on
+        if pub != old_pub:
+            ckeys = r'^items_q:'
+            cache.ram.clear(regex=ckeys)
+            cache.disk.clear(regex=ckeys)
     return _fiddle_dates
 
-def handle_response_mql(mql_form, old_mql, old_modified_on):
+def handle_response_mql(mql_form, old_pub, old_mql, old_modified_on):
     readonly = None
     msg = None
     kind = None
-    mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_mql, old_modified_on), onsuccess=lambda f:None, onfailure=lambda f: None)
+    mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_pub, old_mql, old_modified_on), onsuccess=lambda f:None, onfailure=lambda f: None)
     if mql_form.accepted:
         iid = str(mql_form.vars.id)
         if request.vars.button_execute == 'true':
