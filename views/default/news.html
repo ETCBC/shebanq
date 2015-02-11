@@ -8,6 +8,21 @@
 {{pass}}
 
 <h1>{{=T('News')}}</h1>
+<h2>2015-02-11</h2>
+<p>A minor update of the SHEBANQ website with:</p>
+<dl>
+<dt>Better security</dt>
+<dd>
+<ul>
+<li>Non-public queries are no longer visible to non-logged-in users and to users that have not created those queries.
+The fact that it was possible (by manipulating the url parameters) was a bug.</li>
+<li>SHEBANQ is now much more resistant against manipulation of the url parameters and the cookies.
+No matter how contrived the url parameters or the contents of the cookies, SHEBANQ only looks at a definite set of parameters,
+and parses their values rigorously. All illegal values are detected and translated to harmless default values.</li>
+<li>And where parameters refer to non-existing objects, SHEBANQ detects it and responds gracefully.</li>
+</ul>
+</dd>
+</dl>
 <h2>2015-02-07</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
