@@ -2,8 +2,8 @@
 <input type="text" id="search_contents"/>&nbsp;
 <a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
 <a class="ctrl" href="#" id="search_clear">back</a>
+<p>Public Queries ({{=qcount['']}})</p>
 <div id="public_queries">
-<p>Public queries ({{=qcount['']}})
 <ul>
 {{ for oname in sorted(tree): }}
     <li class="jstree-open">{{=oname}} ({{=qcount['o'][oname]}})
