@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
 <input type="text" id="search_contents"/>&nbsp;
 <a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
-<a class="ctrl" href="#" id="search_clear">show all</a>
+<a class="ctrl" href="#" id="search_clear">back</a>
 <div id="public_queries">
 <ul>
 {{ for oname in sorted(tree): }}
@@ -42,7 +42,9 @@ $(function () {
         },
         "plugins" : [ "wholerow", "checkbox", "sort", "search" ],
         "checkbox" : { "whole_node" : false },
-        "search" : { "show_only_matches" : true },
+        "search" : {
+            "show_only_matches" : false,
+        },
     })
 })
 $('#public_queries').on('changed.jstree', function (e, data) {
