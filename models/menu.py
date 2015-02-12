@@ -62,7 +62,7 @@ response.menu = [
         ('SHEBANQ user guide', False, URL('default', 'help'), []),
         ('Release notes', False, URL('default', 'news'), []),
         ('MQL quick reference guide (pdf)', False, URL('static', 'docs/MQL-QuickRef.pdf'), []),
-        ('MQL Query Reference by Ulrik(pdf)', False, URL('static', 'docs/MQL-Query-Guide.pdf'), []),
+        ('MQL Query Reference by Ulrik (pdf)', False, URL('static', 'docs/MQL-Query-Guide.pdf'), []),
         ('ETCBC4 feature doc', False, 'http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html', []),
         ('ETCBC4 transcription table (pdf)', False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),
         (T('Sources'), False, URL('default', 'sources'), []),

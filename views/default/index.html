@@ -8,69 +8,51 @@
 {{pass}}
 
 <h4>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</h4>
-This is a tool, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>
-for working with the Hebrew Bible.
+<p>This is a system for the study of the Hebrew Bible, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>.
 It is powered by the ETCBC <i>database</i>, formerly known as WIVU, and it facilitates powerful syntactical queries.
-SHEBANQ lets you define, execute, save and publish such queries.
+SHEBANQ lets you develop and share those queries with fellow researchers.
+It uses a <i>queries-as-annotations</i> paradigm. 
+Scholarly editions of the Bible usually dedicate space to a critical apparatus and various kinds of annotations. 
+SHEBANQ introduces the idea of annotating the text with <i>queries</i>.
+They show up next to the text pages where the results are.
+By sharing your queries with others, you may find what you did not search for.</p>
 
 <h4>{{=T('Get started')}}</h4>
-<p>Just have a look at the
-{{=A(T("shibboleth query"), _href=URL('hebrew', 'query', vars=dict(id=18, page=1)))}}
+<p>You can just read
+{{=A(T("The Text"), _href=URL('hebrew', 'text', vars=dict(book='Genesis', chapter=1, qget='v', wget='v')))}}.
+In the margin you find related queries, and you can follow them.
+You can also start with a query, such as
+{{=A(T("shibboleth"), _href=URL('hebrew', 'query', vars=dict(id=18, page=1)))}}
 (1 result)
-or the
-{{=A(T("definite article word"), _href=URL('hebrew', 'word', vars=dict(id=3933, page=1)))}}
+or a word such as the
+{{=A(T("definite article"), _href=URL('hebrew', 'word', vars=dict(id=3933, page=1)))}}
 (more than 30,000 occurrences).
-</p>
-<p>Do not forget to use the clickable chart of results, which shows you how your results are distributed over the chapters in the Hebrew Bible.</p>
-<p>Or find an other
+Do not forget to use the clickable <i>chart</i>,
+which shows you how your results are distributed over the text as a whole.
+You can even download the results as a <i>csv file</i> and use your spreadsheet program to make a nicer chart.
+Or find an other
 {{=A(T("public query"), _href=URL('hebrew', 'public_queries'))}}
-that interests you.<p/>
-Try to click on query names, query authors and passage headings.
-In this way you switch back and forth from browsing passages to inspecting relevant queries.
-Or start reading a
-{{=A(T("passage"), _href=URL('hebrew', 'text', vars=dict(mr='m', book='Genesis', chapter=1, qget='v')))}}
-and look which queries land there. Do not forget to check the underlying data. You can customize the data that is shown, and lookup the meaning of the data fields by clicking on it in the legend.
-</p>
-<p>All this and more is explained in the {{=A('help', _href=URL('default', 'help'))}}.
+that interests you.
+You switch back and forth from browsing passages to inspecting relevant queries by clicking on queries in the margin
+and verse labels in the text material.
+The data that underlies the text can be viewed by pressing the <i>data</i> button.
+All this and more is explained in the {{=A('help', _href=URL('default', 'help'))}}.</p>
 
 <h4>{{=T('Next step: make your own queries')}}</h4>
-<p>
-You can contribute queries yourself, but then you have to register/login.
-By filling in your institution and your project you provide other users with a bit of context.<br/>
-Start with the menu item
-{{=A(T("My Queries"), _href=URL('hebrew', 'my_queries'))}}.
-You can add a query by means of the + button, and you can edit, save, execute existing queries.<br/>
-Precise, concise documentation is at your finger tips under the menu <i>Help</i>:
-{{=A('MQL quick reference guide', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}
-and
-{{=A('ETCBC4 transcription table', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}.
-</p>
-<p>There is a growing body of online documentation on <a target="_blank" href="http://shebanq-doc.readthedocs.org">readthedocs</a>.</p>
+<p>You can contribute queries yourself, but then you have to register/login.
+By filling in your institution and your project you provide other users with a bit of context.
+Precise, concise documentation is at your finger tips, e.g. the
+growing body of online documentation on <a target="_blank" href="http://shebanq-doc.readthedocs.org">readthedocs</a>.</p>
 
 <h4>{{=T('Expert step: publish your queries')}}</h4>
-You can publish your queries, by pressing the <i>Publish</i> button where you edit the query
-(you can also unpublish them by pressing <i>Make Private</i>).<br/>
-When you press <i>Publish</i> the query will be executed first, in order to make sure that the query results match the query instruction.<br/>
-Published queries show up under <i>Public Queries</i>.
-They also are shown in the margin when you browse Bible chapters containing their results.<br/>
+<p>You can publish your queries, so that they show up
+in the margin of the chapters containing their results.
 In this way they are become a valuable resource for fellow Hebrew readers.
-See for example the 
-{{=A(T('P"Alef verbs'), _href=URL('hebrew', 'query', vars=dict(id=30)))}}
-(by Oliver Glanz).
+See for example this
+<a target="_blank" href="https://shebanq-doc.readthedocs.org/en/latest/features/comments/0_hints.html">set of real-life, yet tutorial style queries</a>
+by Oliver Glanz, Reinoud Oosting, and Martijn Naaijer.</p>
 
 <h4>{{=T('For gurus')}}</h4>
-You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
+<p>You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
 Consult the menu item {{=A(T("Help/Sources"), _href=URL('default', 'sources'))}}. 
-There is already one application for ETCBC data-processing, that might jump-start your own new workflows.
-Best of all: the license is such that nothing stands in your way, as long as you stay non-commercial.
-
-{{block right_sidebar}}
-    {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
-
-    <h6>{{=T("Don't know what to do?")}}</h6>
-    <ul class="text">
-      <li>{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
-      <li><a href="http://web2py.com">web2py.com</a></li>
-      <li><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>
-    </ul>
-{{end}}
+The license is such that nothing stands in your way, as long as you stay non-commercial.</p>
