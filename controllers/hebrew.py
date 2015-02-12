@@ -445,7 +445,7 @@ def my_queries():
         grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
     return locals()
 
-def public_queries():
+def old_public_queries():
     grid = SQLFORM.grid(
         db.queries.is_published == True,
         fields=[db.queries.id, db.queries.name ,db.queries.modified_by, db.queries.created_on,
@@ -474,6 +474,25 @@ def public_queries():
         csv=False,
     )
     return locals()
+
+def public_queries():
+    pqueries_sql = '''
+select
+    organization.name,
+    project.name,
+    auth_user.first_name, auth_user.last_name, 
+    queries.name, queries.id
+from queries
+inner join organization on queries.organization = organization.id
+inner join project on queries.project = project.id
+inner join auth_user on queries.created_by = auth_user.id
+where queries.is_published = 'T'
+'''
+    pqueries = db.executesql(pqueries_sql)
+    tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: {})))
+    for (oname, pname, ufname, ulname, qname, qid) in pqueries:
+        tree[oname][pname][ufname+' '+ulname][qid] = qname
+    return dict(tree=tree)
 
 @auth.requires(lambda: check_query_access_write())
 def delete_multiple():
