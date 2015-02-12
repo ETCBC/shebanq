@@ -31,6 +31,7 @@
 </ul>
 </div>
 <script type="text/javascript">
+var searches = []
 $(function () {
         $('#public_queries').jstree({
         "core" : {
@@ -44,6 +45,16 @@ $(function () {
         "checkbox" : { "whole_node" : false },
         "search" : {
             "show_only_matches" : false,
+            "search_callback" : function(pat, node) {
+                var found = false
+                var pqo = $('#public_queries').jstree(true)
+                var text = pqo.get_text(node).toLowerCase()
+                if (text.indexOf(pat.toLowerCase()) >= 0) {
+                    found = true
+                    searches.push(node)
+                }
+                return found
+            }
         },
     })
 })
@@ -62,7 +73,14 @@ $('#search_control').click(function() {
         $('#search_contents').val('search string')
     }
     else {
+        searches = []
+        var pqo = $('#public_queries').jstree(true)
         $('#public_queries').jstree(true).search(pat)
+        for (i in searches) {
+            node = searches[i]
+            pqo.open_node(node)
+            pqo.draw_children(node)
+        }
         $('#search_clear').show()
     }
 })
