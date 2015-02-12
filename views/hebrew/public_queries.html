@@ -8,10 +8,10 @@
     <li class="jstree-open">{{=oname}}
         <ul>
 {{     for pname in sorted(tree[oname]): }}
-            <li class="jstree-open">{{=pname}}
+            <li>{{=pname}}
                 <ul>
 {{         for uname in sorted(tree[oname][pname]): }}
-                    <li class="jstree-closed">{{=uname}}
+                    <li>{{=uname}}
                         <ul>
 {{             for qid in sorted(tree[oname][pname][uname]):
                     qname = tree[oname][pname][uname][qid]
