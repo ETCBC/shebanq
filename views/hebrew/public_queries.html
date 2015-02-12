@@ -3,15 +3,16 @@
 <a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
 <a class="ctrl" href="#" id="search_clear">back</a>
 <div id="public_queries">
+<p>Public queries ({{=qcount['']}})
 <ul>
 {{ for oname in sorted(tree): }}
-    <li class="jstree-open">{{=oname}}
+    <li class="jstree-open">{{=oname}} ({{=qcount['o'][oname]}})
         <ul>
 {{     for pname in sorted(tree[oname]): }}
-            <li>{{=pname}}
+            <li>{{=pname}} ({{=qcount['p'][oname][pname]}})
                 <ul>
 {{         for uname in sorted(tree[oname][pname]): }}
-                    <li>{{=uname}}
+                    <li>{{=uname}} ({{=qcount['u'][oname][pname][uname]}})
                         <ul>
 {{             for qid in sorted(tree[oname][pname][uname]):
                     qname = tree[oname][pname][uname][qid]

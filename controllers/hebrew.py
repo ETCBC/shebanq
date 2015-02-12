@@ -490,9 +490,20 @@ where queries.is_published = 'T'
 '''
     pqueries = db.executesql(pqueries_sql)
     tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: {})))
+    qcount = {
+        '': 0,
+        'o': collections.defaultdict(lambda: 0),
+        'p': collections.defaultdict(lambda: collections.defaultdict(lambda: 0)),
+        'u': collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0))),
+    }
     for (oname, pname, ufname, ulname, qname, qid) in pqueries:
-        tree[oname][pname][ufname+' '+ulname][qid] = qname
-    return dict(tree=tree)
+        uname = ufname+' '+ulname
+        tree[oname][pname][uname][qid] = qname
+        qcount[''] += 1
+        qcount['o'][oname] += 1
+        qcount['p'][oname][pname] += 1
+        qcount['u'][oname][pname][uname] += 1
+    return dict(tree=tree, qcount=qcount)
 
 @auth.requires(lambda: check_query_access_write())
 def delete_multiple():
