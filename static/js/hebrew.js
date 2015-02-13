@@ -102,7 +102,7 @@ $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
 /* state variables */
-var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
+var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style, muting // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
 var wb      // holds the one and only page object
 
@@ -261,15 +261,18 @@ the origin must be an object which has a member indicating the type of origin an
                 If a word belongs to several query results, the last-applied coloring determines the color that the user sees.
                 We want to promote the customised colors over the non-customized ones, so we compute customized coloring after 
                 uncustomized coloring.
+                Skip the muted queries
             */
             $('#side_list_'+qw+' li').each(function() {
                 var iid = $(this).attr('iid')
-                var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
-                if (wb.vs.iscolor(qw, iid)) {
-                    custitems[iid] = monads
-                }
-                else {
-                    plainitems[iid] = monads
+                if (!(iid in muting && muting[iid] == 'v')) {
+                    var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
+                    if (wb.vs.iscolor(qw, iid)) {
+                        custitems[iid] = monads
+                    }
+                    else {
+                        plainitems[iid] = monads
+                    }
                 }
             })
         }
@@ -1220,6 +1223,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
     }
     this.sidelistitem = function(iid) { // individual item in an m-sidebar
+        var itop = $('#'+this.qw+iid) 
         var more = $('#m_'+this.qw+iid) 
         var head = $('#h_'+this.qw+iid) 
         var desc = $('#d_'+this.qw+iid) 
@@ -1238,6 +1242,14 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         if (this.qw == 'w') {
             if (!wb.vs.iscolor(this.qw, iid)) {
                 all.hide()
+            }
+        }
+        if (this.qw == 'q') {
+            if (iid in muting && muting[iid] == 'v') {
+                itop.hide()
+            }
+            else {
+                itop.show()
             }
         }
     }
@@ -1439,12 +1451,14 @@ function defcolor(qw, iid) {// compute the default color
         wb.vs.apply(ev)
 }*/
 
-History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-        if (!from_push) {
-            var state = History.getState(); // Note: We are using History.getState() instead of event.state
-            wb.vs.apply(state)
-        }
-})
+function goback() {
+    if (!from_push) {
+        var state = History.getState(); // Note: We are using History.getState() instead of event.state
+        wb.vs.apply(state)
+    }
+}
+
+History.Adapter.bind(window,'statechange', goback)
 
 
 function ViewState(init, pref) {
@@ -1473,7 +1487,9 @@ function ViewState(init, pref) {
         from_push = false
     }
     this.apply = function(state, load_it) {
-        this.data = state.data
+        if (state.data != undefined) {
+            this.data = state.data
+        }
         wb.go()
     }
     this.delsv = function(group, qw, name) {

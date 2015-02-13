@@ -2,22 +2,28 @@
 <input type="text" id="search_contents"/>&nbsp;
 <a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
 <a class="ctrl" href="#" id="search_clear">back</a>
-<p>Public Queries ({{=qcount['']}})</p>
+<p>Public Queries ({{=qcount['']}})&nbsp;
+<a class="ctrl" href="#" id="mute_none">none</a>&nbsp;
+<a class="ctrl" href="#" id="mute_all">all</a>
+</p>
 <div id="public_queries">
 <ul>
+{{
+from markdown import markdown
+}}
 {{ for oname in sorted(tree): }}
-    <li class="jstree-open">{{=oname}} ({{=qcount['o'][oname]}})
+    <li class="jstree-open"><a href="#">{{=oname}} ({{=qcount['o'][oname]}})</a>
         <ul>
 {{     for pname in sorted(tree[oname]): }}
-            <li>{{=pname}} ({{=qcount['p'][oname][pname]}})
+            <li><a href="#">{{=pname}} ({{=qcount['p'][oname][pname]}})</a>
                 <ul>
 {{         for uname in sorted(tree[oname][pname]): }}
-                    <li>{{=uname}} ({{=qcount['u'][oname][pname][uname]}})
+                    <li uname="{{=uname}}"><a href="#">{{=uname}} ({{=qcount['u'][oname][pname][uname]}})</a>
                         <ul>
 {{             for qid in sorted(tree[oname][pname][uname]):
                     qname = tree[oname][pname][uname][qid]
 }}
-                            <li>{{=A(qname, _href=URL('hebrew', 'text', vars=dict(iid=qid, mr='r', qw='q')))}}
+                            <li qid="{{=qid}}">{{=A(qname, _href=URL('hebrew', 'text', host=True, vars=dict(iid=qid, mr='r', qw='q')))}}
                             </li>
 {{             pass }}
                         </ul>
@@ -32,19 +38,65 @@
 </ul>
 </div>
 <script type="text/javascript">
+
+$.cookie.raw = false
+$.cookie.json = true
+$.cookie.defaults.expires = 30
+$.cookie.defaults.path = '/'
+
 var searches = []
+
 $(function () {
         $('#public_queries').jstree({
         "core" : {
-            "expand_selected_onload" : true,
-            "themes" : {
-                "icons" : false,
-                "dots" : false,
+            "expand_selected_onload": true,
+            "multiple": true,
+            "themes": {
+                "icons": false,
+                "dots": false,
              },
         },
-        "plugins" : [ "wholerow", "checkbox", "sort", "search" ],
-        "checkbox" : { "whole_node" : false },
-        "search" : {
+        "plugins": [
+            "wholerow",
+            "checkbox",
+            "sort",
+            "search",
+            "state",
+            "contextmenu",
+        ],
+        "checkbox": {
+            "whole_node" : false,
+            "tie_selection": true,
+            "keep_selected_style": false,
+        },
+        "state": {"key": 'mymute'},
+        "contextmenu": {
+            "select_node" : false,
+            "items": function(node, f) {
+                var items = {}
+                if ('a_attr' in node && 'href' in node.a_attr) {
+                    var lnk = node.a_attr.href
+                    if (lnk != '#') {
+                        items = {
+                            'goto': {
+                                "label": "go to this query",
+                                "action": function() {window.location.href = lnk},
+                            },
+                            'link': {
+                                "label": "get mark down link",
+                                "action": function() {
+                                    var qname = node.text
+                                    var uname = $('#public_queries').jstree(true).get_node(node.parent).li_attr.uname
+                                    window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+qname+']('+lnk+')')
+                                },
+                            },
+                        }
+                    }
+                }
+                return items
+            },
+        },
+        "search": {
             "show_only_matches" : false,
             "search_callback" : function(pat, node) {
                 var found = false
@@ -55,16 +107,34 @@ $(function () {
                     searches.push(node)
                 }
                 return found
-            }
+            },
         },
     })
 })
-$('#public_queries').on('changed.jstree', function (e, data) {
-    lnk = data.node.a_attr.href
+/*
+var check_event = false
+
+$('#public_queries').on('activate_node.jstree', function (e, data) {
+    if (check_event) {
+        check_event = false
+        return
+    }
+    lnk = '#'
+    if ('node' in data && 'a_attr' in data.node && 'href' in data.node.a_attr) {
+        lnk = data.node.a_attr.href
+    }
     if (lnk != '#') {
         window.location.href = lnk
     }
-  })
+})
+$('#public_queries').on('check_node.jstree', function (e, data) {
+    check_event = true
+})
+$('#public_queries').on('uncheck_node.jstree', function (e, data) {
+    check_event = true
+})
+*/
+
 
 $('#search_clear').hide()
 
@@ -89,5 +159,27 @@ $('#search_control').click(function() {
 $('#search_clear').click(function() {
     $('#public_queries').jstree(true).clear_search()
     $('#search_clear').hide()
+})
+function apply_muting() {
+    var checked = $('#public_queries').jstree(true).get_checked(true)
+    var purechecked = {}
+    for (i in checked) {
+        node = checked[i]
+        if ('li_attr' in node && 'qid' in node.li_attr) {
+            purechecked[node.li_attr.qid] = 'v'
+        }
+    }
+    $.cookie('mymuting', purechecked)
+}
+$('#public_queries').on('changed.jstree', function (e, data) {
+    apply_muting()
+})
+$('#mute_none').click(function() {
+    $('#public_queries').jstree(true).uncheck_all()
+    apply_muting()
+})
+$('#mute_all').click(function() {
+    $('#public_queries').jstree(true).check_all()
+    apply_muting()
 })
 </script>

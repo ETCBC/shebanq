@@ -779,3 +779,47 @@ div.msg_error {
 .pnll .ui-dialog-titlebar-close {
   display: none;
 }
+
+/* MARKDOWN FIELDS */
+
+.w2p_fw h1,.w2p_fw h2,.w2p_fw h3,.w2p_fw h4,.w2p_fw h5,.w2p_fw h6 {
+    margin:0.2em 0 0.1em 0; display:block;
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    background-color: white;
+}
+.w2p_fw h1 {
+    font-size:large;
+    font-weight: bold;
+    color: #007fd1;
+}
+.w2p_fw h2 {
+    font-size:medium;
+    font-weight: bold;
+    color: #007fd1;
+}
+.w2p_fw h3 {
+    font-size:small;
+    font-weight: bold;
+    color: #007fd1;
+}
+.w2p_fw h4 {
+    font-size:small;
+    font-style: italic;
+    color: #007fd1;
+}
+.w2p_fw h5 {
+    font-size:small;
+    font-style: italic;
+    color: #003c57;
+}
+.w2p_fw h6 {
+    font-size:small;
+    font-style: italic;
+    color: black;
+}
+.w2p_fw p, .w2p_fw div, .w2p_fw li, .w2p_fw dt, .w2p_fw dd, .w2p_fw td {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-size:small;
+    color: #5a5100;
+    background-color: white;
+}

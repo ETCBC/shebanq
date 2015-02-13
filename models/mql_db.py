@@ -22,6 +22,7 @@ if 0:
     # End of fake imports to satisfy the editor.
     #
 
+from markdown import markdown
 from gluon.validators import Validator, is_empty
 from select_or_add_option_widget import SELECT_OR_ADD_OPTION
 
@@ -73,10 +74,12 @@ signature = db.Table(db, 'auth_signature',
 # Define the query table
 db.define_table("queries",
                 Field('name', 'string', requires=IS_NOT_EMPTY(error_message='Enter a name for the query')),
-                Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Enter the description of the query')),
+                Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Enter the description of the query'),
+                    represent = lambda v: XML(markdown(v)),
+                ),
                 Field('mql', 'text', requires=IS_MQL_QUERY(),
                     writable=False,
-                    represent = lambda v: XML('<textarea class="mql" readonly>{mql}</textarea>'.format(mql=v)),
+                    represent = lambda v: XML('<textarea class="mql" readonly">{mql}</textarea>'.format(mql=v)),
                 ),
                 Field('project', 'reference project', requires=IS_IN_DB(db, db.project.id, '%(name)s'),
                     widget=SELECT_OR_ADD_OPTION("project", controller='select_or_add_option_widget').widget,

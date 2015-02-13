@@ -764,7 +764,6 @@ def get_mql_form(iid, readonly=False):
         medit_link = ''
     mql_form = SQLFORM(db.queries, record=iid, readonly=readonly,
         fields=[
-            'is_published',
             'name',
             'project',
             'organization',
@@ -773,6 +772,7 @@ def get_mql_form(iid, readonly=False):
             'modified_on',
             'modified_by',
             'executed_on',
+            'is_published',
             'description',
             'mql',
         ] if readonly else [
