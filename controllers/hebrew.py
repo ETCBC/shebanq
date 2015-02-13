@@ -784,7 +784,7 @@ def get_mql_form(iid, readonly=False):
         showid=False, ignore_rw=True,
         col3 = dict(
             mql=qedit_link,
-            name=medit_link,
+            organization=medit_link,
         ),
         labels=dict(
             mql='MQL Query',
