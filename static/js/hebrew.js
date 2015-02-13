@@ -102,9 +102,10 @@ $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
 /* state variables */
-var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style, muting // parameters dumped by the server, mostly in json form
+var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
 var wb      // holds the one and only page object
+var muting = {}
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)

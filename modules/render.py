@@ -443,12 +443,6 @@ class Viewsettings():
                     current.response.cookies[self.pref+group+qw]['expires'] = 30 * 24 * 3600
                     current.response.cookies[self.pref+group+qw]['path'] = '/'
 
-        self.muting = {}
-        if self.pref == 'my':
-            try:
-                self.muting = json.loads(urllib.unquote(current.request.cookies[self.pref+'muting'].value))
-            except KeyError, ValueError: pass
-
 
     def dynamics(self):
         book_proto = get_request_val('material', '', 'book')
@@ -461,7 +455,6 @@ var dnrows = {dnrows}
 var viewinit = {initstate}
 var style = {style}
 var pref = {pref}
-var muting = {muting}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
@@ -469,7 +462,6 @@ dynamics()
     vcolors = json.dumps(vcolors),
     ccolors = json.dumps(make_ccolors()),
     style = json.dumps(style),
-    muting = json.dumps(self.muting),
     pref = '"{}"'.format(self.pref),
     dncols = dncols,
     dnrows = dnrows,
