@@ -1,6 +1,3 @@
-<div class="mql_form" id="mform">
-{{=form}}
-</div>
 {{if msg != None:}}
     <div class="msg_{{=kind}}">{{=msg}}</div>
 {{pass}}
@@ -14,6 +11,11 @@
 {{else:}}
     <p>This query is not yet saved.</p>
 {{pass}}
+</div>
+<div class="mql_form" id="mform">
+{{=form}}
+</div>
+<div>
     <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
     <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
     <p>{{=A('MQL Query Guide by Ulrik (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-Query-Guide.pdf'))}}</p>
