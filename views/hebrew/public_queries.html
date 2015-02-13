@@ -2,9 +2,9 @@
 <input type="text" id="search_contents"/>&nbsp;
 <a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
 <a class="ctrl" href="#" id="search_clear">back</a>
-<p>Public Queries ({{=qcount['']}})&nbsp;
-<a class="ctrl" href="#" id="mute_none">none</a>&nbsp;
-<a class="ctrl" href="#" id="mute_all">all</a>
+<p>Public Queries ({{=qcount['']}})&nbsp;Mute&nbsp;
+<a class="ctrl" href="#" id="mute_none">none</a>&nbsp;or&nbsp;
+<a class="ctrl" href="#" id="mute_all">all</a>&nbsp;or mute selected below&nbsp;
 </p>
 <div id="public_queries">
 <ul>
@@ -49,7 +49,7 @@ var searches = []
 $(function () {
         $('#public_queries').jstree({
         "core" : {
-            "expand_selected_onload": true,
+            "expand_selected_onload": false,
             "multiple": true,
             "themes": {
                 "icons": false,
