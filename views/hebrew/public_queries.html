@@ -140,19 +140,17 @@ $('#search_clear').click(function() {
 function apply_muting() {
     var checked = $('#public_queries').jstree(true).get_checked(true)
     var purechecked = {}
+    console.log('length='+checked.length)
     for (i in checked) {
         node = checked[i]
         if ('li_attr' in node && 'qid' in node.li_attr) {
             purechecked[node.li_attr.qid] = 'v'
+            console.log('adding '+node.li_attr.qid)
         }
     }
     $.cookie('mymuting', purechecked)
+    console.log('cookie mymuting set')
 }
-/*
-$('#public_queries').on('changed.jstree', function (e, data) {
-    apply_muting()
-})
-*/
 $('#mute_none').click(function() {
     $('#public_queries').jstree(true).uncheck_all()
     apply_muting()
