@@ -141,11 +141,15 @@ function apply_muting() {
     var checked = $('#public_queries').jstree(true).get_checked(true)
     var purechecked = {}
     console.log('length='+checked.length)
+    var j = 0
     for (i in checked) {
-        node = checked[i]
-        if ('li_attr' in node && 'qid' in node.li_attr) {
-            purechecked[node.li_attr.qid] = 'v'
-            console.log('adding '+node.li_attr.qid)
+        j += 1
+        if (j < 10) {
+            node = checked[i]
+            if ('li_attr' in node && 'qid' in node.li_attr) {
+                purechecked[node.li_attr.qid] = 'v'
+                console.log('adding '+node.li_attr.qid)
+            }
         }
     }
     $.cookie('mymuting', purechecked)
