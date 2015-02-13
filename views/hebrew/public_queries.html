@@ -5,6 +5,7 @@
 <p>Public Queries ({{=qcount['']}})&nbsp;Mute&nbsp;
 <a class="ctrl" href="#" id="mute_none">none</a>&nbsp;or&nbsp;
 <a class="ctrl" href="#" id="mute_all">all</a>&nbsp;or mute selected below&nbsp;
+<a class="ctrl" href="#" id="mute_apply">selected</a>&nbsp;below.
 </p>
 <div id="public_queries">
 <ul>
@@ -111,30 +112,6 @@ $(function () {
         },
     })
 })
-/*
-var check_event = false
-
-$('#public_queries').on('activate_node.jstree', function (e, data) {
-    if (check_event) {
-        check_event = false
-        return
-    }
-    lnk = '#'
-    if ('node' in data && 'a_attr' in data.node && 'href' in data.node.a_attr) {
-        lnk = data.node.a_attr.href
-    }
-    if (lnk != '#') {
-        window.location.href = lnk
-    }
-})
-$('#public_queries').on('check_node.jstree', function (e, data) {
-    check_event = true
-})
-$('#public_queries').on('uncheck_node.jstree', function (e, data) {
-    check_event = true
-})
-*/
-
 
 $('#search_clear').hide()
 
@@ -171,15 +148,20 @@ function apply_muting() {
     }
     $.cookie('mymuting', purechecked)
 }
+/*
 $('#public_queries').on('changed.jstree', function (e, data) {
     apply_muting()
 })
+*/
 $('#mute_none').click(function() {
     $('#public_queries').jstree(true).uncheck_all()
     apply_muting()
 })
 $('#mute_all').click(function() {
     $('#public_queries').jstree(true).check_all()
+    apply_muting()
+})
+$('#mute_apply').click(function() {
     apply_muting()
 })
 </script>
