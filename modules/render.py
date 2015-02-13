@@ -447,7 +447,7 @@ class Viewsettings():
         if self.pref == 'my':
             try:
                 self.muting = json.loads(urllib.unquote(current.request.cookies[self.pref+'muting'].value))
-            except ValueError: pass
+            except KeyError, ValueError: pass
 
 
     def dynamics(self):
