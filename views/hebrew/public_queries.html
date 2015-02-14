@@ -2,11 +2,11 @@
 <input type="text" id="search_contents"/>&nbsp;
 <a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
 <a class="ctrl" href="#" id="search_clear">back</a>
-<p>Public Queries ({{=qcount['']}})<!--&nbsp;Mute&nbsp;
+<p>Public Queries ({{=qcount['']}})&nbsp;Mute&nbsp;
 <a class="ctrl" href="#" id="mute_none">none</a>&nbsp;or&nbsp;
-<a class="ctrl" href="#" id="mute_all">all</a>&nbsp;or mute selected below&nbsp;
-<a class="ctrl" href="#" id="mute_apply">selected</a>&nbsp;below.
---></p>
+<a class="ctrl" href="#" id="mute_all">all</a>&nbsp;or&nbsp;
+<a class="ctrl" href="#" id="mute_selected">use</a>&nbsp;use the selection below.
+</p>
 <div id="public_queries">
 <ul>
 {{
@@ -40,10 +40,7 @@ from markdown import markdown
 </div>
 <script type="text/javascript">
 
-$.cookie.raw = false
-$.cookie.json = true
-$.cookie.defaults.expires = 30
-$.cookie.defaults.path = '/'
+var muting = $.initNamespaceStorage('mymuting').localStorage
 
 var searches = []
 
@@ -62,12 +59,12 @@ $(function () {
             "checkbox",
             "sort",
             "search",
-            //"state",
+            "state",
             "contextmenu",
         ],
         "checkbox": {
             "whole_node" : false,
-            "tie_selection": true,
+            "tie_selection": false,
             "keep_selected_style": false,
         },
         "state": {"key": 'mymute'},
@@ -113,6 +110,35 @@ $(function () {
     })
 })
 
+function apply_muting() {
+    var checked = $('#public_queries').jstree(true).get_checked(true)
+    muting.removeAll()
+    for (i in checked) {
+        var node = checked[i]
+        if ('li_attr' in node && 'qid' in node.li_attr) {
+            muting.set(node.li_attr.qid, 1)
+        }
+    }
+}
+
+function load_muting(node) {
+    var pqo = $('#public_queries').jstree(true)
+    pqo.check_all()
+    checked = pqo.get_checked(true)
+    pqo.uncheck_all()
+    for (i in checked) {
+        var node = checked[i]
+        if ('li_attr' in node && 'qid' in node.li_attr) {
+            if (muting.isSet(node.li_attr.qid)) {
+                pqo.check_node(node)
+                console.log(node)
+                console.log(pqo.is_selected(node))
+            }
+        }
+    }
+}
+
+
 $('#search_clear').hide()
 
 $('#search_control').click(function() {
@@ -126,6 +152,7 @@ $('#search_control').click(function() {
         $('#public_queries').jstree(true).search(pat)
         for (i in searches) {
             node = searches[i]
+            pqo.select_node(node)
             pqo.open_node(node)
             pqo.draw_children(node)
         }
@@ -137,26 +164,44 @@ $('#search_clear').click(function() {
     $('#public_queries').jstree(true).clear_search()
     $('#search_clear').hide()
 })
-function apply_muting() {
-    var checked = $('#public_queries').jstree(true).get_checked(true)
-    var purechecked = {}
-    for (i in checked) {
-        node = checked[i]
-        if ('li_attr' in node && 'qid' in node.li_attr) {
-            purechecked[node.li_attr.qid] = 'v'
-        }
+
+var check_event = false
+
+/*
+$('#public_queries').on('activate_node.jstree', function (e, data) {
+    console.log('activate triggered check_event='+check_event)
+    if (check_event) {
+        check_event = false
+        return
     }
-    $.cookie('mymuting', purechecked)
-}
+    lnk = '#'
+    if ('node' in data && 'a_attr' in data.node && 'href' in data.node.a_attr) {
+        lnk = data.node.a_attr.href
+    }
+    if (lnk != '#') {
+        window.location.href = lnk
+    }
+})
+$('#public_queries').on('check_node.jstree', function (e, data) {
+    check_event = true
+})
+$('#public_queries').on('uncheck_node.jstree', function (e, data) {
+    check_event = true
+})
+*/
 $('#mute_none').click(function() {
     $('#public_queries').jstree(true).uncheck_all()
-//    apply_muting()
+    apply_muting()
 })
 $('#mute_all').click(function() {
     $('#public_queries').jstree(true).check_all()
-//    apply_muting()
+    apply_muting()
 })
-$('#mute_apply').click(function() {
-//    apply_muting()
+$('#mute_selected').click(function() {
+    apply_muting()
+})
+
+$('#public_queries').on('ready.jstree', function () {
+    load_muting()
 })
 </script>

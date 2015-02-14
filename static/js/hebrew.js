@@ -101,11 +101,13 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
+var ns = $.initNamespaceStorage('mymuting')
+var muting = ns.localStorage
+
 /* state variables */
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
 var wb      // holds the one and only page object
-var muting = {}
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
@@ -266,7 +268,7 @@ the origin must be an object which has a member indicating the type of origin an
             */
             $('#side_list_'+qw+' li').each(function() {
                 var iid = $(this).attr('iid')
-                if (!(iid in muting && muting[iid] == 'v')) {
+                if (!(muting.isSet(iid))) {
                     var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
                     if (wb.vs.iscolor(qw, iid)) {
                         custitems[iid] = monads
@@ -1246,7 +1248,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
         }
         if (this.qw == 'q') {
-            if (iid in muting && muting[iid] == 'v') {
+            if (muting.isSet(iid)) {
                 itop.hide()
             }
             else {
