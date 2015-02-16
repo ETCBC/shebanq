@@ -476,11 +476,7 @@ def old_public_queries():
     return locals()
 
 def public_queries():
-    return from_cache(
-        'public_queries',
-        lambda: response.render(dict()),
-        None,
-    )
+    return response.render(dict())
 
 def pq():
     return from_cache('public_queries:json:', pq_c, None)
