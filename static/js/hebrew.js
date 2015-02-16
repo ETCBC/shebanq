@@ -1478,7 +1478,7 @@ function ViewState(init, pref) {
     }
     this.addHist = function() {
         //History.pushState(this.data, '', view_url+this.getvars())
-        var title = (this.mr() == 'm')?(this.book()+' '+this.chapter()):(style[this.qw()]['Tag']+' '+this.iid())
+        var title = (this.mr() == 'm')?(this.book()+' '+this.chapter()):(style[this.qw()]['Tag']+' '+this.iid()+' p'+this.page())
         History.pushState(this.data, title, view_url)
     }
     this.apply = function(state, load_it) {
