@@ -1,207 +1,143 @@
+{{ right_sidebar_enabled = True }}
 {{extend 'layout.html'}}
-<input type="text" id="search_contents"/>&nbsp;
-<a class="ctrl" href="#" id="search_control">show matches</a>&nbsp;
-<a class="ctrl" href="#" id="search_clear">back</a>
-<p>Public Queries ({{=qcount['']}})&nbsp;Mute&nbsp;
-<a class="ctrl" href="#" id="mute_none">none</a>&nbsp;or&nbsp;
-<a class="ctrl" href="#" id="mute_all">all</a>&nbsp;or&nbsp;
-<a class="ctrl" href="#" id="mute_selected">use</a>&nbsp;use the selection below.
-</p>
-<div id="public_queries">
-<ul>
-{{
-from markdown import markdown
-}}
-{{ for oname in sorted(tree): }}
-    <li class="jstree-open"><a href="#">{{=oname}} ({{=qcount['o'][oname]}})</a>
-        <ul>
-{{     for pname in sorted(tree[oname]): }}
-            <li><a href="#">{{=pname}} ({{=qcount['p'][oname][pname]}})</a>
-                <ul>
-{{         for uname in sorted(tree[oname][pname]): }}
-                    <li uname="{{=uname}}"><a href="#">{{=uname}} ({{=qcount['u'][oname][pname][uname]}})</a>
-                        <ul>
-{{             for qid in sorted(tree[oname][pname][uname]):
-                    qname = tree[oname][pname][uname][qid]
-}}
-                            <li qid="{{=qid}}">{{=A(qname, _href=URL('hebrew', 'text', host=True, vars=dict(iid=qid, mr='r', qw='q')))}}
-                            </li>
-{{             pass }}
-                        </ul>
-                    </li>
-{{         pass }}
-                </ul>
-            </li>
-{{     pass }}
-        </ul>
-    </li>
-{{ pass }}
-</ul>
-</div>
+
+<div id="public_queries"></div>
+
+{{ block right_sidebar }}
+
+<h4>Filter</h4>
+<input type="text" id="search_contents"/></p>
+<p><a class="ctrl" href="#" id="search_control_b">all matches</a></p>
+<p><a class="ctrl" href="#" id="search_control_l">in queries only</a></p>
+<p><a class="ctrl" href="#" id="search_clear">back</a></p>
+
+<h4>Level</h4>
+<p><a class="ctrl" href="#" id="org_c">organizations</a></p>
+<p><a class="ctrl" href="#" id="prj_c">projects</a></p>
+<p><a class="ctrl" href="#" id="usr_c">users</a></p>
+<p><a class="ctrl" href="#" id="qur_c">queries</a></p>
+
 <script type="text/javascript">
+var pq_url = "{{=XML(URL('hebrew', 'pq', extension='json', host=True))}}"
+var ns = $.initNamespaceStorage('muting')
+var muting = ns.localStorage
+var ftw
 
-var muting = $.initNamespaceStorage('mymuting').localStorage
-
-var searches = []
-
-$(function () {
-        $('#public_queries').jstree({
-        "core" : {
-            "expand_selected_onload": false,
-            "multiple": true,
-            "themes": {
-                "icons": false,
-                "dots": false,
-             },
-        },
-        "plugins": [
-            "wholerow",
-            "checkbox",
-            "sort",
-            "search",
-            "state",
-            "contextmenu",
-        ],
-        "checkbox": {
-            "whole_node" : false,
-            "tie_selection": false,
-            "keep_selected_style": false,
-        },
-        "state": {"key": 'mymute'},
-        "contextmenu": {
-            "select_node" : false,
-            "items": function(node, f) {
-                var items = {}
-                if ('a_attr' in node && 'href' in node.a_attr) {
-                    var lnk = node.a_attr.href
-                    if (lnk != '#') {
-                        items = {
-                            'goto': {
-                                "label": "go to this query",
-                                "action": function() {window.location.href = lnk},
-                            },
-                            'link': {
-                                "label": "get mark down link",
-                                "action": function() {
-                                    var qname = node.text
-                                    var uname = $('#public_queries').jstree(true).get_node(node.parent).li_attr.uname
-                                    window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+qname+']('+lnk+')')
-                                },
-                            },
-                        }
-                    }
-                }
-                return items
-            },
-        },
-        "search": {
-            "show_only_matches" : false,
-            "search_callback" : function(pat, node) {
-                var found = false
-                var pqo = $('#public_queries').jstree(true)
-                var text = pqo.get_text(node).toLowerCase()
-                if (text.indexOf(pat.toLowerCase()) >= 0) {
-                    found = true
-                    searches.push(node)
-                }
-                return found
-            },
-        },
-    })
-})
-
-function apply_muting() {
-    var checked = $('#public_queries').jstree(true).get_checked(true)
-    muting.removeAll()
-    for (i in checked) {
-        var node = checked[i]
-        if ('li_attr' in node && 'qid' in node.li_attr) {
-            muting.set(node.li_attr.qid, 1)
-        }
-    }
+function expand_all() {
+    ftw.visit(function(n) {
+        n.setExpanded(true, {noAnimation: true, noEvents: true})
+    }, true)
 }
 
-function load_muting(node) {
-    var pqo = $('#public_queries').jstree(true)
-    pqo.check_all()
-    checked = pqo.get_checked(true)
-    pqo.uncheck_all()
-    for (i in checked) {
-        var node = checked[i]
-        if ('li_attr' in node && 'qid' in node.li_attr) {
-            if (muting.isSet(node.li_attr.qid)) {
-                pqo.check_node(node)
-                console.log(node)
-                console.log(pqo.is_selected(node))
-            }
-        }
-    }
+function expand_level(level) {
+    ftw.visit(function(n) {
+        nlevel = n.getLevel()
+        n.setExpanded(nlevel <= level , {noAnimation: true, noEvents: true})
+    }, true)
 }
 
-
-$('#search_clear').hide()
-
-$('#search_control').click(function() {
+function pqsearch(all) {
     pat = $('#search_contents').val()
     if (pat == '') {
         $('#search_contents').val('search string')
     }
     else {
-        searches = []
-        var pqo = $('#public_queries').jstree(true)
-        $('#public_queries').jstree(true).search(pat)
-        for (i in searches) {
-            node = searches[i]
-            pqo.select_node(node)
-            pqo.open_node(node)
-            pqo.draw_children(node)
+        expand_all()
+        if (all) {
+            ftw.filterBranches(pat)
+        }
+        else {
+            ftw.filterNodes(pat, true)
         }
         $('#search_clear').show()
     }
+}
+
+$('#search_clear').hide()
+
+$('#search_control_b').click(function() {
+    pqsearch(true)
+})
+
+$('#search_control_l').click(function() {
+    pqsearch(false)
 })
 
 $('#search_clear').click(function() {
-    $('#public_queries').jstree(true).clear_search()
+    ftw.clearFilter()
     $('#search_clear').hide()
 })
+$('#org_c').click(function() {expand_level(1)})
+$('#prj_c').click(function() {expand_level(2)})
+$('#usr_c').click(function() {expand_level(3)})
+$('#qur_c').click(function() {expand_level(4)})
 
-var check_event = false
+function store_select_deep(node) {
+    store_select(node)
+    var children = node.children
+    if (children != null) {
+        for (n in children) {
+            store_select_deep(children[n])
+        }
+    }
+}
 
-/*
-$('#public_queries').on('activate_node.jstree', function (e, data) {
-    console.log('activate triggered check_event='+check_event)
-    if (check_event) {
-        check_event = false
-        return
+function store_select(node) {
+    if (!node.folder) {
+        var iid = node.key
+        if (node.selected) {
+            muting.set(iid, 1)
+        }
+        else {
+            if (muting.isSet(iid)) {
+                muting.remove(iid)
+            }
+        }
     }
-    lnk = '#'
-    if ('node' in data && 'a_attr' in data.node && 'href' in data.node.a_attr) {
-        lnk = data.node.a_attr.href
-    }
-    if (lnk != '#') {
-        window.location.href = lnk
-    }
-})
-$('#public_queries').on('check_node.jstree', function (e, data) {
-    check_event = true
-})
-$('#public_queries').on('uncheck_node.jstree', function (e, data) {
-    check_event = true
-})
-*/
-$('#mute_none').click(function() {
-    $('#public_queries').jstree(true).uncheck_all()
-    apply_muting()
-})
-$('#mute_all').click(function() {
-    $('#public_queries').jstree(true).check_all()
-    apply_muting()
-})
-$('#mute_selected').click(function() {
-    apply_muting()
-})
+}
 
-$('#public_queries').on('ready.jstree', function () {
-    load_muting()
+$(function(){
+    $("#public_queries").fancytree({
+        extensions: ["persist", "filter"],
+        checkbox: true,
+        selectMode: 3,
+        activeVisible: true,
+        toggleEffect: false,
+        clickFolderMode: 2,
+        focusOnSelect: false,
+        quicksearch: true,
+        persist: {
+            store: 'local',
+            types: 'expanded selected',
+        },
+        source: {
+            url: pq_url,
+        },
+        filter: {
+            mode: 'hide',
+        },
+        init: function(e, data) {
+            muting.removeAll()
+            ftw =  $("#public_queries").fancytree('getTree')
+            var s = ftw.getSelectedNodes(true)
+            for (i in s) {
+                store_select_deep(s[i])
+            }
+            $('#public_queries a.md span').addClass('ui-icon ui-icon-lightbulb')
+            $('#public_queries a.md').click(function() {
+                var uname = $(this).closest('ul').closest('li').find('span[n]').html()
+                var prev = $(this).prev()
+                var lnk = prev.attr('href')
+                var qname = prev.html()
+                window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+qname+']('+lnk+')')
+            })
+        },
+        select: function(e, data) {
+            store_select_deep(data.node)
+        },
+    })
 })
 </script>
+
+{{ end }}
+

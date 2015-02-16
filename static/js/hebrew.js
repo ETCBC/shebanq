@@ -101,7 +101,7 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
-var ns = $.initNamespaceStorage('mymuting')
+var ns = $.initNamespaceStorage('muting')
 var muting = ns.localStorage
 
 /* state variables */
@@ -126,9 +126,6 @@ var edit_side_width = '55%' // the desired width of the sidebar when editing a q
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
 var chart_width = '400px' // dialog width for charts
 var chart_cols = 30 // number of chapters in a row in a chart
-
-/* history (making back buttons work, setting the window location to reflect the view state */
-var from_push = false // variable used in maintaining the history
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -268,7 +265,7 @@ the origin must be an object which has a member indicating the type of origin an
             */
             $('#side_list_'+qw+' li').each(function() {
                 var iid = $(this).attr('iid')
-                if (!(muting.isSet(iid))) {
+                if (!(muting.isSet(iid+''))) {
                     var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
                     if (wb.vs.iscolor(qw, iid)) {
                         custitems[iid] = monads
@@ -1248,7 +1245,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
         }
         if (this.qw == 'q') {
-            if (muting.isSet(iid)) {
+            if (muting.isSet(iid+'')) {
                 itop.hide()
             }
             else {
@@ -1449,20 +1446,15 @@ function defcolor(qw, iid) {// compute the default color
 
 // VIEW STATE
 
-//$(window).bind('popstate',  
-/*window.onstatechange = function(ev) {
-        wb.vs.apply(ev)
-}*/
-
 function goback() {
-    if (!from_push) {
-        var state = History.getState(); // Note: We are using History.getState() instead of event.state
-        wb.vs.apply(state)
+    var state = History.getState()
+    if (state && state.data) {
+        if (wb && wb.vs) {wb.vs.apply(state)}
     }
 }
 
-History.Adapter.bind(window,'statechange', goback)
 
+History.Adapter.bind(window,'statechange', goback)
 
 function ViewState(init, pref) {
     this.data = init
@@ -1485,9 +1477,9 @@ function ViewState(init, pref) {
         return item_url+this.getvars()
     }
     this.addHist = function() {
-        from_push = true
-        History.pushState(this.data, '', view_url+this.getvars())
-        from_push = false
+        //History.pushState(this.data, '', view_url+this.getvars())
+        var title = (this.mr() == 'm')?(this.book()+' '+this.chapter()):(style[this.qw()]['Tag']+' '+this.iid())
+        History.pushState(this.data, title, view_url)
     }
     this.apply = function(state, load_it) {
         if (state.data != undefined) {

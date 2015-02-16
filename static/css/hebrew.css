@@ -823,3 +823,7 @@ div.msg_error {
     color: #5a5100;
     background-color: white;
 }
+
+.md .ui-icon {
+    float: right;
+}

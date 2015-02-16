@@ -1,5 +1,5 @@
 {{ left_sidebar_enabled = False }}
-{{ right_sidebar_enabled = False }}
+{{ right_sidebar_enabled = True }}
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
 
@@ -13,22 +13,22 @@
 <dd>In the not so distant future we expect a major and stable new release of the ETCBC4 database, to be named ETCBC4s.
 We keep the then old ETCBC4 data in SHEBANQ, so that existing queries can be shown exactly as they are now.
 We let the ETCBC4 and ETCBC4s coexist in SHEBANQ, and users may execute their queries on both versions of the data.</dd>
+</dl>
+<h1>{{=T('News')}}</h1>
+<h2>2015-02-16</h2>
+<p>A minor update of the SHEBANQ website with:</p>
+<dl>
+<dt>Embedded tweets</dt>
+<dd>We use Twitter to communicate about SHEBANQ. You must have seen it on the right, by now.</dd>
 <dt>Muting public queries</dt>
 <dd>As the amount of public queries grows, the amount of queries that show up next to a chapter may become overwhelming.
 From the new public queries page you can easily mute and un-mute queries.</dd>
-</dl>
-<h1>{{=T('News')}}</h1>
-<h2>2015-02-13</h2>
-<p>A minor update of the SHEBANQ website with:</p>
-<dl>
-<dt>NOT YET Muting public queries</dt>
-<dd>Muting is coming. It worked on the test system, but there are still problems on the production system.
-You will see checkboxes on the public queries page for muting queries, but they do not have yet effect.</dd>
 <dt>Better overview of public queries</dt>
 <dd>You can now hierarchically browse all public queries, and go from there to each individual query.
+Searching public queries is now much easier.</dd>
 <dt>Rich text in descriptions</dt>
-<dd>Descriptions are important, and the formatting of it should support comprehension.
-It is now possible to write descriptions in
+<dd>Descriptions are important, and plain text formatting is just not enough for long descriptions.
+It is now possible to use rich text for descriptions, by using
 <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">mark-down syntax</a>.
 Moreover, from the public queries page, you can easily copy a mark-down hyperlink to that query, in order to paste it in
 the description of an other query. Then your readers can jump to the query that you refer to.
@@ -212,12 +212,5 @@ Currently we are aware of:
 <a target="_blank" href="http://annotation-paradigm.readthedocs.org/en/latest/queries-as-annotations/history.html">Queries-as-Annotations</a>
 
 {{block right_sidebar}}
-    {{=A(T("Administrative Interface"), _href=URL('admin','default','index'), _class='btn', _style='margin-top: 1em;')}}
-
-    <h6>{{=T("Don't know what to do?")}}</h6>
-    <ul class="text">
-      <li>{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
-      <li><a href="http://web2py.com">web2py.com</a></li>
-      <li><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>
-    </ul>
+<a class="twitter-timeline" href="https://twitter.com/shebanq_" data-widget-id="567327247393374208">Tweets by @shebanq_</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 {{end}}

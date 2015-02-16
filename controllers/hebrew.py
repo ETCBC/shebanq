@@ -476,12 +476,19 @@ def old_public_queries():
     return locals()
 
 def public_queries():
+    return from_cache(
+        'public_queries',
+        lambda: response.render(dict()),
+        None,
+    )
+
+def pq():
     pqueries_sql = '''
 select
-    organization.name,
-    project.name,
-    auth_user.first_name, auth_user.last_name, 
-    queries.name, queries.id
+    organization.name as oname,
+    project.name as pname,
+    concat(auth_user.first_name, ' ', auth_user.last_name) as uname, 
+    queries.name as qname, queries.id as qid
 from queries
 inner join organization on queries.organization = organization.id
 inner join project on queries.project = project.id
@@ -489,21 +496,37 @@ inner join auth_user on queries.created_by = auth_user.id
 where queries.is_published = 'T'
 '''
     pqueries = db.executesql(pqueries_sql)
+
     tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: {})))
-    qcount = {
-        '': 0,
-        'o': collections.defaultdict(lambda: 0),
-        'p': collections.defaultdict(lambda: collections.defaultdict(lambda: 0)),
-        'u': collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0))),
-    }
-    for (oname, pname, ufname, ulname, qname, qid) in pqueries:
-        uname = ufname+' '+ulname
+    count = 0
+    counto = collections.defaultdict(lambda: 0)
+    countp = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+    countu = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
+    for (oname, pname, uname, qname, qid) in pqueries:
         tree[oname][pname][uname][qid] = qname
-        qcount[''] += 1
-        qcount['o'][oname] += 1
-        qcount['p'][oname][pname] += 1
-        qcount['u'][oname][pname][uname] += 1
-    return dict(tree=tree, qcount=qcount)
+        count += 1
+        counto[oname] += 1
+        countp[oname][pname] += 1
+        countu[oname][pname][uname] += 1
+    source = [dict(title='{} ({})'.format('Public Queries', count), folder=True, children=[])]
+    curdest = source[-1]['children']
+    cursource = tree
+    for oname in cursource:
+        curdest.append(dict(title='{} ({})'.format(oname, counto[oname]), folder=True, children=[]))
+        curodest = curdest[-1]['children']
+        curosource = cursource[oname]
+        for pname in curosource:
+            curodest.append(dict(title='{} ({})'.format(pname, countp[oname][pname]), folder=True, children=[]))
+            curpdest = curodest[-1]['children']
+            curpsource = curosource[pname]
+            for uname in curpsource:
+                curpdest.append(dict(title='<span n="1">{}</span><span>({})</span>'.format(uname, countu[oname][pname][uname]), folder=True, children=[]))
+                curudest = curpdest[-1]['children']
+                curusource = curpsource[uname]
+                for qid in curusource:
+                    qname = curusource[qid]
+                    curudest.append(dict(title='<a href="{}">{}</a> <a class="md" href="#"><span/></a>'.format(URL('hebrew', 'text', host=True, extension='', vars=dict(iid=qid, mr='r', qw='q')), qname), key=qid, folder=False))
+    return dict(data=json.dumps(source))
 
 @auth.requires(lambda: check_query_access_write())
 def delete_multiple():
