@@ -18,7 +18,8 @@
 <p><a class="ctrl" href="#" id="qur_c">queries</a></p>
 
 <script type="text/javascript">
-var pq_url = "{{=XML(URL('hebrew', 'pq', extension='json', host=True))}}"
+var pq_url = "{{=XML(URL('hebrew', 'pq', extension='json'))}}"
+console.log(pq_url)
 var ns = $.initNamespaceStorage('muting')
 var muting = ns.localStorage
 var ftw
