@@ -389,7 +389,7 @@ def dictionary():
     )
 
 def dictionary_page(lan=None, letter=None):
-    (letters, words) = from_cache('dictionary_data', lambda: get_dictionary_data(), None)
+    (letters, words) = from_cache('dictionary_data', get_dictionary_data, None)
     return response.render(dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, [])))
 
 def get_dictionary_data():
@@ -483,6 +483,9 @@ def public_queries():
     )
 
 def pq():
+    return from_cache('public_queries:json:', pq_c, None)
+
+def pq_c(no_controller=True):
     pqueries_sql = '''
 select
     organization.name as oname,
@@ -877,6 +880,9 @@ def fiddle_dates(old_pub, old_mql, old_modified_on):
             ckeys = r'^items_q:'
             cache.ram.clear(regex=ckeys)
             cache.disk.clear(regex=ckeys)
+            ckeys = r'^public_queries:json:'
+            cache.ram.clear(regex=ckeys)
+            cache.disk.clear(regex=ckeys)
     return _fiddle_dates
 
 def handle_response_mql(mql_form, old_pub, old_mql, old_modified_on):
@@ -1045,8 +1051,8 @@ def get_chart(monad_sets): # get data for a chart of the monadset: organized by 
     chart = {}
     chart_order = []
     if len(monads):
-        (books, books_order) = from_cache('books', lambda: get_books(), None)
-        (blocks, block_mapping) = from_cache('blocks', lambda: get_blocks(), None)
+        (books, books_order) = from_cache('books', get_books, None)
+        (blocks, block_mapping) = from_cache('blocks', get_blocks, None)
         results = {}
 
         for bl in range(len(blocks)):
