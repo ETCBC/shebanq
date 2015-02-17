@@ -47,7 +47,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = True
+CACHING = False
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -487,7 +487,8 @@ select
     organization.name as oname,
     project.name as pname,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname, 
-    queries.name as qname, queries.id as qid
+    queries.name as qname, queries.id as qid,
+    queries.modified_on as qmod, queries.executed_on as qexe
 from queries
 inner join organization on queries.organization = organization.id
 inner join project on queries.project = project.id
@@ -497,35 +498,118 @@ where queries.is_published = 'T'
     pqueries = db.executesql(pqueries_sql)
 
     tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: {})))
-    count = 0
+    countset = collections.defaultdict(lambda: set())
     counto = collections.defaultdict(lambda: 0)
+    counto_good = collections.defaultdict(lambda: 0)
+    counto_warn = collections.defaultdict(lambda: 0)
+    counto_err = collections.defaultdict(lambda: 0)
+    counto_tot = collections.defaultdict(lambda: 0)
     countp = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+    countp_good = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+    countp_warn = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+    countp_err = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+    countp_tot = collections.defaultdict(lambda: 0)
     countu = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
-    for (oname, pname, uname, qname, qid) in pqueries:
+    countu_good = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
+    countu_warn = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
+    countu_err = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
+    countu_tot = collections.defaultdict(lambda: 0)
+    count = 0
+    count_good = 0
+    count_warn = 0
+    count_err = 0
+    query_status = {}
+    for (oname, pname, uname, qname, qid, qmod, qexe) in pqueries:
+        countset['o'].add(oname)
+        countset['p'].add(pname)
+        countset['u'].add(uname)
+        countset['q'].add(qid)
+        if qexe:
+            if qexe < qmod:
+                qstatus = 'error'
+                countu_err[oname][pname][uname] += 1
+                countp_err[oname][pname] += 1
+                counto_err[oname] += 1
+                count_err += 1
+            else:
+                qstatus = 'info'
+                countu_good[oname][pname][uname] += 1
+                countp_good[oname][pname] += 1
+                counto_good[oname] += 1
+                count_good += 1
+        else:
+            qstatus = 'warning'
+            countu_warn[oname][pname][uname] += 1
+            countp_warn[oname][pname] += 1
+            counto_warn[oname] += 1
+            count_warn += 1
         tree[oname][pname][uname][qid] = qname
-        count += 1
+        query_status[qid] = qstatus
+        count +=1
         counto[oname] += 1
         countp[oname][pname] += 1
         countu[oname][pname][uname] += 1
-    source = [dict(title='{} ({})'.format('Public Queries', count), folder=True, children=[])]
-    curdest = source[-1]['children']
+        counto_tot[oname] += 1
+        countp_tot[pname] += 1
+        countu_tot[uname] += 1
+    ccount = dict((x[0], len(x[1])) for x in countset.items())
+    title = title_badge('Public Queries', count_good, count_warn, count_err, count, count)
+    dest = [dict(title='{}'.format(title), folder=True, children=[], data=ccount)]
+    curdest = dest[-1]['children']
     cursource = tree
     for oname in cursource:
-        curdest.append(dict(title='{} ({})'.format(oname, counto[oname]), folder=True, children=[]))
+        onum = counto[oname]
+        ogood = counto_good[oname]
+        owarn = counto_warn[oname]
+        oerr = counto_err[oname]
+        otot = counto_tot[oname]
+        otitle = title_badge(oname, ogood, owarn, oerr, onum, otot)
+        curdest.append(dict(title='{}'.format(otitle), folder=True, children=[]))
         curodest = curdest[-1]['children']
         curosource = cursource[oname]
         for pname in curosource:
-            curodest.append(dict(title='{} ({})'.format(pname, countp[oname][pname]), folder=True, children=[]))
+            pnum = countp[oname][pname]
+            pgood = countp_good[oname][pname]
+            pwarn = countp_warn[oname][pname]
+            perr = countp_err[oname][pname]
+            ptot = countp_tot[pname]
+            ptitle = title_badge(pname, pgood, pwarn, perr, pnum, ptot)
+            curodest.append(dict(title='{}'.format(ptitle), folder=True, children=[]))
             curpdest = curodest[-1]['children']
             curpsource = curosource[pname]
             for uname in curpsource:
-                curpdest.append(dict(title='<span n="1">{}</span><span>({})</span>'.format(uname, countu[oname][pname][uname]), folder=True, children=[]))
+                unum = countu[oname][pname][uname]
+                ugood = countu_good[oname][pname][uname]
+                uwarn = countu_warn[oname][pname][uname]
+                uerr = countu_err[oname][pname][uname]
+                utot = countu_tot[uname]
+                utitle = title_badge(uname, ugood, uwarn, uerr, unum, utot)
+                curpdest.append(dict(title='{}'.format(utitle), folder=True, children=[]))
                 curudest = curpdest[-1]['children']
                 curusource = curpsource[uname]
                 for qid in curusource:
                     qname = curusource[qid]
-                    curudest.append(dict(title='<a href="{}">{}</a> <a class="md" href="#"><span/></a>'.format(URL('hebrew', 'text', host=True, extension='', vars=dict(iid=qid, mr='r', qw='q')), qname), key=qid, folder=False))
-    return dict(data=json.dumps(source))
+                    qstatus = query_status[qid]
+                    curudest.append(dict(title='<a href="{}">{}</a> <a class="md" href="#"><span class="{}"/></a>'.format(URL('hebrew', 'text', host=True, extension='', vars=dict(iid=qid, mr='r', qw='q')), qname, qstatus), key=qid, folder=False))
+    return dict(data=json.dumps(dest))
+
+def title_badge(name, good, warn, err, num, tot):
+    nums = []
+    if good != 0: nums.append('<span class="info">{}</span>'.format(good))
+    if warn != 0: nums.append('<span class="warning">{}</span>'.format(warn))
+    if err != 0: nums.append('<span class="error">{}</span>'.format(err))
+    badge = ''
+    if len(nums) == 1:
+        if tot == num:
+            badge = '<span class="total">{}</span>'.format('+'.join(nums))
+        else:
+            badge = '{} of <span class="total">{}</span>'.format('+'.join(nums), tot)
+    else:
+        if tot == num:
+            badge = '{}=<span class="total">{}</span>'.format('+'.join(nums), num)
+        else:
+            badge = '{}={} of <span class="total">{}</span>'.format('+'.join(nums), num, tot)
+    return '{} ({})'.format(h_esc(name), badge)
 
 @auth.requires(lambda: check_query_access_write())
 def delete_multiple():

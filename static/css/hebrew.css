@@ -762,6 +762,18 @@ span.warning {
 span.info {
     background-color: #aaffaa;
 }
+span.total {
+    font-weight: bold;
+    background-color: #aaddff;
+}
+span.match {
+    font-weight: bold;
+    color: #0000aa;
+}
+span.submatch {
+    font-weight: normal;
+    color: #999999;
+}
 .copyright {
     font-size: small;
 }
@@ -825,5 +837,5 @@ div.msg_error {
 }
 
 .md .ui-icon {
-    float: right;
+    float: left;
 }

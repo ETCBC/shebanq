@@ -7,19 +7,25 @@
 
 <h4>Filter</h4>
 <input type="text" id="search_contents"/></p>
-<p><a class="ctrl" href="#" id="search_control_b">all matches</a></p>
-<p><a class="ctrl" href="#" id="search_control_l">in queries only</a></p>
+<p><a class="ctrl" href="#" id="search_control_b">all matches</a>
+<span id="amatches">&nbsp;</span>
+</p>
+<p><a class="ctrl" href="#" id="search_control_c">all matches with children</a>
+<span id="cmatches">&nbsp;</span>
+</p>
+<p><a class="ctrl" href="#" id="search_control_l">in queries only</a>
+<span id="qmatches">&nbsp;</span>
+</p>
 <p><a class="ctrl" href="#" id="search_clear">back</a></p>
 
 <h4>Level</h4>
-<p><a class="ctrl" href="#" id="org_c">organizations</a></p>
-<p><a class="ctrl" href="#" id="prj_c">projects</a></p>
-<p><a class="ctrl" href="#" id="usr_c">users</a></p>
-<p><a class="ctrl" href="#" id="qur_c">queries</a></p>
+<p><a class="ctrl" href="#" id="o_level">organizations</a> (<span id='o_count'></span>)</p>
+<p><a class="ctrl" href="#" id="p_level">projects</a> (<span id='p_count'></span>)</p>
+<p><a class="ctrl" href="#" id="u_level">users</a> (<span id='u_count'></span>)</p>
+<p><a class="ctrl" href="#" id="q_level">queries</a> (<span id='q_count'></span>)</p>
 
 <script type="text/javascript">
 var pq_url = "{{=XML(URL('hebrew', 'pq', extension='json'))}}"
-console.log(pq_url)
 var ns = $.initNamespaceStorage('muting')
 var muting = ns.localStorage
 var ftw
@@ -37,41 +43,82 @@ function expand_level(level) {
     }, true)
 }
 
-function pqsearch(all) {
-    pat = $('#search_contents').val()
+function pqsearch(kind) {
+    var pat = $('#search_contents').val()
+    var amatches = 0
+    var cmatches = 0
+    var qmatches = 0
     if (pat == '') {
         $('#search_contents').val('search string')
+        amatches = -1
+        cmatches = -1
+        qmatches = -1
     }
     else {
         expand_all()
-        if (all) {
-            ftw.filterBranches(pat)
+        if (kind == 'b') {
+            amatches = ftw.filterNodes(pat, false)
+            $('#amatches').html(amatches>=0?('('+amatches+')'):'')
+        }
+        else if (kind == 'c') {
+            cmatches = ftw.filterBranches(pat)
+            $('#cmatches').html(cmatches>=0?('('+cmatches+')'):'')
         }
         else {
-            ftw.filterNodes(pat, true)
+            qmatches = ftw.filterNodes(pat, true)
+            $('#qmatches').html(qmatches>=0?('('+qmatches+')'):'')
         }
         $('#search_clear').show()
+        var submatch = 'span.fancytree-submatch'
+        var match = 'span.fancytree-match'
+        var o_base = '#public_queries>ul>li>ul>li>'
+        var o_match = $(o_base+match).length
+        var o_submatch = $(o_base+submatch).length
+        var p_base = o_base+'ul>li>'
+        var p_match = $(p_base+match).length
+        var p_submatch = $(p_base+submatch).length
+        var u_base = p_base+'ul>li>'
+        var u_match = $(u_base+match).length
+        var u_submatch = $(u_base+submatch).length
+        var q_base = u_base+'ul>li>'
+        var q_match = $(q_base+match).length
+        $('#o_count').html('<span class="match">'+o_match+'</span> <span class="submatch">'+o_submatch+'</span>')
+        $('#p_count').html('<span class="match">'+p_match+'</span> <span class="submatch">'+p_submatch+'</span>')
+        $('#u_count').html('<span class="match">'+u_match+'</span> <span class="submatch">'+u_submatch+'</span>')
+        $('#q_count').html('<span class="match">'+q_match+'</span>')
     }
 }
 
 $('#search_clear').hide()
 
 $('#search_control_b').click(function() {
-    pqsearch(true)
+    pqsearch('b')
+})
+
+$('#search_control_c').click(function() {
+    pqsearch('c')
 })
 
 $('#search_control_l').click(function() {
-    pqsearch(false)
+    pqsearch('l')
 })
 
 $('#search_clear').click(function() {
     ftw.clearFilter()
     $('#search_clear').hide()
+    $('#amatches').html('')
+    $('#cmatches').html('')
+    $('#qmatches').html('')
+    $('#o_count').html(count.o)
+    $('#p_count').html(count.p)
+    $('#u_count').html(count.u)
+    $('#q_count').html(count.q)
 })
-$('#org_c').click(function() {expand_level(1)})
-$('#prj_c').click(function() {expand_level(2)})
-$('#usr_c').click(function() {expand_level(3)})
-$('#qur_c').click(function() {expand_level(4)})
+
+$('#o_level').click(function() {expand_level(1)})
+$('#p_level').click(function() {expand_level(2)})
+$('#u_level').click(function() {expand_level(3)})
+$('#q_level').click(function() {expand_level(4)})
 
 function store_select_deep(node) {
     store_select(node)
@@ -97,6 +144,17 @@ function store_select(node) {
     }
 }
 
+function dress_queries() {
+    $('#public_queries a.md span').addClass('ui-icon ui-icon-lightbulb')
+    $('#public_queries a.md').click(function() {
+        var uname = $(this).closest('ul').closest('li').find('span[n]').html()
+        var tit = $(this).prev()
+        var lnk = tit.attr('href')
+        var qname = tit.html()
+        window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+qname+']('+lnk+')')
+    })
+}
+
 $(function(){
     $("#public_queries").fancytree({
         extensions: ["persist", "filter"],
@@ -107,6 +165,7 @@ $(function(){
         clickFolderMode: 2,
         focusOnSelect: false,
         quicksearch: true,
+        icons: false,
         persist: {
             store: 'local',
             types: 'expanded selected',
@@ -124,14 +183,13 @@ $(function(){
             for (i in s) {
                 store_select_deep(s[i])
             }
-            $('#public_queries a.md span').addClass('ui-icon ui-icon-lightbulb')
-            $('#public_queries a.md').click(function() {
-                var uname = $(this).closest('ul').closest('li').find('span[n]').html()
-                var prev = $(this).prev()
-                var lnk = prev.attr('href')
-                var qname = prev.html()
-                window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+qname+']('+lnk+')')
-            })
+            ftw.render(true, true)
+            dress_queries()
+            count = ftw.rootNode.children[0].data
+            $('#o_count').html(count.o)
+            $('#p_count').html(count.p)
+            $('#u_count').html(count.u)
+            $('#q_count').html(count.q)
         },
         select: function(e, data) {
             store_select_deep(data.node)
