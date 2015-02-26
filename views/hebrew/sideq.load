@@ -1,23 +1,63 @@
-{{if msg != None:}}
-    <div class="msg_{{=kind}}">{{=msg}}</div>
+<h5 class="detail"><a id="goback" href="#"><span id="namem"></span></a></h5>
+{{if writable:}}
+<input type="text" id="nameq" value=""/>
+<input type="hidden" id="qid" value=""/>
 {{pass}}
-<div>
-{{if query:}}
-    <input type="hidden" id="itemtag" value="{{=query.created_by.first_name}} {{=query.created_by.last_name}}: {{=query.name}}"/>
-    <p>{{if not query.executed_on:}}<span class='warning'>This query needs to be executed.</span>
-    {{elif query.executed_on < query.modified_on:}}<span class='error'>The stored query results are outdated.</span>
-    {{else:}}<span class='info'>The stored query results are up to date.</span>
-    {{pass}}</p>
-{{else:}}
-    <p>This query is not yet saved.</p>
-{{pass}}
+<input type="hidden" id="itemtag" value=""/>
+<div class="detail">
+    <p>
+        <a target="_blank" id="nameul" href=""><span id="nameu"></span></a>
+        <a target="_blank" id="nameol" href=""><span id="nameo"></span></a>
+        <a target="_blank" id="namepl" href=""><span id="namep"></span></a>
+    </p>
 </div>
-<div class="mql_form" id="mform">
-{{=form}}
+<div id="bigger">
+    <div id="descm" class="old descm"></div>
+    <textarea id="descq" class="desc"></textarea>
+    <div>
+        <p class="fullcpx">
+            <a href="#" title="toggle expanded view"><span class="ctrli fullc ir ui-icon ui-icon-arrowthick-2-ne-sw"></span></a>
+        </p>
+        <textarea id="mqlq" class="mql" readonly></textarea>
+        <p>
+            {{if writable:}}
+            <a id="editq" href="#" title="edit query and description"><span class="ctrli ir ui-icon ui-icon-pencil"></span></a>
+            <a id="doneq" class="ctrl" href="#" title="done editing">Done</a>
+            <a id="execq" class="ctrl" href="#" title="save and execute query">Execute</a>
+            <a id="saveq" class="ctrl" href="#" title="save query and description">Save</span></a>
+            {{pass}}
+        </p>
+    </div>
+    <div id="dbmsg_q"></div>
+        <p class="fullcpx">
+            <a href="#" title="clear diagnostic messages"><span class="ctrli trashc ir ui-icon ui-icon-trash"></span></a>
+        </p>
+    </div>
 </div>
+<table>
+    <tr><td><span class="flabel">status</span></td><td id="statq"><span id="statm"></span></td></tr>
+    <tr><td><span class="flabel">published</span></td><td>{{
+    if writable: }}
+        <input qid="" id="is_pub_c" type="checkbox"/>
+    {{else:}}
+        <span id="ispub_ro" class="ui-icon ui-icon-check"></span>
+    {{pass}}</td></tr>
+    <tr class="detail"><td><span class="flabel">created</span></td><td><span id="created_on"></span></td></tr>
+    <tr><td><span class="flabel">modified</span></td><td><span id="modified_on"></span></td></tr>
+    <tr><td><span class="flabel">executed</span></td><td><span id="executed_on"></span></td></tr>
+</table>
 <div>
     <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
     <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
     <p>{{=A('MQL Query Guide by Ulrik (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-Query-Guide.pdf'))}}</p>
     <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
+<script type="text/javascript">
+var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
+var msgs = {{=XML(msgs)}};
+msgs.forEach(function(m) {
+    msg.msg(m)
+})
+var q = {{=XML(q)}}
+</script>
+

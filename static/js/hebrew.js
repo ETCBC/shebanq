@@ -108,10 +108,11 @@ var muting = ns.localStorage
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
 var wb      // holds the one and only page object
+var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, side_url, item_url, chart_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, side_url, item_url, chart_url, queries_url, field_url, fields_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -119,8 +120,8 @@ var subtract = 150 // the canvas holding the material gets a height equal to the
 var standard_height // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
 var mql_small_width = '97%' // height of mql query body in sidebar and in dialog
-var mql_big_width_dia = '600px' // height of mql query body in sidebar and in dialog
-var mql_big_width = '560px' // height of mql query body in sidebar and in dialog
+var mql_big_width_dia = '60%' // height of mql query body in sidebar and in dialog
+var mql_big_width = '95%' // width of mql query body in sidebar and in dialog
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
 var edit_side_width = '55%' // the desired width of the sidebar when editing a query body
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
@@ -131,6 +132,7 @@ var chart_cols = 30 // number of chapters in a row in a chart
 
 function dynamics() { // top level function, called when the page has loaded
     viewfluid = {}
+    msg = new Msg()
     wb = new Page(new ViewState(viewinit, pref))
     wb.init()
     wb.go()
@@ -138,6 +140,7 @@ function dynamics() { // top level function, called when the page has loaded
 
 function set_height() { // the heights of the sidebars are set, depending on the height of the window
     standard_height = window.innerHeight - subtract
+    half_standard_height = (0.4 * standard_height) + 'px'
     $('#material_txt_p').css('height', standard_height+'px')
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
     $('#side_material_mq').css('max-height', (0.75 * standard_height)+'px')
@@ -163,6 +166,7 @@ function set_edit_width() { // switch to increased sidebar width
 
 function Page(vs) { // the one and only page object
     this.vs = vs    // the viewstate
+    History.Adapter.bind(window,'statechange', this.vs.goback)
 
     this.init = function() { // dress up the skeleton, initialize state variables
         this.material = new Material()
@@ -423,13 +427,16 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         else {
             wb.highlight2({code: '5', qw: 'w'})
+            if (wb.vs.tp() == 'txt_il') {
+                this.msettings.hebrewsettings.apply()
+            }
         }
     }
     this.process = function() { // process new material obtained by an AJAX call
         if (wb.mr == 'r') {
             this.pselect.apply()
             wb.picker1[wb.qw].adapt(wb.iid, true)
-            $('a.vref').click(function() {
+            $('a.vref').click(function(e) {e.preventDefault();
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
                 wb.vs.addHist()
                 wb.go()
@@ -443,7 +450,7 @@ function Material() { // Object corresponding to everything that controls the ma
         }
     }
     this.add_word_actions = function() { // Make words clickable, so that they show up in the sidebar
-        $('#material_'+wb.vs.tp()+' span[l]').click(function() {
+        $('#material_'+wb.vs.tp()+' span[l]').click(function(e) {e.preventDefault();
             var iid = $(this).attr('l')
             var qw = 'w'
             var all = $('#'+qw+iid)
@@ -550,7 +557,7 @@ function SelectBook() { // book selection
         return nitems
     }
     this.add_item = function(item) {
-        item.click(function() {
+        item.click(function(e) {e.preventDefault();
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
@@ -572,7 +579,7 @@ function SelectBook() { // book selection
         $(this.control).show()
         this.present()
     }
-    $(this.control).click(function () {
+    $(this.control).click(function(e) {e.preventDefault();
         $(that.hid).dialog('open')
     })
 }
@@ -596,14 +603,14 @@ function SelectItems(key) { // both for chapters and for result pages
             wb.go_material()
         }
     }
-    this.prev.click(function() {
+    this.prev.click(function(e) {e.preventDefault();
         vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
         that.go()
     })
-    this.next.click(function() {
+    this.next.click(function(e) {e.preventDefault();
         vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
@@ -659,7 +666,7 @@ function SelectItems(key) { // both for chapters and for result pages
         return nitems
     }
     this.add_item = function(item) {
-        item.click(function() {
+        item.click(function(e) {e.preventDefault();
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
@@ -700,7 +707,7 @@ function SelectItems(key) { // both for chapters and for result pages
         }
         this.present()
     }
-    $(this.control).click(function () {
+    $(this.control).click(function(e) {e.preventDefault();
         $(that.hid).dialog('open')
     })
 }
@@ -711,7 +718,7 @@ function CSelect(qw) { // for chart selection
     this.control = '#select_control_chart'+qw
     this.select = '#select_contents_chart'+qw
     this.loaded = null
-    $(this.control).click(function() {
+    $(this.control).click(function(e) {e.preventDefault();
         that.apply()
     })
     this.apply = function() {
@@ -735,7 +742,7 @@ function CSelect(qw) { // for chart selection
             that.add_item($(this))
         })
         var iid = wb.iid
-        $('#theitemc').click(function() {
+        $('#theitemc').click(function(e) {e.preventDefault();
             vals = {}
             vals['iid'] = iid
             vals['mr'] = 'r'
@@ -823,7 +830,7 @@ function CSelect(qw) { // for chart selection
     }
     this.add_item = function(item) {
         var iid = wb.iid
-        item.click(function() {
+        item.click(function(e) {e.preventDefault();
             vals = {}
             vals['book'] = $(this).attr('b')
             vals['chapter'] = $(this).attr('ch')
@@ -892,7 +899,7 @@ function MSettings(content) {
     this.hid = '#'+this.name
     this.content = content
     this.hebrewsettings = new HebrewSettings()
-    legendc.click(function () {
+    legendc.click(function(e) {e.preventDefault();
         legend.dialog({
             autoOpen: true,
             dialogClass: 'legend',
@@ -918,7 +925,7 @@ function MSettings(content) {
         set_csv(wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         wb.material.adapt()
     }
-    $('.mhradio').click(function() {
+    $('.mhradio').click(function(e) {e.preventDefault();
         wb.vs.mstatesv({tp: $(this).attr('id').substring(1)})
         wb.vs.addHist()
         that.apply()
@@ -942,7 +949,7 @@ function HebrewSetting(fld) {
     var that = this
     this.name = fld
     this.hid = '#'+this.name
-    $(this.hid).click(function() {
+    $(this.hid).click(function(e) {
         vals = {}
         vals[fld] = $(this).prop('checked')?'v':'x'
         wb.vs.dstatesv(vals)
@@ -1080,12 +1087,12 @@ function Sidebar(mr, qw) { // the individual sidebar, parametrized with qr and m
             this.content.apply()
         }
     }
-    show.click(function(){
+    show.click(function(e){e.preventDefault();
         wb.vs.hstatesv(that.qw, {get: 'v'})
         wb.vs.addHist()
         that.apply()
     })
-    hide.click(function(){
+    hide.click(function(e){e.preventDefault();
         wb.vs.hstatesv(that.qw, {get: 'x'})
         wb.vs.addHist()
         that.apply()
@@ -1115,61 +1122,214 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             wb.listsettings[this.qw].apply()
         }
         else {
-            set_csv(mr, qw, wb.vs.iid())
+            var iid = wb.vs.iid()
+            set_csv(mr, qw, iid)
+            if (qw == 'q') {
+                var oname = escapeHTML(q.oname)
+                var pname = escapeHTML(q.pname)
+                var uname = escapeHTML(q.uname)
+                var qname = escapeHTML(q.name)
+                $('#itemtag').val(uname+': '+qname)
+                $('#goback').attr('href', queries_url+'?goto='+iid)
+                $('#nameu').html(uname)
+                $('#nameul').attr('href', 'mailto:'+q.uemail)
+                $('#nameo').html(oname)
+                $('#nameol').attr('href', q.owebsite)
+                $('#namep').html(pname)
+                $('#namepl').attr('href', q.pwebsite)
+                $('#namem').html(qname)
+                $('#nameq').val(q.name)
+                $('#qid').val(q.id)
+                $('#is_pub_c').attr('qid', q.id)
+                $('#descm').html(q.description_md)
+                $('#descq').val(q.description)
+                $('#mqlq').val(q.mql)
+                $('#ispub_ro').attr('class', 'ui-icon ui-icon-'+((q.is_published == 'T')?'check':'closethick'))
+                $('#ispub_c').prop('checked', q.is_published == 'T')
+                $('#created_on').html(q.created_on)
+                $('#modified_on').html(q.modified_on)
+                $('#executed_on').html(q.executed_on)
+                $('#statq').removeClass('error warning good').addClass(q.status)
+                this.setstatus(null)
+            }
         }
 
         $('#theitem').html($('#itemtag').val()+' ')                              // fill in the title of the query/word above the verse material
         if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
-            $('.fullc').click(function() {
+            $('.fullc').click(function(e) {e.preventDefault();
                 var thisiid = $(this).attr('iid')
-                var area = $('#area_'+thisiid)
+                var mqlq = $('#area_'+thisiid)
                 var dia = $('#bigq_'+thisiid).dialog({
                     dialogClass: 'mql_dialog',
                     closeOnEscape: true,
                     close: function() {
                         dia.dialog('destroy')
-                        var area = $('#area_'+thisiid)
-                        area.removeClass('mql_dia')
-                        area.addClass('mql small')
-                        area.css('height', mql_small_height)
-                        area.css('width', mql_small_width)
+                        var mqlq = $('#area_'+thisiid)
+                        mqlq.removeClass('mql_dia')
+                        mqlq.addClass('mql small')
+                        mqlq.css('height', mql_small_height)
+                        mqlq.css('width', mql_small_width)
                     },
                     modal: false,
                     title: 'mql query body',
                     position: {my: 'left top', at: 'left top', of: window},
                     width: '600px',
                 })
-                area.removeClass('mql small')
-                area.addClass('mql_dia')
-                area.css('height', standard_height)
-                area.css('width', mql_big_width)
+                mqlq.removeClass('mql small')
+                mqlq.addClass('mql_dia')
+                mqlq.css('height', standard_height)
+                mqlq.css('width', mql_big_width)
             })
         }
         else { // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
-            $('.fullc').click(function() {
-                var area = $('textarea.mql')
-                var dia = area.closest('div').dialog({
+            var fullc = $('.fullc')
+            var mqlq = $('#mqlq')
+            var descm = $('#descm')
+            fullc.click(function(e) {e.preventDefault();
+                fullc.hide()
+                var dia = $('#bigger').closest('div').dialog({
                     dialogClass: 'mql_dialog',
                     closeOnEscape: true,
                     close: function() {
                         dia.dialog('destroy')
-                        var area = $('textarea.mql_dia')
-                        area.removeClass('mql_dia')
-                        area.addClass('mql')
-                        area.css('height', mql_small_height)
-                        area.css('width', mql_small_width)
+                        var mqlq = $('textarea.mql_dia')
+                        mqlq.removeClass('mql_dia')
+                        mqlq.addClass('mql')
+                        mqlq.css('height', mql_small_height)
+                        mqlq.css('width', mql_small_width)
+                        descm.removeClass('desc_dia')
+                        descm.addClass('desc')
+                        descm.css('height', mql_small_height)
+                        descm.css('width', mql_small_width)
+                        fullc.show()
                     },
                     modal: false,
-                    title: 'mql query body',
+                    title: 'description and mql query body',
                     position: {my: 'left top', at: 'left top', of: window},
                     width: mql_big_width_dia,
+                    height: standard_height,
                 })
-                area.removeClass('mql')
-                area.addClass('mql_dia')
-                area.css('height', standard_height)
-                area.css('width', mql_big_width)
+                mqlq.removeClass('mql')
+                mqlq.addClass('mql_dia')
+                mqlq.css('height', half_standard_height)
+                mqlq.css('width', mql_big_width)
+                descm.removeClass('desc')
+                descm.addClass('desc_dia')
+                descm.css('height', half_standard_height)
+                descm.css('width', mql_big_width)
+            })
+            msg.set_dest('#dbmsg_q')
+            $('#is_pub_c').click(function(e) {
+                val = $(this).prop('checked')
+                that.sendval($(this).attr('qid'), 'is_published', val?'T':'')
+            })
+            var detlq = $('.detail')
+            var editq = $('#editq')
+            var execq = $('#execq')
+            var saveq = $('#saveq')
+            var doneq = $('#doneq')
+            var nameq = $('#nameq')
+            var descq = $('#descq')
+            var descm = $('#descm')
+            nameq.hide()
+            descq.hide()
+            descm.show()
+            detlq.show()
+            editq.show()
+            execq.hide()
+            saveq.hide()
+            doneq.hide()
+            editq.click(function(e) {e.preventDefault();
+                set_edit_width()
+                nameq.show()
+                descq.show()
+                descm.hide()
+                detlq.hide()
+                editq.hide()
+                execq.show()
+                saveq.show()
+                doneq.show()
+                mqlq.prop('readonly', false)
+                mqlq.css('height', '20em')
+            })
+            doneq.click(function(e) {e.preventDefault();
+                reset_main_width()
+                nameq.hide()
+                descq.hide()
+                descm.show()
+                detlq.show()
+                editq.show()
+                execq.hide()
+                saveq.hide()
+                doneq.hide()
+                mqlq.prop('readonly', true)
+                mqlq.css('height', '10em')
+            })
+            saveq.click(function(e) {e.preventDefault();
+                var data = {
+                    qid: $('#qid').val(),
+                    name: $('#nameq').val(),
+                    description: $('#descq').val(),
+                    mql: $('#mqlq').val(),
+                    execute: false,
+                }
+                that.sendvals(data)
+            })
+            execq.click(function(e) {e.preventDefault();
+                var data = {
+                    qid: $('#qid').val(),
+                    name: $('#nameq').val(),
+                    description: $('#descq').val(),
+                    mql: $('#mqlq').val(),
+                    execute: true,
+                }
+                that.sendvals(data)
             })
         }
+    }
+    this.setstatus = function(cls) {
+        var statq = (cls != null)?cls:$('#statq').attr('class');
+        var statm = (statq == 'good')?'results up to date':((statq == 'error')?'results outdated':'never executed')
+        $('#statm').html(statm)
+    }
+    this.sendval = function(iid, fname, val) {
+        var good = false
+        var senddata = {}
+        senddata.qid = iid
+        senddata.fname = fname
+        senddata.val = val
+        $.post(field_url, senddata, function(json) {
+            good = json.good
+            msg.clear()
+            json.msgs.forEach(function(m) {
+                msg.msg(m)
+            })
+        }, 'json')
+    }
+    this.sendvals = function(senddata) {
+        var good = false
+        var execute = senddata.execute;
+        $.post(fields_url, senddata, function(json) {
+            good = json.good
+            var q = json.q
+            msg.clear()
+            json.msgs.forEach(function(m) {
+                msg.msg(m)
+            })
+            if (good) {
+                $('#namem').html(escapeHTML(q.name))
+                $('#nameq').val(q.name)
+                $('#descm').html(q.description_md)
+                $('#descq').val(q.description)
+                $('#mqlq').val(q.mql)
+                $('#statq').removeClass('error warning good').addClass(q.status)
+                that.setstatus(q.status)
+            }
+            if (execute) {
+                material_fetched = {txt_p: false, txt_il: false}
+                wb.material.adapt()
+            }
+        }, 'json')
     }
     this.apply = function() {
         if (wb.mr == this.mr && (this.mr == 'r' || wb.vs.get(this.qw) == 'v')) {
@@ -1230,10 +1390,10 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         var item = $('#item_'+this.qw+iid) 
         var all = $('#'+this.qw+iid)
         desc.hide()
-        more.click(function() {
+        more.click(function(e) {e.preventDefault();
             desc.toggle()
         })
-        item.click(function() {
+        item.click(function(e) {e.preventDefault();
             var qw = that.qw
             wb.vs.mstatesv({mr: that.other_mr, qw: qw, iid: $(this).attr('iid'), page: 1})
             wb.vs.addHist()
@@ -1245,7 +1405,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
         }
         if (this.qw == 'q') {
-            if (muting.isSet(iid+'')) {
+            if (muting.isSet('q'+iid)) {
                 itop.hide()
             }
             else {
@@ -1274,7 +1434,7 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
         }
     }
     this.picker2 = new Colorpicker2(this.qw, false)
-    hlradio.click(function() {
+    hlradio.click(function(e) {e.preventDefault();
         wb.vs.hstatesv(that.qw, {active: $(this).attr('id').substring(1)})
         wb.vs.addHist()
         wb.highlight2({code: '3', qw: that.qw})
@@ -1325,7 +1485,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         }
     }
 
-    sel.click(function() {
+    sel.click(function(e) {e.preventDefault();
         picker.dialog({
             dialogClass: 'picker_dialog',
             closeOnEscape: true,
@@ -1335,7 +1495,8 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
             width: '200px',
         })
     })
-    selc.click(function() {                 // process a click on the selectbox of the picker
+    selc.click(function(e) {
+                        // process a click on the selectbox of the picker
         var was_cust = wb.vs.iscolor(that.qw, that.iid)
         close_dialog(picker)
         if (was_cust) {
@@ -1353,7 +1514,8 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         wb.vs.addHist()
         that.apply(true)
     })
-    $('.c'+this.qw+'.'+this.qw+pointer+'>a').click(function() { // process a click on a colored cell of the picker
+    $('.c'+this.qw+'.'+this.qw+pointer+'>a').click(function(e) {e.preventDefault();
+        // process a click on a colored cell of the picker
         close_dialog(picker)
         vals = {}
         vals[that.iid] = $(this).html()
@@ -1398,7 +1560,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
             wb.highlight2(this)
         }
     }
-    sel.click(function() {
+    sel.click(function(e) {e.preventDefault();
         picker.dialog({
             dialogClass: 'picker_dialog',
             closeOnEscape: true,
@@ -1408,7 +1570,8 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
             width: '200px',
         })
     })
-    $('.c'+this.qw+'.'+this.qw+'one>a').click(function() { // process a click on a colored cell of the picker
+    $('.c'+this.qw+'.'+this.qw+'one>a').click(function(e) {e.preventDefault();
+                // process a click on a colored cell of the picker
         close_dialog(picker)
         var current_active = wb.vs.active(that.qw)
         if (current_active != 'hlone' && current_active != 'hlcustom') {
@@ -1446,19 +1609,12 @@ function defcolor(qw, iid) {// compute the default color
 
 // VIEW STATE
 
-function goback() {
-    var state = History.getState()
-    if (state && state.data) {
-        if (wb && wb.vs) {wb.vs.apply(state)}
-    }
-}
-
-
-History.Adapter.bind(window,'statechange', goback)
 
 function ViewState(init, pref) {
+    var that = this
     this.data = init
     this.pref = pref
+    this.from_push = false
 
     this.getvars = function() {
         var vars = ''
@@ -1476,14 +1632,21 @@ function ViewState(init, pref) {
     this.csv_url = function() {
         return item_url+this.getvars()
     }
+    this.goback = function() {
+        var state = History.getState()
+        if (!that.from_push && state && state.data) {
+            that.apply(state)
+        }
+    }
     this.addHist = function() {
-        //History.pushState(this.data, '', view_url+this.getvars())
-        var title = (this.mr() == 'm')?(this.book()+' '+this.chapter()):(style[this.qw()]['Tag']+' '+this.iid()+' p'+this.page())
-        History.pushState(this.data, title, view_url)
+        var title = (this.mr() == 'm')?(that.book()+' '+that.chapter()):(style[that.qw()]['Tag']+' '+that.iid()+' p'+that.page())
+        that.from_push = true
+        History.pushState(that.data, title, view_url)
+        that.from_push = false
     }
     this.apply = function(state, load_it) {
         if (state.data != undefined) {
-            this.data = state.data
+            that.data = state.data
         }
         wb.go()
     }
@@ -1531,34 +1694,53 @@ function ViewState(init, pref) {
     this.addHist()
 }
 
-/*
-
-We run the edit form for queries as an AJAX component in a DIV (see Chapter 12 of the Web2py book about LOAD).
-That works fine, except that for some reason the extra buttons do not record themselves in the form
-or request vars after pressing.
-So, here is a workaround: we add some click event to the buttons to leave a trace in some hidden input fields.
-
-*/
-function activate_buttons() {
-    $('.smb').each(function() {
-        $(this).click(function() {
-            $('.smb').each(function() {
-                var name = $(this).attr('name')
-                $('#'+name).val(false)
-            })
-            var name = $(this).attr('name')
-            $('#'+name).val(true)
-            if (name == 'button_done') {
-                reset_main_width()
-            }
-        })
-    })
-    material_fetched = {txt_p: false, txt_il: false}
-    wb.material.apply()
-    set_edit_width()
-}
-
 function close_dialog(dia) {
     if (dia && dia.dialog('instance') && dia.dialog('isOpen')) {dia.dialog('close')}
 }
 
+/* Words */
+
+function words_init() {
+    $('[wii]').hide()
+    $('[gi]').click(function(e) {e.preventDefault();
+        var i = $(this).attr('gi')
+        $('[wi="'+i+'"]').toggle()
+        $('[wii="'+i+'"]').toggle()
+    })
+}
+
+/* GENERIC */
+
+var escapeHTML = (function () {
+    'use strict';
+    var chr = {
+        '&': '&amp;', '<': '&lt;',  '>': '&gt;'
+    };
+    return function (text) {
+        return text.replace(/[&<>]/g, function (a) { return chr[a]; });
+    };
+}());
+
+function Msg() {
+    var that = this
+    this.destination = $('#material_message')
+    this.clear = function() {
+        this.destination.html('')
+        this.trashc.hide()
+    }
+    this.set_dest = function(dest) {
+        this.destination = $(dest)
+        this.trashc = $('.trashc')
+        this.trashc.click(function(e) {e.preventDefault();
+            that.clear()
+            that.trashc.hide()
+        })
+        that.trashc.hide()
+    }
+    this.msg = function(msgobj) {
+        var msgc = this.destination;
+        mtext = msgc.html()
+        msgc.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
+        this.trashc.show()
+    }
+}

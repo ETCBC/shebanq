@@ -105,7 +105,7 @@ ol.text {
 
 /* MATERIAL */
 
-#material_txt_p,#material_txt_il {
+#material_txt_p,#material_txt_il,#queries {
     overflow: auto;
 }
 .vnum {
@@ -141,12 +141,12 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.dletter.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.dletter.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio,.dletter {
+.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.dletter {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
@@ -176,6 +176,11 @@ table.hlsettings {
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
     padding: 2pt;
+}
+.ctrli {
+    border-radius: 6pt;
+    border: 1pt solid #dde6dd;
+    background-color: #fafffa;
 }
 .ctrll {
     border-radius: 8pt;
@@ -294,24 +299,55 @@ textarea.mql {
     height: 10em;
     margin-left: 0em;
 }
-textarea.small {
-    font-size: small;
-}
 textarea.mql_dia {
     font-family: Menlo, Courier New, Courier, monospace;
+    font-size: small;
     background-color: white;
     margin-left: 0em;
+}
+textarea.desc {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: small;
+    background-color: #fefbfe;
+    height: 10em;
+    margin-left: 0em;
+}
+div.desc_dia {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: small;
+    background-color: #fefbfe;
+    margin-left: 0em;
+}
+#namem {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: small;
+    background-color: #fefbfe;
+    margin-left: 0em;
+}
+#descm {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: small;
+    background-color: #fefbfe;
+    margin-left: 0em;
+    height: 10em;
+    overflow: auto;
+}
+div.descm {
+    background-color: #fefbfe;
+}
+textarea.small {
     font-size: small;
 }
 p.fullcp {
     text-align: right;
     margin-top: -0.5em;
-    margin-bottom: -0em;
+    margin-bottom: 0em;
 }
 p.fullcpx {
-    text-align: right;
-    margin-top: -2em;
-    margin-bottom: -1em;
+    margin-bottom: 1.5em;
+}
+span.ir {
+    float: right;
 }
 td.qname {
     width: 6em;
@@ -753,16 +789,26 @@ td.z7 {background-color: #000000;}
 label.radio {
     margin-left: 0.5em;
 }
-span.error {
+code.merr {
+    font-family: Menlo, Courier New, Courier, monospace;
+    color: #0000ff;
+}
+.error, code.merr {
     background-color: #ffaaaa;
 }
-span.warning {
+.warning {
     background-color: #ffddaa;
 }
-span.info {
+.good {
     background-color: #aaffaa;
 }
-span.total {
+.info {
+    background-color: #eeeeee;
+}
+.special {
+    background-color: #aaddff;
+}
+.total {
     font-weight: bold;
     background-color: #aaddff;
 }
@@ -773,6 +819,15 @@ span.match {
 span.submatch {
     font-weight: normal;
     color: #999999;
+}
+a.q {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+}
+a.qmy {
+    font-weight: bold;
+}
+a.qpriv {
+    font-style: italic;
 }
 .copyright {
     font-size: small;
@@ -794,48 +849,71 @@ div.msg_error {
 
 /* MARKDOWN FIELDS */
 
-.w2p_fw h1,.w2p_fw h2,.w2p_fw h3,.w2p_fw h4,.w2p_fw h5,.w2p_fw h6 {
+.descm h1,.descm h2,.descm h3,.descm h4,.descm h5,.descm h6 {
     margin:0.2em 0 0.1em 0; display:block;
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
-    background-color: white;
 }
-.w2p_fw h1 {
+.descm h1 {
     font-size:large;
     font-weight: bold;
     color: #007fd1;
 }
-.w2p_fw h2 {
+.descm h2 {
     font-size:medium;
     font-weight: bold;
     color: #007fd1;
 }
-.w2p_fw h3 {
+.descm h3 {
     font-size:small;
     font-weight: bold;
     color: #007fd1;
 }
-.w2p_fw h4 {
+.descm h4 {
     font-size:small;
     font-style: italic;
     color: #007fd1;
 }
-.w2p_fw h5 {
+.descm h5 {
     font-size:small;
     font-style: italic;
     color: #003c57;
 }
-.w2p_fw h6 {
+.descm h6 {
     font-size:small;
     font-style: italic;
     color: black;
 }
-.w2p_fw p, .w2p_fw div, .w2p_fw li, .w2p_fw dt, .w2p_fw dd, .w2p_fw td {
+.descm p, .descm div, .descm li, .descm dt, .descm dd, .descm td {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     font-size:small;
     color: #5a5100;
-    background-color: white;
 }
 
-.md .ui-icon {
+.qx.ui-icon {
     float: left;
 }
+.md.ui-icon {
+    float: right;
+}
+.n_o.ui-icon, .r_o.ui-icon, .n_p.ui-icon, .r_p.ui-icon, .n_q.ui-icon, .r_q.ui-icon, .v_q.ui-icon {
+    float: right;
+}
+.s_o.ui-icon, .s_p.ui-icon {
+    border-radius: 8pt;
+    float: left;
+    background-color: #88ffff;
+}
+.flabel {
+    font-size: small;
+    font-weight: bold;
+}
+span.treehl {
+    background-color: #ffff88;
+}
+.selecthlo, .selecthlp {
+    background-color: #88ffff;
+}
+/*input[type="text"] {
+    max-width: 200px;
+    min-width: 50px;
+}*/

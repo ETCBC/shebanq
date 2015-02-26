@@ -5,6 +5,9 @@ from gluon.custom_import import track_changes; track_changes(True)
 import collections, json
 import xml.etree.ElementTree as ET
 from itertools import groupby
+from urllib import unquote
+from urlparse import urlparse, urlunparse
+from markdown import markdown
 
 from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style
 from mql import mql
@@ -47,7 +50,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = False
+CACHING = True
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -149,9 +152,8 @@ def material():
     ch = get_request_val('material', '', 'chapter')
     tp = get_request_val('material', '', 'tp')
     iid = get_request_val('material', '', 'iid')
-    authorized = query_access_read(iid=iid)
+    (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
-        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
         return dict(
             mr=mr,
             qw=qw,
@@ -285,9 +287,8 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     filename = '{}{}.csv'.format(style[qw]['t'], iid)
-    authorized = query_access_read(iid=iid)
+    (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
-        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
         return dict(filename=filename, data=msg)
     hfields = get_fields()
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
@@ -313,7 +314,7 @@ where
 order by
     word.word_number
 '''.format(
-            hflist=', '.join('word.{}'.format(hf[0]) for hf in hfields),
+            hflist=u', '.join(u'word.{}'.format(hf[0]) for hf in hfields),
             monads=','.join(str(x) for x in monads),
         )
         data = passage_db.executesql(sql)
@@ -322,9 +323,8 @@ order by
 def chart(): # controller to produce a chart of query results or lexeme occurrences
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
-    authorized = query_access_read(iid=iid)
+    (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
-        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
         result = get_chart([])
         result.update(qw=qw)
         return result()
@@ -343,10 +343,9 @@ def chart_c(qw, iid):
 def sideqm():
     session.forget(response)
     iid = get_request_val('material', '', 'iid')
-    authorized = query_access_read(iid=iid)
-    msg = 'fetching query'
-    if not authorized:
-        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
+    (authorized, msg) = query_access_read(iid=iid)
+    if authorized:
+        msg = 'fetching query'
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
         vars=dict(mr='r', qw='q', iid=iid),
         ajax=False, ajax_trap=True, target='querybody', 
@@ -356,10 +355,9 @@ def sideqm():
 def sidewm():
     session.forget(response)
     iid = get_request_val('material', '', 'iid')
-    authorized = query_access_read(iid=iid)
-    msg = 'fetching word'
-    if not authorized:
-        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
+    (authorized, msg) = query_access_read(iid=iid)
+    if authorized:
+        msg = 'fetching word'
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
         vars=dict(mr='r', qw='w', iid=iid),
         ajax=False, ajax_trap=True, target='wordbody', 
@@ -369,30 +367,26 @@ def sidewm():
 @auth.requires(lambda: check_query_access_write())
 def sideqe():
     if not request.is_local: request.requires_https()
-    return show_query(readonly=False)
-
-def sideq():
-    session.forget(response)
-    return show_query(readonly=True)
+    return show_query()
 
 def sidew():
     session.forget(response)
     return show_word()
 
-def dictionary():
+def words():
     lan = get_request_val('rest', '', 'lan')
     letter = get_request_val('rest', '', 'letter')
     return from_cache(
-        'dictionary_page_{}_{}:'.format(lan, letter),
-        lambda: dictionary_page(lan, letter),
+        'words_page_{}_{}:'.format(lan, letter),
+        lambda: words_page(lan, letter),
         None,
     )
 
-def dictionary_page(lan=None, letter=None):
-    (letters, words) = from_cache('dictionary_data', get_dictionary_data, None)
+def words_page(lan=None, letter=None):
+    (letters, words) = from_cache('words_data', get_words_data, None)
     return response.render(dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, [])))
 
-def get_dictionary_data():
+def get_words_data():
     ddata = passage_db.executesql('''
 select id, entry_heb, entryid_heb, lan, gloss from lexicon
 order by lan, entryid_heb
@@ -407,97 +401,89 @@ order by lan, entryid_heb
         words[lan][letter].append((e, id, eid, gloss))
     return (letters, words)
 
-@auth.requires_login()
-def my_queries():
-    if not request.is_local: request.requires_https()
-    grid = SQLFORM.grid(
-        db.queries.created_by == auth.user,
-        fields=[db.queries.name, db.queries.is_published,
-                db.queries.modified_on, db.queries.executed_on],
-        orderby=~db.queries.modified_on,
-        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
-        headers={
-            'queries.is_published': 'Public',
-            'queries.executed_on': 'Last Run',
-            'queries.modified_on': 'Modified',
-        },
-        selectable=[('Delete selected', lambda ids: redirect(URL('mql', 'delete_multiple', vars=dict(id=ids))))],
-        editable=True,
-        details=False,
-        create=True,
-        links=[
-            dict(
-                header='view',
-                body=lambda row: A(
-                    SPAN(_class='icon info-sign icon-info-sign'),
-                    SPAN('', _class='buttontext button', _title='View'),
-                    _class='button btn',
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
-                ) 
-            ),
-        ],
-        showbuttontext=False,
-        paginate=20,
-        csv=False,
-    )
-
-    if 1 in grid:
-        grid[1].element(_type="submit", _value="Delete selected")["_onclick"] = "return confirm('Delete selected records?');"
-    return locals()
-
-def old_public_queries():
-    grid = SQLFORM.grid(
-        db.queries.is_published == True,
-        fields=[db.queries.id, db.queries.name ,db.queries.modified_by, db.queries.created_on,
-                db.queries.modified_on, db.queries.executed_on],
-        orderby=~db.queries.modified_on,
-        sorter_icons=(XML('&#x2191;'), XML('&#x2193;')),
-        headers={
-            'queries.executed_on': 'Last Run',
-            'queries.modified_on': 'Modified',
-        },
-        editable=False,
-        deletable=False,
-        details=False,
-        create=False,
-        links_placement='left',
-        links=[
-            dict(
-                header='View',
-                body=lambda row: A(
-                    row.name,
-                    _href=URL('hebrew', 'text', vars=dict(mr='r', qw='q', iid=row.id, page=1)),
-                ) 
-            ),
-        ],
-        paginate=20,
-        csv=False,
-    )
-    return locals()
-
-def public_queries():
-    return response.render(dict())
+def queries():
+    msgs = []
+    qid = check_int('goto', 'query', msgs)
+    if qid != None:
+        if not query_auth_read(qid):
+            qid = None
+    return response.render(dict(qid=qid if qid != None else 0))
 
 def pq():
-    return from_cache('public_queries:json:', pq_c, None)
+    myid = None
+    if auth.user:
+        myid = auth.user.id
+    return from_cache('queries:json:{}:'.format(myid), lambda:pq_c(myid), None)
 
-def pq_c(no_controller=True):
+def pq_c(myid):
+    linfo = collections.defaultdict(lambda: {})
+
+    def title_badge(myid, lid, ltype, newtype, good, warn, err, num, tot):
+        name = linfo[ltype][lid] if ltype != None else 'Public Queries'
+        nums = []
+        if good != 0: nums.append(u'<span class="good">{}</span>'.format(good))
+        if warn != 0: nums.append(u'<span class="warning">{}</span>'.format(warn))
+        if err != 0: nums.append(u'<span class="error">{}</span>'.format(err))
+        badge = ''
+        if len(nums) == 1:
+            if tot == num:
+                badge = u'<span class="total">{}</span>'.format('+'.join(nums))
+            else:
+                badge = u'{} of <span class="total">{}</span>'.format('+'.join(nums), tot)
+        else:
+            if tot == num:
+                badge = u'{}=<span class="total">{}</span>'.format('+'.join(nums), num)
+            else:
+                badge = u'{}={} of <span class="total">{}</span>'.format('+'.join(nums), num, tot)
+        rename = ''
+        create = ''
+        select = ''
+        if myid != None:
+            if newtype != None:
+                create = u'<a class="n_{}" href="#"></a>'.format(newtype)
+            if ltype in {'o', 'p'}:
+                if lid:
+                    rename = u'<a class="r_{}" lid="{}" href="#"></a>'.format(ltype, lid)
+                select = u'<a class="s_{}" lid="{}" href="#"></a>'.format(ltype, lid)
+        return u'<span n="1">{}</span>{}<span class="brq">({})</span>{}{}'.format(h_esc(name), create, badge, rename, select)
+
+    condition = '''
+where queries.is_published = 'T'
+''' if myid == None else '''
+where queries.is_published = 'T' or queries.created_by = {}
+'''.format(myid)
+
     pqueries_sql = '''
 select
-    organization.name as oname,
-    project.name as pname,
-    concat(auth_user.first_name, ' ', auth_user.last_name) as uname, 
+    organization.name as oname, organization.id as oid,
+    project.name as pname, project.id as pid,
+    concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.id as uid,
     queries.name as qname, queries.id as qid,
-    queries.modified_on as qmod, queries.executed_on as qexe
+    queries.modified_on as qmod, queries.executed_on as qexe,
+    queries.is_published as qpub
 from queries
 inner join organization on queries.organization = organization.id
 inner join project on queries.project = project.id
 inner join auth_user on queries.created_by = auth_user.id
-where queries.is_published = 'T'
-'''
+{}
+'''.format(condition)
     pqueries = db.executesql(pqueries_sql)
 
-    tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: {})))
+    porg_sql = '''
+select
+    name, id
+from organization
+'''
+    porg = db.executesql(porg_sql)
+
+    pproj_sql = '''
+select
+    name, id
+from project
+'''
+    pproj = db.executesql(pproj_sql)
+
+    tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: [])))
     countset = collections.defaultdict(lambda: set())
     counto = collections.defaultdict(lambda: 0)
     counto_good = collections.defaultdict(lambda: 0)
@@ -518,98 +504,500 @@ where queries.is_published = 'T'
     count_good = 0
     count_warn = 0
     count_err = 0
-    query_status = {}
-    for (oname, pname, uname, qname, qid, qmod, qexe) in pqueries:
-        countset['o'].add(oname)
-        countset['p'].add(pname)
-        countset['u'].add(uname)
+    for (oname, oid, pname, pid, uname, uid, qname, qid, qmod, qexe, qpub) in pqueries:
+        countset['o'].add(oid)
+        countset['p'].add(pid)
+        countset['u'].add(uid)
         countset['q'].add(qid)
+        linfo['o'][oid] = oname
+        linfo['p'][pid] = pname
+        linfo['u'][uid] = uname
+        qownstatus = ''
+        if uid == myid:
+            countset['m'].add(qid)
+            qownstatus = 'qmy'
+        qpubstatus = ''
+        if qpub != 'T':
+            countset['r'].add(qid)
+            qpubstatus = 'qpriv'
         if qexe:
             if qexe < qmod:
-                qstatus = 'error'
-                countu_err[oname][pname][uname] += 1
-                countp_err[oname][pname] += 1
-                counto_err[oname] += 1
+                qexestatus = 'error'
+                countu_err[oid][pid][uid] += 1
+                countp_err[oid][pid] += 1
+                counto_err[oid] += 1
                 count_err += 1
             else:
-                qstatus = 'info'
-                countu_good[oname][pname][uname] += 1
-                countp_good[oname][pname] += 1
-                counto_good[oname] += 1
+                qexestatus = 'good'
+                countu_good[oid][pid][uid] += 1
+                countp_good[oid][pid] += 1
+                counto_good[oid] += 1
                 count_good += 1
         else:
-            qstatus = 'warning'
-            countu_warn[oname][pname][uname] += 1
-            countp_warn[oname][pname] += 1
-            counto_warn[oname] += 1
+            qexestatus = 'warning'
+            countu_warn[oid][pid][uid] += 1
+            countp_warn[oid][pid] += 1
+            counto_warn[oid] += 1
             count_warn += 1
-        tree[oname][pname][uname][qid] = qname
-        query_status[qid] = qstatus
+        linfo['q'][qid] = (qname, qownstatus, qpubstatus, qexestatus)
+        tree[oid][pid][uid].append(qid)
         count +=1
-        counto[oname] += 1
-        countp[oname][pname] += 1
-        countu[oname][pname][uname] += 1
-        counto_tot[oname] += 1
-        countp_tot[pname] += 1
-        countu_tot[uname] += 1
+        counto[oid] += 1
+        countp[oid][pid] += 1
+        countu[oid][pid][uid] += 1
+        counto_tot[oid] += 1
+        countp_tot[pid] += 1
+        countu_tot[uid] += 1
+
+    linfo['o'][0] = 'Projects without Queries'
+    linfo['p'][0] = 'New Project'
+    linfo['u'][0] = ''
+    linfo['q'][0] = ('', '', '', '')
+    counto[0] = 0
+    countp[0][0] = 0
+    for (oname, oid) in porg:
+        if oid in linfo['o']: continue
+        countset['o'].add(oid)
+        linfo['o'][oid] = oname
+        tree[oid] = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+
+    for (pname, pid) in pproj:
+        if pid in linfo['p']: continue
+        countset['o'].add(0)
+        countset['p'].add(pid)
+        linfo['p'][pid] = pname
+        tree[0][pid] = collections.defaultdict(lambda: [])
+
     ccount = dict((x[0], len(x[1])) for x in countset.items())
-    title = title_badge('Public Queries', count_good, count_warn, count_err, count, count)
-    dest = [dict(title='{}'.format(title), folder=True, children=[], data=ccount)]
+    ccount['uid'] = myid
+    title = title_badge(myid, None, None, 'o', count_good, count_warn, count_err, count, count)
+    dest = [dict(title=u'{}'.format(title), folder=True, children=[], data=ccount)]
     curdest = dest[-1]['children']
     cursource = tree
-    for oname in cursource:
-        onum = counto[oname]
-        ogood = counto_good[oname]
-        owarn = counto_warn[oname]
-        oerr = counto_err[oname]
-        otot = counto_tot[oname]
-        otitle = title_badge(oname, ogood, owarn, oerr, onum, otot)
-        curdest.append(dict(title='{}'.format(otitle), folder=True, children=[]))
+    for oid in cursource:
+        onum = counto[oid]
+        ogood = counto_good[oid]
+        owarn = counto_warn[oid]
+        oerr = counto_err[oid]
+        otot = counto_tot[oid]
+        otitle = title_badge(myid, oid, 'o', 'p', ogood, owarn, oerr, onum, otot)
+        curdest.append(dict(title=u'{}'.format(otitle), folder=True, children=[]))
         curodest = curdest[-1]['children']
-        curosource = cursource[oname]
-        for pname in curosource:
-            pnum = countp[oname][pname]
-            pgood = countp_good[oname][pname]
-            pwarn = countp_warn[oname][pname]
-            perr = countp_err[oname][pname]
-            ptot = countp_tot[pname]
-            ptitle = title_badge(pname, pgood, pwarn, perr, pnum, ptot)
-            curodest.append(dict(title='{}'.format(ptitle), folder=True, children=[]))
+        curosource = cursource[oid]
+        for pid in curosource:
+            pnum = countp[oid][pid]
+            pgood = countp_good[oid][pid]
+            pwarn = countp_warn[oid][pid]
+            perr = countp_err[oid][pid]
+            ptot = countp_tot[pid]
+            ptitle = title_badge(myid, pid, 'p', 'q', pgood, pwarn, perr, pnum, ptot)
+            curodest.append(dict(title=u'{}'.format(ptitle), folder=True, children=[]))
             curpdest = curodest[-1]['children']
-            curpsource = curosource[pname]
-            for uname in curpsource:
-                unum = countu[oname][pname][uname]
-                ugood = countu_good[oname][pname][uname]
-                uwarn = countu_warn[oname][pname][uname]
-                uerr = countu_err[oname][pname][uname]
-                utot = countu_tot[uname]
-                utitle = title_badge(uname, ugood, uwarn, uerr, unum, utot)
-                curpdest.append(dict(title='{}'.format(utitle), folder=True, children=[]))
+            curpsource = curosource[pid]
+            for uid in curpsource:
+                unum = countu[oid][pid][uid]
+                ugood = countu_good[oid][pid][uid]
+                uwarn = countu_warn[oid][pid][uid]
+                uerr = countu_err[oid][pid][uid]
+                utot = countu_tot[uid]
+                utitle = title_badge(myid, uid, 'u', None, ugood, uwarn, uerr, unum, utot)
+                curpdest.append(dict(title=u'{}'.format(utitle), folder=True, children=[]))
                 curudest = curpdest[-1]['children']
-                curusource = curpsource[uname]
+                curusource = curpsource[uid]
                 for qid in curusource:
-                    qname = curusource[qid]
-                    qstatus = query_status[qid]
-                    curudest.append(dict(title='<a href="{}">{}</a> <a class="md" href="#"><span class="{}"/></a>'.format(URL('hebrew', 'text', host=True, extension='', vars=dict(iid=qid, mr='r', qw='q')), qname, qstatus), key=qid, folder=False))
+                    (qname, qownstatus, qpubstatus, qexestatus) = linfo['q'][qid]
+                    rename = u'<a class="{}_{}" lid="{}" href="#"></a>'.format('r' if myid == uid else 'v', 'q', qid)
+                    curudest.append(dict(title=u'<a class="q {} {}" n="1" qid="{}" href="#">{}</a> <a class="md" href="#">  <a class="qx {}" href="#"> {}'.format(
+                        qownstatus, qpubstatus,
+                        qid,
+                        #URL('hebrew', 'text', host=True, extension='', vars=dict(iid=qid, page=1, mr='r', qw='q')),
+                        h_esc(qname),
+                        qexestatus,
+                        rename,
+                    ), key='q{}'.format(qid), folder=False))
     return dict(data=json.dumps(dest))
 
-def title_badge(name, good, warn, err, num, tot):
-    nums = []
-    if good != 0: nums.append('<span class="info">{}</span>'.format(good))
-    if warn != 0: nums.append('<span class="warning">{}</span>'.format(warn))
-    if err != 0: nums.append('<span class="error">{}</span>'.format(err))
-    badge = ''
-    if len(nums) == 1:
-        if tot == num:
-            badge = '<span class="total">{}</span>'.format('+'.join(nums))
+tps = dict(o=('organization', 'organization'), p=('project', 'project'), q=('query', 'queries'))
+
+def check_unique(tp, lid, val, myid, msgs):
+    result = False
+    (label, table) = tps[tp]
+    for x in [1]:
+        if tp == 'q':
+            check_sql = u'''
+select id from queries where name = '{}' and queries.created_by = {};'''.format(val, myid)
         else:
-            badge = '{} of <span class="total">{}</span>'.format('+'.join(nums), tot)
-    else:
-        if tot == num:
-            badge = '{}=<span class="total">{}</span>'.format('+'.join(nums), num)
+            check_sql = u'''select id from {} where name = '{}';'''.format(table, val)
+        try:
+            ids = db.executesql(check_sql)
+        except:
+            msgs.append(('error', u'cannot check the unicity of {} as {}!'.format(val, label)))
+            break
+        if len(ids) and (lid == 0 or ids[0][0] != int(lid)):
+            msgs.append(('error', u'the {} name is already taken!'.format(label)))
+            break
+        result = True
+    return result
+
+def check_name(tp, lid, myid, val, msgs):
+    label = tps[tp][0]
+    result = None
+    for x in [1]:
+        if len(val) > 64:
+            msgs.append(('error', u'{label} name is longer than 64 characters!'.format(label=label)))
+            break
+        val = val.strip()
+        if val == '':
+            msgs.append(('error', u'{label} name consists completely of white space!'.format(label=label)))
+            break
+        val = val.replace("'","''").replace('\\', '\\\\')
+        if not check_unique(tp, lid, val, myid, msgs):
+            break
+        result = val
+    return result
+
+def check_description(tp, val, msgs):
+    label = tps[tp][0]
+    result = None
+    for x in [1]:
+        if len(val) > 8192:
+            msgs.append(('error', u'{label} description is longer than 8192 characters!'.format(label=label)))
+            break
+        result = val.replace("'","''").replace('\\', '\\\\')
+    return result
+
+def check_mql(tp, val, msgs):
+    label = tps[tp][0]
+    result = None
+    for x in [1]:
+        if len(val) > 8192:
+            msgs.append(('error', u'{label} mql is longer than 8192 characters!'.format(label=label)))
+            break
+        result = val.replace("'","''").replace('\\', '\\\\')
+    return result
+
+def check_published(tp, val, msgs):
+    label = tps[tp][0]
+    result = None
+    for x in [1]:
+        if len(val) > 10 or (len(val) > 0 and not val.isalnum()):
+            msgs.append(('error', u'{} published status has an invalid value {}'.format(label, val)))
+            break
+        result = 'T' if val == 'T' else ''
+    return result
+
+def check_website(tp, val, msgs):
+    label = tps[tp][0]
+    result = None
+    for x in [1]:
+        if len(val) > 512:
+            msgs.append(('error', u'{label} val is longer than 512 characters!'.format(label=label)))
+            break
+        val = val.strip()
+        if val == '':
+            msgs.append(('error', u'{label} val consists completely of white space!'.format(label=label)))
+            break
+        try:
+            url_comps = urlparse(val)
+        except ValueError:
+            msgs.append(('error', u'invalid syntax in {label} website !'.format(label=label)))
+            break
+        scheme = url_comps.scheme
+        if scheme not in {'http', 'https'}:
+            msgs.append(('error', u'{label} website does not start with http(s)://'.format(label=label)))
+            break
+        netloc = url_comps.netloc
+        if not '.' in netloc: 
+            msgs.append(('error', u'no location in {label} website'.format(label=label)))
+            break
+        result = urlunparse(url_comps).replace("'","''").replace('\\', '\\\\')
+    return result
+
+def check_int(var, label, msgs):
+    val = request.vars[var]
+    if val == None:
+        msgs.append(('error', u'No {} id given'.format(label)))
+        return None
+    if len(val) > 10 or not val.isdigit():
+        msgs.append(('error', u'Not a valid {} id'.format(label)))
+        return None
+    return int(val)
+
+def check_rel(tp, val, msgs):
+    (label, table) = tps[tp]
+    result = None
+    for x in [1]:
+        check_sql = '''select count(*) as occurs from {} where id = '{}';'''.format(table, val)
+        try:
+            occurs = db.executesql(check_sql)[0][0]
+        except:
+            msgs.append(('error', u'cannot check the occurrence of {} id {}!'.format(label, val)))
+            break
+        if not occurs:
+            if val == 0:
+                msgs.append(('error', u'No {} chosen!'.format(label)))
+            else:
+                msgs.append(('error', u'There is no {} {}!'.format(label, val)))
+            break
+        result = val
+    return result
+
+def record():
+    msgs = []
+    record = {}
+    good = False
+    myid = auth.user.id if auth.user != None else None
+    for x in [1]:
+        tp = request.vars.tp
+        (label, table) = tps[tp]
+        lid = check_int('lid', label, msgs)
+        upd = request.vars.upd
+        if tp not in tps:
+            msgs.append(('error', u'unknown type {}!'.format(tp)))
+            break
+        if lid == None: break
+        if upd not in {'true', 'false'}:
+            msgs.append(('error', u'invalid instruction {}!'.format(upd)))
+            break
+        upd = True if upd == 'true' else False
+        if upd and not myid:
+            msgs.append(('error', u'for updating you have to be logged in!'))
+            break
+        fields = ['name']
+        if tp == 'q':
+            fields.append('organization')
+            fields.append('project')
+            fields.append('description')
         else:
-            badge = '{}={} of <span class="total">{}</span>'.format('+'.join(nums), num, tot)
-    return '{} ({})'.format(h_esc(name), badge)
+            fields.append('website')
+        if upd:
+            (authorized, msg) = query_auth_write(lid) if tp == 'q' else auth_write(label)
+        else:
+            (authorized, msg) = query_auth_read(lid) if tp == 'q' else auth_write(label)
+        if not authorized:
+            msgs.append(('error', msg))
+            break
+        if upd:
+            (good, new_lid) = upd_record(tp, lid, myid, fields, msgs)
+            if not good:
+                break
+            lid = new_lid
+        if tp == 'q':
+            if lid == 0:
+                oid = check_int('oid', tps['o'][0], msgs)
+                pid = check_int('pid', tps['o'][0], msgs)
+                if oid == None or pid == None: break
+                osql = u'''select id as oid, name as oname, website as owebsite from organization where id = {};'''.format(oid)
+                psql = u'''select id as pid, name as pname, website as pwebsite from project where id = {};'''.format(pid)
+                odbrecord = db.executesql(osql, as_dict=True)
+                pdbrecord = db.executesql(psql, as_dict=True)
+                odbrecord = odbrecord[0] if odbrecord else dict(oid=0, oname='', owebsite='')
+                pdbrecord = pdbrecord[0] if pdbrecord else dict(pid=0, pname='', pwebsite='')
+                dbrecord = [odbrecord]
+                dbrecord[0].update(pdbrecord)
+            else: 
+                dbrecord = db.executesql(u'''
+select
+queries.id as id,
+queries.name as name,
+queries.description as description,
+organization.id as oid,
+organization.name as oname,
+organization.website as owebsite,
+project.id as pid,
+project.name as pname,
+project.website as pwebsite
+from queries
+inner join organization on queries.organization = organization.id
+inner join project on queries.project = project.id
+where queries.id = {}
+'''.format(lid), as_dict=True)
+        else:
+            if lid == 0:
+                pass
+            else:
+                dbrecord = db.executesql(u'''select {} from {} where id = {}'''.format(','.join(fields), table, lid), as_dict=True)
+        if not dbrecord:
+            msgs.append(('error', u'No {} with id {}'.format(label, lid)))
+            break
+        record = dbrecord[0]
+        if tp == 'q' and lid != 0:
+            record['description_md'] = markdown(record['description'])
+    return dict(data=json.dumps(dict(record=record, msgs=msgs, good=good)))
+
+def upd_record(tp, lid, myid, fields, msgs):
+    updrecord = {}
+    good = False
+    (label, table) = tps[tp]
+    for x in [1]:
+        valsql = check_name(tp, lid, myid, unicode(request.vars.name, encoding='utf-8'), msgs)
+        if valsql == None:
+            break
+        updrecord['name'] = valsql
+        if tp == 'q':
+            valsql = check_description(tp, unicode(request.vars.description, encoding='utf-8'), msgs)
+            if valsql == None:
+                break
+            updrecord['description'] = valsql
+            val = check_int('oid', tps['o'][0], msgs)
+            if val == None: break
+            valsql = check_rel('o', val, msgs)
+            if valsql == None: break
+            updrecord['organization'] = valsql
+            val = check_int('pid', tps['p'][0], msgs)
+            valsql = check_rel('p', val, msgs)
+            if valsql == None: break
+            updrecord['project'] = valsql
+            fld = 'created_' # we only set the modified by and modified on if the query body has been changed
+            updrecord[fld+'by'] = myid
+            updrecord[fld+'on'] = request.now
+            fields.extend([fld+'by', fld+'on'])
+        else:
+            valsql = check_website(tp, request.vars.website, msgs)
+            if valsql == None:
+                break
+            updrecord['website'] = valsql
+        good = True
+    if good:
+        if lid:
+            fieldvals = [u" {} = '{}'".format(f, updrecord[f]) for f in fields]
+            sql = u'''update {} set{} where id = {}'''.format(table, ','.join(fieldvals), lid)
+            thismsg = 'modified'
+        else:
+            fieldvals = [u"'{}'".format(updrecord[f]) for f in fields]
+            sql = u'''insert into {} ({}) values ({})'''.format(table, u','.join(fields), u','.join(fieldvals), lid)
+            thismsg = u'added'
+        result = db.executesql(sql)
+        if lid == 0:
+            lid = db.executesql('select last_insert_id() as x;')[0][0]
+
+        msgs.append((u'good', thismsg))
+    return (good, lid)
+
+def field():
+    msgs = []
+    good = False
+    myid = auth.user.id if auth.user != None else None
+    for x in [1]:
+        qid = check_int('qid', 'query', msgs)
+        if qid == None: break
+        fname = request.vars.fname
+        val = request.vars.val
+        if fname == None or fname not in {'name', 'is_published', 'description', 'mql'}:
+            msgs.append('error', 'Illegal field name {}')
+            break
+        (authorized, msg) = query_auth_write(qid)
+        if not authorized:
+            msgs.append(('error', msg))
+            break
+        good = upd_field(qid, fname, val, msgs)
+    return dict(data=json.dumps(dict(msgs=msgs, good=good)))
+
+def upd_field(qid, fname, val, msgs):
+    updrecord = {}
+    good = False
+    (label, table) = ('query', 'queries')
+    myid = None
+    if auth.user:
+        myid = auth.user.id
+    for x in [1]:
+        if fname == 'name':
+            valsql = check_name('q', qid, myid, unicode(val, encoding='utf-8'), msgs)
+            if valsql == None:
+                break
+        if fname == 'description':
+            valsql = check_description('q', unicode(val, encoding='utf-8'), msgs)
+            if valsql == None:
+                break
+        if fname == 'mql':
+            valsql = check_mql('q', unicode(val, encoding='utf-8'), msgs)
+            if valsql == None:
+                break
+        if fname == 'is_published':
+            valsql = check_published('q', unicode(val, encoding='utf-8'), msgs)
+            if valsql == None:
+                break
+        good = True
+    if good:
+        fieldval = u" {} = '{}'".format(fname, valsql)
+        sql = u'''update {} set{} where id = {}'''.format(table, fieldval, qid)
+        result = db.executesql(sql)
+        thismsg = 'modified'
+        if fname == 'is_published':
+            thismsg = 'published' if valsql == 'T' else 'UNpublished'
+        if fname == 'name':
+            thismsg = 'renamed'
+            
+        msgs.append((u'good', thismsg))
+    return good
+
+def fields():
+    msgs = []
+    good = False
+    updrecord = {}
+    (label, table) = ('query', 'queries')
+    myid = auth.user.id if auth.user != None else None
+    fields = {}
+    for x in [1]:
+        qid = check_int('qid', 'query', msgs)
+        if qid == None: break
+        (authorized, msg) = query_auth_write(qid)
+        if not authorized:
+            msgs.append(('error', msg))
+            break
+        oldrecord = db.executesql('''select name, description, mql from queries where id = {}'''.format(qid), as_dict=True)
+        if oldrecord == None or len(oldrecord) == 0:
+            msgs.append(('error', 'No query with id {}'.format(qid)))
+            break
+        oldvals = oldrecord[0]
+        valsql = check_name('q', qid, myid, unicode(request.vars.name, encoding='utf-8'), msgs)
+        if valsql == None:
+            break
+        fields['name'] = valsql
+        valsql = check_description('q', unicode(request.vars.description, encoding='utf-8'), msgs)
+        if valsql == None:
+            break
+        fields['description'] = valsql
+        newmql = request.vars.mql
+        valsql = check_mql('q', unicode(newmql, encoding='utf-8'), msgs)
+        if valsql == None:
+            break
+        fields['mql'] = valsql
+        good = True
+        if oldvals['mql'] != newmql:
+            msgs.append(('warning', 'query body modified'))
+            fields['modified_by'] = myid
+            fields['modified_on'] = request.now
+        else:
+            msgs.append(('good', 'same query body'))
+    if good:
+        execute = request.vars.execute
+        xgood = True
+        if execute == 'true':
+            (xgood, xresults) = mql(newmql) 
+            if xgood:
+                store_monad_sets(qid, xresults)
+                fields['executed_on'] = request.now
+                msgs.append(('good', 'Query executed'))
+            else:
+                store_monad_sets(qid, [])
+                msgs.append(('error', u'<code class="merr">{}</code>'.format(xresults)))
+        sql = u'''update {} set{} where id = {}'''.format(table, ', '.join(u" {} = '{}'".format(f, fields[f]) for f in fields if f != 'status'), qid)
+        db.executesql(sql)
+        sql = u'''select name, description, mql, executed_on, modified_on from queries where id = {}'''.format(qid)
+        result = db.executesql(sql, as_dict=True)
+        if result == None or len(result) == 0:
+            msgs.append(('error', 'No query with id {}'.format(qid)))
+            good = False
+        else:
+            fields = result[0]
+            query_status(fields)
+            fields['description_md'] = markdown(unicode(request.vars.description, encoding='utf-8'))
+        for f in ('created_on', 'modified_on', 'executed_on'):
+            if f in fields:
+                fields[f] = str(fields[f])
+
+    return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=fields)))
 
 @auth.requires(lambda: check_query_access_write())
 def delete_multiple():
@@ -621,43 +1009,76 @@ def delete_multiple():
     response.flash = "deleted " + str(iid)
     redirect(URL('my_queries'))
 
-def show_query(readonly=True, kind=None, msg=None):
-    response.headers['web2py-component-flash']=None
-    iid = get_request_val('material', '', 'iid')
-    authorized = query_access_read(iid=iid)
-    if not authorized:
-        msg = 'No item with id {}'.format(iid) if authorized == None else 'You have no access to item with id {}'.format(iid) 
-        return dict(
-            readonly=True,
-            kind=kind,
-            msg=msg,
-            form=None,
-            iid=iid,
-            query=None,
-        )
-    if iid:
-        old_pub = db.queries[iid].is_published
-        old_mql = db.queries[iid].mql
-        old_modified_on = db.queries[iid].modified_on
+def query_status(mql_record):
+    if not mql_record['executed_on']:
+        mql_record['status'] = 'warning'
+    elif mql_record['executed_on'] < mql_record['modified_on']:
+        mql_record['status'] = 'error'
     else:
-        iid = 0
-        old_pub = False
-        old_mql = ''
-        old_modified_on = 0
-    mql_form = get_mql_form(iid, readonly=readonly)
-    (thisreadonly, thiskind, thismsg) = handle_response_mql(mql_form, old_pub, old_mql, old_modified_on)
-    if thisreadonly != None: readonly = thisreadonly
-    if thiskind != None: kind = thiskind
-    if thismsg != None: msg = thismsg
-    mql_record = db.queries[iid]
+        mql_record['status'] = 'good'
+
+def sideq():
+    session.forget(response)
+    msgs = []
+    iid = get_request_val('material', '', 'iid')
+    (authorized, msg) = query_auth_read(iid)
+    if not authorized or not iid:
+        msgs.append(('error', msg))
+        return dict(
+            writable=False,
+            q=collections.defaultdict(lambda: ''),
+            msgs=json.dumps(msgs),
+        )
+    sql = '''
+select
+    queries.id,
+    queries.name,
+    queries.description,
+    queries.mql,
+    queries.is_published,
+    queries.created_on,
+    queries.modified_on,
+    queries.executed_on,
+    queries.created_by as uid,
+    concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.email as uemail,
+    organization.name as oname, organization.website as owebsite,
+    project.name as pname, project.website as pwebsite
+from queries
+inner join auth_user on queries.created_by = auth_user.id
+inner join organization on queries.organization = organization.id
+inner join project on queries.project = project.id
+where queries.id = {}
+'''.format(iid)
+    records = db.executesql(sql, as_dict=True)
+    if records == None or len(records) == 0:
+        msgs.append(('error', 'No query with id {}'.format(iid)))
+        return dict(
+            writable=True,
+            q=collections.defaultdict(lambda: ''),
+            msgs=json.dumps(msgs),
+        )
+    mql_record = records[0]
+    old_pub = mql_record['is_published']
+    mql_record['description_md'] = markdown(mql_record['description'])
+    query_status(mql_record)
+    if old_pub != mql_record['is_published']:
+        ckeys = r'^items_q:'
+        cache.ram.clear(regex=ckeys)
+        cache.disk.clear(regex=ckeys)
+        ckeys = r'^queries:json:'
+        cache.ram.clear(regex=ckeys)
+        cache.disk.clear(regex=ckeys)
+    (authorized, msg) = query_auth_write(iid=iid)
+    mql_record['name'] = mql_record['name']
+    mql_record['description'] = mql_record['description']
+    mql_record['mql'] = mql_record['mql']
+    for f in ('created_on', 'modified_on', 'executed_on'):
+        mql_record[f] = str(mql_record[f])
 
     return dict(
-        readonly=readonly,
-        kind=kind,
-        msg=msg,
-        form=mql_form,
-        iid=iid,
-        query=mql_record,
+        writable=authorized,
+        q=json.dumps(mql_record),
+        msgs=json.dumps(msgs),
     )
 
 def show_word(no_controller=True):
@@ -759,7 +1180,7 @@ def get_monadsets_MySQL(chapter):
      {'first_m': 296470L, 'query_id': 6L, 'last_m': 296470L},
      {'first_m': 296494L, 'query_id': 6L, 'last_m': 296494L}, ...]
     """
-    return db.executesql('''
+    return db.executesql(u'''
 select DISTINCT
     query_id,
     GREATEST(first_m, {chapter_first_m}) as first_m,
@@ -777,7 +1198,7 @@ where
     ), as_dict=True)
 
 def get_lexemes(chapter):
-    lexeme_data = passage_db.executesql('''
+    lexeme_data = passage_db.executesql(u'''
 select
     anchor, lexicon_id
 from
@@ -798,17 +1219,41 @@ where
     return r
 
 
-def query_access_read(iid=get_request_val('material', '', 'tp')):
-    authorized = None
+def query_access_read(iid=get_request_val('material', '', 'iid')):
     if get_request_val('material', '', 'mr') == 'm' or get_request_val('material', '', 'qw') == 'w':
-        authorized = True
-    elif iid != None and iid > 0:
+        return (True, '')
+    if iid != None and iid > 0:
+        return query_auth_read(iid)
+    return (None, u'Not a valid id {}'.format(iid))
+
+def query_auth_read(iid):
+    authorized = None
+    if iid == 0:
+        authorized = auth.user != None
+    else:
         mql_record = db.queries[iid]
         if mql_record != None:
             authorized = mql_record.is_published or (auth.user != None and mql_record.created_by == auth.user.id)
-    return authorized
+    msg = u'No item with id {}'.format(iid) if authorized == None else u'You have no access to item with id {}'.format(iid) 
+    return (authorized, msg)
+
+def query_auth_write(iid):
+    authorized = None
+    if iid == 0:
+        authorized = auth.user != None
+    else:
+        mql_record = db.queries[iid]
+        if mql_record != None:
+            authorized = (auth.user != None and mql_record.created_by == auth.user.id)
+    msg = u'No item with id {}'.format(iid) if authorized == None else u'You have no access to create/modify item with id {}'.format(iid) 
+    return (authorized, msg)
 
 @auth.requires_login()
+def auth_write(label):
+    authorized = auth.user != None
+    msg = u'You have no access to create/modify a {}'.format(label) 
+    return (authorized, msg)
+
 def check_query_access_write(iid=get_request_val('material', '', 'iid')):
     authorized = True
     if iid is not None and iid > 0:
@@ -865,7 +1310,7 @@ def get_mql_form(iid, readonly=False):
             SPAN(_class='icon resize-full icon-resize-full'),
             _class='ctrl fullc fullcp',
             _href='#',
-            _id='readq_{}'.format(iid),
+            _id=u'readq_{}'.format(iid),
         ), _class='fullcpx')
         medit_link = ''
     mql_form = SQLFORM(db.queries, record=iid, readonly=readonly,
@@ -948,22 +1393,6 @@ def get_word_form(iid):
         formstyle='table3cols',
     )
     return word_form
-
-def fiddle_dates(old_pub, old_mql, old_modified_on):
-    def _fiddle_dates(mql_form):
-        pub = mql_form.vars.is_published
-        mql = mql_form.vars.mql
-        modified_on = mql_form.vars.modified_on
-        if mql == old_mql:
-            mql_form.vars.modified_on = old_modified_on
-        if pub != old_pub:
-            ckeys = r'^items_q:'
-            cache.ram.clear(regex=ckeys)
-            cache.disk.clear(regex=ckeys)
-            ckeys = r'^public_queries:json:'
-            cache.ram.clear(regex=ckeys)
-            cache.disk.clear(regex=ckeys)
-    return _fiddle_dates
 
 def handle_response_mql(mql_form, old_pub, old_mql, old_modified_on):
     readonly = None

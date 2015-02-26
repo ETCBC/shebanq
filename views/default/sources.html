@@ -7,12 +7,58 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<h4>{{=T('Sources')}}</h4>
+<h4>{{=T('About')}}</h4>
+<p>The <i>shebanq</i> service is the first data service of <i>ancient-data.org</i>.<br/>
+Shebanq is a search engine for the Hebrew Bible, powered by the ETCBC4 linguistic database, formerly know as WIVU.<br/>
+The data is archived for <i>open access</i>, and the program code is <i>open source</i>. 
+A list of sources needed to recreate all underlying data processing is included <a href="#sources">below</a>. 
+</p>
+
+<h4>{{=T('License and Re-use')}}</h4>
 <p>The creators of the linguistic annotations that drive SHEBANQ, the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>, 
 want to facilitate optimal access to their data by researchers. All operations that are needed for the scholarly process are allowed.
-Here are the locations of the data, code and documentation.
-All materials are open source.</p>
+You are allowed to download the data and the code, build your own workflows on top of the data and even to redistribute your versions of the data and the code.
+The licence is:
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+That means:</p>
+<ul>
+<li>You may not use the data for commercial applications;</li>
+<li>You must give proper attribution to the data when you use it in new applications, preferably by citing its persistent identifier
+<a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY">urn:nbn:nl:ui:13-048i-71</a>
+</li>
+</ul>
+<p>The ETCBC prefers to stress the potential of using its data, rather than the legal restrictions in doing so.
+It has published data, tools and documentation online that enables teams of biblical scholars and developers
+to reproduce all data processing that is needed for SHEBANQ.
+The recommended tool to start with is 
+{{=A('laf-fabric', _href='https://github.com/ETCBC/laf-fabric', _target='_blank')}}.
+Its documentation describes in detail how to download the data and set up data-processing workflows.</p>
 
+<p>The ETCBC welcomes contributions that improve and enrich the interface of SHEBANQ.
+We are also open to implement mutual deep linking with other biblical data sources.</p>
+
+<h4>{{=T('Authors')}}</h4>
+<dl>
+    <dt>ETCBC</dt>
+    <dd><a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">Eep Talstra Center for Bible and Computer</a>
+        <ul>
+            <li><a href="mailto:w.t.van.peursen@vu.nl">Wido van Peursen (ETCBC)</a></li>
+            <li>Eep Talstra</li>
+            <li>Constantijn Sikkel</li>
+            <li><a href="mailto:glanz@andrews.edu">Oliver Glanz</a> (now at <a target="_blank" href="https://www.andrews.edu">Andrews University)</a></li>
+        </ul>
+    </dd>
+    <dt>DANS</dt>
+    <dd><a target="_blank" href="http://www.dans.knaw.nl">Data Archiving and Networked Services</a>
+        <ul>
+            <li><a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda (DANS)</a></li>
+            <li>Henk van den Berg</li>
+            <li>Heleen van de Schraaf</li>
+        </ul>
+    </dd>
+</dl>
+
+<h4><a name="sources">Sources</a></h4>
 <p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
 In practice, it is not completely straightforward.
 We are working on a complete installation recipe for an Ubuntu server.
@@ -50,4 +96,18 @@ The document is not yet finished, but if you are interested, here is the
     </dd>
     <dt><a target="_blank" href="http://emdros.org">EMDROS</a></dt>
     <dd>The engine that performs MQL queries against an Emdros text database. Written in C++.</dd>
+</dl>
+
+<h4>{{=T('History')}}</h4>
+See {{=A(T("Release notes"), _href=URL('default', 'news', ))}} for an overview of the ideas behind shebanq and how they have been implemented.
+
+<h4>{{=T('References')}}</h4>
+<dl>
+    <dt><a href="http://arxiv.org/abs/1501.01866" target="blank">The Hebrew Bible as Data: Laboratory - Sharing - Experiences</a></dt>
+    <dd>Positioning of SHEBANQ, history, ideas and more references.</dd>
+    <dt><a href="http://arxiv.org/abs/1410.0286" target="blank">LAF-Fabric: a data analysis tool for Linguistic Annotation Framework with an application to the Hebrew Bible</a></dt>
+    <dd>LAF-Fabric is the auxiliary tool with which the ETCBC data has been prepared for the SHEBANQ website.
+    It can also be used for other preprocessing tasks, e.g. preparing data for analysis in R.</dd>
+    <dt><a href="http://arxiv.org/abs/1412.6069" target="blank">Annotation as a New Paradigm in Research Archiving</a></dt>
+    <dd>The idea of treating queries as annotations.</dd>
 </dl>

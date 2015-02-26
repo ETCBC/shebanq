@@ -28,10 +28,10 @@ jQuery(function(){
 	jQuery('#socialdrawer span').css({'float':'left','margin':'2px 3px','text-shadow':' 1px 1px 1px #FFF','color':'#444','font-size':'12px','line-height':'1em'});
         jQuery('#socialdrawer img').hide();
 	// hover
-    $('#clipview,#clipquery,#clipword').click(function() {
+    $('#clipview,#clipquery,#clipword').click(function(e) {e.preventDefault();
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
     })
-	st.click(function(){
+	st.click(function(e){e.preventDefault();
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
         var shebanq_url = encodeURIComponent(shebanq_url_raw)
 	    var twit = 'http://twitter.com/home?status='+title+'%20';

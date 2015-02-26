@@ -1,0 +1,123 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = True }}
+{{extend 'layout.html'}}
+
+<input type="hidden" id="qid" value="{{=qid}}"/>
+<div id="queries"></div>
+
+{{ block left_sidebar }}
+
+<p>
+    <a href="#" id="c_view_simple" class="ctrl qvradio">simple</a>
+    <a href="#" id="c_view_advanced" class="ctrl qvradio">advanced</a>
+</p>
+
+<h4>Filter</h4>
+<input type="text" id="filter_contents"/> <span id="filter_msg"></span></p>
+<p class="brq"><a class="ctrl qfradio" href="#" id="filter_control_a">all matches</a>
+<span id="amatches">&nbsp;</span>
+</p>
+<p><a class="ctrl qfradio" href="#" id="filter_control_c">all with children</a>
+<span id="cmatches">&nbsp;</span>
+</p>
+<p class="brq"><a class="ctrl qfradio" href="#" id="filter_control_q">in all queries</a>
+<span id="qmatches">&nbsp;</span>
+</p>
+<p><a class="ctrl qfradio" href="#" id="filter_control_m">in my queries</a>
+<span id="mmatches">&nbsp;</span>
+</p>
+<p class="brq"><a class="ctrl qfradio" href="#" id="filter_control_r">in private queries</a>
+<span id="rmatches">&nbsp;</span>
+</p>
+<p><a class="ctrl qfradio" href="#" id="filter_clear">clear filter</a></p>
+
+<h4>Level</h4>
+<p><a class="ctrl qlradio" href="#" id="level_o">organizations</a> (<span id='count_o'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_p">projects</a> (<span id='count_p'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_u">users</a> (<span id='count_u'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_q">queries</a> (<span id='count_q'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_">manual</a></p>
+
+<script src="{{=URL('static','js/jquery.fancytree-all.min.js')}}"></script>
+<script src="{{=URL('static', 'js/queries.js')}}"></script>
+
+<script type="text/javascript">
+var pq_url = "{{=XML(URL('hebrew', 'pq', extension='json'))}}"
+var q_url = "{{=XML(URL('hebrew', 'text', extension=''))}}"
+var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
+</script>
+
+{{ end }}
+
+{{ block right_sidebar }}
+
+<div class="form_l" id="form_o">
+<h4><span id="title_o">New</span> organization</h4>
+<table>
+<tr><td><span class="flabel">Name</span></td><td><input type="text" id="name_o"/></td></tr>
+<tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_o"/></td></tr>
+</table>
+<div id="dbmsg_o"></div>
+<p>
+    <a href="#" id="cancel_o" class="ctrl">Cancel</a>
+    <a href="#" id="save_o" class="ctrl">Add</a>
+    <a href="#" id="done_p" class="ctrl">Done</a>
+    <input type="hidden" id="id_o" name="lid" value="0"/>
+</p>
+</div>
+
+
+<div class="form_l" id="form_p">
+<h4><span id="title_p">New</span> project</h4>
+<table>
+<tr><td><span class="flabel">Name</span></td><td><input type="text" id="name_p"/></td></tr>
+<tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_p"/></td></tr>
+</table>
+<div id="dbmsg_p"></div>
+<p>
+    <a href="#" id="cancel_p" class="ctrl">Cancel</a>
+    <a href="#" id="save_p" class="ctrl">Add</a>
+    <a href="#" id="done_p" class="ctrl">Done</a>
+    <input type="hidden" id="id_p" name="lid" value="0"/>
+</p>
+</div>
+
+<div class="form_l" id="form_q">
+<h4><span id="title_q">New</span> query</h4>
+<p><span class="flabel">Name</p>
+<p><input type="text" id="name_q"/></p>
+<p><span class="flabel">Organization/Project</span></p>
+<p>
+    <a target="_blank" href="" id="fo_q" oid=""></a>
+    /
+    <a target="_blank" href="" id="fp_q" pid=""></a>
+</p>
+<p><span class="flabel">Description</p>
+<div class="old descm" id="description_old_q"></div>
+<textarea id="description_q"/></textarea>
+<div id="dbmsg_q"></div>
+<p>
+    <a href="#" id="cancel_q" class="ctrl">Cancel</a>
+    <a href="#" id="save_q" class="ctrl">Add</a>
+    <a href="#" id="done_q" class="ctrl">Done</a>
+    <input type="hidden" id="id_q" name="lid" value="0"/>
+</p>
+</div>
+<div class="form_l" id="formv_q">
+<h4 id="name_qv"></h4>
+<p>
+    <a target="_blank" href="" id="fo_qv" oid=""></a>
+    <a target="_blank" href="" id="fp_qv" pid=""></a>
+</p>
+<div class="old descm" id="description_old_qv"></div>
+<div id="dbmsg_qv"></div>
+<p>
+    <a href="#" id="done_qv" class="ctrl">Done</a>
+    <input type="hidden" id="id_qv" name="lid" value="0"/>
+</p>
+</div>
+<p>
+<a href="#" id="reload_tree" class="ctrl">refresh tree</a>
+</p>
+
+{{ end }}

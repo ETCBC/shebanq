@@ -13,13 +13,6 @@ def index():
     return response.render(dict())
 
 @cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
-def about():
-    session.forget(response)
-    response.title = T("SHEBANQ - about")
-    response.subtitle = T("About the ETCBC4 database")
-    return response.render(dict())
-
-@cache.action(time_expire=EXPIRE, cache_model=cache.ram, quick='P')
 def help():
     session.forget(response)
     response.title = T("SHEBANQ - help")
