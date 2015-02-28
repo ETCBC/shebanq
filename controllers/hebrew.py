@@ -413,7 +413,8 @@ def pq():
     myid = None
     if auth.user:
         myid = auth.user.id
-    return from_cache('queries:json:{}:'.format(myid), lambda:pq_c(myid), None)
+    return pq_c(myid)
+    #return from_cache('queries:json:{}:'.format(myid), lambda:pq_c(myid), None)
 
 def pq_c(myid):
     linfo = collections.defaultdict(lambda: {})
@@ -1065,9 +1066,9 @@ where queries.id = {}
         ckeys = r'^items_q:'
         cache.ram.clear(regex=ckeys)
         cache.disk.clear(regex=ckeys)
-        ckeys = r'^queries:json:'
-        cache.ram.clear(regex=ckeys)
-        cache.disk.clear(regex=ckeys)
+        #ckeys = r'^queries:json:'
+        #cache.ram.clear(regex=ckeys)
+        #cache.disk.clear(regex=ckeys)
     (authorized, msg) = query_auth_write(iid=iid)
     mql_record['name'] = mql_record['name']
     mql_record['description'] = mql_record['description']
