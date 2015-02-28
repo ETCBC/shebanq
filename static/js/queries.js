@@ -300,14 +300,15 @@ function Tree() {
         }
         var good = false
         $.post(record_url, senddata, function(json) {
+            var tpp = tp
             if (view) {
-                tp = tp + 'v'
+                tpp = tp + 'v'
             }
             var rec = json.record
             good = json.good
-            msg.clear(tp)
+            msg.clear(tpp)
             json.msgs.forEach(function(m) {
-                msg.msg(tp, m)
+                msg.msg(tpp, m)
             })
             if (!update || good) {
                 that.selectid('o', rec.oid, null)
@@ -315,41 +316,41 @@ function Tree() {
             }
             if (!update || (good && senddata.lid != '0')) {
                 if (view) {
-                    $('#name_'+tp).html(rec.name)
+                    $('#name_'+tpp).html(rec.name)
                 }
                 else {
-                    $('#name_'+tp).val(rec.name)
+                    $('#name_'+tpp).val(rec.name)
                 }
-                if (tp == 'q' || tp == 'qv') {
+                if (tpp == 'q' || tpp == 'qv') {
                     oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
                     pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
-                    $('#description_'+tp).val(rec.description)
-                    $('#description_old_'+tp).html(rec.description_md)
-                    $('#fo_'+tp).attr('href', rec.owebsite)
-                    $('#fo_'+tp).html(escapeHTML(oname))
-                    $('#fp_'+tp).attr('href', rec.pwebsite)
-                    $('#fp_'+tp).html(escapeHTML(pname))
-                    $('#fo_'+tp).attr('oid', rec.oid)
-                    $('#fp_'+tp).attr('pid', rec.pid)
+                    $('#description_'+tpp).val(rec.description)
+                    $('#description_old_'+tpp).html(rec.description_md)
+                    $('#fo_'+tpp).attr('href', rec.owebsite)
+                    $('#fo_'+tpp).html(escapeHTML(oname))
+                    $('#fp_'+tpp).attr('href', rec.pwebsite)
+                    $('#fp_'+tpp).html(escapeHTML(pname))
+                    $('#fo_'+tpp).attr('oid', rec.oid)
+                    $('#fp_'+tpp).attr('pid', rec.pid)
                 }
                 else {
-                    $('#website_'+tp).val(rec.website)
+                    $('#website_'+tpp).val(rec.website)
                 }
                 if (update) {
-                    var elem = (tp == 'q')?'a':'span'
+                    var elem = (tpp == 'q')?'a':'span'
                     $('.treehl').find(elem+'[n=1]').html(escapeHTML(rec.name))
                 }
             }
             if (update && good && senddata.lid == '0') {
-                if (tp == 'q') {
+                if (tpp == 'q') {
                     oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
                     pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
-                    $('#fo_'+tp).attr('href', rec.owebsite)
-                    $('#fo_'+tp).html(escapeHTML(oname))
-                    $('#fp_'+tp).attr('href', rec.pwebsite)
-                    $('#fp_'+tp).html(escapeHTML(pname))
-                    $('#fo_'+tp).attr('oid', rec.oid)
-                    $('#fp_'+tp).attr('pid', rec.pid)
+                    $('#fo_'+tpp).attr('href', rec.owebsite)
+                    $('#fo_'+tpp).html(escapeHTML(oname))
+                    $('#fp_'+tpp).attr('href', rec.pwebsite)
+                    $('#fp_'+tpp).html(escapeHTML(pname))
+                    $('#fo_'+tpp).attr('oid', rec.oid)
+                    $('#fp_'+tpp).attr('pid', rec.pid)
                 }
             }
             var orig = $('.treehl')
@@ -418,7 +419,7 @@ function Tree() {
         else if (tp == 'p') {
             o = obj.closest('ul').closest('li')
         }
-        mtp = tp+'v'
+        var mtp = tp+'v'
         msg.clear(mtp)
         msg.msg(mtp, ['info', 'loading ...'])
         $('.form_l').hide()
@@ -530,11 +531,11 @@ function Tree() {
                 return false
             })
         }
-        for (tp in this.tps) {
-            $('#form_'+tp).hide()
-            $('#formv_'+tp).hide()
-            this.viewtp(tp)
-            if (tp == 'q') {
+        for (var t in this.tps) {
+            $('#form_'+t).hide()
+            $('#formv_'+t).hide()
+            this.viewtp(t)
+            if (t == 'q') {
                 this.select_init('o')
                 this.select_init('p')
             }
@@ -585,12 +586,12 @@ function Tree() {
                 window.location.reload(true)
             })
         }
-        for (tp in this.tps) {
-            $('#form_'+tp).hide()
-            $('#formv_'+tp).hide()
-            this.createtp(tp)
-            this.updatetp(tp)
-            this.formtp(tp)
+        for (var t in this.tps) {
+            $('#form_'+t).hide()
+            $('#formv_'+t).hide()
+            this.createtp(t)
+            this.updatetp(t)
+            this.formtp(t)
         }
     }
     this.gotoquery = function(qid) {
