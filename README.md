@@ -22,11 +22,20 @@ Authors
 ETCBC
 -----
 [Eep Talstra Center for Bible and Computing](http://godgeleerdheid.vu.nl/etcbc)
-[Wido van Peursen](mailto:w.t.van.peursen@vu.nl)
+* [Wido van Peursen](mailto:w.t.van.peursen@vu.nl)
+* Eep Talstra
+* Constantijn Sikkel
+* [Oliver Glanz](mailto:glanz@andrews.edu) (now at [Andrews University](https://www.andrews.edu)
     
 DANS
 ----
 [Data Archiving and Networked Services](http://www.dans.knaw.nl)
-[Dirk Roorda](mailto:dirk.roorda@dans.knaw.nl)
+* [Dirk Roorda](mailto:dirk.roorda@dans.knaw.nl)
+* Henk van den Berg
+* Heleen van de Schraaf
     
+
+2014-2015: Continuing development of SHEBANQ made possible by the ETCBC and [The Language Archive](http://tla.mpi.nl)
+
 2013-2014: The SHEBANQ demonstrator and the data curation of the ETCBC4 data into LAF have been funded by [CLARIN-NL](http://www.clarin.nl)
+
