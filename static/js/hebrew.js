@@ -92,6 +92,39 @@ So the main parts of the page are always in view, at fairly stable places.
 When editing a query it is important to make room for the query body.
 When editing is happening, the sidebar will be widened at the expense of the main area.
 
+Plans for the near future:
+
+I. Load data view per verse, not per chapter. A click on the verse number should be the trigger.
+
+II. Make SHEBANQ able to deal with several versions of the data.
+Queries will get an execution record per version of the data.
+
+Plans for distant future:
+
+I. integrate the Queries page with this page.
+
+The skeleton will have 4 columns, of which 2 or three are visible at a given time:
+
+A: filter and level controls for the queries tree
+B: the queries tree itself
+C: an individual query, possibly in edit mode, or an individual word
+D: material column: the verses of a chapter, or a page with occurrences of a word, or a page with query results
+
+Then the hebrew.js and the queries.js can be integrated, redundant code can be erased, ajax messages can be done more consistently.
+
+II. replace all usage of cookies by local storage.
+
+The queries page already does not use cookies but local storage. 
+Now the parsing of the request.vars occurs server side in Python, maybe it is better to defer all checks to the browser.
+The browser can then keep all view settings to its own, without any need to communicate view settings with the server.
+
+III. send all data from server to browser in JSON form.
+
+The browser generates HTML out of the JSON.
+I am not sure whether this is worth it. 
+On the one hand it means smaller data transfers (but they are already fast enough), on the other hand, template code in python is
+much more manageable than in Javascript.
+
 */
 
 // GLOBALS
@@ -102,7 +135,8 @@ $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
 var ns = $.initNamespaceStorage('muting')
-var muting = ns.localStorage
+var muting = ns.localStorage // on the Queries page the user can "mute" queries. Which queries are muted, is stored as key value pairs in this local storage bucket.
+// When shebanq shows relevant queries next to a page, muting is taken into account.
 
 /* state variables */
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
@@ -132,8 +166,8 @@ var chart_cols = 30 // number of chapters in a row in a chart
 
 function dynamics() { // top level function, called when the page has loaded
     viewfluid = {}
-    msg = new Msg()
-    wb = new Page(new ViewState(viewinit, pref))
+    msg = new Msg() // a place where ajax messages can be shown to the user
+    wb = new Page(new ViewState(viewinit, pref)) // wb is the handle to manipulate the whole page
     wb.init()
     wb.go()
 }
