@@ -25,7 +25,7 @@ ETCBC
 * [Wido van Peursen](mailto:w.t.van.peursen@vu.nl)
 * Eep Talstra
 * Constantijn Sikkel
-* [Oliver Glanz](mailto:glanz@andrews.edu) (now at [Andrews University](https://www.andrews.edu)
+* [Oliver Glanz](mailto:glanz@andrews.edu) (now at [Andrews University](https://www.andrews.edu))
     
 DANS
 ----
@@ -35,7 +35,7 @@ DANS
 * Heleen van de Schraaf
     
 
-2014-2015: Continuing development of SHEBANQ made possible by the ETCBC and [The Language Archive](http://tla.mpi.nl)
+2014-2015: Continued development of SHEBANQ made possible by the ETCBC and [The Language Archive](http://tla.mpi.nl)
 
 2013-2014: The SHEBANQ demonstrator and the data curation of the ETCBC4 data into LAF have been funded by [CLARIN-NL](http://www.clarin.nl)
 
