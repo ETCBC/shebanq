@@ -149,14 +149,13 @@
         <footer class="footer span12" id="footer">
             <div class="footer-content">
                 {{block footer}} <!-- this is default footer -->
-                <div class="copyright pull-left">SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</div>
-                <div id="poweredBy" class="pull-right">
-                    {{=T('funded by')}}
+                <div class="copyright pull-left">
+                    <p>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup&nbsp;</p>
+                    <p>{{=T('funded by')}}
                     <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>,
-                    <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a>.
+                    <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a></p>
                 </div>
-                <div class="pull-left">
-                    &nbsp; &nbsp; &nbsp; &nbsp;
+                <div class="pull-right">
                     <a target="_blank" title="VU ETCBC"
                         href="http://www.godgeleerdheid.vu.nl/etcbc"><img
                             src="{{=URL('static', 'images/VU-ETCBC-small.png')}}"
@@ -164,6 +163,7 @@
                     /></a>
                     <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0"
                         src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
+                    &nbsp;
                 </div>
                 <div class="pull-right">
                     <a target="_blank" title="ETCBC4 Dataset in DANS EASY"
@@ -171,7 +171,15 @@
                             src="{{=URL('static', 'images/etcbc4easy-small.png')}}"
                             width="100px"
                     /></a>
-                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp;
+                </div>
+                <div class="pull-left">
+                    <a target="_blank" title="DH2014 Award"
+                        href="http://dhawards.org/dhawards2014/results/"><img
+                            src="{{=URL('static', 'images/DHAwards2014-tool.png')}}"
+                            width="200px"
+                    /></a>
+                    &nbsp;
                 </div>
                 {{end}}
             </div>

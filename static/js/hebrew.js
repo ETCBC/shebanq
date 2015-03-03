@@ -492,15 +492,18 @@ function Material() { // Object corresponding to everything that controls the ma
             var vs= $(this).attr('v')
             var dat = $('#txt_il_'+bk+'_'+ch+'_'+vs)
             var txt = $('#txt_p_'+bk+'_'+ch+'_'+vs)
+            var legendc = $('#datalegend_control')
             if ($(this).hasClass('ison')) {
                 $(this).removeClass('ison')
                 $(this).attr('title', 'interlinear data')
+                legendc.hide()
                 dat.hide()
                 txt.show()
             }
             else {
                 $(this).addClass('ison')
                 $(this).attr('title', 'text only')
+                legendc.show()
                 dat.show()
                 txt.hide()
                 if (dat.attr('l') == 'x') {

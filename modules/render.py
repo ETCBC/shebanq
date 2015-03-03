@@ -41,7 +41,7 @@ vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
 field_names = '''
-    word_heb word_vlex word_clex word_tran word_lex word_gloss
+    word_heb word_vlex word_clex word_tran word_lex word_glex word_gloss
     word_subpos word_pos word_lang word_number
     word_gender word_gnumber word_person word_state word_tense word_stem
     word_nme word_pfm word_prs word_uvf word_vbe word_vbs
@@ -55,7 +55,7 @@ hebrewdata_lines_spec = '''
     ht:ht=word_heb=text-h
     hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
     tt:tt=word_tran=text-t
-    tl:tl=word_lex=lexeme-t
+    tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
     gl:gl=word_gloss=gloss
     wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
@@ -81,7 +81,7 @@ specs = dict(
         ht
         hl hl_hlv hl_hlc
         tt
-        tl
+        tl tl_tlv tl_tlc
         gl
         wd1 wd1_subpos wd1_pos wd1_lang wd1_n
         wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
@@ -94,7 +94,7 @@ specs = dict(
         bool
         bool bool bool
         bool
-        bool
+        bool bool bool
         bool
         bool bool bool bool bool
         bool bool bool bool bool bool bool
@@ -107,7 +107,7 @@ specs = dict(
         v
         v x v
         x
-        x
+        x x v
         v
         v x v x x
         v v v v v v v
@@ -165,7 +165,12 @@ legend_tpl = '''
 
     <tr class="il l_tl">
         <td class="c l_tl"><input type="checkbox" id="tl" name="tl"/></td>
-        <td class="il l_tl"><a target="_blank" href="{base_doc}/g_lex.html"><span class="l_tl">lexeme</span></a></td>
+        <td class="il l_tl">
+            <input type="checkbox" id="tl_tlv" name="tl_tlv"/>
+                <a target="_blank" href="{base_doc}/g_lex.html"><span class="il l_tl_tlv">lexeme-v</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="tl_tlc" name="tl_tlc"/>
+                <a target="_blank" href="{base_doc}/lex.html"><span class="il l_tl_tlc">lexeme-c</span></a>
+        </td>
     </tr>
 
     <tr class="il l_gl">
@@ -296,7 +301,7 @@ text_tpl = u'''<table class="il c">
         <td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td>
     </tr>
     <tr class="il tl">
-        <td class="il tl"><span l="{lexicon_id}" class="tl">{word_lex}</span></td>
+        <td class="il tl"><span l="{lexicon_id}" class="tl tl_tlv">{word_glex}</span>&nbsp;&nbsp;<span l="{lexicon_id}" class="il tl_tlc">{word_lex}</span></td>
     </tr>
     <tr class="il gl">
         <td class="il gl"><span class="gl">{word_gloss}</span></td>
