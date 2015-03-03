@@ -47,16 +47,18 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
     {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}
         {{tp = material.tp}}
-        {{for verse in material.verses:}}
-            <div class="{{=tp}}">
-            {{if material.mr == 'm':}}
-                <span class="vnum">{{=verse.label()}}</span>
-            {{else:
-                (label, book, chapter) = verse.label()
-            }}
-                <span class="vref"><a href="#" book="{{=book}}" chapter="{{=chapter}}" class="vref">{{=label}}</a></span>
-            {{pass}}
-                <span>{{=XML(verse.material(ua))}}</span>
+        {{for verse in material.verses:
+            (pb, b, c, v) = verse.label()
+            verse_control = u'<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=b, chapter=c, verse=v)
+        }}
+            <div class="{{=tp}}">{{
+            if material.mr == 'm':
+                }}<span class="vrefi">{{=XML(verse_control)}}{{
+            else: 
+                }}<span class="vref"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}{{
+            pass
+                }}</span>
+                <span id="txt_p_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txt_il_base" id="txt_il_{{=b}}_{{=c}}_{{=v}}" l="x"></span>
             </div>
         {{ pass }}
     {{ pass }}

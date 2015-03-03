@@ -146,7 +146,7 @@ var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, side_url, item_url, chart_url, queries_url, field_url, fields_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, field_url, fields_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -470,7 +470,7 @@ function Material() { // Object corresponding to everything that controls the ma
         if (wb.mr == 'r') {
             this.pselect.apply()
             wb.picker1[wb.qw].adapt(wb.iid, true)
-            $('a.vref').click(function(e) {e.preventDefault();
+            $('a.cref').click(function(e) {e.preventDefault();
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
                 wb.vs.addHist()
                 wb.go()
@@ -479,6 +479,47 @@ function Material() { // Object corresponding to everything that controls the ma
         else {
             this.add_word_actions()
         }
+        var vrefs = $('.vradio')
+        vrefs.each(function() {
+            var book = $(this).attr('b')
+            var chapter = $(this).attr('c')
+            var verse = $(this).attr('v')
+            $(this).attr('title', 'interlinear data')
+        })
+        vrefs.click(function(e) {e.preventDefault();
+            var bk = $(this).attr('b')
+            var ch= $(this).attr('c')
+            var vs= $(this).attr('v')
+            var dat = $('#txt_il_'+bk+'_'+ch+'_'+vs)
+            var txt = $('#txt_p_'+bk+'_'+ch+'_'+vs)
+            if ($(this).hasClass('ison')) {
+                $(this).removeClass('ison')
+                $(this).attr('title', 'interlinear data')
+                dat.hide()
+                txt.show()
+            }
+            else {
+                $(this).addClass('ison')
+                $(this).attr('title', 'text only')
+                dat.show()
+                txt.hide()
+                if (dat.attr('l') == 'x') {
+                    dat.html('fetching data for '+bk+' '+ch+':'+vs+' ...')
+                    dat.load(data_url+'?book='+bk+'&chapter='+ch+'&verse='+vs, function() {
+                        dat.attr('l', 'v')
+                        that.msettings.hebrewsettings.apply()
+                        if (wb.mr == 'r') {
+                            wb.picker1[wb.qw].adapt(wb.iid, true)
+                        }
+                        else {
+                            wb.highlight2({code: '5', qw: 'w'})
+                            wb.highlight2({code: '5', qw: 'q'})
+                            //that.add_word_actions()
+                        }
+                    }, 'html')
+                }
+            }
+        })
         if (wb.vs.tp() == 'txt_il') {
             this.msettings.hebrewsettings.apply()
         }

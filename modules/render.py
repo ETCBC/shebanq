@@ -515,16 +515,30 @@ ORDER BY word_number;
         for v in verse_info:
             v_id = int(v[0])
             xml = v[4] if tp == 'txt_p' else ''
-            self.verses.append(Verse(v[1], v[2], v[3], xml, word_data[v_id], tp=tp, mr=mr)) 
+            self.verses.append(Verse(passage_db, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, mr=mr)) 
 
 class Verse():
-
-    def __init__(self, book_name, chapter_num, verse_num, xml, word_data, tp=None, mr=None):
+    def __init__(self, passage_db, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, mr=None):
         self.tp = tp
         self.mr = mr
         self.book_name = book_name
         self.chapter_num = chapter_num
         self.verse_num = verse_num
+        if xml == None:
+            xml = ''
+        if word_data == None:
+            word_records = passage_db.executesql('''
+SELECT {}, lexicon_id FROM word
+INNER JOIN word_verse ON word_number = word_verse.anchor
+INNER JOIN verse ON verse.id = word_verse.verse_id
+INNER JOIN chapter ON verse.chapter_id = chapter.id
+INNER JOIN book ON chapter.book_id = book.id
+WHERE book.name = '{}' AND chapter.chapter_num = {} AND verse.verse_num = {}
+ORDER BY word_number;
+'''.format(','.join(field_names), book_name, chapter_num, verse_num), as_dict=True)
+            word_data = []
+            for record in word_records:
+                word_data.append(dict((x,h_esc(unicode(y), not x.endswith('_border'))) for (x,y) in record.items()))
         self.xml = xml
         self.word_data = word_data
         self.words = []
@@ -536,11 +550,12 @@ class Verse():
         return (self.book_name, self.chapter_num)
 
     def label(self):
-        if self.mr == 'm': return self.verse_num
+        return (self.book_name.replace('_', ''), self.book_name, self.chapter_num, self.verse_num)
+        verse_control = u'<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=book, chapter=chapter, verse=verse)
+        if self.mr == 'm': return verse_control
         else:
-            (book, chapter, verse) = (self.book_name, self.chapter_num, self.verse_num)
             pretty_book = book.replace('_', ' ')
-            return ("{} {}:{}".format(pretty_book, chapter, verse), book, chapter)
+            return ('{} {}: {}'.format(pretty_book, chapter, book, verse_control), book, chapter)
 
     def get_words(self):
         if (len(self.words) == 0):

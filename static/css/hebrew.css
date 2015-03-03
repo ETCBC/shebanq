@@ -108,18 +108,12 @@ ol.text {
 #material_txt_p,#material_txt_il,#queries {
     overflow: auto;
 }
-.vnum {
-    vertical-align: super;
-    font-size: small;
-    color: #cccccc;
-    float: right;
-    margin-right: -1.7em
-}
-span.vref {
+span.vref, span.vrefi {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
-    color: grey;
     text-align: right;
+}
+span.vref {
     display: block;
 }
 
@@ -141,15 +135,25 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.dletter.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.dletter.ison,.vradio.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.dletter {
+.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.dletter,.vradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
+}
+.vradio {
+    font-weight: normal;
+    background-color: #eeeeff;
+    color: #0000cc;
+}
+.vradio.ison {
+    font-weight: bold;
+    background-color: #eeffee;
+    color: #00cc00;
 }
 .isoff {
     background-color: #fafffa;
@@ -461,6 +465,10 @@ div.mql_form,div.word_form {
 .txt_il {
     direction: rtl;
     text-align: right;
+}
+.txt_il_base {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
 }
 table.il {
     display: inline-table;

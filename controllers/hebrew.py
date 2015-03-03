@@ -9,7 +9,7 @@ from urllib import unquote
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style
+from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style
 from mql import mql
 
 # Note on caching
@@ -50,7 +50,7 @@ from mql import mql
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
 
-CACHING = True
+CACHING = False
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -224,6 +224,34 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
             )
     else:
         result = dict()
+    return response.render(result)
+
+def verse():
+    session.forget(response)
+    msgs = []
+    good = False
+    bk = get_request_val('material', '', 'book')
+    ch = get_request_val('material', '', 'chapter')
+    vs = check_int('verse', 'verse', msgs)
+    if vs == None:
+        return dict(good=False, msgs=msgs)
+    return from_cache(
+        'verse:{}_{}:{}:'.format(bk, ch, vs),
+        lambda: verse_c(bk, ch, vs, msgs),
+        None,
+    )
+
+def verse_c(bk, ch, vs, msgs):
+    material = Verse(passage_db, bk, ch, vs, xml=None, word_data=None, tp='txt_il', mr=None)
+    good = True
+    if len(material.word_data) == 0:
+        msgs.append(('error', '{} {}:{} does not exist'.format(bk, ch, vs)))
+        good = False
+    result = dict(
+        good = good,
+        msgs = msgs,
+        material=material,
+    )
     return response.render(result)
 
 def sidem():
@@ -403,7 +431,7 @@ order by lan, entryid_heb
 
 def queries():
     msgs = []
-    qid = check_int('goto', 'query', msgs)
+    qid = check_id('goto', 'query', msgs)
     if qid != None:
         if not query_auth_read(qid):
             qid = None
@@ -717,6 +745,16 @@ def check_website(tp, val, msgs):
 def check_int(var, label, msgs):
     val = request.vars[var]
     if val == None:
+        msgs.append(('error', u'No {} number given'.format(label)))
+        return None
+    if len(val) > 10 or not val.isdigit():
+        msgs.append(('error', u'Not a valid {} verse'.format(label)))
+        return None
+    return int(val)
+
+def check_id(var, label, msgs):
+    val = request.vars[var]
+    if val == None:
         msgs.append(('error', u'No {} id given'.format(label)))
         return None
     if len(val) > 10 or not val.isdigit():
@@ -751,7 +789,7 @@ def record():
     for x in [1]:
         tp = request.vars.tp
         (label, table) = tps[tp]
-        lid = check_int('lid', label, msgs)
+        lid = check_id('lid', label, msgs)
         upd = request.vars.upd
         if tp not in tps:
             msgs.append(('error', u'unknown type {}!'.format(tp)))
@@ -785,8 +823,8 @@ def record():
             lid = new_lid
         if tp == 'q':
             if lid == 0:
-                oid = check_int('oid', tps['o'][0], msgs)
-                pid = check_int('pid', tps['o'][0], msgs)
+                oid = check_id('oid', tps['o'][0], msgs)
+                pid = check_id('pid', tps['o'][0], msgs)
                 if oid == None or pid == None: break
                 osql = u'''select id as oid, name as oname, website as owebsite from organization where id = {};'''.format(oid)
                 psql = u'''select id as pid, name as pname, website as pwebsite from project where id = {};'''.format(pid)
@@ -840,12 +878,12 @@ def upd_record(tp, lid, myid, fields, msgs):
             if valsql == None:
                 break
             updrecord['description'] = valsql
-            val = check_int('oid', tps['o'][0], msgs)
+            val = check_id('oid', tps['o'][0], msgs)
             if val == None: break
             valsql = check_rel('o', val, msgs)
             if valsql == None: break
             updrecord['organization'] = valsql
-            val = check_int('pid', tps['p'][0], msgs)
+            val = check_id('pid', tps['p'][0], msgs)
             valsql = check_rel('p', val, msgs)
             if valsql == None: break
             updrecord['project'] = valsql
@@ -880,7 +918,7 @@ def field():
     good = False
     myid = auth.user.id if auth.user != None else None
     for x in [1]:
-        qid = check_int('qid', 'query', msgs)
+        qid = check_id('qid', 'query', msgs)
         if qid == None: break
         fname = request.vars.fname
         val = request.vars.val
@@ -940,7 +978,7 @@ def fields():
     myid = auth.user.id if auth.user != None else None
     fields = {}
     for x in [1]:
-        qid = check_int('qid', 'query', msgs)
+        qid = check_id('qid', 'query', msgs)
         if qid == None: break
         (authorized, msg) = query_auth_write(qid)
         if not authorized:
