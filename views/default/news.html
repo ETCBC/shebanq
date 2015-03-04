@@ -14,6 +14,21 @@
 We keep the then old ETCBC4 data in SHEBANQ, so that existing queries can be shown exactly as they are now.
 We let the ETCBC4 and ETCBC4s coexist in SHEBANQ, and users may execute their queries on both versions of the data.</dd>
 </dl>
+<dt>https and a decent certificate</dt>
+<dd>We will migrate SHEBANQ to a new server shortly and install a proper certificate for https.
+Now SHEBANQ works with a self-signed certificate,
+which is <i>not-done</i> on a production server. That's why you get those annoying security warnings when you first log in.
+Once the certificate is in place, we let SHEBANQ work over https exclusively.
+We intend to keep the present server for hosting SHEBANQ-beta, where we stage new changes before we apply them to the production SHEBANQ.
+Up till now, using SHEBANQ is sometimes a rough ride for you, with a rush of updates and new annoying bugs every now and then.
+By using a test server we hope to improve on that.</dd>
+<dt>Sharing, Publishing, Freezing and Deleting queries</dt>
+<dd>Now you cannot delete queries, yet it is a legitimate whish to erase your obsolete queries.
+But what if they have been published? Currently you can unpublish queries, but what if somebody else maintains a link to such a query?
+I am contemplating to split the notion of publishing into <i>sharing</i> and <i>freezing</i>.
+Sharing is your device to let others see what you have done, without the commitment to keep that always available in the same form.
+Freezing is an irrevocable act of making the query unchangeable. It then can become part of your scholarly record.
+Nobody, not even you can change or delete that query, because it might have been cited in papers.</dd>
 <h1>{{=T('News')}}</h1>
 <p style="background-color: #ff99aa; font-weight: bold;">It might be necessary to delete browser data for shebanq or to refresh your browser after
 having loaded the SHEBANQ site!</p>
@@ -59,6 +74,31 @@ Instructors can keep a reasonable eye on the collective queries of their student
 <li>Going back in the browser usually required several go back actions.</li>
 </ul>
 </dd>
+<p>Here is an account of the reasons for this update:</p>
+<ol>
+<li>- it became increasingly difficult to locate queries of interest among the multitude of public queries</li>
+<li>- when creating new queries, it was too cumbersome to fill in the relevant organization and project.
+Now you create every new query inside an organization and project, amidst a set of existing queries.
+This helps to keep the queries organized.</li>
+<li>- The previous creation/editing functionality was implemented using standard components, and they suffered from several weaknesses:
+<ol>
+<li>o they did not function in every context within SHEBANQ where I needed them</li>
+<li>o it was impossible to provide a good layout for editing forms, a layout that did not consume excessive screen real estate</li>
+<li>o when a query gets executed or (un)published, some logic has to be carried out.
+Everywhere where SHEBANQ allows you to alter these states, this logic should be carried out.
+It was difficult to guarantee that when using the standard machinery.</li>
+<li>o a rather big change is at hand: queries that can be run on several versions of the data.
+That means an even more non-standard way of creating/editing queries, and even more logic to be executed when dealing with status changes.</li>
+</ol>
+</li>
+<li>- So, I bit the bullet, and implemented a tree view of queries, organized by organization and project and user, and I completely reimplemented
+creating and modifying queries, which introduced some unexpected bugs of which some of you have suffered. <b>My sincere apologies</b>.<li>
+<li>- Although organizations and projects and users seem to be neatly arranged in a simple hierarchy, this is in fact not so.
+Some projects occur in multiple organizations.
+In fact, there are no links between projects and organizations and users except the queries itself.
+A query must link to a project and to an organization and to a user, and only when that happens,
+you see that project under that organization and that user under that project.</li>
+</ol>
 </dl>
 <h2>2015-02-16</h2>
 <p>A minor update of the SHEBANQ website with:</p>
