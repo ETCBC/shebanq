@@ -555,12 +555,7 @@ ORDER BY word_number;
         return (self.book_name, self.chapter_num)
 
     def label(self):
-        return (self.book_name.replace('_', ''), self.book_name, self.chapter_num, self.verse_num)
-        verse_control = u'<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=book, chapter=chapter, verse=verse)
-        if self.mr == 'm': return verse_control
-        else:
-            pretty_book = book.replace('_', ' ')
-            return ('{} {}: {}'.format(pretty_book, chapter, book, verse_control), book, chapter)
+        return (self.book_name.replace('_', ' '), self.book_name, self.chapter_num, self.verse_num)
 
     def get_words(self):
         if (len(self.words) == 0):
