@@ -287,11 +287,51 @@ def sidem_c(qw, bk, ch):
     return response.render(result)
 
 def query():
-    request.vars['mr'] = 'r'
-    request.vars['qw'] = 'q'
-    request.vars['tp'] = 'txt_p'
-    request.vars['iid'] = get_request_val('material', '', 'iid')
-    request.vars['page'] = 1
+    iid = get_request_val('material', '', 'iid')
+    if request.extension == 'json':
+        (authorized, msg) = query_access_read(iid=iid)
+        if not authorized:
+            result = dict(good=False, msg=msg)
+        else:
+            records = db.executesql('''
+select
+    organization.name as organization,
+    project.name as project,
+    concat(auth_user.first_name, ' ', auth_user.last_name) as author,
+    queries.name as name, queries.id as id,
+    queries.is_published as is_published,
+    queries.description as description,
+    queries.mql as mql,
+    queries.created_on as created,
+    queries.modified_on as modified,
+    queries.executed_on as executed
+from queries
+inner join organization on queries.organization = organization.id
+inner join project on queries.project = project.id
+inner join auth_user on queries.created_by = auth_user.id
+where queries.id = {};
+'''.format(iid), as_dict=True)
+            lr = len(records)
+            msg = ''
+            data = None
+            good = False
+            if lr != 1:
+                msg='{} records instead of just 1'.format(lr)
+            else:
+                good = True
+                data = records[0]
+                for f in ('created', 'modified', 'executed'):
+                    if f in data:
+                        data[f] = str(data[f])
+                data['is_published'] = data.get('is_published', False) == 'T'
+            result = dict(good=good, msg=msg, data=data)
+            return dict(data=json.dumps(result))
+    else:
+        request.vars['mr'] = 'r'
+        request.vars['qw'] = 'q'
+        request.vars['tp'] = 'txt_p'
+        request.vars['iid'] = iid
+        request.vars['page'] = 1
     return text()
 
 def word():
@@ -821,6 +861,8 @@ def record():
             if not good:
                 break
             lid = new_lid
+        else:
+            good = True
         if tp == 'q':
             if lid == 0:
                 oid = check_id('oid', tps['o'][0], msgs)
