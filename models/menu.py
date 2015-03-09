@@ -27,10 +27,12 @@ if 0:
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
-response.logo = A(B('SHEBANQ'),
+response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
                   _class="brand",
                   _href="http://arxiv.org/abs/1501.01866",
-                  _target="_blank")
+                  _target="_blank",
+                  _style="margin-bottom: -2em;",
+                  )
 
 #response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace('_', ' ').capitalize()
