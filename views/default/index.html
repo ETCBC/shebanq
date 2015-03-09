@@ -1,5 +1,5 @@
 {{ left_sidebar_enabled = False }}
-{{ right_sidebar_enabled = False }}
+{{ right_sidebar_enabled = True }}
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
 
@@ -56,3 +56,24 @@ by Oliver Glanz, Reinoud Oosting, and Martijn Naaijer.</p>
 <p>You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
 Consult the menu item {{=A(T("Help/Sources"), _href=URL('default', 'sources'))}}. 
 The license is such that nothing stands in your way, as long as you stay non-commercial.</p>
+
+{{block right_sidebar}}
+<h5>Companion tools based on ETCBC data</h5>
+<div class="reltool">
+<a class="ctrll" href="http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html" target="_blank">shebanq-doc</a>. 
+<p><b>For <i>all users</i> of the ETCBC data</b>.</p>
+<p>Your reference guide for interpreting the ETCBC data with hints for writing queries.</p>
+</div>
+<div class="reltool">
+<a class="ctrll" href="http://laf-fabric.readthedocs.org/en/latest/texts/welcome.html" target="_blank">laf-fabric <img src="{{=URL('static', 'images/laf-fabric-xsmall.png')}}"/></a>. 
+<p><b>Examples</b>: <a class= "ctrl" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/tree/master/" target="_blank">online notebbooks</a></p>
+<p><b>For researchers</b>.</p>
+<p>Work offline, beyond the limits of SHEBANQ, and share your results online. <i>Programming skills required!</i></p>
+</div>
+<div class="reltool">
+<a class="ctrll" href="http://bibleol.3bmoodle.dk" target="_blank">Bible Online Learner <img src="{{=URL('static', 'images/3bm_logo.png')}}"/></a>. 
+<p><b>For teachers and students of Hebrew</b>.</p>
+<p>Select and perform drills in context. From a chapter in SHEBANQ, click the logo to jump directly to that chapter in BOL.</p>
+<p>Created by Nicolai Winther-Nielsen and Claus Tøndering-Ekstern.</p>
+</div>
+{{end}}

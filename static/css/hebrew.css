@@ -201,6 +201,14 @@ table.hlsettings {
     padding: 2pt;
     text-align: center;
 }
+.reltool {
+    border-radius: 12pt;
+    border: 1pt solid #ffffaa;
+    background-color: #ffffee;
+    padding: 2pt;
+    text-align: center;
+    margin-bottom: 1em;
+}
 #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
     border-radius: 12pt;
     border: 1pt solid #dde6dd;
@@ -921,7 +929,8 @@ span.treehl {
 .selecthlo, .selecthlp {
     background-color: #88ffff;
 }
-/*input[type="text"] {
-    max-width: 200px;
-    min-width: 50px;
-}*/
+#bol_lnk {
+    float: left;
+}
+.pdesc {
+    text-align: left;

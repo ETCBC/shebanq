@@ -1,5 +1,5 @@
 {{ left_sidebar_enabled = False }}
-{{ right_sidebar_enabled = False }}
+{{ right_sidebar_enabled = True }}
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
 
@@ -36,27 +36,6 @@ Its documentation describes in detail how to download the data and set up data-p
 
 <p>The ETCBC welcomes contributions that improve and enrich the interface of SHEBANQ.
 We are also open to implement mutual deep linking with other biblical data sources.</p>
-
-<h4>{{=T('Authors')}}</h4>
-<dl>
-    <dt>ETCBC</dt>
-    <dd><a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">Eep Talstra Center for Bible and Computer</a>
-        <ul>
-            <li><a href="mailto:w.t.van.peursen@vu.nl">Wido van Peursen (ETCBC)</a></li>
-            <li>Eep Talstra</li>
-            <li>Constantijn Sikkel</li>
-            <li><a href="mailto:glanz@andrews.edu">Oliver Glanz</a> (now at <a target="_blank" href="https://www.andrews.edu">Andrews University)</a></li>
-        </ul>
-    </dd>
-    <dt>DANS</dt>
-    <dd><a target="_blank" href="http://www.dans.knaw.nl">Data Archiving and Networked Services</a>
-        <ul>
-            <li><a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda (DANS)</a></li>
-            <li>Henk van den Berg</li>
-            <li>Heleen van de Schraaf</li>
-        </ul>
-    </dd>
-</dl>
 
 <h4><a name="sources">Sources</a></h4>
 <p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
@@ -111,3 +90,93 @@ See {{=A(T("Release notes"), _href=URL('default', 'news', ))}} for an overview o
     <dt><a href="http://arxiv.org/abs/1412.6069" target="blank">Annotation as a New Paradigm in Research Archiving</a></dt>
     <dd>The idea of treating queries as annotations.</dd>
 </dl>
+
+{{block right_sidebar}}
+<h4>SHEBANQ Team</h4>
+<table>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/WidoVanPeursen.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:w.t.van.peursen@vu.nl"><b>Wido van Peursen</b></a>, leader of
+            <a target="_blank" href="http://www.godgeleerdheid.vu.nl/en/index.asp">ETCBC</a>.
+            Initiator and strategic leader.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/OliverGlanz.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:o.glanz@gmail.com"><b>Oliver Glanz</b></a>, 
+            <a target="_blank" href="https://www.andrews.edu/sem/faculty_staff/faculty/oliver-glanz.html">Andrews University</a>.
+            ETCBC data expert, contributing numerous queries for teaching.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/Dirkroorda.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:dirk.roorda@dans.knaw.nl"><b>Dirk Roorda</b></a>, 
+            <a target="_blank" href="http://www.dans.knaw.nl/en/front-page?set_language=en">DANS</a>.
+            Author of most of the code.
+            </p>
+        </td>
+    </tr>
+    <tr><td colspan="2">SHEBANQ relies on data created by:</td></tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/EepTalstra.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:eep@wi.th.vu.nl"><b>Eep Talstra</b></a>, founder of
+            <a target="_blank" href="http://www.godgeleerdheid.vu.nl/en/index.asp">ETCBC</a>.
+            Still computing (Pascal): participant data in the making.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/ConstantijnSikkel.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:const@wi.th.vu.nl"><b>Constantijn Sikkel</b></a>, data designer for
+            <a target="_blank" href="http://www.godgeleerdheid.vu.nl/en/index.asp">ETCBC</a>.
+            Inventor of efficient data creation work flows.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/ReinoudOosting.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:reinoud@wi.th.vu.nl"><b>Reinoud Oosting</b></a>, data designer for
+            <a target="_blank" href="https://leidenuniv.academia.edu/Departments/Leiden_Institute_for_Religious_Studies">Leiden University</a>.
+            Contributed ETCBC data, now key user.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/UlrikPetersen.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:ulrikp@emergence.dk"><b>Ulrik Sandborg-Petersen</b></a>, creator of
+            <a target="_blank" href="http://emdros.org">Emdros</a>.
+            Without it, SHEBANQ would not exist!
+            </p>
+        </td>
+    </tr>
+    <tr><td colspan="2">Contributors in the past</td></tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/HenkVanDenBerg.png')}}"/></td>
+        <td>
+            <p class="pdesc"><a href="mailto:henk.van.den.berg@dans.knaw.nl"><b>Henk van den Berg</b></a>, 
+            <a target="_blank" href="http://www.dans.knaw.nl/en/front-page?set_language=en">DANS</a>.
+            Programmed the first versions.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="96px"><img src="{{=URL('static', 'images/HeleenVanDeSchraaf.png')}}"/></td>
+        <td>
+            <p class="pdesc"><b>Heleen van de Schraaf</b>, then 
+            <a target="_blank" href="http://www.dans.knaw.nl/en/front-page?set_language=en">DANS</a>.
+            Programmed the first user interface.
+            </p>
+        </td>
+    </tr>
+</table>
+
+{{end}}

@@ -146,7 +146,7 @@ var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, field_url, fields_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -568,13 +568,24 @@ function MSelect() { // for book and chapter selection
     this.book = new SelectBook()
     this.select = new SelectItems('chapter')
     this.apply = function() { // apply material viewsettings to current material
+        var bol = $('#bol_lnk')
         if (wb.mr == 'm') {
             this.book.apply()
             this.select.apply()
             $(this.hid).show()
+            var book = wb.vs.book()
+            var chapter = wb.vs.chapter()
+            if (book != 'x' && chapter > 0) {
+                bol.attr('href', bol_url+'/ETCBC4/'+book+'/'+chapter)
+                bol.show()
+            }
+            else {
+                bol.hide()
+            }
         }
         else {
             $(this.hid).hide()
+            bol.hide()
         }
     }
 }
