@@ -1,6 +1,0 @@
-{{ include 'hebrew/sideq.load' }}
-{{if not readonly:}}
-<script type="text/javascript">
-activate_buttons()
-</script>
-{{pass}}

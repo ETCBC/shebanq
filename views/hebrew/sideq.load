@@ -1,4 +1,4 @@
-<h5 class="detail"><a id="goback" href="#"><span id="namem"></span></a></h5>
+<h5 class="detail"><a title="to query list" id="gobackq" href="#"><span id="nameqm"></span></a></h5>
 {{if writable:}}
 <input type="text" id="nameq" value=""/>
 <input type="hidden" id="qid" value=""/>

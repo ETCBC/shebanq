@@ -1,23 +1,18 @@
 {{if side_items:}}
 <ul id="side_list_{{=qw}}">
     {{
-    if qw == 'q':
-        sortkey = lambda x: (x['item'].created_by.last_name, x['item'].created_by.first_name, x['item'].name)
-    else:
-        sortkey = lambda x: x['item'].entry_heb
-    pass
-    for si in sorted(side_items, key=sortkey):
-        iid = si['item'].id
+    for si in side_items:
+        iid = si['item']['id']
         if qw == 'q':
-            qname = si['item'].name
-            fname = si['item'].created_by.first_name
-            lname = si['item'].created_by.last_name
-            pname = fname + ' ' + lname
-            desc = si['item'].description
-            mql = si['item'].mql
+            qname = si['item']['name']
+            fname = si['item']['created_by_f']
+            lname = si['item']['created_by_l']
+            pname = fname + u' ' + lname
+            desc = si['item']['description']
+            mql = si['item']['mql']
             qname_short = qname if len(qname) < 7 else qname[0:7]+'..'
             pname_short = pname if len(pname) < 11 else pname[0:11]+'..'
-            title = '{} by {} {}'.format(qname, fname, lname)
+            title = u'{} by {} {}'.format(qname, fname, lname)
             clinktext = pname_short
             dlinktext = qname_short
             cclass = 'qauth'

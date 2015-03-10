@@ -1,5 +1,0 @@
-{{for msg in msgs:
-    (kind, txt) = msg
-}}
-<p class="{{=kind}}">{{=txt}}</p>
-{{pass}}

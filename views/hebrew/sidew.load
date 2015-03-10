@@ -1,12 +1,34 @@
-<div class="word_form" id="wform">
-{{=form}}
+<a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
+<input type="hidden" id="itemtag" value=""/>
+<div id="bigger">
+    <div id="dbmsg_w"></div>
+        <p class="fullcpx">
+            <a href="#" title="clear diagnostic messages"><span class="ctrli trashc ir ui-icon ui-icon-trash"></span></a>
+        </p>
+    </div>
 </div>
-{{if word:}}
-    <input type="hidden" id="itemtag" value="{{=word.g_entry_heb}} &nbsp;=&nbsp; {{=h_esc(word.entryid)}} &nbsp;"/>
-{{else:}}
-    <p>This lexeme does not exist.</p>
-{{pass}}
+<table>
+    <tr><td><span class="wlabel">vocalized</td><td class="dd" span id="g_entry_heb"></span></td></tr>
+    <tr><td><span class="wlabel">consonantal</td><td span class="dd" id="entry_heb"></span></td></tr>
+    <tr><td><span class="wlabel">disambiguated</td><td span class="dd" id="entryid_heb"></span></td></tr>
+    <tr><td><span class="wlabel">vocalized</td><td span id="g_entry"></span></td></tr>
+    <tr><td><span class="wlabel">consonantal</td><td span id="entry"></span></td></tr>
+    <tr><td><span class="wlabel">disambiguated</td><td span id="entryid"></span></td></tr>
+    <tr><td><span class="wlabel">part-of-speech</td><td span id="pos"></span></td></tr>
+    <tr><td><span class="wlabel">lexical set</td><td span id="subpos"></span></td></tr>
+    <tr><td><span class="wlabel">proper noun category</td><td span id="nametype"></span></td></tr>
+    <tr><td><span class="wlabel">language</td><td span id="lan"></span></td></tr>
+    <tr><td><span class="wlabel">gloss</td><td span id="gloss"></span></td></tr>
+</table>
+<div>
     <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
-    <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
     <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
+<script type="text/javascript">
+var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
+var msgs = {{=XML(msgs)}};
+msgs.forEach(function(m) {
+    msg.msg(m)
+})
+var w = {{=XML(w)}}
+</script>

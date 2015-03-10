@@ -105,7 +105,7 @@ ol.text {
 
 /* MATERIAL */
 
-#material_txt_p,#material_txt_il,#queries {
+#material_txt_p,#material_txt_il,#queries,#words,#letters {
     overflow: auto;
 }
 span.vref, span.vrefi {
@@ -330,7 +330,7 @@ div.desc_dia {
     background-color: #fefbfe;
     margin-left: 0em;
 }
-#namem {
+#nameqm, #namewm {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: small;
     background-color: #fefbfe;
@@ -366,97 +366,6 @@ td.qname {
 }
 td.qauth {
     width: 7em;
-}
-
-/* QUERY FORM */
-
-div.mql_form,div.word_form {
-    padding: 1pt;
-    overflow: auto;
-}
-.mql_form div.w2p_fl, {
-    display: inline;
-}
-.mql_form div.w2p_fl label {
-    display: inline;
-    font-size: small;
-    font-weight: bold;
-}
-.mql_form div.w2p_fw {
-    font-size: small;
-    display: inline;
-}
-.mql_form div.w2p_fc {
-    display: inline;
-    font-size: small;
-    color: grey;
-}
-#queries_name__row, #queries_is_published__row {
-    display: inline;
-}
-#queries_name,#queries_name__row .w2p_fw {
-    font-weight: bold;
-    font-size: large;
-    text-align: right;
-    padding-right: 1em;
-    text-align: center;
-}
-#queries_mql__label, #queries_description__label {
-    display: block;
-}
-#queries_description {
-    display: inline;
-    height: 6em;
-}
-#queries_mql {
-    display: inline;
-    height: 12em;
-    font-family: Menlo, Courier New, Courier, monospace;
-}
-#queries_project__label, #queries_organization__label {
-    display: block;
-}
-#queries_project__reference-actions__wrapper, #queries_organization__reference-actions__wrapper {
-    display: inline;
-}
-#queries_project, #queries_organization {
-    display: inline;
-    width: 10em;
-}
-#queries_created_on__label, #queries_created_by__label, #queries_modified_on__label, #queries_modified_by__label {
-    font-size: small;
-}
-#queries_created_on__row {
-    font-size: small;
-}
-#queries_created_by__row {
-    font-size: small;
-}
-#queries_modified_on__row {
-    font-size: small;
-}
-#queries_modified_by__row {
-    font-size: small;
-}
-#submit_record__row {
-}
-.word_form div.w2p_fl, {
-    display: inline;
-}
-.word_form div.w2p_fl label {
-    display: inline;
-    font-size: x-small;
-    font-weight: normal;
-}
-.word_form div.w2p_fw {
-    font-size: medium;
-    font-weight: bold;
-}
-.word_form div.w2p_fc {
-    display: inline;
-    font-family: Menlo, Courier New, Courier, monospace;
-    font-size: small;
-    color: grey;
 }
 
 /* HEBREW DATA */
@@ -628,7 +537,7 @@ span.hl_hlc, span.l_hl_hlc {
     color: #000000;
     line-height: 1.5;
 }
-.i_hl,#lexicon_g_entry_heb__row .w2p_fw, #lexicon_entry_heb__row .w2p_fw, #lexicon_entryid_heb__row .w2p_fw {
+.i_hl,#g_entry_heb, #entry_heb, #entryid_heb {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: large;
     color: #000000;
@@ -639,18 +548,18 @@ span.tt, span.l_tt {
     font-size: small;
     color: #000000;
 }
-span.tl, span.l_tl, #lexicon_g_entry__row .w2p_fw, #lexicon_entry__row .w2p_fw, , #lexicon_root__row .w2p_fw {
+span.tl, span.l_tl, #g_entry, #entry, , #root {
     font-family: Menlo, Courier New, Courier, monospace;
     font-size: small;
     color: #000000;
 }
-#lexicon_entryid__row .w2p_fw {
+#entryid {
     font-family: Menlo, Courier New, Courier, monospace;
     font-size: medium;
     font-weight: bold;
     color: #0000ff;
 }
-.i_gl, span.gl, span.l_gl, #lexicon_gloss__row .w2p_fw {
+.i_gl, span.gl, span.l_gl, #gloss {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: #dd0000;
@@ -663,15 +572,15 @@ span.n {
 span.a {
     font-style: italic;
 }
-span.wd1_lang, span.l_wd1_lang, #lexicon_lan__row .w2p_fw {
+span.wd1_lang, span.l_wd1_lang, #lan {
     font-size: small;
     color: #0000ff;
 }
-span.wd1_pos, span.l_wd1_pos, #lexicon_pos__row .w2p_fw {
+span.wd1_pos, span.l_wd1_pos, #pos {
     font-weight: bold;
     color: #0000ff;
 }
-span.wd1_subpos, span.l_wd1_subpos, #lexicon_subpos__row .w2p_fw,, #lexicon_nametype__row .w2p_fw {
+span.wd1_subpos, span.l_wd1_subpos, #subpos, #nametype {
     color: #0000ff;
 }
 span.wd2_gender, span.l_wd2_gender {
@@ -718,6 +627,9 @@ td.d {
     width: 140px;
     margin-bottom: 0pt;
     margin-top: 0pt;
+}
+td.dd {
+    text-align: right;
 }
 a.d {
     color: #000000;
@@ -923,10 +835,13 @@ div.msg_error {
     font-size: small;
     font-weight: bold;
 }
+.wlabel {
+    font-size: small;
+}
 span.treehl {
     background-color: #ffff88;
 }
-.selecthlo, .selecthlp {
+.selecthlo, .selecthlp, .selecthlw {
     background-color: #88ffff;
 }
 #bol_lnk {

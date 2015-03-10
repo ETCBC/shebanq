@@ -34,14 +34,25 @@ if 0:
 
 from get_db_config import config
 
-db = DAL('mysql://%s:%s@%s/%s' % (config['shebanq_user'],
-                                  config['shebanq_passwd'],
-                                  config['shebanq_host'],
-                                  'shebanq'),
-                                  migrate_enabled=False, # if session table already exists
-                                  #migrate=False, # if session table does not yet exist
-                                  ) 
-# because this db will contain the session table, which may have to be created.
+db = DAL('mysql://{}:{}@{}/{}'.format(
+        config['shebanq_user'],
+        config['shebanq_passwd'],
+        config['shebanq_host'],
+        'shebanq',
+    ),
+    migrate_enabled=False, # if session table already exists
+    #migrate=False, # if session table does not yet exist
+) 
+
+passage_db = DAL('mysql://{}:{}@{}/{}'.format(
+        config['shebanq_user'],
+        config['shebanq_passwd'],
+        config['shebanq_host'],
+        'passage',
+    ),
+    migrate_enabled=False,
+)
+
 # Indeed, we store sessions in the database:
 session.connect(request, response, db=db)
 
@@ -136,3 +147,4 @@ use_janrain(auth, filename='private/janrain.key')
 
 auth.messages.logged_in = None
 auth.messages.logged_out = None
+

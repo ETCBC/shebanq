@@ -16,6 +16,31 @@ var escapeHTML = (function () {
     };
 }());
 
+var Request = {
+    parameter: function(name) {
+        return this.parameters()[name]
+    },
+    parameters: function(uri) {
+        var i, parameter, params, query, result;
+        result = {};
+        if (!uri) {
+            uri = window.location.search;
+        }
+        if (uri.indexOf("?") === -1) {
+            return {};
+        }
+        query = uri.slice(1);
+        params = query.split("&");
+        i = 0;
+        while (i < params.length) {
+            parameter = params[i].split("=");
+            result[parameter[0]] = parameter[1];
+            i++;
+        }
+        return result;
+    }
+}
+
 function View() {
     var that = this
     this.prevstate = false
@@ -598,6 +623,10 @@ function Tree() {
         if (qid != undefined && qid != '0') {
             var qnode = this.ftw.getNodeByKey('q'+qid)
             qnode.makeVisible({noAnimation: true})
+            console.log('goto', $(qnode.li))
+            $('.treehl').removeClass('treehl')
+            $('a[qid='+qid+']').closest('span').addClass('treehl')
+            $(qnode.li)[0].scrollIntoView()
             var editable = $(qnode.li).has('.r_q').length > 0
             if (editable) {
                 var qtitle = $('a[qid='+qid+']').nextAll('.r_q')

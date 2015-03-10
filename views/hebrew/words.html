@@ -18,6 +18,7 @@ wordlb = 'words' if wsize != 1 else 'word'
 }}
 {{ end }}
 
+<div id="words">
 {{
 tables = [[[None for c in range(cols)] for r in range(rows)] for t in range(ntables)] 
 curtable = 0
@@ -63,8 +64,10 @@ for t in tables:
     {{pass}}
 </table><hr/>
 {{pass}}
+</div>
 
 {{ block left_sidebar }}
+<div id="letters">
 <table><tr>
 <td>
 <p class="{{=class_arc}}">Aramaic</p>
@@ -87,6 +90,7 @@ for t in tables:
     <p>{{='{} {}'.format(wsize, wordlb)}}</p>
 </td>
 </tr></table>
+</div>
 {{ end }}
 
 <script type="text/javascript">

@@ -3,9 +3,6 @@
 
 from gluon.custom_import import track_changes; track_changes(True)
 import collections, json
-import xml.etree.ElementTree as ET
-from itertools import groupby
-from urllib import unquote
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
@@ -26,7 +23,8 @@ from mql import mql
 # We use the lower-level mechanisms of web2py: cache.ram, and refrain from decorating controllers with @cache or @cache.action,
 # because we have to be selective on which request vars are important for keying the cached items.
  
-# For verse material and item lists we cache the rendered view. So we do use response.render(result).
+# We do not cache rendered views, because the views implement tweaks that are dependent on the browser.
+# So we do not use response.render(result).
 #
 # Note that what the user sees, is the effect of the javascript in hebrew.js on the html produced by rendered view.
 # So the cached data only has to be indexed by those request vars that select content: mr, qw, book, chapter, item id (iid) and (result) page.
@@ -178,7 +176,7 @@ def material():
 def material_c(mr, qw, bk, iid, ch, page, tp):
     if mr == 'm':
         (book, chapter) = getpassage()
-        material = Verses(passage_db, mr, chapter=chapter.id, tp=tp) if chapter != None else None
+        material = Verses(passage_db, mr, chapter=chapter['id'], tp=tp) if chapter else None
         result = dict(
             mr=mr,
             qw=qw,
@@ -224,7 +222,7 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
             )
     else:
         result = dict()
-    return response.render(result)
+    return result
 
 def verse():
     session.forget(response)
@@ -252,7 +250,7 @@ def verse_c(bk, ch, vs, msgs):
         msgs = msgs,
         material=material,
     )
-    return response.render(result)
+    return result
 
 def sidem():
     session.forget(response)
@@ -267,7 +265,7 @@ def sidem():
 
 def sidem_c(qw, bk, ch):
     (book, chapter) = getpassage()
-    if chapter == None:
+    if not chapter:
         result = dict(
             colorpicker=colorpicker,
             side_items=[],
@@ -275,16 +273,17 @@ def sidem_c(qw, bk, ch):
         )
     else:
         if qw == 'q':
-            monad_sets = get_monadsets_MySQL(chapter)
-            side_items = group_MySQL(monad_sets)
+            monad_sets = get_monadsets(chapter)
+            side_items = groupq(monad_sets)
         else:
-            side_items = get_lexemes(chapter)
+            monad_sets = get_lexemes(chapter)
+            side_items = groupw(monad_sets)
         result = dict(
             colorpicker=colorpicker,
             side_items=side_items,
             qw=qw,
         )
-    return response.render(result)
+    return result
 
 def query():
     iid = get_request_val('material', '', 'iid')
@@ -386,7 +385,7 @@ order by
             monads=','.join(str(x) for x in monads),
         )
         data = passage_db.executesql(sql)
-    return dict(filename=filename, data=csv((head_row,)+data))
+    return dict(filename=filename, data=csv([head_row]+data))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
     iid = get_request_val('material', '', 'iid')
@@ -406,7 +405,7 @@ def chart_c(qw, iid):
     (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
     result = get_chart(monad_sets)
     result.update(qw=qw)
-    return response.render(result)
+    return result
 
 def sideqm():
     session.forget(response)
@@ -432,15 +431,6 @@ def sidewm():
         content=msg,
     ))
 
-@auth.requires(lambda: check_query_access_write())
-def sideqe():
-    if not request.is_local: request.requires_https()
-    return show_query()
-
-def sidew():
-    session.forget(response)
-    return show_word()
-
 def words():
     lan = get_request_val('rest', '', 'lan')
     letter = get_request_val('rest', '', 'letter')
@@ -450,9 +440,17 @@ def words():
         None,
     )
 
+def queries():
+    msgs = []
+    qid = check_id('goto', 'query', msgs)
+    if qid != None:
+        if not query_auth_read(qid):
+            qid = None
+    return dict(qid=qid if qid != None else 0)
+
 def words_page(lan=None, letter=None):
     (letters, words) = from_cache('words_data', get_words_data, None)
-    return response.render(dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, [])))
+    return dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
 
 def get_words_data():
     ddata = passage_db.executesql('''
@@ -468,14 +466,6 @@ order by lan, entryid_heb
             words[lan][letter] = []
         words[lan][letter].append((e, id, eid, gloss))
     return (letters, words)
-
-def queries():
-    msgs = []
-    qid = check_id('goto', 'query', msgs)
-    if qid != None:
-        if not query_auth_read(qid):
-            qid = None
-    return response.render(dict(qid=qid if qid != None else 0))
 
 def pq():
     myid = None
@@ -1080,16 +1070,6 @@ def fields():
 
     return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=fields)))
 
-@auth.requires(lambda: check_query_access_write())
-def delete_multiple():
-    if not request.is_local: request.requires_https()
-    iid = get_request_val('material', '', 'iid')
-    if iid is not None:
-        db(db.queries.id == iid).delete()
-
-    response.flash = "deleted " + str(iid)
-    redirect(URL('my_queries'))
-
 def query_status(mql_record):
     if not mql_record['executed_on']:
         mql_record['status'] = 'warning'
@@ -1146,13 +1126,7 @@ where queries.id = {}
         ckeys = r'^items_q:'
         cache.ram.clear(regex=ckeys)
         cache.disk.clear(regex=ckeys)
-        #ckeys = r'^queries:json:'
-        #cache.ram.clear(regex=ckeys)
-        #cache.disk.clear(regex=ckeys)
     (authorized, msg) = query_auth_write(iid=iid)
-    mql_record['name'] = mql_record['name']
-    mql_record['description'] = mql_record['description']
-    mql_record['mql'] = mql_record['mql']
     for f in ('created_on', 'modified_on', 'executed_on'):
         mql_record[f] = str(mql_record[f])
 
@@ -1162,34 +1136,35 @@ where queries.id = {}
         msgs=json.dumps(msgs),
     )
 
-def show_word(no_controller=True):
-    response.headers['web2py-component-flash']=None
+def sidew():
+    session.forget(response)
+    msgs = []
     iid = get_request_val('material', '', 'iid')
-    word_form = get_word_form(iid)
-    handle_response_word(word_form)
-    word_record = passage_db.lexicon[iid]
+    (authorized, msg) = word_auth_read(iid)
+    if not authorized or not iid:
+        msgs.append(('error', msg))
+        return dict(
+            w=collections.defaultdict(lambda: ''),
+            msgs=json.dumps(msgs),
+        )
+    sql = '''
+select *
+from lexicon
+where lexicon.id = {}
+'''.format(iid)
+    records = passage_db.executesql(sql, as_dict=True)
+    if records == None or len(records) == 0:
+        msgs.append(('error', 'No word with id {}'.format(iid)))
+        return dict(
+            w=collections.defaultdict(lambda: ''),
+            msgs=json.dumps(msgs),
+        )
+    word = records[0]
 
-    result_dict = dict(
-        readonly=True,
-        form=word_form,
-        iid=iid,
-        word=word_record,
-        msg=None,
+    return dict(
+        w=json.dumps(word),
+        msgs=json.dumps(msgs),
     )
-    return result_dict
-
-@auth.requires(lambda: check_query_access_execute())
-def execute_query(iid):
-    mql_form = get_mql_form(iid, readonly=False)
-    mql_record = db.queries[iid]
-    (good, result) = mql(mql_record.mql) 
-    if good:
-        store_monad_sets(iid, result)
-        mql_record.update_record(executed_on=request.now)
-        (kind, msg) = ('ok', 'Query executed')
-    else:
-        (kind, msg) = ('error', CODE(result))
-    return (kind, msg)
 
 def pagelist(page, pages, spread):
     factor = 1
@@ -1208,59 +1183,62 @@ def flatten(msets):
     return list(sorted(result))
 
 def getpassage(no_controller=True):
-    book = passage_db.book(name=get_request_val('material', '', 'book'))
-    chapter = passage_db.chapter(chapter_num=get_request_val('material', '', 'chapter'), book_id=book.id) if book else None
+    bookname = get_request_val('material', '', 'book')
+    chapternum = get_request_val('material', '', 'chapter')
+    if bookname == None or chapternum == None: return ({},{})
+    bookrecords = passage_db.executesql('''select * from book where name = '{}';'''.format(bookname), as_dict=True)
+    book = bookrecords[0] if bookrecords else {}
+    chapterrecords = passage_db.executesql('''select * from chapter where chapter_num = {} and book_id = {};'''.format(chapternum, book['id']), as_dict=True)
+    chapter = chapterrecords[0] if chapterrecords else {}
     return (book, chapter)
 
-def group_MySQL(input):
-    """ HELPER for query_form
-    Reorganise a query_monad query.
-
-    Input (query dict):
-    [
-        {'query_id': 10L, 'first_m': 1L,  'last_m': 7L},
-        {'query_id': 7L,  'first_m': 1L,  'last_m': 7L},
-        {'query_id': 9L,  'first_m': 1L,  'last_m': 7L},
-        {'query_id': 10L, 'first_m': 10L, 'last_m': 13L},
-        {'query_id': 5L,  'first_m': 1L,  'last_m': 7L}
-    ]
-    Output (replace the query id with the actual query row object):
-    [
-        {'query': <Row {'query': 'Dit is query 5.', 'id': 5L, ...}>,
-         'monadsets': [(1L, 7L),],
-         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L]',},
-        {'query': <Row {'query': 'Dit is query 7.', 'id': 7L, ...}>,
-         'monadsets': [(1L, 7L),],
-         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L]',},
-        {'query': <Row {'query': 'Dit is query 9.', 'id': 9L, ...}>,
-         'monadsets': [(1L, 7L),],
-         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L]',},
-        {'query': <Row {'query': 'Dit is query 10.', 'id': 10L, ...}>,
-         'monadsets': [(1L, 7L), (10L, 15L)],
-         'json_monads': '[1L, 2L, 3L, 4L, 5L, 6L, 7L, 10L, 11L, 12L, 13L]',},
-    ]
-    """
-    sorted_input = sorted(input, key=lambda x: x['query_id'])
-    groups = groupby(sorted_input, key=lambda x: x['query_id'])
+def groupq(input):
+    monads = collections.defaultdict(lambda: set())
+    for (qid, b, e) in input:
+        monads[qid] |= set(range(b, e + 1))
     r = []
-    for key, val in groups:
-        query = db.queries(key)
-        monads = [(m['first_m'], m['last_m']) for m in val]
-        json_monads = json.dumps(sorted(list(set(sum([range(x[0], x[1] + 1) for x in monads], [])))))
-        r.append({'item': query, 'monads': json_monads})
+    if len(input):
+        qsql = '''
+select
+    auth_user.first_name as created_by_f,
+    auth_user.last_name as created_by_l,
+    queries.name as name, queries.id as id,
+    queries.is_published as is_published,
+    queries.description as description,
+    queries.mql as mql,
+    queries.created_on as created_on,
+    queries.modified_on as modified_on,
+    queries.executed_on as executed_on
+from queries
+inner join auth_user on queries.created_by = auth_user.id
+where
+    queries.id in ({})
+order by auth_user.last_name, auth_user.first_name, queries.name
+'''.format(','.join(str(x) for x in monads))
+        queryrecords = db.executesql(qsql, as_dict=True)
+        for q in queryrecords:
+            for f in ('modified_on', 'executed_on'): q[f] = str(q[f])
+            r.append({'item': q, 'monads': json.dumps(sorted(list(monads[q['id']])))})
     return r
 
+def groupw(input):
+    wids = collections.defaultdict(lambda: [])
+    for x in input:
+        wids[x[1]].append(x[0])
+    r = []
+    if len(wids):
+        wsql = '''
+select * from lexicon
+where
+    id in ({})
+order by entryid
+'''.format(','.join(str(x) for x in wids))
+        wordrecords = passage_db.executesql(wsql, as_dict=True)
+        for w in wordrecords:
+            r.append({'item': w, 'monads': json.dumps(wids[w['id']])})
+    return r
 
-def get_monadsets_MySQL(chapter):
-    """ HELPER to get all monadsets that relate to selected chapter.
-    These will be transformed into queries with monads by 'group'.
-
-    Output:
-    [{'first_m': 296211L, 'query_id': 2L, 'last_m': 296496L},
-     {'first_m': 296438L, 'query_id': 6L, 'last_m': 296438L},
-     {'first_m': 296470L, 'query_id': 6L, 'last_m': 296470L},
-     {'first_m': 296494L, 'query_id': 6L, 'last_m': 296494L}, ...]
-    """
+def get_monadsets(chapter):
     return db.executesql(u'''
 select DISTINCT
     query_id,
@@ -1274,12 +1252,12 @@ where
     (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
     ({chapter_first_m} BETWEEN first_m AND last_m);
 '''.format(
-         chapter_last_m=chapter.last_m,
-         chapter_first_m=chapter.first_m,
-    ), as_dict=True)
+         chapter_last_m=chapter['last_m'],
+         chapter_first_m=chapter['first_m'],
+    ))
 
 def get_lexemes(chapter):
-    lexeme_data = passage_db.executesql(u'''
+    return passage_db.executesql(u'''
 select
     anchor, lexicon_id
 from
@@ -1287,22 +1265,13 @@ from
 where
     anchor BETWEEN {chapter_first_m} AND {chapter_last_m}
 '''.format(
-         chapter_last_m=chapter.last_m,
-         chapter_first_m=chapter.first_m,
+         chapter_last_m=chapter['last_m'],
+         chapter_first_m=chapter['first_m'],
     ))
-    grouped = collections.defaultdict(lambda: [])
-    for x in lexeme_data:
-        grouped[x[1]].append(x[0])
-    r = []
-    for lex_id in grouped:
-        lexeme = passage_db.lexicon(lex_id)
-        r.append({'item': lexeme, 'monads': json.dumps(grouped[lex_id])})
-    return r
-
 
 def query_access_read(iid=get_request_val('material', '', 'iid')):
     if get_request_val('material', '', 'mr') == 'm' or get_request_val('material', '', 'qw') == 'w':
-        return (True, '')
+       return (True, '')
     if iid != None and iid > 0:
         return query_auth_read(iid)
     return (None, u'Not a valid id {}'.format(iid))
@@ -1312,10 +1281,23 @@ def query_auth_read(iid):
     if iid == 0:
         authorized = auth.user != None
     else:
-        mql_record = db.queries[iid]
-        if mql_record != None:
-            authorized = mql_record.is_published or (auth.user != None and mql_record.created_by == auth.user.id)
-    msg = u'No item with id {}'.format(iid) if authorized == None else u'You have no access to item with id {}'.format(iid) 
+        mql_records = db.executesql('select * from queries where id = {};'.format(iid), as_dict=True)
+        mql_record = mql_records[0] if mql_records else {}
+        if mql_record:
+            authorized = mql_record['is_published'] or (auth.user != None and mql_record['created_by'] == auth.user.id)
+    msg = u'No query with id {}'.format(iid) if authorized == None else u'You have no access to item with id {}'.format(iid) 
+    return (authorized, msg)
+
+def word_auth_read(iid):
+    authorized = None
+    if iid == 0:
+        authorized = auth.user != None
+    else:
+        words = passage_db.executesql('select * from lexicon where id = {};'.format(iid), as_dict=True)
+        word = words[0] if words else {}
+        if word:
+            authorized = True
+    msg = u'No word with id {}'.format(iid) if authorized == None else u''
     return (authorized, msg)
 
 def query_auth_write(iid):
@@ -1323,9 +1305,10 @@ def query_auth_write(iid):
     if iid == 0:
         authorized = auth.user != None
     else:
-        mql_record = db.queries[iid]
+        mql_records = db.executesql('select * from queries where id = {};'.format(iid), as_dict=True)
+        mql_record = mql_records[0] if mql_records else {}
         if mql_record != None:
-            authorized = (auth.user != None and mql_record.created_by == auth.user.id)
+            authorized = (auth.user != None and mql_record['created_by'] == auth.user.id)
     msg = u'No item with id {}'.format(iid) if authorized == None else u'You have no access to create/modify item with id {}'.format(iid) 
     return (authorized, msg)
 
@@ -1334,170 +1317,6 @@ def auth_write(label):
     authorized = auth.user != None
     msg = u'You have no access to create/modify a {}'.format(label) 
     return (authorized, msg)
-
-def check_query_access_write(iid=get_request_val('material', '', 'iid')):
-    authorized = True
-    if iid is not None and iid > 0:
-        mql_record = db.queries[iid]
-        if mql_record is None:
-            raise HTTP(404, "No write access. Object not found in database. id=" + str(iid))
-        if mql_record.created_by != auth.user.id:
-            authorized = False
-    return authorized
-
-@auth.requires_login()
-def check_query_access_execute(iid=get_request_val('material', '', 'iid')):
-    authorized = False
-
-    if iid is not None and iid > 0:
-        mql_record = db.queries[iid]
-        if mql_record is None:
-            raise HTTP(404, "No execute access. Object not found in database. id=" + str(iid))
-        if mql_record.created_by == auth.user.id:
-            authorized = True
-
-    return authorized
-
-
-def get_mql_form(iid, readonly=False):
-    mql_record = db.queries[iid]
-    buttons = [
-        TAG.button('Reset', _class="smb", _type='reset', _name='button_reset'),
-        TAG.button('Save', _class="smb", _type='submit', _name='button_save'),
-        TAG.button('Execute', _class="smb", _type='submit', _name='button_execute'),
-        TAG.button('Done', _class="smb", _type='submit', _name='button_done'),
-    ]
-    qedit_link = ''
-    medit_link = ''
-    if auth.user and auth.user.id == mql_record.created_by:
-        if readonly:
-            qedit_link = A(
-                SPAN(_class='icon pen icon-pencil'),
-                SPAN('Edit query', _class='buttontext button', _title='Edit query'),
-                _class='button btn',
-                _href=URL('hebrew', 'sideqe', vars=dict(mr='r', qw='q', iid=iid)),
-                cid=request.cid,
-            )
-        medit_link = A(
-            SPAN(_class='icon pen icon-pencil'),
-            SPAN('', _class='buttontext button', _title='Edit info fields'),
-            SPAN('Edit info', _class='buttontext button', _title='Edit info fields'),
-            _class='button btn',
-            _href=URL('hebrew', 'my_queries', extension='', args=['edit', 'queries', iid], user_signature=True),
-        )
-    else:
-        qedit_link = 'You cannot edit queries created by some one else'
-        qedit_link = P(A(
-            SPAN(_class='icon resize-full icon-resize-full'),
-            _class='ctrl fullc fullcp',
-            _href='#',
-            _id=u'readq_{}'.format(iid),
-        ), _class='fullcpx')
-        medit_link = ''
-    mql_form = SQLFORM(db.queries, record=iid, readonly=readonly,
-        fields=[
-            'is_published',
-            'name',
-            'description',
-            'mql',
-            'project',
-            'organization',
-            'created_on',
-            'created_by',
-            'modified_on',
-            'modified_by',
-            'executed_on',
-        ] if readonly else [
-            'is_published',
-            'name',
-            'description',
-            'mql',
-        ],
-        showid=False, ignore_rw=True,
-        col3 = dict(
-            mql=qedit_link,
-            organization=medit_link,
-        ),
-        labels=dict(
-            mql='MQL Query',
-            is_published='Public',
-            created_by='by',
-            modified_by='by',
-            created_on='created',
-            modified_on='modified',
-            executed_on='executed',
-        ),
-        formstyle='divs',
-        buttons=buttons,
-    )
-    extra = DIV(
-        INPUT(_id='button_reset', _name='button_reset',value=False,_type='hidden'),
-        INPUT(_id='button_save', _name='button_save',value=False,_type='hidden'),
-        INPUT(_id='button_execute', _name='button_execute',value=False,_type='hidden'),
-        INPUT(_id='button_done', _name='button_done',value=False,_type='hidden'),
-    )
-    if not readonly:
-        mql_form[0].insert(-1,extra)
-    return mql_form
-
-def get_word_form(iid):
-    word_record = passage_db.lexicon[iid]
-    word_form = SQLFORM(passage_db.lexicon, record=iid, readonly=True,
-        fields=[
-            'g_entry_heb',
-            'g_entry',
-            'entry_heb',
-            'entry',
-            'entryid_heb',
-            'entryid',
-            'pos',
-            'subpos',
-            'nametype',
-            'root',
-            'lan',
-            'gloss',
-        ],
-        showid=False, ignore_rw=False,
-        labels=dict(
-            g_entry_heb='vocalized-hebrew',
-            g_entry='vocalized-translit',
-            entry_heb='consonantal-hebrew',
-            entry='consonantal-translit',
-            entryid_heb='disambiguated-hebrew',
-            entryid='disambiguated-translit',
-            pos='part-of-speech',
-            subpos='lexical set',
-            nametype='proper noun category',
-            lan='language',
-            gloss='gloss',
-        ),
-        formstyle='table3cols',
-    )
-    return word_form
-
-def handle_response_mql(mql_form, old_pub, old_mql, old_modified_on):
-    readonly = None
-    msg = None
-    kind = None
-    mql_form.process(keepvalues=True, onvalidation=fiddle_dates(old_pub, old_mql, old_modified_on), onsuccess=lambda f:None, onfailure=lambda f: None)
-    if mql_form.accepted:
-        iid = str(mql_form.vars.id)
-        if request.vars.button_execute == 'true':
-            (kind, msg) = execute_query(iid) 
-        if request.vars.button_save == 'true':
-            (kind, msg) = ('ok', 'saved')
-        if request.vars.button_done == 'true':
-            redirect(URL('hebrew', 'sideqm', vars=dict(mr='r', qw='q', iid=iid), extension=''))
-    elif mql_form.errors:
-        (kind, msg) = ('error', 'make corrections as indicated above')
-    return (readonly, kind, msg)
-
-def handle_response_word(word_form):
-    word_form.process(keepvalues=True)
-    if word_form.accepted:
-        pass
-    elif word_form.errors:
-        response.flash = 'form has errors, see details'
 
 def store_monad_sets(iid, rows):
     db.executesql('DELETE FROM monadsets WHERE query_id=' + str(iid) + ';')

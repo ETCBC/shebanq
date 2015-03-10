@@ -146,7 +146,7 @@ var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -179,6 +179,8 @@ function set_height() { // the heights of the sidebars are set, depending on the
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
     $('#side_material_mq').css('max-height', (0.75 * standard_height)+'px')
     $('#side_material_mw').css('max-height', (0.75 * standard_height)+'px')
+    $('#words').css('height', (0.75 * standard_height)+'px')
+    $('#letters').css('height', (0.75 * standard_height)+'px')
 }
 
 function get_width() { // save the orginal widths of sidebar and main area
@@ -1219,14 +1221,14 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 var uname = escapeHTML(q.uname)
                 var qname = escapeHTML(q.name)
                 $('#itemtag').val(uname+': '+qname)
-                $('#goback').attr('href', queries_url+'?goto='+iid)
+                $('#gobackq').attr('href', queries_url+'?goto='+iid)
                 $('#nameu').html(uname)
                 $('#nameul').attr('href', 'mailto:'+q.uemail)
                 $('#nameo').html(oname)
                 $('#nameol').attr('href', q.owebsite)
                 $('#namep').html(pname)
                 $('#namepl').attr('href', q.pwebsite)
-                $('#namem').html(qname)
+                $('#nameqm').html(qname)
                 $('#nameq').val(q.name)
                 $('#qid').val(q.id)
                 $('#is_pub_c').attr('qid', q.id)
@@ -1240,6 +1242,34 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#executed_on').html(q.executed_on)
                 $('#statq').removeClass('error warning good').addClass(q.status)
                 this.setstatus(null)
+            }
+            else {
+                var g_entry_heb = escapeHTML(w.g_entry_heb)
+                var g_entry = escapeHTML(w.g_entry)
+                var entry_heb = escapeHTML(w.entry_heb)
+                var entry = escapeHTML(w.entry)
+                var entryid_heb = escapeHTML(w.entryid_heb)
+                var entryid = escapeHTML(w.entryid)
+                var pos = escapeHTML(w.pos)
+                var subpos = escapeHTML(w.subpos)
+                var nametype = escapeHTML(w.nametype)
+                var root = escapeHTML(w.root)
+                var lan = escapeHTML(w.lan)
+                var gloss = escapeHTML(w.gloss)
+                $('#itemtag').val(entry_heb+': '+entryid)
+                $('#gobackw').attr('href', words_url+'?lan='+lan+'&letter='+entry_heb.charCodeAt(0)+'&goto='+w.id)
+                $('#g_entry_heb').html(g_entry_heb)
+                $('#g_entry').html(g_entry)
+                $('#entry_heb').html(entry_heb)
+                $('#entry').html(entry)
+                $('#entryid_heb').html(entryid_heb)
+                $('#entryid').html(entryid)
+                $('#pos').html(pos)
+                $('#subpos').html(subpos)
+                $('#nametype').html(nametype)
+                $('#root').html(root)
+                $('#lan').html(lan)
+                $('#gloss').html(gloss)
             }
         }
 
@@ -1406,7 +1436,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 msg.msg(m)
             })
             if (good) {
-                $('#namem').html(escapeHTML(q.name))
+                $('#nameqm').html(escapeHTML(q.name))
                 $('#nameq').val(q.name)
                 $('#descm').html(q.description_md)
                 $('#descq').val(q.description)
@@ -1789,13 +1819,44 @@ function close_dialog(dia) {
 
 /* Words */
 
+var Request = {
+    parameter: function(name) {
+        return this.parameters()[name]
+    },
+    parameters: function(uri) {
+        var i, parameter, params, query, result;
+        result = {};
+        if (!uri) {
+            uri = window.location.search;
+        }
+        if (uri.indexOf("?") === -1) {
+            return {};
+        }
+        query = uri.slice(1);
+        params = query.split("&");
+        i = 0;
+        while (i < params.length) {
+            parameter = params[i].split("=");
+            result[parameter[0]] = parameter[1];
+            i++;
+        }
+        return result;
+    }
+}
+
 function words_init() {
+    var gotoword = Request.parameter('goto');
+    set_height()
     $('[wii]').hide()
     $('[gi]').click(function(e) {e.preventDefault();
         var i = $(this).attr('gi')
         $('[wi="'+i+'"]').toggle()
         $('[wii="'+i+'"]').toggle()
     })
+    $('[gi]').closest('td').removeClass('selecthlw')
+    var wtarget = $('[gi='+gotoword+']').closest('td')
+    wtarget.addClass('selecthlw')
+    wtarget[0].scrollIntoView()
 }
 
 /* GENERIC */
