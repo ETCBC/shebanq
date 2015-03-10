@@ -519,7 +519,6 @@ function Tree() {
             }
             var objs = $('.v_'+tp);
             objs.click(function(e) {e.preventDefault();
-                console.log('i clicked')
                 $('.treehl').removeClass('treehl')
                 that.op_selection(tp)
                 $(this).closest('span').addClass('treehl')
@@ -623,7 +622,6 @@ function Tree() {
         if (qid != undefined && qid != '0') {
             var qnode = this.ftw.getNodeByKey('q'+qid)
             qnode.makeVisible({noAnimation: true})
-            console.log('goto', $(qnode.li))
             $('.treehl').removeClass('treehl')
             $('a[qid='+qid+']').closest('span').addClass('treehl')
             $(qnode.li)[0].scrollIntoView()

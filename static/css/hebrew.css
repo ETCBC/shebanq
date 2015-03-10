@@ -777,11 +777,11 @@ div.msg_error {
 
 /* MARKDOWN FIELDS */
 
-.descm h1,.descm h2,.descm h3,.descm h4,.descm h5,.descm h6 {
+.descm h1,.descm h2,.descm h3,.descm h4, #name_qv,.descm h5,.descm h6 {
     margin:0.2em 0 0.1em 0; display:block;
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
 }
-.descm h1 {
+.descm h1, #name_qv {
     font-size:large;
     font-weight: bold;
     color: #007fd1;
