@@ -179,8 +179,8 @@ function set_height() { // the heights of the sidebars are set, depending on the
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
     $('#side_material_mq').css('max-height', (0.75 * standard_height)+'px')
     $('#side_material_mw').css('max-height', (0.75 * standard_height)+'px')
-    $('#words').css('height', (0.75 * standard_height)+'px')
-    $('#letters').css('height', (0.75 * standard_height)+'px')
+    $('#words').css('height', standard_height+'px')
+    $('#letters').css('height', standard_height+'px')
 }
 
 function get_width() { // save the orginal widths of sidebar and main area
