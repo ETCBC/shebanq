@@ -775,6 +775,33 @@ div.msg_error {
   display: none;
 }
 
+/* HELP TOC */
+
+#helptoc h1 {
+    font-weight: bold;
+    font-size:medium;
+    line-height: 1.8em;
+    margin-left: 1em;
+    margin-top: 0.4em;
+    margin-bottom: 0.1em;
+}
+#helptoc h2 {
+    font-weight: bold;
+    font-size:small;
+    line-height: 1.4em;
+    margin-left: 2em;
+    margin-top: 0.2em;
+    margin-bottom: 0.1em;
+}
+#helptoc h3 {
+    font-weight: normal;
+    font-style: italic;
+    font-size:small;
+    line-height: 1.2em;
+    margin-left: 3em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+}
 /* MARKDOWN FIELDS */
 
 .descm h1,.descm h2,.descm h3,.descm h4, #name_qv,.descm h5,.descm h6 {

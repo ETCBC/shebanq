@@ -3,86 +3,114 @@
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
 
-<p>{{=A('SHEBANQ User Guide as PDF', _target='_blank',_href=URL('static', 'docs/help.pdf'))}}</p>
+<p style="margin-left: 80px;">{{=A('Download as PDF', _target='_blank',_href=URL('static', 'docs/help.pdf'))}}</p>
+<img style="float: right;" src="{{=URL('static', 'images/shebanq_logo.png')}}"/>
 <hr/>
-<h1><a name="usage">Summary</a></h1>
-<dl>
-<dt><a href="#the_text">The Text</a></dt>
-<dt><a href="#words">Words</a></dt>
-<dt><a href="#queries">Queries</a></dt>
-<dt><a href="#queries_advanced">Queries Advanced</a></dt>
-<dt><a href="#data">Data</a></dt>
-<dt><a href="#context_view">Context View</a></dt>
-<dt><a href="#word_highlights">Word Highlights</a></dt>
-<dt><a href="#query_highlights">Query Highlights</a></dt>
-<dt><a href="#single_word_view">Single Word View</a></dt>
-<dt><a href="#single_query_view">Single Query View</a></dt>
-<dt><a href="#executing_queries">Executing Queries</a></dt>
-<dt><a href="#charts">Charts</a></dt>
-<dt><a href="#export_data">Export Data</a></dt>
-<dt><a href="#citation">Citation</a></dt>
-<dt><a href="#documentation">Documentation</a></dt>
-<dt><a href="#support">Support</a></dt>
-</dl>
+<div id="helptoc">
+<h1><a href="#basic_usage">Basic Usage</a></h1>
+<h2><a href="#view_and_visualize">View and visualize</a></h2>
+<h3><a href="#the_text">The Text</a></h3>
+<h3><a href="#context_view">Context View</a></h3>
+<h3><a href="#data">Data</a></h3>
+<h3><a href="#words">Words</a></h3>
+<h3><a href="#queries">Queries</a></h3>
+<h3><a href="#charts">Charts</a></h3>
+<h2><a href="#export_and_share">Export and share</a></h2>
+<h3><a href="#export_data">Export Data</a></h3>
+<h3><a href="#citation">Citation</a></h3>
+<h1><a href="#more_about_words">More about Words</a></h1>
+<h3><a href="#word_highlights">Word Highlights</a></h3>
+<h3><a href="#single_word_view">Single Word View</a></h3>
+<h1><a href="#working_with_queries">Working with Queries</a></h1>
+<h3><a href="#queries_advanced">Queries Advanced</a></h3>
+<h3><a href="#query_highlights">Query Highlights</a></h3>
+<h3><a href="#single_query_view">Single Query View</a></h3>
+<h3><a href="#executing_queries">Executing Queries</a></h3>
+<h1><a href="#go_your_own_way">Go your own way</a></h1>
+<h3><a href="#laf_fabric">Beyond: LAF-Fabric</a></h3>
+<h1><a href="#documentation_and_support">Documentation and Support</a></h1>
+</div>
 
 <hr/>
-<h1><a name="the_text">The Text</a></h1>
-<p><img src="{{=URL('static', 'images/help/help.001.jpg')}}"/></p>
+<h1><a name="basic_usage">Basic Usage</a></h1>
 
 <hr/>
-<h1><a name="words">Words</a></h1>
-<p><img src="{{=URL('static', 'images/help/help.002.jpg')}}"/></p>
- 
+<h2><a name="view_and_visualize">View and visualize</a></h2>
+
 <hr/>
-<h1><a name="queries">Queries</a></h1>
+<h3><a name="the_text">The Text</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.003.jpg')}}"/></p>
- 
+
 <hr/>
-<h1><a name="queries_advanced">Queries Advanced</a></h1>
+<h3><a name="context_view">Context View</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.004.jpg')}}"/></p>
- 
+
 <hr/>
-<h1><a name="data">Data</a></h1>
+<h3><a name="data">Data</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.005.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="context_view">Context View</a></h1>
+<h3><a name="words">Words</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.006.jpg')}}"/></p>
-
+ 
 <hr/>
-<h1><a name="word_highlights">Word Highlights</a></h1>
+<h3><a name="queries">Queries</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.007.jpg')}}"/></p>
-
+ 
 <hr/>
-<h1><a name="query_highlights">Query Highlights</a></h1>
+<h3><a name="charts">Charts</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.008.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="single_word_view">Single Word View</a></h1>
+<h2><a name="export_and_share">Export and share</a></h2>
+
+<hr/>
+<h3><a name="export_data">Export Data</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.009.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="single_query_view">Single Query View</a></h1>
+<h3><a name="citation">Citation</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.010.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="executing_queries">Executing queries</a></h1>
+<h1><a name="more_about_words">More about Words</a></h1>
+
+<hr/>
+<h3><a name="word_highlights">Word Highlights</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.011.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="charts">Charts</a></h1>
+<h3><a name="single_word_view">Single Word View</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.012.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="export_data">Export Data</a></h1>
-<p><img src="{{=URL('static', 'images/help/help.013.jpg')}}"/></p>
+<h1><a name="working_with_queries">Working with Queries</a></h2>
 
 <hr/>
-<h1><a name="citation">Citation</a></h1>
+<h3><a name="queries_advanced">Queries Advanced</a></h3>
+<p><img src="{{=URL('static', 'images/help/help.013.jpg')}}"/></p>
+ 
+<hr/>
+<h3><a name="query_highlights">Query Highlights</a></h3>
 <p><img src="{{=URL('static', 'images/help/help.014.jpg')}}"/></p>
 
 <hr/>
-<h1><a name="documentation">Documentation</a></h1>
+<h3><a name="single_query_view">Single Query View</a></h3>
+<p><img src="{{=URL('static', 'images/help/help.015.jpg')}}"/></p>
+
+<hr/>
+<h3><a name="executing_queries">Executing queries</a></h3>
+<p><img src="{{=URL('static', 'images/help/help.016.jpg')}}"/></p>
+
+<hr/>
+<h1><a name="go_your_own_way">Go your own way</a></h1>
+
+<hr/>
+<h3><a name="laf_fabric">Beyond: LAF-Fabric</a></h3>
+<p><img src="{{=URL('static', 'images/help/help.017.jpg')}}"/></p>
+
+<hr/>
+<h1><a name="documentation_and_support">Documentation and Support</a></h1>
 <ul>
     <li><a target="_blank" href="{{=URL('static', 'docs/MQL-QuickRef.pdf')}}">MQL quick reference guide (pdf)</a></li>
     <li><a target="_blank" href="{{=URL('static', 'docs/MQL-Query-Guide.pdf')}}">MQL Query Reference by Ulrik (pdf)</a></li>
@@ -91,5 +119,4 @@
 </ul>
 
 <hr/>
-<h1><a name="support">Support</a></h1>
-<p>Please report to <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a>.</p>
+<p>Please report issues to <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a>.</p>
