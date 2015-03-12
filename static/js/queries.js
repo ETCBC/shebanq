@@ -4,7 +4,7 @@ var vs = $.initNamespaceStorage('qsview')
 var muting = ns.localStorage
 var qsview = vs.localStorage
 var ftree, msg, rdata
-var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
+var subtract = 80 // the canvas holding the material gets a height equal to the window height minus this amount
 
 var escapeHTML = (function () {
     'use strict';

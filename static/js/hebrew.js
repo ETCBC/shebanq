@@ -151,7 +151,9 @@ var pref    // prefix for the cookie names, in order to distinguish settings by 
 
 /* fixed dimensions, measures, heights, widths, etc */
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
+var subtractw = 80 // the canvas holding the material gets a height equal to the window height minus this amount
 var standard_height // height of canvas
+var standard_heightw // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
 var mql_small_width = '97%' // height of mql query body in sidebar and in dialog
 var mql_big_width_dia = '60%' // height of mql query body in sidebar and in dialog
@@ -177,10 +179,16 @@ function set_height() { // the heights of the sidebars are set, depending on the
     half_standard_height = (0.4 * standard_height) + 'px'
     $('#material_txt_p').css('height', standard_height+'px')
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
-    $('#side_material_mq').css('max-height', (0.75 * standard_height)+'px')
-    $('#side_material_mw').css('max-height', (0.75 * standard_height)+'px')
+    $('#side_material_mq').css('max-height', (0.60 * standard_height)+'px')
+    $('#side_material_mw').css('max-height', (0.35 * standard_height)+'px')
     $('#words').css('height', standard_height+'px')
     $('#letters').css('height', standard_height+'px')
+}
+
+function set_heightw() { // the heights of the sidebars are set, depending on the height of the window
+    standard_heightw = window.innerHeight - subtractw
+    $('#words').css('height', standard_heightw+'px')
+    $('#letters').css('height', standard_heightw+'px')
 }
 
 function get_width() { // save the orginal widths of sidebar and main area
@@ -1846,7 +1854,7 @@ var Request = {
 
 function words_init() {
     var gotoword = Request.parameter('goto');
-    set_height()
+    set_heightw()
     $('[wii]').hide()
     $('[gi]').click(function(e) {e.preventDefault();
         var i = $(this).attr('gi')
@@ -1855,8 +1863,12 @@ function words_init() {
     })
     $('[gi]').closest('td').removeClass('selecthlw')
     var wtarget = $('[gi='+gotoword+']').closest('td')
-    wtarget.addClass('selecthlw')
-    wtarget[0].scrollIntoView()
+    if (wtarget != undefined) {
+        wtarget.addClass('selecthlw')
+        if (wtarget[0] != undefined) {
+            wtarget[0].scrollIntoView()
+        }
+    }
 }
 
 /* GENERIC */
