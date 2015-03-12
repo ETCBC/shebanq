@@ -1403,6 +1403,8 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 that.sendvals(data)
             })
             execq.click(function(e) {e.preventDefault();
+                msg.clear()
+                msg.msg(['special', 'executing query ...'])
                 var data = {
                     qid: $('#qid').val(),
                     name: $('#nameq').val(),
