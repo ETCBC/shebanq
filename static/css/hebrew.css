@@ -135,12 +135,12 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.dletter.ison,.vradio.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.vradio.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.dletter,.vradio {
+.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.vradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
@@ -185,6 +185,12 @@ table.hlsettings {
     border-radius: 6pt;
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
+}
+.ctrld {
+    border-radius: 4pt;
+    border: 1pt solid #eeeeee;
+    padding-top: 1pt;
+    padding-bottom: 1pt;
 }
 .ctrll {
     border-radius: 8pt;
@@ -637,6 +643,11 @@ a.d {
 }
 p.d {
     text-align: right;
+    width: 1.2em;
+}
+p.d {
+    font-weight: bold;
+    text-align: right;
 }
 .dletterh {
     text-align: right;
@@ -648,10 +659,22 @@ p.d {
 }
 .dletter {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
-    font-weight: bold;
     font-size: large;
-    margin-bottom: 0pt;
+}
+.d {
+    font-weight: normal;
     margin-top: 0pt;
+    margin-bottom: 0pt;
+}
+p.d {
+    font-weight: normal;
+    color: #000000;
+    background-color: #ffffff;
+}
+p.d.ison {
+    font-weight: bold;
+    color: #0000ff;
+    background-color: #ffff00;
 }
 .dlanh {
     text-align: right;

@@ -12,8 +12,8 @@ cols = 5
 tsize = rows * cols
 wsize = len(words)
 ntables = int(wsize / tsize) + (1 if wsize % tsize != 0 else 0)
-class_arc = 'ison' if lan == 'arc' else 'isoff'
-class_hbo = 'ison' if lan == 'hbo' else 'isoff'
+class_arc = 'ison' if lan == 'arc' else ''
+class_hbo = 'ison' if lan == 'hbo' else ''
 wordlb = 'words' if wsize != 1 else 'word'
 }}
 {{ end }}
@@ -70,19 +70,19 @@ for t in tables:
 <div id="letters">
 <table><tr>
 <td>
-<p class="{{=class_arc}}">Aramaic</p>
+<p class="dd {{=class_arc}}">Aramaic</p>
 {{ for let in letters[other_lan]:
     lclass = ' ison' if letter == let  and lan == 'arc' else ''
 }}
-    <p class="d">{{=A(unichr(let), _class='ctrl dletter{}'.format(lclass), _href=URL('hebrew', 'words', vars=dict(lan='arc', letter=let)))}}</p>
+    <p class="ctrld d{{=lclass}}">{{=A(unichr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='arc', letter=let)))}}</p>
 {{pass}}
 </td>
 <td>
-<p class="{{=class_hbo}}">Hebrew</p>
+<p class="dd {{=class_hbo}}">Hebrew</p>
 {{ for let in letters[lan]:
     lclass = ' ison' if letter == let  and lan == 'hbo' else ''
 }}
-    <p class="d">{{=A(unichr(let), _class='ctrl dletter{}'.format(lclass), _href=URL('hebrew', 'words', vars=dict(lan='hbo', letter=let)))}}</p>
+    <p class="ctrld d{{=lclass}}">{{=A(unichr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='hbo', letter=let)))}}</p>
 {{pass}}
 </td>
 <td>
