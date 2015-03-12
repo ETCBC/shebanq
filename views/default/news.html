@@ -70,7 +70,7 @@ Just click the verse number.</dd>
 <dl>
 <dt>Improved query view</dt>
 <dd>
-<ul>
+<ul class="ldisc">
 <li>Public and private queries integrated in one tree view, with lots of details, such as:
 are queries up to date? how many queries per organization, project, person? etc.</li>
 <li>Easy expanding and collapsing, easy search;</li>
@@ -82,32 +82,32 @@ Instructors can keep a reasonable eye on the collective queries of their student
 <dt>Reorganized help, documentation and other information</dt>
 <dt>Small annoyances have been fixed.</dt>
 <dd>
-<ul>
+<ul class="ldisc">
 <li>The legend window had the habit of suddenly disappearing.</li>
 <li>Dictionary pages scrolled to the top when clicking on words at the bottom.</li>
 <li>Going back in the browser usually required several go back actions.</li>
 </ul>
 </dd>
 <p>Here is an account of the reasons for this update:</p>
-<ol>
-<li>- it became increasingly difficult to locate queries of interest among the multitude of public queries</li>
-<li>- when creating new queries, it was too cumbersome to fill in the relevant organization and project.
+<ol class="ldec">
+<li>it became increasingly difficult to locate queries of interest among the multitude of public queries</li>
+<li>when creating new queries, it was too cumbersome to fill in the relevant organization and project.
 Now you create every new query inside an organization and project, amidst a set of existing queries.
 This helps to keep the queries organized.</li>
-<li>- The previous creation/editing functionality was implemented using standard components, and they suffered from several weaknesses:
-<ol>
-<li>o they did not function in every context within SHEBANQ where I needed them</li>
-<li>o it was impossible to provide a good layout for editing forms, a layout that did not consume excessive screen real estate</li>
-<li>o when a query gets executed or (un)published, some logic has to be carried out.
+<li>The previous creation/editing functionality was implemented using standard components, and they suffered from several weaknesses:
+<ol class="lalph">
+<li>they did not function in every context within SHEBANQ where I needed them</li>
+<li>it was impossible to provide a good layout for editing forms, a layout that did not consume excessive screen real estate</li>
+<li>when a query gets executed or (un)published, some logic has to be carried out.
 Everywhere where SHEBANQ allows you to alter these states, this logic should be carried out.
 It was difficult to guarantee that when using the standard machinery.</li>
-<li>o a rather big change is at hand: queries that can be run on several versions of the data.
+<li>a rather big change is at hand: queries that can be run on several versions of the data.
 That means an even more non-standard way of creating/editing queries, and even more logic to be executed when dealing with status changes.</li>
 </ol>
 </li>
-<li>- So, I bit the bullet, and implemented a tree view of queries, organized by organization and project and user, and I completely reimplemented
-creating and modifying queries, which introduced some unexpected bugs of which some of you have suffered. <b>My sincere apologies</b>.<li>
-<li>- Although organizations and projects and users seem to be neatly arranged in a simple hierarchy, this is in fact not so.
+<li>So, I bit the bullet, and implemented a tree view of queries, organized by organization and project and user, and I completely reimplemented
+creating and modifying queries, which introduced some unexpected bugs of which some of you have suffered. <b>My sincere apologies</b>.</li>
+<li>Although organizations and projects and users seem to be neatly arranged in a simple hierarchy, this is in fact not so.
 Some projects occur in multiple organizations.
 In fact, there are no links between projects and organizations and users except the queries itself.
 A query must link to a project and to an organization and to a user, and only when that happens,
@@ -134,7 +134,7 @@ the description of an other query. Then your readers can jump to the query that 
 </dd>
 <dt>Better security</dt>
 <dd>
-<ul>
+<ul class="ldisc">
 <li>Non-public queries are no longer visible to non-logged-in users and to users that have not created those queries.
 The fact that it was possible (by manipulating the url parameters) was a bug.</li>
 <li>SHEBANQ is now much more resistant against manipulation of the url parameters and the cookies.
@@ -172,7 +172,7 @@ Endlich können wir die Querien von dem Oliver mal wirklich anschauen!</dd>
 <dd>{{=A("Check it out now!", _href=URL('default','help'))}}</dd>
 <dt>more data!</dt>
 <dd>In data view, you can see now almost all of the ETCBC4 features. This has been added:
-<ul>
+<ul class="ldisc">
 <li>morpheme features:
 <code>nme</code>,
 <code>pfm</code>,
@@ -266,13 +266,13 @@ We hope this helps for getting data ready for statistical analysis.</dd>
 <p>A major update of the SHEBANQ website, featuring</p>
 <dl>
 <dt>lexemes can be highlighted</dt>
-<dd><ul>
+<dd><ul class="ldisc">
 <li>just by clicking on words in the text</li>
 <li>they show up in the side list, like queries</li>
 <li>all occurrences of each particular lexeme are shown on result pages, like query results</li>
 </ul></dd>
 <dt>more economic layout</dt>
-<dd><ul>
+<dd><ul class="ldisc">
 <li>the full vertical space is for the main text</li>
 <li>the list of queries in the sidebar as much more compact, outdated queries do not show up</li>
 <li>more information about the query can be pulled open right in the sidebar</li>
@@ -280,17 +280,17 @@ We hope this helps for getting data ready for statistical analysis.</dd>
 <li>editing and running queries happens in the same window, the trial and error process is easier</li>
 </ul></dd>
 <dt>better help</dt>
-<dd><ul>
+<dd><ul class="ldisc">
 <li>a new user guide</li>
 <li>links to documentation and data- and code sources in the menu bar</li>
 </ul></dd>
 <dt>better machinery</dt>
-<dd><ul>
+<dd><ul class="ldisc">
 <li>less traffic between server and client</li>
 <li>the highlighting process feels more responsive</li>
 </ul></dd>
 <dt>many bug fixes</dt>
-<dd><ul>
+<dd><ul class="ldisc">
 <li>removal of quite a few unnecessary detours and duplicated actions</li>
 </ul></dd>
 </dl>

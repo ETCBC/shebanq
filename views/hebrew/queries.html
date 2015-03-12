@@ -51,6 +51,7 @@ var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
 
 {{ block right_sidebar }}
 
+<div id="opqforms">
 <div class="form_l" id="form_o">
 <h4><span id="title_o">New</span> organization</h4>
 <table>
@@ -94,7 +95,7 @@ var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
 </p>
 <p><span class="flabel">Description</p>
 <div class="old descm" id="description_old_q"></div>
-<textarea id="description_q"/></textarea>
+<textarea class="desc" id="description_q"/></textarea>
 <div id="dbmsg_q"></div>
 <p>
     <a href="#" id="cancel_q" class="ctrl">Cancel</a>
@@ -119,5 +120,6 @@ var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
 <p>
 <a href="#" id="reload_tree" class="ctrl">refresh tree</a>
 </p>
+</div>
 
 {{ end }}

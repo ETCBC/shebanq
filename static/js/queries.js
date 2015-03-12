@@ -708,6 +708,7 @@ function Tree() {
     var canvas_right = $('.right-sidebar')
     canvas_left.css('height', standard_height+'px')
     $('#queries').css('height', standard_height+'px')
+    $('#opqforms').css('height', standard_height+'px')
     canvas_right.css('height', standard_height+'px')
 }
 

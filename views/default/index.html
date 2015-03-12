@@ -58,6 +58,7 @@ Consult the menu item {{=A(T("Help/Sources"), _href=URL('default', 'sources'))}}
 The license is such that nothing stands in your way, as long as you stay non-commercial.</p>
 
 {{block right_sidebar}}
+<div id="relapps">
 <h5>Companion tools based on ETCBC data</h5>
 <div class="reltool">
 <a class="ctrll" href="http://laf-fabric.readthedocs.org/en/latest/texts/welcome.html" target="_blank">laf-fabric <img src="{{=URL('static', 'images/laf-fabric-small.png')}}"/></a>. 
@@ -76,4 +77,17 @@ The license is such that nothing stands in your way, as long as you stay non-com
 <p><b>For <i>all users</i> of the ETCBC data</b>.</p>
 <p>Your reference guide for interpreting the ETCBC data with hints for writing queries.</p>
 </div>
+</div>
 {{end}}
+<script type="text/javascript">
+$(function () {
+    var subtract = 240
+    standard_height = window.innerHeight - subtract
+    var canvas_middle = $('.span9')
+    var canvas_right = $('#relapps')
+    canvas_middle.css('overflow', 'auto')
+    canvas_middle.css('height', standard_height+'px')
+    canvas_right.css('overflow', 'auto')
+    canvas_right.css('height', standard_height+'px')
+})
+</script>
