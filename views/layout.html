@@ -147,11 +147,29 @@
         <footer class="footer span12" id="footer">
             <div class="footer-content"  style="bottom: -5px;" id="footer">
                 {{block footer}} <!-- this is default footer -->
+                <div class="pull-left">
+                    <a target="_blank" title="CLARIN-NL"
+                        href="http://www.clarin.nl"><img
+                            src="{{=URL('static', 'images/CLARIN-NL-small.png')}}"
+                            width="50px"
+                    /></a>
+                    &nbsp;
+                </div>
                 <div class="copyright pull-left">
                     <p>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup&nbsp;</p>
-                    <p>{{=T('funded by')}}
-                    <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>,
-                    <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a></p>
+                        <p>{{=T('funded by')}}
+                        <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>,
+                        <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a>
+                        &nbsp;
+                    </p>
+                </div>
+                <div class="pull-left">
+                    <a target="_blank" title="DH2014 Award"
+                        href="http://dhawards.org/dhawards2014/results/"><img
+                            src="{{=URL('static', 'images/DHAwards2014-tool.png')}}"
+                            width="200px"
+                    /></a>
+                    &nbsp;
                 </div>
                 <div class="pull-right">
                     <a target="_blank" title="VU ETCBC"
@@ -168,14 +186,6 @@
                         href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71"><img
                             src="{{=URL('static', 'images/etcbc4easy-small.png')}}"
                             width="100px"
-                    /></a>
-                    &nbsp;
-                </div>
-                <div class="pull-left">
-                    <a target="_blank" title="DH2014 Award"
-                        href="http://dhawards.org/dhawards2014/results/"><img
-                            src="{{=URL('static', 'images/DHAwards2014-tool.png')}}"
-                            width="200px"
                     /></a>
                     &nbsp;
                 </div>
