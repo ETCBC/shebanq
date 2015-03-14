@@ -1451,12 +1451,19 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#descm').html(q.description_md)
                 $('#descq').val(q.description)
                 $('#mqlq').val(q.mql)
+                $('#executed_on').html(q.executed_on)
+                $('#modified_on').html(q.modified_on)
                 $('#statq').removeClass('error warning good').addClass(q.status)
                 that.setstatus(q.status)
             }
             if (execute) {
                 material_fetched = {txt_p: false, txt_il: false}
                 wb.material.adapt()
+                var show_chart = close_dialog($('#select_contents_chartq'))
+                wb.sidebars.sidebar['rq'].cselect.loaded = null
+                if (show_chart) {
+                    wb.sidebars.sidebar['rq'].cselect.apply()
+                }
             }
         }, 'json')
     }
@@ -1824,7 +1831,9 @@ function ViewState(init, pref) {
 }
 
 function close_dialog(dia) {
-    if (dia && dia.dialog('instance') && dia.dialog('isOpen')) {dia.dialog('close')}
+    var was_open = dia && dia.dialog('instance') && dia.dialog('isOpen')
+    if (was_open) {dia.dialog('close')}
+    return was_open
 }
 
 /* Words */
