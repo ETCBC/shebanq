@@ -709,7 +709,7 @@ def check_name(tp, lid, myid, val, msgs):
         if val == '':
             msgs.append(('error', u'{label} name consists completely of white space!'.format(label=label)))
             break
-        val = val.replace("'","''").replace('\\', '\\\\')
+        val = val.replace("'","''")
         if not check_unique(tp, lid, val, myid, msgs):
             break
         result = val
@@ -722,7 +722,7 @@ def check_description(tp, val, msgs):
         if len(val) > 8192:
             msgs.append(('error', u'{label} description is longer than 8192 characters!'.format(label=label)))
             break
-        result = val.replace("'","''").replace('\\', '\\\\')
+        result = val.replace("'","''")
     return result
 
 def check_mql(tp, val, msgs):
@@ -732,7 +732,7 @@ def check_mql(tp, val, msgs):
         if len(val) > 8192:
             msgs.append(('error', u'{label} mql is longer than 8192 characters!'.format(label=label)))
             break
-        result = val.replace("'","''").replace('\\', '\\\\')
+        result = val.replace("'","''")
     return result
 
 def check_published(tp, val, msgs):
@@ -769,7 +769,7 @@ def check_website(tp, val, msgs):
         if not '.' in netloc: 
             msgs.append(('error', u'no location in {label} website'.format(label=label)))
             break
-        result = urlunparse(url_comps).replace("'","''").replace('\\', '\\\\')
+        result = urlunparse(url_comps).replace("'","''")
     return result
 
 def check_int(var, label, msgs):
