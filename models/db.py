@@ -38,7 +38,7 @@ db = DAL('mysql://{}:{}@{}/{}'.format(
         config['shebanq_user'],
         config['shebanq_passwd'],
         config['shebanq_host'],
-        'shebanq',
+        'shebanq_web',
     ),
     migrate_enabled=False, # if session table already exists
     #migrate=False, # if session table does not yet exist
@@ -48,7 +48,7 @@ passage_db = DAL('mysql://{}:{}@{}/{}'.format(
         config['shebanq_user'],
         config['shebanq_passwd'],
         config['shebanq_host'],
-        'passage',
+        'shebanq_passage4',
     ),
     migrate_enabled=False,
 )
