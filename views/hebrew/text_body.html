@@ -2,6 +2,11 @@
     <div id="material_heading" class="pnl2">
         <div id="select_passage">
             <a title="to this chapter in Bible Online Learner" target="_blank" id="bol_lnk" href="#"><img src="{{=URL('static', 'images/BibleOL.png')}}"/></a>
+            {{for v in versions:
+                vinfo = versions[v]
+                title = '{}: {}'.format(vinfo['name'], vinfo['desc'])
+            }}<a title="{{=title}}" id="version_{{=v}}" href="#" class="ctrl mvradio">{{=v}}</a>
+            {{pass}}
             <a title="click to go to another book" id="select_control_book" class="ctrl" href="#"><span id="thebook"></span></a>
             <div id="select_contents_book"></div>
             <a title="previous chapter" contents="" id="prev_chapter" class="ctrl" href="#"><span class="icon arrow-left icon-arrow-left"></span></a>

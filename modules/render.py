@@ -73,9 +73,9 @@ for item in hebrewdata_lines_spec:
 
 specs = dict(
     material=(
-        '''book chapter iid page mr qw tp''',
-        '''alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_il''',
-        {'': '''Genesis 1 -1 1 m q txt_p'''},
+        '''version book chapter iid page mr qw tp''',
+        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_il''',
+        {'': '''4 Genesis 1 -1 1 m q txt_p'''},
     ),
     hebrewdata=('''
         ht
@@ -483,7 +483,9 @@ def h_esc(material, fill=True):
     return material
 
 class Verses():
-    def __init__(self, passage_db, mr, verse_ids=None, chapter=None, tp=None):
+    def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None):
+        self.version = vr
+        passage_db = passage_dbs[vr]
         self.mr = mr
         self.tp = tp
         self.verses = []
@@ -520,10 +522,12 @@ ORDER BY word_number;
         for v in verse_info:
             v_id = int(v[0])
             xml = v[4] if tp == 'txt_p' else ''
-            self.verses.append(Verse(passage_db, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, mr=mr)) 
+            self.verses.append(Verse(passage_dbs, vr, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, mr=mr)) 
 
 class Verse():
-    def __init__(self, passage_db, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, mr=None):
+    def __init__(self, passage_dbs, version, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, mr=None):
+        self.version = vr
+        passage_db = passage_dbs[vr]
         self.tp = tp
         self.mr = mr
         self.book_name = book_name

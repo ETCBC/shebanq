@@ -425,7 +425,7 @@ function Material() { // Object corresponding to everything that controls the ma
         wb.qw = wb.vs.qw()
         wb.iid = wb.vs.iid()
         if (
-            wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] ||
+            wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] || wb.vs.version() != wb.prev['version'] ||
             (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
             (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page']))
         ) {
@@ -446,7 +446,7 @@ function Material() { // Object corresponding to everything that controls the ma
         }
     }
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
-        var vars = '?mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
+        var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
         if (wb.mr == 'm') {
             vars += '&book='+wb.vs.book()
             vars += '&chapter='+wb.vs.chapter()
@@ -518,7 +518,7 @@ function Material() { // Object corresponding to everything that controls the ma
                 txt.hide()
                 if (dat.attr('l') == 'x') {
                     dat.html('fetching data for '+bk+' '+ch+':'+vs+' ...')
-                    dat.load(data_url+'?book='+bk+'&chapter='+ch+'&verse='+vs, function() {
+                    dat.load(data_url+'?version='+wb.vs.version()+'&book='+bk+'&chapter='+ch+'&verse='+vs, function() {
                         dat.attr('l', 'v')
                         that.msettings.hebrewsettings.apply()
                         if (wb.mr == 'r') {
@@ -578,6 +578,8 @@ function MSelect() { // for book and chapter selection
     this.book = new SelectBook()
     this.select = new SelectItems('chapter')
     this.apply = function() { // apply material viewsettings to current material
+        $('.mvradio').removeClass('ison')
+        $('#version_'+wb.vs.version()).addClass('ison')
         var bol = $('#bol_lnk')
         if (wb.mr == 'm') {
             this.book.apply()
@@ -1473,9 +1475,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
     }
     this.fetch = function() {
-        var thebook = wb.vs.book()
-        var thechapter = wb.vs.chapter()
-        var vars = '?mr='+this.mr+'&qw='+this.qw
+        var vars = '?version='+wb.vs.version()+'&mr='+this.mr+'&qw='+this.qw
         var do_fetch = false
         var extra = ''
         if (this.mr == 'm') {
@@ -1775,7 +1775,7 @@ function ViewState(init, pref) {
         }
     }
     this.addHist = function() {
-        var title = (this.mr() == 'm')?(that.book()+' '+that.chapter()):(style[that.qw()]['Tag']+' '+that.iid()+' p'+that.page())
+        var title = (this.mr() == 'm')?('['+that.version()+'] '+that.book()+' '+that.chapter()):(style[that.qw()]['Tag']+' '+that.iid()+' p'+that.page())
         that.from_push = true
         History.pushState(that.data, title, view_url)
         that.from_push = false
@@ -1817,6 +1817,7 @@ function ViewState(init, pref) {
     this.qw = function() {return this.data['material']['']['qw']}
     this.tp = function() {return this.data['material']['']['tp']}
     this.iid = function() {return this.data['material']['']['iid']}
+    this.version = function() {return this.data['material']['']['version']}
     this.book = function() {return this.data['material']['']['book']}
     this.chapter = function() {return this.data['material']['']['chapter']}
     this.page = function() {return this.data['material']['']['page']}

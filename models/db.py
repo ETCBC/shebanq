@@ -34,6 +34,31 @@ if 0:
 
 from get_db_config import config
 
+dc_u = config['shebanq_user']
+dc_p = config['shebanq_passwd']
+dc_h = config['shebanq_host']
+
+versions = {
+    '4': {
+        'name': 'etcbc4',
+        'date': '2014-07-13',
+        'desc': 'First version of the ETCBC4 database in SHEBANQ',
+        'notes': '',
+    },
+    '4b': {
+        'name': 'etcbc4b',
+        'date': '2014-10-23',
+        'desc': 'Current version of the ETCBC4 database, somehwere between versions 4 and 4s',
+        'notes': 'This version is updated periodically until version 4s is available; it can be used as a preview to version 4s',
+    },
+    '4s': {
+        'name': 'etcbc4s',
+        'date': '',
+        'desc': 'Stable version of the ETCBC4 database',
+        'notes': '',
+    },
+}
+
 db = DAL('mysql://{}:{}@{}/{}'.format(
         config['shebanq_user'],
         config['shebanq_passwd'],
@@ -44,14 +69,10 @@ db = DAL('mysql://{}:{}@{}/{}'.format(
     #migrate=False, # if session table does not yet exist
 ) 
 
-passage_db = DAL('mysql://{}:{}@{}/{}'.format(
-        config['shebanq_user'],
-        config['shebanq_passwd'],
-        config['shebanq_host'],
-        'passage',
-    ),
-    migrate_enabled=False,
-)
+passage_dbs = {}
+
+for vr in versions: 
+    passage_dbs[vr] = DAL('mysql://{}:{}@{}/{}'.format(dc_u, dc_p, dc_h, 'passage_{}'.format(vr),}), migrate_enabled=False)
 
 # Indeed, we store sessions in the database:
 session.connect(request, response, db=db)

@@ -59,31 +59,34 @@ def from_cache(ckey, func, expire):
 
 def text():
     session.forget(response)
-    (books, books_order) = from_cache('books', get_books, None)
+    books = {}
+    books_order = {}
+    for vr in versions:
+        (books[vr], books_order[vr]) = from_cache('books_{}'.format(vr), get_books(vr), None)
 
     return dict(
         viewsettings=Viewsettings(),
+        versions=versions,
         colorpicker=colorpicker,
         legend=legend,
         booksorder=json.dumps(books_order),
         books=json.dumps(books),
     )
 
-def get_books(no_controller=True): # get book information: number of chapters per book
-    ckey = 'books'
-    books_data = passage_db.executesql('''
+def get_books(vr): # get book information: number of chapters per book
+    books_data = passage_dbs[vr].executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
 ''')
     books_order = [x[0] for x in books_data]
     books = dict(x for x in books_data)
     return (books, books_order)
 
-def get_blocks(no_controller = True): # get block info: for each monad: to which block it belongs, for each block: book and chapter number of first word.
+def get_blocks(vr): # get block info: for each monad: to which block it belongs, for each block: book and chapter number of first word.
 # possibly there are gaps between books.
-    book_monads = passage_db.executesql('''
+    book_monads = passage_dbs[vr].executesql('''
 select name, first_m, last_m from book
 ''')
-    chapter_monads = passage_db.executesql('''
+    chapter_monads = passage_dbs[vr].executesql('''
 select chapter_num, first_m, last_m from chapter
 ''')
     m = -1
@@ -146,6 +149,7 @@ def material():
     session.forget(response)
     mr = get_request_val('material', '', 'mr')
     qw = get_request_val('material', '', 'qw')
+    vr = get_request_val('material', '', 'version')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
     tp = get_request_val('material', '', 'tp')
@@ -153,6 +157,7 @@ def material():
     (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
         return dict(
+            version=vr,
             mr=mr,
             qw=qw,
             msg=msg,
@@ -168,15 +173,15 @@ def material():
     page = get_request_val('material', '', 'page')
     mrrep = 'm' if mr == 'm' else qw
     return from_cache(
-        'verses_{}:{}_{}:{}:'.format(mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
-        lambda: material_c(mr, qw, bk, iid, ch, page, tp),
+        'verses_{}_{}+{}_{}+{}+'.format(vr, mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        lambda: material_c(vr, mr, qw, bk, iid, ch, page, tp),
         None,
     )
 
-def material_c(mr, qw, bk, iid, ch, page, tp):
+def material_c(vr, mr, qw, bk, iid, ch, page, tp):
     if mr == 'm':
         (book, chapter) = getpassage()
-        material = Verses(passage_db, mr, chapter=chapter['id'], tp=tp) if chapter else None
+        material = Verses(passage_dbs, vr, mr, chapter=chapter['id'], tp=tp) if chapter else None
         result = dict(
             mr=mr,
             qw=qw,
@@ -205,8 +210,8 @@ def material_c(mr, qw, bk, iid, ch, page, tp):
             )
         else:
             (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
-            (nresults, npages, verses, monads) = get_pagination(page, monad_sets, iid)
-            material = Verses(passage_db, mr, verses, tp=tp)
+            (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets, iid)
+            material = Verses(passage_dbs, vr, mr, verses, tp=tp)
             result = dict(
                 mr=mr,
                 qw=qw,
@@ -228,19 +233,20 @@ def verse():
     session.forget(response)
     msgs = []
     good = False
+    vr = get_request_val('material', '', 'version')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
     vs = check_int('verse', 'verse', msgs)
     if vs == None:
         return dict(good=False, msgs=msgs)
     return from_cache(
-        'verse:{}_{}:{}:'.format(bk, ch, vs),
-        lambda: verse_c(bk, ch, vs, msgs),
+        'verse+{}_{}_{}+{}+'.format(vr, bk, ch, vs),
+        lambda: verse_c(vr, bk, ch, vs, msgs),
         None,
     )
 
-def verse_c(bk, ch, vs, msgs):
-    material = Verse(passage_db, bk, ch, vs, xml=None, word_data=None, tp='txt_il', mr=None)
+def verse_c(vr, bk, ch, vs, msgs):
+    material = Verse(passage_dbs, vr, bk, ch, vs, xml=None, word_data=None, tp='txt_il', mr=None)
     good = True
     if len(material.word_data) == 0:
         msgs.append(('error', '{} {}:{} does not exist'.format(bk, ch, vs)))
@@ -254,16 +260,17 @@ def verse_c(bk, ch, vs, msgs):
 
 def sidem():
     session.forget(response)
+    vr = get_request_val('material', '', 'version')
     qw = get_request_val('material', '', 'qw')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
     return from_cache(
-        'items_{}:{}_{}:'.format(qw, bk, ch),
-        lambda: sidem_c(qw, bk, ch),
+        'items_{}_{}+{}_{}+'.format(vr, qw, bk, ch),
+        lambda: sidem_c(vr, qw, bk, ch),
         None,
     )
 
-def sidem_c(qw, bk, ch):
+def sidem_c(vr, qw, bk, ch):
     (book, chapter) = getpassage()
     if not chapter:
         result = dict(
@@ -273,11 +280,11 @@ def sidem_c(qw, bk, ch):
         )
     else:
         if qw == 'q':
-            monad_sets = get_monadsets(chapter)
-            side_items = groupq(monad_sets)
+            monad_sets = get_monadsets(vr, chapter)
+            side_items = groupq(vr, monad_sets)
         else:
-            monad_sets = get_lexemes(chapter)
-            side_items = groupw(monad_sets)
+            monad_sets = get_lexemes(vr, chapter)
+            side_items = groupw(vr, monad_sets)
         result = dict(
             colorpicker=colorpicker,
             side_items=side_items,
@@ -351,6 +358,7 @@ def csv(data): # converts an data structure of rows and fields into a csv string
     return u'\n'.join(result)
 
 def item(): # controller to produce a csv file of query results or lexeme occurrences, where fields are specified in the current legend
+    vr = get_request_val('material', '', 'version')
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     filename = '{}{}.csv'.format(style[qw]['t'], iid)
@@ -359,7 +367,7 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
         return dict(filename=filename, data=msg)
     hfields = get_fields()
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-    (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+    (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
     monads = flatten(monad_sets)
     data = []
     if len(monads):
@@ -384,26 +392,27 @@ order by
             hflist=u', '.join(u'word.{}'.format(hf[0]) for hf in hfields),
             monads=','.join(str(x) for x in monads),
         )
-        data = passage_db.executesql(sql)
+        data = passage_dbs[vr].executesql(sql)
     return dict(filename=filename, data=csv([head_row]+data))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
+    vr = get_request_val('material', '', 'version')
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
-        result = get_chart([])
+        result = get_chart(vr, [])
         result.update(qw=qw)
         return result()
     return from_cache(
-        'chart_{}:{}:'.format(qw, iid),
-        lambda: chart_c(qw, iid),
+        'chart_{}_{}+{}+'.format(vr, qw, iid),
+        lambda: chart_c(vr, qw, iid),
         None,
     )
 
-def chart_c(qw, iid): 
-    (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
-    result = get_chart(monad_sets)
+def chart_c(vr, qw, iid): 
+    (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
+    result = get_chart(vr, monad_sets)
     result.update(qw=qw)
     return result
 
@@ -432,11 +441,12 @@ def sidewm():
     ))
 
 def words():
+    vr = get_request_val('material', '', 'version')
     lan = get_request_val('rest', '', 'lan')
     letter = get_request_val('rest', '', 'letter')
     return from_cache(
-        'words_page_{}_{}:'.format(lan, letter),
-        lambda: words_page(lan, letter),
+        'words_page_{}_{}_{}+'.format(vr, lan, letter),
+        lambda: words_page(vr, lan, letter),
         None,
     )
 
@@ -448,12 +458,12 @@ def queries():
             qid = None
     return dict(qid=qid if qid != None else 0)
 
-def words_page(lan=None, letter=None):
-    (letters, words) = from_cache('words_data', get_words_data, None)
+def words_page(vr, lan=None, letter=None):
+    (letters, words) = from_cache('words_data_{}'.format(vr), lambda: get_words_data(vr), None)
     return dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
 
-def get_words_data():
-    ddata = passage_db.executesql('''
+def get_words_data(vr):
+    ddata = passage_dbs[vr].executesql('''
 select id, entry_heb, entryid_heb, lan, gloss from lexicon
 order by lan, entryid_heb
 ''')
@@ -472,7 +482,7 @@ def pq():
     if auth.user:
         myid = auth.user.id
     return pq_c(myid)
-    #return from_cache('queries:json:{}:'.format(myid), lambda:pq_c(myid), None)
+    #return from_cache('queries+json+{}+'.format(myid), lambda:pq_c(myid), None)
 
 def pq_c(myid):
     linfo = collections.defaultdict(lambda: {})
@@ -1139,8 +1149,9 @@ where queries.id = {}
 def sidew():
     session.forget(response)
     msgs = []
+    vr = get_request_val('material', '', 'version')
     iid = get_request_val('material', '', 'iid')
-    (authorized, msg) = word_auth_read(iid)
+    (authorized, msg) = word_auth_read(vr, iid)
     if not authorized or not iid:
         msgs.append(('error', msg))
         return dict(
@@ -1152,7 +1163,7 @@ select *
 from lexicon
 where lexicon.id = {}
 '''.format(iid)
-    records = passage_db.executesql(sql, as_dict=True)
+    records = passage_dbs[vr].executesql(sql, as_dict=True)
     if records == None or len(records) == 0:
         msgs.append(('error', 'No word with id {}'.format(iid)))
         return dict(
@@ -1183,16 +1194,17 @@ def flatten(msets):
     return list(sorted(result))
 
 def getpassage(no_controller=True):
+    vr = get_request_val('material', '', 'version')
     bookname = get_request_val('material', '', 'book')
     chapternum = get_request_val('material', '', 'chapter')
     if bookname == None or chapternum == None: return ({},{})
-    bookrecords = passage_db.executesql('''select * from book where name = '{}';'''.format(bookname), as_dict=True)
+    bookrecords = passage_dbs[vr].executesql('''select * from book where name = '{}';'''.format(bookname), as_dict=True)
     book = bookrecords[0] if bookrecords else {}
-    chapterrecords = passage_db.executesql('''select * from chapter where chapter_num = {} and book_id = {};'''.format(chapternum, book['id']), as_dict=True)
+    chapterrecords = passage_dbs[vr].executesql('''select * from chapter where chapter_num = {} and book_id = {};'''.format(chapternum, book['id']), as_dict=True)
     chapter = chapterrecords[0] if chapterrecords else {}
     return (book, chapter)
 
-def groupq(input):
+def groupq(vr, input):
     monads = collections.defaultdict(lambda: set())
     for (qid, b, e) in input:
         monads[qid] |= set(range(b, e + 1))
@@ -1221,7 +1233,7 @@ order by auth_user.last_name, auth_user.first_name, queries.name
             r.append({'item': q, 'monads': json.dumps(sorted(list(monads[q['id']])))})
     return r
 
-def groupw(input):
+def groupw(vr, input):
     wids = collections.defaultdict(lambda: [])
     for x in input:
         wids[x[1]].append(x[0])
@@ -1233,12 +1245,12 @@ where
     id in ({})
 order by entryid
 '''.format(','.join(str(x) for x in wids))
-        wordrecords = passage_db.executesql(wsql, as_dict=True)
+        wordrecords = passage_dbs[vr].executesql(wsql, as_dict=True)
         for w in wordrecords:
             r.append({'item': w, 'monads': json.dumps(wids[w['id']])})
     return r
 
-def get_monadsets(chapter):
+def get_monadsets(vr, chapter):
     return db.executesql(u'''
 select DISTINCT
     query_id,
@@ -1256,8 +1268,8 @@ where
          chapter_first_m=chapter['first_m'],
     ))
 
-def get_lexemes(chapter):
-    return passage_db.executesql(u'''
+def get_lexemes(vr, chapter):
+    return passage_dbs[vr].executesql(u'''
 select
     anchor, lexicon_id
 from
@@ -1288,12 +1300,12 @@ def query_auth_read(iid):
     msg = u'No query with id {}'.format(iid) if authorized == None else u'You have no access to item with id {}'.format(iid) 
     return (authorized, msg)
 
-def word_auth_read(iid):
+def word_auth_read(vr, iid):
     authorized = None
     if iid == 0:
         authorized = auth.user != None
     else:
-        words = passage_db.executesql('select * from lexicon where id = {};'.format(iid), as_dict=True)
+        words = passage_dbs[vr].executesql('select * from lexicon where id = {};'.format(iid), as_dict=True)
         word = words[0] if words else {}
         if word:
             authorized = True
@@ -1356,12 +1368,13 @@ insert into monadsets (query_id, first_m, last_m) values
         db.executesql(query)
         query = ''
 
-def load_monad_sets(iid):
+def load_monad_sets(vr, iid):
     monad_sets = db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
+    # make this dependent on the query execution record
     return normalize_ranges(monad_sets)
 
-def load_word_occurrences(lexeme_id):
-    monads = passage_db.executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
+def load_word_occurrences(vr, lexeme_id):
+    monads = passage_dbs[vr].executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
     return collapse_into_ranges(monads)
 
 def collapse_into_ranges(monads):
@@ -1393,10 +1406,10 @@ def normalize_ranges(ranges, fromset=None):
     if cur_end != None: result.append((cur_start, cur_end - 1))
     return (len(covered), result)
 
-def get_pagination(p, monad_sets, iid):
+def get_pagination(vr, p, monad_sets, iid):
     verse_boundaries = from_cache(
         'verse_boundaries',
-        lambda: passage_db.executesql('SELECT first_m, last_m FROM verse ORDER BY id;'),
+        lambda: passage_dbs[vr].executesql('SELECT first_m, last_m FROM verse ORDER BY id;'),
         None,
     )
     m = 0 # monad range index, walking through monad_sets
@@ -1451,7 +1464,7 @@ def get_pagination(p, monad_sets, iid):
     verses = verse_ids if p <= cur_page and len(verse_ids) else None
     return (nvt, cur_page if nvt else 0, verses, list(verse_monads))
 
-def get_chart(monad_sets): # get data for a chart of the monadset: organized by book and block
+def get_chart(vr, monad_sets): # get data for a chart of the monadset: organized by book and block
 # return a dict keyed by book, with values lists of blocks 
 # (chapter num, start point, end point, number of results, size)
 
@@ -1460,7 +1473,7 @@ def get_chart(monad_sets): # get data for a chart of the monadset: organized by 
     chart = {}
     chart_order = []
     if len(monads):
-        (books, books_order) = from_cache('books', get_books, None)
+        (books, books_order) = from_cache('books_{}'.format(vr), lambda: get_books(vr), None)
         (blocks, block_mapping) = from_cache('blocks', get_blocks, None)
         results = {}
 
