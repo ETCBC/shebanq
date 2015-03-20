@@ -45,9 +45,28 @@ The document is not yet finished, but if you are interested, here is the
 <a target="_blank" href="{{=URL('static', 'docs/ShebanqInstallUbuntu.pdf')}}">current installation document</a>.</p>
 
 <dl>
-    <dt><a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71">Data at DANS</a></dt>
-    <dd><a target="_blank" href="http://www.dans.knaw.nl">DANS</a> is a national research data archive in the Netherlands. Its repository is called 
-        <a target="_blank" href="http://easy.dans.knaw.nl">EASY</a>, and there, among many other data sets you find the Hebrew Text Database of the ETCBC.</dd>
+    <dt>Data</dt>
+    <dd>
+        <dl>
+            <dt><a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71">Archived Dataset at DANS</a></dt>
+            <dd>This dataset corresponds to the database of the ETCBC. We have use their Emdros export version of the data, converted it to LAF, and archived it at
+            <a target="_blank" href="http://www.dans.knaw.nl">DANS</a>, a national research data archive in the Netherlands. Its repository is called 
+            <a target="_blank" href="http://easy.dans.knaw.nl">EASY</a>, and there, among many other data sets you find the Hebrew Text Database of the ETCBC.</dd>
+            <dt>Extra data</dt>
+            <dd>We have added some additional packages of annotations, that can be used together with the proper ETCBC data.
+            Part of this data has also been used for SHEBANQ: the lexicon data. With LAF-Fabric you can use extra annotation packages in a controlled way.
+            Here we point at two packages. If you have LAF-Fabric, you can
+            <a target="_blank" href="https://surfdrive.surf.nl/files/public.php?service=files&t=c201a146df25c6323544bf36d165408c">download the data</a>
+            and place it in your <pre>laf-fabric-data/etcbc4/annotations</pre>
+            directory. <img src="{{=URL('static', 'images/ExtraData.png')}}"/>
+            <ul>
+                <li><b>lexicon</b>, for more info see this
+                <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/extradata/lexicon.ipynb">notebook</a>.</li>
+                <li><b>paragraphs</b>, for more info see this
+                <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/extradata/para%20from%20px.ipynb">notebook</a>.</li>
+            </dd>
+        </dl>
+    </dd>
     <dt><a target="_blank" href="https://github.com/ETCBC">ETCBC</a></dt>
     <dd>The ETCBC organization on Github has several repositories related to its Hebrew Text Database.
         <dl>
