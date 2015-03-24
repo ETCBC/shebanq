@@ -3,7 +3,7 @@ sys.path.append('/opt/emdros/lib/emdros')
 import EmdrosPy
 from get_db_config import config
 
-db='etcbc4'
+db='shebanq_etcbc4'
 
 def sanitize(query):
     comps = query.split('/*')
