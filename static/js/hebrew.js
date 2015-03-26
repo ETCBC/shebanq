@@ -345,6 +345,7 @@ the origin must be an object which has a member indicating the type of origin an
         var chunks = [custitems, plainitems]
 
         var cselect = function(iid) { // assigns a color to an individual monad, based on the viewsettings
+            var paint = ''
             if (active == 'hloff') {paint = style[qw]['off']} /*
                 viewsetting says: do not color any item */
             else if (active == 'hlone') {paint = selclr} /*
@@ -367,7 +368,7 @@ the origin must be an object which has a member indicating the type of origin an
                     var color = cselect(iid)
                     var monads = chunk[iid]
                     for (var m in monads) {
-                        monad = monads[m]
+                        var monad = monads[m]
                         if (!(monad in paintings)) {
                             paintings[monad] = color;
                         }
@@ -447,6 +448,8 @@ function Material() { // Object corresponding to everything that controls the ma
     }
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
         var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
+        var do_fetch = false
+        var do_fetch = false
         if (wb.mr == 'm') {
             vars += '&book='+wb.vs.book()
             vars += '&chapter='+wb.vs.chapter()
@@ -547,7 +550,7 @@ function Material() { // Object corresponding to everything that controls the ma
                 all.hide()
             }
             else {
-                vals = {}
+                var vals = {}
                 vals[iid] = defcolor(null, iid)
                 wb.vs.cstatesv(qw, vals)
                 all.show()
@@ -645,7 +648,7 @@ function SelectBook() { // book selection
         var ht = ''
         ht += '<div class="pagination"><ul>'
         for (var i in thebooksorder) {
-            item = thebooksorder[i]
+            var item = thebooksorder[i]
             if (thebook == item) {
                 ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
             }
@@ -662,7 +665,7 @@ function SelectBook() { // book selection
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
-                vals = {}
+                var vals = {}
                 vals['book'] = $(this).attr('item')
                 vals['chapter'] = '1'
                 wb.vs.mstatesv(vals)
@@ -705,14 +708,14 @@ function SelectItems(key) { // both for chapters and for result pages
         }
     }
     this.prev.click(function(e) {e.preventDefault();
-        vals = {}
+        var vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
         that.go()
     })
     this.next.click(function(e) {e.preventDefault();
-        vals = {}
+        var vals = {}
         vals[that.key] = $(this).attr('contents')
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
@@ -736,7 +739,7 @@ function SelectItems(key) { // both for chapters and for result pages
             var nitems = (thebook != 'x')?thebooks[thebook]:0
             this.lastitem = nitems
             var itemlist = new Array(nitems)
-            for  (i = 0; i < nitems; i++) {itemlist[i] = i+1}
+            for  (var i = 0; i < nitems; i++) {itemlist[i] = i+1}
         }
         else { // 'page'
             var theitem = wb.vs.page()
@@ -752,7 +755,7 @@ function SelectItems(key) { // both for chapters and for result pages
             if (nitems != 0) {
                 ht = '<div class="pagination"><ul>'
                 for (var i in itemlist) {
-                    item = itemlist[i]
+                    var item = itemlist[i]
                     if (theitem == item) {
                         ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
                     }
@@ -771,7 +774,7 @@ function SelectItems(key) { // both for chapters and for result pages
             var newobj = $(this).closest('li')
             var isloaded = newobj.hasClass('active')
             if (!isloaded) {
-                vals = {}
+                var vals = {}
                 vals[that.key] = $(this).attr('item')
                 wb.vs.mstatesv(vals)
                 wb.vs.addHist()
@@ -790,7 +793,7 @@ function SelectItems(key) { // both for chapters and for result pages
                 that.add_item($(this))
             })
             $(this.control).show()
-            thisitem = parseInt(this.key == 'page'?wb.vs.page():wb.vs.chapter())
+            var thisitem = parseInt(this.key == 'page'?wb.vs.page():wb.vs.chapter())
             if (thisitem == undefined || thisitem == 1) {
                 this.prev.hide()
             }
@@ -831,7 +834,7 @@ function CSelect(qw) { // for chart selection
         }
     }
     this.fetch = function() {
-        vars = '?qw='+this.qw+'&iid='+wb.iid
+        var vars = '?qw='+this.qw+'&iid='+wb.iid
         $(this.select).load(chart_url+vars, function () {
             that.loaded = wb.iid
             that.process()
@@ -844,7 +847,7 @@ function CSelect(qw) { // for chart selection
         })
         var iid = wb.iid
         $('#theitemc').click(function(e) {e.preventDefault();
-            vals = {}
+            var vals = {}
             vals['iid'] = iid
             vals['mr'] = 'r'
             vals['qw'] = that.qw
@@ -873,7 +876,7 @@ function CSelect(qw) { // for chart selection
     }
 
     this.gen_html = function() { // generate a new chart
-        nbooks = 0
+        var nbooks = 0
         var booklist = $('#r_chartorder'+this.qw).val()
         var bookdata = $('#r_chart'+this.qw).val()
         if (booklist) {
@@ -893,7 +896,7 @@ function CSelect(qw) { // for chart selection
             var book = booklist[b]
             var blocks = bookdata[book]
             ht += '<tr><td class="bnm">'+book+'</td><td class="chp"><table class="chp"><tr>'
-            l = 0
+            var l = 0
             for (var i=0; i < blocks.length; i++) {
                 if (l == chart_cols) {
                     ht += '</tr><tr>'
@@ -904,11 +907,11 @@ function CSelect(qw) { // for chart selection
                 var ch_range = block_info[1]+'-'+block_info[2]
                 var blres = block_info[3]
                 var blsize = block_info[4]
-                blres_select = (blres >= ccl)?ccl-1:blres
-                z = ccolors[blres_select]
-                s = '&nbsp;'
-                sz = ''
-                sc = ''
+                var blres_select = (blres >= ccl)?ccl-1:blres
+                var z = ccolors[blres_select]
+                var s = '&nbsp;'
+                var sz = ''
+                var sc = ''
                 if (blsize < 25) {
                     s = '='
                     sc = 's1'
@@ -932,7 +935,7 @@ function CSelect(qw) { // for chart selection
     this.add_item = function(item) {
         var iid = wb.iid
         item.click(function(e) {e.preventDefault();
-            vals = {}
+            var vals = {}
             vals['book'] = $(this).attr('b')
             vals['chapter'] = $(this).attr('ch')
             vals['mr'] = 'm'
@@ -1051,7 +1054,7 @@ function HebrewSetting(fld) {
     this.name = fld
     this.hid = '#'+this.name
     $(this.hid).click(function(e) {
-        vals = {}
+        var vals = {}
         vals[fld] = $(this).prop('checked')?'v':'x'
         wb.vs.dstatesv(vals)
         wb.vs.addHist()
@@ -1349,7 +1352,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             })
             msg.set_dest('#dbmsg_q')
             $('#is_pub_c').click(function(e) {
-                val = $(this).prop('checked')
+                var val = $(this).prop('checked')
                 that.sendval($(this).attr('qid'), 'is_published', val?'T':'')
             })
             var detlq = $('.detail')
@@ -1639,7 +1642,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
             wb.vs.cstatex(that.qw, that.iid)
         }
         else {
-            vals = {}
+            var vals = {}
             vals[that.iid] = defcolor(null, that.iid)
             wb.vs.cstatesv(that.qw, vals)
             var active = wb.vs.active(that.qw)
@@ -1653,7 +1656,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
     $('.c'+this.qw+'.'+this.qw+pointer+'>a').click(function(e) {e.preventDefault();
         // process a click on a colored cell of the picker
         close_dialog(picker)
-        vals = {}
+        var vals = {}
         vals[that.iid] = $(this).html()
         wb.vs.cstatesv(that.qw, vals)
         wb.vs.hstatesv(that.qw, {active: 'hlcustom'})
@@ -1690,7 +1693,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
     
     this.apply = function(do_highlight) {
         var color = wb.vs.sel_one(this.qw) || defcolor(this.qw, null)
-        target = (this.qw == 'q')?sel:selw
+        var target = (this.qw == 'q')?sel:selw
         target.css(stl, vcolors[color][this.qw]) // apply state to the selected cell
         if (do_highlight) {
             wb.highlight2(this)
@@ -1721,7 +1724,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
     })
     picker.hide()
     $('.c'+this.qw+'.'+this.qw+'one>a').each(function() { //initialize the individual color cells in the picker
-        target = (that.qw == 'q')?$(this).closest('td'):$(this)
+        var target = (that.qw == 'q')?$(this).closest('td'):$(this)
         target.css(stl, vcolors[$(this).html()][that.qw])
     })
     this.apply(do_highlight)
@@ -1733,6 +1736,7 @@ function defcolor(qw, iid) {// compute the default color
         vdefaultcolors
         dncols, dnrows
 */
+    var result
     if (qw == null) {
         var mod = iid % vdefaultcolors.length
         result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
@@ -1913,7 +1917,7 @@ function Msg() {
     }
     this.msg = function(msgobj) {
         var msgc = this.destination;
-        mtext = msgc.html()
+        var mtext = msgc.html()
         msgc.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
         this.trashc.show()
     }

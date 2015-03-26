@@ -91,9 +91,9 @@ function Level() {
         $('#level_'+level).addClass('ison')
         qsview.set('level', level)
         if (level in levels) {
-            numlevel = levels[level]
+            var numlevel = levels[level]
             ftree.ftw.visit(function(n) {
-                nlevel = n.getLevel()
+                var nlevel = n.getLevel()
                 n.setExpanded(nlevel <= numlevel , {noAnimation: true, noEvents: true})
             }, true)
         }
@@ -259,7 +259,7 @@ function Msg() {
     }
     this.msg = function(dest, msgobj) {
         var msgc = this.destinations[dest];
-        mtext = msgc.html()
+        var mtext = msgc.html()
         msgc.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
     }
 }
@@ -347,8 +347,8 @@ function Tree() {
                     $('#name_'+tpp).val(rec.name)
                 }
                 if (tpp == 'q' || tpp == 'qv') {
-                    oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
-                    pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                    var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
+                    var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
                     $('#description_'+tpp).val(rec.description)
                     $('#description_old_'+tpp).html(rec.description_md)
                     $('#fo_'+tpp).attr('href', rec.owebsite)
@@ -368,8 +368,8 @@ function Tree() {
             }
             if (update && good && senddata.lid == '0') {
                 if (tpp == 'q') {
-                    oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
-                    pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                    var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
+                    var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
                     $('#fo_'+tpp).attr('href', rec.owebsite)
                     $('#fo_'+tpp).html(escapeHTML(oname))
                     $('#fp_'+tpp).attr('href', rec.pwebsite)
@@ -701,8 +701,8 @@ function Tree() {
             that.store_select_deep(data.node)
         },
     })
-    standard_height = window.innerHeight - subtract
-    standard_width = window.innerWidth
+    var standard_height = window.innerHeight - subtract
+    var standard_width = window.innerWidth
     var canvas_left = $('.left-sidebar')
     var canvas_middle = $('.span6')
     var canvas_right = $('.right-sidebar')
