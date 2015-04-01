@@ -118,9 +118,9 @@ specs = dict(
         v v v
     '''}),
     highlights=(
-        '''get active sel_one''',
-        '''bool enum:hloff,hlone,hlcustom,hlmany enum:color''',
-        dict(q='x hlcustom grey', w='x hlcustom gray'),
+        '''get active sel_one pub''',
+        '''bool enum:hloff,hlone,hlcustom,hlmany enum:color bool''',
+        dict(q='x hlcustom grey x', w='x hlcustom gray x'),
     ),
     colormap=(
         '0',
@@ -408,9 +408,10 @@ def get_fields():
     return hfields
     
 class Viewsettings():
-    def __init__(self):
+    def __init__(self, versions):
         self.state = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
         self.pref = get_request_val('rest', '', 'pref')
+        self.versions = versions
         for group in settings:
             self.state[group] = {}
             for qw in settings[group]:
@@ -449,9 +450,20 @@ class Viewsettings():
                     current.response.cookies[self.pref+group+qw]['path'] = '/'
 
 
+    def theversion(self): return self.state['material']['']['version']
+    def versionstate(self):
+        return '''
+var versions = {versions}
+var version = '{version}'
+'''.format(
+    versions = json.dumps(dict((v, self.versions[v]['date'] != '') for v in self.versions)),
+    version = self.state['material']['']['version'],
+)
+
     def dynamics(self):
         book_proto = get_request_val('material', '', 'book')
         return '''
+var versions = {versions}
 var vcolors = {vcolors}
 var ccolors = {ccolors}
 var vdefaultcolors = {vdefaultcolors}
@@ -470,6 +482,7 @@ dynamics()
     pref = '"{}"'.format(self.pref),
     dncols = dncols,
     dnrows = dnrows,
+    versions = json.dumps(dict((v, self.versions[v]['date'] != '') for v in self.versions)),
 )
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
@@ -525,7 +538,7 @@ ORDER BY word_number;
             self.verses.append(Verse(passage_dbs, vr, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, mr=mr)) 
 
 class Verse():
-    def __init__(self, passage_dbs, version, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, mr=None):
+    def __init__(self, passage_dbs, vr, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, mr=None):
         self.version = vr
         passage_db = passage_dbs[vr]
         self.tp = tp

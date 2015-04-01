@@ -1,0 +1,10 @@
+        <div id="select_version">
+            <span class="source">etcbc</span>
+            {{for v in version_order:
+                vinfo = versions[v]
+                vdate = vinfo['date'] or 'future'
+                title = '{}: {} [{}]'.format(vdate, vinfo['desc'], vinfo['notes'])
+            }}{{if vinfo['date']:}}<a title="{{=title}}" href="#" id="version_{{=v}}" class="ctrl mvradio">{{=v}}</a>{{
+            else:}}<span title="{{=title}}" class="ctrl mvradio isdis">{{=v}}</a>{{pass}}
+            {{pass}}
+        </div>

@@ -1,56 +1,89 @@
-<h5 class="detail"><a title="to query list" id="gobackq" href="#"><span id="nameqm"></span></a></h5>
+{{
+statusmap = dict(
+    good='results up to date',
+    error='results outdated',
+    warning='never executed',
+)
+}}
 {{if writable:}}
-<input type="text" id="nameq" value=""/>
-<input type="hidden" id="qid" value=""/>
+<input type="hidden" id="qid" value="{{=qr['id']}}"/>
 {{pass}}
 <input type="hidden" id="itemtag" value=""/>
-<div class="detail">
-    <p>
-        <a target="_blank" id="nameul" href=""><span id="nameu"></span></a>
-        <a target="_blank" id="nameol" href=""><span id="nameo"></span></a>
-        <a target="_blank" id="namepl" href=""><span id="namep"></span></a>
-    </p>
-</div>
 <div id="bigger">
-    <div id="descm" class="old descm"></div>
-    <textarea id="descq" class="desc"></textarea>
+    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+'?goto={}'.format(iid)}}"><span id="nameqm">{{=h_esc(qr['name'])}}</span></a>
+    <span class="ir"><a class="ctrl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
+    <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
-        <p class="fullcpx">
-            <a href="#" title="toggle expanded view"><span class="ctrli fullc ir ui-icon ui-icon-arrowthick-2-ne-sw"></span></a>
-        </p>
-        <textarea id="mqlq" class="mql" readonly></textarea>
         <p>
-            {{if writable:}}
-            <a id="editq" href="#" title="edit query and description"><span class="ctrli ir ui-icon ui-icon-pencil"></span></a>
-            <a id="doneq" class="ctrl" href="#" title="done editing">Done</a>
-            <a id="execq" class="ctrl" href="#" title="save and execute query">Execute</a>
-            <a id="saveq" class="ctrl" href="#" title="save query and description">Save</span></a>
-            {{pass}}
+            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=h_esc('{} {}'.format(qr['ufname'], qr['ulname']))}}</span></a>
+            <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=h_esc(qr['oname'])}}</span></a>
+            <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=h_esc(qr['pname'])}}</span></a>
         </p>
+    </div>
+    <div id="descm" class="old descm">{{=XML(qr['description_md'])}}</div>
+    <textarea id="descq" class="desc">{{=qr['description']}}</textarea>
+    <div version="" class="version this">
+        <table>
+            <tr><td style="padding-left: 0px;"><a class="ctrlb moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
+            <span class="flabel">shared</span></td><td>{{
+            if writable: }}
+                <input qid="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
+            {{else:}}
+                <span class="fa fa-{{='check' if qr['is_shared'] else 'close'}}"></span>
+            {{pass}}</td><td class="dtval"><span id="shared_on">{{=qr['shared_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">created</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['created_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['modified_on']}}</span></td></tr>
+        </table>
     </div>
     <div id="dbmsg_q"></div>
-        <p class="fullcpx">
-            <a href="#" title="clear diagnostic messages"><span class="ctrli trashc ir ui-icon ui-icon-trash"></span></a>
-        </p>
+    <p class="fullcpx"><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{for v in version_order:
+    if not versions[v]['date']: continue
+    qrinfo = qr['versions'][v]
+    qstatus = qrinfo['status']
+    thisclass = 'this' if v == vr else 'other'
+    is_pub = qrinfo['is_published']
+    id_q = XML('id="statq" ') if v == vr else ''
+    id_m = XML('id="statm" ') if v == vr else ''
+    arrow = 'down' if v == vr else 'right'
+}}
+    <div version="{{=v}}" class="version {{=thisclass}}">
+        <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+        <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+        ({{='this' if v == vr else 'other'}} version)
+    {{if writable and v == vr:}}
+            <span class="ir"><a id="editq" href="#" title="edit name, description, and mql" class="ctrl fa fa-pencil fa-lg"></a></span>
+            <span class="ir"><a id="cancq" href="#" title="QUIT editing WITHOUT saving recent changes" class="ctrl fa fa-close fa-lg"></a></span>
+            <span class="ir"><a id="doneq" href="#" title="save changes and QUIT editing" class="ctrl fa fa-check fa-lg"></a></span>
+            <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctrl fa fa-save fa-lg"></a>&nbsp;</span>
+            <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctrl fa fa-cog fa-lg"></a>&nbsp;</span>
+    {{pass}}</p>
+        <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
+    {{if v == vr:}}
+        <div id="dbmsg_qv"></div>
+        <p class="fullcpx"><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+    {{pass}}
+        <table>
+            <tr><td><span class="flabel">status</span></td><td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td></tr>
+            <tr><td><span class="flabel">published</span></td><td>{{
+            if writable and v == vr:
+            }}<input qid="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_pub else ''}}/>{{
+            pass}}<span {{=XML('id="is_pub_ro"') if writable and v == vr else ''}} class="fa fa-{{='check' if is_pub else 'close'}}"></span>
+            </td><td class="dtval"><span {{=XML('id="published_on"') if v == vr else ''}}>{{=qrinfo['published_on']}}</span></td></tr>
+            <tr><td><span class="flabel">results</span></td><td>&nbsp;</td><td><span {{=XML('id="qresults"') if v == vr else ''}}>{{=qrinfo['results']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">words</span></td><td>&nbsp;</td><td><span {{=XML('id="qresultmonads"') if v == vr else ''}}>{{=qrinfo['resultmonads']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"') if v == vr else ''}}>{{=qrinfo['xmodified_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">executed</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"') if v == vr else ''}}>{{=qrinfo['executed_on']}}</span></td></tr>
+        </table>
     </div>
+{{pass}}
 </div>
-<table>
-    <tr><td><span class="flabel">status</span></td><td id="statq"><span id="statm"></span></td></tr>
-    <tr><td><span class="flabel">published</span></td><td>{{
-    if writable: }}
-        <input qid="" id="is_pub_c" type="checkbox"/>
-    {{else:}}
-        <span id="ispub_ro" class="ui-icon ui-icon-check"></span>
-    {{pass}}</td></tr>
-    <tr class="detail"><td><span class="flabel">created</span></td><td><span id="created_on"></span></td></tr>
-    <tr><td><span class="flabel">modified</span></td><td><span id="modified_on"></span></td></tr>
-    <tr><td><span class="flabel">executed</span></td><td><span id="executed_on"></span></td></tr>
-</table>
 <div>
-    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
-    <p>{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
-    <p>{{=A('MQL Query Guide by Ulrik (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-Query-Guide.pdf'))}}</p>
-    <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
+    <p><a class="ctrlb moredetail fa fa-chevron-right" href="#" title="more/less details"></a>Guides</p>
+    <p class="detail">{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
+    <p class="detail">{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
+    <p class="detail">{{=A('MQL Query Guide by Ulrik (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-Query-Guide.pdf'))}}</p>
+    <p class="detail">{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
 <script type="text/javascript">
 var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"

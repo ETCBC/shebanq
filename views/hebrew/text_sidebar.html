@@ -6,17 +6,18 @@
             <tr>
                 <td id="colorpicker_i{{=qw}}"></td>
                 <td>{{=XML(colorpicker(qw, 'me', ''))}}</td>
-                <td><a
-                        id="csv_lnk{{=qw}}" class="ctrl" href="#"
-                        title="download all {{=items}} of this {{=tag}} as a comma separated file"
-                    ><span class="icon download icon-download"></span>&nbsp;<span id="csvitemdesc{{=qw}}">csv</span></a>
-                    <span><a id="select_control_chart{{=qw}}" class="ctrl" href="#">chart</a></span>
+                <td><a id="csv_lnk{{=qw}}" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all {{=items}} of this {{=tag}} as a csv file"></a>
+                    <a id="select_control_chart{{=qw}}" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
                     <span id="select_contents_chart{{=qw}}"></span>
                 </td>
             </tr>
         </table>
     </div>
-    <div id="side_material_r{{=qw}}" class="mql_form"></div>
+<div id="bigger">
+    <div id="dbmsg_w"></div>
+    <p class="fullcpx"><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+</div>
+    <div id="side_material_r{{=qw}}"></div>
 </div>
 <div id="side_bar_m{{=qw}}">
     <a id="side_show_m{{=qw}}" class="ctrll" href="#">show {{=tags}}</a>
@@ -24,12 +25,13 @@
     <div id="side_settings_m{{=qw}}" class="pnl">
         <table class="hlsettings">
             <tr>
-                <td><a href="#" id="{{=qw}}hlreset" class="ctrl {{=qw}}hradio">X</a></td>
-                <td><a href="#" id="{{=qw}}hlmany" class="ctrl {{=qw}}hradio">all</a></td>
-                <td><a href="#" id="{{=qw}}hlcustom" class="ctrl {{=qw}}hradio">my</a></td>
+                {{if qw == 'q':}}<td><a href="#" id="hlpub" class="ctrl qpradio fa fa-quote-right" title="show only published queries"></a></td>{{pass}}
+                <td><a href="#" id="{{=qw}}hlreset" class="ctrl {{=qw}}hradio fa fa-close" title="reset highlight customization"></a></td>
+                <td><a href="#" id="{{=qw}}hlmany" class="ctrl {{=qw}}hradio fa fa-hand-o-up" title="show all highlights"></a></td>
+                <td><a href="#" id="{{=qw}}hlcustom" class="ctrl {{=qw}}hradio fa fa-hand-o-down" title="only customized highlight colors"></a></td>
                 <td>{{=XML(colorpicker(qw, 'one', '2'))}}</td>
-                <td><a href="#" id="{{=qw}}hlone" class="ctrl {{=qw}}hradio">one</a></td>
-                <td><a href="#" id="{{=qw}}hloff" class="ctrl {{=qw}}hradio">off</a></td>
+                <td><a href="#" id="{{=qw}}hlone" class="ctrl {{=qw}}hradio fa fa-hand-o-left" title="choose one highlight color"></a></td>
+                <td><a href="#" id="{{=qw}}hloff" class="ctrl {{=qw}}hradio fa fa-ban" title="highlights off"></a></td>
             </tr>
         </table>
     </div>

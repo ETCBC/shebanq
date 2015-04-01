@@ -1,12 +1,5 @@
 <a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
 <input type="hidden" id="itemtag" value=""/>
-<div id="bigger">
-    <div id="dbmsg_w"></div>
-        <p class="fullcpx">
-            <a href="#" title="clear diagnostic messages"><span class="ctrli trashc ir ui-icon ui-icon-trash"></span></a>
-        </p>
-    </div>
-</div>
 <table>
     <tr><td><span class="wlabel">vocalized</td><td class="dd" span id="g_entry_heb"></span></td></tr>
     <tr><td><span class="wlabel">consonantal</td><td span class="dd" id="entry_heb"></span></td></tr>

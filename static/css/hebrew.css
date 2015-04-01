@@ -52,8 +52,17 @@ ol.text {
 }
 /* MATERIAL SELECT */
 
+.source {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: large;
+}
+
 #to_passage {
     display: inline;
+}
+#select_version {
+    padding-right: 3em;
 }
 #select_book {
     width: 10em;
@@ -66,7 +75,7 @@ ol.text {
     display: inline;
     vertical-align: text-bottom;
 }
-#select_passage,#select_pages,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
+#select_version,#select_passage,#select_pages,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
     display: inline;
     vertical-align: text-bottom;
 }
@@ -124,6 +133,7 @@ table.item_w,table.item_q {
     padding: 0;
     margin: 0;
     border: 0;
+    width: 100%;
 }
 table.item_w td,table.item_q td {
     vertical-align: text-bottom;
@@ -135,15 +145,43 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.vradio.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.vradio.ison,.qpradio.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.vradio {
+.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.vradio,.qpradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
+}
+.mvradio {
+    font-weight: normal;
+    font-size: medium;
+    background-color: #eeeeff;
+    color: #aaaaaa;
+}
+.mvradio.isdis {
+    font-weight: normal;
+    font-size: medium;
+    background-color: #ffdddd;
+    color: #aaaaaa;
+}
+.mvradio.ison {
+    font-weight: bold;
+    font-size: medium;
+    background-color: #888888;
+    color: #ffff00;
+}
+.sversion {
+    font-weight: bold;
+    font-size: large;
+}
+.sversion.this {
+    color: #000000;
+}
+.sversion.other {
+    color: #0000ff;
 }
 .vradio {
     font-weight: normal;
@@ -180,6 +218,12 @@ table.hlsettings {
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
     padding: 2pt;
+}
+.ctrlb {
+    border-radius: 0pt;
+    border: 0pt solid #ffffff;
+    background-color: #fafffa;
+    padding: 0pt;
 }
 .ctrli {
     border-radius: 6pt;
@@ -225,7 +269,7 @@ table.hlsettings {
 #side_material_mq,#side_material_mw {
     overflow: auto;
 }
-.pnll, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
+.pnll, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody, #bigger {
     border-radius: 12pt;
     border: 1pt solid #dde6dd;
     background-color: #eef1ee;
@@ -253,7 +297,7 @@ table.hlsettings {
     font-size: small;
     height: 1em;
 }
-table.picker,.qdesc {
+table.picker {
     display: none;
     padding: 0;
     margin: 0;
@@ -310,18 +354,31 @@ td.cw a {
 
 /* SIDEBAR ITEMS: QUERY */
 
+div.version {
+    border-radius: 2pt;
+    border-top: 2pt solid #aaaaaa;
+    border-bottom: 2pt solid #aaaaaa;
+}
+div.version.this {
+    border-top: 2pt solid #ffff00;
+    border-bottom: 2pt solid #ffff00;
+    background-color: #ffffcc;
+}
+.dtval {
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-size: x-small;
+}
+textarea {
+    box-sizing: border-box;
+}
 textarea.mql {
     font-family: Menlo, Courier New, Courier, monospace;
     font-size: small;
     background-color: white;
+    margin-left: 0em;
     height: 10em;
-    margin-left: 0em;
-}
-textarea.mql_dia {
-    font-family: Menlo, Courier New, Courier, monospace;
-    font-size: small;
-    background-color: white;
-    margin-left: 0em;
+    width: 100%;
+    overflow-y: scroll;
 }
 textarea.desc {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
@@ -329,12 +386,15 @@ textarea.desc {
     background-color: #fefbfe;
     height: 10em;
     margin-left: 0em;
+    width: 100%;
+    overflow-y: scroll;
 }
 div.desc_dia {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: small;
     background-color: #fefbfe;
     margin-left: 0em;
+    width: 100%;
 }
 #nameqm, #namewm {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
@@ -353,25 +413,19 @@ div.desc_dia {
 div.descm {
     background-color: #fefbfe;
 }
-textarea.small {
-    font-size: small;
-}
-p.fullcp {
-    text-align: right;
-    margin-top: -0.5em;
-    margin-bottom: 0em;
-}
-p.fullcpx {
-    margin-bottom: 1.5em;
+.fa {
+    color: #000000;
 }
 span.ir {
     float: right;
 }
-td.qname {
-    width: 6em;
+.tr {
+    text-align: right;
 }
-td.qauth {
-    width: 7em;
+.qname {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+}
+.qauth {
 }
 
 /* HEBREW DATA */
@@ -382,7 +436,7 @@ td.qauth {
     line-height: 1.7;
     direction: rtl;
     text-align: right;
-    margin-right: 1.5em;
+    margin-right: 0.5em;
     color: #000000;
 }
 .txt_il {
@@ -548,6 +602,9 @@ span.hl_hlc, span.l_hl_hlc {
     font-size: large;
     color: #000000;
     line-height: 1.2;
+}
+.i_hl {
+    float: right;
 }
 span.tt, span.l_tt {
     font-family: Menlo, Courier New, Courier, monospace;
@@ -872,6 +929,9 @@ div.msg_error {
 .descm ol {
     list-style-type: decimal;
 }
+.tn {
+    font-size: x-small;
+}
 
 .qx.ui-icon {
     float: left;
@@ -886,6 +946,9 @@ div.msg_error {
     border-radius: 8pt;
     float: left;
     background-color: #88ffff;
+}
+.big.ui-icon {
+    zoom: 150%;
 }
 .flabel {
     font-size: small;

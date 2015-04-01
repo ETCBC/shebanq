@@ -1,6 +1,8 @@
 {{ left_sidebar_enabled = True }}
 {{ extend 'layout.html' }}
 
+<script src="{{=URL('static', 'js/words.js')}}"></script>
+
 {{ block head }}
 {{
 other_lan = 'arc' if lan == 'hbo' else 'hbo'
@@ -67,6 +69,7 @@ for t in tables:
 </div>
 
 {{ block left_sidebar }}
+{{ include 'hebrew/versions.html' }}
 <div id="letters">
 <table><tr>
 <td>
@@ -94,6 +97,10 @@ for t in tables:
 {{ end }}
 
 <script type="text/javascript">
+var words_url = "{{=XML(URL('hebrew', 'words', extension=''))}}"
+var lan = "{{=lan}}"
+var letter = "{{=letter}}"
+{{=XML(versionstate)}}
 $(function () {
     words_init()
 })

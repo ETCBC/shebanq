@@ -139,14 +139,14 @@ var muting = ns.localStorage // on the Queries page the user can "mute" queries.
 // When shebanq shows relevant queries next to a page, muting is taken into account.
 
 /* state variables */
-var vcolors, vdefaultcolors, dncols, dnrows, thebooks, viewinit, style // parameters dumped by the server, mostly in json form
+var vcolors, vdefaultcolors, dncols, dnrows, thebooks, thebooksorder, viewinit, style // parameters dumped by the server, mostly in json form
 var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
 var wb      // holds the one and only page object
 var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, field_url, fields_url, windex_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -156,8 +156,8 @@ var standard_height // height of canvas
 var standard_heightw // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
 var mql_small_width = '97%' // height of mql query body in sidebar and in dialog
-var mql_big_width_dia = '60%' // height of mql query body in sidebar and in dialog
-var mql_big_width = '95%' // width of mql query body in sidebar and in dialog
+var mql_big_width_dia = '60%' // width of query info in dialog mode
+var mql_big_width = '100%' // width of mql query body in sidebar and in dialog
 var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
 var edit_side_width = '55%' // the desired width of the sidebar when editing a query body
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
@@ -168,14 +168,15 @@ var chart_cols = 30 // number of chapters in a row in a chart
 
 function dynamics() { // top level function, called when the page has loaded
     viewfluid = {}
-    msg = new Msg() // a place where ajax messages can be shown to the user
+    msg = new Msg('material_settings') // a place where ajax messages can be shown to the user
     wb = new Page(new ViewState(viewinit, pref)) // wb is the handle to manipulate the whole page
     wb.init()
     wb.go()
 }
 
 function set_height() { // the heights of the sidebars are set, depending on the height of the window
-    standard_height = window.innerHeight - subtract
+    window_height = window.innerHeight
+    standard_height = window_height - subtract
     half_standard_height = (0.4 * standard_height) + 'px'
     $('#material_txt_p').css('height', standard_height+'px')
     $('#material_txt_il').css('height', (2 * standard_height)+'px')
@@ -388,6 +389,12 @@ the origin must be an object which has a member indicating the type of origin an
                 }
             }
         }
+        /* maybe the selection of words of queries has changed for the same material, so wipe previous coloring */
+        var monads = $('#material span[m]')
+        var stl = style[qw]['prop']
+        var clr_off = style[qw]['off']
+        monads.css(stl, clr_off) 
+
         /* finally, the computed colors are applied */
         this.paint(qw, paintings)
     }
@@ -422,11 +429,12 @@ function Material() { // Object corresponding to everything that controls the ma
         this.fetch()
     }
     this.apply = function() { // apply viewsettings to current material
+        wb.version = wb.vs.version()
         wb.mr = wb.vs.mr()
         wb.qw = wb.vs.qw()
         wb.iid = wb.vs.iid()
         if (
-            wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] || wb.vs.version() != wb.prev['version'] ||
+            wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] || wb.version != wb.prev['version'] ||
             (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
             (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page']))
         ) {
@@ -521,7 +529,7 @@ function Material() { // Object corresponding to everything that controls the ma
                 txt.hide()
                 if (dat.attr('l') == 'x') {
                     dat.html('fetching data for '+bk+' '+ch+':'+vs+' ...')
-                    dat.load(data_url+'?version='+wb.vs.version()+'&book='+bk+'&chapter='+ch+'&verse='+vs, function() {
+                    dat.load(data_url+'?version='+wb.version+'&book='+bk+'&chapter='+ch+'&verse='+vs, function() {
                         dat.attr('l', 'v')
                         that.msettings.hebrewsettings.apply()
                         if (wb.mr == 'r') {
@@ -576,13 +584,14 @@ function Material() { // Object corresponding to everything that controls the ma
 // MATERIAL: SELECTION
 
 function MSelect() { // for book and chapter selection
+    var that = this
     this.name = 'select_passage'
     this.hid = '#'+this.name
     this.book = new SelectBook()
     this.select = new SelectItems('chapter')
     this.apply = function() { // apply material viewsettings to current material
         $('.mvradio').removeClass('ison')
-        $('#version_'+wb.vs.version()).addClass('ison')
+        $('#version_'+wb.version).addClass('ison')
         var bol = $('#bol_lnk')
         if (wb.mr == 'm') {
             this.book.apply()
@@ -603,9 +612,38 @@ function MSelect() { // for book and chapter selection
             bol.hide()
         }
     }
+    this.set_vselect = function(v) {
+        if (versions[v]) {
+            $('#version_'+v).click(function(e) {e.preventDefault();
+                if (wb.vs.mr() == 'r' && wb.vs.qw() == 'w') {
+                    var msg = wb.sidebars.sidebar['rw'].content.msgw
+                    msg.clear()
+                    msg.msg(['special', ' retrieving corresponding word entry'])
+                    $.post(windex_url, {oldwid: wb.vs.iid(), oldv: wb.vs.version(), newv: v}, function(json) {
+                        json.msgs.forEach(function(m) {
+                            msg.msg(m)
+                        })
+                        good = json.good
+                        if (good) {
+                            wb.vs.mstatesv({version: v, iid: json.newwid})
+                            wb.go()
+                        }
+                    }, 'json')
+                }
+                else {
+                    wb.vs.mstatesv({version: v})
+                    wb.go()
+                }
+            })
+        }
+    }
+    for (var v in versions) {
+        this.set_vselect(v)
+    }
 }
 
 function PSelect() { // for result page selection
+    var that = this
     var select = '#select_contents_page'
     this.name = 'select_pages'
     this.hid = '#'+this.name
@@ -643,12 +681,13 @@ function SelectBook() { // book selection
     }
     this.gen_html = function() { // generate a new book selector
         var thebook = wb.vs.book()
-        var nitems = thebooksorder.length
+        thisbooksorder = thebooksorder[wb.version]
+        var nitems = thisbooksorder.length
         this.lastitem = nitems
         var ht = ''
         ht += '<div class="pagination"><ul>'
-        for (var i in thebooksorder) {
-            var item = thebooksorder[i]
+        for (var i in thisbooksorder) {
+            var item = thisbooksorder[i]
             if (thebook == item) {
                 ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
             }
@@ -736,7 +775,7 @@ function SelectItems(key) { // both for chapters and for result pages
         if (this.key == 'chapter') {
             var thebook = wb.vs.book()
             var theitem = wb.vs.chapter()
-            var nitems = (thebook != 'x')?thebooks[thebook]:0
+            var nitems = (thebook != 'x')?thebooks[wb.version][thebook]:0
             this.lastitem = nitems
             var itemlist = new Array(nitems)
             for  (var i = 0; i < nitems; i++) {itemlist[i] = i+1}
@@ -1219,6 +1258,14 @@ function SContent(mr, qw) { // the contents of an individual sidebar
     this.msg = function(m) {
         $(this.hid).html(m)
     }
+    this.set_vselect = function(v) {
+        if (versions[v]) {
+            $('#version_s_'+v).click(function(e) {e.preventDefault();
+                wb.vs.mstatesv({version: v})
+                wb.go()
+            })
+        }
+    }
     this.process = function() {
         wb.sidebars.after_item_fetch()
         this.sidelistitems()
@@ -1226,35 +1273,26 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             wb.listsettings[this.qw].apply()
         }
         else {
+            var vr = wb.version
             var iid = wb.vs.iid()
             set_csv(mr, qw, iid)
             if (qw == 'q') {
-                var oname = escapeHTML(q.oname)
-                var pname = escapeHTML(q.pname)
-                var uname = escapeHTML(q.uname)
+                var ufname = escapeHTML(q.ufname)
+                var ulname = escapeHTML(q.ulname)
                 var qname = escapeHTML(q.name)
-                $('#itemtag').val(uname+': '+qname)
-                $('#gobackq').attr('href', queries_url+'?goto='+iid)
-                $('#nameu').html(uname)
-                $('#nameul').attr('href', 'mailto:'+q.uemail)
-                $('#nameo').html(oname)
-                $('#nameol').attr('href', q.owebsite)
-                $('#namep').html(pname)
-                $('#namepl').attr('href', q.pwebsite)
-                $('#nameqm').html(qname)
-                $('#nameq').val(q.name)
-                $('#qid').val(q.id)
-                $('#is_pub_c').attr('qid', q.id)
-                $('#descm').html(q.description_md)
-                $('#descq').val(q.description)
-                $('#mqlq').val(q.mql)
-                $('#ispub_ro').attr('class', 'ui-icon ui-icon-'+((q.is_published == 'T')?'check':'closethick'))
-                $('#ispub_c').prop('checked', q.is_published == 'T')
-                $('#created_on').html(q.created_on)
-                $('#modified_on').html(q.modified_on)
-                $('#executed_on').html(q.executed_on)
-                $('#statq').removeClass('error warning good').addClass(q.status)
-                this.setstatus(null)
+                $('#itemtag').val(ufname+' '+ulname+': '+qname)
+                $('.moredetail').click(function(e) {e.preventDefault();
+                    toggle_detail($(this))
+                })
+                $('.detail').hide()
+                $('div[version="'+vr+'"]').find('.detail').show()
+                that.msgq = new Msg('dbmsg_q')
+                that.msgqv = new Msg('dbmsg_qv')
+                for (var v in versions) {
+                    this.set_vselect(v)
+                }
+                $('#is_pub_c').show()
+                $('#is_pub_ro').hide()
             }
             else {
                 var g_entry_heb = escapeHTML(w.g_entry_heb)
@@ -1287,153 +1325,228 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
 
         $('#theitem').html($('#itemtag').val()+' ')                              // fill in the title of the query/word above the verse material
-        if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
-            $('.fullc').click(function(e) {e.preventDefault();
-                var thisiid = $(this).attr('iid')
-                var mqlq = $('#area_'+thisiid)
-                var dia = $('#bigq_'+thisiid).dialog({
-                    dialogClass: 'mql_dialog',
-                    closeOnEscape: true,
-                    close: function() {
-                        dia.dialog('destroy')
-                        var mqlq = $('#area_'+thisiid)
-                        mqlq.removeClass('mql_dia')
-                        mqlq.addClass('mql small')
-                        mqlq.css('height', mql_small_height)
-                        mqlq.css('width', mql_small_width)
-                    },
-                    modal: false,
-                    title: 'mql query body',
-                    position: {my: 'left top', at: 'left top', of: window},
-                    width: '600px',
+        if (this.qw == 'q') {
+            if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
+                $('.fullc').click(function(e) {e.preventDefault();
+                    var thisiid = $(this).attr('iid')
+                    var mqlq = $('#area_'+thisiid)
+                    var dia = $('#bigq_'+thisiid).dialog({
+                        dialogClass: 'mql_dialog',
+                        closeOnEscape: true,
+                        close: function() {
+                            dia.dialog('destroy')
+                            var mqlq = $('#area_'+thisiid)
+                            mqlq.css('height', mql_small_height)
+                            mqlq.css('width', mql_small_width)
+                        },
+                        modal: false,
+                        title: 'mql query body',
+                        position: {my: 'left top', at: 'left top', of: window},
+                        width: mql_big_width_dia,
+                        height: window_height,
+                    })
+                    mqlq.css('height', standard_height)
+                    mqlq.css('width', mql_big_width)
                 })
-                mqlq.removeClass('mql small')
-                mqlq.addClass('mql_dia')
-                mqlq.css('height', standard_height)
-                mqlq.css('width', mql_big_width)
-            })
-        }
-        else { // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
-            var fullc = $('.fullc')
-            var mqlq = $('#mqlq')
-            var descm = $('#descm')
-            fullc.click(function(e) {e.preventDefault();
-                fullc.hide()
-                var dia = $('#bigger').closest('div').dialog({
-                    dialogClass: 'mql_dialog',
-                    closeOnEscape: true,
-                    close: function() {
-                        dia.dialog('destroy')
-                        var mqlq = $('textarea.mql_dia')
-                        mqlq.removeClass('mql_dia')
-                        mqlq.addClass('mql')
-                        mqlq.css('height', mql_small_height)
-                        mqlq.css('width', mql_small_width)
-                        descm.removeClass('desc_dia')
-                        descm.addClass('desc')
-                        descm.css('height', mql_small_height)
-                        descm.css('width', mql_small_width)
-                        fullc.show()
-                    },
-                    modal: false,
-                    title: 'description and mql query body',
-                    position: {my: 'left top', at: 'left top', of: window},
-                    width: mql_big_width_dia,
-                    height: standard_height,
+            }
+            else { // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
+                var vr = wb.version
+                var fullc = $('.fullc')
+                var editq = $('#editq')
+                var execq = $('#execq')
+                var saveq = $('#saveq')
+                var cancq = $('#cancq')
+                var doneq = $('#doneq')
+                var nameq = $('#nameq')
+                var descm = $('#descm')
+                var descq = $('#descq')
+                var mqlq = $('#mqlq')
+                var pube = $('#is_pub_c')
+                var pubr = $('#is_pub_ro')
+                var is_pub = q.versions[vr].is_published
+                fullc.click(function(e) {e.preventDefault();
+                    fullc.hide()
+                    var dia = $('#bigger').closest('div').dialog({
+                        dialogClass: 'mql_dialog',
+                        closeOnEscape: true,
+                        close: function() {
+                            dia.dialog('destroy')
+                            mqlq.css('height', mql_small_height)
+                            //mqlq.css('width', mql_small_width)
+                            descm.removeClass('desc_dia')
+                            descm.addClass('desc')
+                            descm.css('height', mql_small_height)
+                            //descm.css('width', mql_small_width)
+                            fullc.show()
+                        },
+                        modal: false,
+                        title: 'description and mql query body',
+                        position: {my: 'left top', at: 'left top', of: window},
+                        width: mql_big_width_dia,
+                        height: window_height,
+                    })
+                    mqlq.css('height', half_standard_height)
+                    //mqlq.css('width', mql_big_width)
+                    descm.removeClass('desc')
+                    descm.addClass('desc_dia')
+                    descm.css('height', half_standard_height)
+                    //descm.css('width', mql_big_width)
                 })
-                mqlq.removeClass('mql')
-                mqlq.addClass('mql_dia')
-                mqlq.css('height', half_standard_height)
-                mqlq.css('width', mql_big_width)
-                descm.removeClass('desc')
-                descm.addClass('desc_dia')
-                descm.css('height', half_standard_height)
-                descm.css('width', mql_big_width)
-            })
-            msg.set_dest('#dbmsg_q')
-            $('#is_pub_c').click(function(e) {
-                var val = $(this).prop('checked')
-                that.sendval($(this).attr('qid'), 'is_published', val?'T':'')
-            })
-            var detlq = $('.detail')
-            var editq = $('#editq')
-            var execq = $('#execq')
-            var saveq = $('#saveq')
-            var doneq = $('#doneq')
-            var nameq = $('#nameq')
-            var descq = $('#descq')
-            var descm = $('#descm')
-            nameq.hide()
-            descq.hide()
-            descm.show()
-            detlq.show()
-            editq.show()
-            execq.hide()
-            saveq.hide()
-            doneq.hide()
-            editq.click(function(e) {e.preventDefault();
-                set_edit_width()
-                nameq.show()
-                descq.show()
-                descm.hide()
-                detlq.hide()
-                editq.hide()
-                execq.show()
-                saveq.show()
-                doneq.show()
-                mqlq.prop('readonly', false)
-                mqlq.css('height', '20em')
-            })
-            doneq.click(function(e) {e.preventDefault();
-                reset_main_width()
+                $('#is_pub_c').click(function(e) {
+                    var val = $(this).prop('checked')
+                    that.sendval(q.versions[vr], $(this), val, vr, $(this).attr('qid'), 'is_published', val?'T':'')
+                })
+                $('#is_shared_c').click(function(e) {
+                    var val = $(this).prop('checked')
+                    that.sendval(q, $(this), val, vr, $(this).attr('qid'), 'is_shared', val?'T':'')
+                })
                 nameq.hide()
                 descq.hide()
                 descm.show()
-                detlq.show()
                 editq.show()
-                execq.hide()
+                if (is_pub) {execq.hide()} else {execq.show()}
                 saveq.hide()
+                cancq.hide()
                 doneq.hide()
-                mqlq.prop('readonly', true)
-                mqlq.css('height', '10em')
-            })
-            saveq.click(function(e) {e.preventDefault();
-                var data = {
-                    qid: $('#qid').val(),
-                    name: $('#nameq').val(),
-                    description: $('#descq').val(),
-                    mql: $('#mqlq').val(),
-                    execute: false,
-                }
-                that.sendvals(data)
-            })
-            execq.click(function(e) {e.preventDefault();
-                msg.clear()
-                msg.msg(['special', 'executing query ...'])
-                var data = {
-                    qid: $('#qid').val(),
-                    name: $('#nameq').val(),
-                    description: $('#descq').val(),
-                    mql: $('#mqlq').val(),
-                    execute: true,
-                }
-                that.sendvals(data)
-            })
+                pube.show()
+                pubr.hide()
+                editq.click(function(e) {e.preventDefault();
+                    var is_pub = q.versions[vr].is_published
+                    that.saved_name = nameq.val()
+                    that.saved_desc = descq.val()
+                    that.saved_mql = mqlq.val()
+                    set_edit_width()
+                    if (!is_pub) {nameq.show()}
+                    descq.show()
+                    descm.hide()
+                    editq.hide()
+                    saveq.show()
+                    cancq.show()
+                    doneq.show()
+                    pubr.show()
+                    pube.hide()
+                    mqlq.prop('readonly', is_pub)
+                    mqlq.css('height', '20em')
+                })
+                cancq.click(function(e) {e.preventDefault();
+                    nameq.val(that.saved_name)
+                    descq.val(that.saved_desc)
+                    mqlq.val(that.saved_mql)
+                    reset_main_width()
+                    nameq.hide()
+                    descq.hide()
+                    descm.show()
+                    editq.show()
+                    saveq.hide()
+                    cancq.hide()
+                    doneq.hide()
+                    pube.show()
+                    pubr.hide()
+                    mqlq.prop('readonly', true)
+                    mqlq.css('height', '10em')
+                })
+                doneq.click(function(e) {e.preventDefault();
+                    reset_main_width()
+                    nameq.hide()
+                    descq.hide()
+                    descm.show()
+                    editq.show()
+                    saveq.hide()
+                    cancq.hide()
+                    doneq.hide()
+                    pube.show()
+                    pubr.hide()
+                    mqlq.prop('readonly', true)
+                    mqlq.css('height', '10em')
+                    var data = {
+                        version: wb.version,
+                        qid: $('#qid').val(),
+                        name: $('#nameq').val(),
+                        description: $('#descq').val(),
+                        mql: $('#mqlq').val(),
+                        execute: false,
+                    }
+                    that.sendvals(data)
+                })
+                saveq.click(function(e) {e.preventDefault();
+                    var data = {
+                        version: wb.version,
+                        qid: $('#qid').val(),
+                        name: $('#nameq').val(),
+                        description: $('#descq').val(),
+                        mql: $('#mqlq').val(),
+                        execute: false,
+                    }
+                    that.sendvals(data)
+                })
+                execq.click(function(e) {e.preventDefault();
+                    execq.addClass('fa-spin')
+                    msg.clear()
+                    that.msgqv.msg(['special', 'executing query ...'])
+                    var data = {
+                        version: wb.version,
+                        qid: $('#qid').val(),
+                        name: $('#nameq').val(),
+                        description: $('#descq').val(),
+                        mql: $('#mqlq').val(),
+                        execute: true,
+                    }
+                    that.sendvals(data)
+                })
+            }
         }
     }
-    this.setstatus = function(cls) {
-        var statq = (cls != null)?cls:$('#statq').attr('class');
+    this.setstatus = function(vr, cls) {
+        var statq = (cls != null)?cls:$('#statq'+vr).attr('class');
         var statm = (statq == 'good')?'results up to date':((statq == 'error')?'results outdated':'never executed')
         $('#statm').html(statm)
     }
-    this.sendval = function(iid, fname, val) {
+    this.sendval = function(q, checkbx, newval, vr, iid, fname, val) {
         var good = false
         var senddata = {}
+        senddata.version = vr
         senddata.qid = iid
         senddata.fname = fname
         senddata.val = val
         $.post(field_url, senddata, function(json) {
             good = json.good
+            var mod_dates = json.mod_dates
+            var mod_cls = json.mod_cls
+            if (good) {
+                for (var mod_date_fld in mod_dates) {
+                    $('#'+mod_date_fld).html(mod_dates[mod_date_fld])
+                }
+                for (var mod_cl in mod_cls) {
+                    var cl = mod_cls[mod_cl]
+                    var dest = $('#'+mod_cl)
+                    dest.removeClass('fa-check fa-close')
+                    dest.addClass(cl)
+                }
+                q[fname] = newval
+            }
+            else {
+                checkbx.prop('checked', !newval)
+            }
+            var extra = json.extra
+            for (var fld in extra) {
+                var instr = extra[fld]
+                var prop = instr[0]
+                var val = instr[1]
+                if (prop == 'check') {
+                    var dest = $('#'+fld+'_c')
+                    dest.prop('checked', val) 
+                }
+                else if (prop == 'show') {
+                    var dest = $('#'+fld)
+                    if (val) {
+                        dest.show() 
+                    }
+                    else {
+                        dest.hide() 
+                    }
+                }
+            }
+            var msg = (fname == 'is_shared')?that.msgq:that.msgqv;
             msg.clear()
             json.msgs.forEach(function(m) {
                 msg.msg(m)
@@ -1443,23 +1556,26 @@ function SContent(mr, qw) { // the contents of an individual sidebar
     this.sendvals = function(senddata) {
         var good = false
         var execute = senddata.execute;
+        var vr = senddata.version
         $.post(fields_url, senddata, function(json) {
             good = json.good
             var q = json.q
+            var msg = that.msgqv;
             msg.clear()
             json.msgs.forEach(function(m) {
                 msg.msg(m)
             })
             if (good) {
+                var qx = q.versions[vr];
                 $('#nameqm').html(escapeHTML(q.name))
                 $('#nameq').val(q.name)
                 $('#descm').html(q.description_md)
                 $('#descq').val(q.description)
-                $('#mqlq').val(q.mql)
-                $('#executed_on').html(q.executed_on)
-                $('#modified_on').html(q.modified_on)
-                $('#statq').removeClass('error warning good').addClass(q.status)
-                that.setstatus(q.status)
+                $('#mqlq').val(qx.mql)
+                $('#executed_on').html(qx.executed_on)
+                $('#xmodified_on').html(qx.xmodified_on)
+                $('#statq').removeClass('error warning good').addClass(qx.status)
+                that.setstatus('', qx.status)
             }
             if (execute) {
                 material_fetched = {txt_p: false, txt_il: false}
@@ -1469,6 +1585,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 if (show_chart) {
                     wb.sidebars.sidebar['rq'].cselect.apply()
                 }
+                $('#execq').removeClass('fa-spin')
             }
         }, 'json')
     }
@@ -1478,12 +1595,15 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
     }
     this.fetch = function() {
-        var vars = '?version='+wb.vs.version()+'&mr='+this.mr+'&qw='+this.qw
+        var vars = '?version='+wb.version+'&mr='+this.mr+'&qw='+this.qw
         var do_fetch = false
         var extra = ''
         if (this.mr == 'm') {
             vars += '&book='+wb.vs.book()
             vars += '&chapter='+wb.vs.chapter()
+            if (this.qw == 'q') {
+                vars += '&qpub='+wb.vs.pub(this.qw)
+            }
             do_fetch = wb.vs.book() != 'x' && wb.vs.chapter() > 0
             extra = 'm'
         }
@@ -1524,13 +1644,12 @@ function SContent(mr, qw) { // the contents of an individual sidebar
     this.sidelistitem = function(iid) { // individual item in an m-sidebar
         var itop = $('#'+this.qw+iid) 
         var more = $('#m_'+this.qw+iid) 
-        var head = $('#h_'+this.qw+iid) 
         var desc = $('#d_'+this.qw+iid) 
         var item = $('#item_'+this.qw+iid) 
         var all = $('#'+this.qw+iid)
         desc.hide()
         more.click(function(e) {e.preventDefault();
-            desc.toggle()
+            toggle_detail($(this), desc, (that.qw == 'q')?put_markdown:undefined)
         })
         item.click(function(e) {e.preventDefault();
             var qw = that.qw
@@ -1554,6 +1673,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
     }
     if (this.mr == 'r') {
         wb.picker1[this.qw] = new Colorpicker1(this.qw, null, true, false)
+        if (this.qw == 'w') {
+            this.msgw = new Msg('dbmsg_w')
+        }
     }
 }
 
@@ -1563,6 +1685,7 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
     var that = this
     this.qw = qw
     var hlradio = $('.'+qw+'hradio')
+    var pradio = $('.qpradio')
 
     this.apply = function() {
         if (wb.vs.get(this.qw) == 'v') {
@@ -1571,6 +1694,15 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
             }
             wb.picker2[this.qw].apply(true)
         }
+        var pradio = $('.qpradio')
+        if (this.qw == 'q') {
+            if (wb.vs.pub('q') == 'v') {
+                pradio.addClass('ison')
+            }
+            else {
+                pradio.removeClass('ison')
+            }
+        }
     }
     this.picker2 = new Colorpicker2(this.qw, false)
     hlradio.click(function(e) {e.preventDefault();
@@ -1578,12 +1710,21 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
         wb.vs.addHist()
         wb.highlight2({code: '3', qw: that.qw})
     })
+    if (qw == 'q') {
+        var pradio = $('.qpradio')
+        pradio.click(function(e) {e.preventDefault();
+            wb.vs.hstatesv(that.qw, {pub: (wb.vs.pub(that.qw) == 'x')?'v':'x'})
+            side_fetched['mq'] = false
+            wb.sidebars.sidebar['mq'].content.apply()
+        })
+    }
 }
 
 function set_csv(mr, qw, iid) {
     if (mr == 'r') {
         $('#csv_lnk'+qw).attr('href', wb.vs.csv_url())
-        $('#csvitemdesc'+qw).html(style[qw]['t']+iid+'.csv')
+        var ctit = $('#csv_lnk'+qw).attr('ftitle')
+        $('#csv_lnk'+qw).attr('title', style[qw]['t']+iid+'.csv'+ctit)
     }
 }
 
@@ -1828,6 +1969,7 @@ function ViewState(init, pref) {
     this.get = function(qw) {return this.data['highlights'][qw]['get']}
     this.active = function(qw) {return this.data['highlights'][qw]['active']}
     this.sel_one = function(qw) {return this.data['highlights'][qw]['sel_one']}
+    this.pub = function(qw) {return this.data['highlights'][qw]['pub']}
     this.colormap = function(qw) {return this.data['colormap'][qw]}
     this.color = function(qw, id) {return this.data['colormap'][qw][id]}
     this.iscolor = function(qw, cl) {return cl in this.data['colormap'][qw]} 
@@ -1839,52 +1981,6 @@ function close_dialog(dia) {
     var was_open = dia && dia.dialog('instance') && dia.dialog('isOpen')
     if (was_open) {dia.dialog('close')}
     return was_open
-}
-
-/* Words */
-
-var Request = {
-    parameter: function(name) {
-        return this.parameters()[name]
-    },
-    parameters: function(uri) {
-        var i, parameter, params, query, result;
-        result = {};
-        if (!uri) {
-            uri = window.location.search;
-        }
-        if (uri.indexOf("?") === -1) {
-            return {};
-        }
-        query = uri.slice(1);
-        params = query.split("&");
-        i = 0;
-        while (i < params.length) {
-            parameter = params[i].split("=");
-            result[parameter[0]] = parameter[1];
-            i++;
-        }
-        return result;
-    }
-}
-
-function words_init() {
-    var gotoword = Request.parameter('goto');
-    set_heightw()
-    $('[wii]').hide()
-    $('[gi]').click(function(e) {e.preventDefault();
-        var i = $(this).attr('gi')
-        $('[wi="'+i+'"]').toggle()
-        $('[wii="'+i+'"]').toggle()
-    })
-    $('[gi]').closest('td').removeClass('selecthlw')
-    var wtarget = $('[gi='+gotoword+']').closest('td')
-    if (wtarget != undefined) {
-        wtarget.addClass('selecthlw')
-        if (wtarget[0] != undefined) {
-            wtarget[0].scrollIntoView()
-        }
-    }
 }
 
 /* GENERIC */
@@ -1899,26 +1995,47 @@ var escapeHTML = (function () {
     };
 }());
 
-function Msg() {
+function toggle_detail(wdg, detail, extra) {
+    var thedetail = (detail == undefined)?wdg.closest('div').find('.detail'):detail
+    thedetail.toggle()
+    if (extra != undefined) {
+        extra(wdg)
+    }
+    var thiscl, othercl
+    if (wdg.hasClass('fa-chevron-right')) {
+        thiscl = 'fa-chevron-right'
+        othercl = 'fa-chevron-down'
+    }
+    else {
+        thiscl = 'fa-chevron-down'
+        othercl = 'fa-chevron-right'
+    }
+    wdg.removeClass(thiscl)
+    wdg.addClass(othercl)
+}
+
+function put_markdown(wdg) {
+    var did = wdg.attr('did')
+    var src = $('#dv_'+did)
+    var mdw = $('#dm_'+did)
+    mdw.html(markdown.toHTML(src.val()))
+}
+
+function Msg(destination) {
     var that = this
-    this.destination = $('#material_message')
+    this.destination = $('#'+destination)
+    this.trashc = $('#trash_'+destination)
     this.clear = function() {
         this.destination.html('')
         this.trashc.hide()
     }
-    this.set_dest = function(dest) {
-        this.destination = $(dest)
-        this.trashc = $('.trashc')
-        this.trashc.click(function(e) {e.preventDefault();
-            that.clear()
-            that.trashc.hide()
-        })
-        that.trashc.hide()
-    }
+    this.trashc.click(function(e) {e.preventDefault();
+        that.clear()
+    })
     this.msg = function(msgobj) {
-        var msgc = this.destination;
-        var mtext = msgc.html()
-        msgc.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
+        var mtext = this.destination.html()
+        this.destination.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
         this.trashc.show()
     }
+    this.trashc.hide()
 }

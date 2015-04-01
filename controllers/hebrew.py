@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gluon.custom_import import track_changes; track_changes(True)
-import collections, json
+import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
@@ -44,9 +44,25 @@ from mql import mql
 # So if users are active with executing queries, the caching of query lists is not very useful.
 # But for those periods where nobody executes a query, all users benefit from better response times. 
 # We cache in ram, but also on disk, in order to retain the cache across restarting the webserver
+#
+# Here are the cache keys we are using:
+
+# books_{vr}_                                   list of books plus fixed book info 
+# blocks_{vr}_                                  list of 500w blocks plus boundary info
+# verse_boundaries                              for each verse its starting and ending monad (word number)
+# verses_{vr}_{mqw}_{bk/iid}_{ch/page}_{tp}_    verses on a material page, either for a chapter, or an occurrences page of a lexeme, or a results page of a query execution
+# verse_{vr}_{bk}_{ch}_{vs}_                    a single verse in data representation
+# items_{qw}_{vr}_{bk}_{ch}_                    the items (queries or words) in a sidebar list of a page that shows a chapter
+# chart_{vr}_{qw}_{iid}_                        the chart data for a query or word
+# words_page_{vr}_{lan}_{letter}_               the data for a word index page
+# words_data_{vr}_                              the data for the main word index page
+
 
 RESULT_PAGE_SIZE = 20
 BLOCK_SIZE = 500
+PUBLISH_FREEZE = datetime.timedelta(weeks=1)
+PUBLISH_FREEZE_MSG = '1 week'
+NULLDT = '____-__-__ __:__:__'
 
 CACHING = True
 
@@ -62,10 +78,11 @@ def text():
     books = {}
     books_order = {}
     for vr in versions:
-        (books[vr], books_order[vr]) = from_cache('books_{}'.format(vr), get_books(vr), None)
+        if not versions[vr]['date']: continue
+        (books[vr], books_order[vr]) = from_cache('books_{}_'.format(vr), lambda:get_books(vr), None)
 
     return dict(
-        viewsettings=Viewsettings(),
+        viewsettings=Viewsettings(versions),
         versions=versions,
         colorpicker=colorpicker,
         legend=legend,
@@ -173,7 +190,7 @@ def material():
     page = get_request_val('material', '', 'page')
     mrrep = 'm' if mr == 'm' else qw
     return from_cache(
-        'verses_{}_{}+{}_{}+{}+'.format(vr, mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
+        'verses_{}_{}_{}_{}_{}_'.format(vr, mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
         lambda: material_c(vr, mr, qw, bk, iid, ch, page, tp),
         None,
     )
@@ -209,7 +226,7 @@ def material_c(vr, mr, qw, bk, iid, ch, page, tp):
                 monads=json.dumps([]),
             )
         else:
-            (nmonads, monad_sets) = load_monad_sets(iid) if qw == 'q' else load_word_occurrences(iid)
+            (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
             (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets, iid)
             material = Verses(passage_dbs, vr, mr, verses, tp=tp)
             result = dict(
@@ -240,7 +257,7 @@ def verse():
     if vs == None:
         return dict(good=False, msgs=msgs)
     return from_cache(
-        'verse+{}_{}_{}+{}+'.format(vr, bk, ch, vs),
+        'verse_{}_{}_{}_{}_'.format(vr, bk, ch, vs),
         lambda: verse_c(vr, bk, ch, vs, msgs),
         None,
     )
@@ -264,13 +281,14 @@ def sidem():
     qw = get_request_val('material', '', 'qw')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
+    pub = get_request_val('highlights', 'q', 'pub') if qw == 'q' else ''
     return from_cache(
-        'items_{}_{}+{}_{}+'.format(vr, qw, bk, ch),
-        lambda: sidem_c(vr, qw, bk, ch),
+        'items_{}_{}_{}_{}_{}_'.format(qw, vr, bk, ch, pub),
+        lambda: sidem_c(vr, qw, bk, ch, pub),
         None,
     )
 
-def sidem_c(vr, qw, bk, ch):
+def sidem_c(vr, qw, bk, ch, pub):
     (book, chapter) = getpassage()
     if not chapter:
         result = dict(
@@ -280,7 +298,7 @@ def sidem_c(vr, qw, bk, ch):
         )
     else:
         if qw == 'q':
-            monad_sets = get_monadsets(vr, chapter)
+            monad_sets = get_monads(vr, chapter, pub)
             side_items = groupq(vr, monad_sets)
         else:
             monad_sets = get_lexemes(vr, chapter)
@@ -294,48 +312,21 @@ def sidem_c(vr, qw, bk, ch):
 
 def query():
     iid = get_request_val('material', '', 'iid')
+    vr = get_request_val('material', '', 'version')
     if request.extension == 'json':
         (authorized, msg) = query_access_read(iid=iid)
         if not authorized:
-            result = dict(good=False, msg=msg)
+            result = dict(good=False, msg=[msg])
         else:
-            records = db.executesql('''
-select
-    organization.name as organization,
-    project.name as project,
-    concat(auth_user.first_name, ' ', auth_user.last_name) as author,
-    queries.name as name, queries.id as id,
-    queries.is_published as is_published,
-    queries.description as description,
-    queries.mql as mql,
-    queries.created_on as created,
-    queries.modified_on as modified,
-    queries.executed_on as executed
-from queries
-inner join organization on queries.organization = organization.id
-inner join project on queries.project = project.id
-inner join auth_user on queries.created_by = auth_user.id
-where queries.id = {};
-'''.format(iid), as_dict=True)
-            lr = len(records)
-            msg = ''
-            data = None
-            good = False
-            if lr != 1:
-                msg='{} records instead of just 1'.format(lr)
-            else:
-                good = True
-                data = records[0]
-                for f in ('created', 'modified', 'executed'):
-                    if f in data:
-                        data[f] = str(data[f])
-                data['is_published'] = data.get('is_published', False) == 'T'
-            result = dict(good=good, msg=msg, data=data)
+            msgs = []
+            qrecord = get_query_info(iid, vr, msgs, with_ids=False, single_version=False, po=True)
+            result = dict(good=qrecord != None, msg=msgs, data=qrecord)
             return dict(data=json.dumps(result))
     else:
         request.vars['mr'] = 'r'
         request.vars['qw'] = 'q'
         request.vars['tp'] = 'txt_p'
+        request.vars['vr'] = vr
         request.vars['iid'] = iid
         request.vars['page'] = 1
     return text()
@@ -344,6 +335,7 @@ def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
+    request.vars['version'] = get_request_val('material', '', 'version')
     request.vars['iid'] = get_request_val('material', '', 'iid')
     request.vars['page'] = 1
     return text()
@@ -405,7 +397,7 @@ def chart(): # controller to produce a chart of query results or lexeme occurren
         result.update(qw=qw)
         return result()
     return from_cache(
-        'chart_{}_{}+{}+'.format(vr, qw, iid),
+        'chart_{}_{}_{}_'.format(vr, qw, iid),
         lambda: chart_c(vr, qw, iid),
         None,
     )
@@ -419,11 +411,12 @@ def chart_c(vr, qw, iid):
 def sideqm():
     session.forget(response)
     iid = get_request_val('material', '', 'iid')
+    vr = get_request_val('material', '', 'version')
     (authorized, msg) = query_access_read(iid=iid)
     if authorized:
         msg = 'fetching query'
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(mr='r', qw='q', iid=iid),
+        vars=dict(mr='r', qw='q', version=vr, iid=iid),
         ajax=False, ajax_trap=True, target='querybody', 
         content=msg,
     ))
@@ -431,22 +424,26 @@ def sideqm():
 def sidewm():
     session.forget(response)
     iid = get_request_val('material', '', 'iid')
+    vr = get_request_val('material', '', 'version')
     (authorized, msg) = query_access_read(iid=iid)
     if authorized:
         msg = 'fetching word'
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
-        vars=dict(mr='r', qw='w', iid=iid),
+        vars=dict(mr='r', qw='w', version=vr, iid=iid),
         ajax=False, ajax_trap=True, target='wordbody', 
         content=msg,
     ))
 
 def words():
-    vr = get_request_val('material', '', 'version')
+    viewsettings = Viewsettings(versions)
+    vr = get_request_val('material', '', 'version', default=False)
+    if not vr:
+        vr = viewsettings.theversion()
     lan = get_request_val('rest', '', 'lan')
     letter = get_request_val('rest', '', 'letter')
     return from_cache(
-        'words_page_{}_{}_{}+'.format(vr, lan, letter),
-        lambda: words_page(vr, lan, letter),
+        'words_page_{}_{}_{}_'.format(vr, lan, letter),
+        lambda: words_page(viewsettings, vr, lan, letter),
         None,
     )
 
@@ -458,9 +455,9 @@ def queries():
             qid = None
     return dict(qid=qid if qid != None else 0)
 
-def words_page(vr, lan=None, letter=None):
-    (letters, words) = from_cache('words_data_{}'.format(vr), lambda: get_words_data(vr), None)
-    return dict(lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
+def words_page(viewsettings, vr, lan=None, letter=None):
+    (letters, words, entrymap) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
+    return dict(versionstate=viewsettings.versionstate(), lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
 
 def get_words_data(vr):
     ddata = passage_dbs[vr].executesql('''
@@ -469,22 +466,24 @@ order by lan, entryid_heb
 ''')
     letters = dict(arc=[], hbo=[])
     words = dict(arc={}, hbo={})
-    for (id, e, eid, lan, gloss) in ddata:
+    entrymap = dict(arc={}, hbo={})
+    for (wid, e, eid, lan, gloss) in ddata:
         letter = ord(e[0])
         if letter not in words[lan]:
             letters[lan].append(letter)
             words[lan][letter] = []
-        words[lan][letter].append((e, id, eid, gloss))
-    return (letters, words)
+        words[lan][letter].append((e, wid, eid, gloss))
+        entrymap[lan][eid] = wid
+    return (letters, words, entrymap)
 
 def pq():
     myid = None
     if auth.user:
         myid = auth.user.id
-    return pq_c(myid)
-    #return from_cache('queries+json+{}+'.format(myid), lambda:pq_c(myid), None)
+    vr = get_request_val('material', '', 'version')
+    return pq_c(vr, myid)
 
-def pq_c(myid):
+def pq_c(vr, myid):
     linfo = collections.defaultdict(lambda: {})
 
     def title_badge(myid, lid, ltype, newtype, good, warn, err, num, tot):
@@ -517,9 +516,9 @@ def pq_c(myid):
         return u'<span n="1">{}</span>{}<span class="brq">({})</span>{}{}'.format(h_esc(name), create, badge, rename, select)
 
     condition = '''
-where queries.is_published = 'T'
+where query.is_shared = 'T'
 ''' if myid == None else '''
-where queries.is_published = 'T' or queries.created_by = {}
+where query.is_shared = 'T' or query.created_by = {}
 '''.format(myid)
 
     pqueries_sql = '''
@@ -527,15 +526,16 @@ select
     organization.name as oname, organization.id as oid,
     project.name as pname, project.id as pid,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.id as uid,
-    queries.name as qname, queries.id as qid,
-    queries.modified_on as qmod, queries.executed_on as qexe,
-    queries.is_published as qpub
-from queries
-inner join organization on queries.organization = organization.id
-inner join project on queries.project = project.id
-inner join auth_user on queries.created_by = auth_user.id
+    query.name as qname, query.id as qid,
+    query_exe.modified_on as qmod, query_exe.executed_on as qexe,
+    query_exe.is_published as qpub
+from query
+inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{}'
+inner join organization on query.organization = organization.id
+inner join project on query.project = project.id
+inner join auth_user on query.created_by = auth_user.id
 {}
-'''.format(condition)
+'''.format(vr, condition)
     pqueries = db.executesql(pqueries_sql)
 
     porg_sql = '''
@@ -694,7 +694,7 @@ def check_unique(tp, lid, val, myid, msgs):
     for x in [1]:
         if tp == 'q':
             check_sql = u'''
-select id from queries where name = '{}' and queries.created_by = {};'''.format(val, myid)
+select id from query where name = '{}' and query.created_by = {};'''.format(val, myid)
         else:
             check_sql = u'''select id from {} where name = '{}';'''.format(table, val)
         try:
@@ -879,19 +879,19 @@ def record():
             else: 
                 dbrecord = db.executesql(u'''
 select
-queries.id as id,
-queries.name as name,
-queries.description as description,
+query.id as id,
+query.name as name,
+query.description as description,
 organization.id as oid,
 organization.name as oname,
 organization.website as owebsite,
 project.id as pid,
 project.name as pname,
 project.website as pwebsite
-from queries
-inner join organization on queries.organization = organization.id
-inner join project on queries.project = project.id
-where queries.id = {}
+from query
+inner join organization on query.organization = organization.id
+inner join project on query.project = project.id
+where query.id = {}
 '''.format(lid), as_dict=True)
         else:
             if lid == 0:
@@ -955,70 +955,180 @@ def upd_record(tp, lid, myid, fields, msgs):
         msgs.append((u'good', thismsg))
     return (good, lid)
 
+def windex():
+    msgs = []
+    good = False
+    newwid = None
+    for x in [1]:
+        oldwid = check_id('oldwid', 'lexicon', msgs)
+        if oldwid == None: break
+        oldv = request.vars.oldv
+        newv = request.vars.newv
+        if oldv not in passage_dbs:
+            msgs.append(('error', 'No data version {}'.format(oldv)))
+            break
+        if newv not in passage_dbs:
+            msgs.append(('error', 'No data version {}'.format(newv)))
+            break
+        result = passage_dbs[oldv].executesql('''
+select entryid from lexicon where id = {};
+'''.format(oldwid)) 
+        if result == None or len(result) != 1:
+            msgs.append(('error', 'No word with id={} in data version {}'.format(oldwid, oldv)))
+            break
+        eid = result[0][0]
+        eidsql = eid.replace("'", "''").replace('%', '\\%')
+        result = passage_dbs[newv].executesql('''
+select id from lexicon where entryid = '{}';
+'''.format(eidsql)) 
+        if result == None or len(result) != 1:
+            msgs.append(('error', 'No word entry {} in data version {}'.format(eid, newv)))
+            break
+        newwid = result[0][0]
+        good = True
+        msgs.append(('special', '{} in {} is {} is {} in {}'.format(oldwid, oldv, h_esc(eid), newwid, newv)))
+    return dict(data=json.dumps(dict(msgs=msgs, good=good, newwid=newwid)))
+
 def field():
     msgs = []
     good = False
+    mod_date_fld = None
+    mod_dates = {}
+    extra = {}
     myid = auth.user.id if auth.user != None else None
     for x in [1]:
         qid = check_id('qid', 'query', msgs)
         if qid == None: break
         fname = request.vars.fname
         val = request.vars.val
-        if fname == None or fname not in {'name', 'is_published', 'description', 'mql'}:
+        vr = request.vars.version
+        if fname == None or fname not in {'is_shared', 'is_published'}:
             msgs.append('error', 'Illegal field name {}')
             break
         (authorized, msg) = query_auth_write(qid)
         if not authorized:
             msgs.append(('error', msg))
             break
-        good = upd_field(qid, fname, val, msgs)
-    return dict(data=json.dumps(dict(msgs=msgs, good=good)))
+        (good, mod_dates, mod_cls, extra) = upd_field(vr, qid, fname, val, msgs)
+    return dict(data=json.dumps(dict(msgs=msgs, good=good, mod_dates=mod_dates, mod_cls=mod_cls, extra=extra)))
 
-def upd_field(qid, fname, val, msgs):
-    updrecord = {}
+def upd_shared(myid, qid, valsql, msgs):
+    mod_date = None
+    mod_date_fld = 'shared_on'
     good = False
-    (label, table) = ('query', 'queries')
+    table = 'query'
+    fname = 'is_shared'
+    ckeys = r'^items_q_'
+    cache.ram.clear(regex=ckeys)
+    cache.disk.clear(regex=ckeys)
+    fieldval = u" {} = '{}'".format(fname, valsql)
+    mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
+    mod_date_sql = 'null' if mod_date == None else "'{}'".format(mod_date)
+    fieldval += u", {} = {} ".format(mod_date_fld, mod_date_sql) 
+    sql = u"update {} set{} where id = {}".format(table, fieldval, qid)
+    result = db.executesql(sql)
+    thismsg = 'modified'
+    thismsg = 'shared' if valsql == 'T' else 'UNshared'
+    msgs.append((u'good', thismsg))
+    return (mod_date_fld, str(mod_date) if mod_date else NULLDT)
+
+def upd_published(myid, vr, qid, valsql, msgs):
+    mod_date = None
+    mod_date_fld = 'published_on'
+    good = False
+    table = 'query_exe'
+    fname = 'is_published'
+    ckeys = r'^items_q_{}_'.format(vr)
+    cache.ram.clear(regex=ckeys)
+    cache.disk.clear(regex=ckeys)
+    verify_version(qid, vr)
+    fieldval = u" {} = '{}'".format(fname, valsql)
+    mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
+    mod_date_sql = 'null' if mod_date == None else "'{}'".format(mod_date)
+    fieldval += u", {} = {} ".format(mod_date_fld, mod_date_sql) 
+    sql = u"update {} set{} where query_id = {} and version = '{}'".format(table, fieldval, qid, vr)
+    result = db.executesql(sql)
+    thismsg = 'modified'
+    thismsg = 'published' if valsql == 'T' else 'UNpublished'
+    msgs.append((u'good', thismsg))
+    return (mod_date_fld, str(mod_date) if mod_date else NULLDT)
+
+def upd_field(vr, qid, fname, val, msgs):
+    good = False
     myid = None
+    mod_dates = {}
+    mod_cls = {}
+    extra = {}
     if auth.user:
         myid = auth.user.id
     for x in [1]:
-        if fname == 'name':
-            valsql = check_name('q', qid, myid, unicode(val, encoding='utf-8'), msgs)
-            if valsql == None:
-                break
-        if fname == 'description':
-            valsql = check_description('q', unicode(val, encoding='utf-8'), msgs)
-            if valsql == None:
-                break
-        if fname == 'mql':
-            valsql = check_mql('q', unicode(val, encoding='utf-8'), msgs)
-            if valsql == None:
+        valsql = check_published('q', unicode(val, encoding='utf-8'), msgs)
+        if valsql == None:
+            break
+        if fname == 'is_shared' and valsql == '':
+            sql = '''select count(*) from query_exe where query_id = {} and is_published = 'T';'''.format(qid)
+            pv = db.executesql(sql)
+            has_public_versions = pv != None and len(pv) == 1 and pv[0][0] > 0
+            if has_public_versions:
+                msgs.append(('error', 'You cannot UNshare this query because there is a published execution record'))
                 break
         if fname == 'is_published':
-            valsql = check_published('q', unicode(val, encoding='utf-8'), msgs)
-            if valsql == None:
-                break
+            mod_cls['is_pub_ro'] = 'fa-{}'.format('check' if valsql == 'T' else 'close')
+            extra['execq'] = ('show', valsql != 'T')
+            if valsql == 'T':
+                sql = '''select executed_on, modified_on as xmodified_on from query_exe where query_id = {} and version = '{}';'''.format(qid, vr)
+                pv = db.executesql(sql, as_dict=True)
+                if pv == None or len(pv) != 1:
+                    msgs.append(('error', 'cannot determine whether query results are up to date'))
+                    break
+                uptodate = qstatus(pv[0])
+                if uptodate != 'good':
+                    msgs.append(('error', 'You can only publish if the query results are up to date'))
+                    break
+                sql = '''select is_shared from query where id = {};'''.format(qid)
+                pv = db.executesql(sql)
+                is_shared = pv != None and len(pv) == 1 and pv[0][0] == 'T'
+                if not is_shared:
+                    (mod_date_fld, mod_date) = upd_shared(myid, qid, 'T', msgs)
+                    mod_dates[mod_date_fld] = mod_date
+                    extra['is_shared'] = ('checked', True)
+            else:
+                sql = '''select published_on from query_exe where query_id = {} and version = '{}';'''.format(qid, vr)
+                pv = db.executesql(sql)
+                pdate_ok = pv == None or len(pv) != 1 or pv[0][0] > request.now - PUBLISH_FREEZE
+                if not pdate_ok:
+                    msgs.append(('error', 'You cannot UNpublish this query because it has been published more than {} ago'.format(PUBLISH_FREEZE_MSG)))
+                    break
+
         good = True
+
     if good:
-        fieldval = u" {} = '{}'".format(fname, valsql)
-        sql = u'''update {} set{} where id = {}'''.format(table, fieldval, qid)
-        result = db.executesql(sql)
-        thismsg = 'modified'
-        if fname == 'is_published':
-            thismsg = 'published' if valsql == 'T' else 'UNpublished'
-        if fname == 'name':
-            thismsg = 'renamed'
-            
-        msgs.append((u'good', thismsg))
-    return good
+        if fname == 'is_shared':
+            (mod_date_fld, mod_date) = upd_shared(myid, qid, valsql, msgs)
+        else:
+            (mod_date_fld, mod_date) = upd_published(myid, vr, qid, valsql, msgs)
+        mod_dates[mod_date_fld] = mod_date
+    return (good, mod_dates, mod_cls, extra)
+
+def verify_version(qid, vr):
+    exist_version = db.executesql('''
+select id from query_exe where version = '{}' and query_id = {};
+'''.format(vr, qid))
+    if exist_version == None or len(exist_version) == 0:
+        db.executesql('''
+insert into query_exe (id, version, query_id) values (null, '{}', {});
+'''.format(vr, qid))
 
 def fields():
     msgs = []
     good = False
     updrecord = {}
-    (label, table) = ('query', 'queries')
+    label = 'query'
     myid = auth.user.id if auth.user != None else None
-    fields = {}
+    flds = {}
+    fldx = {}
+    vr = request.vars.version
+    q_record = {}
     for x in [1]:
         qid = check_id('qid', 'query', msgs)
         if qid == None: break
@@ -1026,123 +1136,278 @@ def fields():
         if not authorized:
             msgs.append(('error', msg))
             break
-        oldrecord = db.executesql('''select name, description, mql from queries where id = {}'''.format(qid), as_dict=True)
+        
+        verify_version(qid, vr)
+        oldrecord = db.executesql('''
+select
+    query.name as name,
+    query.description as description,
+    query_exe.mql as mql,
+    query_exe.is_published as is_published
+from query inner join query_exe on
+    query.id = query_exe.query_id and query_exe.version = '{}'
+where query.id = {};
+'''.format(vr, qid), as_dict=True)
         if oldrecord == None or len(oldrecord) == 0:
             msgs.append(('error', 'No query with id {}'.format(qid)))
             break
         oldvals = oldrecord[0]
-        valsql = check_name('q', qid, myid, unicode(request.vars.name, encoding='utf-8'), msgs)
-        if valsql == None:
-            break
-        fields['name'] = valsql
-        valsql = check_description('q', unicode(request.vars.description, encoding='utf-8'), msgs)
-        if valsql == None:
-            break
-        fields['description'] = valsql
-        newmql = request.vars.mql
-        valsql = check_mql('q', unicode(newmql, encoding='utf-8'), msgs)
-        if valsql == None:
-            break
-        fields['mql'] = valsql
-        good = True
-        if oldvals['mql'] != newmql:
-            msgs.append(('warning', 'query body modified'))
-            fields['modified_by'] = myid
-            fields['modified_on'] = request.now
+        is_published = oldvals['is_published'] == 'T'
+        if not is_published:
+            newname = unicode(request.vars.name, encoding='utf-8')
+            if oldvals['name'] != newname:
+                valsql = check_name('q', qid, myid, newname, msgs)
+                if valsql == None:
+                    break
+                flds['name'] = valsql
+                flds['modified_on'] = request.now
+            newmql = request.vars.mql
+            if oldvals['mql'] != newmql:
+                msgs.append(('warning', 'query body modified'))
+                valsql = check_mql('q', unicode(newmql, encoding='utf-8'), msgs)
+                if valsql == None:
+                    break
+                fldx['mql'] = valsql
+                fldx['modified_on'] = request.now
+            else:
+                msgs.append(('good', 'same query body'))
         else:
-            msgs.append(('good', 'same query body'))
+            msgs.append(('warning', 'only the description can been saved because this is a published query execution'))
+        newdesc = unicode(request.vars.description, encoding='utf-8')
+        if oldvals['description'] != newdesc:
+            valsql = check_description('q', newdesc, msgs)
+            if valsql == None:
+                break
+            flds['description'] = valsql
+            flds['modified_on'] = request.now
+        good = True
     if good:
         execute = request.vars.execute
         xgood = True
         if execute == 'true':
-            (xgood, xresults) = mql(newmql) 
+            (xgood, xresults) = mql(vr, newmql) 
             if xgood:
-                store_monad_sets(qid, xresults)
-                fields['executed_on'] = request.now
+                store_monad_sets(vr, qid, xresults)
+                fldx['executed_on'] = request.now
                 msgs.append(('good', 'Query executed'))
             else:
-                store_monad_sets(qid, [])
+                store_monad_sets(vr, qid, [])
                 msgs.append(('error', u'<code class="merr">{}</code>'.format(xresults)))
-        sql = u'''update {} set{} where id = {}'''.format(table, ', '.join(u" {} = '{}'".format(f, fields[f]) for f in fields if f != 'status'), qid)
-        db.executesql(sql)
-        sql = u'''select name, description, mql, executed_on, modified_on from queries where id = {}'''.format(qid)
-        result = db.executesql(sql, as_dict=True)
-        if result == None or len(result) == 0:
+        if len(flds):
+            sql = u"update {} set{} where id = {}".format(
+                'query',
+                ', '.join(u" {} = '{}'".format(f, flds[f]) for f in flds if f != 'status'),
+                qid,
+            )
+            db.executesql(sql)
+            ckeys = r'^items_q_'
+            cache.ram.clear(regex=ckeys)
+            cache.disk.clear(regex=ckeys)
+        if len(fldx):
+            sql = u"update {} set{} where query_id = {} and version = '{}'".format(
+                'query_exe',
+                ', '.join(u" {} = '{}'".format(f, fldx[f]) for f in fldx if f != 'status'),
+                qid,
+                vr,
+            )
+            db.executesql(sql)
+            ckeys = r'^items_q_{}_'.format(vr)
+            cache.ram.clear(regex=ckeys)
+            cache.disk.clear(regex=ckeys)
+        sql = u'''select name, description, modified_on from query where id = {};'''.format(qid)
+        records = db.executesql(sql, as_dict=True)
+        if records == None or len(records) == 0:
             msgs.append(('error', 'No query with id {}'.format(qid)))
             good = False
         else:
-            fields = result[0]
-            query_status(fields)
-            fields['description_md'] = markdown(unicode(request.vars.description, encoding='utf-8'))
-        for f in ('created_on', 'modified_on', 'executed_on'):
-            if f in fields:
-                fields[f] = str(fields[f])
+            q_record = records[0]
+            q_record['description_md'] = markdown(q_record['description'])
+            for f in ('modified_on',):
+                q_record[f] = str(q_record[f])
+            sql = '''
+select
+    mql,
+    version,
+    resultmonads,
+    results,
+    executed_on,
+    modified_on as xmodified_on
+from query_exe
+where query_id = {}
+'''.format(qid)
+            recordx = db.executesql(sql, as_dict=True)
+            query_fields(vr, q_record, recordx, single_version=False)
 
-    return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=fields)))
+    return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=q_record)))
 
-def query_status(mql_record):
-    if not mql_record['executed_on']:
-        mql_record['status'] = 'warning'
-    elif mql_record['executed_on'] < mql_record['modified_on']:
-        mql_record['status'] = 'error'
+def datetime_str(fields):
+    for f in ('created_on', 'modified_on', 'shared_on', 'xmodified_on', 'executed_on', 'published_on'):
+        if f in fields:
+            ov = fields[f]
+            fields[f] = str(ov) if ov else NULLDT
+    for f in ('is_shared', 'is_published'):
+        if f in fields: fields[f] = fields[f] == 'T'
+
+def qstatus(qx_record):
+    if not qx_record['executed_on']:
+        return 'warning'
+    if qx_record['executed_on'] < qx_record['xmodified_on']:
+        return 'error'
+    return 'good'
+
+def query_fields(vr, q_record, recordx, single_version=False):
+    datetime_str(q_record)
+    if not single_version:
+        q_record['versions'] = dict((v, dict(
+            xid=None,
+            mql=None,
+            status='warning',
+            is_published=None,
+            results=None,
+            resultmonads=None,
+            xmodified_on=None,
+            executed_on=None,
+            published_on=None,
+        )) for v in versions if versions[v]['date'])
+        for rx in recordx:
+            vx = rx['version']
+            dest = q_record['versions'][vx]
+            dest.update(rx)
+            dest['status'] = qstatus(dest)
+            datetime_str(dest)
+
+def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False):
+    sqli = ''',
+    query.created_by as uid,
+    project.id as pid,
+    organization.id as oid
+''' if with_ids and po else ''
+
+    sqlx = ''',
+    query_exe.id as xid,
+    query_exe.mql as mql,
+    query_exe.version as version,
+    query_exe.resultmonads as resultmonads,
+    query_exe.results as results,
+    query_exe.executed_on as executed_on,
+    query_exe.modified_on as xmodified_on,
+    query_exe.is_published as is_published,
+    query_exe.published_on as published_on
+''' if single_version else ''
+
+    sqlp = ''',
+    project.name as pname,
+    project.website as pwebsite,
+    organization.name as oname,
+    organization.website as owebsite
+''' if po else ''
+
+    sqlm = '''
+    query.id as id,
+    query.name as name,
+    query.description as description,
+    query.created_on as created_on,
+    query.modified_on as modified_on,
+    query.is_shared as is_shared,
+    query.shared_on as shared_on,
+    auth_user.first_name as ufname,
+    auth_user.last_name as ulname,
+    auth_user.email as uemail
+    {}{}{}
+'''.format(sqli, sqlp, sqlx)
+
+    sqlr = '''
+inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{}'
+'''.format(vr) if single_version else ''
+
+    sqlpr = '''
+inner join organization on query.organization = organization.id
+inner join project on query.project = project.id
+''' if po else ''
+
+    sqlc = '''
+where query.id in ({})
+'''.format(','.join(iid)) if single_version else '''
+where query.id = {}
+'''.format(iid)
+
+    sqlo = '''
+order by auth_user.last_name, query.name
+''' if single_version else ''
+
+    sql = '''
+select{}
+from query
+inner join auth_user on query.created_by = auth_user.id
+{}{}{}{}
+'''.format(sqlm, sqlr, sqlpr, sqlc, sqlo)
+    records = db.executesql(sql, as_dict=True)
+    if records == None:
+        msgs.append(('error', 'Cannot lookup query(ies)'))
+        return None
+    if single_version:
+        for q_record in records:
+            query_fields(vr, q_record, [], single_version=True)
+        return records
     else:
-        mql_record['status'] = 'good'
+        if len(records) == 0:
+            msgs.append(('error', 'No query with id {}'.format(iid)))
+            return None
+        q_record = records[0]
+        q_record['description_md'] = markdown(q_record['description'])
+        sql = '''
+select
+    id as xid,
+    mql,
+    version,
+    resultmonads,
+    results,
+    executed_on,
+    modified_on as xmodified_on,
+    is_published,
+    published_on
+from query_exe
+where query_id = {}
+'''.format(iid)
+        recordx = db.executesql(sql, as_dict=True)
+        query_fields(vr, q_record, recordx, single_version=False)
+        return q_record
 
 def sideq():
     session.forget(response)
     msgs = []
     iid = get_request_val('material', '', 'iid')
+    vr = get_request_val('material', '', 'version')
     (authorized, msg) = query_auth_read(iid)
     if not authorized or not iid:
         msgs.append(('error', msg))
         return dict(
             writable=False,
+            iid = iid,
+            vr = vr,
+            qr = {},
             q=collections.defaultdict(lambda: ''),
             msgs=json.dumps(msgs),
         )
-    sql = '''
-select
-    queries.id,
-    queries.name,
-    queries.description,
-    queries.mql,
-    queries.is_published,
-    queries.created_on,
-    queries.modified_on,
-    queries.executed_on,
-    queries.created_by as uid,
-    concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.email as uemail,
-    organization.name as oname, organization.website as owebsite,
-    project.name as pname, project.website as pwebsite
-from queries
-inner join auth_user on queries.created_by = auth_user.id
-inner join organization on queries.organization = organization.id
-inner join project on queries.project = project.id
-where queries.id = {}
-'''.format(iid)
-    records = db.executesql(sql, as_dict=True)
-    if records == None or len(records) == 0:
-        msgs.append(('error', 'No query with id {}'.format(iid)))
+    q_record = get_query_info(iid, vr, msgs, with_ids=True, single_version=False, po=True)
+    if q_record == None:
         return dict(
             writable=True,
+            iid = iid,
+            vr = vr,
+            qr = {},
             q=collections.defaultdict(lambda: ''),
             msgs=json.dumps(msgs),
         )
-    mql_record = records[0]
-    old_pub = mql_record['is_published']
-    mql_record['description_md'] = markdown(mql_record['description'])
-    query_status(mql_record)
-    if old_pub != mql_record['is_published']:
-        ckeys = r'^items_q:'
-        cache.ram.clear(regex=ckeys)
-        cache.disk.clear(regex=ckeys)
+
     (authorized, msg) = query_auth_write(iid=iid)
-    for f in ('created_on', 'modified_on', 'executed_on'):
-        mql_record[f] = str(mql_record[f])
 
     return dict(
         writable=authorized,
-        q=json.dumps(mql_record),
+        iid = iid,
+        vr = vr,
+        qr = q_record,
+        q=json.dumps(q_record),
         msgs=json.dumps(msgs),
     )
 
@@ -1209,27 +1474,10 @@ def groupq(vr, input):
     for (qid, b, e) in input:
         monads[qid] |= set(range(b, e + 1))
     r = []
-    if len(input):
-        qsql = '''
-select
-    auth_user.first_name as created_by_f,
-    auth_user.last_name as created_by_l,
-    queries.name as name, queries.id as id,
-    queries.is_published as is_published,
-    queries.description as description,
-    queries.mql as mql,
-    queries.created_on as created_on,
-    queries.modified_on as modified_on,
-    queries.executed_on as executed_on
-from queries
-inner join auth_user on queries.created_by = auth_user.id
-where
-    queries.id in ({})
-order by auth_user.last_name, auth_user.first_name, queries.name
-'''.format(','.join(str(x) for x in monads))
-        queryrecords = db.executesql(qsql, as_dict=True)
+    if len(monads):
+        msgs = []
+        queryrecords = get_query_info((str(q) for q in monads), vr, msgs, with_ids=False, single_version=True, po=False)
         for q in queryrecords:
-            for f in ('modified_on', 'executed_on'): q[f] = str(q[f])
             r.append({'item': q, 'monads': json.dumps(sorted(list(monads[q['id']])))})
     return r
 
@@ -1243,22 +1491,30 @@ def groupw(vr, input):
 select * from lexicon
 where
     id in ({})
-order by entryid
+order by entryid_heb
 '''.format(','.join(str(x) for x in wids))
         wordrecords = passage_dbs[vr].executesql(wsql, as_dict=True)
         for w in wordrecords:
             r.append({'item': w, 'monads': json.dumps(wids[w['id']])})
     return r
 
-def get_monadsets(vr, chapter):
+def get_monads(vr, chapter, pub):
+    if pub == 'x':
+        pubv = ""
+        pubx = "inner join query on query.id = query_exe.query_id and query.is_shared = 'T'"
+    else:
+        pubv = " and query_exe.is_published = 'T'"
+        pubx = ""
     return db.executesql(u'''
 select DISTINCT
-    query_id,
+    query_exe.query_id as query_id,
     GREATEST(first_m, {chapter_first_m}) as first_m,
     LEAST(last_m, {chapter_last_m}) as last_m
 from
-    monadsets inner join queries on
-    monadsets.query_id = queries.id and queries.is_published = 'T' and queries.executed_on >= queries.modified_on
+    monads
+inner join query_exe on
+    monads.query_exe_id = query_exe.id and query_exe.version = '{vr}' and query_exe.executed_on >= query_exe.modified_on {pubv}
+{pubx}
 where
     (first_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
     (last_m BETWEEN {chapter_first_m} AND {chapter_last_m}) OR
@@ -1266,6 +1522,9 @@ where
 '''.format(
          chapter_last_m=chapter['last_m'],
          chapter_first_m=chapter['first_m'],
+         vr=vr,
+         pubv=pubv,
+         pubx=pubx,
     ))
 
 def get_lexemes(vr, chapter):
@@ -1293,10 +1552,10 @@ def query_auth_read(iid):
     if iid == 0:
         authorized = auth.user != None
     else:
-        mql_records = db.executesql('select * from queries where id = {};'.format(iid), as_dict=True)
-        mql_record = mql_records[0] if mql_records else {}
-        if mql_record:
-            authorized = mql_record['is_published'] or (auth.user != None and mql_record['created_by'] == auth.user.id)
+        q_records = db.executesql('select * from query where id = {};'.format(iid), as_dict=True)
+        q_record = q_records[0] if q_records else {}
+        if q_record:
+            authorized = q_record['is_shared'] or (auth.user != None and q_record['created_by'] == auth.user.id)
     msg = u'No query with id {}'.format(iid) if authorized == None else u'You have no access to item with id {}'.format(iid) 
     return (authorized, msg)
 
@@ -1317,10 +1576,10 @@ def query_auth_write(iid):
     if iid == 0:
         authorized = auth.user != None
     else:
-        mql_records = db.executesql('select * from queries where id = {};'.format(iid), as_dict=True)
-        mql_record = mql_records[0] if mql_records else {}
-        if mql_record != None:
-            authorized = (auth.user != None and mql_record['created_by'] == auth.user.id)
+        q_records = db.executesql('select * from query where id = {};'.format(iid), as_dict=True)
+        q_record = q_records[0] if q_records else {}
+        if q_record != None:
+            authorized = (auth.user != None and q_record['created_by'] == auth.user.id)
     msg = u'No item with id {}'.format(iid) if authorized == None else u'You have no access to create/modify item with id {}'.format(iid) 
     return (authorized, msg)
 
@@ -1330,17 +1589,24 @@ def auth_write(label):
     msg = u'You have no access to create/modify a {}'.format(label) 
     return (authorized, msg)
 
-def store_monad_sets(iid, rows):
-    db.executesql('DELETE FROM monadsets WHERE query_id=' + str(iid) + ';')
+def get_qx(vr, iid):
+    recordx = db.executesql("select id from query_exe where query_id = {} and version = '{}';".format(iid, vr))
+    if recordx == None or len(recordx) != 1: return None
+    return recordx[0][0]
+
+def store_monad_sets(vr, iid, rows):
+    xid = get_qx(vr, iid)
+    if xid == None: return
+    db.executesql("delete from monads where query_exe_id={};".format(xid))
     # Here we clear stuff that will become invalid because of a (re)execution of a query
     # and the deleting of previous results and the storing of new results.
-    ckeys = r'^verses_q:{}_'.format(iid)
+    ckeys = r'^verses_{}_q_{}_'.format(vr, iid)
     cache.ram.clear(regex=ckeys)
     cache.disk.clear(regex=ckeys)
-    ckeys = r'^items_q:'
+    ckeys = r'^items_q_{}_'.format(vr)
     cache.ram.clear(regex=ckeys)
     cache.disk.clear(regex=ckeys)
-    ckeys = r'^chart_q:{}:'.format(iid)
+    ckeys = r'^chart_{}_q_{}_'.format(vr, iid)
     cache.ram.clear(regex=ckeys)
     cache.disk.clear(regex=ckeys)
     nrows = len(rows)
@@ -1348,7 +1614,7 @@ def store_monad_sets(iid, rows):
 
     limit_row = 10000
     start = '''
-insert into monadsets (query_id, first_m, last_m) values
+insert into monads (query_exe_id, first_m, last_m) values
 '''
     query = ''
     r = 0
@@ -1359,18 +1625,21 @@ insert into monadsets (query_id, first_m, last_m) values
         query += start
         s = min(r + limit_row, len(rows))
         row = rows[r]
-        query += '({},{},{})'.format(iid, row[0], row[1])
+        query += '({},{},{})'.format(xid, row[0], row[1])
         if r + 1 < nrows:
             for row in rows[r + 1:s]: 
-                query += ',({},{},{})'.format(iid, row[0], row[1])
+                query += ',({},{},{})'.format(xid, row[0], row[1])
         r = s
     if query != '':
         db.executesql(query)
         query = ''
 
 def load_monad_sets(vr, iid):
-    monad_sets = db.executesql('SELECT first_m, last_m FROM monadsets WHERE query_id=' + str(iid) + ' ORDER BY first_m;')
-    # make this dependent on the query execution record
+    xid = get_qx(vr, iid)
+    if xid == None: return normalize_ranges([])
+    monad_sets = db.executesql('''
+select first_m, last_m from monads where query_exe_id = {} order by first_m;
+'''.format(xid))
     return normalize_ranges(monad_sets)
 
 def load_word_occurrences(vr, lexeme_id):
@@ -1408,7 +1677,7 @@ def normalize_ranges(ranges, fromset=None):
 
 def get_pagination(vr, p, monad_sets, iid):
     verse_boundaries = from_cache(
-        'verse_boundaries',
+        'verse_boundaries_{}_'.format(vr),
         lambda: passage_dbs[vr].executesql('SELECT first_m, last_m FROM verse ORDER BY id;'),
         None,
     )
@@ -1473,8 +1742,8 @@ def get_chart(vr, monad_sets): # get data for a chart of the monadset: organized
     chart = {}
     chart_order = []
     if len(monads):
-        (books, books_order) = from_cache('books_{}'.format(vr), lambda: get_books(vr), None)
-        (blocks, block_mapping) = from_cache('blocks', get_blocks, None)
+        (books, books_order) = from_cache('books_{}_'.format(vr), lambda: get_books(vr), None)
+        (blocks, block_mapping) = from_cache('blocks_{}_'.format(vr), lambda: get_blocks(vr), None)
         results = {}
 
         for bl in range(len(blocks)):

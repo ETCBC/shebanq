@@ -1,30 +1,41 @@
-{{if side_items:}}
+{{if side_items:
+    qlimit = 12
+    ulimit = 10
+}}
+<div>
 <ul id="side_list_{{=qw}}">
     {{
     for si in side_items:
-        iid = si['item']['id']
+        iinfo = si['item']
+        iid = iinfo['id']
+        compp = ''
+        lclass = ''
         if qw == 'q':
-            qname = si['item']['name']
-            fname = si['item']['created_by_f']
-            lname = si['item']['created_by_l']
-            pname = fname + u' ' + lname
-            desc = si['item']['description']
-            mql = si['item']['mql']
-            qname_short = qname if len(qname) < 7 else qname[0:7]+'..'
-            pname_short = pname if len(pname) < 11 else pname[0:11]+'..'
+            qname = iinfo['name']
+            fname = iinfo['ufname']
+            lname = iinfo['ulname']
+            is_pub = iinfo['is_published']
+            uname = u'{} {}'.format(fname, lname)
+            uname1 = u'{} {}'.format(fname[0], lname)
+            desc = iinfo['description']
+            mql = iinfo['mql']
+            qname_short = qname if len(qname) < qlimit else qname[0:qlimit]+'..'
+            uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
             title = u'{} by {} {}'.format(qname, fname, lname)
-            clinktext = pname_short
+            clinktext = uname_short
             dlinktext = qname_short
+            lclass = XML(' class="detail" ')
             cclass = 'qauth'
             dclass = 'qname'
             eclass = 'qdesc'
+            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_pub else ''
         elif qw == 'w':
-            wentry = si['item']['entryid']
-            wgloss = si['item']['gloss']
-            pos = si['item']['pos']
-            vc = si['item']['g_entry_heb']
-            entry_heb = si['item']['entry_heb']
-            entryid_heb = si['item']['entryid_heb']
+            wentry = iinfo['entryid']
+            wgloss = iinfo['gloss']
+            pos = iinfo['pos']
+            vc = iinfo['g_entry_heb']
+            entry_heb = iinfo['entry_heb']
+            entryid_heb = iinfo['entryid_heb']
             title = wentry
             clinktext = vc if vc else entry_heb
             dlinktext = wgloss or '?'
@@ -32,31 +43,29 @@
             dclass = 'i_gl'
             eclass = 'wdesc'
         pass
+        compc = A(clinktext, _href='#', _class=cclass, _iid=iid, _id='item_{}{}'.format(qw, iid))
+        compd = SPAN(dlinktext, _class=dclass)
     }}
-    <li id="{{='{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
+    <li {{=lclass}} id="{{='{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
         <div>{{=XML(colorpicker(qw,iid, ''))}}
-            <table class="item_{{=qw}}" id="h_{{=qw}}{{=iid}}"><tr>
-            <td class="{{=cclass}}">{{=A(clinktext, _class=cclass, _href='#', _iid=iid, _id='item_{}{}'.format(qw, iid))}}</td>
-            <td><span class="ctrl">{{=A(dlinktext, _class=dclass, _href='#', _id='m_{}{}'.format(qw, iid))}}</span></td>
-        </tr></table>
+            <a href='#' title="more/less info" class="ctrlb fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
+            {{if qw == 'q':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}
         </div>
         <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
         {{if qw == 'q':}}
-            <p><b>{{=qname}}</b> by <i>{{=pname}}</i><br/>
-            {{=desc}}</p>
+            <p><a id="bigqf_{{=iid}}" iid="{{=iid}}" href="#" class="ctrl fullc fa fa-arrows-alt"></a>
+            <span class="{{=dclass}}">{{=qname}}</span> by <span class="{{=cclass}}">{{=uname}}</span><br/>
             <div id="bigq_{{=iid}}" class="bigq">
+                <input type="hidden" id="dv_{{=qw}}{{=iid}}" value="{{=desc}}"></p>
+                <div id="dm_{{=qw}}{{=iid}}" class="descm"></div>
                 <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
             </div>
-            <p class="fullcp"><a id="bigqf_{{=iid}}" iid="{{=iid}}" class="ctrl fullc" href="#"><span class="icon resize-full icon-resize-full"></span></a></p>
         {{else:}}
-            <p class="txt_il">
-            &nbsp;<span class="wd1_pos">{{=pos}}</span>&nbsp;
-            &nbsp;<span class={{=cclass}}>{{=entryid_heb}}</span>&nbsp;
-            &nbsp;<span class={{=cclass}}>{{=wentry}}</span>&nbsp;
-            </p>
+            <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=cclass}}>{{=entryid_heb}}</span></p>
         {{pass}}
         </div>
     </li>
     {{pass}}
 </ul>
+</div>
 {{ pass }}

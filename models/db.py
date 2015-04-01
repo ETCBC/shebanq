@@ -38,12 +38,14 @@ dc_u = config['shebanq_user']
 dc_p = config['shebanq_passwd']
 dc_h = config['shebanq_host']
 
+version_order = '''4 4b 4s'''.split()
+
 versions = {
     '4': {
         'name': 'etcbc4',
-        'date': '2014-07-13',
+        'date': '2014-07-14',
         'desc': 'First version of the ETCBC4 database in SHEBANQ',
-        'notes': '',
+        'notes': 'The data for this version is a snapshot. At some locations the encoding is not yet finished. We needed a reasonable version then because of the deadline for SHEBANQ as a project.',
     },
     '4b': {
         'name': 'etcbc4b',
@@ -55,7 +57,7 @@ versions = {
         'name': 'etcbc4s',
         'date': '',
         'desc': 'Stable version of the ETCBC4 database',
-        'notes': '',
+        'notes': 'This version corresponds to an officially released version of the ETCBC data.',
     },
 }
 
@@ -72,7 +74,8 @@ db = DAL('mysql://{}:{}@{}/{}'.format(
 passage_dbs = {}
 
 for vr in versions: 
-    passage_dbs[vr] = DAL('mysql://{}:{}@{}/{}'.format(dc_u, dc_p, dc_h, 'passage_{}'.format(vr),}), migrate_enabled=False)
+    if not versions[vr]['date']: continue
+    passage_dbs[vr] = DAL('mysql://{}:{}@{}/{}'.format(dc_u, dc_p, dc_h, 'shebanq_passage{}'.format(vr)), migrate_enabled=False)
 
 # Indeed, we store sessions in the database:
 session.connect(request, response, db=db)

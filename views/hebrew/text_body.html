@@ -1,26 +1,22 @@
 <div id="material">
     <div id="material_heading" class="pnl2">
+        <a title="to this chapter in Bible Online Learner" target="_blank" id="bol_lnk" href="#"><img src="{{=URL('static', 'images/BibleOL.png')}}"/></a>
+        {{ include 'hebrew/versions.html' }}
         <div id="select_passage">
-            <a title="to this chapter in Bible Online Learner" target="_blank" id="bol_lnk" href="#"><img src="{{=URL('static', 'images/BibleOL.png')}}"/></a>
-            {{for v in versions:
-                vinfo = versions[v]
-                title = '{}: {}'.format(vinfo['name'], vinfo['desc'])
-            }}<a title="{{=title}}" id="version_{{=v}}" href="#" class="ctrl mvradio">{{=v}}</a>
-            {{pass}}
             <a title="click to go to another book" id="select_control_book" class="ctrl" href="#"><span id="thebook"></span></a>
             <div id="select_contents_book"></div>
-            <a title="previous chapter" contents="" id="prev_chapter" class="ctrl" href="#"><span class="icon arrow-left icon-arrow-left"></span></a>
+            <a title="previous chapter" contents="" id="prev_chapter" href="#" class="ctrl fa fa-arrow-left fa-lg"></a>
             <a title="click to go to another chapter" id="select_control_chapter" class="ctrl" href="#"><span id="thechapter"></span></a>
             <span id="select_contents_chapter"></span>
-            <a title="next chapter" contents="" id="next_chapter" class="ctrl" href="#"><span class="icon arrow-right icon-arrow-right"></span></a>
+            <a title="next chapter" contents="" id="next_chapter" href="#" class="ctrl fa fa-arrow-right fa-lg"></span></a>
         </div>
         <div id="select_pages">
             <span id="theitemlabel"></span>
             <span id="theitem"></span>
-            <a title="previous page" contents="" id="prev_page" class="ctrl" href="#"><span class="icon arrow-left icon-arrow-left"></span></a>
+            <a title="previous page" contents="" id="prev_page" href="#"><span class="ctrl fa fa-arrow-left fa-lg"></span></a>
             <a title="click to go to another page" id="select_control_page" class="ctrl" href="#"><span id="thepage"></span></a>
             <span id="select_contents_page"></span>
-            <a title="next page" contents="" id="next_page" class="ctrl" href="#"><span class="icon arrow-right icon-arrow-right"></span></a>
+            <a title="next page" contents="" id="next_page" href="#"><span class="ctrl fa fa-arrow-right fa-lg"></span></a>
         </div>
         <div id="material_settings">
             <span><a href="#" id="mtxt_p" class="ctrl mhradio">text</a></span>
