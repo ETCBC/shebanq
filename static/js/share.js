@@ -109,7 +109,7 @@ jQuery(function(){
                     else {
                         $('.clip_qx.clr').addClass('special')
                         $('#cdiagpub').addClass('special')
-                        $('#cdiagpub').html('If this query has been published more than a week ago, it can be safely cited. It will not be changed anymmore.')
+                        $('#cdiagpub').html('This query has been published. If that happened more than a week ago, it can be safely cited. It will not be changed anymore.')
                     }
                     $('.clip_q.clr').addClass(qstatus)
                     $('#cdiagsts').addClass(qstatus)
