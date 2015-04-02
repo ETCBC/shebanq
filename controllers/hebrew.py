@@ -312,12 +312,12 @@ def sidem_c(vr, qw, bk, ch, pub):
 
 def query():
     iid = get_request_val('material', '', 'iid')
-    vr = get_request_val('material', '', 'version')
     if request.extension == 'json':
         (authorized, msg) = query_access_read(iid=iid)
         if not authorized:
             result = dict(good=False, msg=[msg])
         else:
+            vr = get_request_val('material', '', 'version')
             msgs = []
             qrecord = get_query_info(iid, vr, msgs, with_ids=False, single_version=False, po=True)
             result = dict(good=qrecord != None, msg=msgs, data=qrecord)
@@ -326,7 +326,7 @@ def query():
         request.vars['mr'] = 'r'
         request.vars['qw'] = 'q'
         request.vars['tp'] = 'txt_p'
-        request.vars['vr'] = vr
+        #request.vars['vr'] = vr
         request.vars['iid'] = iid
         request.vars['page'] = 1
     return text()
@@ -335,7 +335,7 @@ def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
-    request.vars['version'] = get_request_val('material', '', 'version')
+    #request.vars['version'] = get_request_val('material', '', 'version')
     request.vars['iid'] = get_request_val('material', '', 'iid')
     request.vars['page'] = 1
     return text()
@@ -456,7 +456,7 @@ def queries():
     return dict(qid=qid if qid != None else 0)
 
 def words_page(viewsettings, vr, lan=None, letter=None):
-    (letters, words, entrymap) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
+    (letters, words) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
     return dict(versionstate=viewsettings.versionstate(), lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
 
 def get_words_data(vr):
@@ -466,43 +466,39 @@ order by lan, entryid_heb
 ''')
     letters = dict(arc=[], hbo=[])
     words = dict(arc={}, hbo={})
-    entrymap = dict(arc={}, hbo={})
     for (wid, e, eid, lan, gloss) in ddata:
         letter = ord(e[0])
         if letter not in words[lan]:
             letters[lan].append(letter)
             words[lan][letter] = []
         words[lan][letter].append((e, wid, eid, gloss))
-        entrymap[lan][eid] = wid
-    return (letters, words, entrymap)
+    return (letters, words)
 
 def pq():
     myid = None
     if auth.user:
         myid = auth.user.id
-    vr = get_request_val('material', '', 'version')
-    return pq_c(vr, myid)
+    return pq_c(myid)
 
-def pq_c(vr, myid):
+def pq_c(myid):
     linfo = collections.defaultdict(lambda: {})
 
-    def title_badge(myid, lid, ltype, newtype, good, warn, err, num, tot):
+    def title_badge(myid, lid, ltype, newtype, publ, good, num, tot):
         name = linfo[ltype][lid] if ltype != None else 'Public Queries'
         nums = []
-        if good != 0: nums.append(u'<span class="good">{}</span>'.format(good))
-        if warn != 0: nums.append(u'<span class="warning">{}</span>'.format(warn))
-        if err != 0: nums.append(u'<span class="error">{}</span>'.format(err))
+        if publ != 0: nums.append(u'<span class="special fa fa-quote-right"> {}</span>'.format(publ))
+        if good != 0: nums.append(u'<span class="good fa fa-gears"> {}</span>'.format(good))
         badge = ''
         if len(nums) == 1:
             if tot == num:
-                badge = u'<span class="total">{}</span>'.format('+'.join(nums))
+                badge = u'<span class="total">{}</span>'.format(', '.join(nums))
             else:
-                badge = u'{} of <span class="total">{}</span>'.format('+'.join(nums), tot)
+                badge = u'{} of <span class="total">{}</span>'.format(', '.join(nums), tot)
         else:
             if tot == num:
-                badge = u'{}=<span class="total">{}</span>'.format('+'.join(nums), num)
+                badge = u'{} of <span class="total">{}</span>'.format(', '.join(nums), num)
             else:
-                badge = u'{}={} of <span class="total">{}</span>'.format('+'.join(nums), num, tot)
+                badge = u'{} of {} of all <span class="total">{}</span>'.format(', '.join(nums), num, tot)
         rename = ''
         create = ''
         select = ''
@@ -512,8 +508,8 @@ def pq_c(vr, myid):
             if ltype in {'o', 'p'}:
                 if lid:
                     rename = u'<a class="r_{}" lid="{}" href="#"></a>'.format(ltype, lid)
-                select = u'<a class="s_{}" lid="{}" href="#"></a>'.format(ltype, lid)
-        return u'<span n="1">{}</span>{}<span class="brq">({})</span>{}{}'.format(h_esc(name), create, badge, rename, select)
+                select = u'<a class="s_{} fa fa-lg" lid="{}" href="#"></a>'.format(ltype, lid)
+        return u'{} <span n="1">{}</span><span class="brq">({})</span> {} {}'.format(select, h_esc(name), badge, rename, create)
 
     condition = '''
 where query.is_shared = 'T'
@@ -521,22 +517,48 @@ where query.is_shared = 'T'
 where query.is_shared = 'T' or query.created_by = {}
 '''.format(myid)
 
-    pqueries_sql = '''
+    pqueryx_sql = '''
 select
+    query_exe.query_id, query_exe.version, query_exe.is_published, query_exe.published_on, query_exe.modified_on, query_exe.executed_on
+from query_exe
+inner join query on query.id = query_exe.query_id
+{}
+'''.format(condition)
+
+    pquery_sql = '''
+select
+    query.id as qid,
     organization.name as oname, organization.id as oid,
     project.name as pname, project.id as pid,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.id as uid,
-    query.name as qname, query.id as qid,
-    query_exe.modified_on as qmod, query_exe.executed_on as qexe,
-    query_exe.is_published as qpub
+    query.name as qname, query.is_shared as is_shared
 from query
-inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{}'
 inner join organization on query.organization = organization.id
 inner join project on query.project = project.id
 inner join auth_user on query.created_by = auth_user.id
 {}
-'''.format(vr, condition)
-    pqueries = db.executesql(pqueries_sql)
+order by query.name
+'''.format(condition)
+
+    pquery = db.executesql(pquery_sql)
+    pqueryx = db.executesql(pqueryx_sql)
+    pqueries = {}
+    rversion_order = [v for v in version_order if versions[v]['date']]
+    rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
+    for (qid, oname, oid, pname, pid, uname, uid, qname, qshared) in pquery:
+        qsharedstatus = qshared == 'T'
+        qownstatus = uid == myid
+        pqueries[qid] = {'': (oname, oid, pname, pid, uname, uid, qname, qsharedstatus, qownstatus), 'publ': False, 'good': False, 'v': [4 for v in rversion_order]}
+    for (qid, vr, qispub, qpub, qmod, qexe) in pqueryx:
+        qinfo = pqueries[qid]
+        qexestatus = None
+        if qexe: qexestatus = qexe >= qmod
+        qpubstatus = False if qispub != 'T' else None if qpub > request.now - PUBLISH_FREEZE else True
+        qstatus = 1 if qpubstatus else 2 if qpubstatus == None else 3 if qexestatus else 4 if qexestatus == None else 5
+        qinfo['v'][rversion_index[vr]] = qstatus
+        if qpubstatus or qpubstatus == None: qinfo['publ'] = True
+        if qexestatus: qinfo['good'] = True
+
 
     porg_sql = '''
 select
@@ -555,25 +577,25 @@ from project
     tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: [])))
     countset = collections.defaultdict(lambda: set())
     counto = collections.defaultdict(lambda: 0)
+    counto_publ = collections.defaultdict(lambda: 0)
     counto_good = collections.defaultdict(lambda: 0)
-    counto_warn = collections.defaultdict(lambda: 0)
-    counto_err = collections.defaultdict(lambda: 0)
     counto_tot = collections.defaultdict(lambda: 0)
     countp = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
+    countp_publ = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
     countp_good = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
-    countp_warn = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
-    countp_err = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
     countp_tot = collections.defaultdict(lambda: 0)
     countu = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
+    countu_publ = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
     countu_good = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
-    countu_warn = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
-    countu_err = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0)))
     countu_tot = collections.defaultdict(lambda: 0)
     count = 0
+    count_publ = 0
     count_good = 0
-    count_warn = 0
-    count_err = 0
-    for (oname, oid, pname, pid, uname, uid, qname, qid, qmod, qexe, qpub) in pqueries:
+    for qid in pqueries:
+        pqinfo = pqueries[qid]
+        (oname, oid, pname, pid, uname, uid, qname, qshared, qown) = pqinfo['']
+        qpubl = pqinfo['publ']
+        qgood = pqinfo['good']
         countset['o'].add(oid)
         countset['p'].add(pid)
         countset['u'].add(uid)
@@ -581,34 +603,20 @@ from project
         linfo['o'][oid] = oname
         linfo['p'][pid] = pname
         linfo['u'][uid] = uname
-        qownstatus = ''
-        if uid == myid:
+        if qown:
             countset['m'].add(qid)
-            qownstatus = 'qmy'
-        qpubstatus = ''
-        if qpub != 'T':
+        if not qshared:
             countset['r'].add(qid)
-            qpubstatus = 'qpriv'
-        if qexe:
-            if qexe < qmod:
-                qexestatus = 'error'
-                countu_err[oid][pid][uid] += 1
-                countp_err[oid][pid] += 1
-                counto_err[oid] += 1
-                count_err += 1
-            else:
-                qexestatus = 'good'
-                countu_good[oid][pid][uid] += 1
-                countp_good[oid][pid] += 1
-                counto_good[oid] += 1
-                count_good += 1
-        else:
-            qexestatus = 'warning'
-            countu_warn[oid][pid][uid] += 1
-            countp_warn[oid][pid] += 1
-            counto_warn[oid] += 1
-            count_warn += 1
-        linfo['q'][qid] = (qname, qownstatus, qpubstatus, qexestatus)
+        if qpubl:
+            countu_publ[oid][pid][uid] += 1
+            countp_publ[oid][pid] += 1
+            counto_publ[oid] += 1
+            count_publ += 1
+        if qgood:
+            countu_good[oid][pid][uid] += 1
+            countp_good[oid][pid] += 1
+            counto_good[oid] += 1
+            count_good += 1
         tree[oid][pid][uid].append(qid)
         count +=1
         counto[oid] += 1
@@ -621,7 +629,7 @@ from project
     linfo['o'][0] = 'Projects without Queries'
     linfo['p'][0] = 'New Project'
     linfo['u'][0] = ''
-    linfo['q'][0] = ('', '', '', '')
+    linfo['q'] = pqueries
     counto[0] = 0
     countp[0][0] = 0
     for (oname, oid) in porg:
@@ -639,54 +647,73 @@ from project
 
     ccount = dict((x[0], len(x[1])) for x in countset.items())
     ccount['uid'] = myid
-    title = title_badge(myid, None, None, 'o', count_good, count_warn, count_err, count, count)
+    title = title_badge(myid, None, None, 'o', count_publ, count_good, count, count)
     dest = [dict(title=u'{}'.format(title), folder=True, children=[], data=ccount)]
     curdest = dest[-1]['children']
     cursource = tree
     for oid in cursource:
         onum = counto[oid]
+        opubl = counto_publ[oid]
         ogood = counto_good[oid]
-        owarn = counto_warn[oid]
-        oerr = counto_err[oid]
         otot = counto_tot[oid]
-        otitle = title_badge(myid, oid, 'o', 'p', ogood, owarn, oerr, onum, otot)
+        otitle = title_badge(myid, oid, 'o', 'p', opubl, ogood, onum, otot)
         curdest.append(dict(title=u'{}'.format(otitle), folder=True, children=[]))
         curodest = curdest[-1]['children']
         curosource = cursource[oid]
         for pid in curosource:
             pnum = countp[oid][pid]
+            ppubl = countp_publ[oid][pid]
             pgood = countp_good[oid][pid]
-            pwarn = countp_warn[oid][pid]
-            perr = countp_err[oid][pid]
             ptot = countp_tot[pid]
-            ptitle = title_badge(myid, pid, 'p', 'q', pgood, pwarn, perr, pnum, ptot)
+            ptitle = title_badge(myid, pid, 'p', 'q', ppubl, pgood, pnum, ptot)
             curodest.append(dict(title=u'{}'.format(ptitle), folder=True, children=[]))
             curpdest = curodest[-1]['children']
             curpsource = curosource[pid]
             for uid in curpsource:
                 unum = countu[oid][pid][uid]
+                upubl = countu_publ[oid][pid][uid]
                 ugood = countu_good[oid][pid][uid]
-                uwarn = countu_warn[oid][pid][uid]
-                uerr = countu_err[oid][pid][uid]
                 utot = countu_tot[uid]
-                utitle = title_badge(myid, uid, 'u', None, ugood, uwarn, uerr, unum, utot)
+                utitle = title_badge(myid, uid, 'u', None, upubl, ugood, unum, utot)
                 curpdest.append(dict(title=u'{}'.format(utitle), folder=True, children=[]))
                 curudest = curpdest[-1]['children']
                 curusource = curpsource[uid]
                 for qid in curusource:
-                    (qname, qownstatus, qpubstatus, qexestatus) = linfo['q'][qid]
-                    rename = u'<a class="{}_{}" lid="{}" href="#"></a>'.format('r' if myid == uid else 'v', 'q', qid)
-                    curudest.append(dict(title=u'<a class="q {} {}" n="1" qid="{}" href="#">{}</a> <a class="md" href="#">  <a class="qx {}" href="#"> {}'.format(
-                        qownstatus, qpubstatus,
+                    pqinfo = linfo['q'][qid]
+                    (oname, oid, pname, pid, uname, uid, qname, qshared, qown) = pqinfo['']
+                    qpubl = pqinfo['publ']
+                    qgood = pqinfo['good']
+                    qversions = pqinfo['v']
+                    rename = u'<a class="{}_{}" lid="{}" href="#"></a>'.format('r' if qown else 'v', 'q', qid)
+                    curudest.append(dict(title=u'{} <a class="q {} {}" n="1" qid="{}" href="#">{}</a> <a class="md" href="#"></a> {}'.format(
+                        ' '.join(formatversion(qid, v, qversions[rversion_index[v]]) for v in rversion_order),
+                        'qmy' if qown else '',
+                        '' if qshared else 'qpriv',
                         qid,
-                        #URL('hebrew', 'text', host=True, extension='', vars=dict(iid=qid, page=1, mr='r', qw='q')),
                         h_esc(qname),
-                        qexestatus,
                         rename,
                     ), key='q{}'.format(qid), folder=False))
     return dict(data=json.dumps(dest))
 
-tps = dict(o=('organization', 'organization'), p=('project', 'project'), q=('query', 'queries'))
+def formatversion(qid, vr, st):
+    if st == 1:
+        icon = 'quote-right'
+        cls = 'special'
+    elif st == 2:
+        icon = 'quote-right'
+        cls = ''
+    elif st == 3:
+        icon = 'gears'
+        cls = 'good'
+    elif st == 4:
+        icon = 'circle-o'
+        cls = 'warning'
+    elif st == 5:
+        icon = 'clock-o'
+        cls = 'error'
+    return '<a href="#" class="ctrl brq {} fa fa-{}" qid="{}" v="{}"></a>'.format(cls, icon, qid, vr)
+
+tps = dict(o=('organization', 'organization'), p=('project', 'project'), q=('query', 'query'))
 
 def check_unique(tp, lid, val, myid, msgs):
     result = False
@@ -929,10 +956,9 @@ def upd_record(tp, lid, myid, fields, msgs):
             valsql = check_rel('p', val, msgs)
             if valsql == None: break
             updrecord['project'] = valsql
-            fld = 'created_' # we only set the modified by and modified on if the query body has been changed
-            updrecord[fld+'by'] = myid
-            updrecord[fld+'on'] = request.now
-            fields.extend([fld+'by', fld+'on'])
+            fld = 'modified_on' 
+            updrecord[fld] = request.now
+            fields.append(fld)
         else:
             valsql = check_website(tp, request.vars.website, msgs)
             if valsql == None:
@@ -942,11 +968,11 @@ def upd_record(tp, lid, myid, fields, msgs):
     if good:
         if lid:
             fieldvals = [u" {} = '{}'".format(f, updrecord[f]) for f in fields]
-            sql = u'''update {} set{} where id = {}'''.format(table, ','.join(fieldvals), lid)
-            thismsg = 'modified'
+            sql = u'''update {} set{} where id = {};'''.format(table, ','.join(fieldvals), lid)
+            thismsg = 'updated'
         else:
             fieldvals = [u"'{}'".format(updrecord[f]) for f in fields]
-            sql = u'''insert into {} ({}) values ({})'''.format(table, u','.join(fields), u','.join(fieldvals), lid)
+            sql = u'''insert into {} ({}) values ({});'''.format(table, u','.join(fields), u','.join(fieldvals), lid)
             thismsg = u'added'
         result = db.executesql(sql)
         if lid == 0:
@@ -971,20 +997,25 @@ def windex():
             msgs.append(('error', 'No data version {}'.format(newv)))
             break
         result = passage_dbs[oldv].executesql('''
-select entryid from lexicon where id = {};
+select lan, entryid from lexicon where id = {};
 '''.format(oldwid)) 
         if result == None or len(result) != 1:
             msgs.append(('error', 'No word with id={} in data version {}'.format(oldwid, oldv)))
             break
-        eid = result[0][0]
-        eidsql = eid.replace("'", "''").replace('%', '\\%')
+        (lan, eid) = result[0]
+        eidsql = eid.replace("'", "''")
         result = passage_dbs[newv].executesql('''
-select id from lexicon where entryid = '{}';
-'''.format(eidsql)) 
-        if result == None or len(result) != 1:
-            msgs.append(('error', 'No word entry {} in data version {}'.format(eid, newv)))
+select id from lexicon where lan = '{}' and entryid = '{}';
+'''.format(lan, eidsql)) 
+        if result == None or len(result) == 0:
+            msgs.append(('error', 'No {} word entry {} in data version {}'.format(lan, eid, newv)))
             break
         newwid = result[0][0]
+        if len(result) > 1:
+            msgs.append(('warning', 'Multiple {} words with entry = {} in data version {}: {}. I choose {}.'.format(
+                 lan, eid, newv, ', '.join(str(r[0]) for r in result), newwid,
+                )
+            ))
         good = True
         msgs.append(('special', '{} in {} is {} is {} in {}'.format(oldwid, oldv, h_esc(eid), newwid, newv)))
     return dict(data=json.dumps(dict(msgs=msgs, good=good, newwid=newwid)))

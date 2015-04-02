@@ -19,49 +19,138 @@ jQuery(function(){
 	var url = encodeURIComponent(window.location.href);
 	var host =  window.location.hostname;
 	var title = escape(jQuery('title').text());
-	var tbar = '<div id="socialdrawer"><span>Cite<br/>&nbsp;&nbsp;</span><div id="sicons"><a lnk="" href="#" id="clipquery" title="citation link for this query">query</a><a lnk="" href="#" id="clipword" title="citation link for this word">word</a>&nbsp;&nbsp;<a lnk="" href="#" id="clipview" title="link to this view">page view</a>&nbsp;<a class="sicon" target="_blank" href="#" id="twit" title="share this view on twitter"><img src="'+path+'/twitter.png"  alt="share this view on twitter" width="32" height="32" /></a></div></div>';	
+    var qmsg = {
+        good: 'The results of this query have been obtained after the query body has been last modified',
+        warning: 'This query has never been executed in SHEBANQ',
+        error: 'The body of this query has been changed after its current results have been obtained.',
+    }
+	var tbar = '\
+<div id="socialdrawer">\
+    <p id="citeh">Cite</p>\
+    <table align="center">\
+        <tr>\
+            <td class="clip_qx clr">\
+                <a lnk="" href="#" id="clip_qx_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_qx_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+            </td>\
+            <td class="clip_q clr">\
+                <a lnk="" href="#" id="clip_q_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_q_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+            </td>\
+            <td class="clip_w clr">\
+                <a lnk="" href="#" id="clip_w_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_w_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+            </td>\
+            <td class="clip_pv clr">\
+                <a lnk="" href="#" id="clip_pv_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+            </td>\
+        </tr>\
+        <tr>\
+            <th class="clip_qx" width="100px">query v</th>\
+            <th class="clip_q" width="100px">query</th>\
+            <th class="clip_w" width="100px">word</th>\
+            <th class="clip_pv" width="100px">page view</th>\
+        </tr>\
+        <tr class="citexpl">\
+            <td class="clip_qx"><span id="xc_qx" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_qx" class="detail">cite query with its results on <i>this</i> data version</span></td>\
+            <td class="clip_q"><span id="xc_q" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_q" class="detail">share link to query page</span></td>\
+            <td class="clip_w"><span id="xc_w" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_w" class="detail">cite word with its occs on <i>this</i> data version</span></td>\
+            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings</span></td>\
+        </tr>\
+    </table>\
+    <p id="cdiagpub"></p>\
+    <p id="cdiagsts"></p>\
+</div>\
+';	
 	// Add the share tool bar.
 	jQuery('body').append(tbar); 
 	var st = jQuery('#socialdrawer');
 	st.css({'opacity':'.7','z-index':'3000','background':'#FFF','border':'solid 1px #666','border-width':' 1px 0 0 1px','height':'20px','width':'40px','position':'fixed','bottom':'0','right':'0','padding':'2px 5px','overflow':'hidden','-webkit-border-top-left-radius':' 12px','-moz-border-radius-topleft':' 12px','border-top-left-radius':' 12px','-moz-box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)','-webkit-box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)','box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)'});
-	jQuery('#socialdrawer .sicon').css({'float':'right','width':'32px','margin':'3px 2px 2px 2px','padding':'0','cursor':'pointer'});
-	jQuery('#socialdrawer span').css({'float':'left','margin':'2px 3px','text-shadow':' 1px 1px 1px #FFF','color':'#444','font-size':'12px','line-height':'1em'});
-        jQuery('#socialdrawer img').hide();
+	jQuery('#citeh').css({'margin':'2px 3px','text-shadow':' 1px 1px 1px #FFF','color':'#444','font-size':'12px','line-height':'1em'});
+    jQuery('#socialdrawer td,#socialdrawer th').css({'width': '100px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
+    jQuery('#socialdrawer .detail').hide()
 	// hover
-    $('#clipview,#clipquery,#clipword').click(function(e) {e.preventDefault();
+    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_pv_md,#clip_pv_ht').click(function(e) {e.preventDefault();
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
     })
+    $('#xc_qx').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_qx')) })
+    $('#xc_q').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_q')) })
+    $('#xc_w').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_w')) })
+    $('#xc_pv').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_pv')) })
 	st.click(function(e){e.preventDefault();
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
         var shebanq_url = encodeURIComponent(shebanq_url_raw)
-	    var twit = 'http://twitter.com/home?status='+title+'%20';
+        var pvtitle
+        $('#citeh').hide()
+        $('#cdiagpub').html('')
+        $('#cdiagsts').html('')
+        $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
         if (wb.mr == 'm') {
-            $('#clipquery').hide()
-            $('#clipword').hide()
+            pvtitle = title
+            $('.clip_qx').hide()
+            $('.clip_q').hide()
+            $('.clip_w').hide()
         }
         else if (wb.mr == 'r') {
+            var vr = wb.version
+            var iinfo = wb.sidebars.sidebar['r'+wb.qw].content.info
             if (wb.qw == 'q') {
+                pvtitle = iinfo.ufname+' '+iinfo.ulname+': '+iinfo.name
+                var is_shared = iinfo.is_shared
+                var is_pub = iinfo.versions[vr].is_published
+                var qstatus = iinfo.versions[vr].status
+                if (is_shared) {
+                    if (!is_pub) {
+                        $('.clip_qx.clr').addClass('warning')
+                        $('#cdiagpub').addClass('warning')
+                        $('#cdiagpub').html('Beware of citing this query. It has not been published. It may be changed later.')
+                    }
+                    else {
+                        $('.clip_qx.clr').addClass('special')
+                        $('#cdiagpub').addClass('special')
+                        $('#cdiagpub').html('If this query has been published more than a week ago, it can be safely cited. It will not be changed anymmore.')
+                    }
+                    $('.clip_q.clr').addClass(qstatus)
+                    $('#cdiagsts').addClass(qstatus)
+                    $('#cdiagsts').html(qmsg[qstatus])
+                }
+                else {
+                    $('.clip_qx.clr').addClass('error')
+                    $('.clip_q.clr').addClass('error')
+                    $('.clip_pv.clr').addClass('error')
+                    $('#cdiagpub').addClass('error')
+                    $('#cdiagpub').html('This query is not accessible to others because it is not shared.')
+                }
                 var quote_url = query_url+'?id='+wb.iid
-                $('#clipquery').attr('lnk', quote_url)
-                $('#clipquery').show()
-                $('#clipword').hide()
+                var quotev_url = query_url+'?version='+vr+'&id='+wb.iid
+                $('#clip_qx_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
+                $('#clip_qx_ht').attr('lnk', quotev_url)
+                $('#clip_q_md').attr('lnk', '['+pvtitle+']('+quote_url+')')
+                $('#clip_q_ht').attr('lnk', quote_url)
+                $('.clip_qx').show()
+                $('.clip_q').show()
+                $('.clip_w').hide()
             }
             else {
-                var quote_url = word_url+'?id='+wb.iid
-                $('#clipword').attr('lnk', quote_url)
-                $('#clipquery').hide()
-                $('#clipword').show()
+                pvtitle = iinfo.entryid_heb+' ('+iinfo.entryid+')'
+                var quotev_url = word_url+'?version='+vr+'&id='+wb.iid
+                $('#clip_w_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
+                $('#clip_w_ht').attr('lnk', quotev_url)
+                $('.clip_w.clr').addClass('special')
+                $('.clip_qx').hide()
+                $('.clip_q').hide()
+                $('.clip_w').show()
             }
         }
-        $('#clipview').attr('lnk', shebanq_url_raw)
-        $('#twit').attr('href', twit+shebanq_url)
-        jQuery(this).animate({height:'40px', width:'200px', opacity: 0.95}, 300);
-        jQuery('#socialdrawer img').show();
+        $('#clip_pv_md').attr('lnk', '['+pvtitle+']('+shebanq_url_raw+')')
+        $('#clip_pv_ht').attr('lnk', shebanq_url_raw)
+        jQuery(this).animate({height:'260px', width:'330px', opacity: 0.95}, 300);
     });
 	//leave
 	st.mouseleave(function(){ 
+        $('#citeh').show()
 	    st.animate({height:'20px', width: '40px', opacity: .7}, 300); 
-	    jQuery('#socialdrawer img').hide();
 	    return false;
 	    }  );
     });

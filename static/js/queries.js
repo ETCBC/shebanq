@@ -3,8 +3,9 @@ var ns = $.initNamespaceStorage('muting')
 var vs = $.initNamespaceStorage('qsview')
 var muting = ns.localStorage
 var qsview = vs.localStorage
-var ftree, msg, rdata
+var ftree, msgflt, msgopq, rdata
 var subtract = 80 // the canvas holding the material gets a height equal to the window height minus this amount
+var control_height = 100 // height for messages and controls
 
 var escapeHTML = (function () {
     'use strict';
@@ -134,8 +135,8 @@ function Filter() {
 
     this.clear = function() {
         ftree.ftw.clearFilter()
-        msg.clear('f')
-        msg.msg('f', ['good', 'no filter applied'])
+        msgflt.clear()
+        msgflt.msg(['good', 'no filter applied'])
         $('.qfradio').removeClass('ison')
         qsview.remove('filter_mode')
         $('#filter_clear').hide()
@@ -166,20 +167,20 @@ function Filter() {
         }
         $('.qfradio').removeClass('ison')
         if (kind == 'm') {
-            msg.clear('f')
-            msg.msg('f', ['warning', 'my queries'])
+            msgflt.clear()
+            msgflt.msg(['warning', 'my queries'])
         }
         else if (kind == 'r') {
-            msg.clear('f')
-            msg.msg('f', ['warning', 'private queries'])
+            msgflt.clear()
+            msgflt.msg(['warning', 'private queries'])
         }
         else if (pat == '') {
             this.clear()
             return
         }
         else {
-            msg.clear('f')
-            msg.msg('f', ['special', 'filter applied'])
+            msgflt.clear()
+            msgflt.msg(['special', 'filter applied'])
         }
         $('#filter_control_'+kind).addClass('ison')
         qsview.set('filter_mode', kind)
@@ -245,25 +246,24 @@ function Filter() {
     $('#filter_clear').click(function(e) {e.preventDefault();that.clear()})
 }
 
-function Msg() {
-    this.destinations = {
-        o: $('#dbmsg_o'),
-        p: $('#dbmsg_p'),
-        q: $('#dbmsg_q'),
-        qv: $('#dbmsg_qv'),
-        f: $('#filter_msg'),
+function Msg(destination) {
+    var that = this
+    this.destination = $('#'+destination)
+    this.trashc = $('#trash_'+destination)
+    this.clear = function() {
+        this.destination.html('')
+        this.trashc.hide()
     }
-    this.clear = function(dest) {
-        var msgc = this.destinations[dest];
-        msgc.html('')
+    this.trashc.click(function(e) {e.preventDefault();
+        that.clear()
+    })
+    this.msg = function(msgobj) {
+        var mtext = this.destination.html()
+        this.destination.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
+        this.trashc.show()
     }
-    this.msg = function(dest, msgobj) {
-        var msgc = this.destinations[dest];
-        var mtext = msgc.html()
-        msgc.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
-    }
+    this.trashc.hide()
 }
-
 function Tree() {
     var that = this
     this.tps = {o: 'organization', p:'project', q:'query'}
@@ -291,10 +291,11 @@ function Tree() {
         }
     }
     this.dress_queries = function() {
-        $('#queries a.md').addClass('ui-icon ui-icon-link')
-        $('#queries a.qx').addClass('ui-icon ui-icon-gear')
+        $('#queries a.md').addClass('fa fa-level-down')
         $('#queries a[qid]').each(function() {
-            $(this).attr('href', q_url+'?iid='+$(this).attr('qid')+'&page=1&mr=r&qw=q')
+            var vr = $(this).attr('v')
+            var extra = (vr == undefined)?'':'&version='+vr;
+            $(this).attr('href', q_url+'?iid='+$(this).attr('qid')+extra+'&page=1&mr=r&qw=q')
         })
         $('#queries a.md').click(function(e) {e.preventDefault();
             var uname = $(this).closest('ul').closest('li').find('span[n]').html()
@@ -331,9 +332,9 @@ function Tree() {
             }
             var rec = json.record
             good = json.good
-            msg.clear(tpp)
+            msgopq.clear()
             json.msgs.forEach(function(m) {
-                msg.msg(tpp, m)
+                msgopq.msg(m)
             })
             if (!update || good) {
                 that.selectid('o', rec.oid, null)
@@ -363,7 +364,7 @@ function Tree() {
                 }
                 if (update) {
                     var elem = (tpp == 'q')?'a':'span'
-                    $('.treehl').find(elem+'[n=1]').html(escapeHTML(rec.name))
+                    that.moditem.find(elem+'[n=1]').html(escapeHTML(rec.name))
                 }
             }
             if (update && good && senddata.lid == '0') {
@@ -392,8 +393,9 @@ function Tree() {
         }, 'json')
     }
     this.do_create = function(tp, obj) {
-        msg.clear(tp)
+        msgopq.clear()
         $('.form_l').hide()
+        $('.ctrl_l').hide()
         $('#title_'+tp).html('Add new')
         $('#name_'+tp).val('')
         var o = null
@@ -413,9 +415,11 @@ function Tree() {
             }
         }
         $('#id_'+tp).val(0)
-        $('#save_'+tp).html('Add')
         this.record(tp, o, false, false)
+        $('#opqforms').show()
+        $('#opqctrl').show()
         $('#form_'+tp).show()
+        $('#ctrl_'+tp).show()
         $('.old').hide()
     }
     this.do_update = function(tp, obj, lid) {
@@ -426,14 +430,18 @@ function Tree() {
         else if (tp == 'p') {
             o = obj.closest('ul').closest('li')
         }
-        msg.clear(tp)
-        msg.msg(tp, ['info', 'loading ...'])
+        this.moditem = obj.closest('li')
+        msgopq.clear()
+        msgopq.msg(['info', 'loading ...'])
         $('.form_l').hide()
+        $('.ctrl_l').hide()
         $('#title_'+tp).html('Modify')
         $('#id_'+tp).val(lid)
-        $('#save_'+tp).html('Update')
         this.record(tp, o, false, false)
+        $('#opqforms').show()
+        $('#opqctrl').show()
         $('#form_'+tp).show()
+        $('#ctrl_'+tp).show()
         $('.old').show()
     }
     this.do_view = function(tp, obj, lid) {
@@ -445,12 +453,15 @@ function Tree() {
             o = obj.closest('ul').closest('li')
         }
         var mtp = tp+'v'
-        msg.clear(mtp)
-        msg.msg(mtp, ['info', 'loading ...'])
+        msgopq.clear()
+        msgopq.msg(['info', 'loading ...'])
         $('.form_l').hide()
+        $('.ctrl_l').hide()
         $('#title_'+tp).html('View')
         $('#id_'+tp).val(lid)
         this.record(tp, o, false, true)
+        $('#opqforms').show()
+        $('#opqctrl').show()
         $('#formv_'+tp).show()
     }
     this.op_selection = function(tp) {
@@ -471,8 +482,8 @@ function Tree() {
         var objs = $('.selecthl'+tp) 
         var icons = $('.s_'+tp)
         objs.removeClass('selecthl'+tp)
-        icons.removeClass('ui-icon-radio-on')
-        icons.addClass('ui-icon-radio-off')
+        icons.removeClass('fa-check-circle')
+        icons.addClass('fa-circle-o')
         if (show) {
             icons.show()
         }
@@ -494,13 +505,14 @@ function Tree() {
         var iconsr = $('.s_'+tp)
         objs.removeClass(sclass)
         obj.addClass(sclass)
-        iconsr.removeClass('ui-icon-radio-on')
-        iconsr.addClass('ui-icon-radio-off')
-        icon.removeClass('ui-icon-radio-off')
-        icon.addClass('ui-icon-radio-on')
+        iconsr.removeClass('fa-check-circle')
+        iconsr.addClass('fa-circle-o')
+        icon.removeClass('fa-circle-o')
+        icon.addClass('fa-check-circle')
     }
     this.viewinit = function() {
         $('.form_l').hide()
+        $('.ctrl_l').hide()
         $('.treehl').removeClass('treehl')
         this.select_hide()
     }
@@ -512,7 +524,7 @@ function Tree() {
         canvas_middle.css('width','35%')
         canvas_right.css('width', '40%')
         var view = $('.v_q') 
-        view.addClass('ui-icon ui-icon-info')
+        view.addClass('fa fa-info')
         this.viewtp = function(tp) {
             if (tp != 'q') {
                 return
@@ -557,7 +569,9 @@ function Tree() {
         }
         for (var t in this.tps) {
             $('#form_'+t).hide()
+            $('#ctrl_'+t).hide()
             $('#formv_'+t).hide()
+            $('#ctrlv_'+t).hide()
             this.viewtp(t)
             if (t == 'q') {
                 this.select_init('o')
@@ -568,10 +582,10 @@ function Tree() {
     this.editinit = function() {
         $('.treehl').removeClass('treehl')
         var select = $('.s_o,.s_p') 
-        select.addClass('ui-icon ui-icon-radio-off')
+        select.addClass('fa-circle-o')
         select.hide()
         var create = $('.n_o, .n_p, .n_q'); 
-        create.addClass('ui-icon ui-icon-plus')
+        create.addClass('fa fa-plus')
         this.createtp = function(tp) {
             var objs = $('.n_'+tp);
             objs.click(function(e) {e.preventDefault();
@@ -583,7 +597,7 @@ function Tree() {
             })
         }
         var update = $('.r_o, .r_p, .r_q') 
-        update.addClass('ui-icon ui-icon-pencil')
+        update.addClass('fa fa-pencil')
         this.updatetp = function(tp) {
             var objs = $('.r_'+tp);
             objs.click(function(e) {e.preventDefault();
@@ -600,11 +614,22 @@ function Tree() {
                 that.op_selection(tp)
                 that.record(tp, null, true, false)
             })
-            $('#cancel_'+tp+', #done_'+tp).click(function(e) {e.preventDefault();
+            $('#cancel_'+tp).click(function(e) {e.preventDefault();
                 $('.treehl').removeClass('treehl')
                 that.select_hide()
                 $('#form_'+tp).hide()
+                $('#ctrl_'+tp).hide()
                 $('#formv_'+tp).hide()
+                $('#ctrlv_'+tp).hide()
+            })
+            $('#done_'+tp).click(function(e) {e.preventDefault();
+                that.op_selection(tp)
+                that.record(tp, null, true, false)
+                that.select_hide()
+                $('#form_'+tp).hide()
+                $('#ctrl_'+tp).hide()
+                $('#formv_'+tp).hide()
+                $('#ctrlv_'+tp).hide()
             })
             $('#reload_tree').click(function(e) {e.preventDefault();
                 window.location.reload(true)
@@ -612,7 +637,9 @@ function Tree() {
         }
         for (var t in this.tps) {
             $('#form_'+t).hide()
+            $('#ctrl_'+t).hide()
             $('#formv_'+t).hide()
+            $('#ctrlv_'+t).hide()
             this.createtp(t)
             this.updatetp(t)
             this.formtp(t)
@@ -672,7 +699,8 @@ function Tree() {
             $('#count_p').html(rdata.p)
             $('#count_u').html(rdata.u)
             $('#count_q').html(rdata.q)
-            msg = new Msg()
+            msgopq = new Msg('opqmsgs')
+            msgflt = new Msg('filter_msg')
             that.view = new View()
             that.level = new Level()
             that.filter = new Filter()
@@ -702,13 +730,15 @@ function Tree() {
         },
     })
     var standard_height = window.innerHeight - subtract
+    var form_height = standard_height - control_height
     var standard_width = window.innerWidth
     var canvas_left = $('.left-sidebar')
     var canvas_middle = $('.span6')
     var canvas_right = $('.right-sidebar')
     canvas_left.css('height', standard_height+'px')
     $('#queries').css('height', standard_height+'px')
-    $('#opqforms').css('height', standard_height+'px')
+    $('#opqforms').css('height', form_height+'px')
+    $('#opqctrl').css('height', control_height+'px')
     canvas_right.css('height', standard_height+'px')
 }
 

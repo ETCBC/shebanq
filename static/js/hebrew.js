@@ -619,15 +619,23 @@ function MSelect() { // for book and chapter selection
                     var msg = wb.sidebars.sidebar['rw'].content.msgw
                     msg.clear()
                     msg.msg(['special', ' retrieving corresponding word entry'])
-                    $.post(windex_url, {oldwid: wb.vs.iid(), oldv: wb.vs.version(), newv: v}, function(json) {
+                    var oldwid = wb.vs.iid()
+                    var oldv = wb.vs.version()
+                    $.post(windex_url, {oldwid: oldwid, oldv: oldv, newv: v}, function(json) {
                         json.msgs.forEach(function(m) {
                             msg.msg(m)
                         })
                         good = json.good
+                        var gotowid
                         if (good) {
-                            wb.vs.mstatesv({version: v, iid: json.newwid})
-                            wb.go()
+                            gotowid = json.newwid
                         }
+                        else {
+                            gotowid = oldwid
+                            msg.msg(['warning', 'showing word '+oldwid+' instead'])
+                        }
+                        wb.vs.mstatesv({version: v, iid: gotowid})
+                        wb.go()
                     }, 'json')
                 }
                 else {
@@ -1277,6 +1285,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             var iid = wb.vs.iid()
             set_csv(mr, qw, iid)
             if (qw == 'q') {
+                this.info = q
                 var ufname = escapeHTML(q.ufname)
                 var ulname = escapeHTML(q.ulname)
                 var qname = escapeHTML(q.name)
@@ -1295,6 +1304,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#is_pub_ro').hide()
             }
             else {
+                this.info = w
                 var g_entry_heb = escapeHTML(w.g_entry_heb)
                 var g_entry = escapeHTML(w.g_entry)
                 var entry_heb = escapeHTML(w.entry_heb)

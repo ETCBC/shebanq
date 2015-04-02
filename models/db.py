@@ -125,7 +125,6 @@ crud, service, plugins = Crud(db), Service(), PluginManager()
 # username=False --> use email address
 # signature=False --> Where is the API? I *believe* signature=True will enable record versioning.
 auth.define_tables(username=False, signature=False)
-#print db.tables
 
 ## configure email
 mail = auth.settings.mailer
@@ -163,7 +162,6 @@ use_janrain(auth, filename='private/janrain.key')
 ##
 ## >>> db.mytable.insert(myfield='value')
 ## >>> rows=db(db.mytable.myfield=='value').select(db.mytable.ALL)
-## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
 ## after defining tables, uncomment below to enable auditing
