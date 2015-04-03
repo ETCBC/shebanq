@@ -1584,6 +1584,8 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#mqlq').val(qx.mql)
                 $('#executed_on').html(qx.executed_on)
                 $('#xmodified_on').html(qx.xmodified_on)
+                $('#qresults').html(qx.results)
+                $('#qresultmonads').html(qx.resultmonads)
                 $('#statq').removeClass('error warning good').addClass(qx.status)
                 that.setstatus('', qx.status)
             }

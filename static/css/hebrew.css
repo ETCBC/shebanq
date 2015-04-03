@@ -361,6 +361,14 @@ td.cw a {
 
 /* SIDEBAR ITEMS: QUERY */
 
+.qexer {
+    text-align: right;
+    color: #4488ff;
+}
+#qresults {
+    font-weight: bold;
+}
+
 div.version {
     border-radius: 2pt;
     border-top: 2pt solid #aaaaaa;

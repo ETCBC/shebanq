@@ -385,7 +385,7 @@ order by
             monads=','.join(str(x) for x in monads),
         )
         data = passage_dbs[vr].executesql(sql)
-    return dict(filename=filename, data=csv([head_row]+data))
+    return dict(filename=filename, data=csv([head_row]+list(data)))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
     vr = get_request_val('material', '', 'version')
@@ -1216,14 +1216,17 @@ where query.id = {};
         execute = request.vars.execute
         xgood = True
         if execute == 'true':
-            (xgood, xresults) = mql(vr, newmql) 
+            (xgood, nresults, xmonads) = mql(vr, newmql) 
             if xgood:
-                store_monad_sets(vr, qid, xresults)
+                store_monad_sets(vr, qid, xmonads)
                 fldx['executed_on'] = request.now
+                nresultmonads = count_monads(xmonads)
+                fldx['results'] = nresults
+                fldx['resultmonads'] = nresultmonads
                 msgs.append(('good', 'Query executed'))
             else:
                 store_monad_sets(vr, qid, [])
-                msgs.append(('error', u'<code class="merr">{}</code>'.format(xresults)))
+                msgs.append(('error', u'<code class="merr">{}</code>'.format(xmonads)))
         if len(flds):
             sql = u"update {} set{} where id = {}".format(
                 'query',
@@ -1624,6 +1627,11 @@ def get_qx(vr, iid):
     recordx = db.executesql("select id from query_exe where query_id = {} and version = '{}';".format(iid, vr))
     if recordx == None or len(recordx) != 1: return None
     return recordx[0][0]
+
+def count_monads(rows):
+    covered = set()
+    for (b,e) in rows: covered |= set(xrange(b, e+1))
+    return len(covered)
 
 def store_monad_sets(vr, iid, rows):
     xid = get_qx(vr, iid)
