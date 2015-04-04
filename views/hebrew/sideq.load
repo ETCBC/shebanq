@@ -46,8 +46,9 @@ statusmap = dict(
     id_q = XML('id="statq" ') if v == vr else ''
     id_m = XML('id="statm" ') if v == vr else ''
     arrow = 'down' if v == vr else 'right'
+    pclass = 'published' if is_pub else 'unpublished'
 }}
-    <div version="{{=v}}" class="version {{=thisclass}}">
+    <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
         <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
         <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
         ({{='this' if v == vr else 'other'}} version)

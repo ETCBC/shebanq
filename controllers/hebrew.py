@@ -1104,7 +1104,8 @@ def upd_field(vr, qid, fname, val, msgs):
                 msgs.append(('error', 'You cannot UNshare this query because there is a published execution record'))
                 break
         if fname == 'is_published':
-            mod_cls['is_pub_ro'] = 'fa-{}'.format('check' if valsql == 'T' else 'close')
+            mod_cls['#is_pub_ro'] = 'fa-{}'.format('check' if valsql == 'T' else 'close')
+            mod_cls['div[version="{}"]'.format(vr)] = 'published' if valsql == 'T' else 'unpublished'
             extra['execq'] = ('show', valsql != 'T')
             if valsql == 'T':
                 sql = '''select executed_on, modified_on as xmodified_on from query_exe where query_id = {} and version = '{}';'''.format(qid, vr)
@@ -1248,29 +1249,7 @@ where query.id = {};
             ckeys = r'^items_q_{}_'.format(vr)
             cache.ram.clear(regex=ckeys)
             cache.disk.clear(regex=ckeys)
-        sql = u'''select name, description, modified_on from query where id = {};'''.format(qid)
-        records = db.executesql(sql, as_dict=True)
-        if records == None or len(records) == 0:
-            msgs.append(('error', 'No query with id {}'.format(qid)))
-            good = False
-        else:
-            q_record = records[0]
-            q_record['description_md'] = markdown(q_record['description'])
-            for f in ('modified_on',):
-                q_record[f] = str(q_record[f])
-            sql = '''
-select
-    mql,
-    version,
-    resultmonads,
-    results,
-    executed_on,
-    modified_on as xmodified_on
-from query_exe
-where query_id = {}
-'''.format(qid)
-            recordx = db.executesql(sql, as_dict=True)
-            query_fields(vr, q_record, recordx, single_version=False)
+        q_record = get_query_info(qid, vr, msgs, with_ids=False, single_version=False, po=True)
 
     return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=q_record)))
 

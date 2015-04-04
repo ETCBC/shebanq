@@ -3,114 +3,92 @@
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
 
+{{
+startimage = 3
+
+section_def = (
+    (1, 'Basic Usage'),
+        (2, 'View and visualize'),
+            (3, 'The Text'),
+            (3, 'Context View'),
+            (3, 'Data'),
+            (3, 'Words'),
+            (3, 'Queries'),
+            (3, 'Queries - more info'),
+            (3, 'Queries - muting'),
+            (3, 'Charts'),
+        (2, 'Export and share'),
+            (3, 'Export Data'),
+            (3, 'Sharing'),
+    (1, 'More about Data'),
+            (3, 'Versions'),
+            (3, 'Versions and Words'),
+            (3, 'Versions and Queries'),
+    (1, 'More about sharing'),
+            (3, 'Sharing versus Publishing'),
+            (3, 'Citation'),
+    (1, 'More about Words'),
+            (3, 'Word Highlights'),
+            (3, 'Single Word View'),
+    (1, 'Working with Queries'),
+            (3, 'Making queries'),
+            (3, 'Query Highlights'),
+            (3, 'Single Query View'),
+            (3, 'Executing Queries'),
+    (1, 'Go your own way'),
+            (3, 'Beyond: LAF-Fabric'),
+    (1, 'Documentation and Support'),
+)
+
+def make_anchor(title): return title.lower().replace(' ','_').replace('-','_').translate(None, '''!@#$%^&*()+={}[]:;"'|\\~`<,>.?/''')
+pass
+
+def toc_line(level, title):
+    return '''
+<h{level}><a href="#{anchor}">{title}</a></h{level}>
+'''.format(level=level, anchor=make_anchor(title), title=title)
+pass
+
+def body_line(level, title, image):
+    if level < 3:
+        bline = '''<hr/><h{level}><a name="{anchor}">{title}</a></h{level}>'''.format(level=level, anchor=make_anchor(title), title=title)
+    else:
+        bline = '''<hr/><h{level}><a name="{anchor}">{title}</a></h{level}><p><img src="{url}.{image:03}.jpg"/></p>'''.format(
+            level=level,
+            anchor=make_anchor(title),
+            title=title,
+            image=image,
+            url=URL('static', 'images/help/help'),
+        )
+    pass
+    return bline
+pass
+
+def toc(): return ''.join(toc_line(s[0], s[1]) for s in section_def)
+pass
+
+def body():
+    material = ''
+    image = startimage
+    for (level, title) in section_def:
+        material += body_line(level, title, image)
+        if level == 3:
+            image += 1
+        pass
+    pass
+    return material
+pass
+
+}}
 <p style="margin-left: 80px;">{{=A('Download as PDF', _target='_blank',_href=URL('static', 'docs/help.pdf'))}}</p>
 <img style="float: right;" src="{{=URL('static', 'images/shebanq_logo.png')}}"/>
+
 <hr/>
 <div id="helptoc">
-<h1><a href="#basic_usage">Basic Usage</a></h1>
-<h2><a href="#view_and_visualize">View and visualize</a></h2>
-<h3><a href="#the_text">The Text</a></h3>
-<h3><a href="#context_view">Context View</a></h3>
-<h3><a href="#data">Data</a></h3>
-<h3><a href="#words">Words</a></h3>
-<h3><a href="#queries">Queries</a></h3>
-<h3><a href="#charts">Charts</a></h3>
-<h2><a href="#export_and_share">Export and share</a></h2>
-<h3><a href="#export_data">Export Data</a></h3>
-<h3><a href="#citation">Citation</a></h3>
-<h1><a href="#more_about_words">More about Words</a></h1>
-<h3><a href="#word_highlights">Word Highlights</a></h3>
-<h3><a href="#single_word_view">Single Word View</a></h3>
-<h1><a href="#working_with_queries">Working with Queries</a></h1>
-<h3><a href="#queries_advanced">Queries Advanced</a></h3>
-<h3><a href="#query_highlights">Query Highlights</a></h3>
-<h3><a href="#single_query_view">Single Query View</a></h3>
-<h3><a href="#executing_queries">Executing Queries</a></h3>
-<h1><a href="#go_your_own_way">Go your own way</a></h1>
-<h3><a href="#laf_fabric">Beyond: LAF-Fabric</a></h3>
-<h1><a href="#documentation_and_support">Documentation and Support</a></h1>
+{{=XML(toc())}}
 </div>
 
-<hr/>
-<h1><a name="basic_usage">Basic Usage</a></h1>
-
-<hr/>
-<h2><a name="view_and_visualize">View and visualize</a></h2>
-
-<hr/>
-<h3><a name="the_text">The Text</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.003.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="context_view">Context View</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.004.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="data">Data</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.005.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="words">Words</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.006.jpg')}}"/></p>
- 
-<hr/>
-<h3><a name="queries">Queries</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.007.jpg')}}"/></p>
- 
-<hr/>
-<h3><a name="charts">Charts</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.008.jpg')}}"/></p>
-
-<hr/>
-<h2><a name="export_and_share">Export and share</a></h2>
-
-<hr/>
-<h3><a name="export_data">Export Data</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.009.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="citation">Citation</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.010.jpg')}}"/></p>
-
-<hr/>
-<h1><a name="more_about_words">More about Words</a></h1>
-
-<hr/>
-<h3><a name="word_highlights">Word Highlights</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.011.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="single_word_view">Single Word View</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.012.jpg')}}"/></p>
-
-<hr/>
-<h1><a name="working_with_queries">Working with Queries</a></h2>
-
-<hr/>
-<h3><a name="queries_advanced">Queries Advanced</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.013.jpg')}}"/></p>
- 
-<hr/>
-<h3><a name="query_highlights">Query Highlights</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.014.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="single_query_view">Single Query View</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.015.jpg')}}"/></p>
-
-<hr/>
-<h3><a name="executing_queries">Executing queries</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.016.jpg')}}"/></p>
-
-<hr/>
-<h1><a name="go_your_own_way">Go your own way</a></h1>
-
-<hr/>
-<h3><a name="laf_fabric">Beyond: LAF-Fabric</a></h3>
-<p><img src="{{=URL('static', 'images/help/help.017.jpg')}}"/></p>
-
-<hr/>
-<h1><a name="documentation_and_support">Documentation and Support</a></h1>
+{{=XML(body())}}
 <ul class="lcirc">
     <li><a target="_blank" href="{{=URL('static', 'docs/MQL-QuickRef.pdf')}}">MQL quick reference guide (pdf)</a></li>
     <li><a target="_blank" href="{{=URL('static', 'docs/MQL-Query-Guide.pdf')}}">MQL Query Reference by Ulrik (pdf)</a></li>

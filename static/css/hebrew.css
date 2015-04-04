@@ -379,6 +379,9 @@ div.version.this {
     border-bottom: 2pt solid #ffff00;
     background-color: #ffffcc;
 }
+div.version.this.published {
+    background-color: #bbffff;
+}
 .dtval {
     font-family: Menlo, Courier New, Courier, monospace;
     font-size: x-small;

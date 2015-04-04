@@ -1528,7 +1528,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 }
                 for (var mod_cl in mod_cls) {
                     var cl = mod_cls[mod_cl]
-                    var dest = $('#'+mod_cl)
+                    var dest = $(mod_cl)
                     dest.removeClass('fa-check fa-close')
                     dest.addClass(cl)
                 }
@@ -1588,6 +1588,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#qresultmonads').html(qx.resultmonads)
                 $('#statq').removeClass('error warning good').addClass(qx.status)
                 that.setstatus('', qx.status)
+                wb.sidebars.sidebar['rq'].content.info = q
             }
             if (execute) {
                 material_fetched = {txt_p: false, txt_il: false}
