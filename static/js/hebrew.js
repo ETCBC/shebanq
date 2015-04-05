@@ -873,7 +873,7 @@ function CSelect(qw) { // for chart selection
         that.apply()
     })
     this.apply = function() {
-        if (that.loaded != wb.iid) {
+        if (that.loaded != wb.version+'_'+wb.iid) {
             this.fetch()
         }
         else {
@@ -881,9 +881,9 @@ function CSelect(qw) { // for chart selection
         }
     }
     this.fetch = function() {
-        var vars = '?qw='+this.qw+'&iid='+wb.iid
+        var vars = '?version='+wb.version+'&qw='+this.qw+'&iid='+wb.iid
         $(this.select).load(chart_url+vars, function () {
-            that.loaded = wb.iid
+            that.loaded = wb.version+'_'+wb.iid
             that.process()
         }, 'html')
     }
@@ -1073,7 +1073,7 @@ function MSettings(content) {
             legend.hide()
             legendc.hide()
         }
-        set_csv(wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         wb.material.adapt()
     }
     $('.mhradio').click(function(e) {e.preventDefault();
@@ -1119,7 +1119,7 @@ function HebrewSetting(fld) {
         else {
             $('.'+this.name).each(function () {$(this).hide()})
         }
-        set_csv(wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
     }
 }
 
@@ -1283,7 +1283,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         else {
             var vr = wb.version
             var iid = wb.vs.iid()
-            set_csv(mr, qw, iid)
+            set_csv(vr, mr, qw, iid)
             if (qw == 'q') {
                 this.info = q
                 var ufname = escapeHTML(q.ufname)
@@ -1733,11 +1733,11 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
     }
 }
 
-function set_csv(mr, qw, iid) {
+function set_csv(vr, mr, qw, iid) {
     if (mr == 'r') {
         $('#csv_lnk'+qw).attr('href', wb.vs.csv_url())
         var ctit = $('#csv_lnk'+qw).attr('ftitle')
-        $('#csv_lnk'+qw).attr('title', style[qw]['t']+iid+'.csv'+ctit)
+        $('#csv_lnk'+qw).attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctit)
     }
 }
 

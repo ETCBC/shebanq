@@ -834,6 +834,9 @@ code.merr {
 .special {
     background-color: #aaddff;
 }
+.note {
+    background-color: #ffff22;
+}
 .total {
     font-weight: bold;
 }
