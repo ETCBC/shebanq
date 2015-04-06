@@ -959,6 +959,13 @@ def upd_record(tp, lid, myid, fields, msgs):
             fld = 'modified_on' 
             updrecord[fld] = request.now
             fields.append(fld)
+            if lid == 0:
+                fld = 'created_on' 
+                updrecord[fld] = request.now
+                fields.append(fld)
+                fld = 'created_by' 
+                updrecord[fld] = myid
+                fields.append(fld)
         else:
             valsql = check_website(tp, request.vars.website, msgs)
             if valsql == None:
@@ -1194,9 +1201,10 @@ where query.id = {};
                 flds['name'] = valsql
                 flds['modified_on'] = request.now
             newmql = request.vars.mql
-            if oldvals['mql'] != newmql:
+            newmql_u = unicode(newmql, encoding='utf-8')
+            if oldvals['mql'] != newmql_u:
                 msgs.append(('warning', 'query body modified'))
-                valsql = check_mql('q', unicode(newmql, encoding='utf-8'), msgs)
+                valsql = check_mql('q', newmql_u, msgs)
                 if valsql == None:
                     break
                 fldx['mql'] = valsql

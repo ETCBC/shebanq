@@ -59,10 +59,10 @@ def mql(vr, query):
     compiler_result = 0
     good = env.executeString(sanitize(query) , compiler_result, 0, 0)[1]
     if not good:
-        return (False, env.getCompilerError())
+        return (False, None, env.getCompilerError())
     else:
         if not env.isSheaf:
-            return (False, 'Result of query is not a sheaf')
+            return (False, None, 'Result of query is not a sheaf')
         else:
             sheaf = env.getSheaf()
             if sheaf == None:
