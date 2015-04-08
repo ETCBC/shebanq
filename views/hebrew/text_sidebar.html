@@ -1,4 +1,5 @@
-{{ for (qw, tag, tags, items) in (('w', 'word', 'words', 'occurrences'), ('q', 'query', 'queries', 'results')):
+{{
+for (qw, tags) in (('w', 'words'), ('q', 'queries')):
 }}
 <div id="side_bar_r{{=qw}}">
     <div id="side_settings_r{{=qw}}">
@@ -6,10 +7,13 @@
             <tr>
                 <td id="colorpicker_i{{=qw}}"></td>
                 <td>{{=XML(colorpicker(qw, 'me', ''))}}</td>
-                <td><a id="csv_lnk{{=qw}}" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all {{=items}} of this {{=tag}} as a csv file"></a>
-                    <a id="select_control_chart{{=qw}}" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
-                    <span id="select_contents_chart{{=qw}}"></span>
-                </td>
+                <td>{{
+    for v in version_order:
+        if versions[v]['date']:
+                }}<span id="select_contents_chart_{{=v}}_{{=qw}}"></span>{{
+        pass
+    pass
+                }}</td>
             </tr>
         </table>
     </div>

@@ -1459,6 +1459,7 @@ where lexicon.id = {}
     word = records[0]
 
     return dict(
+        vr=vr,
         w=json.dumps(word),
         msgs=json.dumps(msgs),
     )

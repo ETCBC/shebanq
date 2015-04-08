@@ -345,7 +345,7 @@ the origin must be an object which has a member indicating the type of origin an
         }
         var chunks = [custitems, plainitems]
 
-        var cselect = function(iid) { // assigns a color to an individual monad, based on the viewsettings
+        var clselect = function(iid) { // assigns a color to an individual monad, based on the viewsettings
             var paint = ''
             if (active == 'hloff') {paint = style[qw]['off']} /*
                 viewsetting says: do not color any item */
@@ -366,7 +366,7 @@ the origin must be an object which has a member indicating the type of origin an
             for (var c = 0; c < 2; c++ ) {
                 var chunk = chunks[c]
                 for (var iid in chunk) {
-                    var color = cselect(iid)
+                    var color = clselect(iid)
                     var monads = chunk[iid]
                     for (var m in monads) {
                         var monad = monads[m]
@@ -383,7 +383,7 @@ the origin must be an object which has a member indicating the type of origin an
                 for (var iid in chunk) {
                     var color = style[qw]['off']
                     if (c == 0) { // do not color the plain items when dealing with words (as opposed to queries)
-                        color = cselect(iid)
+                        color = clselect(iid)
                     }
                     paintings[iid] = color
                 }
@@ -863,66 +863,74 @@ function SelectItems(key) { // both for chapters and for result pages
     })
 }
 
-function CSelect(qw) { // for chart selection
+function CSelect(vr, qw) { // for chart selection
     var that = this
+    this.vr = vr
     this.qw = qw
-    this.control = '#select_control_chart'+qw
-    this.select = '#select_contents_chart'+qw
-    this.loaded = null
-    $(this.control).click(function(e) {e.preventDefault();
-        that.apply()
-    })
+    this.control = '#select_control_chart_'+vr+'_'+qw
+    this.select = '#select_contents_chart_'+vr+'_'+qw
+    this.loaded = {}
+    this.init = function() {
+        $(that.control).click(function(e) {e.preventDefault();
+            that.apply()
+        })
+    }
     this.apply = function() {
-        if (that.loaded != wb.version+'_'+wb.iid) {
-            this.fetch()
+        if (!(that.qw+'_'+wb.iid in that.loaded)) {
+            $(this.select).append('<span id="select_contents_chart_'+that.vr+'_'+that.qw+'_'+wb.iid+'"></span>')
+            this.fetch(wb.iid)
         }
         else {
             this.show()
         }
     }
-    this.fetch = function() {
-        var vars = '?version='+wb.version+'&qw='+this.qw+'&iid='+wb.iid
-        $(this.select).load(chart_url+vars, function () {
-            that.loaded = wb.version+'_'+wb.iid
-            that.process()
+    this.fetch = function(iid) {
+        var vars = '?version='+this.vr+'&qw='+this.qw+'&iid='+iid
+        $(this.select+'_'+iid).load(chart_url+vars, function () {
+            that.loaded[this.qw+'_'+iid] = true
+            that.process(iid)
         }, 'html')
     }
-    this.process = function() {
-        this.gen_html()
-        $('.cnav').each(function() {
-            that.add_item($(this))
+    this.process = function(iid) {
+        this.gen_html(iid)
+        $(this.select+'_'+iid+' .cnav').each(function() {
+            that.add_item($(this), iid)
         })
-        var iid = wb.iid
         $('#theitemc').click(function(e) {e.preventDefault();
             var vals = {}
             vals['iid'] = iid
             vals['mr'] = 'r'
+            vals['version'] = that.vr
             vals['qw'] = that.qw
             wb.vs.mstatesv(vals)
             wb.vs.addHist()
             wb.go()
         })
-        $('#theitemc').html('Back to '+$('#theitem').html()) // fill in the Back to query/word line in a chart
-        this.present()
-        this.show()
+        $('#theitemc').html('Back to '+$('#theitem').html()+' (version '+that.vr+')') // fill in the Back to query/word line in a chart
+        this.present(iid)
+        this.show(iid)
     }
 
-    this.present = function() {
-        $(this.select).dialog({
+    this.present = function(iid) {
+        $(this.select+'_'+iid).dialog({
             autoOpen: false,
             dialogClass: 'items',
             closeOnEscape: true,
+            close: function() {
+                that.loaded[that.qw+'_'+iid] = false
+                $(that.select+'_'+iid).html('')
+            },
             modal: false,
-            title: 'chart for '+style[that.qw]['tag'],
+            title: 'chart for '+style[that.qw]['tag']+' (version '+that.vr+')',
             width: chart_width,
             position: { my: "left top", at: "left top", of: window }
         })
     }
-    this.show = function() {
-        $(this.select).dialog('open')
+    this.show = function(iid) {
+        $(this.select+'_'+iid).dialog('open')
     }
 
-    this.gen_html = function() { // generate a new chart
+    this.gen_html = function(iid) { // generate a new chart
         var nbooks = 0
         var booklist = $('#r_chartorder'+this.qw).val()
         var bookdata = $('#r_chart'+this.qw).val()
@@ -936,7 +944,7 @@ function CSelect(qw) { // for chart selection
             bookdata = {}
         }
         var ht = ''
-        ht += '<p><a id="theitemc" title="back to '+style[this.qw]['tag']+'" href="#">back</a></p>'
+        ht += '<p><a id="theitemc" title="back to '+style[this.qw]['tag']+' (version '+that.vr+')" href="#">back</a></p>'
         ht += '<table class="chart">'
         var ccl = ccolors.length
         for (var b in booklist) {
@@ -976,16 +984,16 @@ function CSelect(qw) { // for chart selection
             ht += '</tr></table></td></tr>'
         }
         ht += '</table>'
-        $(this.select).html(ht)
+        $(this.select+'_'+iid).html(ht)
         return nbooks
     }
-    this.add_item = function(item) {
-        var iid = wb.iid
+    this.add_item = function(item, iid) {
         item.click(function(e) {e.preventDefault();
             var vals = {}
             vals['book'] = $(this).attr('b')
             vals['chapter'] = $(this).attr('ch')
             vals['mr'] = 'm'
+            vals['version'] = that.vr
             wb.vs.mstatesv(vals)
             wb.vs.hstatesv('q', {sel_one: 'white', active: 'hlcustom'})
             wb.vs.hstatesv('w', {sel_one: 'black', active: 'hlcustom'})
@@ -1073,7 +1081,9 @@ function MSettings(content) {
             legend.hide()
             legendc.hide()
         }
-        set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        if (wb.vs.qw() == 'w') {
+            set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        }
         wb.material.adapt()
     }
     $('.mhradio').click(function(e) {e.preventDefault();
@@ -1119,7 +1129,7 @@ function HebrewSetting(fld) {
         else {
             $('.'+this.name).each(function () {$(this).hide()})
         }
-        set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        //set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
     }
 }
 
@@ -1207,8 +1217,16 @@ function Sidebar(mr, qw) { // the individual sidebar, parametrized with qr and m
     var hide = $('#side_hide_'+mr+qw)
     var show = $('#side_show_'+mr+qw)
     this.content = new SContent(mr, qw)
+    this.add_version = function(v) {
+        this.cselect[v] = new CSelect(v, qw)
+    }
     if (mr == 'r') {
-        this.cselect = new CSelect(qw)
+        this.cselect = {}
+        for (v in versions) {
+            if (versions[v]) {
+                this.add_version(v)
+            }
+        }
     }
     this.apply = function() {
         if ((this.mr != wb.mr) || (this.mr == 'r' && this.qw != wb.qw)) {
@@ -1281,9 +1299,13 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             wb.listsettings[this.qw].apply()
         }
         else {
+            for (v in versions) {
+                if (versions[v]) {
+                    wb.sidebars.sidebar['r'+this.qw].cselect[v].init()
+                }
+            }
             var vr = wb.version
             var iid = wb.vs.iid()
-            set_csv(vr, mr, qw, iid)
             if (qw == 'q') {
                 this.info = q
                 var ufname = escapeHTML(q.ufname)
@@ -1297,13 +1319,15 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('div[version="'+vr+'"]').find('.detail').show()
                 that.msgq = new Msg('dbmsg_q')
                 that.msgqv = new Msg('dbmsg_qv')
-                for (var v in versions) {
+                for (var v in q.versions) {
                     this.set_vselect(v)
+                    set_csv(v, mr, qw, iid)
                 }
                 $('#is_pub_c').show()
                 $('#is_pub_ro').hide()
             }
             else {
+                set_csv(vr, mr, qw, iid)
                 this.info = w
                 var g_entry_heb = escapeHTML(w.g_entry_heb)
                 var g_entry = escapeHTML(w.g_entry)
@@ -1593,10 +1617,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             if (execute) {
                 material_fetched = {txt_p: false, txt_il: false}
                 wb.material.adapt()
-                var show_chart = close_dialog($('#select_contents_chartq'))
-                wb.sidebars.sidebar['rq'].cselect.loaded = null
+                var show_chart = close_dialog($('#select_contents_chart_'+vr+'_q_'+q.id))
                 if (show_chart) {
-                    wb.sidebars.sidebar['rq'].cselect.apply()
+                    wb.sidebars.sidebar['rq'].cselect[vr].apply()
                 }
                 $('#execq').removeClass('fa-spin')
             }
@@ -1735,9 +1758,10 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
 
 function set_csv(vr, mr, qw, iid) {
     if (mr == 'r') {
-        $('#csv_lnk'+qw).attr('href', wb.vs.csv_url())
-        var ctit = $('#csv_lnk'+qw).attr('ftitle')
-        $('#csv_lnk'+qw).attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctit)
+        var csvctrl = $('#csv_lnk_'+vr+'_'+qw)
+        csvctrl.attr('href', wb.vs.csv_url())
+        var ctit = csvctrl.attr('ftitle')
+        csvctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctit)
     }
 }
 

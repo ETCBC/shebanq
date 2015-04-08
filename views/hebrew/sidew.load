@@ -1,4 +1,6 @@
 <a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
+<a id="csv_lnk_{{=vr}}_w" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all occurrences of this word as a csv file"></a>
+<a id="select_control_chart_{{=vr}}_w" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
 <input type="hidden" id="itemtag" value=""/>
 <table>
     <tr><td><span class="wlabel">vocalized</td><td class="dd" span id="g_entry_heb"></span></td></tr>
