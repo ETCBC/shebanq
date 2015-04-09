@@ -551,7 +551,6 @@ order by organization.name, project.name, auth_user.last_name, auth_user.first_n
     rversion_order = [v for v in version_order if versions[v]['date']]
     rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
     for (qid, oname, oid, pname, pid, uname, uid, qname, qshared) in pquery:
-        print u'{:<20} {:<20} {:<30} {:<20}'.format(oname[0:19], pname[0:19], uname[0:29], qname[0:19])
         qsharedstatus = qshared == 'T'
         qownstatus = uid == myid
         pqueries[qid] = {'': (oname, oid, pname, pid, uname, uid, qname, qsharedstatus, qownstatus), 'publ': False, 'good': False, 'v': [4 for v in rversion_order]}
