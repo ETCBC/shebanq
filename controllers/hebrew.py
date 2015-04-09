@@ -65,10 +65,14 @@ PUBLISH_FREEZE_MSG = '1 week'
 NULLDT = '____-__-__ __:__:__'
 
 CACHING = True
+CACHING_RAM_ONLY = True
 
 def from_cache(ckey, func, expire):
     if CACHING:
-        result = cache.ram(ckey, lambda:cache.disk(ckey, func, time_expire=expire), time_expire=expire)
+        if CACHING_RAM_ONLY:
+            result = cache.ram(ckey, func, time_expire=expire)
+        else:
+            result = cache.ram(ckey, lambda:cache.disk(ckey, func, time_expire=expire), time_expire=expire)
     else:
         result = func()
     return result
@@ -353,11 +357,12 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     vr = get_request_val('material', '', 'version')
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
-    filename = '{}_{}{}.csv'.format(vr, style[qw]['t'], iid)
+    tp = get_request_val('material', '', 'tp')
+    filename = '{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iid, 'text' if tp == 'txt_p' else 'data')
     (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
         return dict(filename=filename, data=msg)
-    hfields = get_fields()
+    hfields = get_fields(tp)
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
     (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
     monads = flatten(monad_sets)
@@ -489,7 +494,7 @@ def pq_c(myid):
         if publ != 0: nums.append(u'<span class="special fa fa-quote-right"> {}</span>'.format(publ))
         if good != 0: nums.append(u'<span class="good fa fa-gears"> {}</span>'.format(good))
         badge = ''
-        if len(nums) == 1:
+        if len(nums) == 0:
             if tot == num:
                 badge = u'<span class="total">{}</span>'.format(', '.join(nums))
             else:

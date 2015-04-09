@@ -395,8 +395,8 @@ def vsel(qw, iid, typ):
 def legend(): return legend_tpl.format(base_doc=base_doc)
 def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
-def get_fields():
-    if get_request_val('material', '', 'tp') == 'txt_p':
+def get_fields(tp):
+    if tp == 'txt_p':
         hfields = [('word_number', 'monad'), ('word_heb', 'text')]
     else:
         hfields = []

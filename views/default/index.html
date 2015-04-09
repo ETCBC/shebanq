@@ -19,13 +19,13 @@ By sharing your queries with others, you may find what you did not search for.</
 
 <h4>{{=T('Get started')}}</h4>
 <p>You can just read
-{{=A(T("The Text"), _href=URL('hebrew', 'text', vars=dict(book='Genesis', chapter=1, qget='v', wget='v')))}}.
+{{=A(T("The Text"), _href=URL('hebrew', 'text', vars=dict(book='Genesis', chapter=1, version='4', qget='v', wget='v')))}}.
 In the margin you find related queries, and you can follow them.
 You can also start with a query, such as
-{{=A(T("shibboleth"), _href=URL('hebrew', 'query', vars=dict(id=18, page=1)))}}
+{{=A(T("shibboleth"), _href=URL('hebrew', 'query', vars=dict(version='4', id=18, page=1)))}}
 (1 result)
 or a word such as the
-{{=A(T("definite article"), _href=URL('hebrew', 'word', vars=dict(id=3933, page=1)))}}
+{{=A(T("definite article"), _href=URL('hebrew', 'word', vars=dict(version='4', id=3933, page=1)))}}
 (more than 30,000 occurrences).
 Do not forget to use the clickable <i>chart</i>,
 which shows you how your results are distributed over the text as a whole.
@@ -44,13 +44,19 @@ By filling in your institution and your project you provide other users with a b
 Precise, concise documentation is at your finger tips, e.g. the
 growing body of online documentation on <a target="_blank" href="http://shebanq-doc.readthedocs.org">readthedocs</a>.</p>
 
-<h4>{{=T('Expert step: publish your queries')}}</h4>
-<p>You can publish your queries, so that they show up
+<h4>{{=T('Expert step: share and publish your queries')}}</h4>
+<p>You can share publish your queries, so that they show up
 in the margin of the chapters containing their results.
 In this way they are become a valuable resource for fellow Hebrew readers.
 See for example this
 <a target="_blank" href="https://shebanq-doc.readthedocs.org/en/latest/features/comments/0_hints.html">set of real-life, yet tutorial style queries</a>
-by Oliver Glanz, Reinoud Oosting, and Martijn Naaijer.</p>
+by Oliver Glanz, Reinoud Oosting, and Martijn Naaijer.
+If you want to <i>cite</i> your shared query in a publication,
+you can also <i>publish</i> it. Your query and its results on a particular version om the database will be frozen, so that
+others will see exactly the same results later on.
+When newer versions of the database arrive in SHEBANQ, you can run the same query on the new data.
+You can modify that version of your query and publish it separately from earlier versions.
+</p>
 
 <h4>{{=T('For gurus')}}</h4>
 <p>You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.

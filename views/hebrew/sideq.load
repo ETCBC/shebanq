@@ -51,8 +51,8 @@ statusmap = dict(
     <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
         <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
         <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
-        ({{='this' if v == vr else 'other'}} version)
-        <a id="csv_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all results of this query as a csv file"></a>
+        <a id="csvt_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
+        <a id="csvd_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all words of this query with data as a csv file"></a>
         <a id="select_control_chart_{{=v}}_q" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
     {{if writable and v == vr:}}
             <span class="ir"><a id="editq" href="#" title="edit name, description, and mql" class="ctrl fa fa-pencil fa-lg"></a></span>

@@ -482,7 +482,7 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         else {
             wb.highlight2({code: '5', qw: 'w'})
-            if (wb.vs.tp() == 'txt_il') {
+            if (true || wb.vs.tp() == 'txt_il') {
                 this.msettings.hebrewsettings.apply()
             }
         }
@@ -876,8 +876,10 @@ function CSelect(vr, qw) { // for chart selection
         })
     }
     this.apply = function() {
-        if (!(that.qw+'_'+wb.iid in that.loaded)) {
-            $(this.select).append('<span id="select_contents_chart_'+that.vr+'_'+that.qw+'_'+wb.iid+'"></span>')
+        if (!that.loaded[that.qw+'_'+wb.iid]) {
+            if ($('#select_contents_chart_'+that.vr+'_'+that.qw+'_'+wb.iid).length == 0) {
+                $(this.select).append('<span id="select_contents_chart_'+that.vr+'_'+that.qw+'_'+wb.iid+'"></span>')
+            }
             this.fetch(wb.iid)
         }
         else {
@@ -887,7 +889,7 @@ function CSelect(vr, qw) { // for chart selection
     this.fetch = function(iid) {
         var vars = '?version='+this.vr+'&qw='+this.qw+'&iid='+iid
         $(this.select+'_'+iid).load(chart_url+vars, function () {
-            that.loaded[this.qw+'_'+iid] = true
+            that.loaded[that.qw+'_'+iid] = true
             that.process(iid)
         }, 'html')
     }
@@ -1058,6 +1060,8 @@ function MSettings(content) {
     this.hid = '#'+this.name
     this.content = content
     this.hebrewsettings = new HebrewSettings()
+    hltext.hide()
+    hldata.hide()
     legendc.click(function(e) {e.preventDefault();
         legend.dialog({
             autoOpen: true,
@@ -1073,14 +1077,8 @@ function MSettings(content) {
         hlradio.removeClass('ison')
         $('#m'+wb.vs.tp()).addClass('ison')
         this.content.show()
-        if (wb.vs.tp() == 'txt_il') {
-            legend.hide()
-            legendc.show()
-        }
-        else {
-            legend.hide()
-            legendc.hide()
-        }
+        legend.hide()
+        legendc.hide()
         if (wb.vs.qw() == 'w') {
             set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         }
@@ -1129,7 +1127,6 @@ function HebrewSetting(fld) {
         else {
             $('.'+this.name).each(function () {$(this).hide()})
         }
-        //set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
     }
 }
 
@@ -1406,11 +1403,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                         close: function() {
                             dia.dialog('destroy')
                             mqlq.css('height', mql_small_height)
-                            //mqlq.css('width', mql_small_width)
                             descm.removeClass('desc_dia')
                             descm.addClass('desc')
                             descm.css('height', mql_small_height)
-                            //descm.css('width', mql_small_width)
                             fullc.show()
                         },
                         modal: false,
@@ -1420,11 +1415,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                         height: window_height,
                     })
                     mqlq.css('height', half_standard_height)
-                    //mqlq.css('width', mql_big_width)
                     descm.removeClass('desc')
                     descm.addClass('desc_dia')
                     descm.css('height', half_standard_height)
-                    //descm.css('width', mql_big_width)
                 })
                 $('#is_pub_c').click(function(e) {
                     var val = $(this).prop('checked')
@@ -1553,7 +1546,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 for (var mod_cl in mod_cls) {
                     var cl = mod_cls[mod_cl]
                     var dest = $(mod_cl)
-                    dest.removeClass('fa-check fa-close')
+                    dest.removeClass('fa-check fa-close published')
                     dest.addClass(cl)
                 }
                 q[fname] = newval
@@ -1758,10 +1751,16 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
 
 function set_csv(vr, mr, qw, iid) {
     if (mr == 'r') {
-        var csvctrl = $('#csv_lnk_'+vr+'_'+qw)
-        csvctrl.attr('href', wb.vs.csv_url())
-        var ctit = csvctrl.attr('ftitle')
-        csvctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctit)
+        var csvtctrl = $('#csvt_lnk_'+vr+'_'+qw)
+        var csvdctrl = $('#csvd_lnk_'+vr+'_'+qw)
+        csvtctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_p'))
+        var ctitt = csvtctrl.attr('ftitle')
+        var ctitd = csvdctrl.attr('ftitle')
+        csvtctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitt)
+        csvdctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitd)
+        csvdctrl.click(function() {
+            window.location.href = wb.vs.csv_url(vr, mr, qw, iid, 'txt_il')
+        })
     }
 }
 
@@ -1947,8 +1946,13 @@ function ViewState(init, pref) {
         }
         return vars
     }
-    this.csv_url = function() {
-        return item_url+this.getvars()
+    this.csv_url = function(vr, mr, qw, iid, tp) {
+        var vars = '?version='+vr+'&mr='+mr+'&qw='+qw+'&iid='+iid+'&tp='+tp
+        var data = this.data['hebrewdata']['']
+        for (var name in data) {
+            vars += '&'+name+'='+data[name] 
+        }
+        return item_url+vars
     }
     this.goback = function() {
         var state = History.getState()
@@ -2015,7 +2019,7 @@ function ViewState(init, pref) {
 }
 
 function close_dialog(dia) {
-    var was_open = dia && dia.dialog('instance') && dia.dialog('isOpen')
+    var was_open = Boolean(dia && dia.length && dia.dialog('instance') && dia.dialog('isOpen'))
     if (was_open) {dia.dialog('close')}
     return was_open
 }
