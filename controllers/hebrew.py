@@ -542,15 +542,16 @@ inner join organization on query.organization = organization.id
 inner join project on query.project = project.id
 inner join auth_user on query.created_by = auth_user.id
 {}
-order by query.name
+order by organization.name, project.name, auth_user.last_name, auth_user.first_name, query.name
 '''.format(condition)
 
     pquery = db.executesql(pquery_sql)
     pqueryx = db.executesql(pqueryx_sql)
-    pqueries = {}
+    pqueries = collections.OrderedDict()
     rversion_order = [v for v in version_order if versions[v]['date']]
     rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
     for (qid, oname, oid, pname, pid, uname, uid, qname, qshared) in pquery:
+        print u'{:<20} {:<20} {:<30} {:<20}'.format(oname[0:19], pname[0:19], uname[0:29], qname[0:19])
         qsharedstatus = qshared == 'T'
         qownstatus = uid == myid
         pqueries[qid] = {'': (oname, oid, pname, pid, uname, uid, qname, qsharedstatus, qownstatus), 'publ': False, 'good': False, 'v': [4 for v in rversion_order]}
@@ -569,6 +570,7 @@ order by query.name
 select
     name, id
 from organization
+order by name
 '''
     porg = db.executesql(porg_sql)
 
@@ -576,10 +578,12 @@ from organization
 select
     name, id
 from project
+order by name
 '''
     pproj = db.executesql(pproj_sql)
 
-    tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: [])))
+    tree = collections.OrderedDict()
+    #tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: [])))
     countset = collections.defaultdict(lambda: set())
     counto = collections.defaultdict(lambda: 0)
     counto_publ = collections.defaultdict(lambda: 0)
@@ -622,7 +626,8 @@ from project
             countp_good[oid][pid] += 1
             counto_good[oid] += 1
             count_good += 1
-        tree[oid][pid][uid].append(qid)
+        tree.setdefault(oid, collections.OrderedDict()).setdefault(pid, collections.OrderedDict()).setdefault(uid, []).append(qid)
+        #tree[oid][pid][uid].append(qid)
         count +=1
         counto[oid] += 1
         countp[oid][pid] += 1
@@ -641,14 +646,16 @@ from project
         if oid in linfo['o']: continue
         countset['o'].add(oid)
         linfo['o'][oid] = oname
-        tree[oid] = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+        #tree[oid] = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
+        tree[oid] = collections.OrderedDict()
 
     for (pname, pid) in pproj:
         if pid in linfo['p']: continue
         countset['o'].add(0)
         countset['p'].add(pid)
         linfo['p'][pid] = pname
-        tree[0][pid] = collections.defaultdict(lambda: [])
+        #tree[0][pid] = collections.defaultdict(lambda: [])
+        tree.setdefault(0, collections.OrderedDict())[pid] = collections.OrderedDict()
 
     ccount = dict((x[0], len(x[1])) for x in countset.items())
     ccount['uid'] = myid

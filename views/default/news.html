@@ -7,8 +7,8 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<p style="background-color: #ff99aa; font-weight: bold;">After an update it might be necessary to delete browser data for shebanq or to refresh your browser after
-having loaded the SHEBANQ site!</p>
+<p style="background-color: #ff99aa; font-weight: bold;">After an update it might be necessary to delete browser data for shebanq
+or to refresh your browser after having loaded the SHEBANQ site!</p>
 
 <h1>{{=T('Plans')}}</h1>
 <dl>
@@ -35,11 +35,11 @@ But what if they have been published? Currently you can unpublish queries, but w
 
 <h1>{{=T('News')}}</h1>
 
-<h2>2015-04-06</h2>
+<h2>2015-04-09</h2>
 <p>A <b>major</b> update of the SHEBANQ website with:</p>
 <dl>
 <dt>Multiple data versions</dt>
-<dd>In the not so distant future we expect a major and stable new release of the ETCBC4 database, to be named ETCBC4s.
+<dd><p>In the not so distant future we expect a major and stable new release of the ETCBC4 database, to be named ETCBC4s.
 We keep the then old ETCBC4 data in SHEBANQ, so that existing queries can be shown exactly as they are now.
 We let the ETCBC4 and ETCBC4s coexist in SHEBANQ, and users may execute their queries on both versions of the data.
 We also offer an intermediate version, ETCBC4b, that moves from version 4 to 4s over time.
@@ -49,7 +49,7 @@ See these help pages:
 <a href="{{=URL('default','help')}}#more_about_data">More about Data</a>
 <a href="{{=URL('default','help')}}#versions_and_queries">Versions and Queries</a>
 <a href="{{=URL('default','help')}}#single_query_view">Single Query View</a>
-.
+.</p>
 </dd>
 <dt>Sharing, Freezing, Publishing and Citing queries</dt>
 <dd>
@@ -66,8 +66,31 @@ See these help pages:
 <dd>SHEBANQ shows the number of results for each query.</dd>
 <dt>Help pages</dt>
 <dd>The help pages have been adapted to the current version.</dd>
-<dt>Bug fixes</dt>
-<dd>Bugs have been fixed, but due to the extent of this major update, no doubt new bugs have been introduced ... </dd>
+<dt>Bug fixes and small enhancements.</dt>
+<dd>Bugs have been fixed, but due to the extent of this major update, no doubt new bugs have been introduced ... 
+<ul class="ldisc">
+<li>The tree with queries is now neatly sorted on the names of organizations, projects, users and queries.</li>
+<li>It is possible to have multiple charts open at the same time, which eases comparisons between versions of the data.</li>
+<li>Some cases where the csv production lead to an internal error have been fixed.</li>
+<li>There is no longer a data view for whole pages; this turned out to be slow and jerky in the browser.
+Instead, you can quickly get the underlying data per verse, just click the verse number.</li>
+<li>The series of steps to create a new query has been explained better.</li>
+</ul>
+</dd>
+<dt>Migration</dt>
+<dd>
+<p style="background-color: #ff99aa">Your queries have been migrated to the new data model.</p>
+<ul class="ldisc">
+<li>All queries now have a version corresponding to ETCBC4.</li>
+<li>Queries that were <i>published</i> in the old version are now <i>shared</i>.</li>
+<li>No query has been set to <i>published</i> now, you have to do that yourself, if you wish.</li>
+<li>Shared queries that had <i>up-to-date</i> results have been re-run off line in order to determine the number of results,
+which has been added to the corresponding query execution record.</li>
+<li>Such queries have also a copy of the original MQL in a new execution record for ETCBC4b. That makes it very easy for you to see how
+your existing queries do on the new data version.</li>
+<li>In all order cases: if you want to run your query on an other version, you can just copy and paste the MQL between versions.</li>
+</ul>
+</dd>
 </dl>
 
 <h2>2015-03-25</h2>
