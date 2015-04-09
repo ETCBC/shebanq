@@ -49,7 +49,7 @@ versions = {
     },
     '4b': {
         'name': 'etcbc4b',
-        'date': '2014-10-23',
+        'date': '2015-04-09',
         'desc': 'Current version of the ETCBC4 database, somehwere between versions 4 and 4s',
         'notes': 'This version is updated periodically until version 4s is available; it can be used as a preview to version 4s',
     },
