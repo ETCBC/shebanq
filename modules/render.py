@@ -51,6 +51,12 @@ field_names = '''
     sentence_border sentence_number sentence_atom_number
 '''.strip().split()
 
+tfield_names = '''
+    word_heb
+    phrase_border phrase_function
+    sentence_number clause_number clause_atom_number clause_atom_tab clause_txt
+'''.strip().split()
+
 hebrewdata_lines_spec = '''
     ht:ht=word_heb=text-h
     hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
@@ -74,7 +80,7 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=(
         '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_il''',
+        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_tb,txt_il''',
         {'': '''4 Genesis 1 -1 1 m q txt_p'''},
     ),
     hebrewdata=('''
@@ -398,7 +404,16 @@ def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=
 def get_fields(tp):
     if tp == 'txt_p':
         hfields = [('word_number', 'monad'), ('word_heb', 'text')]
-    else:
+    elif tp == 'txt_tb':
+        hfields = [
+            ('word_number', 'monad'),
+            ('word_heb', 'text'),
+            ('phrase_number', 'phrase#'),
+            ('phrase_function', 'function'),
+            ('clause_txt', 'txt'),
+            ('clause_atom_tab', 'tab'),
+        ]
+    elif tp == 'txt_il':
         hfields = []
         for (line, fields) in hebrewdata_lines:
             if get_request_val('hebrewdata', '', line) == 'v':
@@ -519,14 +534,15 @@ ORDER BY verse.id;
 '''.format(', verse.xml' if tp == 'txt_p' else '', condition)) 
 
         word_records = []
-        if tp == 'txt_il':
+        if tp == 'txt_il' or tp == 'txt_tb':
+            thisfield_names = fieldnames if tp == 'txt_il' else tfield_names
             word_records = passage_db.executesql('''
 SELECT {}, verse_id, lexicon_id FROM word
 INNER JOIN word_verse ON word_number = word_verse.anchor
 INNER JOIN verse ON verse.id = word_verse.verse_id
 {}
 ORDER BY word_number;
-'''.format(','.join(field_names), wcondition), as_dict=True)
+'''.format(','.join(thisfield_names), wcondition), as_dict=True)
 
         word_data = collections.defaultdict(lambda: [])
         for record in word_records:
@@ -587,6 +603,7 @@ ORDER BY word_number;
 
     def material(self, user_agent):
         if self.tp == 'txt_p': return self._plain_text(user_agent)
+        elif self.tp == 'txt_tb': return self._tab_text(user_agent)
         elif self.tp == 'txt_il': return self._rich_text(user_agent)
         
     def _plain_text(self, user_agent):
@@ -594,11 +611,41 @@ ORDER BY word_number;
         for word in self.get_words():
             atext = adapted_text(word[2], user_agent)
             material.append(u'''<span m="{}" l="{}">{}</span>{}'''.format(word[0], word[1], atext, word[3]))
-        return ''.join(material)
+        return u''.join(material)
 
     def _rich_text(self, user_agent):
         material = []
         for word in self.word_data:
             material.append(text_tpl.format(**word))
+        return u''.join(material)
+
+    def _tab_text(self, user_agent):
+        material = [u'<dl class="lv">']
+        curnum = (0, 0, 0)
+        curca = []
+        for word in self.word_data:
+            thisnum = (word['sentence_number'], word['clause_number'], word['clause_atom_number'])
+            if thisnum != curnum:
+                material.append(self._putca(curca))
+                curca = []
+                curnum = thisnum
+            curca.append(word)
+        material.append(self._putca(curca))
+        material.append(u'</dl>')
         return ''.join(material)
+
+    def _putca(self, words):
+        if len(words) == 0:
+            return u''
+        txt = words[0][u'clause_txt']
+        tabn = int(words[0][u'clause_atom_tab'])
+        tab = u'<span class="tb fa fa-plus-square"/>' * tabn
+        result = [u'<dt class="lv"><span class="ctxt">{}</span><br/>{}</dt><dd class="lv">'.format(txt, tab)]
+        for word in words:
+            if 'r' in word['phrase_border']:
+                result.append(u' <span class="phf">{}</span> '.format(word['phrase_function']))
+            result.append(u'{} '.format(word['word_heb']))
+        result.append(u'</dd>')
+        return ''.join(result)
+
 

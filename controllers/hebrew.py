@@ -358,7 +358,7 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     tp = get_request_val('material', '', 'tp')
-    filename = '{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iid, 'text' if tp == 'txt_p' else 'data')
+    filename = '{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iid, 'text' if tp == 'txt_p' else 'tab' if tp == 'txt_tb' else 'data')
     (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
         return dict(filename=filename, data=msg)

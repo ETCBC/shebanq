@@ -1,5 +1,6 @@
 <a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
 <a id="csvt_lnk_{{=vr}}_w" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all occurrences of this word as a csv file"></a>
+<a id="csvb_lnk_{{=vr}}_w" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all occurrences of this word with tab info as a csv file"></a>
 <a id="csvd_lnk_{{=vr}}_w" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all occurrences of this word with data as a csv file"></a>
 <a id="select_control_chart_{{=vr}}_w" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
 <input type="hidden" id="itemtag" value=""/>

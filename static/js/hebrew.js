@@ -65,7 +65,8 @@ material
     the current book, chapter, result page, item id,
     qw (q=query, w=word, tells whether the item in question is a query or a word),
     mr (m=material, r=result of query or word search, corresponds to the two kinds of pages),
-    tp (text-or-data setting: whether the material is shown as plain text (txt_p) or as interlinear data (txt_il))
+    tp (text-or-tab setting: whether the material is shown as plain text (txt_p) or as tabbed text (txt_tb)
+       there is also txt_il for interlinear data, but that is on demand per verse
 
 hebrewdata
     a list of switches controlling which fields are shown in the interlinear data view
@@ -179,7 +180,7 @@ function set_height() { // the heights of the sidebars are set, depending on the
     standard_height = window_height - subtract
     half_standard_height = (0.4 * standard_height) + 'px'
     $('#material_txt_p').css('height', standard_height+'px')
-    $('#material_txt_il').css('height', (2 * standard_height)+'px')
+    $('#material_txt_tb').css('height', standard_height+'px')
     $('#side_material_mq').css('max-height', (0.60 * standard_height)+'px')
     $('#side_material_mw').css('max-height', (0.35 * standard_height)+'px')
     $('#words').css('height', standard_height+'px')
@@ -227,7 +228,7 @@ function Page(vs) { // the one and only page object
         for (var x in this.vs.mstate()) {
             this.prev[x] = null
         }
-        material_fetched = {txt_p: false, txt_il: false}
+        material_fetched = {txt_p: false, txt_tb: false}
     }
     this.apply = function() { // apply the viewstate: hide and show material as prescribed by the viewstate
         this.material.apply()
@@ -438,7 +439,7 @@ function Material() { // Object corresponding to everything that controls the ma
             (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
             (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page']))
         ) {
-            material_fetched = {txt_p: false, txt_il: false}
+            material_fetched = {txt_p: false, txt_tb: false}
         }
         this.mselect.apply()
         this.pselect.apply()
@@ -511,8 +512,9 @@ function Material() { // Object corresponding to everything that controls the ma
             var bk = $(this).attr('b')
             var ch= $(this).attr('c')
             var vs= $(this).attr('v')
+            var base_tp = wb.vs.tp()
             var dat = $('#txt_il_'+bk+'_'+ch+'_'+vs)
-            var txt = $('#txt_p_'+bk+'_'+ch+'_'+vs)
+            var txt = $('#'+base_tp+'_'+bk+'_'+ch+'_'+vs)
             var legendc = $('#datalegend_control')
             if ($(this).hasClass('ison')) {
                 $(this).removeClass('ison')
@@ -523,7 +525,7 @@ function Material() { // Object corresponding to everything that controls the ma
             }
             else {
                 $(this).addClass('ison')
-                $(this).attr('title', 'text only')
+                $(this).attr('title', 'text/tab')
                 legendc.show()
                 dat.show()
                 txt.hide()
@@ -573,7 +575,7 @@ function Material() { // Object corresponding to everything that controls the ma
             wb.highlight2({code: '4', qw: qw})
             wb.vs.addHist()
         })
-        if (material_fetched['txt_p'] && material_fetched['txt_il']) {
+        if (material_fetched['txt_p'] && material_fetched['txt_tb']) {
             wb.highlight2({code: '5', qw: 'q'})
             wb.highlight2({code: '5', qw: 'w'})
         }
@@ -1024,12 +1026,12 @@ function MMessage() { // diagnostic output
     }
 }
 
-function MContent() { // the actual Hebrew content, either plain text or interlinear data
-    var tps = {txt_p: 'txt_il', txt_il: 'txt_p'}
+function MContent() { // the actual Hebrew content, either plain text or tabbed data
+    var tps = {txt_p: 'txt_tb', txt_tb: 'txt_p'}
     this.name_text = 'material_text'
-    this.name_data = 'material_data'
+    this.name_tabbed = 'material_tabbed'
     this.hid_text = '#'+this.name_text
-    this.hid_data = '#'+this.name_data
+    this.hid_tabbed = '#'+this.name_tabbed
     this.hid_content = '#material_content'
     this.select = function() {
         this.name_yes = 'material_'+wb.vs.tp()
@@ -1053,15 +1055,15 @@ function MContent() { // the actual Hebrew content, either plain text or interli
 function MSettings(content) {
     var that = this
     var hltext = $('#mtxt_p')
-    var hldata = $('#mtxt_il')
+    var hltabbed = $('#mtxt_tb')
     var legend = $('#datalegend')
     var legendc = $('#datalegend_control')
     this.name = 'material_settings'
     this.hid = '#'+this.name
     this.content = content
     this.hebrewsettings = new HebrewSettings()
-    hltext.hide()
-    hldata.hide()
+    hltext.show()
+    hltabbed.show()
     legendc.click(function(e) {e.preventDefault();
         legend.dialog({
             autoOpen: true,
@@ -1608,7 +1610,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 wb.sidebars.sidebar['rq'].content.info = q
             }
             if (execute) {
-                material_fetched = {txt_p: false, txt_il: false}
+                material_fetched = {txt_p: false, txt_tb: false}
                 wb.material.adapt()
                 var show_chart = close_dialog($('#select_contents_chart_'+vr+'_q_'+q.id))
                 if (show_chart) {
@@ -1752,15 +1754,20 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
 function set_csv(vr, mr, qw, iid) {
     if (mr == 'r') {
         var csvtctrl = $('#csvt_lnk_'+vr+'_'+qw)
+        var csvbctrl = $('#csvb_lnk_'+vr+'_'+qw)
         var csvdctrl = $('#csvd_lnk_'+vr+'_'+qw)
         csvtctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_p'))
+        csvbctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_tb'))
+        csvdctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_il'))
         var ctitt = csvtctrl.attr('ftitle')
+        var ctitb = csvtctrl.attr('ftitle')
         var ctitd = csvdctrl.attr('ftitle')
         csvtctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitt)
+        csvbctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitb)
         csvdctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitd)
-        csvdctrl.click(function() {
-            window.location.href = wb.vs.csv_url(vr, mr, qw, iid, 'txt_il')
-        })
+//        csvdctrl.click(function() {
+//            window.location.href = wb.vs.csv_url(vr, mr, qw, iid, 'txt_il')
+//        })
     }
 }
 

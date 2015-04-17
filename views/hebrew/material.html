@@ -53,12 +53,13 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
         }}
             <div class="{{=tp}}">{{
             if material.mr == 'm':
-                }}<span class="vrefi">{{=XML(verse_control)}}{{
+                vclass = 'vreft' if tp == 'txt_tb' else 'vrefi'
+                }}<span class="{{=vclass}}">{{=XML(verse_control)}}{{
             else: 
                 }}<span class="vref"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}{{
             pass
                 }}</span>
-                <span id="txt_p_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txt_il_base" id="txt_il_{{=b}}_{{=c}}_{{=v}}" l="x"></span>
+                <span id="{{=tp}}_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txt_il_base" id="txt_il_{{=b}}_{{=c}}_{{=v}}" l="x"></span>
             </div>
         {{ pass }}
     {{ pass }}
