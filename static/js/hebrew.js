@@ -529,10 +529,10 @@ function Material() { // Object corresponding to everything that controls the ma
                 legendc.show()
                 dat.show()
                 txt.hide()
-                if (dat.attr('l') == 'x') {
+                if (dat.attr('lf') == 'x') {
                     dat.html('fetching data for '+bk+' '+ch+':'+vs+' ...')
                     dat.load(data_url+'?version='+wb.version+'&book='+bk+'&chapter='+ch+'&verse='+vs, function() {
-                        dat.attr('l', 'v')
+                        dat.attr('lf', 'v')
                         that.msettings.hebrewsettings.apply()
                         if (wb.mr == 'r') {
                             wb.picker1[wb.qw].adapt(wb.iid, true)
@@ -540,7 +540,7 @@ function Material() { // Object corresponding to everything that controls the ma
                         else {
                             wb.highlight2({code: '5', qw: 'w'})
                             wb.highlight2({code: '5', qw: 'q'})
-                            //that.add_word_actions()
+                            that.add_word_actions()
                         }
                     }, 'html')
                 }

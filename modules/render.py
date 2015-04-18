@@ -52,7 +52,7 @@ field_names = '''
 '''.strip().split()
 
 tfield_names = '''
-    word_heb
+    word_heb word_number
     phrase_border phrase_function
     sentence_number clause_number clause_atom_number clause_atom_tab clause_txt
 '''.strip().split()
@@ -644,7 +644,7 @@ ORDER BY word_number;
         for word in words:
             if 'r' in word['phrase_border']:
                 result.append(u' <span class="phf">{}</span> '.format(word['phrase_function']))
-            result.append(u'{} '.format(word['word_heb']))
+            result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
         result.append(u'</dd>')
         return ''.join(result)
 
