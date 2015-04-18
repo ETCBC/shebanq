@@ -65,7 +65,8 @@ material
     the current book, chapter, result page, item id,
     qw (q=query, w=word, tells whether the item in question is a query or a word),
     mr (m=material, r=result of query or word search, corresponds to the two kinds of pages),
-    tp (text-or-tab setting: whether the material is shown as plain text (txt_p) or as tabbed text (txt_tb)
+    tp (text-or-tab setting: whether the material is shown as
+       plain text (txt_p) or as tabbed text in several versions (txt_tb1, txt_tb2, etc.)
        there is also txt_il for interlinear data, but that is on demand per verse
 
 hebrewdata
@@ -164,6 +165,7 @@ var edit_side_width = '55%' // the desired width of the sidebar when editing a q
 var edit_main_width = '40%' // the desired width of the main area when editing a query body
 var chart_width = '400px' // dialog width for charts
 var chart_cols = 30 // number of chapters in a row in a chart
+var tp_labels, tab_info, tab_views, next_tp; // number of tab views and dictionary to go cyclically from a text view to the next
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -180,7 +182,7 @@ function set_height() { // the heights of the sidebars are set, depending on the
     standard_height = window_height - subtract
     half_standard_height = (0.4 * standard_height) + 'px'
     $('#material_txt_p').css('height', standard_height+'px')
-    $('#material_txt_tb').css('height', standard_height+'px')
+    for (var i=1; i<=tab_views; i++) {$('#material_txt_tb'+i).css('height', standard_height+'px')}
     $('#side_material_mq').css('max-height', (0.60 * standard_height)+'px')
     $('#side_material_mw').css('max-height', (0.35 * standard_height)+'px')
     $('#words').css('height', standard_height+'px')
@@ -228,7 +230,7 @@ function Page(vs) { // the one and only page object
         for (var x in this.vs.mstate()) {
             this.prev[x] = null
         }
-        material_fetched = {txt_p: false, txt_tb: false}
+        reset_material_status()
     }
     this.apply = function() { // apply the viewstate: hide and show material as prescribed by the viewstate
         this.material.apply()
@@ -439,7 +441,7 @@ function Material() { // Object corresponding to everything that controls the ma
             (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
             (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page']))
         ) {
-            material_fetched = {txt_p: false, txt_tb: false}
+            reset_material_status()
         }
         this.mselect.apply()
         this.pselect.apply()
@@ -489,6 +491,10 @@ function Material() { // Object corresponding to everything that controls the ma
         }
     }
     this.process = function() { // process new material obtained by an AJAX call
+        var mf = 0
+        for (var x in material_fetched) {if (material_fetched[x]) {mf += 1}} // count how many versions of this material already have been fetched
+        var newcontent = $('#material_'+wb.vs.tp())
+        // because some processes like highlighting and assignment of verse number clicks must be suppressed on first time or on subsequent times
         if (wb.mr == 'r') {
             this.pselect.apply()
             wb.picker1[wb.qw].adapt(wb.iid, true)
@@ -499,9 +505,15 @@ function Material() { // Object corresponding to everything that controls the ma
             })
         }
         else {
-            this.add_word_actions()
+            this.add_word_actions(newcontent, mf)
         }
-        var vrefs = $('.vradio')
+        this.add_vrefs(newcontent, mf)
+        if (wb.vs.tp() == 'txt_il') {
+            this.msettings.hebrewsettings.apply()
+        }
+    }
+    this.add_vrefs = function(newcontent, mf) {
+        var vrefs = newcontent.find('.vradio')
         vrefs.each(function() {
             var book = $(this).attr('b')
             var chapter = $(this).attr('c')
@@ -513,7 +525,7 @@ function Material() { // Object corresponding to everything that controls the ma
             var ch= $(this).attr('c')
             var vs= $(this).attr('v')
             var base_tp = wb.vs.tp()
-            var dat = $('#txt_il_'+bk+'_'+ch+'_'+vs)
+            var dat = $('#'+base_tp+'_txt_il_'+bk+'_'+ch+'_'+vs)
             var txt = $('#'+base_tp+'_'+bk+'_'+ch+'_'+vs)
             var legendc = $('#datalegend_control')
             if ($(this).hasClass('ison')) {
@@ -540,18 +552,15 @@ function Material() { // Object corresponding to everything that controls the ma
                         else {
                             wb.highlight2({code: '5', qw: 'w'})
                             wb.highlight2({code: '5', qw: 'q'})
-                            that.add_word_actions()
+                            that.add_word_actions(dat, mf)
                         }
                     }, 'html')
                 }
             }
         })
-        if (wb.vs.tp() == 'txt_il') {
-            this.msettings.hebrewsettings.apply()
-        }
     }
-    this.add_word_actions = function() { // Make words clickable, so that they show up in the sidebar
-        $('#material_'+wb.vs.tp()+' span[l]').click(function(e) {e.preventDefault();
+    this.add_word_actions = function(newcontent, mf) { // Make words clickable, so that they show up in the sidebar
+        newcontent.find('span[l]').click(function(e) {e.preventDefault();
             var iid = $(this).attr('l')
             var qw = 'w'
             var all = $('#'+qw+iid)
@@ -575,7 +584,11 @@ function Material() { // Object corresponding to everything that controls the ma
             wb.highlight2({code: '4', qw: qw})
             wb.vs.addHist()
         })
-        if (material_fetched['txt_p'] && material_fetched['txt_tb']) {
+        if (mf > 1) {
+/* Initially, material gets highlighted once the sidebars have been loaded.
+But when we load a different representation of material (data, tab), the sidebars are still there,
+and after loading the material, highlighs have to be applied. 
+*/
             wb.highlight2({code: '5', qw: 'q'})
             wb.highlight2({code: '5', qw: 'w'})
         }
@@ -1027,35 +1040,32 @@ function MMessage() { // diagnostic output
 }
 
 function MContent() { // the actual Hebrew content, either plain text or tabbed data
-    var tps = {txt_p: 'txt_tb', txt_tb: 'txt_p'}
-    this.name_text = 'material_text'
-    this.name_tabbed = 'material_tabbed'
-    this.hid_text = '#'+this.name_text
-    this.hid_tabbed = '#'+this.name_tabbed
-    this.hid_content = '#material_content'
+    this.name_content = '#material_content'
     this.select = function() {
-        this.name_yes = 'material_'+wb.vs.tp()
-        this.name_no = 'material_'+tps[wb.vs.tp()]
-        this.hid_yes = '#'+this.name_yes
-        this.hid_no = '#'+this.name_no
     }
     this.add = function(response) {
-        this.select()
-        $(this.hid_yes).html(response.children(this.hid_content).html())
+        $('#material_'+wb.vs.tp()).html(response.children(this.name_content).html())
     }
     this.show = function() {
-        this.select()
-        $(this.hid_yes).show()
-        $(this.hid_no).hide()
+        var this_tp = wb.vs.tp()
+        for (var tp in next_tp) {
+            this_material =  $('#material_'+tp)
+            if (this_tp == tp) {
+               this_material.show()
+            }
+            else {
+               this_material.hide()
+            }
+        }
     }
 }
 
-// MATERIAL SETTINGS (for choosing between plain text and interlinear data)
+// MATERIAL SETTINGS (for choosing between plain text and tabbed data)
 
 function MSettings(content) {
     var that = this
     var hltext = $('#mtxt_p')
-    var hltabbed = $('#mtxt_tb')
+    var hltabbed = $('#mtxt_tb1')
     var legend = $('#datalegend')
     var legendc = $('#datalegend_control')
     this.name = 'material_settings'
@@ -1076,21 +1086,68 @@ function MSettings(content) {
     })
     this.apply = function() {
         var hlradio = $('.mhradio')
+        var tlradio = $('.mhradio:not([id="txt_p"])')
+        var new_tp = wb.vs.tp()
+        var newc = $('#m'+new_tp)
         hlradio.removeClass('ison')
-        $('#m'+wb.vs.tp()).addClass('ison')
+        //tlradio.hide()
+        if (new_tp != 'txt_p' && new_tp != 'txt_il') {
+            for (var i=1; i<=tab_views; i++) {
+                var mc = $('#mtxt_tb'+i)
+                if ('txt_tb'+i == new_tp) {
+                    mc.show()
+                }
+                else {
+                    mc.hide()
+                }
+            }
+        }
+        newc.show()
+        newc.addClass('ison')
         this.content.show()
         legend.hide()
         legendc.hide()
         if (wb.vs.qw() == 'w') {
             set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         }
+        else {
+            for (v in versions) {
+                if (versions[v]) {
+                    set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+                }
+            }
+        }
         wb.material.adapt()
     }
     $('.mhradio').click(function(e) {e.preventDefault();
-        wb.vs.mstatesv({tp: $(this).attr('id').substring(1)})
+        var old_tp = wb.vs.tp()
+        var new_tp = $(this).attr('id').substring(1)
+        if (old_tp == 'txt_p') {
+            if (old_tp == new_tp) {
+                return
+            }
+        }
+        else if (old_tp == new_tp) {
+            new_tp = next_tp[old_tp]
+            if (new_tp == 'txt_p') {
+                new_tp = next_tp[new_tp]
+            }
+        }
+
+        wb.vs.mstatesv({tp: new_tp})
         wb.vs.addHist()
         that.apply()
     })
+    for (var i=1; i<=tab_views; i++) {
+        var mc = $('#mtxt_tb'+i)
+        mc.attr('title', tab_info['txt_tb'+i])
+        if (i == tab_views) {
+            mc.show()
+        }
+        else {
+            mc.hide()
+        }
+    }
 }
 
 // HEBREW DATA (which fields to show if interlinear text is displayed)
@@ -1610,7 +1667,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 wb.sidebars.sidebar['rq'].content.info = q
             }
             if (execute) {
-                material_fetched = {txt_p: false, txt_tb: false}
+                reset_material_status()
                 wb.material.adapt()
                 var show_chart = close_dialog($('#select_contents_chart_'+vr+'_q_'+q.id))
                 if (show_chart) {
@@ -1753,21 +1810,21 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
 
 function set_csv(vr, mr, qw, iid) {
     if (mr == 'r') {
-        var csvtctrl = $('#csvt_lnk_'+vr+'_'+qw)
-        var csvbctrl = $('#csvb_lnk_'+vr+'_'+qw)
-        var csvdctrl = $('#csvd_lnk_'+vr+'_'+qw)
-        csvtctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_p'))
-        csvbctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_tb'))
-        csvdctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, 'txt_il'))
-        var ctitt = csvtctrl.attr('ftitle')
-        var ctitb = csvtctrl.attr('ftitle')
-        var ctitd = csvdctrl.attr('ftitle')
-        csvtctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitt)
-        csvbctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitb)
-        csvdctrl.attr('title', vr+'_'+style[qw]['t']+iid+'.csv'+ctitd)
-//        csvdctrl.click(function() {
-//            window.location.href = wb.vs.csv_url(vr, mr, qw, iid, 'txt_il')
-//        })
+        var tasks = {t: 'txt_p', d: 'txt_il', b: wb.vs.tp()}
+
+        for (var task in tasks) {
+            var tp = tasks[task]
+            var csvctrl = $('#csv'+task+'_lnk_'+vr+'_'+qw)
+            if (task != 'b' || (tp != 'txt_p' && tp != 'txt_il')) {
+                var ctit = csvctrl.attr('ftitle')
+                csvctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, tp))
+                csvctrl.attr('title', vr+'_'+style[qw]['t']+iid+'_'+tp_labels[tp]+'.csv'+ctit)
+                csvctrl.show()
+            }
+            else {
+                csvctrl.hide()
+            }
+        }
     }
 }
 
@@ -2029,6 +2086,11 @@ function close_dialog(dia) {
     var was_open = Boolean(dia && dia.length && dia.dialog('instance') && dia.dialog('isOpen'))
     if (was_open) {dia.dialog('close')}
     return was_open
+}
+
+function reset_material_status() {
+    material_fetched = {txt_p: false}
+    for (var i=1; i<= tab_views; i++) {material_fetched['txt_tb'+i] = false}
 }
 
 /* GENERIC */

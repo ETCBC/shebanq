@@ -6,7 +6,7 @@ import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style
+from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels
 from mql import mql
 
 # Note on caching
@@ -358,7 +358,7 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     tp = get_request_val('material', '', 'tp')
-    filename = '{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iid, 'text' if tp == 'txt_p' else 'tab' if tp == 'txt_tb' else 'data')
+    filename = '{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iid, tp_labels[tp])
     (authorized, msg) = query_access_read(iid=iid)
     if not authorized:
         return dict(filename=filename, data=msg)

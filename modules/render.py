@@ -40,22 +40,66 @@ vcolornames = [x[0] for x in vcolor_proto]
 vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
-field_names = '''
-    word_heb word_vlex word_clex word_tran word_lex word_glex word_gloss
-    word_subpos word_pos word_lang word_number
-    word_gender word_gnumber word_person word_state word_tense word_stem
-    word_nme word_pfm word_prs word_uvf word_vbe word_vbs
-    subphrase_border subphrase_number subphrase_rela
-    phrase_border phrase_number phrase_atom_number phrase_rela phrase_atom_rela phrase_function phrase_typ phrase_det
-    clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_rela clause_typ clause_txt
-    sentence_border sentence_number sentence_atom_number
-'''.strip().split()
+tab_views = 2
+next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
+tab_info = dict(
+    txt_tb1='Tabbed view, style Nicolai Winther-Nielsen',
+    txt_tb2='Tabbed view, style Oliver Glanz',
+)
+tp_labels = dict(
+    txt_p='text',
+    txt_tb1='tab1',
+    txt_tb2='tab2',
+    txt_il='data',
+)
+# next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
 
-tfield_names = '''
-    word_heb word_number
-    phrase_border phrase_function
-    sentence_number clause_number clause_atom_number clause_atom_tab clause_txt
-'''.strip().split()
+field_names = dict(
+    txt_il='''
+        word_heb word_vlex word_clex word_tran word_lex word_glex word_gloss
+        word_subpos word_pos word_lang word_number
+        word_gender word_gnumber word_person word_state word_tense word_stem
+        word_nme word_pfm word_prs word_uvf word_vbe word_vbs
+        subphrase_border subphrase_number subphrase_rela
+        phrase_border phrase_number phrase_atom_number phrase_rela phrase_atom_rela phrase_function phrase_typ phrase_det
+        clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_rela clause_typ clause_txt
+        sentence_border sentence_number sentence_atom_number
+        '''.strip().split(),
+    txt_tb1='''
+        word_heb word_number
+        phrase_border phrase_function
+        sentence_number clause_number clause_atom_number clause_atom_tab clause_txt
+        '''.strip().split(),
+    txt_tb2='''
+        word_heb word_number
+        phrase_border phrase_function
+        sentence_number clause_number clause_atom_number clause_atom_tab clause_atom_code clause_txt clause_typ
+        '''.strip().split(),
+)
+hfields = dict( 
+    txt_p=[
+        ('word_number', 'monad'),
+        ('word_heb', 'text'),
+    ],
+    txt_tb1=[
+        ('word_number', 'monad'),
+        ('word_heb', 'text'),
+        ('phrase_number', 'phrase#'),
+        ('phrase_function', 'function'),
+        ('clause_txt', 'txt'),
+        ('clause_atom_tab', 'tab'),
+    ],
+    txt_tb2=[
+        ('word_number', 'monad'),
+        ('word_heb', 'text'),
+        ('phrase_number', 'phrase#'),
+        ('phrase_function', 'function'),
+        ('clause_txt', 'txt'),
+        ('clause_typ', 'typ'),
+        ('clause_atom_tab', 'tab'),
+        ('clause_atom_code', 'code'),
+    ],
+)
 
 hebrewdata_lines_spec = '''
     ht:ht=word_heb=text-h
@@ -80,7 +124,7 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=(
         '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_tb,txt_il''',
+        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_tb1,txt_tb2,txt_il''',
         {'': '''4 Genesis 1 -1 1 m q txt_p'''},
     ),
     hebrewdata=('''
@@ -402,25 +446,16 @@ def legend(): return legend_tpl.format(base_doc=base_doc)
 def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
 def get_fields(tp):
-    if tp == 'txt_p':
-        hfields = [('word_number', 'monad'), ('word_heb', 'text')]
-    elif tp == 'txt_tb':
-        hfields = [
-            ('word_number', 'monad'),
-            ('word_heb', 'text'),
-            ('phrase_number', 'phrase#'),
-            ('phrase_function', 'function'),
-            ('clause_txt', 'txt'),
-            ('clause_atom_tab', 'tab'),
-        ]
-    elif tp == 'txt_il':
-        hfields = []
+    if tp == 'txt_il':
+        thesehfields = []
         for (line, fields) in hebrewdata_lines:
             if get_request_val('hebrewdata', '', line) == 'v':
                 for (f, name, pretty_name) in fields:
                     if get_request_val('hebrewdata', '', f) == 'v':
-                        hfields.append((name, pretty_name))
-    return hfields
+                        thesehfields.append((name, pretty_name))
+    else:
+        thesehfields = hfields[tp]
+    return thesehfields
     
 class Viewsettings():
     def __init__(self, versions):
@@ -487,6 +522,10 @@ var dnrows = {dnrows}
 var viewinit = {initstate}
 var style = {style}
 var pref = {pref}
+var tp_labels = {tp_labels}
+var tab_info = {tab_info}
+var tab_views = {tab_views}
+var next_tp = {next_tp}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
@@ -498,6 +537,10 @@ dynamics()
     dncols = dncols,
     dnrows = dnrows,
     versions = json.dumps(dict((v, self.versions[v]['date'] != '') for v in self.versions)),
+    tp_labels = json.dumps(tp_labels),
+    tab_info = json.dumps(tab_info),
+    tab_views = tab_views,
+    next_tp = json.dumps(next_tp),
 )
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
@@ -534,15 +577,14 @@ ORDER BY verse.id;
 '''.format(', verse.xml' if tp == 'txt_p' else '', condition)) 
 
         word_records = []
-        if tp == 'txt_il' or tp == 'txt_tb':
-            thisfield_names = fieldnames if tp == 'txt_il' else tfield_names
+        if tp != 'txt_p':
             word_records = passage_db.executesql('''
 SELECT {}, verse_id, lexicon_id FROM word
 INNER JOIN word_verse ON word_number = word_verse.anchor
 INNER JOIN verse ON verse.id = word_verse.verse_id
 {}
 ORDER BY word_number;
-'''.format(','.join(thisfield_names), wcondition), as_dict=True)
+'''.format(','.join(field_names[tp]), wcondition), as_dict=True)
 
         word_data = collections.defaultdict(lambda: [])
         for record in word_records:
@@ -573,7 +615,7 @@ INNER JOIN chapter ON verse.chapter_id = chapter.id
 INNER JOIN book ON chapter.book_id = book.id
 WHERE book.name = '{}' AND chapter.chapter_num = {} AND verse.verse_num = {}
 ORDER BY word_number;
-'''.format(','.join(field_names), book_name, chapter_num, verse_num), as_dict=True)
+'''.format(','.join(field_names['txt_il']), book_name, chapter_num, verse_num), as_dict=True)
             word_data = []
             for record in word_records:
                 word_data.append(dict((x,h_esc(unicode(y), not x.endswith('_border'))) for (x,y) in record.items()))
@@ -603,7 +645,8 @@ ORDER BY word_number;
 
     def material(self, user_agent):
         if self.tp == 'txt_p': return self._plain_text(user_agent)
-        elif self.tp == 'txt_tb': return self._tab_text(user_agent)
+        elif self.tp == 'txt_tb1': return self._tab1_text(user_agent)
+        elif self.tp == 'txt_tb2': return self._tab2_text(user_agent)
         elif self.tp == 'txt_il': return self._rich_text(user_agent)
         
     def _plain_text(self, user_agent):
@@ -619,31 +662,64 @@ ORDER BY word_number;
             material.append(text_tpl.format(**word))
         return u''.join(material)
 
-    def _tab_text(self, user_agent):
-        material = [u'<dl class="lv">']
+    def _tab1_text(self, user_agent):
+        material = [u'<dl class="lv1">']
         curnum = (0, 0, 0)
         curca = []
         for word in self.word_data:
             thisnum = (word['sentence_number'], word['clause_number'], word['clause_atom_number'])
             if thisnum != curnum:
-                material.append(self._putca(curca))
+                material.append(self._putca1(curca))
                 curca = []
                 curnum = thisnum
             curca.append(word)
-        material.append(self._putca(curca))
+        material.append(self._putca1(curca))
         material.append(u'</dl>')
         return ''.join(material)
 
-    def _putca(self, words):
+    def _tab2_text(self, user_agent):
+        material = [u'<dl class="lv2">']
+        curnum = (0, 0, 0)
+        curca = []
+        for word in self.word_data:
+            thisnum = (word['sentence_number'], word['clause_number'], word['clause_atom_number'])
+            if thisnum != curnum:
+                material.append(self._putca2(curca))
+                curca = []
+                curnum = thisnum
+            curca.append(word)
+        material.append(self._putca2(curca))
+        material.append(u'</dl>')
+        return ''.join(material)
+
+    def _putca1(self, words):
         if len(words) == 0:
             return u''
         txt = words[0][u'clause_txt']
         tabn = int(words[0][u'clause_atom_tab'])
-        tab = u'<span class="tb fa fa-plus-square"/>' * tabn
-        result = [u'<dt class="lv"><span class="ctxt">{}</span><br/>{}</dt><dd class="lv">'.format(txt, tab)]
+        tab = u'<span class="fa fa-plus-square"/>' * tabn
+        result = [u'<dt class="lv1"><span class="ctxt1">{}</span><br/><span class="tb1">{}</span></dt><dd class="lv1">'.format(txt, tab)]
         for word in words:
             if 'r' in word['phrase_border']:
-                result.append(u' <span class="phf">{}</span> '.format(word['phrase_function']))
+                result.append(u' <span class="phf1">{}</span> '.format(word['phrase_function']))
+            result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
+        result.append(u'</dd>')
+        return ''.join(result)
+
+    def _putca2(self, words):
+        if len(words) == 0:
+            return u''
+        txt = words[0][u'clause_txt']
+        ctp = words[0][u'clause_typ']
+        code = words[0][u'clause_atom_code']
+        tabn = int(words[0][u'clause_atom_tab'])
+        tab = u'<span class="fa fa-arrow-left"/>' * tabn
+        result = [u'<dt class="lv2"><span class="ctxt2">{}</span> <span class="ctp2">{}</span> <span class="ccode2">{}</span></dt><dd class="lv2"><span class="tb2">{}</span>&nbsp;'.format(
+            txt, ctp, code, tab,
+        )]
+        for word in words:
+            if 'r' in word['phrase_border']:
+                result.append(u' <span class="phf2">{}</span> '.format(word['phrase_function']))
             result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
         result.append(u'</dd>')
         return ''.join(result)

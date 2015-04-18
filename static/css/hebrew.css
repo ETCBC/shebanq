@@ -114,7 +114,7 @@ ol.text {
 
 /* MATERIAL */
 
-#material_txt_p,#material_txt_tb,#queries,#opqforms,#opqctrl,#words,#letters {
+#material_txt_p,#material_txt_tb1,#material_txt_tb2,#queries,#opqforms,#opqctrl,#words,#letters {
     overflow: auto;
 }
 #opqforms,#opqctrl {
@@ -437,7 +437,7 @@ div.desc_dia {
 div.descm {
     background-color: #fefbfe;
 }
-.fa {
+.fa.ctrl,.fa.ctrlb,.fa.ctrli,.fa.ctrld,.fa.ctrll {
     color: #000000;
 }
 span.ir {
@@ -453,43 +453,101 @@ span.ir {
 }
 
 /* HEBREW TABBED */
-.phf {
+.phf1 {
     vertical-align: super;
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: #0088dd;
 }
-.ctxt {
+.ctxt1 {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
-    color: #ee6600;
+    color: #dd8800;
 }
-.tb {
+.ccode1 {
+    color: #886644;
+    font-size: small;
+    font-family: Menlo, Courier New, Courier, monospace;
+}
+.ctp1 {
+    color: #dd8800;
+    font-size: small;
+    font-weight: bold;
+    font-family: Verdana, Arial, sans-serif;
+}
+.tb1 {
     color: #0000bb;
 }
-dl.lv {
+.phf2 {
+    vertical-align: super;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #0088dd;
+}
+.ctxt2 {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #0000bb;
+}
+.ccode2 {
+    color: #886644;
+    font-size: small;
+    font-family: Menlo, Courier New, Courier, monospace;
+}
+.ctp2 {
+    color: #dd8800;
+    font-size: small;
+    font-weight: bold;
+    font-family: Verdana, Arial, sans-serif;
+}
+.tb2 {
+    font-size: small;
+    color: #0000bb;
+}
+dl.lv1 {
     display: inline;
 }
-dt.lv {
+dt.lv1 {
     font-size: small;
     float: right;
     clear: right;
-    width: 100px;
+    width: 105px;
     text-align: right;
-    margin-right: 25px;
+    margin-right: 0px;
+    direction: ltr;
 }
-dt.lv:after {
+dt.lv1:after {
     content: " ";
 }
-dd.lv {
+dd.lv1 {
     font-size: x-large;
     line-height: 1.7;
     margin-right: 135px;
 }
+dl.lv2 {
+    display: inline;
+}
+dt.lv2 {
+    font-size: small;
+    float: right;
+    clear: right;
+    width: 125px;
+    text-align: right;
+    margin-right: 0px;
+    direction: ltr;
+}
+dt.lv2:after {
+    content: " ";
+}
+dd.lv2 {
+    font-size: x-large;
+    line-height: 1.7;
+    margin-right: 130px;
+}
 
 /* HEBREW DATA */
 
-.txt_p,.txt_tb {
+.txt_p,.txt_tb1,.txt_tb2 {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     line-height: 1.7;
@@ -498,7 +556,7 @@ dd.lv {
     margin-right: 0.5em;
     color: #000000;
 }
-#material_txt_tb div.txt_tb {
+div.txt_tb1,div.txt_tb2 {
     border-bottom: 1px solid #bbbbbb;
     padding-bottom: 0.2em;
     padding-top: 0.2em;
