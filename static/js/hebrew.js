@@ -485,6 +485,7 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         else {
             wb.highlight2({code: '5', qw: 'w'})
+            wb.highlight2({code: '5', qw: 'q'})
             if (true || wb.vs.tp() == 'txt_il') {
                 this.msettings.hebrewsettings.apply()
             }
