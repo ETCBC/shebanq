@@ -697,7 +697,7 @@ ORDER BY word_number;
             return u''
         txt = words[0][u'clause_txt']
         tabn = int(words[0][u'clause_atom_tab'])
-        tab = u'<span class="fa fa-plus-square"/>' * tabn
+        tab = u'<span class="fa fa-plus-square">&#xf0fe;</span>' * tabn # plus square
         result = [u'<dt class="lv1"><span class="ctxt1">{}</span><br/><span class="tb1">{}</span></dt><dd class="lv1">'.format(txt, tab)]
         for word in words:
             if 'r' in word['phrase_border']:
@@ -713,7 +713,7 @@ ORDER BY word_number;
         ctp = words[0][u'clause_typ']
         code = words[0][u'clause_atom_code']
         tabn = int(words[0][u'clause_atom_tab'])
-        tab = u'<span class="fa fa-arrow-left"/>' * tabn
+        tab = u'<span class="fa">&#xf060;</span>' * tabn # arrow-left
         result = [u'<dt class="lv2"><span class="ctxt2">{}</span> <span class="ctp2">{}</span> <span class="ccode2">{}</span></dt><dd class="lv2"><span class="tb2">{}</span>&nbsp;'.format(
             txt, ctp, code, tab,
         )]
