@@ -1,13 +1,23 @@
-/**
 
-   Created and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>
-   (MIT license)  
-
-   Example:
-
-   <script src="share.js"></script>
-
-**/
+function deselectText() {
+    if (document.selection) {
+        document.selection.empty();
+    } else if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+    }
+}
+function selectText(containerid) {
+    deselectText()
+    if (document.selection) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById(containerid));
+        range.select();
+    } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(containerid));
+        window.getSelection().addRange(range);
+    }
+}
 
 jQuery(function(){
 	var script_source = jQuery('script[src*="share.js"]').attr('src');
@@ -24,6 +34,7 @@ jQuery(function(){
         warning: 'This query has never been executed in SHEBANQ',
         error: 'The body of this query has been changed after its current results have been obtained.',
     }
+
 	var tbar = '\
 <div id="socialdrawer">\
     <p id="citeh">Cite</p>\
@@ -44,19 +55,20 @@ jQuery(function(){
             <td class="clip_pv clr">\
                 <a lnk="" href="#" id="clip_pv_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
                 <a lnk="" href="#" id="clip_pv_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_cn" title="page content" class="ctrl fa fa-file-text-o fa-lg fa-fw"></a>\
             </td>\
         </tr>\
         <tr>\
-            <th class="clip_qx" width="100px">query v</th>\
-            <th class="clip_q" width="100px">query</th>\
-            <th class="clip_w" width="100px">word</th>\
-            <th class="clip_pv" width="100px">page view</th>\
+            <th class="clip_qx" width="120px">query v</th>\
+            <th class="clip_q" width="120px">query</th>\
+            <th class="clip_w" width="120px">word</th>\
+            <th class="clip_pv" width="120px">page view</th>\
         </tr>\
         <tr class="citexpl">\
             <td class="clip_qx"><span id="xc_qx" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_qx" class="detail">cite query with its results on <i>this</i> data version</span></td>\
             <td class="clip_q"><span id="xc_q" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_q" class="detail">share link to query page</span></td>\
             <td class="clip_w"><span id="xc_w" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_w" class="detail">cite word with its occs on <i>this</i> data version</span></td>\
-            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings</span></td>\
+            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings, or copy page contents to paste in mail, Evernote, etc.</span></td>\
         </tr>\
     </table>\
     <p id="cdiagpub"></p>\
@@ -68,11 +80,18 @@ jQuery(function(){
 	var st = jQuery('#socialdrawer');
 	st.css({'opacity':'.7','z-index':'3000','background':'#FFF','border':'solid 1px #666','border-width':' 1px 0 0 1px','height':'20px','width':'40px','position':'fixed','bottom':'0','right':'0','padding':'2px 5px','overflow':'hidden','-webkit-border-top-left-radius':' 12px','-moz-border-radius-topleft':' 12px','border-top-left-radius':' 12px','-moz-box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)','-webkit-box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)','box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)'});
 	jQuery('#citeh').css({'margin':'2px 3px','text-shadow':' 1px 1px 1px #FFF','color':'#444','font-size':'12px','line-height':'1em'});
-    jQuery('#socialdrawer td,#socialdrawer th').css({'width': '100px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
+    jQuery('#socialdrawer td,#socialdrawer th').css({'width': '120px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
     jQuery('#socialdrawer .detail').hide()
 	// hover
     $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_pv_md,#clip_pv_ht').click(function(e) {e.preventDefault();
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
+    })
+    $('#clip_pv_cn').click(function(e) {e.preventDefault();
+        var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
+        var slink = $('#self_link')
+        slink.show()
+        slink.attr('href', shebanq_url_raw)
+        selectText('material')
     })
     $('#xc_qx').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_qx')) })
     $('#xc_q').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_q')) })
@@ -145,12 +164,16 @@ jQuery(function(){
         }
         $('#clip_pv_md').attr('lnk', '['+pvtitle+']('+shebanq_url_raw+')')
         $('#clip_pv_ht').attr('lnk', shebanq_url_raw)
-        jQuery(this).animate({height:'260px', width:'330px', opacity: 0.95}, 300);
+        $('#clip_pv_cn').attr('lnk', shebanq_url_raw)
+        $('#clip_pv_cn').attr('tit', pvtitle)
+        jQuery(this).animate({height:'260px', width:'450px', opacity: 0.95}, 300);
     });
 	//leave
 	st.mouseleave(function(){ 
+        $('#self_link').hide()
+        deselectText()
         $('#citeh').show()
 	    st.animate({height:'20px', width: '40px', opacity: .7}, 300); 
 	    return false;
-	    }  );
     });
+});

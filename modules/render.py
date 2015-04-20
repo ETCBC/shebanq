@@ -40,16 +40,18 @@ vcolornames = [x[0] for x in vcolor_proto]
 vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
-tab_views = 2
+tab_views = 3
 next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
 tab_info = dict(
     txt_tb1='Tabbed view, style Nicolai Winther-Nielsen',
     txt_tb2='Tabbed view, style Oliver Glanz',
+    txt_tb3='Visalization by Dirk Roorda',
 )
 tp_labels = dict(
     txt_p='text',
-    txt_tb1='tab1',
-    txt_tb2='tab2',
+    txt_tb1='Nicolai',
+    txt_tb2='Oliver',
+    txt_tb3='Dirk',
     txt_il='data',
 )
 # next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
@@ -75,6 +77,11 @@ field_names = dict(
         phrase_border phrase_function
         sentence_number clause_number clause_atom_number clause_atom_tab clause_atom_code clause_txt clause_typ
         '''.strip().split(),
+    txt_tb3='''
+        word_heb word_number word_lex word_pos word_gender
+        phrase_border
+        sentence_number clause_number clause_atom_number clause_atom_tab
+        '''.strip().split(),
 )
 hfields = dict( 
     txt_p=[
@@ -98,6 +105,15 @@ hfields = dict(
         ('clause_typ', 'typ'),
         ('clause_atom_tab', 'tab'),
         ('clause_atom_code', 'code'),
+    ],
+    txt_tb3=[
+        ('word_number', 'monad'),
+        ('word_heb', 'text'),
+        ('word_lex', 'lexeme-t'),
+        ('word_pos', 'part-of-speech'),
+        ('word_gender', 'gender'),
+        ('phrase_number', 'phrase#'),
+        ('clause_atom_tab', 'tab'),
     ],
 )
 
@@ -124,7 +140,9 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=(
         '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,txt_tb1,txt_tb2,txt_il''',
+        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,{},txt_il'''.format(
+            ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
+        ),
         {'': '''4 Genesis 1 -1 1 m q txt_p'''},
     ),
     hebrewdata=('''
@@ -647,6 +665,7 @@ ORDER BY word_number;
         if self.tp == 'txt_p': return self._plain_text(user_agent)
         elif self.tp == 'txt_tb1': return self._tab1_text(user_agent)
         elif self.tp == 'txt_tb2': return self._tab2_text(user_agent)
+        elif self.tp == 'txt_tb3': return self._tab3_text(user_agent)
         elif self.tp == 'txt_il': return self._rich_text(user_agent)
         
     def _plain_text(self, user_agent):
@@ -692,6 +711,21 @@ ORDER BY word_number;
         material.append(u'</dl>')
         return ''.join(material)
 
+    def _tab3_text(self, user_agent):
+        material = [u'<dl class="lv3">']
+        curnum = (0, 0, 0)
+        curca = []
+        for word in self.word_data:
+            thisnum = (word['sentence_number'], word['clause_number'], word['clause_atom_number'])
+            if thisnum != curnum:
+                material.append(self._putca3(curca))
+                curca = []
+                curnum = thisnum
+            curca.append(word)
+        material.append(self._putca3(curca))
+        material.append(u'</dl>')
+        return ''.join(material)
+
     def _putca1(self, words):
         if len(words) == 0:
             return u''
@@ -721,6 +755,59 @@ ORDER BY word_number;
             if 'r' in word['phrase_border']:
                 result.append(u' <span class="phf2">{}</span> '.format(word['phrase_function']))
             result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
+        result.append(u'</dd>')
+        return ''.join(result)
+
+    def _putca3(self, words):
+        if len(words) == 0:
+            return u''
+        tabn = int(words[0][u'clause_atom_tab'])
+        tab = u'<span class="fa">&#xf060;</span>' * tabn # arrow-left
+        result = [u'<dt class="lv3"><span class="tb3">{}</span></dt><dd class="lv3">'.format(
+            tab,
+        )]
+        phrb_table = dict(
+            rr='&nbsp;', # arrow-circle-right
+            r='<span class="fa">&#xf105;</span>', # arrow-circle-o-left
+            l='<span class="fa">&#xf104;</span>', # arrow-circle-o-right
+            ll='&nbsp;' # arrow-circle-left,
+        )
+        for word in words:
+            phrbs = word['phrase_border'].split()
+            phrbsymb = ''
+            phrbsyme = ''
+            for phrb in phrbs:
+                phrbsym = phrb_table.get(phrb, '')
+                if 'r' in phrb:
+                    phrbsymb = phrbsym
+                elif 'l' in phrb:
+                    phrbsyme = phrbsym
+            if word['word_lex'] == 'H':
+                txtsym = '0d9' # caret-left
+            elif word['word_lex'] == 'W':
+                txtsym = '0d8' # caret-up
+            elif word['word_lex'] == '&gt;LHJM/':
+                txtsym = '0ed' # 
+            elif word['word_lex'] == 'JHWH/':
+                txtsym = '0ee' # 
+            elif word['word_pos'] == 'nmpr':
+                if word['word_gender'] == 'm':
+                    txtsym = '222' # mars 
+                elif word['word_gender'] == 'f':
+                    txtsym = '221' # venus
+                elif word['word_gender'] == 'NA':
+                    txtsym = '1db' # genderless
+                elif word['word_gender'] == 'unknown':
+                    txtsym = '1db' # genderless
+            elif word['word_pos'] == 'verb':
+                txtsym = '013' # cog
+            elif word['word_pos'] == 'subs':
+                txtsym = '146' # minus-square
+            else:
+                txtsym = '068' # minus
+            result.append(u'{}<span m="{}" l="{}"><span class="fa">&#xf{};</span></span>{}'.format(
+                phrbsymb, word['word_number'], word['lexicon_id'], txtsym, phrbsyme,
+            ))
         result.append(u'</dd>')
         return ''.join(result)
 

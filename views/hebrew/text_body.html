@@ -2,6 +2,7 @@
     <div id="material_heading" class="pnl2">
         <a title="to this chapter in Bible Online Learner" target="_blank" id="bol_lnk" href="#"><img src="{{=URL('static', 'images/BibleOL.png')}}"/></a>
         {{ include 'hebrew/versions.html' }}
+        <a id="self_link" title="to the online version of this page" href="#">See this page on SHEBANQ</a>
         <div id="select_passage">
             <a title="click to go to another book" id="select_control_book" class="ctrl" href="#"><span id="thebook"></span></a>
             <div id="select_contents_book"></div>
@@ -11,7 +12,6 @@
             <a title="next chapter" contents="" id="next_chapter" href="#" class="ctrl fa fa-arrow-right fa-lg"></span></a>
         </div>
         <div id="select_pages">
-            <span id="theitemlabel"></span>
             <span id="theitem"></span>
             <a title="previous page" contents="" id="prev_page" href="#"><span class="ctrl fa fa-arrow-left fa-lg"></span></a>
             <a title="click to go to another page" id="select_control_page" class="ctrl" href="#"><span id="thepage"></span></a>
@@ -20,15 +20,17 @@
         </div>
         <div id="material_settings">
             <span><a href="#" id="mtxt_p" class="ctrl mhradio">text</a></span>
-            <span><a href="#" id="mtxt_tb1" class="ctrl mhradio">tab1</a></span>
-            <span><a href="#" id="mtxt_tb2" class="ctrl mhradio">tab2</a></span>
+{{for t in range(1, tab_views+1):}}
+            <span><a href="#" id="mtxt_tb{{=t}}" class="ctrl mhradio">{{=tp_labels['txt_tb{}'.format(t)]}}</a></span>
+{{pass}}
             <span><a id="datalegend_control" class="ctrl" href="#">legend</a></span>
             <span id="datalegend" class="txt_il2">{{=XML(legend())}}</span>
         </div>
     </div>
     <div id="material_message"></div>
     <div id="material_txt_p"></div>
-    <div id="material_txt_tb1"></div>
-    <div id="material_txt_tb2"></div>
+{{for t in range(1, tab_views+1):}}
+    <div id="material_txt_tb{{=t}}"></div>
+{{pass}}
 </div>
 <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>

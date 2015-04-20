@@ -154,6 +154,7 @@ var pref    // prefix for the cookie names, in order to distinguish settings by 
 /* fixed dimensions, measures, heights, widths, etc */
 var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
 var subtractw = 80 // the canvas holding the material gets a height equal to the window height minus this amount
+var window_height
 var standard_height // height of canvas
 var standard_heightw // height of canvas
 var mql_small_height = '10em' // height of mql query body in sidebar
@@ -449,7 +450,6 @@ function Material() { // Object corresponding to everything that controls the ma
         var book = wb.vs.book()
         var chapter = wb.vs.chapter()
         var page = wb.vs.page()
-        $('#theitemlabel').html('')
         $('#thebook').html((book != 'x')?book:'book')
         $('#thechapter').html((chapter > 0)?chapter:'chapter')
         $('#thepage').html((page > 0)?''+page:'')
@@ -473,8 +473,8 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
-            wb.sidebars.after_material_fetch()
             $.get(material_url+vars, function(html) {
+                wb.sidebars.after_material_fetch()
                 var response = $(html)
                 that.pselect.add(response)
                 that.message.add(response)
@@ -580,7 +580,9 @@ function Material() { // Object corresponding to everything that controls the ma
                 wb.vs.hstatesv(qw, {active: 'hlcustom'})
             }
             if (wb.vs.get('w') == 'v') {
-                wb.picker1list['w'][iid].apply(false)
+                if (iid in wb.picker1list['w']) { // should not happen but it happens when changing data versions
+                    wb.picker1list['w'][iid].apply(false)
+                }
             }
             wb.highlight2({code: '4', qw: qw})
             wb.vs.addHist()
@@ -655,6 +657,7 @@ function MSelect() { // for book and chapter selection
                     }, 'json')
                 }
                 else {
+                    side_fetched['mw'] = false
                     wb.vs.mstatesv({version: v})
                     wb.go()
                 }
@@ -664,6 +667,7 @@ function MSelect() { // for book and chapter selection
     for (var v in versions) {
         this.set_vselect(v)
     }
+    $('#self_link').hide()
 }
 
 function PSelect() { // for result page selection

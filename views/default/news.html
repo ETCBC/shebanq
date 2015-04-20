@@ -10,7 +10,8 @@
 <p style="background-color: #ff99aa; font-weight: bold;">After an update it might be necessary to delete browser data for shebanq
 or to refresh your browser after having loaded the SHEBANQ site!</p>
 
-<h1>{{=T('Plans')}}</h1>
+<div>
+<h2>{{=T('Plans')}}</h2>
 <dl>
 <dt>Feature index</dt>
 <dd>A tree-like index of objects and features that can be used in queries would be helpful for users when they are developing MQL queries.</dd>
@@ -32,13 +33,15 @@ By using a test server we hope to improve on that.</dd>
 <dd>Now you cannot delete queries, yet it is a legitimate whish to erase your obsolete queries.
 But what if they have been published? Currently you can unpublish queries, but what if somebody else maintains a link to such a query?</dd>
 </dl>
+</div>
 
 <h1>{{=T('News')}}</h1>
 
-<h2>2015-04-18</h2>
+<div>
+<h2>2015-04-20</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
-<dt>Tabbed views: experimental</dt>
+<dt>Tabbed views and visualisations: experimental</dt>
 <dd><p>Our key users have proposed alternative ways for displaying the texts.
 We provide a text view, lined up per <i>clause_atom</i>, with a layout that shows the indentation and text structure a bit more.
 There are several layouts, which will evolve further. Currently we have one in the style of Nicolai Winther-Nielsen, and one in the style of Oliver Glanz.
@@ -47,11 +50,34 @@ See these help pages:
 <a href="{{=URL('default','help')}}#nicolai_style">Nicolai style</a>,
 <a href="{{=URL('default','help')}}#oliver_style">Oliver style</a>.
 </p>
-If you have comments or suggestions, consider tweeting them to @shebanq_. You can use the buttons on this page.
+<p>Next to the tabbed view, there is also an iconic visualization of the text, which shows a very abstract rendering of the text.
+See <a href="{{=URL('hebrew','text', vars=dict(version='4',tp='txt_tb3'))}}">Dirk's visualization</a>.
+You can still highlight queries and words and call up the underlying data from this view.
+So you can switch back and forth between <i>distant</i> and <i>close</i> reading.</p>
+<p>If you have comments or suggestions, consider tweeting them to @shebanq_. You can use the buttons on this page.
+If you have a proposal for yet another view on the text, then your suggestion is very welcome!</p>
+</dd>
+<dt>Cite page content</dt>
+<dd><p>It is now easy to copy and paste a SHEBANQ page with Hebrew material to an other application.
+This is handy when you are preparing hand-outs for classes.
+Once a SHEBANQ page is pasted in your application, you can edit the content, and put your own notes in.
+The content you copy always contains a link to the live SHEBANQ page from where it has been copied.</p>
+<ul class="ldisc">
+<li>For best results, ensure that you have a good Hebrew font installed on your system, e.g. Ezra SIL or SBL Hebrew.</li>
+<li>Also install <a href="http://fontawesome.io">FontAwesome</a> on your system, this contains the special symbols.
+After downloading, double-click the file <code>fonts/FontAwesome.otf</code> to install the font on your system.</li>
+<li>Not all applications treat the pasted HTML equally well:</li>
+<li>Good results: Evernote, Apple Mail (both also on iPad)</li>
+<li>Reasonable results: Apple Pages, Apple TextEdit, OpenOffice</li>
+<li>Bad results: Microsoft Word.</li>
+</ul>
+</p>
 </dd>
 <dt>Small fixes in highlighting.</dt>
 </dl>
+</div>
 
+<div>
 <h2>2015-04-09</h2>
 <p>A <b>major</b> update of the SHEBANQ website with:</p>
 <dl>
@@ -109,7 +135,9 @@ your existing queries do on the new data version.</li>
 </ul>
 </dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-03-25</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -119,7 +147,9 @@ In fact, this was not IE's fault, but mine: in the Javascript code for SHEBANQ t
 that had not been declared with *var*.
 Still, I do not promise that SHEBANQ works well with IE, but at the moment I do not see IE-specific bugs.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-03-14</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -131,22 +161,26 @@ A manual page refresh was needed.
 Now it is fixed, and the updated information is shown immediately to you.
 If you execute a query whose chart is open, that chart will be refreshed automatically after successful execution.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-03-09</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
 <dt>links to Bible Online Learner</dt>
-<dl>People in Denmark have developed an online learning tool for Hebrew, based on the same ETCBC data as SHEBANQ: Bible Online Learner.
+<dd>People in Denmark have developed an online learning tool for Hebrew, based on the same ETCBC data as SHEBANQ: Bible Online Learner.
 SHEBANQ now links from every chapter to that chapter in BOL.
 BOL is listed on the
-<a href="{{=URL('default','index')}}">home page</a> under <i>Companion tools</i>.</dl>
+<a href="{{=URL('default','index')}}">home page</a> under <i>Companion tools</i>.</dd>
 <dt>Better presentation of the SHEBANQ team</dt>
-<dl>See the
-<a href="{{=URL('default','sources')}}">sources page</a>.</dl>
+<dd>See the
+<a href="{{=URL('default','sources')}}">sources page</a>.</dd>
 <dt>small fixes</dt>
 <dd>Development has been rapid lately. Code has to be weeded out, rough edges straightened, bugs fixed.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-03-03</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -165,7 +199,9 @@ Just click the verse number.</dd>
 <dt>Data elements</dt>
 <dd>Among the data are now two transcriptions of the lexeme: vocalized and consonantal. See the legend.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-02-26</h2>
 <p>A major update of the SHEBANQ website with:</p>
 <dl>
@@ -189,7 +225,8 @@ Instructors can keep a reasonable eye on the collective queries of their student
 <li>Going back in the browser usually required several go back actions.</li>
 </ul>
 </dd>
-<p>Here is an account of the reasons for this update:</p>
+<dt>Here is an account of the reasons for this update:</dt>
+<dd>
 <ol class="ldec">
 <li>it became increasingly difficult to locate queries of interest among the multitude of public queries</li>
 <li>when creating new queries, it was too cumbersome to fill in the relevant organization and project.
@@ -214,8 +251,11 @@ In fact, there are no links between projects and organizations and users except 
 A query must link to a project and to an organization and to a user, and only when that happens,
 you see that project under that organization and that user under that project.</li>
 </ol>
+</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-02-16</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -246,7 +286,9 @@ and parses their values rigorously. All illegal values are detected and translat
 </ul>
 </dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-02-07</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -254,13 +296,15 @@ and parses their values rigorously. All illegal values are detected and translat
 <dd>Now the cells in the charts no longer represent chapters but blocks of a fixed size: 500 words, except the last block of a book, which
 usually has less words. Blocks cross chapter boundaries, but not book boundaries.
 There are 929 chapters, and there are 853 blocks.
-The charts now make more sense from a statistical perspective, but navigating to an individual chapter is sometimes less easy, because some blocks contain several chapters.</dd>
-The color coding has been refined a little.
+The charts now make more sense from a statistical perspective, but navigating to an individual chapter is sometimes less easy, because some blocks contain several chapters.
+The color coding has been refined a little.</dd>
 <dt>Previous and next controls</dt>
 <dd>There are now controls for going to the next and previous page or chapter. So you can page forward and backward without calling up the <i>other pages</i> or 
 <i>other chapters</i> dialog.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-02-04</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -269,7 +313,9 @@ The color coding has been refined a little.
 Now they can be viewed on a big canvas in a resizable dialog box.
 Endlich können wir die Querien von dem Oliver mal wirklich anschauen!</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-02-03</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -308,8 +354,10 @@ Now we show the <code>txt</code> feature with the values of the same <code>txt</
 </ul>
 </dd>
 </dl>
+</div>
 
 <h2>2015-02-02</h2>
+<div>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
 <dt>Words: Hebrew and Aramaic lexicon</dt>
@@ -317,7 +365,9 @@ Now we show the <code>txt</code> feature with the values of the same <code>txt</
 Henrew and Aramaic words. Each entry is a clickable link, which brings you to an item page where you
 can view all occurrences of that lexeme in context.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-01-30</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -327,7 +377,9 @@ The chart gives you an overview of where in the bible the members of a result se
 to the specific chapters where members of the chart show up. Check it out!</dd>
 </dl>
 <dl>
+</div>
 
+<div>
 <h2>2015-01-29</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -336,7 +388,9 @@ to the specific chapters where members of the chart show up. Check it out!</dd>
 of their view settings, the material that the server sends to the browser is always the same.
 These chunks are now being cached.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-01-23</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -349,7 +403,9 @@ The edit-execute cycle of query development is much smoother now.</dd>
 The contents of this field can be copied and pasted as value for the ``lex_utf8`` feature.
 </dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-01-21</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -364,7 +420,9 @@ bindings with Emdros. This will help future additions of functionality greatly, 
 install and maintain. It seems that the performance benefits for individual queries.
 It remains to be seen how performance will keep up when doing many concurrent queries.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2015-01-15</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -373,7 +431,9 @@ It remains to be seen how performance will keep up when doing many concurrent qu
 the listed items. Each item occupies a row in which also the passage is indicated.
 We hope this helps for getting data ready for statistical analysis.</dd>
 </dl>
+</div>
 
+<div>
 <h2>2014-12-19</h2>
 <p>A major update of the SHEBANQ website, featuring</p>
 <dl>
@@ -406,10 +466,13 @@ We hope this helps for getting data ready for statistical analysis.</dd>
 <li>removal of quite a few unnecessary detours and duplicated actions</li>
 </ul></dd>
 </dl>
+</div>
 
+<div>
 <h2>2014-07-29</h2>
-SHEBANQ goes live, but it is a demonstrator, with open issues.
-Currently we are aware of:
+<dl>
+<dt>SHEBANQ goes live, but it is a demonstrator, with open issues.</dt>
+<dd>Currently we are aware of:
 <ol class="text">
     <li>The query engine might cause exceptions that are not yet handled</li>
     <li>The rendering of the spacing between words is not completely correct, at least in Chrome.
@@ -418,10 +481,38 @@ Currently we are aware of:
         to work around the issues, so that you can enjoy the otherwise beautiful typography even on your iPad.
         N.B.: to our great pleasure we obeserved that as of Safari 7.1 on OSX 10.9.5 there is no need for a work-around anymore.
 </ol>
+</dd>
+</dl>
+</div>
 
+<div>
 <h2>Earlier</h2>
 <a target="_blank" href="http://annotation-paradigm.readthedocs.org/en/latest/queries-as-annotations/history.html">Queries-as-Annotations</a>
+</div>
 
 {{block right_sidebar}}
 <a class="twitter-timeline" href="https://twitter.com/shebanq_" data-widget-id="572382814054932480">Tweets by @shebanq_</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 {{end}}
+<script type="text/javascript">
+var detailcontrols = '<a class="showc fa fa-chevron-right" href="#" title="Show details"></a><a class="hidec fa fa-chevron-down" href="#" title="Hide details"></a>'
+$('h2').each(function() {
+    var orig = $(this).html()
+    $(this).html(detailcontrols+'&nbsp;'+orig)
+})
+$('dd').hide()
+$('.hidec').hide()
+$('.showc').show()
+$('.hidec').click(function(e) {e.preventDefault();
+    refo = $(this).closest('div')
+    refo.find('dd').hide()
+    refo.find('.hidec').hide()
+    refo.find('.showc').show()
+})
+$('.showc').click(function(e) {e.preventDefault();
+    refo = $(this).closest('div')
+    refo.find('dd').show()
+    refo.find('.hidec').show()
+    refo.find('.showc').hide()
+})
+$('.showc')[1].click()
+</script>

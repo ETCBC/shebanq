@@ -6,7 +6,7 @@ import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels
+from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views
 from mql import mql
 
 # Note on caching
@@ -92,6 +92,8 @@ def text():
         legend=legend,
         booksorder=json.dumps(books_order),
         books=json.dumps(books),
+        tp_labels=tp_labels,
+        tab_views=tab_views,
     )
 
 def get_books(vr): # get book information: number of chapters per book
