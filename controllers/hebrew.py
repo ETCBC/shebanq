@@ -481,6 +481,188 @@ order by lan, entryid_heb
         words[lan][letter].append((e, wid, eid, gloss))
     return (letters, words)
 
+def get_word_info(iid, vr, msgs):
+    sql = '''select * from lexicon where id = '{}';'''.format(iid)
+    w_record = dict(id=iid, versions={})
+    for v in versions:
+        if not versions[v]['date']: continue
+        records = passage_dbs[v].executesql(sql, as_dict=True)
+        if records == None:
+            msgs.append(('error', 'Cannot lookup word with id {} in version'.format(iid, v)))
+            fields = {}
+        elif len(records) == 0:
+            msgs.append(('error', 'No word with id {} in version {}'.format(iid, v)))
+            fields = {}
+        else:
+            fields = records[0]
+        w_record['versions'][v] = fields
+    return w_record
+
+def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False):
+    sqli = ''',
+    query.created_by as uid,
+    project.id as pid,
+    organization.id as oid
+''' if with_ids and po else ''
+
+    sqlx = ''',
+    query_exe.id as xid,
+    query_exe.mql as mql,
+    query_exe.version as version,
+    query_exe.resultmonads as resultmonads,
+    query_exe.results as results,
+    query_exe.executed_on as executed_on,
+    query_exe.modified_on as xmodified_on,
+    query_exe.is_published as is_published,
+    query_exe.published_on as published_on
+''' if single_version else ''
+
+    sqlp = ''',
+    project.name as pname,
+    project.website as pwebsite,
+    organization.name as oname,
+    organization.website as owebsite
+''' if po else ''
+
+    sqlm = '''
+    query.id as id,
+    query.name as name,
+    query.description as description,
+    query.created_on as created_on,
+    query.modified_on as modified_on,
+    query.is_shared as is_shared,
+    query.shared_on as shared_on,
+    auth_user.first_name as ufname,
+    auth_user.last_name as ulname,
+    auth_user.email as uemail
+    {}{}{}
+'''.format(sqli, sqlp, sqlx)
+
+    sqlr = '''
+inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{}'
+'''.format(vr) if single_version else ''
+
+    sqlpr = '''
+inner join organization on query.organization = organization.id
+inner join project on query.project = project.id
+''' if po else ''
+
+    sqlc = '''
+where query.id in ({})
+'''.format(','.join(iid)) if single_version else '''
+where query.id = {}
+'''.format(iid)
+
+    sqlo = '''
+order by auth_user.last_name, query.name
+''' if single_version else ''
+
+    sql = '''
+select{}
+from query
+inner join auth_user on query.created_by = auth_user.id
+{}{}{}{}
+'''.format(sqlm, sqlr, sqlpr, sqlc, sqlo)
+    records = db.executesql(sql, as_dict=True)
+    if records == None:
+        msgs.append(('error', 'Cannot lookup query(ies)'))
+        return None
+    if single_version:
+        for q_record in records:
+            query_fields(vr, q_record, [], single_version=True)
+        return records
+    else:
+        if len(records) == 0:
+            msgs.append(('error', 'No query with id {}'.format(iid)))
+            return None
+        q_record = records[0]
+        q_record['description_md'] = markdown(q_record['description'])
+        sql = '''
+select
+    id as xid,
+    mql,
+    version,
+    resultmonads,
+    results,
+    executed_on,
+    modified_on as xmodified_on,
+    is_published,
+    published_on
+from query_exe
+where query_id = {}
+'''.format(iid)
+        recordx = db.executesql(sql, as_dict=True)
+        query_fields(vr, q_record, recordx, single_version=False)
+        return q_record
+
+def sideq():
+    session.forget(response)
+    msgs = []
+    iid = get_request_val('material', '', 'iid')
+    vr = get_request_val('material', '', 'version')
+    (authorized, msg) = query_auth_read(iid)
+    if not authorized or not iid:
+        msgs.append(('error', msg))
+        return dict(
+            writable=False,
+            iid = iid,
+            vr = vr,
+            qr = dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    q_record = get_query_info(iid, vr, msgs, with_ids=True, single_version=False, po=True)
+    if q_record == None:
+        return dict(
+            writable=True,
+            iid = iid,
+            vr = vr,
+            qr = dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+
+    (authorized, msg) = query_auth_write(iid=iid)
+
+    return dict(
+        writable=authorized,
+        iid = iid,
+        vr = vr,
+        qr = q_record,
+        q=json.dumps(q_record),
+        msgs=json.dumps(msgs),
+    )
+
+def sidew():
+    session.forget(response)
+    msgs = []
+    vr = get_request_val('material', '', 'version')
+    iid = get_request_val('material', '', 'iid')
+    (authorized, msg) = word_auth_read(vr, iid)
+    if not authorized or not iid:
+        msgs.append(('error', msg))
+        return dict(
+            wr=dict(),
+            w=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    w_record = get_word_info(iid, vr, msgs)
+    return dict(
+        vr=vr,
+        wr=w_record,
+        w=json.dumps(w_record),
+        msgs=json.dumps(msgs),
+    )
+
+def pagelist(page, pages, spread):
+    factor = 1
+    filtered_pages = {1, page, pages}
+    while factor <= pages:
+        page_base = factor * int(page / factor)
+        filtered_pages |= {page_base + int((i - spread / 2) * factor) for i in range(2 * int(spread / 2) + 1)} 
+        factor *= spread
+    return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
+
 def pq():
     myid = None
     if auth.user:
@@ -1270,182 +1452,6 @@ def query_fields(vr, q_record, recordx, single_version=False):
             dest.update(rx)
             dest['status'] = qstatus(dest)
             datetime_str(dest)
-
-def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False):
-    sqli = ''',
-    query.created_by as uid,
-    project.id as pid,
-    organization.id as oid
-''' if with_ids and po else ''
-
-    sqlx = ''',
-    query_exe.id as xid,
-    query_exe.mql as mql,
-    query_exe.version as version,
-    query_exe.resultmonads as resultmonads,
-    query_exe.results as results,
-    query_exe.executed_on as executed_on,
-    query_exe.modified_on as xmodified_on,
-    query_exe.is_published as is_published,
-    query_exe.published_on as published_on
-''' if single_version else ''
-
-    sqlp = ''',
-    project.name as pname,
-    project.website as pwebsite,
-    organization.name as oname,
-    organization.website as owebsite
-''' if po else ''
-
-    sqlm = '''
-    query.id as id,
-    query.name as name,
-    query.description as description,
-    query.created_on as created_on,
-    query.modified_on as modified_on,
-    query.is_shared as is_shared,
-    query.shared_on as shared_on,
-    auth_user.first_name as ufname,
-    auth_user.last_name as ulname,
-    auth_user.email as uemail
-    {}{}{}
-'''.format(sqli, sqlp, sqlx)
-
-    sqlr = '''
-inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{}'
-'''.format(vr) if single_version else ''
-
-    sqlpr = '''
-inner join organization on query.organization = organization.id
-inner join project on query.project = project.id
-''' if po else ''
-
-    sqlc = '''
-where query.id in ({})
-'''.format(','.join(iid)) if single_version else '''
-where query.id = {}
-'''.format(iid)
-
-    sqlo = '''
-order by auth_user.last_name, query.name
-''' if single_version else ''
-
-    sql = '''
-select{}
-from query
-inner join auth_user on query.created_by = auth_user.id
-{}{}{}{}
-'''.format(sqlm, sqlr, sqlpr, sqlc, sqlo)
-    records = db.executesql(sql, as_dict=True)
-    if records == None:
-        msgs.append(('error', 'Cannot lookup query(ies)'))
-        return None
-    if single_version:
-        for q_record in records:
-            query_fields(vr, q_record, [], single_version=True)
-        return records
-    else:
-        if len(records) == 0:
-            msgs.append(('error', 'No query with id {}'.format(iid)))
-            return None
-        q_record = records[0]
-        q_record['description_md'] = markdown(q_record['description'])
-        sql = '''
-select
-    id as xid,
-    mql,
-    version,
-    resultmonads,
-    results,
-    executed_on,
-    modified_on as xmodified_on,
-    is_published,
-    published_on
-from query_exe
-where query_id = {}
-'''.format(iid)
-        recordx = db.executesql(sql, as_dict=True)
-        query_fields(vr, q_record, recordx, single_version=False)
-        return q_record
-
-def sideq():
-    session.forget(response)
-    msgs = []
-    iid = get_request_val('material', '', 'iid')
-    vr = get_request_val('material', '', 'version')
-    (authorized, msg) = query_auth_read(iid)
-    if not authorized or not iid:
-        msgs.append(('error', msg))
-        return dict(
-            writable=False,
-            iid = iid,
-            vr = vr,
-            qr = {},
-            q=collections.defaultdict(lambda: ''),
-            msgs=json.dumps(msgs),
-        )
-    q_record = get_query_info(iid, vr, msgs, with_ids=True, single_version=False, po=True)
-    if q_record == None:
-        return dict(
-            writable=True,
-            iid = iid,
-            vr = vr,
-            qr = {},
-            q=collections.defaultdict(lambda: ''),
-            msgs=json.dumps(msgs),
-        )
-
-    (authorized, msg) = query_auth_write(iid=iid)
-
-    return dict(
-        writable=authorized,
-        iid = iid,
-        vr = vr,
-        qr = q_record,
-        q=json.dumps(q_record),
-        msgs=json.dumps(msgs),
-    )
-
-def sidew():
-    session.forget(response)
-    msgs = []
-    vr = get_request_val('material', '', 'version')
-    iid = get_request_val('material', '', 'iid')
-    (authorized, msg) = word_auth_read(vr, iid)
-    if not authorized or not iid:
-        msgs.append(('error', msg))
-        return dict(
-            w=collections.defaultdict(lambda: ''),
-            msgs=json.dumps(msgs),
-        )
-    sql = '''
-select *
-from lexicon
-where lexicon.id = '{}'
-'''.format(iid)
-    records = passage_dbs[vr].executesql(sql, as_dict=True)
-    if records == None or len(records) == 0:
-        msgs.append(('error', 'No word with id {}'.format(iid)))
-        return dict(
-            w=collections.defaultdict(lambda: ''),
-            msgs=json.dumps(msgs),
-        )
-    word = records[0]
-
-    return dict(
-        vr=vr,
-        w=json.dumps(word),
-        msgs=json.dumps(msgs),
-    )
-
-def pagelist(page, pages, spread):
-    factor = 1
-    filtered_pages = {1, page, pages}
-    while factor <= pages:
-        page_base = factor * int(page / factor)
-        filtered_pages |= {page_base + int((i - spread / 2) * factor) for i in range(2 * int(spread / 2) + 1)} 
-        factor *= spread
-    return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
 
 def flatten(msets):
     result = set()

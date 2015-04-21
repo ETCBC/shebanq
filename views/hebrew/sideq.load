@@ -92,9 +92,6 @@ statusmap = dict(
 <script type="text/javascript">
 var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
 var msgs = {{=XML(msgs)}};
-msgs.forEach(function(m) {
-    msg.msg(m)
-})
 var q = {{=XML(q)}}
 </script>
 

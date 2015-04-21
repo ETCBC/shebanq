@@ -1342,56 +1342,36 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
             var vr = wb.version
             var iid = wb.vs.iid()
+            $('.moredetail').click(function(e) {e.preventDefault();
+                toggle_detail($(this))
+            })
+            $('.detail').hide()
+            $('div[version="'+vr+'"]').find('.detail').show()
+            that.msgo = new Msg('dbmsg_'+qw)
             if (qw == 'q') {
                 this.info = q
                 var ufname = escapeHTML(q.ufname)
                 var ulname = escapeHTML(q.ulname)
                 var qname = escapeHTML(q.name)
                 $('#itemtag').val(ufname+' '+ulname+': '+qname)
-                $('.moredetail').click(function(e) {e.preventDefault();
-                    toggle_detail($(this))
-                })
-                $('.detail').hide()
-                $('div[version="'+vr+'"]').find('.detail').show()
-                that.msgq = new Msg('dbmsg_q')
-                that.msgqv = new Msg('dbmsg_qv')
-                for (var v in q.versions) {
-                    this.set_vselect(v)
-                    set_csv(v, mr, qw, iid)
-                }
+                that.msgov = new Msg('dbmsg_qv')
                 $('#is_pub_c').show()
                 $('#is_pub_ro').hide()
             }
             else {
-                set_csv(vr, mr, qw, iid)
                 this.info = w
-                var g_entry_heb = escapeHTML(w.g_entry_heb)
-                var g_entry = escapeHTML(w.g_entry)
-                var entry_heb = escapeHTML(w.entry_heb)
-                var entry = escapeHTML(w.entry)
-                var entryid_heb = escapeHTML(w.entryid_heb)
-                var entryid = escapeHTML(w.entryid)
-                var pos = escapeHTML(w.pos)
-                var subpos = escapeHTML(w.subpos)
-                var nametype = escapeHTML(w.nametype)
-                var root = escapeHTML(w.root)
-                var lan = escapeHTML(w.lan)
-                var gloss = escapeHTML(w.gloss)
-                $('#itemtag').val(entry_heb+': '+entryid)
-                $('#gobackw').attr('href', words_url+'?lan='+lan+'&letter='+entry_heb.charCodeAt(0)+'&goto='+w.id)
-                $('#g_entry_heb').html(g_entry_heb)
-                $('#g_entry').html(g_entry)
-                $('#entry_heb').html(entry_heb)
-                $('#entry').html(entry)
-                $('#entryid_heb').html(entryid_heb)
-                $('#entryid').html(entryid)
-                $('#pos').html(pos)
-                $('#subpos').html(subpos)
-                $('#nametype').html(nametype)
-                $('#root').html(root)
-                $('#lan').html(lan)
-                $('#gloss').html(gloss)
+                var wvr = w.versions[vr]
+                $('#itemtag').val(wvr.entry_heb+': '+wvr.entryid)
+                $('#gobackw').attr('href', words_url+'?lan='+wvr.lan+'&letter='+wvr.entry_heb.charCodeAt(0)+'&goto='+w.id)
+                that.msgw = new Msg('dbmsg_w')
             }
+            for (var v in this.info.versions) {
+                this.set_vselect(v)
+                set_csv(v, mr, qw, iid)
+            }
+            msgs.forEach(function(m) {
+                that.msgo.msg(m)
+            })
         }
 
         $('#theitem').html($('#itemtag').val()+' ')                              // fill in the title of the query/word above the verse material
@@ -1548,7 +1528,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 execq.click(function(e) {e.preventDefault();
                     execq.addClass('fa-spin')
                     msg.clear()
-                    that.msgqv.msg(['special', 'executing query ...'])
+                    that.msgov.msg(['special', 'executing query ...'])
                     var data = {
                         version: wb.version,
                         qid: $('#qid').val(),
@@ -1612,7 +1592,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                     }
                 }
             }
-            var msg = (fname == 'is_shared')?that.msgq:that.msgqv;
+            var msg = (fname == 'is_shared')?that.msgo:that.msgov;
             msg.clear()
             json.msgs.forEach(function(m) {
                 msg.msg(m)
@@ -1626,7 +1606,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         $.post(fields_url, senddata, function(json) {
             good = json.good
             var q = json.q
-            var msg = that.msgqv;
+            var msg = that.msgov;
             msg.clear()
             json.msgs.forEach(function(m) {
                 msg.msg(m)
@@ -1741,9 +1721,6 @@ function SContent(mr, qw) { // the contents of an individual sidebar
     }
     if (this.mr == 'r') {
         wb.picker1[this.qw] = new Colorpicker1(this.qw, null, true, false)
-        if (this.qw == 'w') {
-            this.msgw = new Msg('dbmsg_w')
-        }
     }
 }
 

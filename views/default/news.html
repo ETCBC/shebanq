@@ -38,8 +38,8 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
-<h2>2015-04-20</h2>
-<p>A minor update of the SHEBANQ website with:</p>
+<h2>2015-04-21</h2>
+<p>A fair update of the SHEBANQ website with:</p>
 <dl>
 <dt>Tabbed views and visualisations: experimental</dt>
 <dd><p>Our key users have proposed alternative ways for displaying the texts.
@@ -50,7 +50,7 @@ See these help pages:
 <a href="{{=URL('default','help')}}#nicolai_style">Nicolai style</a>,
 <a href="{{=URL('default','help')}}#oliver_style">Oliver style</a>.
 </p>
-<p>Next to the tabbed view, there is also an iconic visualization of the text, which shows a very abstract rendering of the text.
+<p>Besides the tabbed views, there is also an iconic visualization of the text, which shows a very abstract rendering of the text.
 See <a href="{{=URL('hebrew','text', vars=dict(version='4',tp='txt_tb3'))}}">Dirk's visualization</a>.
 You can still highlight queries and words and call up the underlying data from this view.
 So you can switch back and forth between <i>distant</i> and <i>close</i> reading.</p>
@@ -73,6 +73,11 @@ After downloading, double-click the file <code>fonts/FontAwesome.otf</code> to i
 </ul>
 </p>
 </dd>
+<dt>Words across versions</dt>
+<dd>The behaviour of word highlighting when switching versions was confusing.
+This was caused by the fact that the identifiers of words were not consistent across data versions.
+Now I have chosen an identifier scheme that is as consistent as possible across versions.
+That means that the color you assign to a word in one version will also be used for the same word in another version of the data.</dd>
 <dt>Small fixes in highlighting.</dt>
 </dl>
 </div>
