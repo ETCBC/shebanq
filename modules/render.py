@@ -70,7 +70,7 @@ field_names = dict(
     txt_tb1='''
         word_heb word_number
         phrase_border phrase_function
-        sentence_number clause_number clause_atom_number clause_atom_tab clause_txt
+        sentence_number clause_number clause_atom_number clause_atom_tab clause_txt clause_typ
         '''.strip().split(),
     txt_tb2='''
         word_heb word_number
@@ -94,6 +94,7 @@ hfields = dict(
         ('phrase_number', 'phrase#'),
         ('phrase_function', 'function'),
         ('clause_txt', 'txt'),
+        ('clause_typ', 'typ'),
         ('clause_atom_tab', 'tab'),
     ],
     txt_tb2=[
@@ -729,9 +730,10 @@ ORDER BY word_number;
         if len(words) == 0:
             return u''
         txt = words[0][u'clause_txt']
+        ctp = words[0][u'clause_typ']
         tabn = int(words[0][u'clause_atom_tab'])
         tab = u'<span class="fa fa-plus-square">&#xf0fe;</span>' * tabn # plus square
-        result = [u'<tr><td class="lv1"><span class="ctxt1">{}</span></td><td class="lv1"><span class="tb1">{}</span></td><td class="lv1t">'.format(txt, tab)]
+        result = [u'<tr><td><span class="ctp1">{}</span></td><td class="lv1"><span class="ctxt1">{}</span></td><td class="lv1"><span class="tb1">{}</span></td><td class="lv1t">'.format(ctp, txt, tab)]
         for word in words:
             if 'r' in word['phrase_border']:
                 result.append(u' <span class="phf1">{}</span> '.format(word['phrase_function']))
