@@ -681,7 +681,7 @@ ORDER BY word_number;
         return u''.join(material)
 
     def _tab1_text(self, user_agent):
-        material = [u'<dl class="lv1">']
+        material = [u'<table class="lv1">']
         curnum = (0, 0, 0)
         curca = []
         for word in self.word_data:
@@ -692,7 +692,7 @@ ORDER BY word_number;
                 curnum = thisnum
             curca.append(word)
         material.append(self._putca1(curca))
-        material.append(u'</dl>')
+        material.append(u'</table>')
         return ''.join(material)
 
     def _tab2_text(self, user_agent):
@@ -731,12 +731,12 @@ ORDER BY word_number;
         txt = words[0][u'clause_txt']
         tabn = int(words[0][u'clause_atom_tab'])
         tab = u'<span class="fa fa-plus-square">&#xf0fe;</span>' * tabn # plus square
-        result = [u'<dt class="lv1"><span class="ctxt1">{}</span><br/><span class="tb1">{}</span></dt><dd class="lv1">'.format(txt, tab)]
+        result = [u'<tr><td class="lv1"><span class="ctxt1">{}</span></td><td class="lv1"><span class="tb1">{}</span></td><td class="lv1t">'.format(txt, tab)]
         for word in words:
             if 'r' in word['phrase_border']:
                 result.append(u' <span class="phf1">{}</span> '.format(word['phrase_function']))
             result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
-        result.append(u'</dd>')
+        result.append(u'</td></tr>')
         return ''.join(result)
 
     def _putca2(self, words):

@@ -454,25 +454,20 @@ span.ir {
 
 /* HEBREW TABBED */
 /* TAB1 */
-dl.lv1 {
-    display: inline;
-}
-dt.lv1 {
-    font-size: small;
-    float: right;
-    clear: right;
-    width: 105px;
-    text-align: right;
-    margin-right: 0px;
-    direction: ltr;
+table.lv1 {
+    direction: rtl;
 }
 dt.lv1:after {
     content: " ";
 }
-dd.lv1 {
+td.lv1 {
+    text-align: right;
+}
+td.lv1t {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     line-height: 1.7;
-    margin-right: 135px;
+    text-align: right;
 }
 .phf1 {
     vertical-align: super;
@@ -497,6 +492,7 @@ dd.lv1 {
     font-family: Verdana, Arial, sans-serif;
 }
 .tb1 {
+    font-size: small;
     color: #0000bb;
 }
 /* TAB2 */
@@ -543,10 +539,6 @@ dd.lv2 {
     font-family: Verdana, Arial, sans-serif;
 }
 .tb2 {
-    font-size: small;
-    color: #0000bb;
-}
-.tb3 {
     font-size: small;
     color: #0000bb;
 }
