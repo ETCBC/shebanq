@@ -472,8 +472,8 @@ function Material() { // Object corresponding to everything that controls the ma
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
+            wb.sidebars.after_material_fetch()
             $.get(material_url+vars, function(html) {
-                wb.sidebars.after_material_fetch()
                 var response = $(html)
                 that.pselect.add(response)
                 that.message.add(response)
