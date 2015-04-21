@@ -35,21 +35,21 @@ var Request = {
     }
 }
 
-function set_vselect(v) {
+function set_vselect(v, gotoword) {
     if (versions[v]) {
         $('#version_'+v).click(function(e) {e.preventDefault();
             version = v
-            window.location.href = words_url+'?version='+v+'&lan='+lan+'&letter='+letter
+            window.location.href = words_url+'?version='+v+'&lan='+lan+'&letter='+letter+'&goto='+gotoword
         })
     }
 }
 function words_init() {
     $('.mvradio').removeClass('ison')
+    var gotoword = Request.parameter('goto');
     for (var v in versions) {
-        this.set_vselect(v)
+        this.set_vselect(v, gotoword)
     }
     $('#version_'+version).addClass('ison')
-    var gotoword = Request.parameter('goto');
     set_heightw()
     $('[wii]').hide()
     $('[gi]').click(function(e) {e.preventDefault();

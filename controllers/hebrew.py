@@ -232,7 +232,7 @@ def material_c(vr, mr, qw, bk, iid, ch, page, tp):
                 monads=json.dumps([]),
             )
         else:
-            (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
+            (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid)
             (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets, iid)
             material = Verses(passage_dbs, vr, mr, verses, tp=tp)
             result = dict(
@@ -304,10 +304,10 @@ def sidem_c(vr, qw, bk, ch, pub):
         )
     else:
         if qw == 'q':
-            monad_sets = get_monads(vr, chapter, pub)
+            monad_sets = get_q_hits(vr, chapter, pub)
             side_items = groupq(vr, monad_sets)
         else:
-            monad_sets = get_lexemes(vr, chapter)
+            monad_sets = get_w_occs(vr, chapter)
             side_items = groupw(vr, monad_sets)
         result = dict(
             colorpicker=colorpicker,
@@ -366,7 +366,7 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
         return dict(filename=filename, data=msg)
     hfields = get_fields(tp)
     head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-    (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
+    (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid)
     monads = flatten(monad_sets)
     data = []
     if len(monads):
@@ -410,7 +410,7 @@ def chart(): # controller to produce a chart of query results or lexeme occurren
     )
 
 def chart_c(vr, qw, iid): 
-    (nmonads, monad_sets) = load_monad_sets(vr, iid) if qw == 'q' else load_word_occurrences(vr, iid)
+    (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid)
     result = get_chart(vr, monad_sets)
     result.update(qw=qw)
     return result
@@ -1001,45 +1001,6 @@ def upd_record(tp, lid, myid, fields, msgs):
         msgs.append((u'good', thismsg))
     return (good, lid)
 
-def windex():
-    msgs = []
-    good = False
-    newwid = None
-    for x in [1]:
-        oldwid = check_id('oldwid', 'lexicon', msgs)
-        if oldwid == None: break
-        oldv = request.vars.oldv
-        newv = request.vars.newv
-        if oldv not in passage_dbs:
-            msgs.append(('error', 'No data version {}'.format(oldv)))
-            break
-        if newv not in passage_dbs:
-            msgs.append(('error', 'No data version {}'.format(newv)))
-            break
-        result = passage_dbs[oldv].executesql('''
-select lan, entryid from lexicon where id = {};
-'''.format(oldwid)) 
-        if result == None or len(result) != 1:
-            msgs.append(('error', 'No word with id={} in data version {}'.format(oldwid, oldv)))
-            break
-        (lan, eid) = result[0]
-        eidsql = eid.replace("'", "''")
-        result = passage_dbs[newv].executesql('''
-select id from lexicon where lan = '{}' and entryid = '{}';
-'''.format(lan, eidsql)) 
-        if result == None or len(result) == 0:
-            msgs.append(('error', 'No {} word entry {} in data version {}'.format(lan, eid, newv)))
-            break
-        newwid = result[0][0]
-        if len(result) > 1:
-            msgs.append(('warning', 'Multiple {} words with entry = {} in data version {}: {}. I choose {}.'.format(
-                 lan, eid, newv, ', '.join(str(r[0]) for r in result), newwid,
-                )
-            ))
-        good = True
-        msgs.append(('special', '{} in {} is {} is {} in {}'.format(oldwid, oldv, h_esc(eid), newwid, newv)))
-    return dict(data=json.dumps(dict(msgs=msgs, good=good, newwid=newwid)))
-
 def field():
     msgs = []
     good = False
@@ -1460,7 +1421,7 @@ def sidew():
     sql = '''
 select *
 from lexicon
-where lexicon.id = {}
+where lexicon.id = '{}'
 '''.format(iid)
     records = passage_dbs[vr].executesql(sql, as_dict=True)
     if records == None or len(records) == 0:
@@ -1527,13 +1488,13 @@ select * from lexicon
 where
     id in ({})
 order by entryid_heb
-'''.format(','.join(str(x) for x in wids))
+'''.format(','.join("'{}'".format(str(x)) for x in wids))
         wordrecords = passage_dbs[vr].executesql(wsql, as_dict=True)
         for w in wordrecords:
             r.append({'item': w, 'monads': json.dumps(wids[w['id']])})
     return r
 
-def get_monads(vr, chapter, pub):
+def get_q_hits(vr, chapter, pub):
     if pub == 'x':
         pubv = ""
         pubx = "inner join query on query.id = query_exe.query_id and query.is_shared = 'T'"
@@ -1562,7 +1523,7 @@ where
          pubx=pubx,
     ))
 
-def get_lexemes(vr, chapter):
+def get_w_occs(vr, chapter):
     return passage_dbs[vr].executesql(u'''
 select
     anchor, lexicon_id
@@ -1587,7 +1548,7 @@ def query_auth_read(iid):
     if iid == 0:
         authorized = auth.user != None
     else:
-        q_records = db.executesql('select * from query where id = {};'.format(iid), as_dict=True)
+        q_records = db.executesql('''select * from query where id = {};'''.format(iid), as_dict=True)
         q_record = q_records[0] if q_records else {}
         if q_record:
             authorized = q_record['is_shared'] or (auth.user != None and q_record['created_by'] == auth.user.id)
@@ -1599,7 +1560,7 @@ def word_auth_read(vr, iid):
     if iid == 0:
         authorized = auth.user != None
     else:
-        words = passage_dbs[vr].executesql('select * from lexicon where id = {};'.format(iid), as_dict=True)
+        words = passage_dbs[vr].executesql('''select * from lexicon where id = '{}';'''.format(iid), as_dict=True)
         word = words[0] if words else {}
         if word:
             authorized = True
@@ -1674,7 +1635,7 @@ insert into monads (query_exe_id, first_m, last_m) values
         db.executesql(query)
         query = ''
 
-def load_monad_sets(vr, iid):
+def load_q_hits(vr, iid):
     xid = get_qx(vr, iid)
     if xid == None: return normalize_ranges([])
     monad_sets = db.executesql('''
@@ -1682,8 +1643,8 @@ select first_m, last_m from monads where query_exe_id = {} order by first_m;
 '''.format(xid))
     return normalize_ranges(monad_sets)
 
-def load_word_occurrences(vr, lexeme_id):
-    monads = passage_dbs[vr].executesql('SELECT anchor FROM word_verse WHERE lexicon_id = {} ORDER BY anchor;'.format(lexeme_id))
+def load_w_occs(vr, lexeme_id):
+    monads = passage_dbs[vr].executesql('''select anchor from word_verse where lexicon_id = '{}' order by anchor;'''.format(lexeme_id))
     return collapse_into_ranges(monads)
 
 def collapse_into_ranges(monads):

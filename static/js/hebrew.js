@@ -148,7 +148,7 @@ var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, field_url, fields_url, windex_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -289,7 +289,7 @@ the origin must be an object which has a member indicating the type of origin an
                 This is simple coloring, using a single color.
             */
             var iid = origin.iid
-            var paint = cmap[iid] || defcolor(null, iid)
+            var paint = cmap[iid] || defcolor(qw == 'q', iid)
             if (qw == 'q') {
                 $($.parseJSON($('#themonads').val())).each(function(i, m) {
                     paintings[m] = paint
@@ -355,7 +355,7 @@ the origin must be an object which has a member indicating the type of origin an
                 viewsetting says: do not color any item */
             else if (active == 'hlone') {paint = selclr} /*
                 viewsetting says: color every applicable item with the same color */
-            else if (active == 'hlmany') {paint = cmap[iid] || defcolor(null, iid)} /*
+            else if (active == 'hlmany') {paint = cmap[iid] || defcolor(qw == 'q', iid)} /*
                 viewsetting says:
                 color every item with customized color (if customized) else with query/word-dependent default color */
             else if (active == 'hlcustom') {paint = cmap[iid] || selclr} /*
@@ -460,7 +460,6 @@ function Material() { // Object corresponding to everything that controls the ma
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
         var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
         var do_fetch = false
-        var do_fetch = false
         if (wb.mr == 'm') {
             vars += '&book='+wb.vs.book()
             vars += '&chapter='+wb.vs.chapter()
@@ -469,7 +468,7 @@ function Material() { // Object corresponding to everything that controls the ma
         else {
             vars += '&iid='+wb.iid
             vars += '&page='+wb.vs.page()
-            do_fetch = wb.iid >=0
+            do_fetch = (wb.qw == 'q')?(wb.iid >=0):(wb.iid != '-1')
         }
         if (do_fetch && !material_fetched[wb.vs.tp()]) {
             this.message.msg('fetching data ...')
@@ -571,7 +570,7 @@ function Material() { // Object corresponding to everything that controls the ma
             }
             else {
                 var vals = {}
-                vals[iid] = defcolor(null, iid)
+                vals[iid] = defcolor(false, iid)
                 wb.vs.cstatesv(qw, vals)
                 all.show()
             }
@@ -633,34 +632,10 @@ function MSelect() { // for book and chapter selection
     this.set_vselect = function(v) {
         if (versions[v]) {
             $('#version_'+v).click(function(e) {e.preventDefault();
-                if (wb.vs.mr() == 'r' && wb.vs.qw() == 'w') {
-                    var msg = wb.sidebars.sidebar['rw'].content.msgw
-                    msg.clear()
-                    msg.msg(['special', ' retrieving corresponding word entry'])
-                    var oldwid = wb.vs.iid()
-                    var oldv = wb.vs.version()
-                    $.post(windex_url, {oldwid: oldwid, oldv: oldv, newv: v}, function(json) {
-                        json.msgs.forEach(function(m) {
-                            msg.msg(m)
-                        })
-                        good = json.good
-                        var gotowid
-                        if (good) {
-                            gotowid = json.newwid
-                        }
-                        else {
-                            gotowid = oldwid
-                            msg.msg(['warning', 'showing word '+oldwid+' instead'])
-                        }
-                        wb.vs.mstatesv({version: v, iid: gotowid})
-                        wb.go()
-                    }, 'json')
-                }
-                else {
-                    side_fetched['mw'] = false
-                    wb.vs.mstatesv({version: v})
-                    wb.go()
-                }
+                side_fetched['mw'] = false
+                side_fetched['mq'] = false
+                wb.vs.mstatesv({version: v})
+                wb.go()
             })
         }
     }
@@ -1019,7 +994,7 @@ function CSelect(vr, qw) { // for chart selection
             wb.vs.mstatesv(vals)
             wb.vs.hstatesv('q', {sel_one: 'white', active: 'hlcustom'})
             wb.vs.hstatesv('w', {sel_one: 'black', active: 'hlcustom'})
-            var thiscolor = wb.vs.colormap(that.qw)[iid] || defcolor(null, iid)
+            var thiscolor = wb.vs.colormap(that.qw)[iid] || defcolor(that.qw == 'q', iid)
             wb.vs.cstatexx('q')
             wb.vs.cstatexx('w')
             vals = {}
@@ -1702,7 +1677,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
         else {
             vars += '&iid='+wb.iid
-            do_fetch = wb.iid >=0
+            do_fetch = (wb.qw == 'q')?(wb.iid >=0):(wb.iid != '-1')
             extra = this.qw+'m'
         }
         if (do_fetch && !side_fetched[this.mr+this.qw]) {
@@ -1861,7 +1836,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         this.apply(do_highlight)
     }
     this.apply = function(do_highlight) {
-        var color = wb.vs.color(this.qw, this.iid) || defcolor(null, this.iid)
+        var color = wb.vs.color(this.qw, this.iid) || defcolor(this.qw == 'q', this.iid)
         var target = (this.qw == 'q')?sel:selw
         target.css(stl, vcolors[color][this.qw])                  // apply state to the selected cell
         selc.prop('checked', wb.vs.iscolor(this.qw, this.iid))                   // apply state to the checkbox
@@ -1889,7 +1864,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
         }
         else {
             var vals = {}
-            vals[that.iid] = defcolor(null, that.iid)
+            vals[that.iid] = defcolor(that.qw == 'q', that.iid)
             wb.vs.cstatesv(that.qw, vals)
             var active = wb.vs.active(that.qw)
             if (active != 'hlcustom' && active != 'hlmany') {
@@ -1983,12 +1958,19 @@ function defcolor(qw, iid) {// compute the default color
         dncols, dnrows
 */
     var result
-    if (qw == null) {
+    if (qw in style) {
+        result = style[qw]['default']
+    }
+    else if (qw) {
         var mod = iid % vdefaultcolors.length
         result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
     }
     else {
-        result = style[qw]['default']
+        var iidstr = (iid == null)?'':iid
+        sumiid = 0
+        for (var i=0; i<iidstr.length;i++) {sumiid += iidstr.charCodeAt(i)}
+        var mod = sumiid % vdefaultcolors.length
+        result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
     }
     return result
 }
@@ -2059,12 +2041,12 @@ function ViewState(init, pref) {
         }
         $.cookie(this.pref+group+qw, this.data[group][qw])
     }
-    this.mstatesv = function(values) { this.setsv('material', '', values) }
-    this.dstatesv = function(values) { this.setsv('hebrewdata', '', values) }
-    this.hstatesv = function(qw, values) { this.setsv('highlights', qw, values) }
-    this.cstatesv = function(qw, values) { this.setsv('colormap', qw, values) }
-    this.cstatex = function(qw, name) { this.delsv('colormap', qw, name) }
-    this.cstatexx = function(qw) { this.resetsv('colormap', qw) }
+    this.mstatesv = function(values) {this.setsv('material', '', values)}
+    this.dstatesv = function(values) {this.setsv('hebrewdata', '', values)}
+    this.hstatesv = function(qw, values) {this.setsv('highlights', qw, values)}
+    this.cstatesv = function(qw, values) {this.setsv('colormap', qw, values)}
+    this.cstatex = function(qw, name) {this.delsv('colormap', qw, name)}
+    this.cstatexx = function(qw) {this.resetsv('colormap', qw)}
 
     this.mstate =function() {return this.data['material']['']}
     this.hdata =function() {return this.data['hebrewdata']['']}

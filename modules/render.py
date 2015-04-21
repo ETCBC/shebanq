@@ -140,7 +140,7 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=(
         '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 int:1-1000000 int:1-1000000 enum:m,r enum:q,w enum:txt_p,{},txt_il'''.format(
+        '''alnum:10 alnum:30 int:1-150 alnum:32 int:1-1000000 enum:m,r enum:q,w enum:txt_p,{},txt_il'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
         ),
         {'': '''4 Genesis 1 -1 1 m q txt_p'''},
@@ -402,7 +402,7 @@ def vcompile(tp):
         return lambda d, x: x if x in {'x', 'v'} else d
     (t, v) = tp.split(':')
     if t == 'alnum':
-        return lambda d, x: x if x != None and len(x) < int(v) and x.replace('_','').replace(' ','').isalnum() else d
+        return lambda d, x: x if x != None and len(str(x)) < int(v) and str(x).replace('_','').replace(' ','').isalnum() else d
     elif t == 'int':
         (lowest, highest) = v.split('-')
         return lambda d, x: int(x) if x != None and str(x).isdigit() and int(x) >= int(lowest) and int(x) <= int(highest) else int(d) if d != None else d
@@ -492,13 +492,13 @@ class Viewsettings():
                         except ValueError: pass
                 if group == 'colormap':
                     for fid in from_cookie:
-                        if len(fid) <= 7 and fid.isdigit():
+                        if len(fid) <= 32 and fid.replace('_','').isalnum():
                             vstate = validation[group][qw]['0'](None, from_cookie[fid])
-                        if vstate != None:
-                            self.state[group][qw][fid] = vstate
+                            if vstate != None:
+                                self.state[group][qw][fid] = vstate
                     for f in current.request.vars:
                         fid = f[1:]
-                        if len(fid) <= 7 and fid.isdigit():
+                        if len(fid) <= 32 and fid.replace('_','').isalnum():
                             vstate = get_request_val(group, qw, f, default=False)
                             if vstate != None:
                                 from_cookie[fid] = vstate
@@ -516,7 +516,6 @@ class Viewsettings():
                     current.response.cookies[self.pref+group+qw] = urllib.quote(json.dumps(from_cookie))
                     current.response.cookies[self.pref+group+qw]['expires'] = 30 * 24 * 3600
                     current.response.cookies[self.pref+group+qw]['path'] = '/'
-
 
     def theversion(self): return self.state['material']['']['version']
     def versionstate(self):
@@ -655,7 +654,7 @@ ORDER BY word_number;
             root = ET.fromstring(u'<verse>{}</verse>'.format(self.xml).encode('utf-8'))
             for child in root:
                 monad_id = int(child.attrib['m'])
-                lex_id = int(child.attrib['l'])
+                lex_id = child.attrib['l']
                 text = '' if child.text is None else child.text
                 trailer = child.get('t', '')
                 self.words.append((monad_id, lex_id, text, trailer))
