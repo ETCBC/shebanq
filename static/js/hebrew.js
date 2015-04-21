@@ -1965,9 +1965,10 @@ function ViewState(init, pref) {
         var vars = ''
         var sep = '?'
         for (var group in this.data) {
+            var extra = (group == 'colormap')?'c_':''
             for (var qw in this.data[group]) {
                 for (var name in this.data[group][qw]) {
-                    vars += sep+qw+name+'='+this.data[group][qw][name] 
+                    vars += sep+extra+qw+name+'='+this.data[group][qw][name] 
                     sep = '&'
                 }
             }

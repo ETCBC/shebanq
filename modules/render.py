@@ -426,7 +426,7 @@ for group in specs:
             validation[group][qw][f] = valtype[i]
 
 def get_request_val(group, qw, f, default=True):
-    rvar = qw+f
+    rvar = ('c_' if group == 'colormap' else '')+qw+f 
     if rvar == 'iid':
         x = current.request.vars.id or current.request.vars.iid
     else:
@@ -498,9 +498,10 @@ class Viewsettings():
                             if vstate != None:
                                 self.state[group][qw][fid] = vstate
                     for f in current.request.vars:
-                        fid = f[1:]
+                        if not f.startswith('c_{}'.format(qw)): continue
+                        fid = f[3:]
                         if len(fid) <= 32 and fid.replace('_','').isalnum():
-                            vstate = get_request_val(group, qw, f, default=False)
+                            vstate = get_request_val(group, qw, fid, default=False)
                             if vstate != None:
                                 from_cookie[fid] = vstate
                                 self.state[group][qw][fid] = vstate
