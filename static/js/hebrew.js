@@ -511,6 +511,27 @@ function Material() { // Object corresponding to everything that controls the ma
         if (wb.vs.tp() == 'txt_il') {
             this.msettings.hebrewsettings.apply()
         }
+        else if (wb.vs.tp() == 'txt_tb1') {
+            this.add_tab1()
+        }
+    }
+    this.add_tab1 = function() { // add actions for the tab1 view
+        this.comment_all = false
+        $('tr.t1_cmt').hide()
+        $('a.t1_ctrl').click(function(e) {e.preventDefault();
+            $(this).closest('tr').next('tr').toggle()
+        })
+        $('a.t1_ctrl').dblclick(function(e) {e.preventDefault();
+            var comments = $('tr.t1_cmt')
+            if (that.comment_all) {
+                comments.hide()
+                that.comment_all = false
+            }
+            else {
+                comments.show()
+                that.comment_all = true
+            }
+        })
     }
     this.add_vrefs = function(newcontent, mf) {
         var vrefs = newcontent.find('.vradio')

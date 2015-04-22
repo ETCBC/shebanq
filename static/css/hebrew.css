@@ -454,20 +454,16 @@ span.ir {
 
 /* HEBREW TABBED */
 /* TAB1 */
-table.lv1 {
-    direction: rtl;
+table.t1_table {
+    width: 100%;
+    direction: ltr;
 }
-dt.lv1:after {
-    content: " ";
-}
-td.lv1 {
-    text-align: right;
-}
-td.lv1t {
+td.t1_txt {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     line-height: 1.7;
     text-align: right;
+    direction: rtl;
 }
 .phf1 {
     vertical-align: super;
@@ -475,25 +471,59 @@ td.lv1t {
     font-size: small;
     color: #0088dd;
 }
-.ctxt1 {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: small;
-    color: #dd8800;
-}
-.ccode1 {
-    color: #886644;
-    font-size: small;
+td.t1_tb1 {
+    width: 25px;
     font-family: Menlo, Courier New, Courier, monospace;
-}
-.ctp1 {
-    color: #dd8800;
+    letter-spacing: -1pt;
+    text-align: right;
     font-size: small;
     font-weight: bold;
-    font-family: Verdana, Arial, sans-serif;
+    color: #0000ff;
+    background-color: #ddddff;
+    text-align: right;
 }
-.tb1 {
+td.t1_tb10 {
+    width: 15px;
+    font-family: Menlo, Courier New, Courier, monospace;
+    letter-spacing: 2pt;
+    text-align: right;
+    font-size: large;
+    font-weight: bold;
+    color: #0000ff;
+    background-color: #ddddff;
+    text-align: right;
+}
+td.t1_txttp {
+    width: 25px;
+    font-family: Menlo, Courier New, Courier, monospace;
     font-size: small;
-    color: #0000bb;
+    font-weight: bold;
+    color: #33aa44;
+    text-align: right;
+}
+td.t1_ctp {
+    width: 25px;
+    color: #aa6644;
+    font-size: small;
+    font-family: Menlo, Courier New, Courier, monospace;
+    text-align: right;
+}
+td.t1_ctrl {
+    text-align: left;
+}
+a.t1_ctrl {
+    color: #6666aa;
+    font-size: small;
+    font-weight: bold;
+}
+td.t1_cmt {
+    color: #cc0000;
+    background-color: #ffffdd;
+    font-size: small;
+    font-style: italic;
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    text-align: left;
+    border: 1px solid #bbbbbb;
 }
 /* TAB2 */
 dl.lv2 {

@@ -683,7 +683,7 @@ ORDER BY word_number;
         return u''.join(material)
 
     def _tab1_text(self, user_agent):
-        material = [u'<table class="lv1">']
+        material = [u'<table class="t1_table">']
         curnum = (0, 0, 0)
         curca = []
         for word in self.word_data:
@@ -730,16 +730,44 @@ ORDER BY word_number;
     def _putca1(self, words):
         if len(words) == 0:
             return u''
-        txt = words[0][u'clause_txt']
+        txttp = words[0][u'clause_txt'].replace('?','')
         ctp = words[0][u'clause_typ']
         tabn = int(words[0][u'clause_atom_tab'])
-        tab = u'<span class="fa fa-plus-square">&#xf0fe;</span>' * tabn # plus square
-        result = [u'<tr><td><span class="ctp1">{}</span></td><td class="lv1"><span class="ctxt1">{}</span></td><td class="lv1"><span class="tb1">{}</span></td><td class="lv1t">'.format(ctp, txt, tab)]
+        #tab = u'<span class="fa fa-plus-square">&#xf0fe;</span>' * tabn # plus square
+        #tab = u'&gt;' * tabn # plus square
+        tab10s = tabn / 10
+        tab10r = tabn % 10
+        smalltab = '&lt;' * tab10r
+        bigtab = '&lt;' * tab10s
+        result = [u'''
+<tr>
+    <td class="t1_ctrl"><a title="show/hide comments (double click for all comments)" href="#" class="t1_ctrl">#</a></td>
+    <td class="t1_txt">
+''']
         for word in words:
             if 'r' in word['phrase_border']:
-                result.append(u' <span class="phf1">{}</span> '.format(word['phrase_function']))
-            result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
-        result.append(u'</td></tr>')
+                result.append(u''' <span class="phf1">{}</span> '''.format(word['phrase_function']))
+            result.append(u''' <span m="{}" l="{}">{}</span> '''.format(word['word_number'], word['lexicon_id'], word['word_heb']))
+        result.append(u'''
+    </td>
+    <td class="t1_tb1">{smalltab}</td>
+    <td class="t1_tb10">{bigtab}</td>
+    <td class="t1_txttp">{txttp}</td>
+    <td class="t1_ctp">{ctp}</td>
+</tr>
+<tr class="t1_cmt">
+    <td class="t1_cmt" contenteditable></td>
+    <td class="t1_cmt" contenteditable></td>
+    <td class="t1_cmt" contenteditable colspan="2"></td>
+    <td class="t1_cmt" contenteditable></td>
+    <td class="t1_cmt" contenteditable></td>
+</tr>
+'''.format(
+        smalltab=smalltab,
+        bigtab=bigtab,
+        txttp=txttp,
+        ctp=ctp,
+))
         return ''.join(result)
 
     def _putca2(self, words):
