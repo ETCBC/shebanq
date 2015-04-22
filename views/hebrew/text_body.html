@@ -21,7 +21,7 @@
         <div id="material_settings">
             <span><a href="#" id="mtxt_p" class="ctrl mhradio">text</a></span>
 {{for t in range(1, tab_views+1):}}
-            <span><a href="#" id="mtxt_tb{{=t}}" class="ctrl mhradio">{{=tp_labels['txt_tb{}'.format(t)]}}</a></span>
+            <span><a href="#" id="mtxt_tb{{=t}}" class="ctrl mhradio">{{='{} ({}/{})'.format(tp_labels['txt_tb{}'.format(t)], t, tab_views)}}</a></span>
 {{pass}}
             <span><a id="datalegend_control" class="ctrl" href="#">legend</a></span>
             <span id="datalegend" class="txt_il2">{{=XML(legend())}}</span>

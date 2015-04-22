@@ -1142,7 +1142,7 @@ function MSettings(content) {
     for (var i=1; i<=tab_views; i++) {
         var mc = $('#mtxt_tb'+i)
         mc.attr('title', tab_info['txt_tb'+i])
-        if (i == tab_views) {
+        if (i == 1) {
             mc.show()
         }
         else {
