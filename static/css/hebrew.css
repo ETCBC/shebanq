@@ -494,7 +494,7 @@ td.t1_tb10 {
     text-align: right;
 }
 td.t1_txttp {
-    width: 25px;
+    width: 35px;
     font-family: Menlo, Courier New, Courier, monospace;
     font-size: small;
     font-weight: bold;
@@ -508,16 +508,20 @@ td.t1_ctp {
     font-family: Menlo, Courier New, Courier, monospace;
     text-align: right;
 }
-td.t1_ctrl {
+span.t1_ctrl {
     font-family: Verdana, Arial, sans-serif;
     text-align: left;
+    float: left;
 }
 a.t1_ctrl {
     color: #6666aa;
     font-size: small;
     font-weight: bold;
 }
-td.t1_stat,td.t1_pub {
+td.t1_stat {
+    width: 10px;
+}
+td.t1_stat,td.t1_pub,td.t1_sav {
     color: #00cc00;
     font-size: small;
     font-weight: bold;
@@ -554,7 +558,6 @@ td.t1_stat,td.t1_pub {
 }
 td.t1_cmt {
     font-size: small;
-    font-style: italic;
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     text-align: left;
     border: 1px solid #bbbbbb;
@@ -650,18 +653,18 @@ dd.lv3 {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     line-height: 1.7;
-    direction: rtl;
     text-align: right;
     margin-right: 0.5em;
     color: #000000;
+    direction: rtl;
 }
 div.txt_tb1,div.txt_tb2,.txt_tb3 {
     border-bottom: 1px solid #bbbbbb;
     padding-bottom: 0.2em;
     padding-top: 0.2em;
+    direction: rtl;
 }
 .txt_il {
-    direction: rtl;
     text-align: right;
 }
 .txt_il_base {

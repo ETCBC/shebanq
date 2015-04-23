@@ -73,6 +73,16 @@ db = DAL('mysql://{}:{}@{}/{}'.format(
 
 passage_dbs = {}
 
+note_db = DAL('mysql://{}:{}@{}/{}'.format(
+        config['shebanq_user'],
+        config['shebanq_passwd'],
+        config['shebanq_host'],
+        'shebanq_note',
+    ),
+    migrate_enabled=False, # if session table already exists
+    #migrate=False, # if session table does not yet exist
+) 
+
 for vr in versions: 
     if not versions[vr]['date']: continue
     passage_dbs[vr] = DAL('mysql://{}:{}@{}/{}'.format(dc_u, dc_p, dc_h, 'shebanq_passage{}'.format(vr)), migrate_enabled=False)

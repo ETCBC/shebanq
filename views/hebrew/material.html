@@ -51,12 +51,23 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
             (pb, b, c, v) = verse.label()
             verse_control = u'<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=b, chapter=c, verse=v)
         }}
-            <div class="{{=tp}}">{{
-            if material.mr == 'm':
+            <div class="{{=tp}}">
+            {{if material.mr == 'm':
                 vclass = 'vrefi' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
-                }}<span class="{{=vclass}}">{{=XML(verse_control)}}{{
-            else: 
-                }}<span class="vref"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}{{
+            }}
+                <span class="{{=vclass}}">{{=XML(verse_control)}}
+            {{else:}}
+                <span class="vref"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
+            {{pass}}{{
+            if tp == 'txt_tb1':
+                    }}&nbsp;<span class="t1_ctrl">
+                        <span class="t1_sav">
+                            <a class="ctrli" href="#" title="save">s</a>
+                            <a class="ctrli" href="#" title="revert">x</a>
+                        </span>
+                        <span class="t1_msg"></span>
+                        <a title="show/hide comments (double click for all comments)" href="#" class="t1_ctrl">#</a>
+                    </span>&nbsp;{{
             pass
                 }}</span>
                 <span id="{{=tp}}_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txt_il_base" id="{{=tp}}_txt_il_{{=b}}_{{=c}}_{{=v}}" lf="x"></span>

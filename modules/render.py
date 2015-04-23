@@ -658,9 +658,6 @@ ORDER BY word_number;
         self.word_data = word_data
         self.words = []
 
-    def to_string(self):
-        return "{}\n{}".format(self.citation_ref(), self.text)
-
     def chapter_link(self):
         return (self.book_name, self.chapter_num)
 
@@ -699,7 +696,7 @@ ORDER BY word_number;
         return u''.join(material)
 
     def _tab1_text(self, user_agent):
-        material = [u'<table class="t1_table">']
+        material = [u'''<table class="t1_table">''']
         curnum = (0, 0, 0)
         curca = []
         for word in self.word_data:
@@ -749,6 +746,7 @@ ORDER BY word_number;
         txttp = words[0][u'clause_txt'].replace('?','')
         ctp = words[0][u'clause_typ']
         tabn = int(words[0][u'clause_atom_tab'])
+        canr = int(words[0][u'clause_atom_number'])
         #tab = u'<span class="fa fa-plus-square">&#xf0fe;</span>' * tabn # plus square
         #tab = u'&gt;' * tabn # plus square
         tab10s = tabn / 10
@@ -756,10 +754,11 @@ ORDER BY word_number;
         smalltab = '&lt;' * tab10r
         bigtab = '&lt;' * tab10s
         result = [u'''
-<tr>
-    <td class="t1_ctrl"><a title="show/hide comments (double click for all comments)" href="#" class="t1_ctrl">#</a></td>
-    <td class="t1_txt">
-''']
+<tr canr="{canr}">
+    <td colspan="2" class="t1_txt">
+'''.format(
+        canr=canr,
+)]
         for word in words:
             if 'r' in word['phrase_border']:
                 result.append(u''' <span class="phf1">{}</span> '''.format(word['phrase_function']))
@@ -771,22 +770,13 @@ ORDER BY word_number;
     <td class="t1_txttp">{txttp}</td>
     <td class="t1_ctp">{ctp}</td>
 </tr>
-<tr class="t1_cmt t1_info">
-    <td class="t1_stat"><a href="#" title="set status">{stat}</a></td>
-    <td class="t1_cmt" contenteditable></td>
-    <td class="t1_cmt" contenteditable colspan="2"></td>
-    <td class="t1_keyw" contenteditable></td>
-    <td class="t1_pub">
-        <a class="ctrli pradio" href="#" title="shared?">@</a>
-        <a class="ctrli pradio" href="#" title="published?">"</a>
-    </td>
-</tr>
 '''.format(
         smalltab=smalltab,
         bigtab=bigtab,
         txttp=txttp,
         ctp=ctp,
         stat=t1_statorder[0],
+        canr=canr,
 ))
         return ''.join(result)
 

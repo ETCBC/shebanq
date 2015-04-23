@@ -281,6 +281,20 @@ def verse_c(vr, bk, ch, vs, msgs):
     )
     return result
 
+def notes():
+    data = {}
+    notes = {
+        '2': {
+            0: dict(stat='o', ntxt='', kw='', shared=False, pub=False,),
+        },
+        '3': {
+            0: dict(stat='o', ntxt='', kw='', shared=False, pub=False,),
+            1: dict(stat='+', ntxt='good', kw='', shared=True, pub=False,),
+        },
+    }
+    good = True
+    return json.dumps(dict(good=good, notes=notes))
+
 def sidem():
     session.forget(response)
     vr = get_request_val('material', '', 'version')

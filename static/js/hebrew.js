@@ -513,43 +513,13 @@ function Material() { // Object corresponding to everything that controls the ma
             this.msettings.hebrewsettings.apply()
         }
         else if (wb.vs.tp() == 'txt_tb1') {
-            this.add_tab1()
+            this.add_tab1(newcontent)
         }
     }
-    this.add_tab1 = function() { // add actions for the tab1 view
-        this.comment_all = false
-        $('tr.t1_cmt').hide()
-        $('a.t1_ctrl').click(function(e) {e.preventDefault();
-            $(this).closest('tr').next('tr').toggle()
-        })
-        $('a.t1_ctrl').dblclick(function(e) {e.preventDefault();
-            var comments = $('tr.t1_cmt')
-            if (that.comment_all) {
-                comments.hide()
-                that.comment_all = false
-            }
-            else {
-                comments.show()
-                that.comment_all = true
-            }
-        })
-        $('td.t1_stat').find('a').click(function(e) {e.preventDefault();
-            var statcode = $(this).html()
-            var nextcode = t1_statnext[statcode]
-            var row =  $(this).closest('tr')
-            for (var c in t1_statclass) {row.removeClass(t1_statclass[c])}
-            row.addClass(t1_statclass[nextcode])
-            $(this).html(nextcode)
-        })
-        $('td.t1_pub').find('a').click(function(e) {e.preventDefault();
-            if ($(this).hasClass('ison')) {
-                $(this).removeClass('ison')
-            }
-            else {
-                $(this).addClass('ison')
-            }
-        })
+    this.add_tab1 = function(newcontent) { // add actions for the tab1 view
+        this.notes = new Notes(newcontent)
     }
+
     this.add_vrefs = function(newcontent, mf) {
         var vrefs = newcontent.find('.vradio')
         vrefs.each(function() {
@@ -634,6 +604,105 @@ and after loading the material, highlighs have to be applied.
         }
     }
     this.message.msg('choose a passage or a query or a word')
+}
+
+// MATERIAL: Notes
+
+function Notes(newcontent) {
+    var that = this
+    this.verselist = {}
+    newcontent.find('.vradio').each(function() {
+        var bk = $(this).attr('b')
+        var ch = $(this).attr('c')
+        var vs = $(this).attr('v')
+        var topl = $(this).closest('div')
+        that.verselist[bk+' '+ch+':'+vs] = new Notev(bk, ch, vs, topl.find('span.t1_ctrl'), topl.find('table.t1_table'))
+    })
+    $('tr.t1_cmt').hide()
+    $('span.t1_sav').hide()
+}
+function Notev(bk, ch, vs, ctrl, dest) {
+    var that = this
+    this.loaded = false
+    this.show = false
+    this.fetch = function() {
+        var senddata = {bk: bk, ch:ch, vs:vs}
+        var msg = ctrl.find('.t1_msg')
+        msg.html('fetching notes ...')
+        $.post(notes_url, senddata, function(json) {
+            msg.html('')
+            that.loaded = true
+            if (json.good) {
+                that.process(json.notes)
+            }
+        })
+    }
+    this.process = function(notes) {
+        this.gen_html(notes, dest)
+        dest.find('td.t1_stat').find('a').click(function(e) {e.preventDefault();
+            var statcode = $(this).html()
+            var nextcode = t1_statnext[statcode]
+            var row =  $(this).closest('tr')
+            for (var c in t1_statclass) {row.removeClass(t1_statclass[c])}
+            row.addClass(t1_statclass[nextcode])
+            $(this).html(nextcode)
+        })
+        dest.find('td.t1_pub').find('a').click(function(e) {e.preventDefault();
+            if ($(this).hasClass('ison')) {
+                $(this).removeClass('ison')
+            }
+            else {
+                $(this).addClass('ison')
+            }
+        })
+        dest.find('tr.t1_cmt').show()
+    }
+    this.gen_html = function(notes, dest) {
+        for (var canr in notes) {
+            var notelines = notes[canr]
+            no = []
+            for (var n in notelines) {
+                no.push(n)
+            }
+            no.sort()
+            var html = ''
+            var target = dest.find('tr[canr='+canr+']')
+            for (var n in no) {
+                var nline = notelines[n]
+                var pubc = nline.pub?'ison':''
+                var sharedc = nline.shared?'ison':''
+                var statc = t1_statclass[nline.stat]
+                html = '<tr class="t1_cmt t1_info '+statc+'" ncanr="'+canr+'">'
+                html += '<td class="t1_stat"><a href="#" title="set status">'+nline.stat+'</a></td>'
+                html += '<td class="t1_cmt" contenteditable>'+nline.ntxt+'</td>'
+                html += '<td class="t1_keyw" contenteditable colspan="3">'+nline.kw+'</td>'
+                html += '<td class="t1_pub">'
+                html += '    <a class="ctrli pradio '+sharedc+'" href="#" title="shared?">@</a>'
+                html += '    <a class="ctrli pradio '+pubc+'" href="#" title="published?">"</a>'
+                html += '</td></tr>'
+            }
+            target.after(html)
+        }
+    }
+    dest.find('tr.t1_cmt').hide()
+    ctrl.find('span.t1_sav').hide()
+    ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
+        if (that.show) {
+            that.show = false
+            ctrl.find('span.t1_sav').hide()
+            dest.find('tr.t1_cmt').hide()
+        }
+        else {
+            that.show = true
+            ctrl.find('span.t1_sav').show()
+            if (!that.loaded) {
+                that.fetch()
+            }
+            else {
+                dest.find('tr.t1_cmt').show()
+            }
+        }
+    })
 }
 
 // MATERIAL: SELECTION
