@@ -41,6 +41,7 @@ vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
 tab_views = 3
+# next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
 next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
 tab_info = dict(
     txt_tb1='Tabbed view, style Nicolai Winther-Nielsen',
@@ -54,7 +55,18 @@ tp_labels = dict(
     txt_tb3='Dirk',
     txt_il='data',
 )
-# next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
+t1_statorder = 'o*+?-!'
+t1_statclass = {
+    'o': 't1_info',
+    '+': 't1_good',
+    '-': 't1_error',
+    '?': 't1_warning',
+    '!': 't1_special',
+    '*': 't1_note',
+}
+t1_statnext = {}
+for (i,x) in enumerate(t1_statorder):
+    t1_statnext[x] = t1_statorder[(i+1)%len(t1_statorder)]
 
 field_names = dict(
     txt_il='''
@@ -545,6 +557,8 @@ var tp_labels = {tp_labels}
 var tab_info = {tab_info}
 var tab_views = {tab_views}
 var next_tp = {next_tp}
+var t1_statclass = {t1_statclass}
+var t1_statnext = {t1_statnext}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
@@ -560,6 +574,8 @@ dynamics()
     tab_info = json.dumps(tab_info),
     tab_views = tab_views,
     next_tp = json.dumps(next_tp),
+    t1_statclass = json.dumps(t1_statclass),
+    t1_statnext = json.dumps(t1_statnext),
 )
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
@@ -755,18 +771,22 @@ ORDER BY word_number;
     <td class="t1_txttp">{txttp}</td>
     <td class="t1_ctp">{ctp}</td>
 </tr>
-<tr class="t1_cmt">
-    <td class="t1_cmt" contenteditable></td>
+<tr class="t1_cmt t1_info">
+    <td class="t1_stat"><a href="#" title="set status">{stat}</a></td>
     <td class="t1_cmt" contenteditable></td>
     <td class="t1_cmt" contenteditable colspan="2"></td>
-    <td class="t1_cmt" contenteditable></td>
-    <td class="t1_cmt" contenteditable></td>
+    <td class="t1_keyw" contenteditable></td>
+    <td class="t1_pub">
+        <a class="ctrli pradio" href="#" title="shared?">@</a>
+        <a class="ctrli pradio" href="#" title="published?">"</a>
+    </td>
 </tr>
 '''.format(
         smalltab=smalltab,
         bigtab=bigtab,
         txttp=txttp,
         ctp=ctp,
+        stat=t1_statorder[0],
 ))
         return ''.join(result)
 

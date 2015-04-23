@@ -167,6 +167,7 @@ var edit_main_width = '40%' // the desired width of the main area when editing a
 var chart_width = '400px' // dialog width for charts
 var chart_cols = 30 // number of chapters in a row in a chart
 var tp_labels, tab_info, tab_views, next_tp; // number of tab views and dictionary to go cyclically from a text view to the next
+var t1_statclass, t1_statnext; // characteristics for tabbed view 1
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -530,6 +531,22 @@ function Material() { // Object corresponding to everything that controls the ma
             else {
                 comments.show()
                 that.comment_all = true
+            }
+        })
+        $('td.t1_stat').find('a').click(function(e) {e.preventDefault();
+            var statcode = $(this).html()
+            var nextcode = t1_statnext[statcode]
+            var row =  $(this).closest('tr')
+            for (var c in t1_statclass) {row.removeClass(t1_statclass[c])}
+            row.addClass(t1_statclass[nextcode])
+            $(this).html(nextcode)
+        })
+        $('td.t1_pub').find('a').click(function(e) {e.preventDefault();
+            if ($(this).hasClass('ison')) {
+                $(this).removeClass('ison')
+            }
+            else {
+                $(this).addClass('ison')
             }
         })
     }

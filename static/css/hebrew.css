@@ -154,12 +154,12 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.vradio.ison,.qpradio.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.vradio.ison,.qpradio.ison,.pradio.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.vradio,.qpradio {
+.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.vradio,.qpradio,.pradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
@@ -502,13 +502,14 @@ td.t1_txttp {
     text-align: right;
 }
 td.t1_ctp {
-    width: 25px;
+    width: 40px;
     color: #aa6644;
     font-size: small;
     font-family: Menlo, Courier New, Courier, monospace;
     text-align: right;
 }
 td.t1_ctrl {
+    font-family: Verdana, Arial, sans-serif;
     text-align: left;
 }
 a.t1_ctrl {
@@ -516,14 +517,58 @@ a.t1_ctrl {
     font-size: small;
     font-weight: bold;
 }
-td.t1_cmt {
-    color: #cc0000;
+td.t1_stat,td.t1_pub {
+    color: #00cc00;
+    font-size: small;
+    font-weight: bold;
+    font-family: Verdana, Arial, sans-serif;
+    text-align: center;
+    border-top: 1px solid #bbbbbb;
+    border-bottom: 1px solid #bbbbbb;
+    border-left: 2px solid #bbbbbb;
+    border-right: 2px solid #bbbbbb;
+}
+.t1_info {
+    color: #880000;
     background-color: #ffffdd;
+}
+.t1_error {
+    color: #000000;
+    background-color: #ffaaaa;
+}
+.t1_warning {
+    color: #000000;
+    background-color: #ffddaa;
+}
+.t1_good {
+    color: #000000;
+    background-color: #aaffaa;
+}
+.t1_special {
+    color: #ffff00;
+    background-color: #224488;
+}
+.t1_note {
+    color: #000000;
+    background-color: #ffff00;
+}
+td.t1_cmt {
     font-size: small;
     font-style: italic;
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     text-align: left;
     border: 1px solid #bbbbbb;
+}
+td.t1_keyw {
+    color: #008800;
+    font-size: small;
+    font-weight: bold;
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    text-align: left;
+    border-top: 1px solid #bbbbbb;
+    border-bottom: 1px solid #bbbbbb;
+    border-left: 2px solid #bbbbbb;
+    border-right: 2px solid #bbbbbb;
 }
 /* TAB2 */
 dl.lv2 {
