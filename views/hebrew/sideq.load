@@ -15,7 +15,7 @@ statusmap = dict(
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
         <p>
-            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=h_esc('{} {}'.format(qr['ufname'], qr['ulname']))}}</span></a>
+            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=h_esc(u'{} {}'.format(qr['ufname'], qr['ulname']))}}</span></a>
             <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=h_esc(qr['oname'])}}</span></a>
             <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=h_esc(qr['pname'])}}</span></a>
         </p>
