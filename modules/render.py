@@ -755,7 +755,7 @@ ORDER BY word_number;
         bigtab = '&lt;' * tab10s
         result = [u'''
 <tr canr="{canr}">
-    <td colspan="2" class="t1_txt">
+    <td colspan="3" class="t1_txt">
 '''.format(
         canr=canr,
 )]

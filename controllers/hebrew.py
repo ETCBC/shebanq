@@ -96,6 +96,32 @@ def text():
         tab_views=tab_views,
     )
 
+def get_clause_atoms(vr): # get clauseatoms for each verse
+    clause_atoms = {}
+    ca_data = passage_dbs[vr].executesql('''
+select
+   distinct word.clause_atom_number,
+   book.name,
+   chapter.chapter_num,
+   verse.verse_num
+from 
+    verse
+inner join 
+    word_verse on verse.id = word_verse.verse_id
+inner join
+    word on word.word_number = word_verse.anchor
+inner join
+    chapter on chapter.id = verse.chapter_id
+inner join
+    book on book.id = chapter.book_id
+order by
+    book.id,
+    word.clause_atom_number
+''')
+    for (can, bk, ch, vs) in ca_data:
+        clause_atoms.setdefault((bk, ch, vs), []).append(can)
+    return clause_atoms
+
 def get_books(vr): # get book information: number of chapters per book
     books_data = passage_dbs[vr].executesql('''
 select name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id;
@@ -282,18 +308,86 @@ def verse_c(vr, bk, ch, vs, msgs):
     return result
 
 def notes():
-    data = {}
-    notes = {
-        '2': {
-            0: dict(stat='o', ntxt='', kw='', shared=False, pub=False,),
-        },
-        '3': {
-            0: dict(stat='o', ntxt='', kw='', shared=False, pub=False,),
-            1: dict(stat='+', ntxt='good', kw='', shared=True, pub=False,),
-        },
-    }
+    myid = None
+    msgs = []
+    if auth.user:
+        myid = auth.user.id
+    vr = get_request_val('material', '', 'version')
+    bk = get_request_val('material', '', 'book')
+    ch = get_request_val('material', '', 'chapter')
+    vs = check_int('verse', 'verse', msgs)
+    if vs == None:
+        return json.dumps(dict(good=False, msgs=msgs, users={}, notes={}))
+    save = request.vars.save
+    if save == 'true':
+        print '{}'.format(request.post_vars.getlist('lines'))
+    else:
+        clause_atoms = from_cache('clause_atoms_{}_'.format(vr), lambda: get_clause_atoms(vr), None)
+        return notes_c(vr, bk, ch, vs, myid, clause_atoms[(bk, ch, vs)], msgs)
+
+def notes_c(vr, bk, ch, vs, myid, clause_atoms, msgs):
+    condition = '''
+is_shared = 'T'
+''' if myid == None else '''
+is_shared = 'T' or created_by = {}
+'''.format(myid)
+
+    note_sql = '''
+select
+    note.created_by as uid,
+    shebanq_web.auth_user.first_name as ufname,
+    shebanq_web.auth_user.last_name as ulname,
+    note.clause_atom,
+    note.is_shared,
+    note.is_published,
+    note.status,
+    note.keywords,
+    note.ntext
+from note inner join shebanq_web.auth_user
+on note.created_by = shebanq_web.auth_user.id
+where
+    {cond}
+and
+    version = '{vr}'
+and
+    book ='{bk}'
+and
+    chapter = {ch}
+and
+    verse ={vs}
+order by
+    modified_on
+'''.format(
+    cond=condition,
+    vr=vr,
+    bk=bk,
+    ch=ch,
+    vs=vs,
+)
+
+    records = note_db.executesql(note_sql)
+    notes = dict((ca, {myid: [dict(shared=False, pub=False, stat='o', kw='', ntxt='')]}) for ca in clause_atoms)
+    users = {}
+    if myid != None: users[myid] = 'me'
     good = True
-    return json.dumps(dict(good=good, notes=notes))
+    if records == None:
+        msgs.append(('error', 'Cannot lookup notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
+        good = False
+    elif len(records) == 0:
+        msgs.append(('info', 'No notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
+    else:
+        for (uid, ufname, ulname, ca, shared, published, status, keywords, ntext) in records:
+            if (myid == None or (uid != myid)) and uid not in users:
+                users[uid] = u'{} {}'.format(ufname, ulname)
+            notes[ca].setdefault(uid, []).append(dict(
+                shared=shared == 'T',
+                pub=published == 'T',
+                stat=status,
+                kw=keywords,
+                ntxt=ntext,
+            ))
+
+    return json.dumps(dict(good=good, msgs=msgs, users=users, notes=notes))
 
 def sidem():
     session.forget(response)

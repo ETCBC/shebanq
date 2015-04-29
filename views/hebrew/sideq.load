@@ -36,7 +36,7 @@ statusmap = dict(
         </table>
     </div>
     <div id="dbmsg_q"></div>
-    <p class="fullcpx"><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 {{for v in version_order:
     if not versions[v]['date']: continue
     qrinfo = qr['versions'][v]
@@ -65,7 +65,7 @@ statusmap = dict(
         <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
     {{if v == vr:}}
         <div id="dbmsg_qv"></div>
-        <p class="fullcpx"><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+        <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
     {{pass}}
         <table>
             <tr><td><span class="flabel">status</span></td><td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td></tr>

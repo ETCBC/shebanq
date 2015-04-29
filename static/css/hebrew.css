@@ -521,7 +521,7 @@ a.t1_ctrl {
 td.t1_stat {
     width: 10px;
 }
-td.t1_stat,td.t1_pub,td.t1_sav {
+td.t1_stat,td.t1_pub,td.t1_sav,td.t1_user {
     color: #00cc00;
     font-size: small;
     font-weight: bold;
@@ -563,6 +563,7 @@ td.t1_cmt {
     border: 1px solid #bbbbbb;
 }
 td.t1_keyw {
+    width: 30px;
     color: #008800;
     font-size: small;
     font-weight: bold;

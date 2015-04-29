@@ -611,34 +611,38 @@ and after loading the material, highlighs have to be applied.
 function Notes(newcontent) {
     var that = this
     this.verselist = {}
+    this.version = wb.version
     newcontent.find('.vradio').each(function() {
         var bk = $(this).attr('b')
         var ch = $(this).attr('c')
         var vs = $(this).attr('v')
         var topl = $(this).closest('div')
-        that.verselist[bk+' '+ch+':'+vs] = new Notev(bk, ch, vs, topl.find('span.t1_ctrl'), topl.find('table.t1_table'))
+        that.verselist[bk+' '+ch+':'+vs] = new Notev(that.version, bk, ch, vs, topl.find('span.t1_ctrl'), topl.find('table.t1_table'))
     })
     $('tr.t1_cmt').hide()
     $('span.t1_sav').hide()
 }
-function Notev(bk, ch, vs, ctrl, dest) {
+function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
     this.loaded = false
     this.show = false
+    this.msgn = new Msg('t1_msg_'+bk+'_'+ch+'_'+vs)
     this.fetch = function() {
-        var senddata = {bk: bk, ch:ch, vs:vs}
-        var msg = ctrl.find('.t1_msg')
-        msg.html('fetching notes ...')
+        var senddata = {version: this.version, book: bk, chapter:ch, verse:vs}
+        this.msgn.msg('info', 'fetching notes ...')
         $.post(notes_url, senddata, function(json) {
-            msg.html('')
             that.loaded = true
+            that.msgn.clear()
+            json.msgs.forEach(function(m) {
+                that.msgn.msg(m)
+            })
             if (json.good) {
-                that.process(json.notes)
+                that.process(json.users, json.notes)
             }
         })
     }
-    this.process = function(notes) {
-        this.gen_html(notes, dest)
+    this.process = function(users, notes) {
+        this.gen_html(users, notes, dest)
         dest.find('td.t1_stat').find('a').click(function(e) {e.preventDefault();
             var statcode = $(this).html()
             var nextcode = t1_statnext[statcode]
@@ -657,35 +661,80 @@ function Notev(bk, ch, vs, ctrl, dest) {
         })
         dest.find('tr.t1_cmt').show()
     }
-    this.gen_html = function(notes, dest) {
+    this.gen_html_user = function(users, canr, uid, notelines) {
+        var user = users[uid]
+        var html = ''
+        for (var n = 0; n < notelines.length; n++) {
+            var nline = notelines[n]
+            var pubc = nline.pub?'ison':''
+            var sharedc = nline.shared?'ison':''
+            var statc = t1_statclass[nline.stat]
+            html = '<tr class="t1_cmt t1_info '+statc+'" ncanr="'+canr+'">'
+            html += '<td class="t1_stat"><a href="#" title="set status">'+nline.stat+'</a></td>'
+            html += '<td class="t1_keyw" contenteditable>'+nline.kw+'</td>'
+            html += '<td class="t1_cmt" contenteditable>'+nline.ntxt+'</td>'
+            html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
+            html += '<td class="t1_pub">'
+            html += '    <a class="ctrli pradio '+sharedc+'" href="#" title="shared?">@</a>'
+            html += '    <a class="ctrli pradio '+pubc+'" href="#" title="published?">"</a>'
+            html += '</td></tr>'
+        }
+        return html
+    }
+    this.gen_html = function(users, notes, dest) {
         for (var canr in notes) {
-            var notelines = notes[canr]
-            no = []
-            for (var n in notelines) {
-                no.push(n)
-            }
-            no.sort()
-            var html = ''
             var target = dest.find('tr[canr='+canr+']')
-            for (var n in no) {
-                var nline = notelines[n]
-                var pubc = nline.pub?'ison':''
-                var sharedc = nline.shared?'ison':''
-                var statc = t1_statclass[nline.stat]
-                html = '<tr class="t1_cmt t1_info '+statc+'" ncanr="'+canr+'">'
-                html += '<td class="t1_stat"><a href="#" title="set status">'+nline.stat+'</a></td>'
-                html += '<td class="t1_cmt" contenteditable>'+nline.ntxt+'</td>'
-                html += '<td class="t1_keyw" contenteditable colspan="3">'+nline.kw+'</td>'
-                html += '<td class="t1_pub">'
-                html += '    <a class="ctrli pradio '+sharedc+'" href="#" title="shared?">@</a>'
-                html += '    <a class="ctrli pradio '+pubc+'" href="#" title="published?">"</a>'
-                html += '</td></tr>'
+            var uids = notes[canr]
+            var html = ''
+            for (var uid in uids) {
+                html += this.gen_html_user(users, canr, uid, uids[uid])
             }
             target.after(html)
         }
     }
+    this.sendnotes = function(senddata) {
+        console.log(senddata)
+        var good = false
+        $.post(notes_url, senddata, function(json) {
+            good = json.good
+            that.msgn.clear()
+            json.msgs.forEach(function(m) {
+                that.msgn.msg(m)
+            })
+        }, 'json')
+    }
     dest.find('tr.t1_cmt').hide()
-    ctrl.find('span.t1_sav').hide()
+    var sav_controls =  ctrl.find('span.t1_sav')
+    var sav_c = sav_controls.find('a').first()
+    var rev_c = sav_controls.find('a').last()
+    sav_c.click(function(e) {e.preventDefault();
+        var data = {
+            version: vr,
+            book: bk,
+            chapter: ch,
+            verse: vs,
+            save: true,
+        }
+        var notes = dest.find('tr[ncanr]')
+        var lines = []
+        notes.each(function() {
+            var row = $(this)
+            lines.push({
+                canr: row.attr('ncanr'),
+                stat: row.find('td.t1_stat a').html(),
+                keyw: row.find('td.t1_keyw').html(),
+                ntxt: row.find('td.t1_cmt').html(),
+                uid: row.find('td[uid]').attr('uid'),
+                shared: row.find('td.t1_pub a').first().hasClass('ison'),
+                pub: row.find('td.t1_pub a').last().hasClass('ison'),
+            })
+        })
+        data['lines'] = lines
+        that.sendnotes(data)
+    })
+    rev_c.click(function(e) {e.preventDefault();
+    })
+    sav_controls.hide()
     ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
         if (that.show) {
             that.show = false
@@ -2203,7 +2252,7 @@ function put_markdown(wdg) {
     mdw.html(markdown.toHTML(src.val()))
 }
 
-function Msg(destination) {
+function Msg(destination, dest_object) {
     var that = this
     this.destination = $('#'+destination)
     this.trashc = $('#trash_'+destination)

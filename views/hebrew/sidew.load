@@ -1,7 +1,7 @@
 <a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
 <input type="hidden" id="itemtag" value=""/>
 <div id="dbmsg_w"></div>
-<p class="fullcpx"><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+<p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 {{for v in version_order:
     if not versions[v]['date']: continue
     wrinfo = wr['versions'].get(v, collections.defaultdict(lambda: ''))
