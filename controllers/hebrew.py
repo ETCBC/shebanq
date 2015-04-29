@@ -328,7 +328,7 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
     for nid in upd_notes:
         (shared, pub, stat, keyw, ntxt) = upd_notes[nid]
         (o_shared, o_pub, o_stat, o_keyw, o_ntxt) = old_notes[nid]
-        extrafields = ''
+        extrafields = []
         if shared and not o_shared:
             extrafields.append(",\n\tshared_on = '{}'".format(request.now)) 
         if not shared and o_shared:
