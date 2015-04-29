@@ -61,13 +61,13 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
             {{pass}}{{
             if tp == 'txt_tb1':
                     }}&nbsp;<span class="t1_ctrl">
+                        <a title="show/hide comments (double click for all comments)" href="#" class="t1_ctrl fa fa-comment fa-fw"></a>
                         <span class="t1_sav">
-                            <a class="ctrli" href="#" title="save">s</a>
-                            <a class="ctrli" href="#" title="revert">x</a>
+                            <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
+                            <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
                         </span>
-                        <span id="t1_msg_{{=b}}_{{=c}}_{{=v}}" class="t1_msg"></span>
                         <a href="#" title="clear diagnostic messages"><span id="trash_t1_msg_{{=b}}_{{=c}}_{{=v}}" class="ctrl ir fa fa-trash fa-lg"></span></a>
-                        <a title="show/hide comments (double click for all comments)" href="#" class="t1_ctrl">#</a>
+                        <span id="t1_msg_{{=b}}_{{=c}}_{{=v}}" class="t1_msg"></span>
                     </span>&nbsp;{{
             pass
                 }}</span>

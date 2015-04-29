@@ -167,7 +167,7 @@ var edit_main_width = '40%' // the desired width of the main area when editing a
 var chart_width = '400px' // dialog width for charts
 var chart_cols = 30 // number of chapters in a row in a chart
 var tp_labels, tab_info, tab_views, next_tp; // number of tab views and dictionary to go cyclically from a text view to the next
-var t1_statclass, t1_statnext; // characteristics for tabbed view 1
+var t1_statclass, t1_statsym, t1_statnext; // characteristics for tabbed view 1
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -626,10 +626,16 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
     this.loaded = false
     this.show = false
-    this.msgn = new Msg('t1_msg_'+bk+'_'+ch+'_'+vs)
+    this.version = vr
+    this.book = bk
+    this.chapter = ch
+    this.verse = vs
+    this.ctrl = ctrl
+    this.dest = dest
+    this.msgn = new Msg('t1_msg_'+this.book+'_'+this.chapter+'_'+this.verse)
     this.fetch = function() {
-        var senddata = {version: this.version, book: bk, chapter:ch, verse:vs}
-        this.msgn.msg('info', 'fetching notes ...')
+        var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse}
+        this.msgn.msg(['info', 'fetching notes ...'])
         $.post(notes_url, senddata, function(json) {
             that.loaded = true
             that.msgn.clear()
@@ -642,16 +648,24 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         })
     }
     this.process = function(users, notes) {
-        this.gen_html(users, notes, dest)
-        dest.find('td.t1_stat').find('a').click(function(e) {e.preventDefault();
-            var statcode = $(this).html()
+        this.orig_users = users
+        this.orig_notes = notes
+        this.gen_html(users, notes, false)
+        this.decorate()
+    }
+    this.decorate = function() {
+        this.dest.find('td.t1_stat').find('a').click(function(e) {e.preventDefault();
+            var statcode = $(this).attr('code')
             var nextcode = t1_statnext[statcode]
+            var nextsym = t1_statsym[nextcode]
             var row =  $(this).closest('tr')
             for (var c in t1_statclass) {row.removeClass(t1_statclass[c])}
+            for (var c in t1_statsym) {$(this).removeClass('fa-'+t1_statsym[c])}
             row.addClass(t1_statclass[nextcode])
-            $(this).html(nextcode)
+            $(this).attr('code', nextcode)
+            $(this).addClass('fa-'+nextsym)
         })
-        dest.find('td.t1_pub').find('a').click(function(e) {e.preventDefault();
+        this.dest.find('td.t1_pub').find('a').click(function(e) {e.preventDefault();
             if ($(this).hasClass('ison')) {
                 $(this).removeClass('ison')
             }
@@ -659,18 +673,20 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 $(this).addClass('ison')
             }
         })
-        dest.find('tr.t1_cmt').show()
+        this.dest.find('tr.t1_cmt').show()
     }
     this.gen_html_user = function(users, canr, uid, notelines) {
         var user = users[uid]
         var html = ''
         for (var n = 0; n < notelines.length; n++) {
             var nline = notelines[n]
+            var nid = nline.nid 
             var pubc = nline.pub?'ison':''
             var sharedc = nline.shared?'ison':''
             var statc = t1_statclass[nline.stat]
-            html = '<tr class="t1_cmt t1_info '+statc+'" ncanr="'+canr+'">'
-            html += '<td class="t1_stat"><a href="#" title="set status">'+nline.stat+'</a></td>'
+            var statsym = t1_statsym[nline.stat]
+            html += '<tr class="t1_cmt t1_info '+statc+'" nid="'+nid+'" ncanr="'+canr+'">'
+            html += '<td class="t1_stat"><a href="#" title="set status" class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></a></td>'
             html += '<td class="t1_keyw" contenteditable>'+nline.kw+'</td>'
             html += '<td class="t1_cmt" contenteditable>'+nline.ntxt+'</td>'
             html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
@@ -681,9 +697,12 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         }
         return html
     }
-    this.gen_html = function(users, notes, dest) {
+    this.gen_html = function(users, notes, replace) {
+        if (replace) {
+            this.dest.find('tr[ncanr]').remove()
+        }
         for (var canr in notes) {
-            var target = dest.find('tr[canr='+canr+']')
+            var target = this.dest.find('tr[canr='+canr+']')
             var uids = notes[canr]
             var html = ''
             for (var uid in uids) {
@@ -693,7 +712,6 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         }
     }
     this.sendnotes = function(senddata) {
-        console.log(senddata)
         var good = false
         $.post(notes_url, senddata, function(json) {
             good = json.good
@@ -701,27 +719,36 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             json.msgs.forEach(function(m) {
                 that.msgn.msg(m)
             })
+            if (json.good) {
+                that.dest.find('tr[ncanr]').remove()
+                that.process(json.users, json.notes)
+            }
         }, 'json')
     }
-    dest.find('tr.t1_cmt').hide()
-    var sav_controls =  ctrl.find('span.t1_sav')
+    this.dest.find('tr.t1_cmt').hide()
+    var sav_controls =  this.ctrl.find('span.t1_sav')
     var sav_c = sav_controls.find('a').first()
     var rev_c = sav_controls.find('a').last()
+    rev_c.click(function(e) {e.preventDefault();
+        that.gen_html(that.orig_users, that.orig_notes, true)
+        that.decorate()
+    })
     sav_c.click(function(e) {e.preventDefault();
         var data = {
-            version: vr,
-            book: bk,
-            chapter: ch,
-            verse: vs,
+            version: that.version,
+            book: that.book,
+            chapter: that.chapter,
+            verse: that.verse,
             save: true,
         }
-        var notes = dest.find('tr[ncanr]')
-        var lines = []
+        var notes = that.dest.find('tr[ncanr]')
+        var notelines = []
         notes.each(function() {
             var row = $(this)
-            lines.push({
+            notelines.push({
+                nid: row.attr('nid'),
                 canr: row.attr('ncanr'),
-                stat: row.find('td.t1_stat a').html(),
+                stat: row.find('td.t1_stat a').attr('code'),
                 keyw: row.find('td.t1_keyw').html(),
                 ntxt: row.find('td.t1_cmt').html(),
                 uid: row.find('td[uid]').attr('uid'),
@@ -729,26 +756,24 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 pub: row.find('td.t1_pub a').last().hasClass('ison'),
             })
         })
-        data['lines'] = lines
+        data['notes'] = JSON.stringify(notelines)
         that.sendnotes(data)
     })
-    rev_c.click(function(e) {e.preventDefault();
-    })
     sav_controls.hide()
-    ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
+    this.ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
         if (that.show) {
             that.show = false
-            ctrl.find('span.t1_sav').hide()
-            dest.find('tr.t1_cmt').hide()
+            that.ctrl.find('span.t1_sav').hide()
+            that.dest.find('tr.t1_cmt').hide()
         }
         else {
             that.show = true
-            ctrl.find('span.t1_sav').show()
+            that.ctrl.find('span.t1_sav').show()
             if (!that.loaded) {
                 that.fetch()
             }
             else {
-                dest.find('tr.t1_cmt').show()
+                that.dest.find('tr.t1_cmt').show()
             }
         }
     })

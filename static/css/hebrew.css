@@ -133,6 +133,7 @@ span.vreft {
     font-size: small;
     text-align: right;
     float: left;
+    direction: ltr;
 }
 
 /* SIDEBAR ITEMS: BOTH */
@@ -511,12 +512,12 @@ td.t1_ctp {
 span.t1_ctrl {
     font-family: Verdana, Arial, sans-serif;
     text-align: left;
-    float: left;
+    /*float: left;*/
 }
 a.t1_ctrl {
-    color: #6666aa;
-    font-size: small;
-    font-weight: bold;
+    border-radius: 6pt;
+    border: 1pt solid #dde6dd;
+    background-color: #fafffa;
 }
 td.t1_stat {
     width: 10px;
@@ -549,8 +550,8 @@ td.t1_stat,td.t1_pub,td.t1_sav,td.t1_user {
     background-color: #aaffaa;
 }
 .t1_special {
-    color: #ffff00;
-    background-color: #224488;
+    color: #442200;
+    background-color: #ccddff;
 }
 .t1_note {
     color: #000000;
@@ -1046,6 +1047,9 @@ code.merr {
 }
 .total {
     font-weight: bold;
+}
+p.error, p.warning, p.good, p.info, p.special, p.note {
+    margin: 0 0 0px;
 }
 span.match {
     font-weight: bold;

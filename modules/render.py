@@ -64,6 +64,14 @@ t1_statclass = {
     '!': 't1_special',
     '*': 't1_note',
 }
+t1_statsym = {
+    'o': 'circle',
+    '+': 'check-circle',
+    '-': 'times-circle',
+    '?': 'exclamation-circle',
+    '!': 'info-circle',
+    '*': 'star',
+}
 t1_statnext = {}
 for (i,x) in enumerate(t1_statorder):
     t1_statnext[x] = t1_statorder[(i+1)%len(t1_statorder)]
@@ -558,6 +566,7 @@ var tab_info = {tab_info}
 var tab_views = {tab_views}
 var next_tp = {next_tp}
 var t1_statclass = {t1_statclass}
+var t1_statsym = {t1_statsym}
 var t1_statnext = {t1_statnext}
 dynamics()
 '''.format(
@@ -575,6 +584,7 @@ dynamics()
     tab_views = tab_views,
     next_tp = json.dumps(next_tp),
     t1_statclass = json.dumps(t1_statclass),
+    t1_statsym = json.dumps(t1_statsym),
     t1_statnext = json.dumps(t1_statnext),
 )
 
