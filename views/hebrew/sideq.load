@@ -90,7 +90,6 @@ statusmap = dict(
     <p class="detail">{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
 <script type="text/javascript">
-var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
 var msgs = {{=XML(msgs)}};
 var q = {{=XML(q)}}
 </script>

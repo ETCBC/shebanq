@@ -47,6 +47,17 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
     {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}
         {{tp = material.tp}}
+        {{if tp == 'txt_tb1':}}
+        <div class="t1_main_ctrl">
+            <a title="show/hide all comments" href="#" class="t1_main_ctrl fa fa-comments fa-fw"></a>
+            <span class="t1_main_sav">
+                <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
+                <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
+            </span>
+            <a href="#" title="clear diagnostic messages"><span id="trash_t1_main_msg" class="ctrl fa fa-trash fa-lg"></span></a>
+            <span id="t1_main_msg" class="t1_main_msg"></span>
+        </div>
+        {{pass}}
         {{for verse in material.verses:
             (pb, b, c, v) = verse.label()
             verse_control = u'<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=b, chapter=c, verse=v)
@@ -56,19 +67,21 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
                 vclass = 'vrefi' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
             }}
                 <span class="{{=vclass}}">{{=XML(verse_control)}}
-            {{else:}}
-                <span class="vref"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
+            {{else:
+                vclass = 'vref' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
+            }}
+                <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
             {{pass}}{{
             if tp == 'txt_tb1':
-                    }}&nbsp;<span class="t1_ctrl">
-                        <a title="show/hide comments (double click for all comments)" href="#" class="t1_ctrl fa fa-comment fa-fw"></a>
+                    }}<span class="t1_ctrl">
+                        <a title="show/hide comments" href="#" class="t1_ctrl fa fa-comment fa-fw"></a>
                         <span class="t1_sav">
                             <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
                             <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
                         </span>
                         <a href="#" title="clear diagnostic messages"><span id="trash_t1_msg_{{=b}}_{{=c}}_{{=v}}" class="ctrl ir fa fa-trash fa-lg"></span></a>
                         <span id="t1_msg_{{=b}}_{{=c}}_{{=v}}" class="t1_msg"></span>
-                    </span>&nbsp;{{
+                    </span>{{
             pass
                 }}</span>
                 <span id="{{=tp}}_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txt_il_base" id="{{=tp}}_txt_il_{{=b}}_{{=c}}_{{=v}}" lf="x"></span>

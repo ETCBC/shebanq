@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gluon.custom_import import track_changes; track_changes(True)
-import collections, json, datetime
+import collections, json, datetime, re
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
@@ -67,6 +67,8 @@ NULLDT = '____-__-__ __:__:__'
 CACHING = True
 CACHING_RAM_ONLY = True
 
+WORD_PAT = re.compile(r'[^\s!,.?":;`\']+')
+
 def from_cache(ckey, func, expire):
     if CACHING:
         if CACHING_RAM_ONLY:
@@ -76,6 +78,11 @@ def from_cache(ckey, func, expire):
     else:
         result = func()
     return result
+
+def clear_cache(ckeys):
+    cache.ram.clear(regex=ckeys)
+    if not CACHING_RAM_ONLY:
+        cache.disk.clear(regex=ckeys)
 
 def text():
     session.forget(response)
@@ -96,14 +103,11 @@ def text():
         tab_views=tab_views,
     )
 
-def get_clause_atoms(vr): # get clauseatoms for each verse
+def get_clause_atoms(vr, bk, ch, vs): # get clauseatoms for each verse
     clause_atoms = {}
     ca_data = passage_dbs[vr].executesql('''
 select
-   distinct word.clause_atom_number,
-   book.name,
-   chapter.chapter_num,
-   verse.verse_num
+   distinct word.clause_atom_number
 from 
     verse
 inner join 
@@ -114,13 +118,29 @@ inner join
     chapter on chapter.id = verse.chapter_id
 inner join
     book on book.id = chapter.book_id
+where
+    book.name = '{}' and chapter.chapter_num = {} and verse.verse_num = {}
 order by
-    book.id,
-    word.clause_atom_number
-''')
-    for (can, bk, ch, vs) in ca_data:
+    word.clause_atom_number;
+'''.format(bk, ch, vs))
+
+    for (can,) in ca_data:
         clause_atoms.setdefault((bk, ch, vs), []).append(can)
     return clause_atoms
+
+#def get_sections(vr): # get the list of verse numbers per chapter
+#    records = passage_dbs[vr].executesql('''
+#select
+#    book.name, chapter.chapter_num, verse.verse_num
+#from book
+#inner join chapter on book.id = chapter.book_id
+#inner join verse on chapter.id = verse.chapter_id
+#order by verse.versenum;
+#''')
+#    sections = {}
+#    for (b, c, v) in records:
+#        sections.setdefault(b, {}).setdefault(c, []).append(v)
+#    return sections
 
 def get_books(vr): # get book information: number of chapters per book
     books_data = passage_dbs[vr].executesql('''
@@ -311,11 +331,28 @@ def notes():
     if vs == None:
         return json.dumps(dict(good=False, msgs=msgs, users={}, notes={}))
     save = request.vars.save
-    clause_atoms = from_cache('clause_atoms_{}_'.format(vr), lambda: get_clause_atoms(vr), None)
+    clause_atoms = from_cache('clause_atoms_{}_{}_{}_{}_'.format(vr, bk, ch, vs), lambda: get_clause_atoms(vr, bk, ch, vs), None)
     these_clause_atoms = clause_atoms[(bk, ch, vs)]
+    changed = False
     if save == 'true':
-        note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs)
-    return notes_c(vr, bk, ch, vs, myid, these_clause_atoms, msgs)
+        changed = note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs)
+    return notes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs)
+
+def key_add(kw, nid):
+    insert_sql = '''
+insert into key_note
+(keyword, note_id)
+values
+{}
+;
+'''.format(
+    ','.join("('{}', {})".format(k, nid) for k in set(WORD_PAT.findall(kw))),
+)
+    note_db.executesql(insert_sql)
+
+def key_del(nids):
+    del_sql = '''delete from key_note where note_id in ({});'''.format(','.join(str(nid) for nid in nids))
+    note_db.executesql(del_sql)
 
 def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
     if myid == None:
@@ -326,8 +363,8 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
 
     updated = 0
     for nid in upd_notes:
-        (shared, pub, stat, keyw, ntxt) = upd_notes[nid]
-        (o_shared, o_pub, o_stat, o_keyw, o_ntxt) = old_notes[nid]
+        (shared, pub, stat, kw, ntxt) = upd_notes[nid]
+        (o_shared, o_pub, o_stat, o_kw, o_ntxt) = old_notes[nid]
         extrafields = []
         if shared and not o_shared:
             extrafields.append(",\n\tshared_on = '{}'".format(request.now)) 
@@ -340,17 +377,20 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
         shared = "'T'" if shared else 'null'
         pub = "'T'" if pub else 'null'
         stat = 'o' if stat not in {'o', '*', '+', '?', '-', '!'} else stat
+        if o_kw != kw: key_del([nid])
         update_sql = '''
 update note set modified_on = '{}', is_shared = {}, is_published = {}, status = '{}', keywords = '{}', ntext = '{}'{}
 where id = {}; 
-'''.format(request.now, shared, pub, stat, keyw.replace("'","''"), ntxt.replace("'","''"), ''.join(extrafields), nid)
+'''.format(request.now, shared, pub, stat, kw.replace("'","''"), ntxt.replace("'","''"), ''.join(extrafields), nid)
         note_db.executesql(update_sql)
+        if o_kw != kw: key_add(kw, nid)
         updated += 1
     if len(del_notes) > 0:
+        key_del(del_notes)
         del_sql = '''delete from note where id in ({});'''.format(','.join(str(x) for x in del_notes))
         note_db.executesql(del_sql)
     for canr in new_notes:
-        (shared, pub, stat, keyw, ntxt) = new_notes[canr]
+        (shared, pub, stat, kw, ntxt) = new_notes[canr]
         insert_sql = '''
 insert into note
 (version, book, chapter, verse, clause_atom, created_by, created_on, modified_on, is_shared, shared_on, is_published, published_on, status, keywords, ntext)
@@ -363,11 +403,13 @@ values
     "'T'" if pub else 'null',
     "'{}'".format(request.now) if pub else 'null',
     'o' if stat not in {'o', '*', '+', '?', '-', '!'} else stat,
-    keyw.replace("'","''"),
+    kw.replace("'","''"),
     ntxt.replace("'","''"),
 )
         note_db.executesql(insert_sql)
+        key_add(kw, 'last_insert_id()')
 
+    changed = False
     if len(del_notes) > 0:
         msgs.append(('special', 'Deleted notes: {}'.format(len(del_notes))))
     if updated > 0:
@@ -376,13 +418,10 @@ values
         msgs.append(('special', 'Added notes: {}'.format(len(new_notes))))
     if len(del_notes) + len(new_notes) + updated == 0:
         msgs.append(('warning', 'No changes'))
-
-def clean_end(hstr):
-    h = hstr.strip()
-    if h.endswith(u'<br>'): h = h[0:-4]
-    elif h.endswith(u'<br/>'): h = h[0:-5]
-    h = h.rstrip()
-    return h
+    else:
+        changed = True
+        clear_cache(r'^items_n_{}_{}_{}_'.format(vr, bk, ch))
+    return changed
 
 def note_filter_notes(myid, notes, these_clause_atoms, msgs):
     good = True
@@ -408,18 +447,18 @@ def note_filter_notes(myid, notes, these_clause_atoms, msgs):
             clause_errors.add(nid)
             good = False
             continue
-        keyw = clean_end(fields['keyw'])
-        ntxt = clean_end(fields['ntxt'])
-        if keyw == '' and ntxt == '':
+        kw = fields['kw'].strip()
+        ntxt = fields['ntxt'].strip()
+        if kw == '' and ntxt == '':
             if nid == 0:
                 emptynew += 1
             else:
                 del_notes.add(nid)
             continue
         if nid != 0:
-            upd_notes[nid] = (fields['shared'], fields['pub'], fields['stat'], keyw, ntxt)
+            upd_notes[nid] = (fields['shared'], fields['pub'], fields['stat'], kw, ntxt)
         else:
-            new_notes[fields['canr']] = (fields['shared'], fields['pub'], fields['stat'], keyw, ntxt)
+            new_notes[fields['canr']] = (fields['shared'], fields['pub'], fields['stat'], kw, ntxt)
     if len(upd_notes) > 0 or len(del_notes) > 0:
         old_sql = '''
 select id, created_by, is_shared, is_published, status, keywords, ntext
@@ -427,7 +466,7 @@ from note where id in ({});
 '''.format(','.join(str(x) for x in (set(upd_notes.keys()) | del_notes)))
         cresult = note_db.executesql(old_sql)
         if cresult != None:
-            for (nid, uid, o_shared, o_pub, o_stat, o_keyw, o_ntxt) in cresult:
+            for (nid, uid, o_shared, o_pub, o_stat, o_kw, o_ntxt) in cresult:
                 remove = False
                 if uid != myid:
                     other_user_notes.add(nid)
@@ -436,8 +475,10 @@ from note where id in ({});
                     extra_notes.add(nid)
                     remove = True
                 elif nid in upd_notes:
-                    (shared, pub, stat, keyw, ntxt) = upd_notes[nid]
-                    if o_stat == stat and o_keyw == keyw and o_ntxt == ntxt and o_shared == shared and o_pub == pub:
+                    (shared, pub, stat, kw, ntxt) = upd_notes[nid]
+                    if not shared: shared = None
+                    if not pub: pub = None
+                    if o_stat == stat and o_kw == kw and o_ntxt == ntxt and o_shared == shared and o_pub == pub:
                         same_notes.add(nid)
                         if nid not in del_notes:
                             remove = True
@@ -445,17 +486,23 @@ from note where id in ({});
                     if nid in upd_notes: del upd_notes[nid]
                     if nid in del_notes: del_notes.remove(nid)
                 else:
-                    old_notes[nid] = (o_shared, o_pub, o_stat, o_keyw, o_ntxt) 
+                    old_notes[nid] = (o_shared, o_pub, o_stat, o_kw, o_ntxt) 
+    to_remove = set()
     for nid in upd_notes:
         if nid not in old_notes:
             if nid not in other_user_notes:
                 missing_notes.add(nid)
-                del upd_notes[nid]
+                to_remove.add(nid)
+    for nid in to_remove:
+        del upd_notes[nid]
+    to_remove = set()
     for nid in del_notes:
         if nid not in old_notes:
             if nid not in other_user_notes:
                 missing_notes.add(nid)
-                del_notes.remove(nid)
+                to_remove.add(nid)
+    for nid in to_remove:
+        del_notes.remove(nid)
     if len(other_user_notes) > 0:
         msgs.append(('error', 'Notes of other users skipped: {}'.format(len(other_user_notes))))
     if len(missing_notes) > 0:
@@ -472,12 +519,9 @@ from note where id in ({});
         #msgs.append(('info', 'Skipped empty new notes: {}'.format(emptynew)))
     return (good, old_notes, upd_notes, new_notes, del_notes)
 
-def notes_c(vr, bk, ch, vs, myid, clause_atoms, msgs):
-    condition = '''
-is_shared = 'T'
-''' if myid == None else '''
-is_shared = 'T' or created_by = {}
-'''.format(myid)
+def notes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs):
+    condition = '''is_shared = 'T' or is_published = 'T' '''
+    if myid != None: condition += ''' or created_by = {} '''.format(myid)
 
     note_sql = '''
 select
@@ -488,6 +532,7 @@ select
     note.clause_atom,
     note.is_shared,
     note.is_published,
+    note.published_on,
     note.status,
     note.keywords,
     note.ntext
@@ -504,7 +549,7 @@ and
 and
     verse = {vs}
 order by
-    modified_on
+    modified_on desc
 '''.format(
     cond=condition,
     vr=vr,
@@ -514,9 +559,14 @@ order by
 )
 
     records = note_db.executesql(note_sql)
-    notes = dict((ca, {myid: [dict(nid=0, shared=False, pub=False, stat='o', kw='', ntxt='')]}) for ca in clause_atoms)
     users = {}
-    if myid != None: users[myid] = 'me'
+    notes_proto = collections.defaultdict(lambda: {})
+    ca_users = collections.defaultdict(lambda: collections.OrderedDict())
+    if myid != None:
+        users[myid] = 'me'
+        for ca in clause_atoms:
+            notes_proto[ca][myid] = [dict(uid=myid, nid=0, shared=True, pub=False, stat='o', kw='', ntxt='')]
+            ca_users[ca][myid] = None
     good = True
     if records == None:
         msgs.append(('error', 'Cannot lookup notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
@@ -525,18 +575,29 @@ order by
         pass
         #msgs.append(('info', 'No notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
     else:
-        for (nid, uid, ufname, ulname, ca, shared, published, status, keywords, ntext) in records:
+        for (nid, uid, ufname, ulname, ca, shared, pub, pub_on, status, keywords, ntext) in records:
             if (myid == None or (uid != myid)) and uid not in users:
                 users[uid] = u'{} {}'.format(ufname, ulname)
-            notes[ca].setdefault(uid, []).append(dict(
+            if uid not in ca_users[ca]: ca_users[ca][uid] = None
+            pub = pub == 'T'
+            shared = pub or shared == 'T'
+            ro = myid == None or uid != myid or (pub and (pub_on <= request.now - PUBLISH_FREEZE))
+            notes_proto.setdefault(ca, {}).setdefault(uid, []).append(dict(
+                uid=uid,
                 nid=nid,
-                shared=shared == 'T',
-                pub=published == 'T',
+                ro=ro,
+                shared=shared,
+                pub=pub,
                 stat=status,
                 kw=keywords,
                 ntxt=ntext,
             ))
-    return json.dumps(dict(good=good, msgs=msgs, users=users, notes=notes))
+    notes = {}
+    for ca in notes_proto:
+        for uid in ca_users[ca]:
+            notes.setdefault(ca, []).extend(notes_proto[ca][uid])
+
+    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes))
 
 def sidem():
     session.forget(response)
@@ -544,7 +605,7 @@ def sidem():
     qw = get_request_val('material', '', 'qw')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
-    pub = get_request_val('highlights', 'q', 'pub') if qw == 'q' else ''
+    pub = get_request_val('highlights', qw, 'pub') if qw != 'w' else ''
     return from_cache(
         'items_{}_{}_{}_{}_{}_'.format(qw, vr, bk, ch, pub),
         lambda: sidem_c(vr, qw, bk, ch, pub),
@@ -563,9 +624,11 @@ def sidem_c(vr, qw, bk, ch, pub):
         if qw == 'q':
             monad_sets = get_q_hits(vr, chapter, pub)
             side_items = groupq(vr, monad_sets)
-        else:
+        elif qw == 'w':
             monad_sets = get_w_occs(vr, chapter)
             side_items = groupw(vr, monad_sets)
+        else:
+            side_items = get_notes(vr, book, chapter, pub)
         result = dict(
             colorpicker=colorpicker,
             side_items=side_items,
@@ -695,6 +758,19 @@ def sidewm():
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
         vars=dict(mr='r', qw='w', version=vr, iid=iid),
         ajax=False, ajax_trap=True, target='wordbody', 
+        content=msg,
+    ))
+
+def sidenm():
+    session.forget(response)
+    iid = get_request_val('material', '', 'iid')
+    kw = get_request_val('material', '', 'kw')
+    vr = get_request_val('material', '', 'version')
+    if iid:
+        msg = 'fetching note'
+    return dict(load=LOAD('hebrew', 'siden', extension='load',
+        vars=dict(mr='r', qw='n', version=vr, iid=iid, kw=kw),
+        ajax=False, ajax_trap=True, target='notebody', 
         content=msg,
     ))
 
@@ -908,6 +984,27 @@ def sidew():
         vr=vr,
         wr=w_record,
         w=json.dumps(w_record),
+        msgs=json.dumps(msgs),
+    )
+
+def siden():
+    session.forget(response)
+    msgs = []
+    vr = get_request_val('material', '', 'version')
+    iid = get_request_val('material', '', 'iid')
+    kw = get_request_val('material', '', 'kw')
+    if not iid:
+        msgs.append(('error', msg))
+        return dict(
+            nr=dict(),
+            n=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    n_record = get_note_info(iid, kw, vr, msgs)
+    return dict(
+        vr=vr,
+        nr=n_record,
+        n=json.dumps(n_record),
         msgs=json.dumps(msgs),
     )
 
@@ -1469,9 +1566,7 @@ def upd_shared(myid, qid, valsql, msgs):
     good = False
     table = 'query'
     fname = 'is_shared'
-    ckeys = r'^items_q_'
-    cache.ram.clear(regex=ckeys)
-    cache.disk.clear(regex=ckeys)
+    clear_cache(r'^items_q_')
     fieldval = u" {} = '{}'".format(fname, valsql)
     mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
     mod_date_sql = 'null' if mod_date == None else "'{}'".format(mod_date)
@@ -1489,9 +1584,7 @@ def upd_published(myid, vr, qid, valsql, msgs):
     good = False
     table = 'query_exe'
     fname = 'is_published'
-    ckeys = r'^items_q_{}_'.format(vr)
-    cache.ram.clear(regex=ckeys)
-    cache.disk.clear(regex=ckeys)
+    clear_cache(r'^items_q_{}_'.format(vr))
     verify_version(qid, vr)
     fieldval = u" {} = '{}'".format(fname, valsql)
     mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
@@ -1656,9 +1749,7 @@ where query.id = {};
                 qid,
             )
             db.executesql(sql)
-            ckeys = r'^items_q_'
-            cache.ram.clear(regex=ckeys)
-            cache.disk.clear(regex=ckeys)
+            clear_cache(r'^items_q_')
         if len(fldx):
             sql = u"update {} set{} where query_id = {} and version = '{}'".format(
                 'query_exe',
@@ -1667,9 +1758,7 @@ where query.id = {};
                 vr,
             )
             db.executesql(sql)
-            ckeys = r'^items_q_{}_'.format(vr)
-            cache.ram.clear(regex=ckeys)
-            cache.disk.clear(regex=ckeys)
+            clear_cache(r'^items_q_{}_'.format(vr))
         q_record = get_query_info(qid, vr, msgs, with_ids=False, single_version=False, po=True)
 
     return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=q_record)))
@@ -1755,6 +1844,58 @@ order by entryid_heb
         wordrecords = passage_dbs[vr].executesql(wsql, as_dict=True)
         for w in wordrecords:
             r.append({'item': w, 'monads': json.dumps(wids[w['id']])})
+    return r
+
+def get_notes(vr, book, chapter, pub):
+    bk = book['name']
+    ch = chapter['chapter_num']
+    if pub == 'x':
+        pubv = ""
+    else:
+        pubv = " and is_published = 'T'"
+    sql = '''
+select
+    note.created_by,
+    shebanq_web.auth_user.first_name,
+    shebanq_web.auth_user.last_name,
+    note.keywords,
+    note.verse,
+    note.is_published
+from note
+inner join shebanq_web.auth_user on shebanq_web.auth_user.id = created_by
+where
+    version = '{}' and book = '{}' and chapter = {} {}
+order by note.verse;
+'''.format(vr, bk, ch, pubv)
+    records = note_db.executesql(sql)
+    user = {}
+    npub = collections.Counter()
+    nnotes = collections.Counter()
+    nverses = {}
+    for (uid, ufname, ulname, kw, v, pub) in records:
+        if uid not in user: user[uid] = (ufname, ulname)
+        for k in WORD_PAT.findall(kw):
+            if pub == 'T': npub[(uid, k)] += 1
+            nnotes[(uid, k)] += 1
+            nverses.setdefault((uid, k), set()).add(v)
+    r = []
+    for (uid, k) in nnotes:
+        (ufname, ulname) = user[uid]
+        this_npub = npub[(uid, k)]
+        this_nnotes = nnotes[(uid, k)]
+        this_nverses = len(nverses[(uid, k)])
+        r.append({
+            'item': dict(
+                    id=u'{}_{}'.format(uid, k),
+                    ufname=ufname,
+                    ulname=ulname,
+                    kw=k,
+                    is_published=this_npub>0,
+                    nnotes=this_nnotes,
+                    nverses=this_nverses,
+                ),
+            'monads': json.dumps([]),
+        })
     return r
 
 def get_q_hits(vr, chapter, pub):
@@ -1864,15 +2005,9 @@ def store_monad_sets(vr, iid, rows):
     db.executesql("delete from monads where query_exe_id={};".format(xid))
     # Here we clear stuff that will become invalid because of a (re)execution of a query
     # and the deleting of previous results and the storing of new results.
-    ckeys = r'^verses_{}_q_{}_'.format(vr, iid)
-    cache.ram.clear(regex=ckeys)
-    cache.disk.clear(regex=ckeys)
-    ckeys = r'^items_q_{}_'.format(vr)
-    cache.ram.clear(regex=ckeys)
-    cache.disk.clear(regex=ckeys)
-    ckeys = r'^chart_{}_q_{}_'.format(vr, iid)
-    cache.ram.clear(regex=ckeys)
-    cache.disk.clear(regex=ckeys)
+    clear_cache(r'^verses_{}_q_{}_'.format(vr, iid))
+    clear_cache(r'^items_q_{}_'.format(vr))
+    clear_cache(r'^chart_{}_q_{}_'.format(vr, iid))
     nrows = len(rows)
     if nrows == 0: return
 

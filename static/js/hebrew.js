@@ -148,7 +148,7 @@ var msg   // messages object
 
 /* url values for AJAX calls from this application */
 var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
-var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
+var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, notes_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -224,9 +224,11 @@ function Page(vs) { // the one and only page object
         set_height()
         get_width()
         this.listsettings = {}
-        for (var qw in {q: 1, w: 1}) {
+        for (var qw in {q: 1, w: 1, n: 1}) {
             this.listsettings[qw] = new ListSettings(qw)
-            this.picker2[qw] = this.listsettings[qw].picker2
+            if (qw != 'n') {
+                this.picker2[qw] = this.listsettings[qw].picker2
+            }
         }
         this.prev = {}
         for (var x in this.vs.mstate()) {
@@ -286,7 +288,7 @@ the origin must be an object which has a member indicating the type of origin an
 
         /* computing the paint instructions */
 
-        if (code == '1a') { /* highlights on an r-page (with a single query or word), coming from the associated Color1Picker             
+        if (code == '1a') { /* highlights on an r-page (with a single query or word), coming from the associated ColorPicker1             
                 This is simple coloring, using a single color.
             */
             var iid = origin.iid
@@ -296,7 +298,7 @@ the origin must be an object which has a member indicating the type of origin an
                     paintings[m] = paint
                 })
             }
-            else {
+            else if (qw == 'w') {
                 paintings[iid] = paint
             }
             this.paint(qw, paintings)
@@ -330,7 +332,7 @@ the origin must be an object which has a member indicating the type of origin an
                 }
             })
         }
-        else { // Words: they are disjoint, no priority needed
+        else if (qw == 'w') { // Words: they are disjoint, no priority needed
             $('#side_list_'+qw+' li').each(function() {
                 var iid = $(this).attr('iid')
                 if (wb.vs.iscolor(qw, iid)) {
@@ -382,7 +384,7 @@ the origin must be an object which has a member indicating the type of origin an
                 }
             }
         }
-        else { // Words: gather the lexeme_ids to be painted and the colors needed for it
+        else if (qw == 'w') { // Words: gather the lexeme_ids to be painted and the colors needed for it
             for (var c = 0; c < 2; c++ ) {
                 var chunk = chunks[c]
                 for (var iid in chunk) {
@@ -441,7 +443,7 @@ function Material() { // Object corresponding to everything that controls the ma
         if (
             wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] || wb.version != wb.prev['version'] ||
             (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
-            (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page']))
+            (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page'] || wb.vs.kw() != wb.prev['kw']))
         ) {
             reset_material_status()
         }
@@ -498,7 +500,9 @@ function Material() { // Object corresponding to everything that controls the ma
         // because some processes like highlighting and assignment of verse number clicks must be suppressed on first time or on subsequent times
         if (wb.mr == 'r') {
             this.pselect.apply()
-            wb.picker1[wb.qw].adapt(wb.iid, true)
+            if (wb.qw != 'n') {
+                wb.picker1[wb.qw].adapt(wb.iid, true)
+            }
             $('a.cref').click(function(e) {e.preventDefault();
                 wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
                 wb.vs.addHist()
@@ -555,7 +559,9 @@ function Material() { // Object corresponding to everything that controls the ma
                         dat.attr('lf', 'v')
                         that.msettings.hebrewsettings.apply()
                         if (wb.mr == 'r') {
-                            wb.picker1[wb.qw].adapt(wb.iid, true)
+                            if (wb.qw != 'n') {
+                                wb.picker1[wb.qw].adapt(wb.iid, true)
+                            }
                         }
                         else {
                             wb.highlight2({code: '5', qw: 'w'})
@@ -610,8 +616,10 @@ and after loading the material, highlighs have to be applied.
 
 function Notes(newcontent) {
     var that = this
+    this.show = false
     this.verselist = {}
     this.version = wb.version
+    var sav_controls =  $('span.t1_main_sav')
     newcontent.find('.vradio').each(function() {
         var bk = $(this).attr('b')
         var ch = $(this).attr('c')
@@ -619,8 +627,47 @@ function Notes(newcontent) {
         var topl = $(this).closest('div')
         that.verselist[bk+' '+ch+':'+vs] = new Notev(that.version, bk, ch, vs, topl.find('span.t1_ctrl'), topl.find('table.t1_table'))
     })
-    $('tr.t1_cmt').hide()
-    $('span.t1_sav').hide()
+    this.msgn = new Msg('t1_main_msg', function() {
+        for (var item in that.verselist) {
+            var notev = that.verselist[item]
+            notev.clear_msg()
+        }
+    })
+    $('a.t1_main_ctrl').click(function(e) {e.preventDefault();
+        if (that.show) {
+            that.show = false
+            sav_controls.hide()
+            for (var item in that.verselist) {
+                var notev = that.verselist[item]
+                notev.hide_notes()
+            }
+        }
+        else {
+            that.show = true
+            sav_controls.show()
+            for (var item in that.verselist) {
+                var notev = that.verselist[item]
+                notev.show_notes()
+            }
+        }
+    })
+    var sav_c = sav_controls.find('a').first()
+    var rev_c = sav_controls.find('a').last()
+    rev_c.click(function(e) {e.preventDefault();
+        for (var item in that.verselist) {
+            var notev = that.verselist[item]
+            notev.revert()
+        }
+    })
+    sav_c.click(function(e) {e.preventDefault();
+        for (var item in that.verselist) {
+            var notev = that.verselist[item]
+            notev.save()
+        }
+        that.msgn.msg(['special', 'Done'])
+    })
+    this.msgn.clear()
+    $('span.t1_main_sav').hide()
 }
 function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
@@ -633,6 +680,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.ctrl = ctrl
     this.dest = dest
     this.msgn = new Msg('t1_msg_'+this.book+'_'+this.chapter+'_'+this.verse)
+
     this.fetch = function() {
         var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse}
         this.msgn.msg(['info', 'fetching notes ...'])
@@ -647,10 +695,17 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             }
         })
     }
-    this.process = function(users, notes) {
+    this.process = function(users, notes, changed) {
+        if (changed) {
+            if (wb.mr == 'm') {
+                side_fetched['mn'] = false
+                wb.sidebars.sidebar['mn'].content.apply()
+            }
+        }
         this.orig_users = users
         this.orig_notes = notes
-        this.gen_html(users, notes, false)
+        this.orig_edit = []
+        this.gen_html(false)
         this.decorate()
     }
     this.decorate = function() {
@@ -675,39 +730,52 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         })
         this.dest.find('tr.t1_cmt').show()
     }
-    this.gen_html_user = function(users, canr, uid, notelines) {
-        var user = users[uid]
+    this.gen_html_ca = function(canr) {
+        var notes = this.orig_notes[canr]
         var html = ''
-        for (var n = 0; n < notelines.length; n++) {
-            var nline = notelines[n]
+        for (var n = 0; n < notes.length; n++) {
+            var nline = notes[n]
+            var uid = nline.uid 
+            var user = this.orig_users[uid]
             var nid = nline.nid 
             var pubc = nline.pub?'ison':''
             var sharedc = nline.shared?'ison':''
             var statc = t1_statclass[nline.stat]
             var statsym = t1_statsym[nline.stat]
-            html += '<tr class="t1_cmt t1_info '+statc+'" nid="'+nid+'" ncanr="'+canr+'">'
-            html += '<td class="t1_stat"><a href="#" title="set status" class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></a></td>'
-            html += '<td class="t1_keyw" contenteditable>'+nline.kw+'</td>'
-            html += '<td class="t1_cmt" contenteditable>'+nline.ntxt+'</td>'
-            html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
-            html += '<td class="t1_pub">'
-            html += '    <a class="ctrli pradio '+sharedc+'" href="#" title="shared?">@</a>'
-            html += '    <a class="ctrli pradio '+pubc+'" href="#" title="published?">"</a>'
+            var ro = nline.ro
+            var edit_att = ro?'':' edit="1"'
+            var edit_class = ro?'':' edit'
+            html += '<tr class="t1_cmt t1_info '+statc+edit_class+'" nid="'+nid+'" ncanr="'+canr+'"'+edit_att+'>'
+            if (ro) {
+                html += '<td class="t1_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
+                html += '<td class="t1_kw">'+nline.kw+'</td>'
+                html += '<td class="t1_cmt">'+nline.ntxt+'</td>'
+                html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
+                html += '<td class="t1_pub">'
+                html += '    <span class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" title="shared?"></span>'
+                html += '    <span class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" title="published?"></span>'
+            }
+            else {
+                this.orig_edit.push({canr: canr, note: nline})
+                html += '<td class="t1_stat"><a href="#" title="set status" class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></a></td>'
+                html += '<td class="t1_kw"><textarea>'+nline.kw+'</textarea></td>'
+                html += '<td class="t1_cmt"><textarea>'+nline.ntxt+'</textarea></td>'
+                html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
+                html += '<td class="t1_pub">'
+                html += '    <a class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" href="#" title="shared?"></a>'
+                html += '    <a class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" href="#" title="published?"></a>'
+            }
             html += '</td></tr>'
         }
         return html
     }
-    this.gen_html = function(users, notes, replace) {
+    this.gen_html = function(replace) {
         if (replace) {
             this.dest.find('tr[ncanr]').remove()
         }
-        for (var canr in notes) {
+        for (var canr in this.orig_notes) {
             var target = this.dest.find('tr[canr='+canr+']')
-            var uids = notes[canr]
-            var html = ''
-            for (var uid in uids) {
-                html += this.gen_html_user(users, canr, uid, uids[uid])
-            }
+            var html = this.gen_html_ca(canr)
             target.after(html)
         }
     }
@@ -721,62 +789,96 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             })
             if (json.good) {
                 that.dest.find('tr[ncanr]').remove()
-                that.process(json.users, json.notes)
+                that.process(json.users, json.notes, json.changed)
             }
         }, 'json')
     }
     this.dest.find('tr.t1_cmt').hide()
+    var main_sav_controls =  $('span.t1_main_sav')
     var sav_controls =  this.ctrl.find('span.t1_sav')
     var sav_c = sav_controls.find('a').first()
     var rev_c = sav_controls.find('a').last()
+    this.revert = function() {
+        this.gen_html(this.orig_users, this.orig_notes, true)
+        this.decorate()
+    }
     rev_c.click(function(e) {e.preventDefault();
-        that.gen_html(that.orig_users, that.orig_notes, true)
-        that.decorate()
+        that.revert()
     })
-    sav_c.click(function(e) {e.preventDefault();
+    this.save = function() {
         var data = {
-            version: that.version,
-            book: that.book,
-            chapter: that.chapter,
-            verse: that.verse,
+            version: this.version,
+            book: this.book,
+            chapter: this.chapter,
+            verse: this.verse,
             save: true,
         }
-        var notes = that.dest.find('tr[ncanr]')
+        var notes = this.dest.find('tr[edit]')
         var notelines = []
-        notes.each(function() {
-            var row = $(this)
-            notelines.push({
-                nid: row.attr('nid'),
-                canr: row.attr('ncanr'),
-                stat: row.find('td.t1_stat a').attr('code'),
-                keyw: row.find('td.t1_keyw').html(),
-                ntxt: row.find('td.t1_cmt').html(),
-                uid: row.find('td[uid]').attr('uid'),
-                shared: row.find('td.t1_pub a').first().hasClass('ison'),
-                pub: row.find('td.t1_pub a').last().hasClass('ison'),
-            })
-        })
-        data['notes'] = JSON.stringify(notelines)
-        that.sendnotes(data)
-    })
-    sav_controls.hide()
-    this.ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
-        if (that.show) {
-            that.show = false
-            that.ctrl.find('span.t1_sav').hide()
-            that.dest.find('tr.t1_cmt').hide()
+        if (this.orig_edit == undefined) {return}
+        for (n = 0; n < this.orig_edit.length; n++) {
+            canr = this.orig_edit[n].canr
+            o_note = this.orig_edit[n].note
+            nid = o_note.nid
+            uid = o_note.uid
+            n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
+            o_stat = o_note.stat
+            n_stat = n_note.find('td.t1_stat a').attr('code')
+            o_kw = o_note.kw
+            n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
+            o_ntxt = o_note.ntxt
+            n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
+            o_shared = o_note.shared
+            n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
+            o_pub = o_note.pub
+            n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
+            if (o_stat != n_stat || o_kw != n_kw || o_ntxt != n_ntxt || o_shared != n_shared || o_pub != n_pub) {
+                notelines.push({
+                    nid: nid,
+                    canr: canr,
+                    stat: n_stat,
+                    kw: n_kw,
+                    ntxt: n_ntxt,
+                    uid: uid,
+                    shared: n_shared,
+                    pub: n_pub,
+                })
+            }
+        }
+        if (notelines.length > 0) {
+            data['notes'] = JSON.stringify(notelines)
+            this.sendnotes(data)
         }
         else {
-            that.show = true
-            that.ctrl.find('span.t1_sav').show()
-            if (!that.loaded) {
-                that.fetch()
-            }
-            else {
-                that.dest.find('tr.t1_cmt').show()
-            }
+            this.msgn.msg(['warning', 'No changes'])
         }
+    }
+    sav_c.click(function(e) {e.preventDefault();
+        that.save()
     })
+    this.hide_notes = function() {
+        this.show = false
+        sav_controls.hide()
+        this.dest.find('tr.t1_cmt').hide()
+    }
+    this.show_notes = function() {
+        this.show = true
+        main_sav_controls.show()
+        sav_controls.show()
+        if (!this.loaded) {
+            this.fetch()
+        }
+        else {
+            this.dest.find('tr.t1_cmt').show()
+        }
+    }
+    this.clear_msg = function() {
+        this.msgn.clear()
+    }
+    this.ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
+        if (that.show) {that.hide_notes()} else {that.show_notes()}
+    })
+    sav_controls.hide()
 }
 
 // MATERIAL: SELECTION
@@ -815,6 +917,7 @@ function MSelect() { // for book and chapter selection
             $('#version_'+v).click(function(e) {e.preventDefault();
                 side_fetched['mw'] = false
                 side_fetched['mq'] = false
+                side_fetched['mn'] = false
                 wb.vs.mstatesv({version: v})
                 wb.go()
             })
@@ -1268,14 +1371,9 @@ function MSettings(content) {
         this.content.show()
         legend.hide()
         legendc.hide()
-        if (wb.vs.qw() == 'w') {
-            set_csv(wb.vs.version(), wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
-        }
-        else {
-            for (v in versions) {
-                if (versions[v]) {
-                    set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
-                }
+        for (v in versions) {
+            if (versions[v]) {
+                set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
             }
         }
         wb.material.adapt()
@@ -1395,26 +1493,26 @@ By using the share link, the user can preserve color settings in a notebook, or 
 
 function Sidebars() { // TOP LEVEL: all four kinds of sidebars
     this.sidebar = {}
-    for (var mr in {m: 1, r: 1}) {
-        for (var qw in {q: 1, w: 1}) {
+    for (var mr in {m:1, r:1}) {
+        for (var qw in {q:1, w:1, n:1}) {
             this.sidebar[mr+qw] = new Sidebar(mr, qw)
         }
     }
     side_fetched = {}
     this.apply = function() {
-        for (var mr in {m: 1, r: 1}) {
-            for (var qw in {q: 1, w: 1}) {
+        for (var mr in {m:1, r:1}) {
+            for (var qw in {q:1, w:1, n:1}) {
                 this.sidebar[mr+qw].apply()
             }
         }
     }
     this.after_material_fetch = function() {
-        for (var qw in {q: 1, w: 1}) {
+        for (var qw in {q:1, w:1, n:1}) {
             side_fetched['m'+qw] = false
         }
     }
     this.after_item_fetch = function() {
-        for (var qw in {q: 1, w: 1}) {
+        for (var qw in {q:1, w:1, n:1}) {
             side_fetched['r'+qw] = false
         }
     }
@@ -1528,7 +1626,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             })
             $('.detail').hide()
             $('div[version="'+vr+'"]').find('.detail').show()
-            that.msgo = new Msg('dbmsg_'+qw)
+            this.msgo = new Msg('dbmsg_'+qw)
             if (qw == 'q') {
                 this.info = q
                 var ufname = escapeHTML(q.ufname)
@@ -1539,12 +1637,19 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#is_pub_c').show()
                 $('#is_pub_ro').hide()
             }
-            else {
+            else if (qw == 'w') {
                 this.info = w
                 var wvr = w.versions[vr]
                 $('#itemtag').val(wvr.entry_heb+': '+wvr.entryid)
                 $('#gobackw').attr('href', words_url+'?lan='+wvr.lan+'&letter='+wvr.entry_heb.charCodeAt(0)+'&goto='+w.id)
-                that.msgw = new Msg('dbmsg_w')
+            }
+            else if (qw == 'n') {
+                this.info = n
+                var ufname = escapeHTML(n.ufname)
+                var ulname = escapeHTML(n.ulname)
+                var kw = escapeHTML(n.kw)
+                var nvr = n.versions[vr]
+                $('#itemtag').val(ufname+' '+ulname+': '+kw)
             }
             for (var v in this.info.versions) {
                 this.set_vselect(v)
@@ -1708,8 +1813,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 })
                 execq.click(function(e) {e.preventDefault();
                     execq.addClass('fa-spin')
+                    var msg = that.msgov;
                     msg.clear()
-                    that.msgov.msg(['special', 'executing query ...'])
+                    msg.msg(['special', 'executing query ...'])
                     var data = {
                         version: wb.version,
                         qid: $('#qid').val(),
@@ -1830,8 +1936,8 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         if (this.mr == 'm') {
             vars += '&book='+wb.vs.book()
             vars += '&chapter='+wb.vs.chapter()
-            if (this.qw == 'q') {
-                vars += '&qpub='+wb.vs.pub(this.qw)
+            if (this.qw == 'q' || this.qw == 'n') {
+                vars += '&'+this.qw+'pub='+wb.vs.pub(this.qw)
             }
             do_fetch = wb.vs.book() != 'x' && wb.vs.chapter() > 0
             extra = 'm'
@@ -1861,12 +1967,16 @@ function SContent(mr, qw) { // the contents of an individual sidebar
     }
     this.sidelistitems = function() { // the list of items in an m-sidebar
         if (this.mr == 'm') {
-            wb.picker1list[that.qw] = {}
+            if (this.qw != 'n') {
+                wb.picker1list[this.qw] = {}
+            }
             var qwlist = $('#side_list_'+this.qw+' li')
             qwlist.each(function() {
                 var iid = $(this).attr('iid') 
                 that.sidelistitem(iid)
-                wb.picker1list[that.qw][iid] = new Colorpicker1(that.qw, iid, false, false)
+                if (that.qw != 'n') {
+                    wb.picker1list[that.qw][iid] = new Colorpicker1(that.qw, iid, false, false)
+                }
             })
         }
     }
@@ -1891,8 +2001,16 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 all.hide()
             }
         }
-        if (this.qw == 'q') {
+        else if (this.qw == 'q') {
             if (muting.isSet('q'+iid)) {
+                itop.hide()
+            }
+            else {
+                itop.show()
+            }
+        }
+        else if (this.qw == 'n') {
+            if (muting.isSet('n'+iid)) {
                 itop.hide()
             }
             else {
@@ -1901,7 +2019,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
     }
     if (this.mr == 'r') {
-        wb.picker1[this.qw] = new Colorpicker1(this.qw, null, true, false)
+        if (this.qw != 'n') {
+            wb.picker1[this.qw] = new Colorpicker1(this.qw, null, true, false)
+        }
     }
 }
 
@@ -1911,18 +2031,19 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
     var that = this
     this.qw = qw
     var hlradio = $('.'+qw+'hradio')
-    var pradio = $('.qpradio')
 
     this.apply = function() {
         if (wb.vs.get(this.qw) == 'v') {
-            for (var iid in wb.picker1list[this.qw]) {
-                wb.picker1list[this.qw][iid].apply(false)
+            if (this.qw != 'n') {
+                for (var iid in wb.picker1list[this.qw]) {
+                    wb.picker1list[this.qw][iid].apply(false)
+                }
+                wb.picker2[this.qw].apply(true)
             }
-            wb.picker2[this.qw].apply(true)
         }
-        var pradio = $('.qpradio')
-        if (this.qw == 'q') {
-            if (wb.vs.pub('q') == 'v') {
+        if (this.qw == 'q' || this.qw == 'n') {
+            var pradio = $('.'+this.qw+'pradio')
+            if (wb.vs.pub(qw) == 'v') {
                 pradio.addClass('ison')
             }
             else {
@@ -1930,18 +2051,20 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
             }
         }
     }
-    this.picker2 = new Colorpicker2(this.qw, false)
-    hlradio.click(function(e) {e.preventDefault();
-        wb.vs.hstatesv(that.qw, {active: $(this).attr('id').substring(1)})
-        wb.vs.addHist()
-        wb.highlight2({code: '3', qw: that.qw})
-    })
-    if (qw == 'q') {
-        var pradio = $('.qpradio')
+    if (this.qw != 'n') {
+        this.picker2 = new Colorpicker2(this.qw, false)
+        hlradio.click(function(e) {e.preventDefault();
+            wb.vs.hstatesv(that.qw, {active: $(this).attr('id').substring(1)})
+            wb.vs.addHist()
+            wb.highlight2({code: '3', qw: that.qw})
+        })
+    }
+    if (qw == 'q' || qw == 'n') {
+        var pradio = $('.'+this.qw+'pradio')
         pradio.click(function(e) {e.preventDefault();
             wb.vs.hstatesv(that.qw, {pub: (wb.vs.pub(that.qw) == 'x')?'v':'x'})
-            side_fetched['mq'] = false
-            wb.sidebars.sidebar['mq'].content.apply()
+            side_fetched['m'+that.qw] = false
+            wb.sidebars.sidebar['m'+that.qw].content.apply()
         })
     }
 }
@@ -2213,6 +2336,7 @@ function ViewState(init, pref) {
     this.qw = function() {return this.data['material']['']['qw']}
     this.tp = function() {return this.data['material']['']['tp']}
     this.iid = function() {return this.data['material']['']['iid']}
+    this.kw = function() {return this.data['material']['']['kw']}
     this.version = function() {return this.data['material']['']['version']}
     this.book = function() {return this.data['material']['']['book']}
     this.chapter = function() {return this.data['material']['']['chapter']}
@@ -2277,12 +2401,15 @@ function put_markdown(wdg) {
     mdw.html(markdown.toHTML(src.val()))
 }
 
-function Msg(destination, dest_object) {
+function Msg(destination, on_clear) {
     var that = this
     this.destination = $('#'+destination)
     this.trashc = $('#trash_'+destination)
     this.clear = function() {
         this.destination.html('')
+        if (on_clear != undefined) {
+            on_clear()
+        }
         this.trashc.hide()
     }
     this.trashc.click(function(e) {e.preventDefault();

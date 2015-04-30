@@ -1,0 +1,35 @@
+<a class="ctrl" id="gobackn" href="#"><span id="namewn">to note set</span></a>
+<input type="hidden" id="itemtag" value=""/>
+<div id="dbmsg_n"></div>
+<p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{for v in version_order:
+    if not versions[v]['date']: continue
+    nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))
+    thisclass = 'this' if v == vr else 'other'
+    arrow = 'down' if v == vr else 'right'
+}}
+<div version="{{=v}}" class="version {{=thisclass}}">
+    <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+    <a id="csvt_lnk_{{=v}}_n" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all notes of this set as a csv file"></a>
+    <a id="csvb_lnk_{{=v}}_n" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all notes of this set with tab info as a csv file"></a>
+    <a id="csvd_lnk_{{=v}}_n" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all notes of this set with data as a csv file"></a>
+    <a id="select_control_chart_{{=v}}_n" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
+    </p>
+    <table>
+        <tr class="detail"><td><span class="nlabel">author</td><td class="q">{{=nrinfo['fname']}} {{=nrinfo['lname']}}</span></td></tr>
+        <tr class="detail"><td><span class="nlabel">keyword</td><td class="q">{{=nrinfo['kw']}}</span></td></tr>
+        <tr class="detail"><td><span class="nlabel">size</td><td class="q">{{=nrinfo['size']}} notes</span></td></tr>
+    </table>
+</div>
+{{pass}}
+<div>
+    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
+    <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
+</div>
+<script type="text/javascript">
+var msgs = {{=XML(msgs)}};
+var n = {{=XML(n)}}
+</script>
+
+

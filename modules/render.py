@@ -160,11 +160,11 @@ for item in hebrewdata_lines_spec:
 
 specs = dict(
     material=(
-        '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 alnum:32 int:1-1000000 enum:m,r enum:q,w enum:txt_p,{},txt_il'''.format(
+        '''version book chapter iid page kw mr qw tp''',
+        '''alnum:10 alnum:30 int:1-150 alnum:32 int:1-1000000 alnum:32 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
         ),
-        {'': '''4 Genesis 1 -1 1 m q txt_p'''},
+        {'': '''4 Genesis 1 -1 1 x m q txt_p'''},
     ),
     hebrewdata=('''
         ht
@@ -209,7 +209,7 @@ specs = dict(
     highlights=(
         '''get active sel_one pub''',
         '''bool enum:hloff,hlone,hlcustom,hlmany enum:color bool''',
-        dict(q='x hlcustom grey x', w='x hlcustom gray x'),
+        dict(q='x hlcustom grey x', w='x hlcustom gray x', n='x hlcustom black v'),
     ),
     colormap=(
         '0',
@@ -226,6 +226,7 @@ specs = dict(
 style = dict(
     q=dict(prop='background-color', default='grey', off='white', subtract=250, T='Q', t='q', Tag='Query', tag='query', Tags='Queries', tags='queries'),
     w=dict(prop='color', default='gray', off='black', subtract=250, T='W', t='w', Tag='Word', tag='word', Tags='Words', tags='words'),
+    n=dict(subtract=250, T='N', t='n', Tag='Note', tag='note', Tags='Notes', tags='notes'),
     m=dict(subtract=250, T='I', t='i', Tag='Item', tag='item', Tags='Items', tags='items'),
 )
 

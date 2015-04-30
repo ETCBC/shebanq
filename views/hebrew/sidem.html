@@ -1,34 +1,48 @@
 {{if side_items:
     qlimit = 12
     ulimit = 10
+    klimit = 12
 }}
 <div>
 <ul id="side_list_{{=qw}}">
     {{
+    grain = 'monads' if qw == 'q' or qw == 'w' else 'verses'
     for si in side_items:
         iinfo = si['item']
         iid = iinfo['id']
         compp = ''
         lclass = ''
-        if qw == 'q':
-            qname = iinfo['name']
+        if qw == 'q' or qw == 'n':
             fname = iinfo['ufname']
             lname = iinfo['ulname']
             is_pub = iinfo['is_published']
             uname = u'{} {}'.format(fname, lname)
             uname1 = u'{} {}'.format(fname[0], lname)
+            uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
+            clinktext = uname_short
+            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_pub else ''
+        pass
+        if qw == 'q':
+            qname = iinfo['name']
             desc = iinfo['description']
             mql = iinfo['mql']
             qname_short = qname if len(qname) < qlimit else qname[0:qlimit]+'..'
-            uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
             title = u'{} by {} {}'.format(qname, fname, lname)
-            clinktext = uname_short
             dlinktext = qname_short
             lclass = XML(' class="detail" ')
             cclass = 'qauth'
             dclass = 'qname'
             eclass = 'qdesc'
-            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_pub else ''
+        elif qw == 'n':
+            (uid, kw) = iid.split('_', 1)
+            kw_short = kw if len(kw) < klimit else kw[0:klimit]+'..'
+            nnotes = iinfo['nnotes']
+            nverses = iinfo['nverses']
+            title = u'{} by {} {}'.format(kw, fname, lname)
+            dlinktext = kw_short
+            cclass = 'nauth'
+            dclass = 't1_kw'
+            eclass = 'ndesc'
         elif qw == 'w':
             wentry = iinfo['entryid']
             wgloss = iinfo['gloss']
@@ -47,9 +61,9 @@
         compd = SPAN(dlinktext, _class=dclass)
     }}
     <li {{=lclass}} id="{{='{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
-        <div>{{=XML(colorpicker(qw,iid, ''))}}
+        <div>{{=XML(colorpicker(qw,iid, '')) if qw != 'n' else ''}}
             <a href='#' title="more/less info" class="ctrlb fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
-            {{if qw == 'q':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}
+            {{if qw == 'q' or qw == 'n':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}
         </div>
         <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
         {{if qw == 'q':}}
@@ -60,8 +74,10 @@
                 <div id="dm_{{=qw}}{{=iid}}" class="descm"></div>
                 <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
             </div>
-        {{else:}}
+        {{elif qw == 'w':}}
             <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=cclass}}>{{=entryid_heb}}</span></p>
+        {{elif qw == 'n':}}
+            <p class="tr"><span class="q">notes: {{=nnotes}}<br/>verses: {{=nverses}}</span></p>
         {{pass}}
         </div>
     </li>
