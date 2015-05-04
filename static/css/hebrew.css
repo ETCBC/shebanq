@@ -453,7 +453,21 @@ span.ir {
 .qname,.nkw {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
 }
-.qauth,.nauth {
+.qauth {
+}
+.nauth {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+}
+.nstat {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    font-weight: bold;
+}
+.ndesc,.ndesc p {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: small;
+    margin: 0 0 0 5px;
 }
 
 /* HEBREW TABBED */
@@ -1222,7 +1236,7 @@ div.msg_error {
     font-size: small;
     font-weight: bold;
 }
-.wlabel {
+.wlabel,.nlabel {
     font-size: small;
 }
 span.treehl {

@@ -160,11 +160,11 @@ for item in hebrewdata_lines_spec:
 
 specs = dict(
     material=(
-        '''version book chapter iid page kw mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 alnum:32 int:1-1000000 alnum:32 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
+        '''version book chapter iid page mr qw tp''',
+        '''alnum:10 alnum:30 int:1-150 alnum:128 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
         ),
-        {'': '''4 Genesis 1 -1 1 x m q txt_p'''},
+        {'': '''4 Genesis 1 -1 1 x m txt_p'''},
     ),
     hebrewdata=('''
         ht
@@ -424,7 +424,9 @@ def vcompile(tp):
         return lambda d, x: x if x in {'x', 'v'} else d
     (t, v) = tp.split(':')
     if t == 'alnum':
-        return lambda d, x: x if x != None and len(str(x)) < int(v) and str(x).replace('_','').replace(' ','').isalnum() else d
+        #return lambda d, x: x if x != None and len(unicode(x)) < int(v) and unicode(x).replace(u'_',u'').replace(u' ',u'').isalnum() else d
+        return lambda d, x: d if x == None else x if type(x) is int and len(str(x)) < int(v) else x if type(x) is str and len(x) < int(v) else d
+        #return lambda d, x: x if x != None and len(str(x)) < int(v) else d
     elif t == 'int':
         (lowest, highest) = v.split('-')
         return lambda d, x: int(x) if x != None and str(x).isdigit() and int(x) >= int(lowest) and int(x) <= int(highest) else int(d) if d != None else d
@@ -449,7 +451,7 @@ for group in specs:
 def get_request_val(group, qw, f, default=True):
     rvar = ('c_' if group == 'colormap' else '')+qw+f 
     if rvar == 'iid':
-        x = current.request.vars.id or current.request.vars.iid
+        x = current.request.vars.get('id', current.request.vars.get('iid', None))
     else:
         x = current.request.vars.get(rvar, None)
     fref = '0' if group == 'colormap' else f
@@ -468,22 +470,22 @@ def make_ccolors():
     return ccolors
 
 if nrows * ncols != len(vcolornames):
-    print("View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolornames)))
+    print(u"View settings: mismatch in number of colors: {} * {} != {}".format(nrows, ncols, len(vcolornames)))
 if dnrows * dncols != len(vdefaultcolors):
-    print("View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
+    print(u"View settings: mismatch in number of default colors: {} * {} != {}".format(dnrows, dncols, len(vdefaultcolors)))
 
-def ccell(qw,iid,c): return '\t\t<td class="c{qw} {qw}{iid}"><a href="#">{n}</a></td>'.format(qw=qw,iid=iid,n=vcolornames[c])
-def crow(qw,iid,r): return '\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(qw,iid,c) for c in range(r * ncols, (r + 1) * ncols)))
-def ctable(qw, iid): return '<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'.format(qw=qw,iid=iid, cs='\n'.join(crow(qw,iid,r) for r in range(nrows)))
+def ccell(qw,iid,c): return u'\t\t<td class="c{qw} {qw}{iid}"><a href="#">{n}</a></td>'.format(qw=qw,iid=iid,n=vcolornames[c])
+def crow(qw,iid,r): return u'\t<tr>\n{}\n\t</tr>'.format('\n'.join(ccell(qw,iid,c) for c in range(r * ncols, (r + 1) * ncols)))
+def ctable(qw, iid): return u'<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'.format(qw=qw,iid=iid, cs='\n'.join(crow(qw,iid,r) for r in range(nrows)))
 
 def vsel(qw, iid, typ):
     content = '&nbsp;' if qw == 'q' else 'w'
-    selc = '' if typ else '<span class="pickedc cc_selc_{qw}"><input type="checkbox" id="selc_{qw}{iid}" name="selc_{qw}{iid}"/></span>&nbsp;'
-    sel = '<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}"><a href="#">{lab}</a></span>'
-    return (selc + sel).format (qw=qw,iid=iid, lab=content)
+    selc = u'' if typ else u'<span class="pickedc cc_selc_{qw}"><input type="checkbox" id="selc_{qw}{iid}" name="selc_{qw}{iid}"/></span>&nbsp;'
+    sel = u'<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}"><a href="#">{lab}</a></span>'
+    return (selc + sel).format(qw=qw,iid=iid, lab=content)
 
 def legend(): return legend_tpl.format(base_doc=base_doc)
-def colorpicker(qw, iid, typ): return '{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
+def colorpicker(qw, iid, typ): return u'{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
 def get_fields(tp):
     if tp == 'txt_il':
@@ -514,14 +516,14 @@ class Viewsettings():
                         except ValueError: pass
                 if group == 'colormap':
                     for fid in from_cookie:
-                        if len(fid) <= 32 and fid.replace('_','').isalnum():
+                        if len(fid) <= 32 and fid.replace(u'_',u'').isalnum():
                             vstate = validation[group][qw]['0'](None, from_cookie[fid])
                             if vstate != None:
                                 self.state[group][qw][fid] = vstate
                     for f in current.request.vars:
-                        if not f.startswith('c_{}'.format(qw)): continue
+                        if not f.startswith(u'c_{}'.format(qw)): continue
                         fid = f[3:]
-                        if len(fid) <= 32 and fid.replace('_','').isalnum():
+                        if len(fid) <= 32 and fid.replace(u'_',u'').isalnum():
                             vstate = get_request_val(group, qw, fid, default=False)
                             if vstate != None:
                                 from_cookie[fid] = vstate
@@ -542,7 +544,7 @@ class Viewsettings():
 
     def theversion(self): return self.state['material']['']['version']
     def versionstate(self):
-        return '''
+        return u'''
 var versions = {versions}
 var version = '{version}'
 '''.format(
@@ -552,7 +554,7 @@ var version = '{version}'
 
     def dynamics(self):
         book_proto = get_request_val('material', '', 'book')
-        return '''
+        return u'''
 var versions = {versions}
 var vcolors = {vcolors}
 var ccolors = {ccolors}
@@ -576,7 +578,7 @@ dynamics()
     vcolors = json.dumps(vcolors),
     ccolors = json.dumps(make_ccolors()),
     style = json.dumps(style),
-    pref = '"{}"'.format(self.pref),
+    pref = u'"{}"'.format(self.pref),
     dncols = dncols,
     dnrows = dnrows,
     versions = json.dumps(dict((v, self.versions[v]['date'] != '') for v in self.versions)),
@@ -593,8 +595,8 @@ def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp
 
 def h_esc(material, fill=True):
     material = material.replace(
-        '&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot').replace(
-        "'", '&apos;').replace('\\n', '\n')
+        u'&', u'&amp;').replace(u'<', u'&lt;').replace(u'>', u'&gt;').replace(u'"', u'&quot').replace(
+        u"'", u'&apos;').replace(u'\\n', u'\n')
     if fill:
         if material == '': material = '&nbsp;'
     return material
@@ -607,29 +609,35 @@ class Verses():
         self.tp = tp
         self.verses = []
         if self.mr == 'r' and (verse_ids == None or len(verse_ids) == 0): return
-        verse_ids_str = ','.join((str(v) for v in verse_ids)) if verse_ids != None else None
+        verse_ids_str = u','.join((str(v) for v in verse_ids)) if verse_ids != None else None
         cfield = 'verse.id'
         cwfield = 'word_verse.verse_id'
-        condition_pre = 'WHERE {{}} IN ({})'.format(verse_ids_str) if verse_ids != None else 'WHERE chapter_id = {}'.format(chapter) if chapter != None else ''
+        condition_pre = u'''
+where {{}} in ({})
+'''.format(verse_ids_str) if verse_ids != None else u'''
+where chapter_id = {}
+'''.format(chapter) if chapter != None else u''
         condition = condition_pre.format(cfield)
         wcondition = condition_pre.format(cwfield)
 
-        verse_info = passage_db.executesql('''
-SELECT verse.id, book.name, chapter.chapter_num, verse.verse_num{} FROM verse
-INNER JOIN chapter ON verse.chapter_id=chapter.id
-INNER JOIN book ON chapter.book_id=book.id
+        verse_info = passage_db.executesql(u'''
+select verse.id, book.name, chapter.chapter_num, verse.verse_num{} from verse
+inner join chapter on verse.chapter_id=chapter.id
+inner join book on chapter.book_id=book.id
 {}
-ORDER BY verse.id;
-'''.format(', verse.xml' if tp == 'txt_p' else '', condition)) 
+order by verse.id
+;
+'''.format(u', verse.xml' if tp == 'txt_p' else u'', condition)) 
 
         word_records = []
         if tp != 'txt_p':
-            word_records = passage_db.executesql('''
-SELECT {}, verse_id, lexicon_id FROM word
-INNER JOIN word_verse ON word_number = word_verse.anchor
-INNER JOIN verse ON verse.id = word_verse.verse_id
+            word_records = passage_db.executesql(u'''
+select {}, verse_id, lexicon_id from word
+inner join word_verse on word_number = word_verse.anchor
+inner join verse on verse.id = word_verse.verse_id
 {}
-ORDER BY word_number;
+order by word_number
+;
 '''.format(','.join(field_names[tp]), wcondition), as_dict=True)
 
         word_data = collections.defaultdict(lambda: [])
@@ -653,15 +661,16 @@ class Verse():
         if xml == None:
             xml = ''
         if word_data == None:
-            word_records = passage_db.executesql('''
-SELECT {}, lexicon_id FROM word
-INNER JOIN word_verse ON word_number = word_verse.anchor
-INNER JOIN verse ON verse.id = word_verse.verse_id
-INNER JOIN chapter ON verse.chapter_id = chapter.id
-INNER JOIN book ON chapter.book_id = book.id
-WHERE book.name = '{}' AND chapter.chapter_num = {} AND verse.verse_num = {}
-ORDER BY word_number;
-'''.format(','.join(field_names['txt_il']), book_name, chapter_num, verse_num), as_dict=True)
+            word_records = passage_db.executesql(u'''
+select {}, lexicon_id from word
+inner join word_verse on word_number = word_verse.anchor
+inner join verse on verse.id = word_verse.verse_id
+inner join chapter on verse.chapter_id = chapter.id
+inner join book on chapter.book_id = book.id
+where book.name = '{}' and chapter.chapter_num = {} and verse.verse_num = {}
+order by word_number
+;
+'''.format(u','.join(field_names['txt_il']), book_name, chapter_num, verse_num), as_dict=True)
             word_data = []
             for record in word_records:
                 word_data.append(dict((x,h_esc(unicode(y), not x.endswith('_border'))) for (x,y) in record.items()))
@@ -673,7 +682,7 @@ ORDER BY word_number;
         return (self.book_name, self.chapter_num)
 
     def label(self):
-        return (self.book_name.replace('_', ' '), self.book_name, self.chapter_num, self.verse_num)
+        return (self.book_name.replace(u'_', u' '), self.book_name, self.chapter_num, self.verse_num)
 
     def get_words(self):
         if (len(self.words) == 0):
@@ -719,7 +728,7 @@ ORDER BY word_number;
             curca.append(word)
         material.append(self._putca1(curca))
         material.append(u'</table>')
-        return ''.join(material)
+        return u''.join(material)
 
     def _tab2_text(self, user_agent):
         material = [u'<dl class="lv2">']
@@ -734,7 +743,7 @@ ORDER BY word_number;
             curca.append(word)
         material.append(self._putca2(curca))
         material.append(u'</dl>')
-        return ''.join(material)
+        return u''.join(material)
 
     def _tab3_text(self, user_agent):
         material = [u'<dl class="lv3">']
@@ -749,12 +758,12 @@ ORDER BY word_number;
             curca.append(word)
         material.append(self._putca3(curca))
         material.append(u'</dl>')
-        return ''.join(material)
+        return u''.join(material)
 
     def _putca1(self, words):
         if len(words) == 0:
             return u''
-        txttp = words[0][u'clause_txt'].replace('?','')
+        txttp = words[0][u'clause_txt'].replace(u'?',u'')
         ctp = words[0][u'clause_typ']
         tabn = int(words[0][u'clause_atom_tab'])
         canr = int(words[0][u'clause_atom_number'])
@@ -762,8 +771,8 @@ ORDER BY word_number;
         #tab = u'&gt;' * tabn # plus square
         tab10s = tabn / 10
         tab10r = tabn % 10
-        smalltab = '&lt;' * tab10r
-        bigtab = '&lt;' * tab10s
+        smalltab = u'&lt;' * tab10r
+        bigtab = u'&lt;' * tab10s
         result = [u'''
 <tr canr="{canr}">
     <td colspan="3" class="t1_txt">
@@ -789,7 +798,7 @@ ORDER BY word_number;
         stat=t1_statorder[0],
         canr=canr,
 ))
-        return ''.join(result)
+        return u''.join(result)
 
     def _putca2(self, words):
         if len(words) == 0:
@@ -807,7 +816,7 @@ ORDER BY word_number;
                 result.append(u' <span class="phf2">{}</span> '.format(word['phrase_function']))
             result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
         result.append(u'</dd>')
-        return ''.join(result)
+        return u''.join(result)
 
     def _putca3(self, words):
         if len(words) == 0:
@@ -818,10 +827,10 @@ ORDER BY word_number;
             tab,
         )]
         phrb_table = dict(
-            rr='&nbsp;', # arrow-circle-right
-            r='<span class="fa">&#xf105;</span>', # arrow-circle-o-left
-            l='<span class="fa">&#xf104;</span>', # arrow-circle-o-right
-            ll='&nbsp;' # arrow-circle-left,
+            rr=u'&nbsp;', # arrow-circle-right
+            r=u'<span class="fa">&#xf105;</span>', # arrow-circle-o-left
+            l=u'<span class="fa">&#xf104;</span>', # arrow-circle-o-right
+            ll=u'&nbsp;' # arrow-circle-left,
         )
         for word in words:
             phrbs = word['phrase_border'].split()
@@ -860,6 +869,6 @@ ORDER BY word_number;
                 phrbsymb, word['word_number'], word['lexicon_id'], txtsym, phrbsyme,
             ))
         result.append(u'</dd>')
-        return ''.join(result)
+        return u''.join(result)
 
 

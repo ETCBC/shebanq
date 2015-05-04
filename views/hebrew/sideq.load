@@ -10,7 +10,7 @@ statusmap = dict(
 {{pass}}
 <input type="hidden" id="itemtag" value=""/>
 <div id="bigger">
-    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+'?goto={}'.format(iid)}}"><span id="nameqm">{{=h_esc(qr['name'])}}</span></a>
+    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+u'?goto={}'.format(iid)}}"><span id="nameqm">{{=h_esc(qr['name'])}}</span></a>
     <span class="ir"><a class="ctrl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>

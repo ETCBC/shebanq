@@ -1,7 +1,11 @@
-<a class="ctrl" id="gobackn" href="#"><span id="namewn">to note set</span></a>
+<a class="ctrl" id="gobackn" href="#"><span id="namenn">to note set</span></a>
 <input type="hidden" id="itemtag" value=""/>
 <div id="dbmsg_n"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+<table>
+    <tr><td><span class="nlabel">author</span></td><td class="n_auth">{{=nr['ufname']}} {{=nr['ulname']}}</td></tr>
+    <tr><td><span class="nlabel">keyword</span></td><td class="t1_kw">{{=nr['kw']}}</td></tr>
+</table>
 {{for v in version_order:
     if not versions[v]['date']: continue
     nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))
@@ -17,9 +21,9 @@
     <a id="select_control_chart_{{=v}}_n" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="nlabel">author</td><td class="q">{{=nrinfo['fname']}} {{=nrinfo['lname']}}</span></td></tr>
-        <tr class="detail"><td><span class="nlabel">keyword</td><td class="q">{{=nrinfo['kw']}}</span></td></tr>
-        <tr class="detail"><td><span class="nlabel">size</td><td class="q">{{=nrinfo['size']}} notes</span></td></tr>
+        <tr class="detail"><td><span class="nlabel">notes</span></td><td class="nstat">{{=nrinfo['n']}}</td></tr>
+        <tr class="detail"><td><span class="nlabel">clause_atoms</span></td><td class="nstat">{{=nrinfo['c']}}</td></tr>
+        <tr class="detail"><td><span class="nlabel">verses</span></td><td class="nstat">{{=nrinfo['v']}}</td></tr>
     </table>
 </div>
 {{pass}}
