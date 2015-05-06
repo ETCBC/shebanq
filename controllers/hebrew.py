@@ -1381,17 +1381,17 @@ where query.id = {};
         execute = request.vars.execute
         xgood = True
         if execute == 'true':
-            (xgood, nresults, xmonads) = mql(vr, newmql) 
+            (xgood, nresults, xmonads, this_msgs) = mql(vr, newmql) 
             if xgood:
                 store_monad_sets(vr, qid, xmonads)
                 fldx['executed_on'] = request.now
                 nresultmonads = count_monads(xmonads)
                 fldx['results'] = nresults
                 fldx['resultmonads'] = nresultmonads
-                msgs.append(('good', 'Query executed'))
+                msgs.append(('good', u'Query executed'))
             else:
                 store_monad_sets(vr, qid, [])
-                msgs.append(('error', u'<code class="merr">{}</code>'.format(xmonads)))
+            msgs.extend(this_msgs)
         if len(flds):
             sql = u"update {} set{} where id = {}".format(
                 'query',
