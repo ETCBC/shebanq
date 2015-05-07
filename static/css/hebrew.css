@@ -1085,11 +1085,7 @@ td.z7 {background-color: #000000;}
 label.radio {
     margin-left: 0.5em;
 }
-code.merr {
-    font-family: Menlo, Courier New, Courier, monospace;
-    color: #0000ff;
-}
-.error, code.merr {
+.error {
     background-color: #ffaaaa;
 }
 .warning {
