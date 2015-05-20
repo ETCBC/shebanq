@@ -358,7 +358,7 @@ def verse_c(vr, bk, ch, vs, msgs):
     )
     return result
 
-def notes():
+def cnotes():
     myid = None
     msgs = []
     if auth.user:
@@ -375,7 +375,7 @@ def notes():
     changed = False
     if save == 'true':
         changed = note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs)
-    return notes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs)
+    return cnotes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs)
 
 def key_add(kw, nid):
     insert_sql = u'''
@@ -568,7 +568,7 @@ from note where id in ({})
         #msgs.append(('info', u'Skipped empty new notes: {}'.format(emptynew)))
     return (good, old_notes, upd_notes, new_notes, del_notes)
 
-def notes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs):
+def cnotes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs):
     condition = u'''note.is_shared = 'T' or note.is_published = 'T' '''
     if myid != None: condition += u''' or note.created_by = {} '''.format(myid)
 
@@ -878,6 +878,14 @@ def queries():
             qid = None
     return dict(qid=qid if qid != None else 0)
 
+def notes():
+    msgs = []
+    nid = check_id('goto', 'note', msgs)
+    if nid != None:
+        if not note_auth_read(nid):
+            nid = None
+    return dict(nid=nid if nid != None else 0)
+
 def words_page(viewsettings, vr, lan=None, letter=None):
     (letters, words) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
     return dict(versionstate=viewsettings.versionstate(), lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
@@ -1131,7 +1139,7 @@ def pq_c(myid):
     linfo = collections.defaultdict(lambda: {})
 
     def title_badge(myid, lid, ltype, newtype, publ, good, num, tot):
-        name = linfo[ltype][lid] if ltype != None else u'Public Queries'
+        name = linfo[ltype][lid] if ltype != None else u'Shared Queries'
         nums = []
         if publ != 0: nums.append(u'<span class="special fa fa-quote-right"> {}</span>'.format(publ))
         if good != 0: nums.append(u'<span class="good fa fa-gears"> {}</span>'.format(good))
@@ -1221,7 +1229,6 @@ select name, id from project order by name
     pproj = db.executesql(pproj_sql)
 
     tree = collections.OrderedDict()
-    #tree = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: [])))
     countset = collections.defaultdict(lambda: set())
     counto = collections.defaultdict(lambda: 0)
     counto_publ = collections.defaultdict(lambda: 0)
@@ -1265,7 +1272,6 @@ select name, id from project order by name
             counto_good[oid] += 1
             count_good += 1
         tree.setdefault(oid, collections.OrderedDict()).setdefault(pid, collections.OrderedDict()).setdefault(uid, []).append(qid)
-        #tree[oid][pid][uid].append(qid)
         count +=1
         counto[oid] += 1
         countp[oid][pid] += 1
@@ -1284,7 +1290,6 @@ select name, id from project order by name
         if oid in linfo['o']: continue
         countset['o'].add(oid)
         linfo['o'][oid] = oname
-        #tree[oid] = collections.defaultdict(lambda: collections.defaultdict(lambda: []))
         tree[oid] = collections.OrderedDict()
 
     for (pname, pid) in pproj:
@@ -1292,7 +1297,6 @@ select name, id from project order by name
         countset['o'].add(0)
         countset['p'].add(pid)
         linfo['p'][pid] = pname
-        #tree[0][pid] = collections.defaultdict(lambda: [])
         tree.setdefault(0, collections.OrderedDict())[pid] = collections.OrderedDict()
 
     ccount = dict((x[0], len(x[1])) for x in countset.items())
@@ -1336,7 +1340,7 @@ select name, id from project order by name
                     qversions = pqinfo['v']
                     rename = u'<a class="{}_{}" lid="{}" href="#"></a>'.format('r' if qown else 'v', 'q', qid)
                     curudest.append(dict(title=u'{} <a class="q {} {}" n="1" qid="{}" href="#">{}</a> <a class="md" href="#"></a> {}'.format(
-                        u' '.join(formatversion(qid, v, qversions[rversion_index[v]]) for v in rversion_order),
+                        u' '.join(formatversion('q', qid, v, qversions[rversion_index[v]]) for v in rversion_order),
                         u'qmy' if qown else u'',
                         u'' if qshared else u'qpriv',
                         qid,
@@ -1345,23 +1349,119 @@ select name, id from project order by name
                     ), key=u'q{}'.format(qid), folder=False))
     return dict(data=json.dumps(dest))
 
-def formatversion(qid, vr, st):
-    if st == 1:
-        icon = 'quote-right'
-        cls = 'special'
-    elif st == 2:
-        icon = 'quote-right'
-        cls = ''
-    elif st == 3:
-        icon = 'gears'
-        cls = 'good'
-    elif st == 4:
-        icon = 'circle-o'
-        cls = 'warning'
-    elif st == 5:
-        icon = 'clock-o'
-        cls = 'error'
-    return u'<a href="#" class="ctrl brq {} fa fa-{}" qid="{}" v="{}"></a>'.format(cls, icon, qid, vr)
+def pn():
+    myid = None
+    if auth.user:
+        myid = auth.user.id
+    return pn_c(myid)
+
+def pn_c(myid):
+    linfo = collections.defaultdict(lambda: {})
+
+    def title_badge(lid, ltype, tot):
+        name = linfo[ltype][lid] if ltype != None else u'Shared Notes'
+        badge = ''
+        if tot != 0:
+            badge = u'<span class="total special fa fa-quote-right"> {}</span>'.format(tot)
+        return u'<span n="1">{}</span><span class="brn">({})</span>'.format(h_esc(name), badge)
+
+    condition = u'''
+where note.is_shared = 'T'
+''' if myid == None else '''
+where note.is_shared = 'T' or note.created_by = {}
+'''.format(myid)
+
+    pnotek_sql = u'''
+select keyword, note_id from key_note
+order by keyword
+;
+'''
+    pnotek = note_db.executesql(pnotek_sql)
+    pnote_sql = u'''
+select
+    note.version,
+    concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.id as uid
+from note
+inner join shebanq_web.auth_user on note.created_by = shebanq_web.auth_user.id
+{}
+order by shebanq_web.auth_user.last_name, shebanq_web.auth_user.first_name, note.keywords
+;
+'''.format(condition)
+
+    pnote = note_db.executesql(pnote_sql)
+    kindex = collections.defaultdict(lambda: [])
+    for (k, nid) in pnotek:
+        kindex[nid].append(k)
+    pnotes = collections.OrderedDict()
+    rversion_order = [v for v in version_order if versions[v]['date']]
+    rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
+    for (nvr, uname, uid) in pnote:
+        for nname in kindex[nid]:
+            nkid = uname+'_'+nname
+            if nkid not in pnotes:
+                pnotes[nkid] = {'': (uname, uid, nname), 'v': [0 for v in rversion_order]}
+            pnotes[nkid]['v'][rversion_index[nvr]] += 1
+
+    tree = collections.OrderedDict()
+    countset = collections.defaultdict(lambda: set())
+    countu = collections.defaultdict(lambda: 0)
+    count = 0
+    for nid in pnotes:
+        pninfo = pnotes[nid]
+        (uname, uid, nname) = pninfo['']
+        countset['u'].add(uid)
+        countset['n'].add(nid)
+        linfo['u'][uid] = uname
+        tree.setdefault(uid, []).append(nid)
+        count +=1
+        countu[uid] += 1
+
+    linfo['u'][0] = u''
+    linfo['n'] = pnotes
+
+    ccount = dict((x[0], len(x[1])) for x in countset.items())
+    ccount['uid'] = myid
+    title = title_badge(None, None, count)
+    dest = [dict(title=u'{}'.format(title), folder=True, children=[], data=ccount)]
+    curdest = dest[-1]['children']
+    cursource = tree
+    for uid in cursource:
+        utot = countu[uid]
+        utitle = title_badge(uid, 'u', utot)
+        curdest.append(dict(title=u'{}'.format(utitle), folder=True, children=[]))
+        curudest = curdest[-1]['children']
+        curusource = cursource[uid]
+        for nid in curusource:
+            pninfo = linfo['n'][nid]
+            (uname, uid, nname) = pninfo['']
+            nversions = pninfo['v']
+            curudest.append(dict(title=u'{} <a class="n" n="1" nid="{}" href="#">{}</a> <a class="md" href="#"></a>'.format(
+                u' '.join(formatversion('n', nid, v, nversions[rversion_index[v]]) for v in rversion_order),
+                nid,
+                h_esc(nname),
+            ), key=u'n{}'.format(nid), folder=False))
+    return dict(data=json.dumps(dest))
+
+def formatversion(qw, lid, vr, st):
+    if qw == 'q':
+        if st == 1:
+            icon = 'quote-right'
+            cls = 'special'
+        elif st == 2:
+            icon = 'quote-right'
+            cls = ''
+        elif st == 3:
+            icon = 'gears'
+            cls = 'good'
+        elif st == 4:
+            icon = 'circle-o'
+            cls = 'warning'
+        elif st == 5:
+            icon = 'clock-o'
+            cls = 'error'
+        return u'<a href="#" class="ctrl br{} {} fa fa-{}" {}id="{}" v="{}"></a>'.format(qw, cls, icon, qw, lid, vr)
+    else:
+        return u'<a href="#" class="ctrl br{}" {}id="{}" v="{}"></a>'.format(qw, qw, lid, vr)
 
 tps = dict(o=('organization', 'organization'), p=('project', 'project'), q=('query', 'query'))
 
@@ -2132,6 +2232,29 @@ select * from lexicon where id = '{}'
         if word:
             authorized = True
     msg = u'No word with id {}'.format(iid) if authorized == None else u''
+    return (authorized, msg)
+
+def note_auth_read(iid):
+    authorized = None
+    if iid == 0:
+        authorized = auth.user != None
+    else:
+        comps = iid.split(u'_', 1)
+        if len(comps) != 2:
+            return (0, [])
+        (uid, kw_url) = comps
+        kw_sql = url2kw(kw_url).replace(u"'", u"''")
+        myid = auth.user.id if auth.user != None else None
+        extra = u''' or created_by = {} '''.format(uid) if myid == uid else u''
+        sql = u'''
+    select count(*) from note
+    inner join key_note on key_note.note_id = note.id
+    where key_note.keyword = '{}' and note.version = '{}' and (note.is_shared = 'T' {})
+    ;
+    '''.format(kw_sql, vr, extra)
+        answer = note_db.executesql(sql)[0][0]
+        authorized = answer > 0
+    msg = u'No notes with id {}'.format(iid) if authorized == None else u'There are no accessible notes with id {}'.format(iid) 
     return (authorized, msg)
 
 def query_auth_write(iid):

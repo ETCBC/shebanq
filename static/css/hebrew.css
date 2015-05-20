@@ -155,7 +155,7 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.qfradio.ison,.qlradio.ison,.vradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison.qlradio.ison,.nlradio.ison,.vradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
@@ -163,7 +163,7 @@ table.item_w td,table.item_q td {
  {
     color: #000000;
 }
-.qhradio,.whradio,.mhradio,.qvradio,.qfradio,.qlradio,.vradio,.qpradio,.npradio,.pradio {
+.qhradio,.whradio,.mhradio,.qvradio,.nvradio,.qfradio,.nfradio,.qlradio,.nlradio,.vradio,.qpradio,.npradio,.pradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;

@@ -56,6 +56,7 @@ response.menu = [
     (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Words'), False, URL('hebrew', 'words'), []),
     (T('Queries'), False, URL('hebrew', 'queries'), []),
+    (T('Notes'), False, URL('hebrew', 'notes'), []),
     (T('Help'), False, URL('default', 'help'), []),
     (T('News'), False, URL('default', 'news'), []),
     (T('Sources'), False, URL('default', 'sources'), []),

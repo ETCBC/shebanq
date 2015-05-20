@@ -1,0 +1,42 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = False }}
+{{extend 'layout.html'}}
+
+<input type="hidden" id="nid" value="{{=nid}}"/>
+<div id="notes"></div>
+
+{{ block left_sidebar }}
+
+<p>
+    <a href="#" id="c_view_simple" class="ctrl nvradio">simple</a>
+    <a href="#" id="c_view_advanced" class="ctrl nvradio">advanced</a>
+</p>
+
+<h4>Filter</h4>
+<input type="text" id="filter_contents"/> <span id="filter_msg"></span></p>
+<p class="brn"><a class="ctrl nfradio" href="#" id="filter_control_a">all matches</a>
+<span id="amatches">&nbsp;</span>
+</p>
+<p><a class="ctrl nfradio" href="#" id="filter_control_c">all with children</a>
+<span id="cmatches">&nbsp;</span>
+</p>
+<p class="brn"><a class="ctrl nfradio" href="#" id="filter_control_n">in all notes</a>
+<span id="nmatches">&nbsp;</span>
+</p>
+<p><a class="ctrl nfradio" href="#" id="filter_clear">clear filter</a></p>
+
+<h4>Level</h4>
+<p><a class="ctrl nlradio" href="#" id="level_u">users</a> (<span id='count_u'></span>)</p>
+<p><a class="ctrl nlradio" href="#" id="level_n">notes</a> (<span id='count_n'></span>)</p>
+<p><a class="ctrl nlradio" href="#" id="level_">manual</a></p>
+
+<script src="{{=URL('static','js/jquery.fancytree-all.min.js')}}"></script>
+<script src="{{=URL('static', 'js/notes.js')}}"></script>
+
+<script type="text/javascript">
+var pn_url = "{{=XML(URL('hebrew', 'pn', extension='json'))}}"
+var n_url = "{{=XML(URL('hebrew', 'text', extension=''))}}"
+</script>
+
+{{ end }}
+
