@@ -152,7 +152,8 @@ jQuery(function(){
                 $('.clip_w').hide()
             }
             else {
-                pvtitle = iinfo.entryid_heb+' ('+iinfo.entryid+')'
+                vinfo = iinfo.versions[vr]
+                pvtitle = vinfo.entryid_heb+' ('+vinfo.entryid+')'
                 var quotev_url = word_url+'?version='+vr+'&id='+wb.iid
                 $('#clip_w_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
                 $('#clip_w_ht').attr('lnk', quotev_url)

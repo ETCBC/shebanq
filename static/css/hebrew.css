@@ -550,6 +550,12 @@ a.t1_ctrl {
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
 }
+.dirty {
+    color: #ff0000;
+}
+.dirty:hover {
+    color: #ff0000;
+}
 td.t1_stat {
     width: 10px;
 }
@@ -930,6 +936,10 @@ span.wd1_lang, span.l_wd1_lang, .i_lan {
 span.wd1_pos, span.l_wd1_pos, .i_pos {
     font-weight: bold;
     color: #0000ff;
+}
+span.wd1_pdp, span.l_wd1_pdp, .i_pdp {
+    font-weight: bold;
+    color: #00aaaa;
 }
 span.wd1_subpos, span.l_wd1_subpos, .i_subpos, .i_nametype {
     color: #0000ff;

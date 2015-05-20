@@ -79,7 +79,7 @@ for (i,x) in enumerate(t1_statorder):
 field_names = dict(
     txt_il='''
         word_heb word_vlex word_clex word_tran word_lex word_glex word_gloss
-        word_subpos word_pos word_lang word_number
+        word_subpos word_pos word_pdp word_lang word_number
         word_gender word_gnumber word_person word_state word_tense word_stem
         word_nme word_pfm word_prs word_uvf word_vbe word_vbs
         subphrase_border subphrase_number subphrase_rela
@@ -144,7 +144,7 @@ hebrewdata_lines_spec = '''
     tt:tt=word_tran=text-t
     tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
     gl:gl=word_gloss=gloss
-    wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
+    wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
     wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
     sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
@@ -161,7 +161,7 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=(
         '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 alnum:128 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
+        '''alnum:10 alnum:30 int:1-150 alinum:128 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
         ),
         {'': '''4 Genesis 1 -1 1 x m txt_p'''},
@@ -172,7 +172,7 @@ specs = dict(
         tt
         tl tl_tlv tl_tlc
         gl
-        wd1 wd1_subpos wd1_pos wd1_lang wd1_n
+        wd1 wd1_subpos wd1_pos wd1_pdp wd1_lang wd1_n
         wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
         wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
         sp sp_rela sp_n
@@ -185,7 +185,7 @@ specs = dict(
         bool
         bool bool bool
         bool
-        bool bool bool bool bool
+        bool bool bool bool bool bool
         bool bool bool bool bool bool bool
         bool bool bool bool bool bool bool
         bool bool bool
@@ -198,7 +198,7 @@ specs = dict(
         x
         x x v
         v
-        v x v x x
+        v x v x x x
         v v v v v v v
         x x x v x v x
         v v v
@@ -217,9 +217,9 @@ specs = dict(
         dict(q='white', w='black'),
     ),
     rest=(
-        '''pref lan letter''',
-        '''alnum:30 enum:hbo,arc int:1-100000''',
-        {'': '''my hbo 1488'''},
+        '''pref lan letter extra''',
+        '''alnum:30 enum:hbo,arc int:1-100000 alnum:64''',
+        {'': '''my hbo 1488 -'''},
     )
 )
 
@@ -275,6 +275,8 @@ legend_tpl = '''
                 <a target="_blank" href="{base_doc}/ls.html"><span class="il l_wd1_subpos">lexical set</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_pos" name="wd1_pos"/>
                 <a target="_blank" href="{base_doc}/sp.html"><span class="il l_wd1_pos">part-of-speech</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd1_pdp" name="wd1_pdp"/>
+                <a target="_blank" href="{base_doc}/pdp.html" title="phrase dependent part-of-speech"><span class="il l_wd1_pdp">pdp</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_lang" name="wd1_lang"/>
                 <a target="_blank" href="{base_doc}/language.html"><span class="il l_wd1_lang">language</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_n" name="wd1_n"/>
@@ -397,7 +399,7 @@ text_tpl = u'''<table class="il c">
         <td class="il gl"><span class="gl">{word_gloss}</span></td>
     </tr>
     <tr class="il wd1">
-        <td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td>
+        <td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_pdp">{word_pdp}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td>
     </tr>
     <tr class="il wd2">
         <td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td>
@@ -424,9 +426,9 @@ def vcompile(tp):
         return lambda d, x: x if x in {'x', 'v'} else d
     (t, v) = tp.split(':')
     if t == 'alnum':
-        #return lambda d, x: x if x != None and len(unicode(x)) < int(v) and unicode(x).replace(u'_',u'').replace(u' ',u'').isalnum() else d
-        return lambda d, x: d if x == None else x if type(x) is int and len(str(x)) < int(v) else x if type(x) is str and len(x) < int(v) else d
-        #return lambda d, x: x if x != None and len(str(x)) < int(v) else d
+        return lambda d, x: x if x != None and len(unicode(x)) < int(v) and unicode(x).replace(u'_',u'').replace(u' ',u'').isalnum() else d
+    elif t == 'alinum':
+        return lambda d, x: d if x == None else u'{}'.format(x) if type(x) is int and x < 2 ** (int(v) / 4) else x if (type(x) is unicode or type(x) is str) and len(x) < int(v) and x.replace(u'_',u'').replace(u' ',u'').isalnum() else d
     elif t == 'int':
         (lowest, highest) = v.split('-')
         return lambda d, x: int(x) if x != None and str(x).isdigit() and int(x) >= int(lowest) and int(x) <= int(highest) else int(d) if d != None else d
@@ -487,17 +489,36 @@ def vsel(qw, iid, typ):
 def legend(): return legend_tpl.format(base_doc=base_doc)
 def colorpicker(qw, iid, typ): return u'{s}{p}\n'.format(s=vsel(qw, iid, typ), p=ctable(qw, iid))
 
-def get_fields(tp):
-    if tp == 'txt_il':
-        thesehfields = []
-        for (line, fields) in hebrewdata_lines:
-            if get_request_val('hebrewdata', '', line) == 'v':
-                for (f, name, pretty_name) in fields:
-                    if get_request_val('hebrewdata', '', f) == 'v':
-                        thesehfields.append((name, pretty_name))
+def get_fields(tp, qw=qw):
+    if qw == None or qw != 'n':
+        if tp == 'txt_il':
+            thesehfields = []
+            for (line, fields) in hebrewdata_lines:
+                if get_request_val('hebrewdata', '', line) == 'v':
+                    for (f, name, pretty_name) in fields:
+                        if get_request_val('hebrewdata', '', f) == 'v':
+                            thesehfields.append((name, pretty_name))
+        else:
+            thesehfields = hfields[tp]
+        return thesehfields
     else:
-        thesehfields = hfields[tp]
-    return thesehfields
+        if tp == 'txt_p':
+            fields = (
+                ('clause_atom', 'ca_nr'),
+                ('keywords', 'keyw'), ('status', 'status'), ('ntext', 'note'),
+            )
+        else:
+            fields = (
+                ('clause_atom', 'ca_nr'),
+                ('clause_atom.text', 'ca_txt'),
+                ('shebanq_note.note.keywords', 'keyw'), ('shebanq_note.note.status', 'status'), ('shebanq_note.note.ntext', 'note'),
+                ('shebanq_note.note.created_on', 'created_on'),
+                ('shebanq_note.note.modified_on', 'modified_on'),
+                ('if(shebanq_note.note.is_shared = "T", "T", "F") as shared', 'shared'),
+                ('if(shebanq_note.note.is_published = "T", "T", "F") as published', 'published'),
+                ('ifnull(shebanq_note.note.published_on, "") as pub', 'published_on'),
+            )
+        return fields
     
 class Viewsettings():
     def __init__(self, versions):

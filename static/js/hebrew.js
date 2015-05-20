@@ -673,6 +673,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
     this.loaded = false
     this.show = false
+    this.dirty = false
     this.version = vr
     this.book = bk
     this.chapter = ch
@@ -680,6 +681,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.ctrl = ctrl
     this.dest = dest
     this.msgn = new Msg('t1_msg_'+this.book+'_'+this.chapter+'_'+this.verse)
+    this.cctrl = this.ctrl.find('a.t1_ctrl')
 
     this.fetch = function() {
         var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse}
@@ -706,6 +708,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.orig_notes = notes
         this.orig_edit = []
         this.gen_html(false)
+        this.dirty = false
         this.decorate()
     }
     this.decorate = function() {
@@ -800,11 +803,48 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     var rev_c = sav_controls.find('a').last()
     this.revert = function() {
         this.gen_html(this.orig_users, this.orig_notes, true)
+        this.dirty = false
         this.decorate()
     }
     rev_c.click(function(e) {e.preventDefault();
         that.revert()
     })
+    this.is_dirty = function() {
+        var notes = this.dest.find('tr[edit]')
+        var dirty = false
+        if (this.orig_edit == undefined) {
+            this.dirty = false;
+            return
+        }
+        for (n = 0; n < this.orig_edit.length; n++) {
+            canr = this.orig_edit[n].canr
+            o_note = this.orig_edit[n].note
+            nid = o_note.nid
+            uid = o_note.uid
+            n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
+            o_stat = o_note.stat
+            n_stat = n_note.find('td.t1_stat a').attr('code')
+            o_kw = o_note.kw
+            n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
+            o_ntxt = o_note.ntxt
+            n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
+            o_shared = o_note.shared
+            n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
+            o_pub = o_note.pub
+            n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
+            if (o_stat != n_stat || o_kw != n_kw || o_ntxt != n_ntxt || o_shared != n_shared || o_pub != n_pub) {
+                dirty = true
+                break
+            }
+        }
+        this.dirty = dirty
+        if (this.dirty) {
+            this.cctrl.addClass('dirty')
+        }
+        else if (this.cctrl.hasClass('dirty')) {
+            this.cctrl.removeClass('dirty')
+        }
+    }
     this.save = function() {
         var data = {
             version: this.version,
@@ -875,7 +915,8 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.clear_msg = function() {
         this.msgn.clear()
     }
-    this.ctrl.find('a.t1_ctrl').click(function(e) {e.preventDefault();
+    this.cctrl.click(function(e) {e.preventDefault();
+        that.is_dirty()
         if (that.show) {that.hide_notes()} else {that.show_notes()}
     })
     sav_controls.hide()
@@ -1278,12 +1319,13 @@ function CSelect(vr, qw) { // for chart selection
             wb.vs.mstatesv(vals)
             wb.vs.hstatesv('q', {sel_one: 'white', active: 'hlcustom'})
             wb.vs.hstatesv('w', {sel_one: 'black', active: 'hlcustom'})
-            var thiscolor = wb.vs.colormap(that.qw)[iid] || defcolor(that.qw == 'q', iid)
             wb.vs.cstatexx('q')
             wb.vs.cstatexx('w')
-            vals = {}
-            vals[iid] = thiscolor
-            wb.vs.cstatesv(that.qw, vals)
+            if (that.qw != 'n') {
+                vals = {}
+                vals[iid] = wb.vs.colormap(that.qw)[iid] || defcolor(that.qw == 'q', iid)
+                wb.vs.cstatesv(that.qw, vals)
+            }
             wb.vs.addHist()
             wb.go()
         })
@@ -1371,11 +1413,14 @@ function MSettings(content) {
         this.content.show()
         legend.hide()
         legendc.hide()
+        // I forgot why I thought setting the csv exports here was necessary. It is done after filling the sidebars.
+        /*
         for (v in versions) {
             if (versions[v]) {
                 set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
             }
         }
+        */
         wb.material.adapt()
     }
     $('.mhradio').click(function(e) {e.preventDefault();
@@ -1640,7 +1685,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             else if (qw == 'w') {
                 this.info = w
                 var wvr = w.versions[vr]
-                $('#itemtag').val(wvr.entry_heb+': '+wvr.entryid)
+                var wentryh = escapeHTML(wvr.entry_heb)
+                var wentryid = escapeHTML(wvr.entryid)
+                $('#itemtag').val(wentryh+': '+wentryid)
                 $('#gobackw').attr('href', words_url+'?lan='+wvr.lan+'&letter='+wvr.entry_heb.charCodeAt(0)+'&goto='+w.id)
             }
             else if (qw == 'n') {
@@ -1652,8 +1699,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 $('#itemtag').val(ufname+' '+ulname+': '+kw)
             }
             for (var v in this.info.versions) {
+                var extra = (qw == 'w')?'':(ufname+'_'+ulname)
                 this.set_vselect(v)
-                set_csv(v, mr, qw, iid)
+                set_csv(v, mr, qw, iid, extra)
             }
             msgs.forEach(function(m) {
                 that.msgo.msg(m)
@@ -2069,17 +2117,20 @@ function ListSettings(qw) { // the view controls belonging to a side bar with a 
     }
 }
 
-function set_csv(vr, mr, qw, iid) {
+function set_csv(vr, mr, qw, iid, extra) {
     if (mr == 'r') {
-        var tasks = {t: 'txt_p', d: 'txt_il', b: wb.vs.tp()}
+        var tasks = {t: 'txt_p', d: 'txt_il'}
+        if (qw != 'n') {
+            tasks['b'] =  wb.vs.tp()
+        }
 
         for (var task in tasks) {
             var tp = tasks[task]
             var csvctrl = $('#csv'+task+'_lnk_'+vr+'_'+qw)
             if (task != 'b' || (tp != 'txt_p' && tp != 'txt_il')) {
                 var ctit = csvctrl.attr('ftitle')
-                csvctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, tp))
-                csvctrl.attr('title', vr+'_'+style[qw]['t']+iid+'_'+tp_labels[tp]+'.csv'+ctit)
+                csvctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, tp, extra))
+                csvctrl.attr('title', vr+'_'+style[qw]['t']+'_'+iid+'_'+extra+'_'+tp_labels[tp]+'.csv'+ctit)
                 csvctrl.show()
             }
             else {
@@ -2279,8 +2330,8 @@ function ViewState(init, pref) {
         }
         return vars
     }
-    this.csv_url = function(vr, mr, qw, iid, tp) {
-        var vars = '?version='+vr+'&mr='+mr+'&qw='+qw+'&iid='+iid+'&tp='+tp
+    this.csv_url = function(vr, mr, qw, iid, tp, extra) {
+        var vars = '?version='+vr+'&mr='+mr+'&qw='+qw+'&iid='+iid+'&tp='+tp+'&extra='+extra
         var data = this.data['hebrewdata']['']
         for (var name in data) {
             vars += '&'+name+'='+data[name] 

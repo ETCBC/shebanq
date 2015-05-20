@@ -72,11 +72,11 @@ CACHING_RAM_ONLY = True
 
 WORD_PAT = re.compile(ur'[^\s]+', re.UNICODE)
 KW_NORM = re.compile(ur'(.)', re.UNICODE)
-KW_DENORM = re.compile(ur'_b([0-9]+)e_', re.UNICODE)
+KW_DENORM = re.compile(ur'_([0-9]+)', re.UNICODE)
 
 def kw_norm(match):
     x = match.group(1)
-    return u'_b{}e_'.format(ord(x))
+    return u'_{}'.format(ord(x))
 
 def kw_denorm(match):
     x = match.group(1)
@@ -732,17 +732,21 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     iid = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     tp = get_request_val('material', '', 'tp')
-    filename = u'{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iid, tp_labels[tp])
+    extra = get_request_val('rest', '', 'extra')
+    if len(extra) > 64: extra = extra[0:64]
+    iidrep = (url2kw(iid).encode('ascii', 'backslashreplace').replace('\\u','_')+'_'+extra) if qw == 'n' else iid
+    filename = u'{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iidrep, tp_labels[tp])
     (authorized, msg) = item_access_read(iid=iid)
     if not authorized:
         return dict(filename=filename, data=msg)
-    hfields = get_fields(tp)
-    head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-    (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid)
-    monads = flatten(monad_sets)
-    data = []
-    if len(monads):
-        sql = u'''
+    hfields = get_fields(tp, qw=qw)
+    if qw != 'n':
+        head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
+        (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid)
+        monads = flatten(monad_sets)
+        data = []
+        if len(monads):
+            sql = u'''
 select 
     book.name, chapter.chapter_num, verse.verse_num,
     {hflist}
@@ -761,10 +765,37 @@ order by
     word.word_number
 ;
 '''.format(
-            hflist=u', '.join(u'word.{}'.format(hf[0]) for hf in hfields),
-            monads=u','.join(str(x) for x in monads),
-        )
-        data = passage_dbs[vr].executesql(sql)
+                hflist=u', '.join(u'word.{}'.format(hf[0]) for hf in hfields),
+                monads=u','.join(str(x) for x in monads),
+            )
+            data = passage_dbs[vr].executesql(sql)
+    else:
+        head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
+        comps = iid.split(u'_', 1)
+        if len(comps) != 2:
+            data = []
+        else:
+            (uid, kw_url) = comps
+            kw_sql = url2kw(kw_url).replace(u"'", u"''")
+            myid = auth.user.id if auth.user != None else None
+            extra = u''' or created_by = {} '''.format(uid) if myid == uid else u''
+            sql = u'''
+select
+    shebanq_note.note.book, shebanq_note.note.chapter, shebanq_note.note.verse,
+    {hflist}
+from shebanq_note.note
+inner join shebanq_note.key_note on shebanq_note.key_note.note_id = shebanq_note.note.id
+inner join book on shebanq_note.note.book = book.name
+inner join clause_atom on clause_atom.ca_num = shebanq_note.note.clause_atom and clause_atom.book_id = book.id
+where key_note.keyword = '{kw}' and note.version = '{vr}' and (note.is_shared = 'T' {ex})
+;
+'''.format(
+                hflist=u', '.join(hf[0] for hf in hfields),
+                kw=kw_sql,
+                vr=vr,
+                ex=extra,
+            )
+            data = passage_dbs[vr].executesql(sql)
     return dict(filename=filename, data=csv([head_row]+list(data)))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
