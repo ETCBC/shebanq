@@ -161,10 +161,10 @@ for item in hebrewdata_lines_spec:
 specs = dict(
     material=(
         '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 alinum:128 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
+        '''alnum:10 alnum:30 int:1-150 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
         ),
-        {'': '''4 Genesis 1 -1 1 x m txt_p'''},
+        {'': '''4 Genesis 1 None 1 x m txt_p'''},
     ),
     hebrewdata=('''
         ht
@@ -219,7 +219,7 @@ specs = dict(
     rest=(
         '''pref lan letter extra''',
         '''alnum:30 enum:hbo,arc int:1-100000 alnum:64''',
-        {'': '''my hbo 1488 -'''},
+        {'': '''my hbo 1488 None'''},
     )
 )
 
@@ -421,14 +421,30 @@ text_tpl = u'''<table class="il c">
     </tr>
 </table>'''
 
+def iid_encode(qw, idpart, kw=None, sep=u'|'):
+    if qw == 'n': return (u'{}|{}'.format(idpart, kw)).encode('utf8').encode('base64').replace('\n','').replace('=', '_')
+    if qw == 'w': return idpart
+    if qw == 'q': return str(idpart)
+
+def iid_decode(qw, iidrep, sep=u'|', rsep=None):
+    if qw == 'n': (idpart, kw) = iidrep.replace('_','=').decode('base64').decode('utf8').split(sep, 1)
+    if qw == 'w': (idpart, kw) = (iidrep, u'')
+    if qw == 'q': (idpart, kw) = (int(iidrep), u'')
+    if rsep == None: result = (idpart, kw)
+    else:
+        if qw == 'n': result = rsep.join((str(idpart), kw))
+        else: result = unicode(idpart)
+    return result
+
 def vcompile(tp):
     if tp == 'bool':
         return lambda d, x: x if x in {'x', 'v'} else d
     (t, v) = tp.split(':')
     if t == 'alnum':
         return lambda d, x: x if x != None and len(unicode(x)) < int(v) and unicode(x).replace(u'_',u'').replace(u' ',u'').isalnum() else d
-    elif t == 'alinum':
-        return lambda d, x: d if x == None else u'{}'.format(x) if type(x) is int and x < 2 ** (int(v) / 4) else x if (type(x) is unicode or type(x) is str) and len(x) < int(v) and x.replace(u'_',u'').replace(u' ',u'').isalnum() else d
+    elif t == 'base64':
+        return lambda d, x: d if x == None else x if (type(x) is unicode or type(x) is str) and len(x) < int(v) and x.replace(u'_',u'').isalnum() else d
+        #return lambda d, x: d if x == None else u'{}'.format(x) if type(x) is int and x < 2 ** (int(v) / 4) else x if (type(x) is unicode or type(x) is str) and len(x) < int(v) and x.replace(u'_',u'').replace(u' ',u'').isalnum() else d
     elif t == 'int':
         (lowest, highest) = v.split('-')
         return lambda d, x: int(x) if x != None and str(x).isdigit() and int(x) >= int(lowest) and int(x) <= int(highest) else int(d) if d != None else d
@@ -447,7 +463,9 @@ for group in specs:
     for qw in init:
         initk = init[qw].strip().split()
         for (i, f) in enumerate(flds):
-            settings[group][qw][f] = initk[i]
+            this_initk = initk[i]
+            if this_initk == 'None': this_initk = ''
+            settings[group][qw][f] = this_initk
             validation[group][qw][f] = valtype[i]
 
 def get_request_val(group, qw, f, default=True):

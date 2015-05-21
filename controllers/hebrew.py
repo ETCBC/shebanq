@@ -6,7 +6,7 @@ import collections, json, datetime, re
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views
+from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views, iid_encode, iid_decode
 from mql import mql
 
 # Note on caching
@@ -71,19 +71,6 @@ CACHING = True
 CACHING_RAM_ONLY = True
 
 WORD_PAT = re.compile(ur'[^\s]+', re.UNICODE)
-KW_NORM = re.compile(ur'(.)', re.UNICODE)
-KW_DENORM = re.compile(ur'_([0-9]+)', re.UNICODE)
-
-def kw_norm(match):
-    x = match.group(1)
-    return u'_{}'.format(ord(x))
-
-def kw_denorm(match):
-    x = match.group(1)
-    return unichr(int(x))
-
-def kw2url(kw): return KW_NORM.sub(kw_norm, kw)
-def url2kw(ur): return KW_DENORM.sub(kw_denorm, ur)
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -253,8 +240,8 @@ def material():
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
     tp = get_request_val('material', '', 'tp')
-    iid = get_request_val('material', '', 'iid')
-    (authorized, msg) = item_access_read(iid=iid)
+    iidrep = get_request_val('material', '', 'iid')
+    (authorized, msg) = item_access_read(iidrep=iidrep)
     if not authorized:
         return dict(
             version=vr,
@@ -263,7 +250,6 @@ def material():
             msg=msg,
             hits=0,
             results=0,
-            iid=iid,
             pages=0,
             page=0,
             pagelist=json.dumps([]),
@@ -273,12 +259,12 @@ def material():
     page = get_request_val('material', '', 'page')
     mrrep = 'm' if mr == 'm' else qw
     return from_cache(
-        'verses_{}_{}_{}_{}_{}_'.format(vr, mrrep, bk if mr=='m' else iid, ch if mr=='m' else page, tp),
-        lambda: material_c(vr, mr, qw, bk, iid, ch, page, tp),
+        'verses_{}_{}_{}_{}_{}_'.format(vr, mrrep, bk if mr=='m' else iidrep, ch if mr=='m' else page, tp),
+        lambda: material_c(vr, mr, qw, bk, iidrep, ch, page, tp),
         None,
     )
 
-def material_c(vr, mr, qw, bk, iid, ch, page, tp):
+def material_c(vr, mr, qw, bk, iidrep, ch, page, tp):
     if mr == 'm':
         (book, chapter) = getpassage()
         material = Verses(passage_dbs, vr, mr, chapter=chapter['id'], tp=tp) if chapter else None
@@ -293,7 +279,7 @@ def material_c(vr, mr, qw, bk, iid, ch, page, tp):
             monads=json.dumps([]),
         )
     elif mr == 'r':
-        if iid == None:
+        if iidrep == None:
             msg = u'No {} selected'.format('query' if qw == 'q' else u'word')
             result = dict(
                 mr=mr,
@@ -301,7 +287,6 @@ def material_c(vr, mr, qw, bk, iid, ch, page, tp):
                 msg=msg,
                 hits=0,
                 results=0,
-                iid=iid,
                 pages=0,
                 page=0,
                 pagelist=json.dumps([]),
@@ -309,8 +294,9 @@ def material_c(vr, mr, qw, bk, iid, ch, page, tp):
                 monads=json.dumps([]),
             )
         else:
-            (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid)
-            (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets, iid)
+            (iid, kw) = iid_decode(qw, iidrep)
+            (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid, kw)
+            (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets)
             material = Verses(passage_dbs, vr, mr, verses, tp=tp)
             result = dict(
                 mr=mr,
@@ -318,7 +304,6 @@ def material_c(vr, mr, qw, bk, iid, ch, page, tp):
                 msg=None,
                 hits=nmonads,
                 results=nresults,
-                iid=iid,
                 pages=npages,
                 page=page,
                 pagelist=json.dumps(pagelist(page, npages, 10)),
@@ -689,14 +674,15 @@ def sidem_c(vr, qw, bk, ch, pub):
     return result
 
 def query():
-    iid = get_request_val('material', '', 'iid')
+    iidrep = get_request_val('material', '', 'iid')
     if request.extension == 'json':
-        (authorized, msg) = item_access_read(iid=iid)
+        (authorized, msg) = item_access_read(iidrep=iidrep)
         if not authorized:
             result = dict(good=False, msg=[msg])
         else:
             vr = get_request_val('material', '', 'version')
             msgs = []
+            (iid, kw) = iid_decode('q', iidrep)
             qrecord = get_query_info(iid, vr, msgs, with_ids=False, single_version=False, po=True)
             result = dict(good=qrecord != None, msg=msgs, data=qrecord)
             return dict(data=json.dumps(result))
@@ -704,8 +690,6 @@ def query():
         request.vars['mr'] = 'r'
         request.vars['qw'] = 'q'
         request.vars['tp'] = 'txt_p'
-        #request.vars['vr'] = vr
-        request.vars['iid'] = iid
         request.vars['page'] = 1
     return text()
 
@@ -713,8 +697,13 @@ def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     request.vars['tp'] = 'txt_p'
-    #request.vars['version'] = get_request_val('material', '', 'version')
-    request.vars['iid'] = get_request_val('material', '', 'iid')
+    request.vars['page'] = 1
+    return text()
+
+def note():
+    request.vars['mr'] = 'r'
+    request.vars['qw'] = 'n'
+    request.vars['tp'] = 'txt_p'
     request.vars['page'] = 1
     return text()
 
@@ -729,14 +718,17 @@ def csv(data): # converts an data structure of rows and fields into a csv string
 
 def item(): # controller to produce a csv file of query results or lexeme occurrences, where fields are specified in the current legend
     vr = get_request_val('material', '', 'version')
-    iid = get_request_val('material', '', 'iid')
+    iidrep = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
     tp = get_request_val('material', '', 'tp')
     extra = get_request_val('rest', '', 'extra')
+    if extra: extra = '_'+extra
     if len(extra) > 64: extra = extra[0:64]
-    iidrep = (url2kw(iid).encode('ascii', 'backslashreplace').replace('\\u','_')+'_'+extra) if qw == 'n' else iid
-    filename = u'{}_{}{}_{}.csv'.format(vr, style[qw]['t'], iidrep, tp_labels[tp])
-    (authorized, msg) = item_access_read(iid=iid)
+    (iid, kw) = iid_decode(qw, iidrep)
+    iidrep2 = iid_decode(qw, iidrep, rsep=u' ')
+    filename = u'{}_{}{}_{}{}.csv'.format(vr, style[qw]['t'], iidrep2, tp_labels[tp], extra)
+    print filename
+    (authorized, msg) = item_access_read(iidrep=iidrep)
     if not authorized:
         return dict(filename=filename, data=msg)
     hfields = get_fields(tp, qw=qw)
@@ -771,15 +763,10 @@ order by
             data = passage_dbs[vr].executesql(sql)
     else:
         head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
-        comps = iid.split(u'_', 1)
-        if len(comps) != 2:
-            data = []
-        else:
-            (uid, kw_url) = comps
-            kw_sql = url2kw(kw_url).replace(u"'", u"''")
-            myid = auth.user.id if auth.user != None else None
-            extra = u''' or created_by = {} '''.format(uid) if myid == uid else u''
-            sql = u'''
+        kw_sql = kw.replace(u"'", u"''")
+        myid = auth.user.id if auth.user != None else None
+        extra = u''' or created_by = {} '''.format(uid) if myid == iid else u''
+        sql = u'''
 select
     shebanq_note.note.book, shebanq_note.note.chapter, shebanq_note.note.verse,
     {hflist}
@@ -790,72 +777,156 @@ inner join clause_atom on clause_atom.ca_num = shebanq_note.note.clause_atom and
 where key_note.keyword = '{kw}' and note.version = '{vr}' and (note.is_shared = 'T' {ex})
 ;
 '''.format(
-                hflist=u', '.join(hf[0] for hf in hfields),
-                kw=kw_sql,
-                vr=vr,
-                ex=extra,
-            )
-            data = passage_dbs[vr].executesql(sql)
+            hflist=u', '.join(hf[0] for hf in hfields),
+            kw=kw_sql,
+            vr=vr,
+            ex=extra,
+        )
+        data = passage_dbs[vr].executesql(sql)
     return dict(filename=filename, data=csv([head_row]+list(data)))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
     vr = get_request_val('material', '', 'version')
-    iid = get_request_val('material', '', 'iid')
+    iidrep = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
-    (authorized, msg) = item_access_read(iid=iid)
+    (authorized, msg) = item_access_read(iidrep=iidrep)
     if not authorized:
         result = get_chart(vr, [])
         result.update(qw=qw)
         return result()
     return from_cache(
-        'chart_{}_{}_{}_'.format(vr, qw, iid),
-        lambda: chart_c(vr, qw, iid),
+        'chart_{}_{}_{}_'.format(vr, qw, iidrep),
+        lambda: chart_c(vr, qw, iidrep),
         None,
     )
 
-def chart_c(vr, qw, iid): 
-    (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid)
+def chart_c(vr, qw, iidrep): 
+    (iid, kw) = iid_decode(qw, iidrep)
+    (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid, kw)
     result = get_chart(vr, monad_sets)
     result.update(qw=qw)
     return result
 
 def sideqm():
     session.forget(response)
-    iid = get_request_val('material', '', 'iid')
+    iidrep = get_request_val('material', '', 'iid')
     vr = get_request_val('material', '', 'version')
-    (authorized, msg) = item_access_read(iid=iid)
+    (authorized, msg) = item_access_read(iidrep=iidrep)
     if authorized:
         msg = u'fetching query'
     return dict(load=LOAD('hebrew', 'sideq', extension='load',
-        vars=dict(mr='r', qw='q', version=vr, iid=iid),
+        vars=dict(mr='r', qw='q', version=vr, iid=iidrep),
         ajax=False, ajax_trap=True, target='querybody', 
         content=msg,
     ))
 
 def sidewm():
     session.forget(response)
-    iid = get_request_val('material', '', 'iid')
+    iidrep = get_request_val('material', '', 'iid')
     vr = get_request_val('material', '', 'version')
-    (authorized, msg) = item_access_read(iid=iid)
+    (authorized, msg) = item_access_read(iidrep=iidrep)
     if authorized:
         msg = u'fetching word'
     return dict(load=LOAD('hebrew', 'sidew', extension='load',
-        vars=dict(mr='r', qw='w', version=vr, iid=iid),
+        vars=dict(mr='r', qw='w', version=vr, iid=iidrep),
         ajax=False, ajax_trap=True, target='wordbody', 
         content=msg,
     ))
 
 def sidenm():
     session.forget(response)
-    iid = get_request_val('material', '', 'iid')
+    iidrep = get_request_val('material', '', 'iid')
     vr = get_request_val('material', '', 'version')
-    if iid:
-        msg = u'fetching note'
+    msg = u'Not a valid id {}'.format(iidrep)
+    if iidrep:
+        msg = u'fetching note set'
     return dict(load=LOAD('hebrew', 'siden', extension='load',
-        vars=dict(mr='r', qw='n', version=vr, iid=iid),
+        vars=dict(mr='r', qw='n', version=vr, iid=iidrep),
         ajax=False, ajax_trap=True, target='notebody', 
         content=msg,
     ))
+
+def sideq():
+    session.forget(response)
+    msgs = []
+    iidrep = get_request_val('material', '', 'iid')
+    vr = get_request_val('material', '', 'version')
+    (iid, kw) = iid_decode('q', iidrep)
+    (authorized, msg) = query_auth_read(iid)
+    if iid == 0 or not authorized:
+        msgs.append(('error', msg))
+        return dict(
+            writable=False,
+            iidrep = iidrep,
+            vr = vr,
+            qr = dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    q_record = get_query_info(iid, vr, msgs, with_ids=True, single_version=False, po=True)
+    if q_record == None:
+        return dict(
+            writable=True,
+            iidrep = iidrep,
+            vr = vr,
+            qr = dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+
+    (authorized, msg) = query_auth_write(iid=iid)
+
+    return dict(
+        writable=authorized,
+        iidrep = iidrep,
+        vr = vr,
+        qr = q_record,
+        q=json.dumps(q_record),
+        msgs=json.dumps(msgs),
+    )
+
+def sidew():
+    session.forget(response)
+    msgs = []
+    vr = get_request_val('material', '', 'version')
+    iidrep = get_request_val('material', '', 'iid')
+    (iid, kw) = iid_decode('w', iidrep)
+    (authorized, msg) = word_auth_read(vr, iid)
+    if not authorized:
+        msgs.append(('error', msg))
+        return dict(
+            wr=dict(),
+            w=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    w_record = get_word_info(iid, vr, msgs)
+    return dict(
+        vr=vr,
+        wr=w_record,
+        w=json.dumps(w_record),
+        msgs=json.dumps(msgs),
+    )
+
+def siden():
+    session.forget(response)
+    msgs = []
+    vr = get_request_val('material', '', 'version')
+    iidrep = get_request_val('material', '', 'iid')
+    if not iidrep:
+        msg = u'Not a valid id {}'.format(iidrep)
+        msgs.append(('error', msg))
+        return dict(
+            nr=dict(),
+            n=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    n_record = get_note_info(iidrep, vr, msgs)
+    return dict(
+        vr=vr,
+        nr=n_record,
+        n=json.dumps(n_record),
+        msgs=json.dumps(msgs),
+    )
 
 def words():
     viewsettings = Viewsettings(versions)
@@ -872,19 +943,15 @@ def words():
 
 def queries():
     msgs = []
-    qid = check_id('goto', 'query', msgs)
+    qid = check_id('goto', 'q', 'query', msgs)
     if qid != None:
-        if not query_auth_read(qid):
-            qid = None
-    return dict(qid=qid if qid != None else 0)
+        if not query_auth_read(qid): qid = 0
+    return dict(qid=qid)
 
 def notes():
     msgs = []
-    nid = check_id('goto', 'note', msgs)
-    if nid != None:
-        if not note_auth_read(nid):
-            nid = None
-    return dict(nid=nid if nid != None else 0)
+    nkid = check_id('goto', 'n', 'note', msgs)
+    return dict(nkid=nkid)
 
 def words_page(viewsettings, vr, lan=None, letter=None):
     (letters, words) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
@@ -916,31 +983,22 @@ select * from lexicon where id = '{}'
         records = passage_dbs[v].executesql(sql, as_dict=True)
         if records == None:
             msgs.append(('error', u'Cannot lookup word with id {} in version'.format(iid, v)))
-            fields = {}
         elif len(records) == 0:
-            msgs.append(('error', u'No word with id {} in version {}'.format(iid, v)))
-            fields = {}
+            msgs.append(('warning', u'No word with id {} in version {}'.format(iid, v)))
         else:
-            fields = records[0]
-        w_record['versions'][v] = fields
+            w_record['versions'][v] = records[0]
     return w_record
 
-def get_note_info(iid, vr, msgs):
-    n_record = dict(id=iid, uid=0, ufname='N?', ulname='N?', kw='', versions={})
-    comps = iid.split(u'_', 1)
-    if len(comps) != 2:
-        return n_record
-    (uid, kw_url) = comps
-    kw = url2kw(kw_url)
-    n_record['kw'] = kw
-    n_record['versions'] = count_n_notes(uid, kw)
+def get_note_info(iidrep, vr, msgs):
+    (iid, kw) = iid_decode('n', iidrep)
+    n_record = dict(id=iidrep, uid=iid, ufname='N?', ulname='N?', kw=kw, versions={})
+    n_record['versions'] = count_n_notes(iid, kw)
     sql = u'''
 select first_name, last_name from auth_user where id = '{}'
 ;
-'''.format(uid)
+'''.format(iid)
     uinfo = db.executesql(sql)
     if uinfo != None and len(uinfo) > 0:
-        n_record['uid'] = uid
         n_record['ufname'] = uinfo[0][0]
         n_record['ulname'] = uinfo[0][1]
     return n_record
@@ -1041,85 +1099,6 @@ where query_id = {}
         query_fields(vr, q_record, recordx, single_version=False)
         return q_record
 
-def sideq():
-    session.forget(response)
-    msgs = []
-    iid = get_request_val('material', '', 'iid')
-    vr = get_request_val('material', '', 'version')
-    (authorized, msg) = query_auth_read(iid)
-    if not authorized or not iid:
-        msgs.append(('error', msg))
-        return dict(
-            writable=False,
-            iid = iid,
-            vr = vr,
-            qr = dict(),
-            q=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-        )
-    q_record = get_query_info(iid, vr, msgs, with_ids=True, single_version=False, po=True)
-    if q_record == None:
-        return dict(
-            writable=True,
-            iid = iid,
-            vr = vr,
-            qr = dict(),
-            q=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-        )
-
-    (authorized, msg) = query_auth_write(iid=iid)
-
-    return dict(
-        writable=authorized,
-        iid = iid,
-        vr = vr,
-        qr = q_record,
-        q=json.dumps(q_record),
-        msgs=json.dumps(msgs),
-    )
-
-def sidew():
-    session.forget(response)
-    msgs = []
-    vr = get_request_val('material', '', 'version')
-    iid = get_request_val('material', '', 'iid')
-    (authorized, msg) = word_auth_read(vr, iid)
-    if not authorized or not iid:
-        msgs.append(('error', msg))
-        return dict(
-            wr=dict(),
-            w=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-        )
-    w_record = get_word_info(iid, vr, msgs)
-    return dict(
-        vr=vr,
-        wr=w_record,
-        w=json.dumps(w_record),
-        msgs=json.dumps(msgs),
-    )
-
-def siden():
-    session.forget(response)
-    msgs = []
-    vr = get_request_val('material', '', 'version')
-    iid = get_request_val('material', '', 'iid')
-    if not iid:
-        msgs.append(('error', msg))
-        return dict(
-            nr=dict(),
-            n=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-        )
-    n_record = get_note_info(iid, vr, msgs)
-    return dict(
-        vr=vr,
-        nr=n_record,
-        n=json.dumps(n_record),
-        msgs=json.dumps(msgs),
-    )
-
 def pagelist(page, pages, spread):
     factor = 1
     filtered_pages = {1, page, pages}
@@ -1129,16 +1108,13 @@ def pagelist(page, pages, spread):
         factor *= spread
     return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
 
-def pq():
+def query_tree():
     myid = None
     if auth.user:
         myid = auth.user.id
-    return pq_c(myid)
-
-def pq_c(myid):
     linfo = collections.defaultdict(lambda: {})
 
-    def title_badge(myid, lid, ltype, newtype, publ, good, num, tot):
+    def title_badge(lid, ltype, newtype, publ, good, num, tot):
         name = linfo[ltype][lid] if ltype != None else u'Shared Queries'
         nums = []
         if publ != 0: nums.append(u'<span class="special fa fa-quote-right"> {}</span>'.format(publ))
@@ -1301,7 +1277,7 @@ select name, id from project order by name
 
     ccount = dict((x[0], len(x[1])) for x in countset.items())
     ccount['uid'] = myid
-    title = title_badge(myid, None, None, 'o', count_publ, count_good, count, count)
+    title = title_badge(None, None, 'o', count_publ, count_good, count, count)
     dest = [dict(title=u'{}'.format(title), folder=True, children=[], data=ccount)]
     curdest = dest[-1]['children']
     cursource = tree
@@ -1310,7 +1286,7 @@ select name, id from project order by name
         opubl = counto_publ[oid]
         ogood = counto_good[oid]
         otot = counto_tot[oid]
-        otitle = title_badge(myid, oid, 'o', 'p', opubl, ogood, onum, otot)
+        otitle = title_badge(oid, 'o', 'p', opubl, ogood, onum, otot)
         curdest.append(dict(title=u'{}'.format(otitle), folder=True, children=[]))
         curodest = curdest[-1]['children']
         curosource = cursource[oid]
@@ -1319,7 +1295,7 @@ select name, id from project order by name
             ppubl = countp_publ[oid][pid]
             pgood = countp_good[oid][pid]
             ptot = countp_tot[pid]
-            ptitle = title_badge(myid, pid, 'p', 'q', ppubl, pgood, pnum, ptot)
+            ptitle = title_badge(pid, 'p', 'q', ppubl, pgood, pnum, ptot)
             curodest.append(dict(title=u'{}'.format(ptitle), folder=True, children=[]))
             curpdest = curodest[-1]['children']
             curpsource = curosource[pid]
@@ -1328,7 +1304,7 @@ select name, id from project order by name
                 upubl = countu_publ[oid][pid][uid]
                 ugood = countu_good[oid][pid][uid]
                 utot = countu_tot[uid]
-                utitle = title_badge(myid, uid, 'u', None, upubl, ugood, unum, utot)
+                utitle = title_badge(uid, 'u', None, upubl, ugood, unum, utot)
                 curpdest.append(dict(title=u'{}'.format(utitle), folder=True, children=[]))
                 curudest = curpdest[-1]['children']
                 curusource = curpsource[uid]
@@ -1343,26 +1319,23 @@ select name, id from project order by name
                         u' '.join(formatversion('q', qid, v, qversions[rversion_index[v]]) for v in rversion_order),
                         u'qmy' if qown else u'',
                         u'' if qshared else u'qpriv',
-                        qid,
+                        iid_encode('q', qid),
                         h_esc(qname),
                         rename,
                     ), key=u'q{}'.format(qid), folder=False))
     return dict(data=json.dumps(dest))
 
-def pn():
+def note_tree():
     myid = None
     if auth.user:
         myid = auth.user.id
-    return pn_c(myid)
-
-def pn_c(myid):
     linfo = collections.defaultdict(lambda: {})
 
     def title_badge(lid, ltype, tot):
         name = linfo[ltype][lid] if ltype != None else u'Shared Notes'
         badge = ''
         if tot != 0:
-            badge = u'<span class="total special fa fa-quote-right"> {}</span>'.format(tot)
+            badge = u'<span class="total special"> {}</span>'.format(tot)
         return u'<span n="1">{}</span><span class="brn">({})</span>'.format(h_esc(name), badge)
 
     condition = u'''
@@ -1379,6 +1352,7 @@ order by keyword
     pnotek = note_db.executesql(pnotek_sql)
     pnote_sql = u'''
 select
+    note.id,
     note.version,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.id as uid
 from note
@@ -1395,24 +1369,24 @@ order by shebanq_web.auth_user.last_name, shebanq_web.auth_user.first_name, note
     pnotes = collections.OrderedDict()
     rversion_order = [v for v in version_order if versions[v]['date']]
     rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
-    for (nvr, uname, uid) in pnote:
-        for nname in kindex[nid]:
-            nkid = uname+'_'+nname
+    for (nid, nvr, uname, uid) in pnote:
+        for kw in kindex[nid]:
+            nkid = iid_encode('n', uid, kw=kw)
             if nkid not in pnotes:
-                pnotes[nkid] = {'': (uname, uid, nname), 'v': [0 for v in rversion_order]}
+                pnotes[nkid] = {'': (uname, uid, kw), 'v': [0 for v in rversion_order]}
             pnotes[nkid]['v'][rversion_index[nvr]] += 1
 
     tree = collections.OrderedDict()
     countset = collections.defaultdict(lambda: set())
     countu = collections.defaultdict(lambda: 0)
     count = 0
-    for nid in pnotes:
-        pninfo = pnotes[nid]
+    for nkid in pnotes:
+        pninfo = pnotes[nkid]
         (uname, uid, nname) = pninfo['']
         countset['u'].add(uid)
-        countset['n'].add(nid)
+        countset['n'].add(nkid)
         linfo['u'][uid] = uname
-        tree.setdefault(uid, []).append(nid)
+        tree.setdefault(uid, []).append(nkid)
         count +=1
         countu[uid] += 1
 
@@ -1431,15 +1405,18 @@ order by shebanq_web.auth_user.last_name, shebanq_web.auth_user.first_name, note
         curdest.append(dict(title=u'{}'.format(utitle), folder=True, children=[]))
         curudest = curdest[-1]['children']
         curusource = cursource[uid]
-        for nid in curusource:
-            pninfo = linfo['n'][nid]
+        for nkid in curusource:
+            pninfo = linfo['n'][nkid]
             (uname, uid, nname) = pninfo['']
             nversions = pninfo['v']
-            curudest.append(dict(title=u'{} <a class="n" n="1" nid="{}" href="#">{}</a> <a class="md" href="#"></a>'.format(
-                u' '.join(formatversion('n', nid, v, nversions[rversion_index[v]]) for v in rversion_order),
-                nid,
-                h_esc(nname),
-            ), key=u'n{}'.format(nid), folder=False))
+            curudest.append(dict(
+                title=u'{} <a class="n t1_kw" n="1" nkid="{}" href="#">{}</a> <a class="md" href="#"></a>'.format(
+                        u' '.join(formatversion('n', nkid, v, nversions[rversion_index[v]]) for v in rversion_order),
+                        nkid,
+                        h_esc(nname),
+                    ),
+                key=u'n{}'.format(nkid), folder=False),
+            )
     return dict(data=json.dumps(dest))
 
 def formatversion(qw, lid, vr, st):
@@ -1461,7 +1438,7 @@ def formatversion(qw, lid, vr, st):
             cls = 'error'
         return u'<a href="#" class="ctrl br{} {} fa fa-{}" {}id="{}" v="{}"></a>'.format(qw, cls, icon, qw, lid, vr)
     else:
-        return u'<a href="#" class="ctrl br{}" {}id="{}" v="{}"></a>'.format(qw, qw, lid, vr)
+        return u'<a href="#" class="ctrl br{}" nkid="{}" v="{}">{}</a>'.format(qw, lid, vr, st if st else '-')
 
 tps = dict(o=('organization', 'organization'), p=('project', 'project'), q=('query', 'query'))
 
@@ -1574,15 +1551,21 @@ def check_int(var, label, msgs):
         return None
     return int(val)
 
-def check_id(var, label, msgs):
-    val = request.vars[var]
-    if val == None:
+def check_id(var, tp, label, msgs):
+    valrep = request.vars[var]
+    if valrep == None:
         msgs.append(('error', u'No {} id given'.format(label)))
         return None
-    if len(val) > 10 or not val.isdigit():
-        msgs.append(('error', u'Not a valid {} id'.format(label)))
-        return None
-    return int(val)
+    if tp in {'w', 'q', 'n'}:
+        (val, kw) = iid_decode(tp, valrep)
+    else:
+        val = valrep
+        if len(valrep) > 10 or not valrep.isdigit():
+            msgs.append(('error', u'Not a valid {} id'.format(label)))
+            return None
+        val = int(valrep)
+    if tp == 'n': return valrep
+    return val
 
 def check_rel(tp, val, msgs):
     (label, table) = tps[tp]
@@ -1614,7 +1597,7 @@ def record():
     for x in [1]:
         tp = request.vars.tp
         (label, table) = tps[tp]
-        lid = check_id('lid', label, msgs)
+        lid = check_id('lid', tp, label, msgs)
         upd = request.vars.upd
         if tp not in tps:
             msgs.append(('error', u'unknown type {}!'.format(tp)))
@@ -1650,8 +1633,8 @@ def record():
             good = True
         if tp == 'q':
             if lid == 0:
-                oid = check_id('oid', tps['o'][0], msgs)
-                pid = check_id('pid', tps['o'][0], msgs)
+                oid = check_id('oid', 'o', tps['o'][0], msgs)
+                pid = check_id('pid', 'p', tps['o'][0], msgs)
                 if oid == None or pid == None: break
                 osql = u'''
 select id as oid, name as oname, website as owebsite from organization where id = {}
@@ -1715,12 +1698,12 @@ def upd_record(tp, lid, myid, fields, msgs):
             if valsql == None:
                 break
             updrecord['description'] = valsql
-            val = check_id('oid', tps['o'][0], msgs)
+            val = check_id('oid', 'o', tps['o'][0], msgs)
             if val == None: break
             valsql = check_rel('o', val, msgs)
             if valsql == None: break
             updrecord['organization'] = valsql
-            val = check_id('pid', tps['p'][0], msgs)
+            val = check_id('pid', 'p', tps['p'][0], msgs)
             valsql = check_rel('p', val, msgs)
             if valsql == None: break
             updrecord['project'] = valsql
@@ -1770,7 +1753,7 @@ def field():
     extra = {}
     myid = auth.user.id if auth.user != None else None
     for x in [1]:
-        qid = check_id('qid', 'query', msgs)
+        qid = check_id('qid', 'q', 'query', msgs)
         if qid == None: break
         fname = request.vars.fname
         val = request.vars.val
@@ -1920,7 +1903,7 @@ def fields():
     vr = request.vars.version
     q_record = {}
     for x in [1]:
-        qid = check_id('qid', 'query', msgs)
+        qid = check_id('qid', 'q', 'query', msgs)
         if qid == None: break
         (authorized, msg) = query_auth_write(qid)
         if not authorized:
@@ -2142,7 +2125,7 @@ order by note.verse
         this_nverses = len(nverses[(uid, k)])
         r.append({
             'item': dict(
-                    id=u'{}_{}'.format(uid, kw2url(k)),
+                    id=iid_encode('n', uid, k),
                     ufname=ufname,
                     ulname=ulname,
                     kw=k,
@@ -2194,15 +2177,17 @@ where anchor BETWEEN {chapter_first_m} AND {chapter_last_m}
          chapter_first_m=chapter['first_m'],
     ))
 
-def item_access_read(iid=get_request_val('material', '', 'iid')):
+def item_access_read(iidrep=get_request_val('material', '', 'iid')):
     mr = get_request_val('material', '', 'mr')
     qw = get_request_val('material', '', 'qw')
     if mr == 'm': return (True, '')
     if qw == 'w': return (True, '')
     if qw == 'n': return (True, '')
     if qw == 'q':
-        if iid != None and iid > 0: return query_auth_read(iid)
-    return (None, u'Not a valid id {}'.format(iid))
+        if iidrep != None:
+            (iid, kw) = iid_decode(qw, iidrep)
+            if iid > 0: return query_auth_read(iid)
+    return (None, u'Not a valid id {}'.format(iidrep))
 
 def query_auth_read(iid):
     authorized = None
@@ -2221,8 +2206,8 @@ select * from query where id = {}
 
 def word_auth_read(vr, iid):
     authorized = None
-    if iid == 0:
-        authorized = auth.user != None
+    if not iid:
+        authorized = False
     else:
         words = passage_dbs[vr].executesql(u'''
 select * from lexicon where id = '{}'
@@ -2231,30 +2216,7 @@ select * from lexicon where id = '{}'
         word = words[0] if words else {}
         if word:
             authorized = True
-    msg = u'No word with id {}'.format(iid) if authorized == None else u''
-    return (authorized, msg)
-
-def note_auth_read(iid):
-    authorized = None
-    if iid == 0:
-        authorized = auth.user != None
-    else:
-        comps = iid.split(u'_', 1)
-        if len(comps) != 2:
-            return (0, [])
-        (uid, kw_url) = comps
-        kw_sql = url2kw(kw_url).replace(u"'", u"''")
-        myid = auth.user.id if auth.user != None else None
-        extra = u''' or created_by = {} '''.format(uid) if myid == uid else u''
-        sql = u'''
-    select count(*) from note
-    inner join key_note on key_note.note_id = note.id
-    where key_note.keyword = '{}' and note.version = '{}' and (note.is_shared = 'T' {})
-    ;
-    '''.format(kw_sql, vr, extra)
-        answer = note_db.executesql(sql)[0][0]
-        authorized = answer > 0
-    msg = u'No notes with id {}'.format(iid) if authorized == None else u'There are no accessible notes with id {}'.format(iid) 
+    msg = u'No word with id {}'.format(iidrep) if authorized == None else u''
     return (authorized, msg)
 
 def query_auth_write(iid):
@@ -2372,15 +2334,11 @@ where key_note.keyword = '{}' and (note.is_shared = 'T' {})
         versions_info[vr] = dict(n=n, c=c, v=v)
     return versions_info
 
-def load_n_notes(vr, iid):
+def load_n_notes(vr, iid, kw):
     clause_atom_first = from_cache('clause_atom_f_{}_'.format(vr), lambda: get_clause_atom_fmonad(vr), None)
-    comps = iid.split(u'_', 1)
-    if len(comps) != 2:
-        return (0, [])
-    (uid, kw_url) = comps
-    kw_sql = url2kw(kw_url).replace(u"'", u"''")
+    kw_sql = kw.replace(u"'", u"''")
     myid = auth.user.id if auth.user != None else None
-    extra = u''' or created_by = {} '''.format(uid) if myid == uid else u''
+    extra = u''' or created_by = {} '''.format(uid) if myid == iid else u''
     sql = u'''
 select book, clause_atom from note
 inner join key_note on key_note.note_id = note.id
@@ -2420,7 +2378,7 @@ def normalize_ranges(ranges, fromset=None):
     if cur_end != None: result.append((cur_start, cur_end - 1))
     return (len(covered), result)
 
-def get_pagination(vr, p, monad_sets, iid):
+def get_pagination(vr, p, monad_sets):
     verse_boundaries = from_cache(
         'verse_boundaries_{}_'.format(vr),
         lambda: passage_dbs[vr].executesql(u'''

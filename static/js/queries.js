@@ -1,5 +1,5 @@
 var pq_url, q_url, record_url
-var ns = $.initNamespaceStorage('muting')
+var ns = $.initNamespaceStorage('muting_q')
 var vs = $.initNamespaceStorage('qsview')
 var muting = ns.localStorage
 var qsview = vs.localStorage
@@ -648,18 +648,20 @@ function Tree() {
     this.gotoquery = function(qid) {
         if (qid != undefined && qid != '0') {
             var qnode = this.ftw.getNodeByKey('q'+qid)
-            qnode.makeVisible({noAnimation: true})
-            $('.treehl').removeClass('treehl')
-            $('a[qid='+qid+']').closest('span').addClass('treehl')
-            $(qnode.li)[0].scrollIntoView()
-            var editable = $(qnode.li).has('.r_q').length > 0
-            if (editable) {
-                var qtitle = $('a[qid='+qid+']').nextAll('.r_q')
-                this.do_update('q', qtitle, qid)
-            }
-            else {
-                var qtitle = $('a[qid='+qid+']').nextAll('.v_q')
-                this.do_view('q', qtitle, qid)
+            if (qnode != undefined) {
+                qnode.makeVisible({noAnimation: true})
+                $('.treehl').removeClass('treehl')
+                $('a[qid='+qid+']').closest('span').addClass('treehl')
+                $(qnode.li)[0].scrollIntoView()
+                var editable = $(qnode.li).has('.r_q').length > 0
+                if (editable) {
+                    var qtitle = $('a[qid='+qid+']').nextAll('.r_q')
+                    this.do_update('q', qtitle, qid)
+                }
+                else {
+                    var qtitle = $('a[qid='+qid+']').nextAll('.v_q')
+                    this.do_view('q', qtitle, qid)
+                }
             }
         }
     }
@@ -674,7 +676,9 @@ function Tree() {
         focusOnSelect: false,
         quicksearch: true,
         icons: false,
+        idPrefix: 'q_',
         persist: {
+            cookiePrefix: 'ft-q-',
             store: 'local',
             types: 'expanded selected',
         },

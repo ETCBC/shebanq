@@ -155,7 +155,7 @@ table.item_w td,table.item_q td {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison.qlradio.ison,.nlradio.ison,.vradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.vradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
@@ -611,7 +611,7 @@ td.t1_cmt textarea {
     border-radius: 0px;
     resize: vertical;
 }
-span.t1_kw {
+span.t1_kw,a.t1_kw {
     color: #008800;
     font-size: small;
     font-weight: bold;
@@ -1127,7 +1127,7 @@ span.submatch {
     font-weight: normal;
     color: #999999;
 }
-a.q {
+a.q,a.n {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
 }
 a.qmy {

@@ -1,5 +1,5 @@
 var pn_url, n_url, record_url
-var ns = $.initNamespaceStorage('muting')
+var ns = $.initNamespaceStorage('muting_n')
 var vs = $.initNamespaceStorage('nsview')
 var muting = ns.localStorage
 var nsview = vs.localStorage
@@ -166,7 +166,7 @@ function Filter() {
         $('#filter_clear').show()
         var submatch = 'span.fancytree-submatch'
         var match = 'span.fancytree-match'
-        var base_u = base_p+'ul>li>'
+        var base_u = '#queries>ul>li>ul>li>'
         var match_u = $(base_u+match).length
         var submatch_u = $(base_u+submatch).length
         var base_n = base_n+'ul>li>'
@@ -239,10 +239,10 @@ function Tree() {
     }
     this.dress_notes = function() {
         $('#notes a.md').addClass('fa fa-level-down')
-        $('#notes a[nid]').each(function() {
+        $('#notes a[nkid]').each(function() {
             var vr = $(this).attr('v')
             var extra = (vr == undefined)?'':'&version='+vr;
-            $(this).attr('href', n_url+'?iid='+$(this).attr('nid')+extra+'&page=1&mr=r&qw=n')
+            $(this).attr('href', n_url+'?iid='+$(this).attr('nkid')+extra+'&page=1&mr=r&qw=n&tp=txt_tb1')
         })
         $('#notes a.md').click(function(e) {e.preventDefault();
             var uname = $(this).closest('ul').closest('li').find('span[n]').html()
@@ -252,13 +252,15 @@ function Tree() {
             window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+nname+']('+lnk+')')
         })
     }
-    this.gotonote = function(nid) {
-        if (nid != undefined && nid != '0') {
-            var nnode = this.ftw.getNodeByKey('q'+nid)
-            nnode.makeVisible({noAnimation: true})
-            $('.treehl').removeClass('treehl')
-            $('a[nid='+nid+']').closest('span').addClass('treehl')
-            $(nnode.li)[0].scrollIntoView()
+    this.gotonote = function(nkid) {
+        if (nkid != undefined && nkid != '0') {
+            var nnode = this.ftw.getNodeByKey('n'+nkid)
+            if (nnode != null) {
+                nnode.makeVisible({noAnimation: true})
+                $('.treehl').removeClass('treehl')
+                $('a[nkid="'+nkid+'"]').closest('span').addClass('treehl')
+                $(nnode.li)[0].scrollIntoView()
+            }
         }
     }
 
@@ -273,6 +275,7 @@ function Tree() {
         quicksearch: true,
         icons: false,
         persist: {
+            cookiePrefix: 'ft-n-',
             store: 'local',
             types: 'expanded selected',
         },
@@ -301,7 +304,7 @@ function Tree() {
             that.level = new Level()
             that.filter = new Filter()
             that.level.initlevel()
-            that.gotonote($('#nid').val()) 
+            that.gotonote($('#nkid').val()) 
         },
         expand: function(e, data) {
             if (that.level != undefined) {

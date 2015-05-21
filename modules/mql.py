@@ -57,7 +57,6 @@ def mo_results(straw):
 
 def mql(vr, query):
     env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, config['shebanq_host'], config['shebanq_user'], config['shebanq_passwd'], db+vr, EmdrosPy.kMySQL)
-    #print 'BE={}'.format(env.getBackendName())
     compiler_result = 0
     msgs = []
     good = env.executeString(sanitize(query, msgs) , compiler_result, 0, 0)[1]

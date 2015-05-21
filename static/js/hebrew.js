@@ -136,8 +136,11 @@ $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = '/'
 
-var ns = $.initNamespaceStorage('muting')
-var muting = ns.localStorage // on the Queries page the user can "mute" queries. Which queries are muted, is stored as key value pairs in this local storage bucket.
+var nsq = $.initNamespaceStorage('muting_q')
+var muting_q = nsq.localStorage
+var nsn = $.initNamespaceStorage('muting_n')
+var muting_n = nsn.localStorage
+// on the Queries page the user can "mute" queries. Which queries are muted, is stored as key value pairs in this local storage bucket.
 // When shebanq shows relevant queries next to a page, muting is taken into account.
 
 /* state variables */
@@ -321,7 +324,7 @@ the origin must be an object which has a member indicating the type of origin an
             */
             $('#side_list_'+qw+' li').each(function() {
                 var iid = $(this).attr('iid')
-                if (!(muting.isSet(iid+''))) {
+                if (!(muting_q.isSet(iid+''))) {
                     var monads = $.parseJSON($('#'+qw+iid).attr('monads'))
                     if (wb.vs.iscolor(qw, iid)) {
                         custitems[iid] = monads
@@ -443,9 +446,19 @@ function Material() { // Object corresponding to everything that controls the ma
         if (
             wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] || wb.version != wb.prev['version'] ||
             (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
-            (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page'] || wb.vs.kw() != wb.prev['kw']))
+            (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page'] ))
         ) {
             reset_material_status()
+            var p_mr = wb.prev['mr']
+            var p_qw = wb.prev['qw']
+            var p_iid = wb.prev['iid']
+            if (p_mr == 'r' && wb.mr == 'm') {
+                var vals = {}
+                if (p_qw != 'n') {
+                    vals[p_iid] = wb.vs.colormap(p_qw)[p_iid] || defcolor(p_qw == 'q', p_iid)
+                    wb.vs.cstatesv(p_qw, vals)
+                }
+            }
         }
         this.mselect.apply()
         this.pselect.apply()
@@ -709,6 +722,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.orig_edit = []
         this.gen_html(false)
         this.dirty = false
+        this.apply_dirty()
         this.decorate()
     }
     this.decorate = function() {
@@ -804,6 +818,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.revert = function() {
         this.gen_html(this.orig_users, this.orig_notes, true)
         this.dirty = false
+        this.apply_dirty()
         this.decorate()
     }
     rev_c.click(function(e) {e.preventDefault();
@@ -838,6 +853,9 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             }
         }
         this.dirty = dirty
+        this.apply_dirty()
+    }
+    this.apply_dirty = function() {
         if (this.dirty) {
             this.cctrl.addClass('dirty')
         }
@@ -1697,6 +1715,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 var kw = escapeHTML(n.kw)
                 var nvr = n.versions[vr]
                 $('#itemtag').val(ufname+' '+ulname+': '+kw)
+                $('#gobackn').attr('href', notes_url+'?goto='+n.id)
             }
             for (var v in this.info.versions) {
                 var extra = (qw == 'w')?'':(ufname+'_'+ulname)
@@ -2050,7 +2069,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
         }
         else if (this.qw == 'q') {
-            if (muting.isSet('q'+iid)) {
+            if (muting_q.isSet('q'+iid)) {
                 itop.hide()
             }
             else {
@@ -2058,7 +2077,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
         }
         else if (this.qw == 'n') {
-            if (muting.isSet('n'+iid)) {
+            if (muting_n.isSet('n'+iid)) {
                 itop.hide()
             }
             else {
@@ -2387,7 +2406,6 @@ function ViewState(init, pref) {
     this.qw = function() {return this.data['material']['']['qw']}
     this.tp = function() {return this.data['material']['']['tp']}
     this.iid = function() {return this.data['material']['']['iid']}
-    this.kw = function() {return this.data['material']['']['kw']}
     this.version = function() {return this.data['material']['']['version']}
     this.book = function() {return this.data['material']['']['book']}
     this.chapter = function() {return this.data['material']['']['chapter']}

@@ -1,10 +1,10 @@
-<a class="ctrl" id="gobackn" href="#"><span id="namenn">to note set</span></a>
+<a class="ctrl" id="gobackn" href="#"><span id="namenn">to notes overview </span></a>
 <input type="hidden" id="itemtag" value=""/>
 <div id="dbmsg_n"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 <table>
-    <tr><td><span class="nlabel">author</span></td><td class="n_auth">{{=nr['ufname']}} {{=nr['ulname']}}</td></tr>
-    <tr><td><span class="nlabel">keyword</span></td><td class="t1_kw">{{=nr['kw']}}</td></tr>
+    <tr><td><span class="nlabel">author</span></td><td><spanclass="nauth">{{=nr['ufname']}} {{=nr['ulname']}}</span></td></tr>
+    <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['kw']}}</span></td></tr>
 </table>
 {{for v in version_order:
     if not versions[v]['date']: continue

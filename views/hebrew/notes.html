@@ -2,7 +2,7 @@
 {{ right_sidebar_enabled = False }}
 {{extend 'layout.html'}}
 
-<input type="hidden" id="nid" value="{{=nid}}"/>
+<input type="hidden" id="nkid" value="{{=nkid}}"/>
 <div id="notes"></div>
 
 {{ block left_sidebar }}
@@ -34,7 +34,7 @@
 <script src="{{=URL('static', 'js/notes.js')}}"></script>
 
 <script type="text/javascript">
-var pn_url = "{{=XML(URL('hebrew', 'pn', extension='json'))}}"
+var pn_url = "{{=XML(URL('hebrew', 'note_tree', extension='json'))}}"
 var n_url = "{{=XML(URL('hebrew', 'text', extension=''))}}"
 </script>
 
