@@ -52,6 +52,10 @@ jQuery(function(){
                 <a lnk="" href="#" id="clip_w_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
                 <a lnk="" href="#" id="clip_w_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
             </td>\
+            <td class="clip_n clr">\
+                <a lnk="" href="#" id="clip_n_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_n_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+            </td>\
             <td class="clip_pv clr">\
                 <a lnk="" href="#" id="clip_pv_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
                 <a lnk="" href="#" id="clip_pv_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
@@ -62,12 +66,14 @@ jQuery(function(){
             <th class="clip_qx" width="120px">query v</th>\
             <th class="clip_q" width="120px">query</th>\
             <th class="clip_w" width="120px">word</th>\
+            <th class="clip_n" width="120px">note</th>\
             <th class="clip_pv" width="120px">page view</th>\
         </tr>\
         <tr class="citexpl">\
             <td class="clip_qx"><span id="xc_qx" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_qx" class="detail">cite query with its results on <i>this</i> data version</span></td>\
             <td class="clip_q"><span id="xc_q" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_q" class="detail">share link to query page</span></td>\
             <td class="clip_w"><span id="xc_w" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_w" class="detail">cite word with its occs on <i>this</i> data version</span></td>\
+            <td class="clip_n"><span id="xc_n" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_n" class="detail">cite note set with its members</span></td>\
             <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings, or copy page contents to paste in mail, Evernote, etc.</span></td>\
         </tr>\
     </table>\
@@ -83,7 +89,7 @@ jQuery(function(){
     jQuery('#socialdrawer td,#socialdrawer th').css({'width': '120px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
     jQuery('#socialdrawer .detail').hide()
 	// hover
-    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_pv_md,#clip_pv_ht').click(function(e) {e.preventDefault();
+    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht').click(function(e) {e.preventDefault();
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
     })
     $('#clip_pv_cn').click(function(e) {e.preventDefault();
@@ -96,6 +102,7 @@ jQuery(function(){
     $('#xc_qx').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_qx')) })
     $('#xc_q').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_q')) })
     $('#xc_w').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_w')) })
+    $('#xc_n').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_n')) })
     $('#xc_pv').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_pv')) })
 	st.click(function(e){e.preventDefault();
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
@@ -104,12 +111,13 @@ jQuery(function(){
         $('#citeh').hide()
         $('#cdiagpub').html('')
         $('#cdiagsts').html('')
-        $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
+        $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
         if (wb.mr == 'm') {
             pvtitle = title
             $('.clip_qx').hide()
             $('.clip_q').hide()
             $('.clip_w').hide()
+            $('.clip_n').hide()
         }
         else if (wb.mr == 'r') {
             var vr = wb.version
@@ -150,9 +158,10 @@ jQuery(function(){
                 $('.clip_qx').show()
                 $('.clip_q').show()
                 $('.clip_w').hide()
+                $('.clip_n').hide()
             }
-            else {
-                vinfo = iinfo.versions[vr]
+            else if (wb.qw == 'w') {
+                var vinfo = iinfo.versions[vr]
                 pvtitle = vinfo.entryid_heb+' ('+vinfo.entryid+')'
                 var quotev_url = word_url+'?version='+vr+'&id='+wb.iid
                 $('#clip_w_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
@@ -161,13 +170,28 @@ jQuery(function(){
                 $('.clip_qx').hide()
                 $('.clip_q').hide()
                 $('.clip_w').show()
+                $('.clip_n').hide()
+            }
+            else if (wb.qw == 'n') {
+                var ufname = escapeHTML(iinfo.ufname)
+                var ulname = escapeHTML(iinfo.ulname)
+                var kw = escapeHTML(iinfo.kw)
+                pvtitle = ufname+' '+ulname+' - '+kw
+                var quotev_url = note_url+'?version='+vr+'&id='+wb.iid
+                $('#clip_n_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
+                $('#clip_n_ht').attr('lnk', quotev_url)
+                $('.clip_n.clr').addClass('special')
+                $('.clip_qx').hide()
+                $('.clip_q').hide()
+                $('.clip_w').hide()
+                $('.clip_n').show()
             }
         }
         $('#clip_pv_md').attr('lnk', '['+pvtitle+']('+shebanq_url_raw+')')
         $('#clip_pv_ht').attr('lnk', shebanq_url_raw)
         $('#clip_pv_cn').attr('lnk', shebanq_url_raw)
         $('#clip_pv_cn').attr('tit', pvtitle)
-        jQuery(this).animate({height:'260px', width:'450px', opacity: 0.95}, 300);
+        jQuery(this).animate({height:'260px', width:'570px', opacity: 0.95}, 300);
     });
 	//leave
 	st.mouseleave(function(){ 
