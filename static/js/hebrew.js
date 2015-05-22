@@ -1727,7 +1727,10 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             })
         }
 
-        $('#theitem').html($('#itemtag').val()+' ')                              // fill in the title of the query/word above the verse material
+        var thistitle = $('#itemtag').val()
+        $('#theitem').html(thistitle+' ')                  // fill in the title of the query/word/note above the verse material and put it in the page title as well
+        document.title = thistitle
+
         if (this.qw == 'q') {
             if (this.mr == 'm') {  // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
                 $('.fullc').click(function(e) {e.preventDefault();
@@ -2364,7 +2367,13 @@ function ViewState(init, pref) {
         }
     }
     this.addHist = function() {
-        var title = (this.mr() == 'm')?('['+that.version()+'] '+that.book()+' '+that.chapter()):(style[that.qw()]['Tag']+' '+that.iid()+' p'+that.page())
+        var title
+        if (that.mr() == 'm') {
+            title = '['+that.version()+'] '+that.book()+' '+that.chapter()
+        }
+        else {
+            title = style[that.qw()]['Tag']+' '+that.iid()+' p'+that.page()
+        }
         that.from_push = true
         History.pushState(that.data, title, view_url)
         that.from_push = false
