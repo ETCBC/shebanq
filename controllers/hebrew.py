@@ -1014,6 +1014,7 @@ def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False)
     query_exe.id as xid,
     query_exe.mql as mql,
     query_exe.version as version,
+    query_exe.eversion as eversion,
     query_exe.resultmonads as resultmonads,
     query_exe.results as results,
     query_exe.executed_on as executed_on,
@@ -1085,6 +1086,7 @@ select
     id as xid,
     mql,
     version,
+    eversion,
     resultmonads,
     results,
     executed_on,
@@ -1960,10 +1962,11 @@ where query.id = {}
         execute = request.vars.execute
         xgood = True
         if execute == 'true':
-            (xgood, nresults, xmonads, this_msgs) = mql(vr, newmql) 
+            (xgood, nresults, xmonads, this_msgs, eversion) = mql(vr, newmql) 
             if xgood:
                 store_monad_sets(vr, qid, xmonads)
                 fldx['executed_on'] = request.now
+                fldx['eversion'] = eversion
                 nresultmonads = count_monads(xmonads)
                 fldx['results'] = nresults
                 fldx['resultmonads'] = nresultmonads
@@ -2025,6 +2028,7 @@ def query_fields(vr, q_record, recordx, single_version=False):
             resultmonads=None,
             xmodified_on=None,
             executed_on=None,
+            eversion=None,
             published_on=None,
         )) for v in versions if versions[v]['date'])
         for rx in recordx:

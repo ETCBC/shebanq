@@ -5,6 +5,8 @@ from get_db_config import config
 
 db='shebanq_etcbc'
 
+EMDROS_VERSION = "emdros 3.4.0" # copied manually from /opt/emdros/include/emdros/version-emdros.h
+
 def sanitize(query, msgs):
     comps = query.split('/*')
     lastcomp = comps[-1]
@@ -62,17 +64,17 @@ def mql(vr, query):
     good = env.executeString(sanitize(query, msgs) , compiler_result, 0, 0)[1]
     if not good:
         msgs.append(('error',  env.getCompilerError()))
-        return (False, None, None, msgs)
+        return (False, None, None, msgs, EMDROS_VERSION)
     else:
         if not env.isSheaf:
             msgs.append(('error', 'Result of query is not a sheaf'))
-            return (False, None, None, msgs)
+            return (False, None, None, msgs, EMDROS_VERSION)
         else:
             sheaf = env.getSheaf()
             if sheaf == None:
                 msgs.append(('error', 'Result of query is the null sheaf'))
-                return (False, 0, [], msgs)
+                return (False, 0, [], msgs, EMDROS_VERSION)
             else:
                 n = sheaf_results(sheaf)
-                return (True, n, to_monadsets(sheaf.getSOM(True).toString()), msgs)
+                return (True, n, to_monadsets(sheaf.getSOM(True).toString()), msgs, EMDROS_VERSION)
 
