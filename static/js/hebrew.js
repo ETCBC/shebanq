@@ -1727,8 +1727,14 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             })
         }
 
-        var thistitle = $('#itemtag').val()
-        $('#theitem').html(thistitle+' ')                  // fill in the title of the query/word/note above the verse material and put it in the page title as well
+        var thistitle
+        if (this.mr == 'm') {
+            thistitle = '['+this.version()+'] '+this.book()+' '+this.chapter()
+        }
+        else {
+            thistitle = $('#itemtag').val()
+            $('#theitem').html(thistitle+' ')    // fill in the title of the query/word/note above the verse material and put it in the page title as well
+        }
         document.title = thistitle
 
         if (this.qw == 'q') {
