@@ -454,6 +454,7 @@ select last_insert_id() as x
     else:
         changed = True
         clear_cache(r'^items_n_{}_{}_{}_'.format(vr, bk, ch))
+        clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'r', 'n'))
     return changed
 
 def note_filter_notes(myid, notes, these_clause_atoms, msgs):
