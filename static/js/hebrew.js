@@ -1729,7 +1729,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
 
         var thistitle
         if (this.mr == 'm') {
-            thistitle = '['+this.version()+'] '+this.book()+' '+this.chapter()
+            thistitle = '['+wb.vs.version()+'] '+wb.vs.book()+' '+wb.vs.chapter()
         }
         else {
             thistitle = $('#itemtag').val()
