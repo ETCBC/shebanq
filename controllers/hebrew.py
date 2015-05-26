@@ -728,7 +728,6 @@ def item(): # controller to produce a csv file of query results or lexeme occurr
     (iid, kw) = iid_decode(qw, iidrep)
     iidrep2 = iid_decode(qw, iidrep, rsep=u' ')
     filename = u'{}_{}{}_{}{}.csv'.format(vr, style[qw]['t'], iidrep2, tp_labels[tp], extra)
-    print filename
     (authorized, msg) = item_access_read(iidrep=iidrep)
     if not authorized:
         return dict(filename=filename, data=msg)
@@ -2221,7 +2220,7 @@ select * from lexicon where id = '{}'
         word = words[0] if words else {}
         if word:
             authorized = True
-    msg = u'No word with id {}'.format(iidrep) if authorized == None else u''
+    msg = u'No word with id {}'.format(iid) if authorized == None else u''
     return (authorized, msg)
 
 def query_auth_write(iid):

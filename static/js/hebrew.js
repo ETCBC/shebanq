@@ -1692,9 +1692,9 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             this.msgo = new Msg('dbmsg_'+qw)
             if (qw == 'q') {
                 this.info = q
-                var ufname = escapeHTML(q.ufname)
-                var ulname = escapeHTML(q.ulname)
-                var qname = escapeHTML(q.name)
+                var ufname = escapeHTML(q.ufname || '')
+                var ulname = escapeHTML(q.ulname || '')
+                var qname = escapeHTML(q.name || '')
                 $('#itemtag').val(ufname+' '+ulname+': '+qname)
                 that.msgov = new Msg('dbmsg_qv')
                 $('#is_pub_c').show()
@@ -1775,7 +1775,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 var mqlq = $('#mqlq')
                 var pube = $('#is_pub_c')
                 var pubr = $('#is_pub_ro')
-                var is_pub = q.versions[vr].is_published
+                var is_pub = ('versions' in q) && (vr in q.versions) && q.versions[vr].is_published
                 fullc.click(function(e) {e.preventDefault();
                     fullc.hide()
                     var dia = $('#bigger').closest('div').dialog({
@@ -1976,7 +1976,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             })
             if (good) {
                 var qx = q.versions[vr];
-                $('#nameqm').html(escapeHTML(q.name))
+                $('#nameqm').html(escapeHTML(q.name || ''))
                 $('#nameq').val(q.name)
                 $('#descm').html(q.description_md)
                 $('#descq').val(q.description)

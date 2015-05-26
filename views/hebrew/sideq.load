@@ -5,19 +5,23 @@ statusmap = dict(
     warning='never executed',
 )
 }}
+{{if 'id' not in qr:}}
+    <div id="dbmsg_q"></div>
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{else:}}
 {{if writable:}}
 <input type="hidden" id="qid" value="{{=qr['id']}}"/>
 {{pass}}
 <input type="hidden" id="itemtag" value=""/>
 <div id="bigger">
-    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+u'?goto={}'.format(iidrep)}}"><span id="nameqm">{{=h_esc(qr['name'])}}</span></a>
+    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+u'?goto={}'.format(iidrep)}}"><span id="nameqm">{{=h_esc(qr['name'], fill=False)}}</span></a>
     <span class="ir"><a class="ctrl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
         <p>
-            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=h_esc(u'{} {}'.format(qr['ufname'], qr['ulname']))}}</span></a>
-            <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=h_esc(qr['oname'])}}</span></a>
-            <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=h_esc(qr['pname'])}}</span></a>
+            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=h_esc(u'{} {}'.format(qr['ufname'], qr['ulname']), fill=False)}}</span></a>
+            <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=h_esc(qr['oname'], fill=False)}}</span></a>
+            <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=h_esc(qr['pname'], fill=False)}}</span></a>
         </p>
     </div>
     <div id="descm" class="old descm">{{=XML(qr['description_md'])}}</div>
@@ -90,6 +94,7 @@ statusmap = dict(
     <p class="detail">{{=A('MQL Query Guide by Ulrik (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-Query-Guide.pdf'))}}</p>
     <p class="detail">{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
+{{pass}}
 <script type="text/javascript">
 var msgs = {{=XML(msgs)}};
 var q = {{=XML(q)}}
