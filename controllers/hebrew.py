@@ -1800,7 +1800,7 @@ def upd_published(myid, vr, qid, valsql, msgs):
     fname = 'is_published'
     clear_cache(r'^items_q_{}_'.format(vr))
     verify_version(qid, vr)
-    fieldval = u" {} = u'{}'".format(fname, valsql)
+    fieldval = u" {} = '{}'".format(fname, valsql)
     mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
     mod_date_sql = 'null' if mod_date == None else u"'{}'".format(mod_date)
     fieldval += u', {} = {} '.format(mod_date_fld, mod_date_sql) 
@@ -1808,6 +1808,7 @@ def upd_published(myid, vr, qid, valsql, msgs):
 update {} set{} where query_id = {} and version = '{}'
 ;
 '''.format(table, fieldval, qid, vr)
+    print sql
     result = db.executesql(sql)
     thismsg = 'modified'
     thismsg = 'published' if valsql == 'T' else 'UNpublished'
@@ -1869,7 +1870,7 @@ select published_on from query_exe where query_id = {} and version = '{}'
 ;
 '''.format(qid, vr)
                 pv = db.executesql(sql)
-                pdate_ok = pv == None or len(pv) != 1 or pv[0][0] > request.now - PUBLISH_FREEZE
+                pdate_ok = pv == None or len(pv) != 1 or pv[0][0] == None or pv[0][0] > request.now - PUBLISH_FREEZE
                 if not pdate_ok:
                     msgs.append(('error', u'You cannot UNpublish this query because it has been published more than {} ago'.format(PUBLISH_FREEZE_MSG)))
                     break
