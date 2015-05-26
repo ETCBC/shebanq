@@ -1728,7 +1728,7 @@ def upd_record(tp, lid, myid, fields, msgs):
         good = True
     if good:
         if lid:
-            fieldvals = [u" {} = u'{}'".format(f, updrecord[f]) for f in fields]
+            fieldvals = [u" {} = '{}'".format(f, updrecord[f]) for f in fields]
             sql = u'''update {} set{} where id = {};'''.format(table, u','.join(fieldvals), lid)
             thismsg = 'updated'
         else:
@@ -1778,7 +1778,7 @@ def upd_shared(myid, qid, valsql, msgs):
     table = 'query'
     fname = 'is_shared'
     clear_cache(r'^items_q_')
-    fieldval = u" {} = u'{}'".format(fname, valsql)
+    fieldval = u" {} = '{}'".format(fname, valsql)
     mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
     mod_date_sql = 'null' if mod_date == None else u"'{}'".format(mod_date)
     fieldval += u', {} = {} '.format(mod_date_fld, mod_date_sql) 
@@ -1808,7 +1808,6 @@ def upd_published(myid, vr, qid, valsql, msgs):
 update {} set{} where query_id = {} and version = '{}'
 ;
 '''.format(table, fieldval, qid, vr)
-    print sql
     result = db.executesql(sql)
     thismsg = 'modified'
     thismsg = 'published' if valsql == 'T' else 'UNpublished'
