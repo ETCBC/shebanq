@@ -2,6 +2,7 @@
 <input type="hidden" id="itemtag" value=""/>
 <div id="dbmsg_w"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{if 'id' in wr:}}
 {{for v in version_order:
     if not versions[v]['date']: continue
     wrinfo = wr['versions'].get(v, collections.defaultdict(lambda: ''))
@@ -30,6 +31,7 @@
         <tr class="detail"><td><span class="wlabel">gloss</span></td><td class="i_gl">{{=wrinfo['gloss']}}</td></tr>
     </table>
 </div>
+{{pass}}
 {{pass}}
 <div>
     <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>

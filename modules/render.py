@@ -427,7 +427,11 @@ def iid_encode(qw, idpart, kw=None, sep=u'|'):
     if qw == 'q': return str(idpart)
 
 def iid_decode(qw, iidrep, sep=u'|', rsep=None):
-    if qw == 'n': (idpart, kw) = iidrep.replace('_','=').decode('base64').decode('utf8').split(sep, 1)
+    if qw == 'n':
+        try:
+            (idpart, kw) = iidrep.replace('_','=').decode('base64').decode('utf8').split(sep, 1)
+        except:
+            (idpart, kw) = (None, None)
     if qw == 'w': (idpart, kw) = (iidrep, u'')
     if qw == 'q': (idpart, kw) = (int(iidrep), u'')
     if rsep == None: result = (idpart, kw)

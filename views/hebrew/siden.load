@@ -2,6 +2,7 @@
 <input type="hidden" id="itemtag" value=""/>
 <div id="dbmsg_n"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{if 'id' in nr and nr['id'] and nr['id'] != '0':}}
 <table>
     <tr><td><span class="nlabel">author</span></td><td><spanclass="nauth">{{=nr['ufname']}} {{=nr['ulname']}}</span></td></tr>
     <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['kw']}}</span></td></tr>
@@ -25,6 +26,7 @@
         <tr class="detail"><td><span class="nlabel">verses</span></td><td class="nstat">{{=nrinfo['v']}}</td></tr>
     </table>
 </div>
+{{pass}}
 {{pass}}
 <div>
     <p>{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>

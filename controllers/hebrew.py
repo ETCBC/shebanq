@@ -279,8 +279,10 @@ def material_c(vr, mr, qw, bk, iidrep, ch, page, tp):
             monads=json.dumps([]),
         )
     elif mr == 'r':
-        if iidrep == None:
-            msg = u'No {} selected'.format('query' if qw == 'q' else u'word')
+        (iid, kw) = (None, None)
+        if iidrep != None: (iid, kw) = iid_decode(qw, iidrep)
+        if iid == None:
+            msg = u'No {} selected'.format('query' if qw == 'q' else u'word' if qw == 'w' else u'note set')
             result = dict(
                 mr=mr,
                 qw=qw,
@@ -294,7 +296,6 @@ def material_c(vr, mr, qw, bk, iidrep, ch, page, tp):
                 monads=json.dumps([]),
             )
         else:
-            (iid, kw) = iid_decode(qw, iidrep)
             (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid, kw)
             (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets)
             material = Verses(passage_dbs, vr, mr, verses, tp=tp)
@@ -367,7 +368,7 @@ def key_add(kw, nid):
 insert into key_note (keyword, note_id) values {}
 ;
 '''.format(
-        u','.join(u"('{}', {})".format(k, nid) for k in set(WORD_PAT.findall(kw))),
+        u','.join(u"('{}', {})".format(k, nid) for k in {x.lower() for x in WORD_PAT.findall(kw)}),
     )
     note_db.executesql(insert_sql)
 
@@ -454,7 +455,7 @@ select last_insert_id() as x
     else:
         changed = True
         clear_cache(r'^items_n_{}_{}_{}_'.format(vr, bk, ch))
-        clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'r', 'n'))
+        clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'n', iid_encode('n', myid, kw=kw)))
     return changed
 
 def note_filter_notes(myid, notes, these_clause_atoms, msgs):
@@ -912,8 +913,9 @@ def siden():
     msgs = []
     vr = get_request_val('material', '', 'version')
     iidrep = get_request_val('material', '', 'iid')
-    if not iidrep:
-        msg = u'Not a valid id {}'.format(iidrep)
+    (iid, kw) = iid_decode('n', iidrep)
+    if not iid:
+        msg = u'Not a valid id {}'.format(iid)
         msgs.append(('error', msg))
         return dict(
             nr=dict(),
@@ -991,6 +993,7 @@ select * from lexicon where id = '{}'
 
 def get_note_info(iidrep, vr, msgs):
     (iid, kw) = iid_decode('n', iidrep)
+    if iid == None: return {}
     n_record = dict(id=iidrep, uid=iid, ufname='N?', ulname='N?', kw=kw, versions={})
     n_record['versions'] = count_n_notes(iid, kw)
     sql = u'''
@@ -1598,12 +1601,12 @@ def record():
     myid = auth.user.id if auth.user != None else None
     for x in [1]:
         tp = request.vars.tp
-        (label, table) = tps[tp]
-        lid = check_id('lid', tp, label, msgs)
-        upd = request.vars.upd
         if tp not in tps:
             msgs.append(('error', u'unknown type {}!'.format(tp)))
             break
+        (label, table) = tps[tp]
+        lid = check_id('lid', tp, label, msgs)
+        upd = request.vars.upd
         if lid == None: break
         if upd not in {'true', 'false'}:
             msgs.append(('error', u'invalid instruction {}!'.format(upd)))

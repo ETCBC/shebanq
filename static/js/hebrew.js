@@ -1702,25 +1702,31 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
             else if (qw == 'w') {
                 this.info = w
-                var wvr = w.versions[vr]
-                var wentryh = escapeHTML(wvr.entry_heb)
-                var wentryid = escapeHTML(wvr.entryid)
-                $('#itemtag').val(wentryh+': '+wentryid)
-                $('#gobackw').attr('href', words_url+'?lan='+wvr.lan+'&letter='+wvr.entry_heb.charCodeAt(0)+'&goto='+w.id)
+                if ('versions' in w) {
+                    var wvr = w.versions[vr]
+                    var wentryh = escapeHTML(wvr.entry_heb)
+                    var wentryid = escapeHTML(wvr.entryid)
+                    $('#itemtag').val(wentryh+': '+wentryid)
+                    $('#gobackw').attr('href', words_url+'?lan='+wvr.lan+'&letter='+wvr.entry_heb.charCodeAt(0)+'&goto='+w.id)
+                }
             }
             else if (qw == 'n') {
                 this.info = n
-                var ufname = escapeHTML(n.ufname)
-                var ulname = escapeHTML(n.ulname)
-                var kw = escapeHTML(n.kw)
-                var nvr = n.versions[vr]
-                $('#itemtag').val(ufname+' '+ulname+': '+kw)
-                $('#gobackn').attr('href', notes_url+'?goto='+n.id)
+                if ('versions' in n) {
+                    var ufname = escapeHTML(n.ufname)
+                    var ulname = escapeHTML(n.ulname)
+                    var kw = escapeHTML(n.kw)
+                    var nvr = n.versions[vr]
+                    $('#itemtag').val(ufname+' '+ulname+': '+kw)
+                    $('#gobackn').attr('href', notes_url+'?goto='+n.id)
+                }
             }
-            for (var v in this.info.versions) {
-                var extra = (qw == 'w')?'':(ufname+'_'+ulname)
-                this.set_vselect(v)
-                set_csv(v, mr, qw, iid, extra)
+            if ('versions' in this.info) {
+                for (var v in this.info.versions) {
+                    var extra = (qw == 'w')?'':(ufname+'_'+ulname)
+                    this.set_vselect(v)
+                    set_csv(v, mr, qw, iid, extra)
+                }
             }
             msgs.forEach(function(m) {
                 that.msgo.msg(m)
