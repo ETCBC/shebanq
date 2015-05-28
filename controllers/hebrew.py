@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from gluon.custom_import import track_changes; track_changes(True)
-import collections, json, datetime, re
+import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views, iid_encode, iid_decode
+from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views, iid_encode, iid_decode, t1_statclass
 from mql import mql
 
 # Note on caching
@@ -69,8 +69,6 @@ NULLDT = u'____-__-__ __:__:__'
 
 CACHING = True
 CACHING_RAM_ONLY = True
-
-WORD_PAT = re.compile(ur'[^\s]+', re.UNICODE)
 
 def from_cache(ckey, func, expire):
     if CACHING:
@@ -363,22 +361,6 @@ def cnotes():
         changed = note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs)
     return cnotes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs)
 
-def key_add(kw, nid):
-    insert_sql = u'''
-insert into key_note (keyword, note_id) values {}
-;
-'''.format(
-        u','.join(u"('{}', {})".format(k, nid) for k in {x.lower() for x in WORD_PAT.findall(kw)}),
-    )
-    note_db.executesql(insert_sql)
-
-def key_del(nids):
-    del_sql = u'''
-delete from key_note where note_id in ({})
-;
-'''.format(u','.join(str(nid) for nid in nids))
-    note_db.executesql(del_sql)
-
 def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
     if myid == None:
         msgs.append(('error', u'You have to be logged in when you save notes'))
@@ -402,17 +384,14 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
         shared = "'T'" if shared else 'null'
         pub = "'T'" if pub else 'null'
         stat = 'o' if stat not in {'o', '*', '+', '?', '-', '!'} else stat
-        if o_kw != kw: key_del([nid])
         update_sql = u'''
 update note set modified_on = '{}', is_shared = {}, is_published = {}, status = '{}', keywords = '{}', ntext = '{}'{}
 where id = {}
 ; 
 '''.format(request.now, shared, pub, stat, kw.replace(u"'",u"''"), ntxt.replace(u"'",u"''"), u''.join(extrafields), nid)
         note_db.executesql(update_sql)
-        if o_kw != kw: key_add(kw, nid)
         updated += 1
     if len(del_notes) > 0:
-        key_del(del_notes)
         del_sql = u'''
 delete from note where id in ({})
 ;
@@ -437,11 +416,6 @@ values
     ntxt.replace(u"'",u"''"),
 )
         note_db.executesql(insert_sql)
-        nid = note_db.executesql(u'''
-select last_insert_id() as x
-;
-''')[0][0]
-        key_add(kw, nid)
 
     changed = False
     if len(del_notes) > 0:
@@ -482,7 +456,7 @@ def note_filter_notes(myid, notes, these_clause_atoms, msgs):
             clause_errors.add(nid)
             good = False
             continue
-        kw = fields['kw'].strip()
+        kw = ''.join(' '+k+' ' for k in fields['kw'].strip().split())
         ntxt = fields['ntxt'].strip()
         if kw == u'' and ntxt == u'':
             if nid == 0:
@@ -691,21 +665,21 @@ def query():
     else:
         request.vars['mr'] = 'r'
         request.vars['qw'] = 'q'
-        request.vars['tp'] = 'txt_p'
+        #request.vars['tp'] = 'txt_p'
         request.vars['page'] = 1
     return text()
 
 def word():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
-    request.vars['tp'] = 'txt_p'
+    #request.vars['tp'] = 'txt_p'
     request.vars['page'] = 1
     return text()
 
 def note():
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'n'
-    request.vars['tp'] = 'txt_p'
+    #request.vars['tp'] = 'txt_tb1'
     request.vars['page'] = 1
     return text()
 
@@ -772,10 +746,9 @@ select
     shebanq_note.note.book, shebanq_note.note.chapter, shebanq_note.note.verse,
     {hflist}
 from shebanq_note.note
-inner join shebanq_note.key_note on shebanq_note.key_note.note_id = shebanq_note.note.id
 inner join book on shebanq_note.note.book = book.name
 inner join clause_atom on clause_atom.ca_num = shebanq_note.note.clause_atom and clause_atom.book_id = book.id
-where key_note.keyword = '{kw}' and note.version = '{vr}' and (note.is_shared = 'T' {ex})
+where shebanq_note.note.keywords like '% {kw} %' and shebanq_note.note.version = '{vr}' and (shebanq_note.note.is_shared = 'T' {ex})
 ;
 '''.format(
             hflist=u', '.join(hf[0] for hf in hfields),
@@ -953,7 +926,147 @@ def queries():
 def notes():
     msgs = []
     nkid = check_id('goto', 'n', 'note', msgs)
-    return dict(nkid=nkid)
+    (may_upload, myid) = check_upload()
+    return dict(nkid=nkid, may_upload=may_upload, uid=myid)
+
+def check_upload(no_controller=True):
+    myid = None
+    may_upload = False
+    if auth.user: myid = auth.user.id
+    if myid:
+        sql = '''
+select uid from uploaders where uid = {}
+    '''.format(myid)
+        records = db.executesql(sql)
+        may_upload = records != None and len(records) == 1 and records[0][0] == myid
+    return (may_upload, myid)
+
+@auth.requires_login()
+def note_upload():
+    msgs = []
+    good = True
+    keywords = request.vars.keywords
+    uid = request.vars.uid
+    (may_upload, myid) = check_upload()
+    if may_upload and str(myid) == uid:
+        good = load_notes(myid, ''.join(' {} '.format(k) for k in set(keywords.strip().split())), request.vars.file, msgs)
+    else:
+        good = False
+        msgs.append(['error', 'you are not allowed to upload notes as csv files'])
+    return dict(data=json.dumps(dict(msgs=msgs, good=good)))
+
+def load_notes(uid, keywords, filetext, msgs):
+    my_versions = set()
+    book_info = {}
+    for vr in versions:
+        if versions[vr]['date']:
+            my_versions.add(vr)
+            book_info[vr] = from_cache('books_{}_'.format(vr), lambda: get_books(vr), None)[0]
+    normative_fields = '''version	book	chapter	verse	clause_atom	is_shared	is_published	status	keywords	ntext'''
+    good = True
+    fieldnames = normative_fields.split('\t')
+    nfields = len(fieldnames)
+    errors = {}
+    now = request.now
+    created_on = now
+    modified_on = now
+
+    nerrors = 0
+    chunks = []
+    chunksize = 100
+    sqlhead = u'''
+insert into note ({}, created_by, created_on, modified_on, shared_on, published_on) values
+'''.format(u', '.join(fieldnames))
+
+    this_chunk = []
+    this_i = 0
+    for (i, linenl) in enumerate(unicode(filetext.value, encoding='utf8').split(u'\n')):
+        line = linenl.rstrip()
+        if line == '': continue
+        if i == 0:
+            if  line != normative_fields:
+                msgs.append(['error', 'Wrong fields: {}. Required fields are {}'.format(line, normative_fields)])
+                good = False
+                break
+            continue
+        fields = line.replace(u"'",u"''").split(u'\t')
+        if len(fields) != nfields:
+            nerrors += 1
+            errors.setdefault('wrong number of fields', []).append(i+1)
+            continue
+        (version, book, chapter, verse, clause_atom, is_shared, is_published, status, keywords, ntext) = fields
+        published_on = 'NULL'
+        shared_on = 'NULL'
+        if version not in my_versions:
+            nerrors += 1
+            errors.setdefault('unrecognized version', []).append('{}:{}'.format(i+1, version))
+            continue
+        books = book_info[version]
+        if book not in books:
+            nerrors += 1
+            errors.setdefault('unrecognized book', []).append('{}:{}'.format(i+1, book))
+            continue
+        max_chapter = books[book]
+        if not chapter.isdigit() or int(chapter) > max_chapter:
+            nerrors += 1
+            errors.setdefault('unrecognized chapter', []).append('{}:{}'.format(i+1, chapter))
+            continue
+        if not verse.isdigit() or int(verse) > 200:
+            nerrors += 1
+            errors.setdefault('unrecognized verse', []).append('{}:{}'.format(i+1, verse))
+            continue
+        if not clause_atom.isdigit() or int(clause_atom) > 100000:
+            nerrors += 1
+            errors.setdefault('unrecognized clause_atom', []).append('{}:{}'.format(i+1, clause_atom))
+            continue
+        if not is_shared in {'T', ''}:
+            nerrors += 1
+            errors.setdefault('unrecognized shared field', []).append('{}:{}'.format(i+1, is_shared))
+            continue
+        if not is_shared in {'T', ''}:
+            nerrors += 1
+            errors.setdefault('unrecognized published field', []).append('{}:{}'.format(i+1, is_published))
+            continue
+        if not status in t1_statclass:
+            nerrors += 1
+            errors.setdefault('unrecognized status', []).append('{}:{}'.format(i+1, status))
+            continue
+        if len(keywords) >= 128:
+            nerrors += 1
+            errors.setdefault('keywords length over 128', []).append('{}:{}'.format(i+1, len(keywords)))
+            continue
+        if len(ntext) >= 1024:
+            nerrors += 1
+            errors.setdefault('note text length over 1024', []).append('{}:{}'.format(i+1, len(ntext)))
+            continue
+        if nerrors > 20:
+            msgs.append(['error', 'too many errors, aborting'])
+            break
+        if is_shared == 'T': shared_on = "'{}'".format(now) 
+        if is_published == 'T': published_on = "'{}'".format(now) 
+        this_chunk.append(u"('{}','{}',{},{},{},'{}','{}','{}','{}','{}',{},'{}','{}',{},{})".format(
+            version, book, chapter, verse, clause_atom, is_shared, is_published, status, keywords, ntext, uid, created_on, modified_on, shared_on, published_on,
+        ))
+        this_i += 1
+        if this_i >= chunksize:
+            chunks.append(this_chunk)
+            this_chunk = []
+            this_i = 0
+    if len(this_chunk): chunks.append(this_chunk)
+
+    #with open('/tmp/xxx.txt', 'w') as fh:
+    #    for line in filetext.value:
+    #        fh.write(line)
+    if errors or nerrors:
+        good = False
+    else:
+        for chunk in chunks:
+            sql = u'{} {};'.format(sqlhead, u',\n'.join(chunk))
+            note_db.executesql(sql)
+    for msg in sorted(errors):
+        msgs.append(['error', u'{}: {}'.format(msg, u','.join(str(i) for i in errors[msg]))])
+    msgs.append(['good' if good else 'error', 'Done'])
+    return True
 
 def words_page(viewsettings, vr, lan=None, letter=None):
     (letters, words) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
@@ -1349,16 +1462,11 @@ where note.is_shared = 'T'
 where note.is_shared = 'T' or note.created_by = {}
 '''.format(myid)
 
-    pnotek_sql = u'''
-select keyword, note_id from key_note
-order by keyword
-;
-'''
-    pnotek = note_db.executesql(pnotek_sql)
     pnote_sql = u'''
 select
     note.id,
     note.version,
+    note.keywords,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname, auth_user.id as uid
 from note
 inner join shebanq_web.auth_user on note.created_by = shebanq_web.auth_user.id
@@ -1368,14 +1476,11 @@ order by shebanq_web.auth_user.last_name, shebanq_web.auth_user.first_name, note
 '''.format(condition)
 
     pnote = note_db.executesql(pnote_sql)
-    kindex = collections.defaultdict(lambda: [])
-    for (k, nid) in pnotek:
-        kindex[nid].append(k)
     pnotes = collections.OrderedDict()
     rversion_order = [v for v in version_order if versions[v]['date']]
     rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
-    for (nid, nvr, uname, uid) in pnote:
-        for kw in kindex[nid]:
+    for (nid, nvr, kws, uname, uid) in pnote:
+        for kw in set(x.lower() for x in kws.strip().split()):
             nkid = iid_encode('n', uid, kw=kw)
             if nkid not in pnotes:
                 pnotes[nkid] = {'': (uname, uid, kw), 'v': [0 for v in rversion_order]}
@@ -2120,7 +2225,7 @@ order by note.verse
     nverses = {}
     for (uid, ufname, ulname, kw, v, pub) in records:
         if uid not in user: user[uid] = (ufname, ulname)
-        for k in WORD_PAT.findall(kw):
+        for k in set(x.lower() for x in kw.strip().split()):
             if pub == 'T': npub[(uid, k)] += 1
             nnotes[(uid, k)] += 1
             nverses.setdefault((uid, k), set()).add(v)
@@ -2319,8 +2424,7 @@ def count_n_notes(uid, kw):
     extra = u''' or created_by = {} '''.format(uid) if myid == uid else u''
     sql = u'''
 select version, book, chapter, verse, clause_atom, id from note
-inner join key_note on key_note.note_id = note.id
-where key_note.keyword = '{}' and (note.is_shared = 'T' {})
+where keywords like '% {} %' and (is_shared = 'T' {})
 ;'''.format(kw_sql, extra)
     records = note_db.executesql(sql)
     n_count = collections.Counter()
@@ -2348,8 +2452,7 @@ def load_n_notes(vr, iid, kw):
     extra = u''' or created_by = {} '''.format(uid) if myid == iid else u''
     sql = u'''
 select book, clause_atom from note
-inner join key_note on key_note.note_id = note.id
-where key_note.keyword = '{}' and note.version = '{}' and (note.is_shared = 'T' {})
+where keywords like '% {} %' and version = '{}' and (is_shared = 'T' {})
 ;
 '''.format(kw_sql, vr, extra)
     clause_atoms = note_db.executesql(sql)

@@ -298,7 +298,6 @@ function Tree() {
             rdata = that.ftw.rootNode.children[0].data
             $('#count_u').html(rdata.u)
             $('#count_n').html(rdata.n)
-            msgopn = new Msg('opqmsgs')
             msgflt = new Msg('filter_msg')
             that.view = new View()
             that.level = new Level()
@@ -333,6 +332,61 @@ function Tree() {
     canvas_right.css('height', standard_height+'px')
 }
 
+function Upload() {
+    var that = this
+    this.inpt = $('#ncsv')
+    this.ctrl = $('#ncsv_upload')
+    this.limit = 10 * 1024 * 1024
+    this.ftype = 'text/csv'
+    this.init = function() {
+        this.msgs = new Msg('upl_msgs')
+        this.ctrl.hide()
+        this.inpt.change(function() {
+            that.file = this.files[0]
+            if(that.file.name.length > 0) {
+                msize = (that.file.size/1024/1024).toFixed(2)
+                if (that.file.type != that.ftype) {
+                    that.msgs.msg(['error', 'File has type '+that.file.type+'; should be '+that.ftype]);
+                }
+                else if(that.file.size >= that.limit) {
+                    that.msgs.msg(['error', 'File has size '+msize+'Mb; should be less than '+(that.limit/1024/1024)+'Mb']);
+                }
+                else { 
+                    that.msgs.msg(['good', 'File has type '+that.file.type+' and size '+msize+'Mb']);
+                    that.ctrl.show()
+                }
+            }
+        })
+        this.ctrl.click(function(e) {e.preventDefault();
+            that.fsubmit()
+            that.ctrl.hide()
+            that.inpt.val('')
+        })
+    }
+    this.fsubmit = function() {
+        var fd = new FormData(document.getElementById("fileinfo"));
+        this.msgs.msg(['special', 'uploading ...'])
+        $.ajax({
+          url: upload_url,
+          type: "POST",
+          data: fd,
+          enctype: 'multipart/form-data',
+          processData: false,  // tell jQuery not to process the data
+          contentType: false   // tell jQuery not to set contentType
+        }).done(function( data ) {
+            data.msgs.forEach(function(m) {
+                that.msgs.msg(m)
+            })
+        }, 'json');
+        return false;
+    }
+    if (this.inpt) {
+        this.init()
+    }
+}
+
 $(function(){
     ftree = new Tree()
+    upload = new Upload()
 })
+

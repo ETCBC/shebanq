@@ -264,6 +264,7 @@ function Msg(destination) {
     }
     this.trashc.hide()
 }
+
 function Tree() {
     var that = this
     this.tps = {o: 'organization', p:'project', q:'query'}
