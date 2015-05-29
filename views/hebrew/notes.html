@@ -53,7 +53,7 @@ Please contact <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a> for per
 <div>
 <p>Here are the specifications:</p>
 <dl><dt class="cps">general</dt>
-<dd class="cps"><The file size is at most 1 MB, its type must be recognized as <code>text/csv</code>. Give it the extension <code>.csv</code>;
+<dd class="cps">The file size is at most 1 MB, its type must be recognized as <code>text/csv</code>. Give it the extension <code>.csv</code>;
 The file must be tab-separated, there can be no tabs or newlines inside fields.</dd>
 <dt class="cps">column names</dt>
 <dd class="cps">The first line contains the name of the columns, exactly as follows:
@@ -78,13 +78,14 @@ to find these numbers;</li>
 <dd class="cps"><i>is_shared</i> and <i>is_published</i> should be either <code>T</code> or empty; if <code>T</code> the note counts as shared resp.
 published;</dd>
 <dt class="cps">status</dt>
-<dd class="cps"><ul>
-        <li><code>o</code> info</li>
-        <li><code>+</code> good</li>
-        <li><code>-</code> error</li>
-        <li><code>?</code> warning</li>
-        <li><code>!</code> special</li>
-        <li><code>*</code> note</li>
+<dd class="cps"><p>the field should contain one of the characters of the left column, the meaning is in the right column:</p>
+<ul>
+        <li class="t1_info"><code>o</code> info</li>
+        <li class="t1_good"><code>+</code> good</li>
+        <li class="t1_error"><code>-</code> error</li>
+        <li class="t1_warning"><code>?</code> warning</li>
+        <li class="t1_special"><code>!</code> special</li>
+        <li class="t1_note"><code>*</code> note</li>
     </ul></dd>
 <dt class="cps">keywords</dt>
 <dd class="cps">acts as a name for your set of nodes; at most 128 characters</dd>
