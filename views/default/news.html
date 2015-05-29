@@ -51,7 +51,6 @@ There are more than 1000 relevant cases, and you want to inspect the outcomes of
 Then you can use LAF-Fabric to export the outcomes as a well-formatted csv file and upload this file into SHEBANQ.
 See the
 <a href="{{=URL('hebrew','note', vars=dict(version='4b',id='MnxudG4tbG9jYQ__', tp='txt_tb1'))}}">ntn-loca</a> note set as an example.</p>
-<p class="note">This feature is still undocumented.</p>
 <p class="note">This feature can only be used if you have been approved as an uploader (contact <a href="mailto:dirk.roorda@dans.knaw.nl">me</a>).</p>
 </dd>
 <dt>Small fixes and optimizations</dt>
@@ -573,13 +572,13 @@ $('dd').hide()
 $('.hidec').hide()
 $('.showc').show()
 $('.hidec').click(function(e) {e.preventDefault();
-    refo = $(this).closest('div')
+    var refo = $(this).closest('div')
     refo.find('dd').hide()
     refo.find('.hidec').hide()
     refo.find('.showc').show()
 })
 $('.showc').click(function(e) {e.preventDefault();
-    refo = $(this).closest('div')
+    var refo = $(this).closest('div')
     refo.find('dd').show()
     refo.find('.hidec').show()
     refo.find('.showc').hide()

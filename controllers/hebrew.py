@@ -688,8 +688,8 @@ def csv(data): # converts an data structure of rows and fields into a csv string
     if data != None:
         for row in data:
             prow = [unicode(x) for x in row]
-            trow = [u'"{}"'.format(x.replace(u'"',u'""')) if '"' in x or '\n' in x or '\r' in x or ',' in x else x for x in prow]
-            result.append(u','.join(trow))
+            trow = [u'"{}"'.format(x.replace(u'"',u'""')) if '"' in x or ',' in x else x for x in prow]
+            result.append((u','.join(trow)).replace('\n',' ').replace('\r',' ')) # no newlines in fields, it is impractical
     return u'\n'.join(result)
 
 def item(): # controller to produce a csv file of query results or lexeme occurrences, where fields are specified in the current legend
@@ -945,17 +945,16 @@ select uid from uploaders where uid = {}
 def note_upload():
     msgs = []
     good = True
-    keywords = request.vars.keywords
     uid = request.vars.uid
     (may_upload, myid) = check_upload()
     if may_upload and str(myid) == uid:
-        good = load_notes(myid, ''.join(' {} '.format(k) for k in set(keywords.strip().split())), request.vars.file, msgs)
+        good = load_notes(myid, request.vars.file, msgs)
     else:
         good = False
         msgs.append(['error', 'you are not allowed to upload notes as csv files'])
     return dict(data=json.dumps(dict(msgs=msgs, good=good)))
 
-def load_notes(uid, keywords, filetext, msgs):
+def load_notes(uid, filetext, msgs):
     my_versions = set()
     book_info = {}
     for vr in versions:
@@ -1063,6 +1062,9 @@ insert into note ({}, created_by, created_on, modified_on, shared_on, published_
         for chunk in chunks:
             sql = u'{} {};'.format(sqlhead, u',\n'.join(chunk))
             note_db.executesql(sql)
+        clear_cache(r'^items_n_')
+        for vr in my_versions:
+            clear_cache(r'^verses_{}_n_'.format(vr))
     for msg in sorted(errors):
         msgs.append(['error', u'{}: {}'.format(msg, u','.join(str(i) for i in errors[msg]))])
     msgs.append(['good' if good else 'error', 'Done'])

@@ -44,18 +44,85 @@ var upload_url = "{{=XML(URL('hebrew', 'note_upload', extension='json'))}}"
 {{ block right_sidebar }}
 
 {{if not may_upload:}}
+<h4>Bulk note upload through csv</h4>
 <p>You are not allowed to upload csv files with notes.
 Please contact <a href="mailto:dirk.roorda@dans.knaw.nl">Dirk Roorda</a> for permissions.</p>
 {{else:}}
-<div id="upl_msgs"></div>
-<p><a href="#" title="clear diagnostic messages"><span id="trash_upl_msgs" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+<p>Upload a csv file with notes here.</p>
+{{pass}}
+<div>
+<p>Here are the specifications:</p>
+<dl><dt class="cps">general</dt>
+<dd class="cps"><The file size is at most 1 MB, its type must be recognized as <code>text/csv</code>. Give it the extension <code>.csv</code>;
+The file must be tab-separated, there can be no tabs or newlines inside fields.</dd>
+<dt class="cps">column names</dt>
+<dd class="cps">The first line contains the name of the columns, exactly as follows:
+<code>version</code> <code>book</code> <code>chapter</code> <code>verse</code> <code>clause_atom</code> <code>is_shared</code> <code>is_published</code> <code>status</code> <code>keywords</code> <code>ntext</code>;
+every following line should have exactly the same number of fields;</dd>
+<dt class="cps">passage indicator</dt>
+<dd class="cps">
+<ul class="ldisc">
+<li><i>book</i> should be one of the bible book names, spelled exactly as in The Text;</li>
+<li><i>chapter</i> should be a valid chapter number for the book in question;</li>
+<li><i>verse</i> should be a verse number not bigger than 200;</li>
+<ul></dd>
+<dt class="cps">anchor to the text</dt>
+<dd class="cps">
+<ul class="ldisc">
+<li><i>version</i> should be one of <code>4 4b</code>;</li>
+<li><i>clause_atom</i> should be the number of the clause_atom that the node must be attached to. You need a tool as LAF-Fabric
+to find these numbers;</li>
+<li><i>version</i>, <i>book</i>, and <i>clause_atom</i> together determine uniquely the exact piece of text that the note is attached to;
+<ul></dd>
+<dt class="cps">sharing</dt>
+<dd class="cps"><i>is_shared</i> and <i>is_published</i> should be either <code>T</code> or empty; if <code>T</code> the note counts as shared resp.
+published;</dd>
+<dt class="cps">status</dt>
+<dd class="cps"><ul>
+        <li><code>o</code> info</li>
+        <li><code>+</code> good</li>
+        <li><code>-</code> error</li>
+        <li><code>?</code> warning</li>
+        <li><code>!</code> special</li>
+        <li><code>*</code> note</li>
+    </ul></dd>
+<dt class="cps">keywords</dt>
+<dd class="cps">acts as a name for your set of nodes; at most 128 characters</dd>
+<dt class="cps">ntext</dt>
+<dd class="cps">actual text of the note; at most 512 characters</dd>
+</dl>
+</div>
+{{if may_upload:}}
 <form method="post" id="fileinfo" name="fileinfo">
     <input type="hidden" name="uid" value="{{=uid}}"/>
     <label>Choose csv file:</label> <input type="file" name="file" id="ncsv" required />
-    <label>Keywords</label> <input type="text" name="keywords" required />
 </form>
 <p><a class="ctrl" id="ncsv_upload" href='#'>upload and process</a></p>
+<div id="upl_msgs"></div>
+<p><a href="#" title="clear diagnostic messages"><span id="trash_upl_msgs" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 {{pass}}
 
-{{ end }}
+<script type="text/javascript">
+var detailcontrols = '<a class="showc fa fa-chevron-right" href="#" title="Show details"></a><a class="hidec fa fa-chevron-down" href="#" title="Hide details"></a>'
+$('dt.cps').each(function() {
+    var orig = $(this).html()
+    $(this).html(detailcontrols+'&nbsp;'+orig)
+})
+$('dd.cps').hide()
+$('.hidec').hide()
+$('.showc').show()
+$('.hidec').click(function(e) {e.preventDefault();
+    var refo = $(this).closest('dt')
+    refo.next().hide()
+    refo.find('.hidec').hide()
+    refo.find('.showc').show()
+})
+$('.showc').click(function(e) {e.preventDefault();
+    var refo = $(this).closest('dt')
+    refo.next().show()
+    refo.find('.hidec').show()
+    refo.find('.showc').hide()
+})
+</script>
 
+{{ end }}

@@ -336,7 +336,7 @@ function Upload() {
     var that = this
     this.inpt = $('#ncsv')
     this.ctrl = $('#ncsv_upload')
-    this.limit = 10 * 1024 * 1024
+    this.limit = 1 * 1024
     this.ftype = 'text/csv'
     this.init = function() {
         this.msgs = new Msg('upl_msgs')
@@ -344,15 +344,15 @@ function Upload() {
         this.inpt.change(function() {
             that.file = this.files[0]
             if(that.file.name.length > 0) {
-                msize = (that.file.size/1024/1024).toFixed(2)
+                msize = (that.file.size/1024).toFixed(1)
                 if (that.file.type != that.ftype) {
                     that.msgs.msg(['error', 'File has type '+that.file.type+'; should be '+that.ftype]);
                 }
                 else if(that.file.size >= that.limit) {
-                    that.msgs.msg(['error', 'File has size '+msize+'Mb; should be less than '+(that.limit/1024/1024)+'Mb']);
+                    that.msgs.msg(['error', 'File has size '+msize+'Mb; should be less than '+(that.limit/1024)+'Kb']);
                 }
                 else { 
-                    that.msgs.msg(['good', 'File has type '+that.file.type+' and size '+msize+'Mb']);
+                    that.msgs.msg(['good', 'File has type '+that.file.type+' and size '+msize+'Kb']);
                     that.ctrl.show()
                 }
             }
