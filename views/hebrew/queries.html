@@ -51,73 +51,77 @@ var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
 
 {{ block right_sidebar }}
 
+<h3><a title="new query" class="n_q" href="#"></a> Enter new query</h3>
+<p id="lmsg">You have to be logged in to enter new queries.</p>
 <div id="opqforms">
     <div class="form_l" id="form_o">
         <h4><span id="title_o">New</span> organization</h4>
         <table>
-            <tr><td><span class="flabel">Name</span></td><td><input type="text" id="name_o"/></td></tr>
-            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_o"/></td></tr>
+            <tr id="nameline_o"><td><span class="flabel">Name</span></td><td><input type="text" id="name_o"/></td></tr>
+            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_o"/><a target="_blank" href="" id="fo_v" oid=""></a></td></tr>
         </table>
     </div>
 
     <div class="form_l" id="form_p">
         <h4><span id="title_p">New</span> project</h4>
         <table>
-            <tr><td><span class="flabel">Name</span></td><td><input type="text" id="name_p"/></td></tr>
-            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_p"/></td></tr>
+            <tr id="nameline_p"><td><span class="flabel">Name</span></td><td><input type="text" id="name_p"/></td></tr>
+            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_p"/><a target="_blank" href="" id="fp_v" oid=""></a></td></tr>
         </table>
     </div>
 
     <div class="form_l" id="form_q">
         <h4><span id="title_q">New</span> query</h4>
-        <p><span class="flabel">Name</p>
-        <p><input type="text" id="name_q"/></p>
-        <p><span class="flabel">Organization/Project</span></p>
-        <p><a target="_blank" href="" id="fo_q" oid=""></a>/<a target="_blank" href="" id="fp_q" pid=""></a></p>
-        <p><span class="flabel">Description</p>
-        <div class="old descm" id="description_old_q"></div>
-        <textarea class="desc" id="description_q"/></textarea>
-    </div>
-
-    <div class="form_l" id="formv_q">
-        <h4 id="name_qv"></h4>
-        <p><a target="_blank" href="" id="fo_qv" oid=""></a>/<a target="_blank" href="" id="fp_qv" pid=""></a></p>
-        <div class="old descm" id="description_old_qv"></div>
+        <table>
+            <tr><td class="flabel">Name</td><td><input type="text" id="name_q"/></td></tr>
+            <tr>
+                <td class="flabel">Organization</td><td><span class="fa fa-check-circle fa-lg s_x" title="select existing organization from the tree"></span>
+                    <a target="_blank" href="" id="fo_q" oid=""></a></td>
+                <td><a id="new_ctrl_o" title="new organization" href="#" class="ctrl fa fa-plus fa-lg"
+                    ></a><a id="newx_ctrl_o" title="use existing organization" href="#" class="ctrl fa fa-times fa-lg"></a></td>
+            </tr>
+            <tr class="detail_o"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_o"/></td></tr>
+            <tr class="detail_o"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_o"/></td></tr>
+            <tr>
+                <td class="flabel">Project</td></td><td><span class="fa fa-check-circle fa-lg s_x" title="select existing project from the tree"></span>
+                    <a target="_blank" href="" id="fp_q" pid=""></a></td>
+                <td><a id="new_ctrl_p" title="new project" href="#" class="ctrl fa fa-plus fa-lg"
+                    ></a><a id="newx_ctrl_p" title="use existing project" href="#" class="ctrl fa fa-times fa-lg"></a></td>
+            </tr>
+            <tr class="detail_p"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_p"/></td></tr>
+            <tr class="detail_p"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_p"/></td></tr>
+        </table>
     </div>
 </div>
 
 <div id="opqctrl">
     <div id="opqmsgs"></div>
     <p><a href="#" title="clear diagnostic messages"><span id="trash_opqmsgs" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
-    <div class="ctrl_l" id="ctrl_o">
-        <p><a href="#" id="cancel_o" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
-           <a href="#" id="save_o" class="ctrl fa fa-save fa-lg" title="save changes"></a>
-           <a href="#" id="done_o" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
-           <input type="hidden" id="id_o" name="lid" value="0"/>
-        </p>
-    </div>
+    <span class="ctrl_l" id="ctrl_o">
+       <a href="#" id="cancel_o" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
+       <a href="#" id="save_o" class="ctrl fa fa-save fa-lg" title="save changes"></a>
+       <a href="#" id="done_o" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
+       <input type="hidden" id="id_o" name="lid" value="0"/>
+    </span>
 
-    <div class="ctrl_l" id="ctrl_p">
-        <p><a href="#" id="cancel_p" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
-           <a href="#" id="save_p" class="ctrl fa fa-save fa-lg" title="save changes"></a>
-           <a href="#" id="done_p" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
-           <input type="hidden" id="id_p" name="lid" value="0"/>
-        </p>
-    </div>
+    <span class="ctrl_l" id="ctrl_p">
+       <a href="#" id="cancel_p" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
+       <a href="#" id="save_p" class="ctrl fa fa-save fa-lg" title="save changes"></a>
+       <a href="#" id="done_p" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
+       <input type="hidden" id="id_p" name="lid" value="0"/>
+    </span>
 
-    <div class="ctrl_l" id="ctrl_q">
-        <p><a href="#" id="cancel_q" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
-           <a href="#" id="save_q" class="ctrl fa fa-save fa-lg" title="save changes"></a>
-           <a href="#" id="done_q" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
-           <input type="hidden" id="id_q" name="lid" value="0"/>
-        </p>
-    </div>
+    <span class="ctrl_l" id="ctrl_q">
+       <a href="#" id="cancel_q" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
+       <a href="#" id="save_q" class="ctrl fa fa-save fa-lg" title="save changes"></a>
+       <a href="#" id="done_q" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
+       <input type="hidden" id="id_q" name="lid" value="0"/>
+    </span>
 
-    <div class="ctrlv_l" id="ctrlv_q">
-        <p><input type="hidden" id="id_qv" name="lid" value="0"/></p>
-    </div>
-
-    <p><a href="#" id="reload_tree" class="ctrl fa fa-refresh fa-lg" title="refresh tree"></a></p>
+    <span>
+       <a href="#" id="reload_tree" class="ctrl fa fa-refresh fa-lg" title="refresh tree"></a>
+       <a id="continue_q" href="#" class="ctrl fa fa-arrow-right fa-lg" title="go to the query page to edit the query, run it, and view its results"></a>
+    </span>
 </div>
 
 {{ end }}

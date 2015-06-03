@@ -1234,9 +1234,12 @@ div.msg_error {
 .tn {
     font-size: x-small;
 }
-.s_o.fa, .s_p.fa {
+.s_o.fa, .s_p.fa, .s_x.fa {
     border-radius: 1pt;
     background-color: #88ffff;
+}
+.s_x.fa {
+    color: #0055a0
 }
 .flabel {
     font-size: small;

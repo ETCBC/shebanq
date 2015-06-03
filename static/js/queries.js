@@ -268,6 +268,7 @@ function Msg(destination) {
 function Tree() {
     var that = this
     this.tps = {o: 'organization', p:'project', q:'query'}
+    this.do_new = {}
 
     this.store_select = function(node) {
         if (!node.folder) {
@@ -318,66 +319,141 @@ function Tree() {
             name: $('#name_'+tp).val(),
         }
         if (tp == 'q') {
-            senddata['description'] = $('#description_'+tp).val()
             senddata['oid'] = $('#fo_q').attr('oid')
+            senddata['oname'] = $('#nameq_o').val()
+            senddata['owebsite'] = $('#websiteq_o').val()
             senddata['pid'] = $('#fp_q').attr('pid')
+            senddata['pname'] = $('#nameq_p').val()
+            senddata['pwebsite'] = $('#websiteq_p').val()
+            senddata['do_new_o'] = this.do_new['o']
+            senddata['do_new_p'] = this.do_new['p']
         }
         else {
             senddata['website'] = $('#website_'+tp).val()
         }
         var good = false
         $.post(record_url, senddata, function(json) {
-            var tpp = tp
-            if (view) {
-                tpp = tp + 'v'
-            }
             var rec = json.record
+            var orec = json.orecord
+            var prec = json.precord
             good = json.good
+            ogood = json.ogood
+            pgood = json.pgood
             msgopq.clear()
             json.msgs.forEach(function(m) {
                 msgopq.msg(m)
             })
-            if (!update || good) {
-                that.selectid('o', rec.oid, null)
-                that.selectid('p', rec.pid, o)
-            }
-            if (!update || (good && senddata.lid != '0')) {
-                if (view) {
-                    $('#name_'+tpp).html(rec.name)
+            if (update && tp == 'q') {
+                if (good) {
+                    that.selectid('o', rec.oid, null)
+                    that.selectid('p', rec.pid, o)
                 }
                 else {
-                    $('#name_'+tpp).val(rec.name)
-                }
-                if (tpp == 'q' || tpp == 'qv') {
-                    var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
-                    var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
-                    $('#description_'+tpp).val(rec.description)
-                    $('#description_old_'+tpp).html(rec.description_md)
-                    $('#fo_'+tpp).attr('href', rec.owebsite)
-                    $('#fo_'+tpp).html(escapeHTML(oname))
-                    $('#fp_'+tpp).attr('href', rec.pwebsite)
-                    $('#fp_'+tpp).html(escapeHTML(pname))
-                    $('#fo_'+tpp).attr('oid', rec.oid)
-                    $('#fp_'+tpp).attr('pid', rec.pid)
-                }
-                else {
-                    $('#website_'+tpp).val(rec.website)
-                }
-                if (update) {
-                    var elem = (tpp == 'q')?'a':'span'
-                    that.moditem.find(elem+'[n=1]').html(escapeHTML(rec.name))
+                    if (ogood) {
+                        that.selectid('o', orec.id, null)
+                    }
+                    if (pgood) {
+                        that.selectid('p', prec.id, o)
+                    }
                 }
             }
-            if (update && good && senddata.lid == '0') {
-                if (tpp == 'q') {
+            if (!update) {
+                var name = $('#name_'+tp)
+                name.prop('readonly', view)
+                name.val(rec.name)
+                if (tp == 'q') {
                     var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
                     var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
-                    $('#fo_'+tpp).attr('href', rec.owebsite)
-                    $('#fo_'+tpp).html(escapeHTML(oname))
-                    $('#fp_'+tpp).attr('href', rec.pwebsite)
-                    $('#fp_'+tpp).html(escapeHTML(pname))
-                    $('#fo_'+tpp).attr('oid', rec.oid)
-                    $('#fp_'+tpp).attr('pid', rec.pid)
+                    $('#fo_'+tp).attr('href', rec.owebsite)
+                    $('#fo_'+tp).html(escapeHTML(oname))
+                    $('#fp_'+tp).attr('href', rec.pwebsite)
+                    $('#fp_'+tp).html(escapeHTML(pname))
+                    $('#fo_'+tp).attr('oid', rec.oid)
+                    $('#fp_'+tp).attr('pid', rec.pid)
+                }
+                else {
+                    $('#website_'+tp).val(rec.website)
+                    $('#f'+tp+'_v').attr('href', rec.owebsite)
+                    $('#f'+tp+'_v').html(escapeHTML(rec.name))
+                }
+            }
+            else if (update && senddata.lid != '0') {
+                if (tp == 'q') {
+                    if (good) {
+                        var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
+                        var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                        that.hide_new_q(rec.id, 'o')
+                        that.hide_new_q(rec.id, 'p')
+                        $('#fo_'+tp).attr('href', rec.owebsite)
+                        $('#fo_'+tp).html(escapeHTML(oname))
+                        $('#fp_'+tp).attr('href', rec.pwebsite)
+                        $('#fp_'+tp).html(escapeHTML(pname))
+                        $('#fo_'+tp).attr('oid', rec.oid)
+                        $('#fp_'+tp).attr('pid', rec.pid)
+                        $('#title_q').html('Modify')
+                    }
+                    else {
+                        if (ogood) {
+                            var oname = (orec.name == undefined)?'':escapeHTML(orec.name);
+                            that.hide_new_q(orec.id, 'o')
+                            $('#fo_'+tp).attr('href', orec.website)
+                            $('#fo_'+tp).html(escapeHTML(oname))
+                            $('#fo_'+tp).attr('oid', orec.id)
+                        }
+                        if (pgood) {
+                            var pname = (prec.name == undefined)?'':escapeHTML(prec.name);
+                            that.hide_new_q(prec.id, 'p')
+                            $('#fp_'+tp).attr('href', prec.website)
+                            $('#fp_'+tp).html(escapeHTML(pname))
+                            $('#fp_'+tp).attr('pid', prec.id)
+                        }
+                    }
+                }
+                else {
+                    $('#website_'+tp).val(rec.website)
+                    $('#f'+tp+'_v').attr('href', rec.owebsite)
+                    $('#f'+tp+'_v').html(escapeHTML(rec.name))
+                }
+                var elem = (tp == 'q')?'a':'span'
+                var moditem = that.moditem.find(elem+'[n=1]')
+                if (moditem != undefined) {
+                    moditem.html(escapeHTML(rec.name))
+                }
+            }
+            else if (update && senddata.lid == '0') {
+                if (good) {
+                    $('#id_'+tp).val(rec.id)
+                }
+                if (tp == 'q') {
+                    if (good) {
+                        var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
+                        var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                        that.hide_new_q(rec.id, 'o')
+                        that.hide_new_q(rec.id, 'p')
+                        $('#fo_'+tp).attr('href', rec.owebsite)
+                        $('#fo_'+tp).html(escapeHTML(oname))
+                        $('#fp_'+tp).attr('href', rec.pwebsite)
+                        $('#fp_'+tp).html(escapeHTML(pname))
+                        $('#fo_'+tp).attr('oid', rec.oid)
+                        $('#fp_'+tp).attr('pid', rec.pid)
+                        $('#title_q').html('Modify')
+                    }
+                    else {
+                        if (ogood) {
+                            var oname = (orec.name == undefined)?'':escapeHTML(orec.name);
+                            that.hide_new_q(orec.id, 'o')
+                            $('#fo_'+tp).attr('href', orec.website)
+                            $('#fo_'+tp).html(escapeHTML(oname))
+                            $('#fo_'+tp).attr('oid', orec.id)
+                        }
+                        if (pgood) {
+                            var pname = (prec.name == undefined)?'':escapeHTML(prec.name);
+                            that.hide_new_q(prec.id, 'p')
+                            $('#fp_'+tp).attr('href', prec.website)
+                            $('#fp_'+tp).html(escapeHTML(pname))
+                            $('#fp_'+tp).attr('pid', prec.id)
+                        }
+                    }
                 }
             }
             var orig = $('.treehl')
@@ -391,23 +467,93 @@ function Tree() {
             else {
                 $('#reload_tree').hide()
             }
+            if (update && good && tp == 'q') {
+                $('#continue_q').attr('href', q_url+'?iid='+$('#id_q').val()+'&page=1&mr=r&qw=q')
+                $('#continue_q').show()
+            }
+            else {
+                $('#continue_q').hide()
+            }
         }, 'json')
+    }
+    this.do_edit_controls_q = function() {
+        var ctlo = $('#new_ctrl_o')
+        var ctlp = $('#new_ctrl_p')
+        var ctlxo = $('#newx_ctrl_o')
+        var ctlxp = $('#newx_ctrl_p')
+        var detailo = $('.detail_o')
+        var detailp = $('.detail_p')
+        var existo = $('#fo_q')
+        var existp = $('#fp_q')
+        detailo.hide()
+        detailp.hide()
+        ctlxo.hide()
+        ctlxp.hide()
+        ctlo.click(function(e) {e.preventDefault();
+            detailo.show()
+            ctlxo.show()
+            ctlo.hide()
+            existo.hide()
+            that.do_new['o'] = true
+        })
+        ctlxo.click(function(e) {e.preventDefault();
+            detailo.hide()
+            ctlxo.hide()
+            ctlo.show()
+            existo.show()
+            that.do_new['o'] = false
+        })
+        ctlp.click(function(e) {e.preventDefault();
+            detailp.show()
+            ctlxp.show()
+            ctlp.hide()
+            existp.hide()
+            that.do_new['p'] = true
+            that.select_clear('p', true)
+        })
+        ctlxp.click(function(e) {e.preventDefault();
+            detailp.hide()
+            ctlxp.hide()
+            ctlp.show()
+            existp.show()
+        })
+    }
+    this.hide_new_q = function(lid, tp) {
+        $('#new_ctrl_'+tp).show()
+        $('#newx_ctrl_'+tp).hide()
+        $('.detail_'+tp).hide()
+        $('#f'+tp+'_q').show()
+        that.do_new[tp] = false
+    }
+    this.do_view_controls_q = function() {
+        var ctlo = $('#new_ctrl_o')
+        var ctlp = $('#new_ctrl_p')
+        var ctlxo = $('#newx_ctrl_o')
+        var ctlxp = $('#newx_ctrl_p')
+        var detailo = $('.detail_o')
+        var detailp = $('.detail_p')
+        var existo = $('#fo_q')
+        var existp = $('#fp_q')
+        detailo.hide()
+        detailp.hide()
+        ctlo.hide()
+        ctlxo.hide()
+        ctlp.hide()
+        ctlxp.hide()
     }
     this.do_create = function(tp, obj) {
         msgopq.clear()
         $('.form_l').hide()
         $('.ctrl_l').hide()
-        $('#title_'+tp).html('Add new')
+        $('#title_'+tp).html('New')
         $('#name_'+tp).val('')
         var o = null
         if (tp == 'q') {
-            o = obj.closest('ul').closest('li')
-            var oid = o.find('a[lid]').attr('lid')
-            var p = obj.closest('li')
-            var pid = p.find('a[lid]').attr('lid')
-            $('#description_'+tp).val('')
-            $('#fo_q').attr('oid', oid)
-            $('#fp_q').attr('pid', pid)
+            this.do_new['o'] = false
+            this.do_new['p'] = false
+            $('#fo_q').attr('oid', 0)
+            $('#fp_q').attr('pid', 0)
+            this.do_edit_controls_q()
         }
         else {
             $('#website_'+tp).val('')
@@ -426,12 +572,15 @@ function Tree() {
     this.do_update = function(tp, obj, lid) {
         var o = null
         if (tp == 'q') {
+            this.do_new['o'] = false
+            this.do_new['p'] = false
             o = obj.closest('ul').closest('li').closest('ul').closest('li').closest('ul').closest('li')
+            this.do_edit_controls_q()
         }
         else if (tp == 'p') {
             o = obj.closest('ul').closest('li')
         }
-        this.moditem = obj.closest('li')
+        this.moditem = obj.closest('span')
         msgopq.clear()
         msgopq.msg(['info', 'loading ...'])
         $('.form_l').hide()
@@ -449,6 +598,7 @@ function Tree() {
         var o = null
         if (tp == 'q') {
             o = obj.closest('ul').closest('li').closest('ul').closest('li').closest('ul').closest('li')
+            this.do_view_controls_q()
         }
         else if (tp == 'p') {
             o = obj.closest('ul').closest('li')
@@ -463,7 +613,13 @@ function Tree() {
         this.record(tp, o, false, true)
         $('#opqforms').show()
         $('#opqctrl').show()
-        $('#formv_'+tp).show()
+        $('#form_'+tp).show()
+        if (tp == 'o' || tp == 'p') {
+            $('#nameline_'+tp).hide()
+            $('#website_'+tp).hide()
+            $('#f'+tp+'_v').show()
+        }
+        this.select_hide()
     }
     this.op_selection = function(tp) {
         if (tp == 'q') {
@@ -512,6 +668,7 @@ function Tree() {
         icon.addClass('fa-check-circle')
     }
     this.viewinit = function() {
+        $('#lmsg').how()
         $('.form_l').hide()
         $('.ctrl_l').hide()
         $('.treehl').removeClass('treehl')
@@ -524,12 +681,12 @@ function Tree() {
         canvas_left.css('width', '15%')
         canvas_middle.css('width','35%')
         canvas_right.css('width', '40%')
-        var view = $('.v_q') 
+        var view = $('.v_o, .v_p, .v_q') 
         view.addClass('fa fa-info')
         this.viewtp = function(tp) {
-            if (tp != 'q') {
+            /*if (tp != 'q') {
                 return
-            }
+            }*/
             var objs = $('.v_'+tp);
             objs.click(function(e) {e.preventDefault();
                 $('.treehl').removeClass('treehl')
@@ -571,8 +728,6 @@ function Tree() {
         for (var t in this.tps) {
             $('#form_'+t).hide()
             $('#ctrl_'+t).hide()
-            $('#formv_'+t).hide()
-            $('#ctrlv_'+t).hide()
             this.viewtp(t)
             if (t == 'q') {
                 this.select_init('o')
@@ -582,16 +737,20 @@ function Tree() {
     }
     this.editinit = function() {
         $('.treehl').removeClass('treehl')
+        $('#lmsg').hide()
         var select = $('.s_o,.s_p') 
         select.addClass('fa-circle-o')
         select.hide()
-        var create = $('.n_o, .n_p, .n_q'); 
+        var create = $('.n_q'); 
         create.addClass('fa fa-plus')
         this.createtp = function(tp) {
             var objs = $('.n_'+tp);
             objs.click(function(e) {e.preventDefault();
                 $('.treehl').removeClass('treehl')
                 that.op_selection(tp)
+                if (tp == 'q') {
+                    $('#id_q').val(0)
+                }
                 $(this).closest('span').addClass('treehl')
                 that.do_create(tp, $(this))
                 return false
@@ -606,6 +765,9 @@ function Tree() {
                 that.op_selection(tp)
                 $(this).closest('span').addClass('treehl')
                 var lid = $(this).attr('lid')
+                if (tp == 'q') {
+                    $('#id_q').val(lid)
+                }
                 that.do_update(tp, $(this), lid)
                 return false
             })
@@ -620,8 +782,6 @@ function Tree() {
                 that.select_hide()
                 $('#form_'+tp).hide()
                 $('#ctrl_'+tp).hide()
-                $('#formv_'+tp).hide()
-                $('#ctrlv_'+tp).hide()
             })
             $('#done_'+tp).click(function(e) {e.preventDefault();
                 that.op_selection(tp)
@@ -629,8 +789,6 @@ function Tree() {
                 that.select_hide()
                 $('#form_'+tp).hide()
                 $('#ctrl_'+tp).hide()
-                $('#formv_'+tp).hide()
-                $('#ctrlv_'+tp).hide()
             })
             $('#reload_tree').click(function(e) {e.preventDefault();
                 window.location.reload(true)
@@ -639,8 +797,6 @@ function Tree() {
         for (var t in this.tps) {
             $('#form_'+t).hide()
             $('#ctrl_'+t).hide()
-            $('#formv_'+t).hide()
-            $('#ctrlv_'+t).hide()
             this.createtp(t)
             this.updatetp(t)
             this.formtp(t)
@@ -654,6 +810,7 @@ function Tree() {
                 $('.treehl').removeClass('treehl')
                 $('a[qid='+qid+']').closest('span').addClass('treehl')
                 $(qnode.li)[0].scrollIntoView()
+                /*
                 var editable = $(qnode.li).has('.r_q').length > 0
                 if (editable) {
                     var qtitle = $('a[qid='+qid+']').nextAll('.r_q')
@@ -663,6 +820,7 @@ function Tree() {
                     var qtitle = $('a[qid='+qid+']').nextAll('.v_q')
                     this.do_view('q', qtitle, qid)
                 }
+                */
             }
         }
     }
@@ -742,7 +900,7 @@ function Tree() {
     var canvas_right = $('.right-sidebar')
     canvas_left.css('height', standard_height+'px')
     $('#queries').css('height', standard_height+'px')
-    $('#opqforms').css('height', form_height+'px')
+    //$('#opqforms').css('height', form_height+'px')
     $('#opqctrl').css('height', control_height+'px')
     canvas_right.css('height', standard_height+'px')
 }

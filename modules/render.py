@@ -824,8 +824,8 @@ order by word_number
 )]
         for word in words:
             if 'r' in word['phrase_border']:
-                result.append(u''' <span class="phf1">{}</span> '''.format(word['phrase_function']))
-            result.append(u''' <span m="{}" l="{}">{}</span> '''.format(word['word_number'], word['lexicon_id'], word['word_heb']))
+                result.append(u'''<span class="phf1">{}</span>'''.format(word['phrase_function']))
+            result.append(u'''<span m="{}" l="{}">{}</span>'''.format(word['word_number'], word['lexicon_id'], word['word_heb']))
         result.append(u'''
     </td>
     <td class="t1_tb1">{smalltab}</td>

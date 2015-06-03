@@ -633,6 +633,7 @@ function Notes(newcontent) {
     this.verselist = {}
     this.version = wb.version
     var sav_controls =  $('span.t1_main_sav')
+    this.logged_in = false
     newcontent.find('.vradio').each(function() {
         var bk = $(this).attr('b')
         var ch = $(this).attr('c')
@@ -657,11 +658,12 @@ function Notes(newcontent) {
         }
         else {
             that.show = true
-            sav_controls.show()
             for (var item in that.verselist) {
                 var notev = that.verselist[item]
                 notev.show_notes()
+                that.logged_in = notev.logged_in
             }
+            if (that.logged_in) {sav_controls.show()}
         }
     })
     var sav_c = sav_controls.find('a').first()
@@ -706,11 +708,11 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 that.msgn.msg(m)
             })
             if (json.good) {
-                that.process(json.users, json.notes)
+                that.process(json.users, json.notes, json.changed, json.logged_in)
             }
         })
     }
-    this.process = function(users, notes, changed) {
+    this.process = function(users, notes, changed, logged_in) {
         if (changed) {
             if (wb.mr == 'm') {
                 side_fetched['mn'] = false
@@ -720,6 +722,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.orig_users = users
         this.orig_notes = notes
         this.orig_edit = []
+        this.logged_in = logged_in
         this.gen_html(false)
         this.dirty = false
         this.apply_dirty()
@@ -746,6 +749,10 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             }
         })
         this.dest.find('tr.t1_cmt').show()
+        if (this.logged_in) {
+            main_sav_controls.show()
+            sav_controls.show()
+        }
     }
     this.gen_html_ca = function(canr) {
         var notes = this.orig_notes[canr]
@@ -806,7 +813,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             })
             if (json.good) {
                 that.dest.find('tr[ncanr]').remove()
-                that.process(json.users, json.notes, json.changed)
+                that.process(json.users, json.notes, json.changed, json.logged_in)
             }
         }, 'json')
     }
@@ -839,7 +846,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
             o_stat = o_note.stat
             n_stat = n_note.find('td.t1_stat a').attr('code')
-            o_kw = o_note.kw
+            o_kw = $.trim(o_note.kw)
             n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
             o_ntxt = o_note.ntxt
             n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
@@ -882,7 +889,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
             o_stat = o_note.stat
             n_stat = n_note.find('td.t1_stat a').attr('code')
-            o_kw = o_note.kw
+            o_kw = $.trim(o_note.kw)
             n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
             o_ntxt = o_note.ntxt
             n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
@@ -921,13 +928,14 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     }
     this.show_notes = function() {
         this.show = true
-        main_sav_controls.show()
-        sav_controls.show()
         if (!this.loaded) {
             this.fetch()
         }
         else {
             this.dest.find('tr.t1_cmt').show()
+            if (this.logged_in) {
+                sav_controls.show()
+            }
         }
     }
     this.clear_msg = function() {
@@ -937,6 +945,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         that.is_dirty()
         if (that.show) {that.hide_notes()} else {that.show_notes()}
     })
+    main_sav_controls.hide()
     sav_controls.hide()
 }
 

@@ -347,19 +347,20 @@ def cnotes():
     msgs = []
     if auth.user:
         myid = auth.user.id
+    logged_in = myid != None
     vr = get_request_val('material', '', 'version')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
     vs = check_int('verse', 'verse', msgs)
     if vs == None:
-        return json.dumps(dict(good=False, msgs=msgs, users={}, notes={}))
+        return json.dumps(dict(good=False, msgs=msgs, users={}, notes={}, changed=False, logged_in=logged_in))
     save = request.vars.save
     clause_atoms = from_cache('clause_atoms_{}_{}_{}_{}_'.format(vr, bk, ch, vs), lambda: get_clause_atoms(vr, bk, ch, vs), None)
     these_clause_atoms = clause_atoms[(bk, ch, vs)]
     changed = False
     if save == 'true':
         changed = note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs)
-    return cnotes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs)
+    return cnotes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs, logged_in)
 
 def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
     if myid == None:
@@ -529,7 +530,7 @@ from note where id in ({})
         #msgs.append(('info', u'Skipped empty new notes: {}'.format(emptynew)))
     return (good, old_notes, upd_notes, new_notes, del_notes)
 
-def cnotes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs):
+def cnotes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs, logged_in):
     condition = u'''note.is_shared = 'T' or note.is_published = 'T' '''
     if myid != None: condition += u''' or note.created_by = {} '''.format(myid)
 
@@ -608,7 +609,7 @@ order by
         for uid in ca_users[ca]:
             notes.setdefault(ca, []).extend(notes_proto[ca][uid])
 
-    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes))
+    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes, logged_in=logged_in))
 
 def sidem():
     session.forget(response)
@@ -1198,7 +1199,7 @@ select{} from query inner join auth_user on query.created_by = auth_user.id {}{}
             msgs.append(('error', u'No query with id {}'.format(iid)))
             return None
         q_record = records[0]
-        q_record['description_md'] = markdown(q_record['description'])
+        q_record['description_md'] = markdown(q_record['description'] or u'')
         sql = u'''
 select
     id as xid,
@@ -1234,7 +1235,7 @@ def query_tree():
         myid = auth.user.id
     linfo = collections.defaultdict(lambda: {})
 
-    def title_badge(lid, ltype, newtype, publ, good, num, tot):
+    def title_badge(lid, ltype, publ, good, num, tot):
         name = linfo[ltype][lid] if ltype != None else u'Shared Queries'
         nums = []
         if publ != 0: nums.append(u'<span class="special fa fa-quote-right"> {}</span>'.format(publ))
@@ -1251,16 +1252,16 @@ def query_tree():
             else:
                 badge = u'{} of {} of all <span class="total">{}</span>'.format(u', '.join(nums), num, tot)
         rename = u''
-        create = u''
         select = u''
-        if myid != None:
-            if newtype != None:
-                create = u'<a class="n_{}" href="#"></a>'.format(newtype)
-            if ltype in {'o', 'p'}:
+        if ltype in {'o', 'p'}:
+            if myid != None:
                 if lid:
                     rename = u'<a class="r_{}" lid="{}" href="#"></a>'.format(ltype, lid)
                 select = u'<a class="s_{} fa fa-lg" lid="{}" href="#"></a>'.format(ltype, lid)
-        return u'{} <span n="1">{}</span><span class="brq">({})</span> {} {}'.format(select, h_esc(name), badge, rename, create)
+            else:
+                if lid:
+                    rename = u'<a class="v_{}" lid="{}" href="#"></a>'.format(ltype, lid)
+        return u'{} <span n="1">{}</span><span class="brq">({})</span> {}'.format(select, h_esc(name), badge, rename)
 
     condition = u'''
 where query.is_shared = 'T'
@@ -1397,7 +1398,7 @@ select name, id from project order by name
 
     ccount = dict((x[0], len(x[1])) for x in countset.items())
     ccount['uid'] = myid
-    title = title_badge(None, None, 'o', count_publ, count_good, count, count)
+    title = title_badge(None, None, count_publ, count_good, count, count)
     dest = [dict(title=u'{}'.format(title), folder=True, children=[], data=ccount)]
     curdest = dest[-1]['children']
     cursource = tree
@@ -1406,7 +1407,7 @@ select name, id from project order by name
         opubl = counto_publ[oid]
         ogood = counto_good[oid]
         otot = counto_tot[oid]
-        otitle = title_badge(oid, 'o', 'p', opubl, ogood, onum, otot)
+        otitle = title_badge(oid, 'o', opubl, ogood, onum, otot)
         curdest.append(dict(title=u'{}'.format(otitle), folder=True, children=[]))
         curodest = curdest[-1]['children']
         curosource = cursource[oid]
@@ -1415,7 +1416,7 @@ select name, id from project order by name
             ppubl = countp_publ[oid][pid]
             pgood = countp_good[oid][pid]
             ptot = countp_tot[pid]
-            ptitle = title_badge(pid, 'p', 'q', ppubl, pgood, pnum, ptot)
+            ptitle = title_badge(pid, 'p', ppubl, pgood, pnum, ptot)
             curodest.append(dict(title=u'{}'.format(ptitle), folder=True, children=[]))
             curpdest = curodest[-1]['children']
             curpsource = curosource[pid]
@@ -1424,7 +1425,7 @@ select name, id from project order by name
                 upubl = countu_publ[oid][pid][uid]
                 ugood = countu_good[oid][pid][uid]
                 utot = countu_tot[uid]
-                utitle = title_badge(uid, 'u', None, upubl, ugood, unum, utot)
+                utitle = title_badge(uid, 'u', upubl, ugood, unum, utot)
                 curpdest.append(dict(title=u'{}'.format(utitle), folder=True, children=[]))
                 curudest = curpdest[-1]['children']
                 curusource = curpsource[uid]
@@ -1631,11 +1632,11 @@ def check_website(tp, val, msgs):
     result = None
     for x in [1]:
         if len(val) > 512:
-            msgs.append(('error', u'{label} val is longer than 512 characters!'.format(label=label)))
+            msgs.append(('error', u'{label} website is longer than 512 characters!'.format(label=label)))
             break
         val = val.strip()
         if val == '':
-            msgs.append(('error', u'{label} val consists completely of white space!'.format(label=label)))
+            msgs.append(('error', u'{label} website consists completely of white space!'.format(label=label)))
             break
         try:
             url_comps = urlparse(val)
@@ -1663,8 +1664,8 @@ def check_int(var, label, msgs):
         return None
     return int(val)
 
-def check_id(var, tp, label, msgs):
-    valrep = request.vars[var]
+def check_id(var, tp, label, msgs, valrep=None):
+    if valrep == None: valrep = request.vars[var]
     if valrep == None:
         msgs.append(('error', u'No {} id given'.format(label)))
         return None
@@ -1684,7 +1685,7 @@ def check_rel(tp, val, msgs):
     result = None
     for x in [1]:
         check_sql = u'''
-select count(*) as occurs from {} where id = '{}'
+select count(*) as occurs from {} where id = {}
 ;
 '''.format(table, val)
         try:
@@ -1704,7 +1705,11 @@ select count(*) as occurs from {} where id = '{}'
 def record():
     msgs = []
     record = {}
+    orecord = {}
+    precord = {}
     good = False
+    ogood = False
+    pgood = False
     myid = auth.user.id if auth.user != None else None
     for x in [1]:
         tp = request.vars.tp
@@ -1726,48 +1731,60 @@ def record():
         if tp == 'q':
             fields.append('organization')
             fields.append('project')
-            fields.append('description')
         else:
             fields.append('website')
         if upd:
             (authorized, msg) = query_auth_write(lid) if tp == 'q' else auth_write(label)
         else:
-            (authorized, msg) = query_auth_read(lid) if tp == 'q' else auth_write(label)
+            (authorized, msg) = query_auth_read(lid) if tp == 'q' else auth_read(label)
         if not authorized:
             msgs.append(('error', msg))
             break
         if upd:
-            (good, new_lid) = upd_record(tp, lid, myid, fields, msgs)
+            fvalues = None
+            if tp == 'q':
+                subfields = [u'name', u'website']
+                fvalues = [request.vars.name]
+                do_new_o = request.vars.do_new_o
+                do_new_p = request.vars.do_new_p
+                if do_new_o not in {'true', 'false'}:
+                    msgs.append(('error', u'invalid instruction for organization {}!'.format(do_new_o)))
+                    break
+                do_new_o = do_new_o == 'true'
+                if do_new_p not in {'true', 'false'}:
+                    msgs.append(('error', u'invalid instruction for project {}!'.format(do_new_p)))
+                    break
+                do_new_p = do_new_p == 'true'
+                ogood = True
+                if do_new_o:
+                    (ogood, oid) = upd_record('o', 0, myid, subfields, msgs, fvalues=[request.vars.oname, request.vars.owebsite])
+                    if ogood: orecord = dict(id=oid, name=request.vars.oname, website=request.vars.owebsite)
+                else:
+                    oid = check_id('oid', 'o', tps['o'][0], msgs)
+                pgood = True
+                if do_new_p:
+                    (pgood, pid) = upd_record('p', 0, myid, subfields, msgs, fvalues=[request.vars.pname, request.vars.pwebsite])
+                    if pgood: precord = dict(id=pid, name=request.vars.pname, website=request.vars.pwebsite)
+                else:
+                    pid = check_id('pid', 'p', tps['o'][0], msgs)
+                if not ogood or not pgood: break
+                if oid == None or pid == None: break
+                fvalues.extend([oid, pid])
+            (good, new_lid) = upd_record(tp, lid, myid, fields, msgs, fvalues=fvalues)
             if not good:
                 break
             lid = new_lid
         else:
             good = True
+        dbrecord = None
         if tp == 'q':
             if lid == 0:
-                oid = check_id('oid', 'o', tps['o'][0], msgs)
-                pid = check_id('pid', 'p', tps['o'][0], msgs)
-                if oid == None or pid == None: break
-                osql = u'''
-select id as oid, name as oname, website as owebsite from organization where id = {}
-;
-'''.format(oid)
-                psql = u'''
-select id as pid, name as pname, website as pwebsite from project where id = {}
-;
-'''.format(pid)
-                odbrecord = db.executesql(osql, as_dict=True)
-                pdbrecord = db.executesql(psql, as_dict=True)
-                odbrecord = odbrecord[0] if odbrecord else dict(oid=0, oname='', owebsite='')
-                pdbrecord = pdbrecord[0] if pdbrecord else dict(pid=0, pname='', pwebsite='')
-                dbrecord = [odbrecord]
-                dbrecord[0].update(pdbrecord)
+                dbrecord = [0, u'', 0, u'', u'', 0, u'', u'']
             else: 
                 dbrecord = db.executesql(u'''
 select
 query.id as id,
 query.name as name,
-query.description as description,
 organization.id as oid,
 organization.name as oname,
 organization.website as owebsite,
@@ -1782,7 +1799,7 @@ where query.id = {}
 '''.format(lid), as_dict=True)
         else:
             if lid == 0:
-                pass
+                dbrecord = [0, u'', u'']
             else:
                 dbrecord = db.executesql(u'''
 select {} from {} where id = {}
@@ -1792,30 +1809,30 @@ select {} from {} where id = {}
             msgs.append(('error', u'No {} with id {}'.format(label, lid)))
             break
         record = dbrecord[0]
-        if tp == 'q' and lid != 0:
-            record['description_md'] = markdown(record['description'])
-    return dict(data=json.dumps(dict(record=record, msgs=msgs, good=good)))
+    return dict(data=json.dumps(dict(record=record, orecord=orecord, precord=precord, msgs=msgs, good=good, ogood=ogood, pgood=pgood)))
 
-def upd_record(tp, lid, myid, fields, msgs):
+def upd_record(tp, lid, myid, fields, msgs, fvalues=None):
     updrecord = {}
     good = False
     (label, table) = tps[tp]
+    use_values = {}
+    for i in range(len(fields)):
+        field = fields[i]
+        value = fvalues[i] if fvalues != None else request.vars[field]
+        use_values[field] = value
+
     for x in [1]:
-        valsql = check_name(tp, lid, myid, unicode(request.vars.name, encoding='utf-8'), msgs)
+        valsql = check_name(tp, lid, myid, unicode(use_values['name'], encoding='utf-8'), msgs)
         if valsql == None:
             break
         updrecord['name'] = valsql
         if tp == 'q':
-            valsql = check_description(tp, unicode(request.vars.description, encoding='utf-8'), msgs)
-            if valsql == None:
-                break
-            updrecord['description'] = valsql
-            val = check_id('oid', 'o', tps['o'][0], msgs)
+            val = check_id('oid', 'o', tps['o'][0], msgs, valrep=str(use_values['organization']))
             if val == None: break
             valsql = check_rel('o', val, msgs)
             if valsql == None: break
             updrecord['organization'] = valsql
-            val = check_id('pid', 'p', tps['p'][0], msgs)
+            val = check_id('pid', 'p', tps['p'][0], msgs, valrep=str(use_values['project']))
             valsql = check_rel('p', val, msgs)
             if valsql == None: break
             updrecord['project'] = valsql
@@ -1830,7 +1847,7 @@ def upd_record(tp, lid, myid, fields, msgs):
                 updrecord[fld] = myid
                 fields.append(fld)
         else:
-            valsql = check_website(tp, request.vars.website, msgs)
+            valsql = check_website(tp, use_values['website'], msgs)
             if valsql == None:
                 break
             updrecord['website'] = valsql
@@ -1846,7 +1863,7 @@ def upd_record(tp, lid, myid, fields, msgs):
 insert into {} ({}) values ({})
 ;
 '''.format(table, u','.join(fields), u','.join(fieldvals), lid)
-            thismsg = u'added'
+            thismsg = u'{} added'.format(label)
         result = db.executesql(sql)
         if lid == 0:
             lid = db.executesql(u'''
@@ -2351,6 +2368,11 @@ select * from query where id = {}
 @auth.requires_login()
 def auth_write(label):
     authorized = auth.user != None
+    msg = u'You have no access to create/modify a {}'.format(label) 
+    return (authorized, msg)
+
+def auth_read(label):
+    authorized = True
     msg = u'You have no access to create/modify a {}'.format(label) 
     return (authorized, msg)
 
