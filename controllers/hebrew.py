@@ -660,7 +660,7 @@ def query():
             vr = get_request_val('material', '', 'version')
             msgs = []
             (iid, kw) = iid_decode('q', iidrep)
-            qrecord = get_query_info(iid, vr, msgs, with_ids=False, single_version=False, po=True)
+            qrecord = get_query_info(False, iid, vr, msgs, with_ids=False, single_version=False, po=True)
             result = dict(good=qrecord != None, msg=msgs, data=qrecord)
             return dict(data=json.dumps(result))
     else:
@@ -838,7 +838,7 @@ def sideq():
             q=json.dumps(dict()),
             msgs=json.dumps(msgs),
         )
-    q_record = get_query_info(iid, vr, msgs, with_ids=True, single_version=False, po=True)
+    q_record = get_query_info(auth.user != None, iid, vr, msgs, with_ids=True, single_version=False, po=True)
     if q_record == None:
         return dict(
             writable=True,
@@ -1122,7 +1122,7 @@ select first_name, last_name from auth_user where id = '{}'
         n_record['ulname'] = uinfo[0][1]
     return n_record
 
-def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False):
+def get_query_info(show_private_fields, iid, vr, msgs, single_version=False, with_ids=True, po=False):
     sqli = u''',
     query.created_by as uid,
     project.id as pid,
@@ -1149,6 +1149,12 @@ def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False)
     organization.website as owebsite
 ''' if po else u''
 
+    sqlb = u''',
+    auth_user.email as uemail
+''' if show_private_fields else u''',
+    'n.n@not.disclosed' as uemail
+'''
+
     sqlm = u'''
     query.id as id,
     query.name as name,
@@ -1158,10 +1164,9 @@ def get_query_info(iid, vr, msgs, single_version=False, with_ids=True, po=False)
     query.is_shared as is_shared,
     query.shared_on as shared_on,
     auth_user.first_name as ufname,
-    auth_user.last_name as ulname,
-    auth_user.email as uemail
-    {}{}{}
-'''.format(sqli, sqlp, sqlx)
+    auth_user.last_name as ulname
+    {}{}{}{}
+'''.format(sqlb, sqli, sqlp, sqlx)
 
     sqlr = u'''
 inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{}'
@@ -2124,7 +2129,7 @@ update {} set{} where query_id = {} and version = '{}'
             )
             db.executesql(sql)
             clear_cache(r'^items_q_{}_'.format(vr))
-        q_record = get_query_info(qid, vr, msgs, with_ids=False, single_version=False, po=True)
+        q_record = get_query_info(auth.user != None, qid, vr, msgs, with_ids=False, single_version=False, po=True)
 
     return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=q_record)))
 
@@ -2196,7 +2201,7 @@ def groupq(vr, input):
     r = []
     if len(monads):
         msgs = []
-        queryrecords = get_query_info((str(q) for q in monads), vr, msgs, with_ids=False, single_version=True, po=False)
+        queryrecords = get_query_info(False, (str(q) for q in monads), vr, msgs, with_ids=False, single_version=True, po=False)
         for q in queryrecords:
             r.append({'item': q, 'monads': json.dumps(sorted(list(monads[q['id']])))})
     return r

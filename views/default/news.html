@@ -42,14 +42,28 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
-<h2>2015-06-03</h2>
+<h2>2015-06-04</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
 <dt>Simplified new query process</dt>
-<dd>
+<dd>There is a single plus button to create a new query, give it a name, and associate it with an organization and a project, either existing or new.
+After saving, you can go straight to the new query in edit view, and start coding your MQL, write a description, and run it.</dd>
+<dt>Proper HTTPS</dt>
+<dd><p>The server on which SHEBANQ runs now has a proper certificate for secure traffic over <i>https</i>, issued by Terena.
+From now on, the site uses https throughout.<p>
+<ul class="ldisc">
+<li>New users will no longer get a disturbing security warning, caused by the self-signed certificate that SHEBANQ used until now;</li>
+<li>Existing users will no longer experiences sudden logouts after having followed a non-https link;</li>
+<li>Old http-links, used for citation and sharing, still work; users that use them are redirected to the corresponding https-link automatically;</li>
+<li>New citation/share links use https.</li>
+</ul>
 </dd>
+<dt>Email addresses more private</dt>
+<dd><p>Up till now, everybody could view an email link to authors of shared queries.
+From now on, only registered users can view them.</p>
+<p>We assume, until it is proven otherwise, that the registered users of SHEBANQ form a research and study community that observe civil codes of conduct.</p></dd>
 <dt>Small fixes</dt>
-<dd>If a user was not logged in, the edit controls for notes were still visible. They even worked!</dd>
+<dd>If a user was not logged in, the edit controls for notes were still visible. They even worked. Not anymore.</dd>
 </dl>
 </div>
 
