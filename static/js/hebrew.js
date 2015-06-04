@@ -150,7 +150,7 @@ var wb      // holds the one and only page object
 var msg   // messages object
 
 /* url values for AJAX calls from this application */
-var page_view_url, query_url, word_url // urls that are presented as citatation urls (do not have https but http!)
+var page_view_url, query_url, word_url
 var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, notes_url, cnotes_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 

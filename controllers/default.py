@@ -45,7 +45,7 @@ def user():
     to decorate functions that need access control
     """
 
-    if not request.is_local: request.requires_https()
+    # if not request.is_local: request.requires_https()
     response.title = T("User Profile")
     return dict(form=auth())
 
