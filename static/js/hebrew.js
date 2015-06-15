@@ -838,22 +838,22 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             this.dirty = false;
             return
         }
-        for (n = 0; n < this.orig_edit.length; n++) {
-            canr = this.orig_edit[n].canr
-            o_note = this.orig_edit[n].note
-            nid = o_note.nid
-            uid = o_note.uid
-            n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
-            o_stat = o_note.stat
-            n_stat = n_note.find('td.t1_stat a').attr('code')
-            o_kw = $.trim(o_note.kw)
-            n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
-            o_ntxt = o_note.ntxt
-            n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
-            o_shared = o_note.shared
-            n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
-            o_pub = o_note.pub
-            n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
+        for (var n = 0; n < this.orig_edit.length; n++) {
+            var canr = this.orig_edit[n].canr
+            var o_note = this.orig_edit[n].note
+            var nid = o_note.nid
+            var uid = o_note.uid
+            var n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
+            var o_stat = o_note.stat
+            var n_stat = n_note.find('td.t1_stat a').attr('code')
+            var o_kw = $.trim(o_note.kw)
+            var n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
+            var o_ntxt = o_note.ntxt
+            var n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
+            var o_shared = o_note.shared
+            var n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
+            var o_pub = o_note.pub
+            var n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
             if (o_stat != n_stat || o_kw != n_kw || o_ntxt != n_ntxt || o_shared != n_shared || o_pub != n_pub) {
                 dirty = true
                 break
@@ -881,22 +881,22 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         var notes = this.dest.find('tr[edit]')
         var notelines = []
         if (this.orig_edit == undefined) {return}
-        for (n = 0; n < this.orig_edit.length; n++) {
-            canr = this.orig_edit[n].canr
-            o_note = this.orig_edit[n].note
-            nid = o_note.nid
-            uid = o_note.uid
-            n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
-            o_stat = o_note.stat
-            n_stat = n_note.find('td.t1_stat a').attr('code')
-            o_kw = $.trim(o_note.kw)
-            n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
-            o_ntxt = o_note.ntxt
-            n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
-            o_shared = o_note.shared
-            n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
-            o_pub = o_note.pub
-            n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
+        for (var n = 0; n < this.orig_edit.length; n++) {
+            var canr = this.orig_edit[n].canr
+            var o_note = this.orig_edit[n].note
+            var nid = o_note.nid
+            var uid = o_note.uid
+            var n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
+            var o_stat = o_note.stat
+            var n_stat = n_note.find('td.t1_stat a').attr('code')
+            var o_kw = $.trim(o_note.kw)
+            var n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
+            var o_ntxt = o_note.ntxt
+            var n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
+            var o_shared = o_note.shared
+            var n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
+            var o_pub = o_note.pub
+            var n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
             if (o_stat != n_stat || o_kw != n_kw || o_ntxt != n_ntxt || o_shared != n_shared || o_pub != n_pub) {
                 notelines.push({
                     nid: nid,
@@ -1036,7 +1036,7 @@ function SelectBook() { // book selection
     }
     this.gen_html = function() { // generate a new book selector
         var thebook = wb.vs.book()
-        thisbooksorder = thebooksorder[wb.version]
+        var thisbooksorder = thebooksorder[wb.version]
         var nitems = thisbooksorder.length
         this.lastitem = nitems
         var ht = ''
@@ -1382,7 +1382,7 @@ function MContent() { // the actual Hebrew content, either plain text or tabbed 
     this.show = function() {
         var this_tp = wb.vs.tp()
         for (var tp in next_tp) {
-            this_material =  $('#material_'+tp)
+            var this_material =  $('#material_'+tp)
             if (this_tp == tp) {
                this_material.show()
             }
@@ -2342,7 +2342,7 @@ function defcolor(qw, iid) {// compute the default color
     }
     else {
         var iidstr = (iid == null)?'':iid
-        sumiid = 0
+        var sumiid = 0
         for (var i=0; i<iidstr.length;i++) {sumiid += iidstr.charCodeAt(i)}
         var mod = sumiid % vdefaultcolors.length
         result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]

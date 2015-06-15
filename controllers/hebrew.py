@@ -343,6 +343,7 @@ def verse_c(vr, bk, ch, vs, msgs):
     return result
 
 def cnotes():
+    session.forget(response)
     myid = None
     msgs = []
     if auth.user:
@@ -651,6 +652,7 @@ def sidem_c(vr, qw, bk, ch, pub):
     return result
 
 def query():
+    session.forget(response)
     iidrep = get_request_val('material', '', 'iid')
     if request.extension == 'json':
         (authorized, msg) = item_access_read(iidrep=iidrep)
@@ -671,6 +673,7 @@ def query():
     return text()
 
 def word():
+    session.forget(response)
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
     #request.vars['tp'] = 'txt_p'
@@ -678,6 +681,7 @@ def word():
     return text()
 
 def note():
+    session.forget(response)
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'n'
     #request.vars['tp'] = 'txt_tb1'
@@ -694,6 +698,7 @@ def csv(data): # converts an data structure of rows and fields into a csv string
     return u'\n'.join(result)
 
 def item(): # controller to produce a csv file of query results or lexeme occurrences, where fields are specified in the current legend
+    session.forget(response)
     vr = get_request_val('material', '', 'version')
     iidrep = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
@@ -761,6 +766,7 @@ where shebanq_note.note.keywords like '% {kw} %' and shebanq_note.note.version =
     return dict(filename=filename, data=csv([head_row]+list(data)))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
+    session.forget(response)
     vr = get_request_val('material', '', 'version')
     iidrep = get_request_val('material', '', 'iid')
     qw = get_request_val('material', '', 'qw')
@@ -905,6 +911,7 @@ def siden():
     )
 
 def words():
+    session.forget(response)
     viewsettings = Viewsettings(versions)
     vr = get_request_val('material', '', 'version', default=False)
     if not vr:
@@ -918,6 +925,7 @@ def words():
     )
 
 def queries():
+    session.forget(response)
     msgs = []
     qid = check_id('goto', 'q', 'query', msgs)
     if qid != None:
@@ -925,6 +933,7 @@ def queries():
     return dict(qid=qid)
 
 def notes():
+    session.forget(response)
     msgs = []
     nkid = check_id('goto', 'n', 'note', msgs)
     (may_upload, myid) = check_upload()
@@ -944,6 +953,7 @@ select uid from uploaders where uid = {}
 
 @auth.requires_login()
 def note_upload():
+    session.forget(response)
     msgs = []
     good = True
     uid = request.vars.uid
@@ -1235,6 +1245,7 @@ def pagelist(page, pages, spread):
     return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
 
 def query_tree():
+    session.forget(response)
     myid = None
     if auth.user:
         myid = auth.user.id
@@ -1452,6 +1463,7 @@ select name, id from project order by name
     return dict(data=json.dumps(dest))
 
 def note_tree():
+    session.forget(response)
     myid = None
     if auth.user:
         myid = auth.user.id
@@ -1708,6 +1720,7 @@ select count(*) as occurs from {} where id = {}
     return result
 
 def record():
+    session.forget(response)
     msgs = []
     record = {}
     orecord = {}
@@ -1880,6 +1893,7 @@ select last_insert_id() as x
     return (good, lid)
 
 def field():
+    session.forget(response)
     msgs = []
     good = False
     mod_date_fld = None
@@ -2027,6 +2041,7 @@ insert into query_exe (id, version, query_id) values (null, '{}', {})
 '''.format(vr, qid))
 
 def fields():
+    session.forget(response)
     msgs = []
     good = False
     updrecord = {}

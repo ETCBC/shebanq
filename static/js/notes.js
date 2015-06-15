@@ -3,7 +3,7 @@ var ns = $.initNamespaceStorage('muting_n')
 var vs = $.initNamespaceStorage('nsview')
 var muting = ns.localStorage
 var nsview = vs.localStorage
-var ftree, msgflt, msgopn, rdata
+var ftree, upload, msgflt, rdata
 var subtract = 80 // the canvas holding the material gets a height equal to the window height minus this amount
 var control_height = 100 // height for messages and controls
 
@@ -344,7 +344,7 @@ function Upload() {
         this.inpt.change(function() {
             that.file = this.files[0]
             if(that.file.name.length > 0) {
-                msize = (that.file.size/1024).toFixed(1)
+                var msize = (that.file.size/1024).toFixed(1)
                 if (that.file.type != that.ftype) {
                     that.msgs.msg(['error', 'File has type '+that.file.type+'; should be '+that.ftype]);
                 }

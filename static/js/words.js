@@ -43,6 +43,7 @@ function set_vselect(v, gotoword) {
         })
     }
 }
+
 function words_init() {
     $('.mvradio').removeClass('ison')
     var gotoword = Request.parameter('goto');
