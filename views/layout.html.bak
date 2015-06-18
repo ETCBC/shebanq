@@ -1,0 +1,216 @@
+<!--[if HTML5]><![endif]-->
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]><html class="ie ie6 ie-lte9 ie-lte8 ie-lte7 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if IE 7]><html class="ie ie7 ie-lte9 ie-lte8 ie-lte7 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if IE 8]><html class="ie ie8 ie-lte9 ie-lte8 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if IE 9]><html class="ie9 ie-lte9 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
+<head>
+<title>{{=response.title or request.application}}</title>
+  <!--[if !HTML5]>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+  <![endif]-->
+  <!-- www.phpied.com/conditional-comments-block-downloads/ -->
+  <!-- Always force latest IE rendering engine
+       (even in intranet) & Chrome Frame
+       Remove this if you use the .htaccess -->
+	   
+  <meta charset="utf-8" />
+
+  <!-- http://dev.w3.org/html5/markup/meta.name.html -->
+  <meta name="application-name" content="{{=request.application}}" />
+
+  <!-- Speaking of Google, don't forget to set your site up:
+       http://google.com/webmasters -->
+  <meta name="google-site-verification" content="" />
+
+  <!--  Mobile Viewport Fix
+        j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+        device-width: Occupy full width of the screen in its current orientation
+        initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+        user-scalable = yes allows the user to zoom in -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="shortcut icon" href="{{=URL('static','images/shebanq_logo.ico')}}" type="image/icon"/>
+  <link rel="apple-touch-icon" href="{{=URL('static','images/shebanq_logo_small.png')}}"/>
+
+  <!-- All JavaScript at the bottom, except for Modernizr which enables
+       HTML5 elements & feature detects -->
+  <script src="{{=URL('static','js/modernizr.custom.js')}}"></script>
+
+  <!-- include stylesheets -->
+  {{
+  response.files.insert(0,URL('static','css/reset.css'))
+  response.files.insert(1,URL('static','css/web2py.css'))
+  response.files.insert(2,URL('static','css/bootstrap.min.css'))
+  response.files.insert(3,URL('static','css/bootstrap-responsive.min.css'))
+  response.files.insert(4,URL('static','css/web2py_bootstrap.css'))
+  response.files.insert(5,URL('static','css/jquery-ui.min.css'))
+  response.files.insert(6,URL('static','css/jquery-ui.structure.min.css'))
+  response.files.insert(7,URL('static','css/jquery-ui.theme.min.css'))
+  response.files.insert(7,URL('static','css/fancytree/skin-lion/ui.fancytree.min.css'))
+  response.files.insert(8,URL('static','css/fonts.css'))
+  response.files.insert(9,URL('static','css/font-awesome.min.css'))
+  response.files.insert(9,URL('static','css/hebrew.css'))
+  }}
+
+  {{include 'web2py_ajax.html'}}
+
+  {{
+  # using sidebars need to know what sidebar you want to use
+  left_sidebar_enabled = globals().get('left_sidebar_enabled',False)
+  right_sidebar_enabled = globals().get('right_sidebar_enabled',False)
+  middle_columns = {0:'span12',1:'span9',2:'span6'}[
+    (left_sidebar_enabled and 1 or 0)+(right_sidebar_enabled and 1 or 0)]
+  }}
+
+  <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
+  <script src="{{=URL('static','js/web2py_bootstrap.js')}}"></script>
+  <script src="{{=URL('static','js/jquery-ui.min.js')}}"></script>
+  <script src="{{=URL('static','js/jquery.cookie.js')}}"></script>
+  <script src="{{=URL('static','js/jquery.storageapi.min.js')}}"></script>
+  <script src="{{=URL('static', 'js/history.js/scripts/bundled/html4+html5/native.history.js')}}"></script>
+  <script src="{{=URL('static','js/markdown.js')}}"></script>
+  <script src="{{=URL('static', 'js/hebrew.js')}}"></script>
+  <noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
+  {{block head}}{{end}}
+</head>
+
+<body>
+  <!-- Navbar ================================================== -->
+  <div class="navbar navbar-inverse">
+    <div class="flash">{{=response.flash or ''}}</div>
+    <div class="navbar-inner">
+      <div class="container">
+        {{is_mobile=request.user_agent().is_mobile}}
+        <!-- the next tag is necessary for bootstrap menus, do not remove -->
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="{{='display:none;' if not is_mobile else ''}}">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        {{=response.logo or ''}}
+        <ul id="navbar" class="nav pull-right">{{='auth' in globals() and auth.navbar(mode="dropdown") or ''}}</ul>
+        <div class="{{='nav-collapse' if is_mobile else 'nav'}}">
+          {{if response.menu:}}
+          {{=MENU(response.menu, _class='mobile-menu nav' if is_mobile else 'nav',mobile=is_mobile,li_class='dropdown',ul_class='dropdown-menu')}}
+          {{pass}}
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div><!--/top navbar -->
+
+  <div class="container">
+    <div class="logos row">
+        <div class="span12">
+        </div>
+    </div>
+    <!-- Masthead ================================================== -->
+    <header class="mastheader row" id="header">
+      {{if response.title:}}
+        <div class="span12">
+            <div class="page-header">
+                <h1>
+                    {{=response.title}}
+                    <small>{{=response.subtitle or ''}}</small>
+                </h1>
+            </div>
+        </div>
+	{{pass}}
+    </header>
+
+    <section id="main" class="main row" style="padding-bottom: 10px;">
+        {{if left_sidebar_enabled:}}
+        <div class="span3 left-sidebar">
+            {{block left_sidebar}}
+            <h3>Left Sidebar</h3>
+            {{end}}
+        </div>
+        {{pass}}
+
+        <div class="{{=middle_columns}}">
+            {{block center}}
+            {{include}}
+            {{end}}
+        </div>
+
+        {{if right_sidebar_enabled:}}
+        <div class="span3 right-sidebar">
+            {{block right_sidebar}}
+            <h3>Right Sidebar</h3>
+            {{end}}
+        </div>
+        {{pass}}
+    </section><!--/main-->
+
+    <!-- Footer ================================================== -->
+    <div class="row">
+        <footer class="footer span12" id="footer">
+            <div class="footer-content"  style="bottom: -5px;" id="footer">
+                {{block footer}} <!-- this is default footer -->
+                <div class="pull-left">
+                    <a target="_blank" title="CLARIN-NL"
+                        href="http://www.clarin.nl"><img
+                            src="{{=URL('static', 'images/CLARIN-NL-small.png')}}"
+                            width="50px"
+                    /></a>
+                    &nbsp;
+                </div>
+                <div class="copyright pull-left">
+                    <p>SHEBANQ hahahaha: System for HEBrew Text: ANnotations for Queries and Markup&nbsp;</p>
+                        <p>{{=T('funded by')}}
+                        <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>,
+                        <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a>
+                        &nbsp;
+                    </p>
+                </div>
+                <div class="pull-left">
+                    <a target="_blank" title="DH2014 Award"
+                        href="http://dhawards.org/dhawards2014/results/"><img
+                            src="{{=URL('static', 'images/DHAwards2014-tool.png')}}"
+                            width="200px"
+                    /></a>
+                    &nbsp;
+                </div>
+                <div class="pull-right">
+                    <a target="_blank" title="VU ETCBC"
+                        href="http://www.godgeleerdheid.vu.nl/etcbc"><img
+                            src="{{=URL('static', 'images/VU-ETCBC-small.png')}}"
+                            width="100px"
+                    /></a>
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0"
+                        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
+                    &nbsp;
+                </div>
+                <div class="pull-right">
+                    <a target="_blank" title="ETCBC4 Dataset in DANS EASY"
+                        href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71"><img
+                            src="{{=URL('static', 'images/etcbc4easy-small.png')}}"
+                            width="100px"
+                    /></a>
+                    &nbsp;
+                </div>
+                {{end}}
+            </div>
+        </footer>
+    </div>
+
+  </div> <!-- /container -->
+
+  <!-- The javascript =============================================
+       (Placed at the end of the document so the pages load faster) -->
+  <!--[if lt IE 7 ]>
+      <script src="{{=URL('static','js/dd_belatedpng.js')}}"></script>
+      <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+      <![endif]-->
+  
+  {{if response.google_analytics_id:}}
+  <script src="{{=URL('static','js/analytics.min.js')}}"></script>
+  <script type="text/javascript">
+  analytics.initialize({
+    'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'} 
+  });</script>
+  {{pass}}
+</body>
+</html>

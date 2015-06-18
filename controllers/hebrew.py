@@ -1054,6 +1054,7 @@ insert into note ({}, created_by, created_on, modified_on, shared_on, published_
             break
         if is_shared == 'T': shared_on = "'{}'".format(now) 
         if is_published == 'T': published_on = "'{}'".format(now) 
+        keywords = ''.join(' {} '.format(x) for x in keywords.split())
         this_chunk.append(u"('{}','{}',{},{},{},'{}','{}','{}','{}','{}',{},'{}','{}',{},{})".format(
             version, book, chapter, verse, clause_atom, is_shared, is_published, status, keywords, ntext, uid, created_on, modified_on, shared_on, published_on,
         ))
