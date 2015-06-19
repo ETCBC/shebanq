@@ -170,7 +170,7 @@ var edit_main_width = '40%' // the desired width of the main area when editing a
 var chart_width = '400px' // dialog width for charts
 var chart_cols = 30 // number of chapters in a row in a chart
 var tp_labels, tab_info, tab_views, next_tp; // number of tab views and dictionary to go cyclically from a text view to the next
-var t1_statclass, t1_statsym, t1_statnext; // characteristics for tabbed view 1
+var nt_statclass, nt_statsym, nt_statnext; // characteristics for tabbed views with notes
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -530,10 +530,10 @@ function Material() { // Object corresponding to everything that controls the ma
             this.msettings.hebrewsettings.apply()
         }
         else if (wb.vs.tp() == 'txt_tb1') {
-            this.add_tab1(newcontent)
+            this.add_cmt(newcontent)
         }
     }
-    this.add_tab1 = function(newcontent) { // add actions for the tab1 view
+    this.add_cmt = function(newcontent) { // add actions for the tab1 view
         this.notes = new Notes(newcontent)
     }
 
@@ -632,22 +632,22 @@ function Notes(newcontent) {
     this.show = false
     this.verselist = {}
     this.version = wb.version
-    var sav_controls =  $('span.t1_main_sav')
+    var sav_controls =  $('span.nt_main_sav')
     this.logged_in = false
     newcontent.find('.vradio').each(function() {
         var bk = $(this).attr('b')
         var ch = $(this).attr('c')
         var vs = $(this).attr('v')
         var topl = $(this).closest('div')
-        that.verselist[bk+' '+ch+':'+vs] = new Notev(that.version, bk, ch, vs, topl.find('span.t1_ctrl'), topl.find('table.t1_table'))
+        that.verselist[bk+' '+ch+':'+vs] = new Notev(that.version, bk, ch, vs, topl.find('span.nt_ctrl'), topl.find('table.t1_table'))
     })
-    this.msgn = new Msg('t1_main_msg', function() {
+    this.msgn = new Msg('nt_main_msg', function() {
         for (var item in that.verselist) {
             var notev = that.verselist[item]
             notev.clear_msg()
         }
     })
-    $('a.t1_main_ctrl').click(function(e) {e.preventDefault();
+    $('a.nt_main_ctrl').click(function(e) {e.preventDefault();
         if (that.show) {
             that.show = false
             sav_controls.hide()
@@ -682,7 +682,7 @@ function Notes(newcontent) {
         that.msgn.msg(['special', 'Done'])
     })
     this.msgn.clear()
-    $('span.t1_main_sav').hide()
+    $('span.nt_main_sav').hide()
 }
 function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
@@ -695,8 +695,8 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.verse = vs
     this.ctrl = ctrl
     this.dest = dest
-    this.msgn = new Msg('t1_msg_'+this.book+'_'+this.chapter+'_'+this.verse)
-    this.cctrl = this.ctrl.find('a.t1_ctrl')
+    this.msgn = new Msg('nt_msg_'+this.book+'_'+this.chapter+'_'+this.verse)
+    this.cctrl = this.ctrl.find('a.nt_ctrl')
 
     this.fetch = function() {
         var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse}
@@ -708,11 +708,11 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 that.msgn.msg(m)
             })
             if (json.good) {
-                that.process(json.users, json.notes, json.changed, json.logged_in)
+                that.process(json.users, json.notes, json.nkey_index, json.changed, json.logged_in)
             }
         })
     }
-    this.process = function(users, notes, changed, logged_in) {
+    this.process = function(users, notes, nkey_index, changed, logged_in) {
         if (changed) {
             if (wb.mr == 'm') {
                 side_fetched['mn'] = false
@@ -721,6 +721,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         }
         this.orig_users = users
         this.orig_notes = notes
+        this.orig_nkey_index = nkey_index
         this.orig_edit = []
         this.logged_in = logged_in
         this.gen_html(false)
@@ -729,18 +730,18 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.decorate()
     }
     this.decorate = function() {
-        this.dest.find('td.t1_stat').find('a').click(function(e) {e.preventDefault();
+        this.dest.find('td.nt_stat').find('a').click(function(e) {e.preventDefault();
             var statcode = $(this).attr('code')
-            var nextcode = t1_statnext[statcode]
-            var nextsym = t1_statsym[nextcode]
+            var nextcode = nt_statnext[statcode]
+            var nextsym = nt_statsym[nextcode]
             var row =  $(this).closest('tr')
-            for (var c in t1_statclass) {row.removeClass(t1_statclass[c])}
-            for (var c in t1_statsym) {$(this).removeClass('fa-'+t1_statsym[c])}
-            row.addClass(t1_statclass[nextcode])
+            for (var c in nt_statclass) {row.removeClass(nt_statclass[c])}
+            for (var c in nt_statsym) {$(this).removeClass('fa-'+nt_statsym[c])}
+            row.addClass(nt_statclass[nextcode])
             $(this).attr('code', nextcode)
             $(this).addClass('fa-'+nextsym)
         })
-        this.dest.find('td.t1_pub').find('a').click(function(e) {e.preventDefault();
+        this.dest.find('td.nt_pub').find('a').click(function(e) {e.preventDefault();
             if ($(this).hasClass('ison')) {
                 $(this).removeClass('ison')
             }
@@ -748,7 +749,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 $(this).addClass('ison')
             }
         })
-        this.dest.find('tr.t1_cmt').show()
+        this.dest.find('tr.nt_cmt').show()
         if (this.logged_in) {
             main_sav_controls.show()
             sav_controls.show()
@@ -756,36 +757,50 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     }
     this.gen_html_ca = function(canr) {
         var notes = this.orig_notes[canr]
+        var nkey_index = this.orig_nkey_index
         var html = ''
         for (var n = 0; n < notes.length; n++) {
             var nline = notes[n]
+            var kwtrim = $.trim(nline.kw)
+            var kws = kwtrim.split(/\s+/)
             var uid = nline.uid 
+            var mute = false
+            for (var k in kws) {
+                var nkid = nkey_index[uid+' '+kws[k]]
+                if (muting_n.isSet('n'+nkid)) {
+                    mute = true
+                    break
+                }
+            }
+            if (mute) {
+                continue
+            }
             var user = this.orig_users[uid]
             var nid = nline.nid 
             var pubc = nline.pub?'ison':''
             var sharedc = nline.shared?'ison':''
-            var statc = t1_statclass[nline.stat]
-            var statsym = t1_statsym[nline.stat]
+            var statc = nt_statclass[nline.stat]
+            var statsym = nt_statsym[nline.stat]
             var ro = nline.ro
             var edit_att = ro?'':' edit="1"'
             var edit_class = ro?'':' edit'
-            html += '<tr class="t1_cmt t1_info '+statc+edit_class+'" nid="'+nid+'" ncanr="'+canr+'"'+edit_att+'>'
+            html += '<tr class="nt_cmt nt_info '+statc+edit_class+'" nid="'+nid+'" ncanr="'+canr+'"'+edit_att+'>'
             if (ro) {
-                html += '<td class="t1_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
-                html += '<td class="t1_kw">'+nline.kw+'</td>'
-                html += '<td class="t1_cmt">'+nline.ntxt+'</td>'
-                html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
-                html += '<td class="t1_pub">'
+                html += '<td class="nt_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
+                html += '<td class="nt_kw">'+nline.kw+'</td>'
+                html += '<td class="nt_cmt">'+nline.ntxt+'</td>'
+                html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+user+'</td>'
+                html += '<td class="nt_pub">'
                 html += '    <span class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" title="shared?"></span>'
                 html += '    <span class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" title="published?"></span>'
             }
             else {
                 this.orig_edit.push({canr: canr, note: nline})
-                html += '<td class="t1_stat"><a href="#" title="set status" class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></a></td>'
-                html += '<td class="t1_kw"><textarea>'+nline.kw+'</textarea></td>'
-                html += '<td class="t1_cmt"><textarea>'+nline.ntxt+'</textarea></td>'
-                html += '<td class="t1_user" colspan="3" uid="'+uid+'">'+user+'</td>'
-                html += '<td class="t1_pub">'
+                html += '<td class="nt_stat"><a href="#" title="set status" class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></a></td>'
+                html += '<td class="nt_kw"><textarea>'+nline.kw+'</textarea></td>'
+                html += '<td class="nt_cmt"><textarea>'+nline.ntxt+'</textarea></td>'
+                html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+user+'</td>'
+                html += '<td class="nt_pub">'
                 html += '    <a class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" href="#" title="shared?"></a>'
                 html += '    <a class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" href="#" title="published?"></a>'
             }
@@ -817,9 +832,9 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             }
         }, 'json')
     }
-    this.dest.find('tr.t1_cmt').hide()
-    var main_sav_controls =  $('span.t1_main_sav')
-    var sav_controls =  this.ctrl.find('span.t1_sav')
+    this.dest.find('tr.nt_cmt').hide()
+    var main_sav_controls =  $('span.nt_main_sav')
+    var sav_controls =  this.ctrl.find('span.nt_sav')
     var sav_c = sav_controls.find('a').first()
     var rev_c = sav_controls.find('a').last()
     this.revert = function() {
@@ -845,15 +860,15 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             var uid = o_note.uid
             var n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
             var o_stat = o_note.stat
-            var n_stat = n_note.find('td.t1_stat a').attr('code')
+            var n_stat = n_note.find('td.nt_stat a').attr('code')
             var o_kw = $.trim(o_note.kw)
-            var n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
+            var n_kw = $.trim(n_note.find('td.nt_kw textarea').val())
             var o_ntxt = o_note.ntxt
-            var n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
+            var n_ntxt = $.trim(n_note.find('td.nt_cmt textarea').val())
             var o_shared = o_note.shared
-            var n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
+            var n_shared = n_note.find('td.nt_pub a').first().hasClass('ison')
             var o_pub = o_note.pub
-            var n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
+            var n_pub = n_note.find('td.nt_pub a').last().hasClass('ison')
             if (o_stat != n_stat || o_kw != n_kw || o_ntxt != n_ntxt || o_shared != n_shared || o_pub != n_pub) {
                 dirty = true
                 break
@@ -888,15 +903,15 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             var uid = o_note.uid
             var n_note = (nid == 0)?this.dest.find('tr[nid="0"][ncanr="'+canr+'"]'):this.dest.find('tr[nid="'+nid+'"]')
             var o_stat = o_note.stat
-            var n_stat = n_note.find('td.t1_stat a').attr('code')
+            var n_stat = n_note.find('td.nt_stat a').attr('code')
             var o_kw = $.trim(o_note.kw)
-            var n_kw = $.trim(n_note.find('td.t1_kw textarea').val())
+            var n_kw = $.trim(n_note.find('td.nt_kw textarea').val())
             var o_ntxt = o_note.ntxt
-            var n_ntxt = $.trim(n_note.find('td.t1_cmt textarea').val())
+            var n_ntxt = $.trim(n_note.find('td.nt_cmt textarea').val())
             var o_shared = o_note.shared
-            var n_shared = n_note.find('td.t1_pub a').first().hasClass('ison')
+            var n_shared = n_note.find('td.nt_pub a').first().hasClass('ison')
             var o_pub = o_note.pub
-            var n_pub = n_note.find('td.t1_pub a').last().hasClass('ison')
+            var n_pub = n_note.find('td.nt_pub a').last().hasClass('ison')
             if (o_stat != n_stat || o_kw != n_kw || o_ntxt != n_ntxt || o_shared != n_shared || o_pub != n_pub) {
                 notelines.push({
                     nid: nid,
@@ -924,7 +939,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.hide_notes = function() {
         this.show = false
         sav_controls.hide()
-        this.dest.find('tr.t1_cmt').hide()
+        this.dest.find('tr.nt_cmt').hide()
     }
     this.show_notes = function() {
         this.show = true
@@ -932,7 +947,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             this.fetch()
         }
         else {
-            this.dest.find('tr.t1_cmt').show()
+            this.dest.find('tr.nt_cmt').show()
             if (this.logged_in) {
                 sav_controls.show()
             }

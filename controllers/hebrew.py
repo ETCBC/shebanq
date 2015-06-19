@@ -6,7 +6,7 @@ import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views, iid_encode, iid_decode, t1_statclass
+from render import Verses, Verse, Viewsettings, legend, colorpicker, h_esc, get_request_val, get_fields, style, tp_labels, tab_views, iid_encode, iid_decode, nt_statclass
 from mql import mql
 
 # Note on caching
@@ -573,6 +573,7 @@ order by
 
     records = note_db.executesql(note_sql)
     users = {}
+    nkey_index = {}
     notes_proto = collections.defaultdict(lambda: {})
     ca_users = collections.defaultdict(lambda: collections.OrderedDict())
     if myid != None:
@@ -595,6 +596,9 @@ order by
             pub = pub == 'T'
             shared = pub or shared == 'T'
             ro = myid == None or uid != myid or (pub and (pub_on <= request.now - PUBLISH_FREEZE))
+            kws = keywords.strip().split()
+            for k in kws:
+                nkey_index['{} {}'.format(uid, k)] = iid_encode('n', uid, kw=k)
             notes_proto.setdefault(ca, {}).setdefault(uid, []).append(dict(
                 uid=uid,
                 nid=nid,
@@ -610,7 +614,7 @@ order by
         for uid in ca_users[ca]:
             notes.setdefault(ca, []).extend(notes_proto[ca][uid])
 
-    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes, logged_in=logged_in))
+    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes, nkey_index=nkey_index, logged_in=logged_in))
 
 def sidem():
     session.forget(response)
@@ -668,7 +672,6 @@ def query():
     else:
         request.vars['mr'] = 'r'
         request.vars['qw'] = 'q'
-        #request.vars['tp'] = 'txt_p'
         request.vars['page'] = 1
     return text()
 
@@ -676,7 +679,6 @@ def word():
     session.forget(response)
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'w'
-    #request.vars['tp'] = 'txt_p'
     request.vars['page'] = 1
     return text()
 
@@ -684,7 +686,6 @@ def note():
     session.forget(response)
     request.vars['mr'] = 'r'
     request.vars['qw'] = 'n'
-    #request.vars['tp'] = 'txt_tb1'
     request.vars['page'] = 1
     return text()
 
@@ -1037,7 +1038,7 @@ insert into note ({}, created_by, created_on, modified_on, shared_on, published_
             nerrors += 1
             errors.setdefault('unrecognized published field', []).append('{}:{}'.format(i+1, is_published))
             continue
-        if not status in t1_statclass:
+        if not status in nt_statclass:
             nerrors += 1
             errors.setdefault('unrecognized status', []).append('{}:{}'.format(i+1, status))
             continue
@@ -1541,7 +1542,7 @@ order by shebanq_web.auth_user.last_name, shebanq_web.auth_user.first_name, note
             (uname, uid, nname) = pninfo['']
             nversions = pninfo['v']
             curudest.append(dict(
-                title=u'{} <a class="n t1_kw" n="1" nkid="{}" href="#">{}</a> <a class="md" href="#"></a>'.format(
+                title=u'{} <a class="n nt_kw" n="1" nkid="{}" href="#">{}</a> <a class="md" href="#"></a>'.format(
                         u' '.join(formatversion('n', nkid, v, nversions[rversion_index[v]]) for v in rversion_order),
                         nkid,
                         h_esc(nname),

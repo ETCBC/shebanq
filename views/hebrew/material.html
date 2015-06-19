@@ -48,14 +48,14 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
     {{if len(material.verses) > 0: }}
         {{tp = material.tp}}
         {{if tp == 'txt_tb1':}}
-        <div class="t1_main_ctrl">
-            <a title="show/hide all comments" href="#" class="t1_main_ctrl fa fa-comments fa-fw"></a>
-            <span class="t1_main_sav">
+        <div class="nt_main_ctrl">
+            <a title="show/hide all comments" href="#" class="nt_main_ctrl fa fa-comments fa-fw"></a>
+            <span class="nt_main_sav">
                 <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
                 <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
             </span>
-            <a href="#" title="clear diagnostic messages"><span id="trash_t1_main_msg" class="ctrl fa fa-trash fa-lg"></span></a>
-            <span id="t1_main_msg" class="t1_main_msg"></span>
+            <a href="#" title="clear diagnostic messages"><span id="trash_nt_main_msg" class="ctrl fa fa-trash fa-lg"></span></a>
+            <span id="nt_main_msg" class="nt_main_msg"></span>
         </div>
         {{pass}}
         {{for verse in material.verses:
@@ -73,14 +73,14 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
                 <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
             {{pass}}{{
             if tp == 'txt_tb1':
-                    }}<span class="t1_ctrl">
-                        <a title="show/hide comments" href="#" class="t1_ctrl fa fa-comment fa-fw"></a>
-                        <span class="t1_sav">
+                    }}<span class="nt_ctrl">
+                        <a title="show/hide comments" href="#" class="nt_ctrl fa fa-comment fa-fw"></a>
+                        <span class="nt_sav">
                             <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
                             <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
                         </span>
-                        <a href="#" title="clear diagnostic messages"><span id="trash_t1_msg_{{=b}}_{{=c}}_{{=v}}" class="ctrl ir fa fa-trash fa-lg"></span></a>
-                        <span id="t1_msg_{{=b}}_{{=c}}_{{=v}}" class="t1_msg"></span>
+                        <a href="#" title="clear diagnostic messages"><span id="trash_nt_msg_{{=b}}_{{=c}}_{{=v}}" class="ctrl ir fa fa-trash fa-lg"></span></a>
+                        <span id="nt_msg_{{=b}}_{{=c}}_{{=v}}" class="nt_msg"></span>
                     </span>{{
             pass
                 }}</span>

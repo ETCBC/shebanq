@@ -13,10 +13,6 @@ or to refresh your browser after having loaded the SHEBANQ site!</p>
 <div>
 <h2>{{=T('Plans')}}</h2>
 <dl>
-<dt>Verbal valence</dt>
-<dd>The meaning of a verb is strongly dependent on the patterns of constituents in the clause. Janet Dyk and Reinoud Oosting and Oliver Glanz
-are researching the the nature of this dependency. Results of this study will be incorporated into SHEBANQ.
-Think of a context-dependent refinement of the glosses for verbs, including the reasons why a particular gloss has been suggested in a particular context.</dd>
 <dt>Feature index</dt>
 <dd>A tree-like index of objects and features that can be used in queries would be helpful for users when they are developing MQL queries.</dd>
 <dt>Searching within queries</dt>
@@ -39,12 +35,35 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
+<h2>2015-06-19</h2>
+<p>A minor update of the SHEBANQ website with:</p>
+<dl>
+<dt>Verbal valence</dt>
+<dd><p>The meaning of a verb is strongly dependent on the patterns of constituents in the clause. Janet Dyk and Reinoud Oosting and Oliver Glanz
+are researching the the nature of this dependency. Results of this study will be incorporated into SHEBANQ.
+Think of a context-dependent refinement of the glosses for verbs, including the reasons why a particular gloss has been suggested in a particular context.<p>
+<p>This is really work in progress.
+That is why we do not incorporate valence data into the ETCBC database yet, but we do make our results available as <b>notes</b>.
+These notes areactually generated with the help of LAF-Fabric.
+See the <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/valence/flowchart.ipynb">flowchart notebook</a>, and see the
+<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnx2YWxlbmNl', tp='txt_tb1'))}}">valence</a> note set to inspect the ongoing work.</p>
+</dd>
+<dt>Modified notes view</dt>
+<dd><p>The tabbed views named after Nicolai, Oliver and Dirk, now have names that are more indicative to what you see:
+<i>notes</i>, <i>syntax</i>, and <i>abstact</i>.</p>
+<p>Notes view has been upgraded: the numbers of the phrases are also shown. So you can refer to them in your notes.</p>
+<p>Muting now also works in notes view, so you can focus on the notes sets that you are working with.</p> 
+<p>These improvements support the usage of notes for the work on verbal valence.</p>
+</dl>
+</div>
+
+<div>
 <h2>2015-06-16</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
 <dt>Small data fix</dt>
 <dd><p>In <i>data view</i>, the numbering of <i>subphrases</i> was not correct. It occurred where <i>half_verse</i>
-boundaries cut through phrases.<p>
+boundaries cut through phrases.</p>
 <p>Note that the subphrase numbers as shown in SHEBANQ are not part of the ETCBC database.
 I have put them in for SHEBANQ in order to show where the subphrases are.
 Subphrases may overlap, each word carries the numbers of all subphrases it belongs to.

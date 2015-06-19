@@ -40,31 +40,31 @@ vcolornames = [x[0] for x in vcolor_proto]
 vcolors = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
 ndefcolors = len(vdefaultcolors)
 
-tab_views = 3
-# next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
-next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
 tab_info = dict(
-    txt_tb1='Tabbed view, style Nicolai Winther-Nielsen',
-    txt_tb2='Tabbed view, style Oliver Glanz',
-    txt_tb3='Visalization by Dirk Roorda',
+    txt_tb1='Notes view',
+    txt_tb2='Syntax view',
+    txt_tb3='Abstract view',
 )
 tp_labels = dict(
     txt_p='text',
-    txt_tb1='Nicolai',
-    txt_tb2='Oliver',
-    txt_tb3='Dirk',
+    txt_tb1='Notes',
+    txt_tb2='Syntax',
+    txt_tb3='Abstract',
     txt_il='data',
 )
-t1_statorder = 'o*+?-!'
-t1_statclass = {
-    'o': 't1_info',
-    '+': 't1_good',
-    '-': 't1_error',
-    '?': 't1_warning',
-    '!': 't1_special',
-    '*': 't1_note',
+tab_views = len(tab_info)
+# next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
+next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
+nt_statorder = 'o*+?-!'
+nt_statclass = {
+    'o': 'nt_info',
+    '+': 'nt_good',
+    '-': 'nt_error',
+    '?': 'nt_warning',
+    '!': 'nt_special',
+    '*': 'nt_note',
 }
-t1_statsym = {
+nt_statsym = {
     'o': 'circle',
     '+': 'check-circle',
     '-': 'times-circle',
@@ -72,9 +72,9 @@ t1_statsym = {
     '!': 'info-circle',
     '*': 'star',
 }
-t1_statnext = {}
-for (i,x) in enumerate(t1_statorder):
-    t1_statnext[x] = t1_statorder[(i+1)%len(t1_statorder)]
+nt_statnext = {}
+for (i,x) in enumerate(nt_statorder):
+    nt_statnext[x] = nt_statorder[(i+1)%len(nt_statorder)]
 
 field_names = dict(
     txt_il='''
@@ -89,7 +89,7 @@ field_names = dict(
         '''.strip().split(),
     txt_tb1='''
         word_heb word_number
-        phrase_border phrase_function
+        phrase_border phrase_number phrase_function
         sentence_number clause_number clause_atom_number clause_atom_tab clause_txt clause_typ
         '''.strip().split(),
     txt_tb2='''
@@ -611,9 +611,9 @@ var tp_labels = {tp_labels}
 var tab_info = {tab_info}
 var tab_views = {tab_views}
 var next_tp = {next_tp}
-var t1_statclass = {t1_statclass}
-var t1_statsym = {t1_statsym}
-var t1_statnext = {t1_statnext}
+var nt_statclass = {nt_statclass}
+var nt_statsym = {nt_statsym}
+var nt_statnext = {nt_statnext}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
@@ -629,9 +629,9 @@ dynamics()
     tab_info = json.dumps(tab_info),
     tab_views = tab_views,
     next_tp = json.dumps(next_tp),
-    t1_statclass = json.dumps(t1_statclass),
-    t1_statsym = json.dumps(t1_statsym),
-    t1_statnext = json.dumps(t1_statnext),
+    nt_statclass = json.dumps(nt_statclass),
+    nt_statsym = json.dumps(nt_statsym),
+    nt_statnext = json.dumps(nt_statnext),
 )
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
@@ -824,7 +824,9 @@ order by word_number
 )]
         for word in words:
             if 'r' in word['phrase_border']:
-                result.append(u'''<span class="phf1">{}</span>'''.format(word['phrase_function']))
+                result.append(u'''<span class="t1_phf1">{}</span><span class="t1_phfn">{}</span>'''.format(
+                    word['phrase_function'], word['phrase_number'],
+                ))
             result.append(u'''<span m="{}" l="{}">{}</span>'''.format(word['word_number'], word['lexicon_id'], word['word_heb']))
         result.append(u'''
     </td>
@@ -838,7 +840,7 @@ order by word_number
         bigtab=bigtab,
         txttp=txttp,
         ctp=ctp,
-        stat=t1_statorder[0],
+        stat=nt_statorder[0],
         canr=canr,
 ))
         return u''.join(result)
