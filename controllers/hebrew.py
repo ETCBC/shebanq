@@ -598,7 +598,7 @@ order by
             ro = myid == None or uid != myid or (pub and (pub_on <= request.now - PUBLISH_FREEZE))
             kws = keywords.strip().split()
             for k in kws:
-                nkey_index['{} {}'.format(uid, k)] = iid_encode('n', uid, kw=k)
+                nkey_index[u'{} {}'.format(uid, k)] = iid_encode('n', uid, kw=k)
             notes_proto.setdefault(ca, {}).setdefault(uid, []).append(dict(
                 uid=uid,
                 nid=nid,
