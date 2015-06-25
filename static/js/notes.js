@@ -336,7 +336,7 @@ function Upload() {
     var that = this
     this.inpt = $('#ncsv')
     this.ctrl = $('#ncsv_upload')
-    this.limit = 1 * 1024 * 1024
+    this.limit = 3 * 1024 * 1024
     this.ftype = 'text/csv'
     this.init = function() {
         this.msgs = new Msg('upl_msgs')
