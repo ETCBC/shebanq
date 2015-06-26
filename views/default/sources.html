@@ -38,13 +38,17 @@ Its documentation describes in detail how to download the data and set up data-p
 We are also open to implement mutual deep linking with other biblical data sources.</p>
 
 <h4><a name="sources">Sources</a></h4>
-<p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
-In practice, it is not completely straightforward.
-We are working on a complete installation recipe for an Ubuntu server.
-The document is not yet finished, but if you are interested, here is the
-<a target="_blank" href="{{=URL('static', 'docs/ShebanqInstallUbuntu.pdf')}}">current installation document</a>.</p>
-
 <dl>
+    <dt>Text</dt>
+    <dd><p>The Hebrew text shown in SHEBANQ is the
+    <a target="_blank" href="https://www.academic-bible.com/en/online-bibles/biblia-hebraica-stuttgartensia-bhs/read-the-bible-text/">Biblia Hebraica Stuttgartensia (BHS)</a>,
+    published by the
+    <a target="_blank" href="https://www.academic-bible.com/en/home/bible-society-and-biblical-studies/#c2313">Deutsche Bibelgesellschaft (DBG) (German Bible Society)</a>.</p>
+   <p> Sustained collaboration between the ETCBC and the DBG has resulted in the fact that this outstanding text can be used together
+    with the ETCBC database under a single licence, the above-mentioned Creative Commons (Attribution, NonCommercial).
+    Although the ETCBC database contains the BHS text, it is not guaranteed that every tittle and yod coincide.
+    This is because corrections are implemented by the DBG and the ETCBC at different intervals.
+    The promise is, that whatever the differences, both versions eventually coincide for the full 100%.</p></dd>
     <dt>Data</dt>
     <dd>
         <dl>
@@ -108,6 +112,12 @@ The document is not yet finished, but if you are interested, here is the
     <dt><a target="_blank" href="http://emdros.org">EMDROS</a></dt>
     <dd>The engine that performs MQL queries against an Emdros text database. Written in C++, by Ulrik Sandborg-Petersen.</dd>
 </dl>
+
+<p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
+In practice, it is not completely straightforward.
+We are working on a complete installation recipe for an Ubuntu server.
+The document is not yet finished, but if you are interested, here is the
+<a target="_blank" href="{{=URL('static', 'docs/ShebanqInstallUbuntu.pdf')}}">current installation document</a>.</p>
 
 <h4>{{=T('History')}}</h4>
 See {{=A(T("Release notes"), _href=URL('default', 'news', ))}} for an overview of the ideas behind shebanq and how they have been implemented.
