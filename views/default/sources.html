@@ -8,47 +8,62 @@
 {{pass}}
 
 <h4>{{=T('About')}}</h4>
-<p>The <i>shebanq</i> service is the first data service of <i>ancient-data.org</i>.<br/>
-Shebanq is a search engine for the Hebrew Bible, powered by the ETCBC4 linguistic database, formerly know as WIVU.<br/>
+<p>SHEBANQ is a search engine for the Hebrew Bible, powered by the ETCBC4 linguistic database, formerly know as WIVU.
 The data is archived for <i>open access</i>, and the program code is <i>open source</i>. 
-A list of sources needed to recreate all underlying data processing is included <a href="#sources">below</a>. 
-</p>
+A list of sources needed to recreate all underlying data processing is included <a href="#sources">below</a>.</p>
+
+<h4>Project</h4>
+<p>SHEBANQ started as a project with the same name, funded by
+<a target="_blank" title="CLARIN-NL" href="http://www.clarin.nl">CLARIN-NL</a>, the Dutch section of the European 
+Common Language Resources Infrastructure project
+<a target="_blank" href="http://clarin.eu">CLARIN</a>.</p>
+<p>It was carried out from mid 2013 to mid 2014 by the Eep Talstra Centre for Bible and Computer
+<a target="_blank" href="http://www.godgeleerdheid.vu.nl/en/research/institutes-and-centres/eep-talstra-centre-for-bible-and-computer/index.asp">ETCBC</a>
+and Data Archiving and Networked Services
+<a target="_blank" href="http://www.dans.knaw.nl/en/front-page?set_language=en">DANS</a>, an institute of
+the Royal Netherlands Academy of Arts and Sciences
+<a target="_blank" href="https://www.knaw.nl/en?set_language=en">KNAW</a>
+and the Netherlands Organization for Scientific Research
+<a target="_blank" href="http://www.nwo.nl/en">NWO</a>.<p>
+<p>DANS and the ETCBC, partnered with the German Bible Society
+<a target="_blank" href="https://www.dbg.de/en">DBG</a>
+and the Nederlands Bible Society,
+<a target="_blank" href="https://www.bijbelgenootschap.nl">NBG</a> contribute to the sustained availability
+of the texts and data in SHEBANQ.<p>
 
 <h4>{{=T('License and Re-use')}}</h4>
-<p>The creators of the linguistic annotations that drive SHEBANQ, the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>, 
+<p>The creators of the linguistic annotations that drive SHEBANQ, the
+<a target="_blank" href="http://www.godgeleerdheid.vu.nl/en/research/institutes-and-centres/eep-talstra-centre-for-bible-and-computer/index.asp">ETCBC</a>, 
 want to facilitate optimal access to their data by researchers. All operations that are needed for the scholarly process are allowed.
-You are allowed to download the data and the code, build your own workflows on top of the data and even to redistribute your versions of the data and the code.
-The licence is:
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+You are allowed to download the data and the code, build your own workflows on top of the data and even to redistribute your versions of the data and the code.</p>
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 That means:</p>
 <ul class="ldisc">
-<li>You may not use the data for commercial applications;</li>
 <li>You must give proper attribution to the data when you use it in new applications, preferably by citing its persistent identifier
-<a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY">urn:nbn:nl:ui:13-048i-71</a>
-</li>
+<a target="_blank" href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71" title="ETCBC4 Dataset in DANS EASY">urn:nbn:nl:ui:13-048i-71</a>;</li>
+<li>You may not use the data for commercial applications without consent;</li>
+<li>For any commercial use, please contact the <a href="mailto:zentrale@dbg.de">German Bible Society</a>.</li>
 </ul>
 <p>The ETCBC prefers to stress the potential of using its data, rather than the legal restrictions in doing so.
 It has published data, tools and documentation online that enables teams of biblical scholars and developers
 to reproduce all data processing that is needed for SHEBANQ.
 The recommended tool to start with is 
 {{=A('laf-fabric', _href='https://github.com/ETCBC/laf-fabric', _target='_blank')}}.
-Its documentation describes in detail how to download the data and set up data-processing workflows.</p>
-
+Its documentation describes in detail how to download the data and set up data-processing workflows.
+For an example of what you can do with the LAF-Fabric/SHEBANQ combination, see <a href="#usergenerated">below</a>.
 <p>The ETCBC welcomes contributions that improve and enrich the interface of SHEBANQ.
 We are also open to implement mutual deep linking with other biblical data sources.</p>
 
 <h4><a name="sources">Sources</a></h4>
 <dl>
     <dt>Text</dt>
-    <dd><p>The Hebrew text shown in SHEBANQ is the
-    <a target="_blank" href="https://www.academic-bible.com/en/online-bibles/biblia-hebraica-stuttgartensia-bhs/read-the-bible-text/">Biblia Hebraica Stuttgartensia (BHS)</a>,
-    published by the
-    <a target="_blank" href="https://www.academic-bible.com/en/home/bible-society-and-biblical-studies/#c2313">Deutsche Bibelgesellschaft (DBG) (German Bible Society)</a>.</p>
-   <p> Sustained collaboration between the ETCBC and the DBG has resulted in the fact that this outstanding text can be used together
-    with the ETCBC database under a single licence, the above-mentioned Creative Commons (Attribution, NonCommercial).
-    Although the ETCBC database contains the BHS text, it is not guaranteed that every tittle and yod coincide.
-    This is because corrections are implemented by the DBG and the ETCBC at different intervals.
-    The promise is, that whatever the differences, both versions eventually coincide for the full 100%.</p></dd>
+    <dd><p>The Hebrew text shown in SHEBANQ is taken from:
+    <i>Biblia Hebraica Stuttgartensia</i>,
+    edited by Karl Elliger and Wilhelm Rudolph, Fifth Revised Edition,
+    edited by Adrian Schenker, © 1977 and 1997 Deutsche Bibelgesellschaft, Stuttgart.</p>
+    <p>SHEBANQ is based on this printed text, but the DBG offers also an
+    <a target="_blank" href="https://www.academic-bible.com/en/online-bibles/biblia-hebraica-stuttgartensia-bhs/read-the-bible-text/">online version of the BHS</a>.</p>
     <dt>Data</dt>
     <dd>
         <dl>
@@ -113,6 +128,22 @@ We are also open to implement mutual deep linking with other biblical data sourc
     <dd>The engine that performs MQL queries against an Emdros text database. Written in C++, by Ulrik Sandborg-Petersen.</dd>
 </dl>
 
+<h4><a name="usergenerated">User generated content</a></h4>
+<p>Users are an important source of data for SHEBANQ. 
+They may contribute queries that highlight research questions and solutions, and they may contribute notes to individual
+clauses in the text.
+Notes are the preferred way to add observations and comments that are not carved in stone.
+They can also be used to view the outcomes of algorithms operating on the Hebrew Bible in context.
+As an example, here is a set of notes
+about applying verbal valence patterns to occurrences of selected Hebrew verbs.
+The notes have been created by means of LAF-Fabric in this
+<a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/valence/flowchart.ipynb">notebook</a>
+and from there they have been bulk-uploaded to SHEBANQ, where the notes can be called in
+{{=A(T('between the lines'), _href=URL('hebrew', 'note', vars=dict(id='Mnx2YWxlbmNl', tp='txt_tb1', version='4b', mr='m')))}}.</p>
+<img src="{{=URL('static', 'images/valence.png')}}"/>
+<p>This is work in progress!</p>
+
+<h4>Do it yourself</h4>
 <p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
 In practice, it is not completely straightforward.
 We are working on a complete installation recipe for an Ubuntu server.

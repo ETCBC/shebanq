@@ -8,10 +8,14 @@
 {{pass}}
 
 <h4>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</h4>
-<p>This is a system for the study of the Hebrew Bible, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>.
-It is powered by the ETCBC <i>database</i>, formerly known as WIVU, and it facilitates powerful syntactical queries.
+<p>This is a system for the study of the Hebrew Bible, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>
+in cooperation with the
+<a target="_blank" href="https://www.dbg.de/en">German Bible Society</a>
+and the
+<a target="_blank" href="https://www.bijbelgenootschap.nl">Netherlands Bible Society</a>.</p>
+
+<p>It is powered by the ETCBC <i>database</i>, formerly known as WIVU, and it facilitates powerful syntactical queries.
 SHEBANQ lets you develop and share those queries with fellow researchers.
-It uses a <i>queries-as-annotations</i> paradigm. 
 Scholarly editions of the Bible usually dedicate space to a critical apparatus and various kinds of annotations. 
 SHEBANQ introduces the idea of annotating the text with <i>queries</i>.
 They show up next to the text pages where the results are.
@@ -39,11 +43,15 @@ and verse labels in the text material.
 The data that underlies the text can be viewed by pressing the <i>data</i> button.
 All this and more is explained in the {{=A('help', _href=URL('default', 'help'))}}.</p>
 
-<h4>{{=T('Next step: make your own queries')}}</h4>
-<p>You can contribute queries yourself, but then you have to register/login.
-By filling in your institution and your project you provide other users with a bit of context.
+<h4>{{=T('Next step: make your own queries and notes')}}</h4>
+<p>You can contribute queries and notes yourself, but then you have to register/login.
+When writing a query, 
+by filling in your institution and your project you provide other users with a bit of context.
 Precise, concise documentation is at your finger tips, e.g. the
-growing body of online documentation on <a target="_blank" href="http://shebanq-doc.readthedocs.org">readthedocs</a>.</p>
+growing body of online documentation on <a target="_blank" href="http://shebanq-doc.readthedocs.org">readthedocs</a>.
+Once you are logged in, you can enter manual notes right away. Go to
+{{=A(T('notes view'), _href=URL('hebrew', 'text', vars=dict(nget='v', chapter=1, book='Genesis', tp='txt_tb1', version=4, mr='m')))}}
+and click the comment cloud icons.</p>
 
 <h4>{{=T('Expert step: share and publish your queries')}}</h4>
 <p>You can share publish your queries, so that they show up
@@ -60,6 +68,14 @@ You can modify that version of your query and publish it separately from earlier
 </p>
 
 <h4>{{=T('For gurus')}}</h4>
+<p>You can generate notes sets by means of software, possibly aided by 
+<a href="http://laf-fabric.readthedocs.org/en/latest/texts/welcome.html" target="_blank">laf-fabric</a>
+and
+{{=A(T('bulk upload'), _href=URL('hebrew', 'notes'))}} 
+them to SHEBANQ. See also the
+{{=A(T('sources page'), _href=URL('default', 'sources#usergenerated'))}} 
+.</p>
+
 <p>You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
 Consult the menu item {{=A(T("Help/Sources"), _href=URL('default', 'sources'))}}. 
 The license is such that nothing stands in your way, as long as you stay non-commercial.</p>
