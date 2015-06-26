@@ -28,6 +28,10 @@ ol.text {
     list-style-type: decimal;
 }
 
+.lbar {
+    height: 60px;
+}
+
 /* MATERIAL TITLE */
 
 #theitem,#theitemc {

@@ -150,51 +150,41 @@
             <div class="footer-content"  style="bottom: -5px;" id="footer">
                 {{block footer}} <!-- this is default footer -->
                 <div class="pull-left">
-                    <a target="_blank" title="CLARIN-NL"
-                        href="http://www.clarin.nl"><img
-                            src="{{=URL('static', 'images/CLARIN-NL-small.png')}}"
-                            width="50px"
-                    /></a>
-                    &nbsp;
-                </div>
-                <div class="copyright pull-left">
-                    <p>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup&nbsp;</p>
-                        <p>{{=T('funded by')}}
-                        <a target="_blank" href="http://www.clarin.nl">CLARIN-NL</a>,
-                        <a target="_blank" href="https://tla.mpi.nl">The Language Archive</a>
-                        &nbsp;
-                    </p>
-                </div>
-                <div class="pull-left">
-                    <a target="_blank" title="DH2014 Award"
-                        href="http://dhawards.org/dhawards2014/results/"><img
-                            src="{{=URL('static', 'images/DHAwards2014-tool.png')}}"
-                            width="200px"
-                    /></a>
-                    &nbsp;
-                </div>
-                <div class="pull-right">
                     <a target="_blank" title="VU ETCBC"
                         href="http://www.godgeleerdheid.vu.nl/etcbc"><img
                             src="{{=URL('static', 'images/VU-ETCBC-small.png')}}"
-                            width="100px"
+                            class="lbar"
                     /></a>
                     <a target="_blank" title="DBG Academic Bible"
                         href="http://www.dbg.de/en"><img
-                            src="{{=URL('static', 'images/DBG-logo.png')}}"
-                            width="150px"
+                            src="{{=URL('static', 'images/DBG-small.png')}}"
+                            class="lbar"
                     /></a>
-                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0"
-                        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
-                    &nbsp;
-                </div>
-                <div class="pull-right">
                     <a target="_blank" title="ETCBC4 Dataset in DANS EASY"
                         href="http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71"><img
                             src="{{=URL('static', 'images/etcbc4easy-small.png')}}"
-                            width="100px"
+                            class="lbar"
                     /></a>
-                    &nbsp;
+                    <a target="_blank" title="DH2014 Award"
+                        href="http://dhawards.org/dhawards2014/results/"><img
+                            src="{{=URL('static', 'images/DHAwards2014-tool.png')}}"
+                            class="lbar"
+                    /></a>
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0"
+                        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"
+                    /></a>
+                </div>
+                <div class="pull-right">
+                    <a target="_blank" title="funded by CLARIN-NL"
+                        href="http://www.clarin.nl"><img
+                            src="{{=URL('static', 'images/CLARIN-NL-small.png')}}"
+                            class="lbar"
+                    /></a>
+                    <a target="_blank" title="funded by The Language Archive"
+                        href="https://tla.mpi.nl"><img
+                            src="{{=URL('static', 'images/TLA-xsmall.png')}}"
+                            class="lbar"
+                    /></a>
                 </div>
                 {{end}}
             </div>
