@@ -177,7 +177,7 @@ jQuery(function(){
                 var ulname = escapeHTML(iinfo.ulname)
                 var kw = escapeHTML(iinfo.kw)
                 pvtitle = ufname+' '+ulname+' - '+kw
-                var quotev_url = note_url+'?version='+vr+'&id='+wb.iid+'&tp=txt_tb1'
+                var quotev_url = note_url+'?version='+vr+'&id='+wb.iid+'&tp=txt_tb1&nget=v'
                 $('#clip_n_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
                 $('#clip_n_ht').attr('lnk', quotev_url)
                 $('.clip_n.clr').addClass('special')
