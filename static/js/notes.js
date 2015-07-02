@@ -242,7 +242,7 @@ function Tree() {
         $('#notes a[nkid]').each(function() {
             var vr = $(this).attr('v')
             var extra = (vr == undefined)?'':'&version='+vr;
-            $(this).attr('href', n_url+'?iid='+$(this).attr('nkid')+extra+'&page=1&mr=r&qw=n&tp=txt_tb1')
+            $(this).attr('href', n_url+'?iid='+$(this).attr('nkid')+extra+'&page=1&mr=r&qw=n&tp=txt_tb1&nget=v')
         })
         $('#notes a.md').click(function(e) {e.preventDefault();
             var uname = $(this).closest('ul').closest('li').find('span[n]').html()

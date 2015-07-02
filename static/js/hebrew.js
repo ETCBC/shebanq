@@ -629,7 +629,7 @@ and after loading the material, highlighs have to be applied.
 
 function Notes(newcontent) {
     var that = this
-    this.show = false
+    this.show =  
     this.verselist = {}
     this.version = wb.version
     var sav_controls =  $('span.nt_main_sav')
@@ -647,24 +647,26 @@ function Notes(newcontent) {
             notev.clear_msg()
         }
     })
-    $('a.nt_main_ctrl').click(function(e) {e.preventDefault();
-        if (that.show) {
-            that.show = false
+    this.apply = function() {
+        if (wb.vs.get('n') == 'v') {
+            for (var item in this.verselist) {
+                var notev = this.verselist[item]
+                notev.show_notes()
+                this.logged_in = notev.logged_in
+            }
+            if (this.logged_in) {sav_controls.show()}
+        }
+        else {
             sav_controls.hide()
-            for (var item in that.verselist) {
-                var notev = that.verselist[item]
+            for (var item in this.verselist) {
+                var notev = this.verselist[item]
                 notev.hide_notes()
             }
         }
-        else {
-            that.show = true
-            for (var item in that.verselist) {
-                var notev = that.verselist[item]
-                notev.show_notes()
-                that.logged_in = notev.logged_in
-            }
-            if (that.logged_in) {sav_controls.show()}
-        }
+    }
+    $('a.nt_main_ctrl').click(function(e) {e.preventDefault();
+        wb.vs.hstatesv('n', {get: (wb.vs.get('n') == 'v')?'x':'v'})
+        that.apply()
     })
     var sav_c = sav_controls.find('a').first()
     var rev_c = sav_controls.find('a').last()
@@ -683,6 +685,7 @@ function Notes(newcontent) {
     })
     this.msgn.clear()
     $('span.nt_main_sav').hide()
+    this.apply()
 }
 function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
