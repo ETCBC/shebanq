@@ -788,7 +788,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             if (ro) {
                 html += '<td class="nt_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
                 html += '<td class="nt_kw">'+escapeHTML(nline.kw)+'</td>'
-                html += '<td class="nt_cmt">'+escapeHTML(nline.ntxt)+'</td>'
+                html += '<td class="nt_cmt">'+escapeHTML(nline.ntxt).replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2">$1</a>')+'</td>'
                 html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+escapeHTML(user)+'</td>'
                 html += '<td class="nt_pub">'
                 html += '    <span class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" title="shared?"></span>'
