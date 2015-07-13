@@ -586,8 +586,8 @@ order by
         msgs.append(('error', u'Cannot lookup notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
         good = False
     elif len(records) == 0:
-        pass
-        #msgs.append(('info', u'No notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
+        #msgs.append(('warning', u'No notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
+        msgs.append(('warning', u'No notes'))
     else:
         for (nid, uid, ufname, ulname, ca, shared, pub, pub_on, status, keywords, ntext) in records:
             if (myid == None or (uid != myid)) and uid not in users:
@@ -1502,7 +1502,7 @@ order by shebanq_web.auth_user.last_name, shebanq_web.auth_user.first_name, note
     rversion_order = [v for v in version_order if versions[v]['date']]
     rversion_index = dict((x[1],x[0]) for x in enumerate(rversion_order)) 
     for (nid, nvr, kws, uname, uid) in pnote:
-        for kw in set(x.lower() for x in kws.strip().split()):
+        for kw in set(kws.strip().split()):
             nkid = iid_encode('n', uid, kw=kw)
             if nkid not in pnotes:
                 pnotes[nkid] = {'': (uname, uid, kw), 'v': [0 for v in rversion_order]}
@@ -2266,7 +2266,7 @@ order by note.verse
     nverses = {}
     for (uid, ufname, ulname, kw, v, pub) in records:
         if uid not in user: user[uid] = (ufname, ulname)
-        for k in set(x.lower() for x in kw.strip().split()):
+        for k in set(kw.strip().split()):
             if pub == 'T': npub[(uid, k)] += 1
             nnotes[(uid, k)] += 1
             nverses.setdefault((uid, k), set()).add(v)

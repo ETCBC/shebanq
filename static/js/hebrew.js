@@ -634,6 +634,8 @@ function Notes(newcontent) {
     this.version = wb.version
     var sav_controls =  $('span.nt_main_sav')
     this.logged_in = false
+    this.cctrl =  $('a.nt_main_ctrl')
+
     newcontent.find('.vradio').each(function() {
         var bk = $(this).attr('b')
         var ch = $(this).attr('c')
@@ -649,6 +651,7 @@ function Notes(newcontent) {
     })
     this.apply = function() {
         if (wb.vs.get('n') == 'v') {
+            this.cctrl.addClass('nt_loaded')
             for (var item in this.verselist) {
                 var notev = this.verselist[item]
                 notev.show_notes()
@@ -657,6 +660,7 @@ function Notes(newcontent) {
             if (this.logged_in) {sav_controls.show()}
         }
         else {
+            this.cctrl.removeClass('nt_loaded')
             sav_controls.hide()
             for (var item in this.verselist) {
                 var notev = this.verselist[item]
@@ -664,7 +668,7 @@ function Notes(newcontent) {
             }
         }
     }
-    $('a.nt_main_ctrl').click(function(e) {e.preventDefault();
+    this.cctrl.click(function(e) {e.preventDefault();
         wb.vs.hstatesv('n', {get: (wb.vs.get('n') == 'v')?'x':'v'})
         that.apply()
     })
@@ -690,6 +694,8 @@ function Notes(newcontent) {
 function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
     this.loaded = false
+    this.nnotes = 0
+    this.mnotes = 0
     this.show = false
     this.dirty = false
     this.version = vr
@@ -762,6 +768,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         var notes = this.orig_notes[canr]
         var nkey_index = this.orig_nkey_index
         var html = ''
+        this.nnotes += notes.length
         for (var n = 0; n < notes.length; n++) {
             var nline = notes[n]
             var kwtrim = $.trim(nline.kw)
@@ -776,6 +783,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 }
             }
             if (mute) {
+                this.mnotes += 1
                 continue
             }
             var user = this.orig_users[uid]
@@ -819,6 +827,19 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             var target = this.dest.find('tr[canr='+canr+']')
             var html = this.gen_html_ca(canr)
             target.after(html)
+        }
+        if (this.nnotes == 0) {
+            this.cctrl.addClass('nt_empty')
+        }
+        else {
+            this.cctrl.removeClass('nt_empty')
+        }
+        if (this.mnotes == 0) {
+            this.cctrl.removeClass('nt_muted')
+        }
+        else {
+            this.cctrl.addClass('nt_muted')
+            this.msgn.msg(['special', 'muted notes: '+this.mnotes])
         }
     }
     this.sendnotes = function(senddata) {
@@ -941,11 +962,15 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     })
     this.hide_notes = function() {
         this.show = false
+        this.cctrl.removeClass('nt_loaded')
         sav_controls.hide()
         this.dest.find('tr.nt_cmt').hide()
+        this.msgn.hide()
     }
     this.show_notes = function() {
         this.show = true
+        this.cctrl.addClass('nt_loaded')
+        this.msgn.show()
         if (!this.loaded) {
             this.fetch()
         }
@@ -2528,6 +2553,16 @@ function Msg(destination, on_clear) {
             on_clear()
         }
         this.trashc.hide()
+    }
+    this.hide = function() {
+        this.destination.hide()
+        this.trashc.hide()
+    }
+    this.show = function() {
+        this.destination.show()
+        if (this.destination.html() != '') {
+            this.trashc.show()
+        }
     }
     this.trashc.click(function(e) {e.preventDefault();
         that.clear()
