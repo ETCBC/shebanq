@@ -6,6 +6,7 @@
 {{if 'message' in globals():}}
 <h3>{{=message}}</h3>
 {{pass}}
+host={{=request.env.http_host}}
 
 <p style="background-color: #ff99aa; font-weight: bold;">After an update it might be necessary to delete browser data for shebanq
 or to refresh your browser after having loaded the SHEBANQ site!</p>
