@@ -131,8 +131,9 @@ We are also open to implement mutual deep linking with other biblical data sourc
 <h4><a name="usergenerated">User generated content</a></h4>
 <p>Users are an important source of data for SHEBANQ. 
 They may contribute queries that highlight research questions and solutions, and they may contribute notes to individual
-clauses in the text.
-Notes are the preferred way to add observations and comments that are not carved in stone.
+clauses in the text.</p>
+<h5>Contributing note sets</h5>
+<p>Notes are the preferred way to add observations and comments that are not carved in stone.
 They can also be used to view the outcomes of algorithms operating on the Hebrew Bible in context.
 As an example, here is a set of notes
 about applying verbal valence patterns to occurrences of selected Hebrew verbs.
@@ -142,6 +143,22 @@ and from there they have been bulk-uploaded to SHEBANQ, where the notes can be c
 {{=A(T('between the lines'), _href=URL('hebrew', 'note', vars=dict(id='Mnx2YWxlbmNl', tp='txt_tb1', version='4b', mr='m')))}}.</p>
 <img src="{{=URL('static', 'images/valence.png')}}"/>
 <p>This is work in progress!</p>
+<h5>Contributing research</h5>
+<p>It is also possible to contribute your research to SHEBANQ.
+As an example, have a look at
+<a target="_blank" href="{{=URL('tools', 'index', vars=dict(goto='parallel'))}}">parallel passages</a>.
+By means of LAF-Fabric, we have searched the ETCBC data for similar passages.
+It required a lot of experimentation, for which the IPython notebook is an excellent tool.
+It has everything: code, documentation, visualization, and it can point to the data.
+If you have done data analysis on the Hebrew Bible and you want to share your results,
+the <i>Tools</i> page is where you can do that.
+In order to be eligible, your notebook must satisfy a few basic conditions:
+<ol class="ldec">
+<li>the results must be based on the ETCBC database of the Hebrew Bible</li>
+<li>the results must be <i>reproducible</i> on the basis of the information in the notebook and the data stored with it
+(we can store additional data at the SHEBANQ site).</li>
+<ol> 
+</p> 
 
 <h4>Do it yourself</h4>
 <p>In theory, it is possible to build a shebanq website, powered by ETCBC data, on your own server.
