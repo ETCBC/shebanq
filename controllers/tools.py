@@ -13,10 +13,3 @@ def index():
     response.subtitle = T("Tools for the ETCBC4 database")
     return dict()
 
-def lexiconlist():
-    lli = request.vars.ll_include
-    llx = request.vars.ll_exclude
-    lexemes = dict(i=lli, x=llx)
-    good = True
-    return dict(data=json.dumps(dict(lexemes=lexemes, good=good)))
-
