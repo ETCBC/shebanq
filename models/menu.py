@@ -57,6 +57,7 @@ response.menu = [
     (T('Words'), False, URL('hebrew', 'words'), []),
     (T('Queries'), False, URL('hebrew', 'queries'), []),
     (T('Notes'), False, URL('hebrew', 'notes'), []),
+    (T('Tools'), False, URL('tools', 'index'), []),
     (T('Help'), False, URL('default', 'help'), []),
     (T('News'), False, URL('default', 'news'), []),
     (T('Sources'), False, URL('default', 'sources'), []),

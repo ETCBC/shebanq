@@ -1,0 +1,108 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = False }}
+{{ ('message' in globals()) }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<div class="tool" id="tools">
+<h4>Tools</h4>
+<p>This is a collection of tools, demanded by users of SHEBANQ.
+They are little services based on the ETCBC database.
+These services are not very well integrated in the rest of the web application SHEBANQ.
+However, a successful service could get promoted to a new function of SHEBANQ.<p>
+</div>
+
+<div class="tool" id="lexiconlist">
+<h4>Lexicon List</h4>
+<p>Returns a set of lexemes (as csv file) occurring in the passages you specify.
+You can also specify another set of passages whose lexemes will be left out of the result list.</p>
+<table>
+    <tr><td>Verses to include</td><td><input type="text" id="ll_include"/></td></tr>
+    <tr><td>Verses to exclude</td><td><input type="text" id="ll_exclude"/></td></tr>
+    <tr><td>&nbsp;</td><td><a class="ctrl" id="ll_get" href="#">get results</a></td></tr>
+</table>
+<div id="ll_results"></div>
+
+<p>Enter the verses in the vorm <i>book chapters:verses</i> where chapters and verses are coma separated lists of numbers or ranges.
+These are valid chapter/verse specifications:</p> 
+<ul class="lcirc">
+    <li><code>3</code></li> 
+    <li><code>3,6</code></li> 
+    <li><code>3-6</code></li> 
+    <li><code>3-6,10,11-14</code></li> 
+</ul>
+<p>You can also add multiple passage specifications separated by <code>|</code>
+<ul class="lcirc">
+    <li><code>Genesis 3:16,17|Exodus 4:1-3,5-12|Leviticus 12|Deuteronomium</code></li> 
+</ul>
+</div>
+
+{{block left_sidebar}}
+<dl>
+<dt class="exp"><a href="#" class="toolc" tid="tools">Tools</a></dt>
+<dd class="exp">Overview</dd>
+
+<dt class="exp"><a href="#" class="toolc" tid="lexiconlist">Lexicon List</a></dt>
+<dd class="exp"><p>Gives a list of lexemes occurring in a given set of passages and not occurring in another given set of passages.</p></dd>
+
+</dl>
+
+{{end}}
+<script type="text/javascript">
+var ll_url = "{{=XML(URL('tools', 'lexiconlist.json', host=True))}}"
+
+var detailcontrols = '<a class="showc fa fa-chevron-right" href="#" title="Show details"></a><a class="hidec fa fa-chevron-down" href="#" title="Hide details"></a>'
+$('dt.exp').each(function() {
+    var orig = $(this).html()
+    $(this).html(detailcontrols+'&nbsp;'+orig)
+})
+$('dd.exp').hide()
+$('.hidec').hide()
+$('.showc').show()
+$('.hidec').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.hide()
+    dt.find('.hidec').hide()
+    dt.find('.showc').show()
+})
+$('.showc').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.show()
+    dt.find('.hidec').show()
+    dt.find('.showc').hide()
+})
+$('div.tool').hide()
+$('.toolc').click(function(e) {e.preventDefault();
+    $('dt.exp').removeClass('thl')
+    $(this).closest('dt').addClass('thl')
+    $('div.tool').hide()
+    $('#'+$(this).attr('tid')).show()
+})
+$('#ll_get').click(function(e) {e.preventDefault();
+    var senddata = {
+        ll_include: $('#ll_include').val(),
+        ll_exclude: $('#ll_exclude').val(),
+    }
+    $.post(ll_url, senddata, function(json) {
+        good = json.good
+        console.log('lexemes', json.lexemes)
+        $('#ll_results').html(json.lexemes)
+    })
+})
+$(function () {
+    var subtract = 150
+    standard_height = window.innerHeight - subtract
+    var canvas_middle = $('.span9')
+    var canvas_right = $('#relapps')
+    canvas_middle.css('overflow', 'auto')
+    canvas_middle.css('height', standard_height+'px')
+    canvas_right.css('overflow', 'auto')
+    canvas_right.css('height', standard_height+'px')
+    $('a[tid="tools"]').click()
+})
+</script>
