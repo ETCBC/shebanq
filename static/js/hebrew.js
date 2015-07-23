@@ -763,14 +763,17 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             main_sav_controls.show()
             sav_controls.show()
         }
-        this.dest.find('a[b]').click(function(e) {e.preventDefault();
+        var crossrefs = this.dest.find('a[b]')
+        crossrefs.click(function(e) {e.preventDefault();
             var vals = {}
             vals['book'] = $(this).attr('b')
             vals['chapter'] = $(this).attr('c')
+            vals['mr'] = 'm'
             wb.vs.mstatesv(vals)
             wb.vs.addHist()
             wb.go()
         })
+        crossrefs.addClass('crossref')
     }
     this.gen_html_ca = function(canr) {
         var notes = this.orig_notes[canr]

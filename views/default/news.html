@@ -49,6 +49,12 @@ You enter them in the markdown way:
 <code>[see also Ex 5:3](Exodus 5)</code>
 Other people see it asa clickable link: <a href="{{=URL('hebrew', 'text', vars=dict(book='Exodus', chapter='5'))}}">see also Ex 5:3</a>.
 Note that you can only link to chapters, not to individual verses.</dd>
+<dt>Cross references</dt>
+<dd>The outcome of the 
+<a href="{{=URL('tools','index', vars=dict(goto='parallel'))}}">Parallel Passages</a>.
+has been imported in SHEBANQ as a note set:
+<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnxjcm9zc3JlZg__', tp='txt_tb1', nget='v'))}}">crossref</a>.</p>
+</dd>
 </dl>
 </div>
 
@@ -88,7 +94,7 @@ Think of a context-dependent refinement of the glosses for verbs, including the 
 That is why we do not incorporate valence data into the ETCBC database yet, but we do make our results available as <b>notes</b>.
 These notes areactually generated with the help of LAF-Fabric.
 See the <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/valence/flowchart.ipynb">flowchart notebook</a>, and see the
-<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnx2YWxlbmNl', tp='txt_tb1'))}}">valence</a> note set to inspect the ongoing work.</p>
+<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnx2YWxlbmNl', tp='txt_tb1', nget='v'))}}">valence</a> note set to inspect the ongoing work.</p>
 </dd>
 <dt>Modified notes view</dt>
 <dd><p>The tabbed views named after Nicolai, Oliver and Dirk, now have names that are more indicative to what you see:
@@ -158,7 +164,7 @@ From now on, only registered users can view them.</p>
 There are more than 1000 relevant cases, and you want to inspect the outcomes of the algorithm, especially the uncertain cases.
 Then you can use LAF-Fabric to export the outcomes as a well-formatted csv file and upload this file into SHEBANQ.
 See the
-<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='MnxudG4tbG9jYQ__', tp='txt_tb1'))}}">ntn-loca</a> note set as an example.</p>
+<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='MnxudG4tbG9jYQ__', tp='txt_tb1', nget='v'))}}">ntn-loca</a> note set as an example.</p>
 <p class="note">This feature can only be used if you have been approved as an uploader (contact <a href="mailto:dirk.roorda@dans.knaw.nl">me</a>).</p>
 </dd>
 <dt>Small fixes and optimizations</dt>

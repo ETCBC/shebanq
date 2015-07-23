@@ -139,6 +139,10 @@ span.vreft {
     float: left;
     direction: ltr;
 }
+a.crossref {
+    color: #000088;
+    background-color: #ffffff;
+}
 
 /* SIDEBAR ITEMS: BOTH */
 
