@@ -808,8 +808,8 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 html += '<td class="nt_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
                 html += '<td class="nt_kw">'+escapeHTML(nline.kw)+'</td>'
                 var ntxt = escapeHTML(nline.ntxt)
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" href="#">$1</a>')
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2">$1</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2" class="fa fw">$1&#xf08e;</a>')
                 html += '<td class="nt_cmt">'+ntxt+'</td>'
                 html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+escapeHTML(user)+'</td>'
                 html += '<td class="nt_pub">'
