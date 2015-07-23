@@ -35,7 +35,7 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
-<h2>2015-07-22</h2>
+<h2>2015-07-23</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
 <dt>Tools</dt>
@@ -43,7 +43,12 @@ But what if they have been published? Currently you can unpublish queries, but w
 See for example the tool for finding
 <a href="{{=URL('tools','index', vars=dict(goto='parallel'))}}">Parallel Passages</a>.
 </p>
-</dd>
+<dt>References in notes</dt>
+<dd><p>Besides general markdown shaped hyperlinks, you can now also put <i>chapter references</i> in your notes.
+You enter them in the markdown way:
+<code>[see also Ex 5:3](Exodus 5)</code>
+Other people see it asa clickable link: <a href="{{=URL('hebrew', 'text', vars=dict(book='Exodus', chapter='5'))}}">see also Ex 5:3</a>.
+Note that you can only link to chapters, not to individual verses.</dd>
 </dl>
 </div>
 

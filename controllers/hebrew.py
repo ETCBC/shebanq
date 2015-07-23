@@ -2204,11 +2204,14 @@ select * from book where name = '{}'
 ;
 '''.format(bookname), as_dict=True)
     book = bookrecords[0] if bookrecords else {}
-    chapterrecords = passage_dbs[vr].executesql(u'''
+    if book:
+        chapterrecords = passage_dbs[vr].executesql(u'''
 select * from chapter where chapter_num = {} and book_id = {}
 ;
 '''.format(chapternum, book['id']), as_dict=True)
-    chapter = chapterrecords[0] if chapterrecords else {}
+        chapter = chapterrecords[0] if chapterrecords else {}
+    else:
+        chapter = {}
     return (book, chapter)
 
 def groupq(vr, input):

@@ -763,6 +763,14 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             main_sav_controls.show()
             sav_controls.show()
         }
+        this.dest.find('a[b]').click(function(e) {e.preventDefault();
+            var vals = {}
+            vals['book'] = $(this).attr('b')
+            vals['chapter'] = $(this).attr('c')
+            wb.vs.mstatesv(vals)
+            wb.vs.addHist()
+            wb.go()
+        })
     }
     this.gen_html_ca = function(canr) {
         var notes = this.orig_notes[canr]
@@ -799,7 +807,10 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             if (ro) {
                 html += '<td class="nt_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
                 html += '<td class="nt_kw">'+escapeHTML(nline.kw)+'</td>'
-                html += '<td class="nt_cmt">'+escapeHTML(nline.ntxt).replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2">$1</a>')+'</td>'
+                var ntxt = escapeHTML(nline.ntxt)
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" href="#">$1</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2">$1</a>')
+                html += '<td class="nt_cmt">'+ntxt+'</td>'
                 html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+escapeHTML(user)+'</td>'
                 html += '<td class="nt_pub">'
                 html += '    <span class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" title="shared?"></span>'
