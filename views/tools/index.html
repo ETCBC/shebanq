@@ -19,7 +19,7 @@ this website.
 
 <div class="tool" id="parallel">
 <h4>Parallel Passages</h4>
-<img src="{{=URL('static', 'images/parallel.png')}}" align="right" width="50%"/>
+<img src="{{=URL('static', 'docs/tools/parallel/images/parallel.png')}}" align="right" width="50%"/>
 <p>Various ways of detecting similar passages have been tried out.
 The notebook provides access to the outcomes of those experiments.
 You can navigate to all variants and see parallel passages brought together,
@@ -27,20 +27,44 @@ with differences hightlighted.</p>
 <p><a target="_blank" href="{{=URL('static', 'docs/tools/parallel/parallels.html')}}">View notebook</a></p>
 <p><a target="_blank" href="{{=URL('static', 'docs/tools/parallel/parallels.ipynb')}}" download="parallels.ipynb">Download notebook</a></p>
 The outcomes of the best experiments have been added to SHEBANQ as the note set
-<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnxjcm9zc3JlZg__', tp='txt_tb1', nget='v'))}}">crossref</a>.</p>
+<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnxjcm9zc3JlZg__', tp='txt_tb1', nget='v'))}}">crossref</a>.
 See it in action in
-<a href="{{=URL('hebrew', 'text', vars=dict(npub='x', nget='v', chapter=10, book='Genesis', tp='txt_tb1', iid='Mnxjcm9zc3JlZg__', version='4b', mr='m'))}}">Genesis 10</a>
+<a href="{{=URL('hebrew', 'text', vars=dict(npub='x', nget='v', chapter=10, book='Genesis', tp='txt_tb1', iid='Mnxjcm9zc3JlZg__', version='4b', mr='m'))}}">Genesis 10</a>.</p>
+</div>
+
+<div class="tool" id="valence">
+<h4>Verbal Valence</h4>
+<img src="{{=URL('static', 'docs/tools/valence/images/flowchart.png')}}" align="right" width="50%"/>
+<p>The context of selected verbs are categorized.
+For each of their occurrences it is recorded which kind of complements and other constituents are present.
+Depending on the pattern, sense of the verb is selected by means of a <i>flowchart</i>.</p>
+<p><a target="_blank" href="{{=URL('static', 'docs/tools/valence/flowchart.html')}}">View notebook</a></p>
+<p><a target="_blank" href="{{=URL('static', 'docs/tools/valence/flowchart.ipynb')}}" download="flowchart.ipynb">Download notebook</a></p>
+The outcomes have been added to SHEBANQ as the note set
+<a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnx2YWxlbmNl', tp='txt_tb1', nget='v'))}}">valence</a>.</p>
+<p class='warning'>This tool is <b>eperimental</b>. The algorithm and the results will change, and more verbs will be added over time.</p>
+<p>If you have feed back on particular cases, pleas add your notes directly in SHEBANQ at the clause where it applies,
+and give it the label <code>val_note</code>.</p>
 </div>
 
 {{block left_sidebar}}
+<p>&nbsp;</p>
 <dl>
 <dt class="exp"><a href="#" class="toolc" tid="tools">Tools</a></dt>
 <dd class="exp">Overview</dd>
+<hr/>
 
 <dt class="exp">
 <a href="#" class="toolc" tid="parallel">Parallel Passages</a></dt>
 <dd class="exp"><p>An inventory of <i>parallel</i> passages in the Hebrew Bible.</p></dd>
-<img src="{{=URL('static', 'images/parallel-lr.png')}}"/>
+<img src="{{=URL('static', 'docs/tools/parallel/images/parallel-lr.png')}}"/>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="toolc" tid="valence">Verbal Valence (bet)</a></dt>
+<dd class="exp"><p>Categorizing verbal <i>valence</i> patterns in the Hebrew Bible.</p></dd>
+<img src="{{=URL('static', 'docs/tools/valence/images/flowchart-lr.png')}}"/>
+<hr/>
 
 </dl>
 
