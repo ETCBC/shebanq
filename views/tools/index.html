@@ -46,6 +46,55 @@ The outcomes have been added to SHEBANQ as the note set
 and give it the label <code>val_note</code>.</p>
 </div>
 
+<div class="tool" id="shebanq">
+<h4>SHEBANQ (itself)</h4>
+<img src="{{=URL('static', 'docs/tools/shebanq/images/shebanq.png')}}" align="right" width="50%"/>
+<p>SHEBANQ iss powered by various databases, that are derived from the ETCBC database.
+Here is a collections of notebooks that carry out the conversion from the LAF representation of the ETCBC database
+up to the SQL files that can be imported in a MYSQL database.</p>
+<p>This is not stuff for the normal user, but for the ones that need to recreate and/or maintain SHEBANQ, or for archivists
+that need to know the provenance of the data that powers SHEBANQ.<p>
+<p>Here are the notebooks:</p>
+<dl>
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/laf2shebanq.html')}}">laf2shebanq</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/laf2shebanq.ipynb')}}" download="laf2shebanq.ipynb">(download)</a></dt>
+<dd>We construct a relational database, passage, meant to support browsing of texts and highlighting of words.
+It contains the texts themselves, verse by verse, and it contains book and chapter information.
+The passage database also contains a lexicon, which is linked to the word occurrences.</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.html')}}">loganalysis</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.ipynb')}}" download="loganalysis.ipynb">(download)</a></dt>
+<dd>We read the apache2 log files, filter out irrelevant events, analyse remaining events, and produce usable statistics.
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/notes.html')}}">notes</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/notes.ipynb')}}" download="notes.ipynb">(download)</a></dt>
+<dd>This notebook defines the datamodel for notes in SHEBANQ.
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/versions.html')}}">versions</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/versions.ipynb')}}" download="versions.ipynb">(download)</a></dt>
+<dd>This notebook defines a new datamodel for queries in SHEBANQ, and it converts data according to the old model to data according to the new model.
+The old model had no provisions for working with queries on multiple versions of the data. The new model remedies that.
+</dd>
+
+</dl>
+</div>
+
+<div class="tool" id="trees">
+<h4>Trees</h4>
+<img src="{{=URL('static', 'docs/tools/trees/images/trees.png')}}" align="right" width="50%"/>
+<p>This notebook composes syntax trees out of the ETCBC data. To this end, it imports the module <code>etcbc.trees</code> of LAF-Fabric,
+which contains the logic to synthesize trees from the data as it lies encoded in an EMDROS database and has been translated to LAF.
+<code>etcbc.trees</code> can also work for other data, such as the CALAP database of parts of the Syriac Peshitta.
+This notebook generates a tree for each sentence in the Hebrew Bible.<p>
+<p>The 
+<a target="_blank" href="{{=URL('static', 'docs/tools/trees/files/trees.txt.zip')}}" download="trees.txt.zip">results</a>
+have been used for a Data Oriented Parsing experiment, which is reported in the
+<a target="_blank" href="http://www.clinjournal.org/sites/clinjournal.org/files/08-Roorda-etal-CLIN2014.pdf">Computational Linguistics in the Netherlands Journal 4 (2014) 105-120</a> (a copy is also archived at
+<a target="_blank" href="http://arxiv.org/abs/1410.0286">arxiv.org<a>).</p>
+</div>
+
 {{block left_sidebar}}
 <p>&nbsp;</p>
 <dl>
@@ -63,6 +112,18 @@ and give it the label <code>val_note</code>.</p>
 <a href="#" class="toolc" tid="valence">Verbal Valence (bet)</a></dt>
 <dd class="exp"><p>Categorizing verbal <i>valence</i> patterns in the Hebrew Bible.</p></dd>
 <img src="{{=URL('static', 'docs/tools/valence/images/flowchart-lr.png')}}"/>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="toolc" tid="trees">Trees</a></dt>
+<dd class="exp"><p>Constructing syntax trees for the sentences.</p></dd>
+<img src="{{=URL('static', 'docs/tools/trees/images/trees-lr.png')}}"/>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="toolc" tid="shebanq">SHEBANQ (itself)</a></dt>
+<dd class="exp"><p>Composing the data for SHEBANQ from LAF.</p></dd>
+<img src="{{=URL('static', 'docs/tools/shebanq/images/shebanq-lr.png')}}"/>
 <hr/>
 
 </dl>

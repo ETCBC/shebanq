@@ -7,7 +7,7 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<h4>{{=T('About')}}</h4>
+<h4>About</h4>
 <p>SHEBANQ is a search engine for the Hebrew Bible, powered by the ETCBC4 linguistic database, formerly know as WIVU.
 The data is archived for <i>open access</i>, and the program code is <i>open source</i>. 
 A list of sources needed to recreate all underlying data processing is included <a href="#sources">below</a>.</p>
@@ -29,9 +29,9 @@ and the Netherlands Organization for Scientific Research
 <a target="_blank" href="https://www.dbg.de/en">DBG</a>
 and the Nederlands Bible Society,
 <a target="_blank" href="https://www.bijbelgenootschap.nl">NBG</a> contribute to the sustained availability
-of the texts and data in SHEBANQ.<p>
+of the texts and data in SHEBANQ.</p>
 
-<h4>{{=T('License and Re-use')}}</h4>
+<h4>License and Re-use</h4>
 <p>The creators of the linguistic annotations that drive SHEBANQ, the
 <a target="_blank" href="http://www.godgeleerdheid.vu.nl/en/research/institutes-and-centres/eep-talstra-centre-for-bible-and-computer/index.asp">ETCBC</a>, 
 want to facilitate optimal access to their data by researchers. All operations that are needed for the scholarly process are allowed.
@@ -63,7 +63,8 @@ We are also open to implement mutual deep linking with other biblical data sourc
     edited by Karl Elliger and Wilhelm Rudolph, Fifth Revised Edition,
     edited by Adrian Schenker, © 1977 and 1997 Deutsche Bibelgesellschaft, Stuttgart.</p>
     <p>SHEBANQ is based on this printed text, but the DBG offers also an
-    <a target="_blank" href="https://www.academic-bible.com/en/online-bibles/biblia-hebraica-stuttgartensia-bhs/read-the-bible-text/">online version of the BHS</a>.</p>
+    <a target="_blank" href="https://www.academic-bible.com/en/online-bibles/biblia-hebraica-stuttgartensia-bhs/read-the-bible-text/">online version of the BHS</a>.</p></dd>
+
     <dt>Data</dt>
     <dd>
         <dl>
@@ -72,6 +73,7 @@ We are also open to implement mutual deep linking with other biblical data sourc
             <p>We have use the Emdros export version of the data, converted it to LAF, and archived it at
             <a target="_blank" href="http://www.dans.knaw.nl">DANS</a>, a national research data archive in the Netherlands. Its repository is called 
             <a target="_blank" href="http://easy.dans.knaw.nl">EASY</a>, and there, among many other data sets you find the Hebrew Text Database of the ETCBC.</p></dd>
+
             <dt>ETCBC database version 4b</a></dt>
             <dd><p><b>Snapshot taken from the ETCBC's <i>jacob</i>-server on 2015-05-04</b>. <i>This version is not archived, and not finished</i>.</p>
             <p>We will refresh this version regularly, until the ETCBC provides a stable, finished version, which we will call <b>4s</b>.</p>
@@ -81,33 +83,39 @@ We are also open to implement mutual deep linking with other biblical data sourc
             <p>Earlier snapshots (no longer available in shebanq):</p>
             <p><b>Snapshot taken from the ETCBC's <i>jacob</i>-server on 2015-04-09</b>.</p>
             </dd>
+
             <dt>ETCBC database version 4s</a></dt>
             <dd><p><b>(future:) Snapshot taken from the ETCBC's <i>jacob</i>-server on ??</b>.
-            <i>This version is to be archived at DANS, and will be released as a finished version</i>.</p>
-            <dt>Extra data</dt>
-            <dd>We have added some additional packages of annotations, that can be used together with the proper ETCBC data.
-            Part of this data has also been used for SHEBANQ: the lexicon data. With LAF-Fabric you can use extra annotation packages in a controlled way.
-            Here we point at two packages. If you have LAF-Fabric, you can
-            <a target="_blank" href="https://surfdrive.surf.nl/files/public.php?service=files&t=c201a146df25c6323544bf36d165408c">download the data</a>
-            and place it in your <pre>laf-fabric-data/etcbc4/annotations</pre>
-            directory. <img src="{{=URL('static', 'images/ExtraData.png')}}"/>
-            <ul class="ldisc">
-                <li><b>lexicon</b>, for more info see this
-                <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/extradata/lexicon.ipynb">notebook</a>.</li>
-                <li><b>paragraphs</b>, for more info see this
-                <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/extradata/para%20from%20px.ipynb">notebook</a>.</li>
-            </dd>
+            <i>This version is to be archived at DANS, and will be released as a finished version</i>.</p></dd>
         </dl>
     </dd>
+
+    <dt>Extra data</dt>
+    <dd><p>We have added some additional packages of annotations, that can be used together with the proper ETCBC data.
+    Part of this data has also been used for SHEBANQ: the lexicon data. With LAF-Fabric you can use extra annotation packages in a controlled way.
+    Here we point at two packages. If you have LAF-Fabric, you can
+    <a target="_blank" href="https://surfdrive.surf.nl/files/public.php?service=files&t=c201a146df25c6323544bf36d165408c">download the data</a>
+    and place it in your <pre>laf-fabric-data/etcbc4/annotations</pre>
+    directory. <img src="{{=URL('static', 'images/ExtraData.png')}}"/></p>
+        <ul class="ldisc">
+            <li><b>lexicon</b>, for more info see this
+            <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/extradata/lexicon.ipynb">notebook</a>.</li>
+            <li><b>paragraphs</b>, for more info see this
+            <a target="_blank" href="http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/extradata/para%20from%20px.ipynb">notebook</a>.</li>
+        </ul>
+    </dd>
+
     <dt><a target="_blank" href="https://github.com/ETCBC">ETCBC</a></dt>
     <dd>The ETCBC organization on Github has several repositories related to its Hebrew Text Database.
         <dl>
             <dt><a target="_blank" href="https://shebanq-doc.readthedocs.org">shebanq-doc</a></dt>
             <dd>Feature-by-feature documentation of the Hebrew Text Database. Here you find the meaning of the linguistic annotations to the text.</dd>
+
             <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric">LAF-Fabric</a></dt>
             <dd>The Hebrew Text Database is archived in the <a target="_blank" href="http://www.iso.org/iso/catalogue_detail.htm?csnumber=37326">LAF format</a>.
             LAF-Fabric is a data preprocessing tool that can handle LAF.
             It is a Python package. On top of it there are packages specialized in the peculiarities of the ETCBC data.</dd>
+
             <dt><a target="_blank" href="http://nbviewer.ipython.org/github/ETCBC/laf-fabric-nbs/tree/master/">LAF-Fabric notebooks</a></dt>
             <dd>This a repository full of executable <i>notebooks</i>, showing a wide range of things that can be accomplished.
             A recommended way to do data processing with the ETCBC data is using the concept of the
@@ -116,6 +124,7 @@ We are also open to implement mutual deep linking with other biblical data sourc
             <a target="_blank" href="http://nbviewer.ipython.org">NBviewer</a>.</dd>
         </dl>
     </dd>
+
     <dt><a target="_blank" href="https://github.com/Dans-labs">DANS-Labs</a></dt>
     <dd>The DANS-labs organization on Github contains the SHEBANQ project.
         <dl>
@@ -132,6 +141,7 @@ We are also open to implement mutual deep linking with other biblical data sourc
 <p>Users are an important source of data for SHEBANQ. 
 They may contribute queries that highlight research questions and solutions, and they may contribute notes to individual
 clauses in the text.</p>
+
 <h5>Contributing note sets</h5>
 <p>Notes are the preferred way to add observations and comments that are not carved in stone.
 They can also be used to view the outcomes of algorithms operating on the Hebrew Bible in context.
@@ -143,6 +153,7 @@ and from there they have been bulk-uploaded to SHEBANQ, where the notes can be c
 {{=A(T('between the lines'), _href=URL('hebrew', 'note', vars=dict(id='Mnx2YWxlbmNl', tp='txt_tb1', version='4b', mr='m')))}}.</p>
 <img src="{{=URL('static', 'images/valence.png')}}"/>
 <p>This is work in progress!</p>
+
 <h5>Contributing research</h5>
 <p>It is also possible to contribute your research to SHEBANQ.
 As an example, have a look at
@@ -157,7 +168,7 @@ In order to be eligible, your notebook must satisfy a few basic conditions:
 <li>the results must be based on the ETCBC database of the Hebrew Bible</li>
 <li>the results must be <i>reproducible</i> on the basis of the information in the notebook and the data stored with it
 (we can store additional data at the SHEBANQ site).</li>
-<ol> 
+</ol> 
 </p> 
 
 <h4>Do it yourself</h4>
