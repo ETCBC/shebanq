@@ -1,4 +1,4 @@
-{{ left_sidebar_enabled = False }}
+{{ left_sidebar_enabled = True }}
 {{ right_sidebar_enabled = True }}
 {{ ('message' in globals()) }}
 {{ extend 'layout.html' }}
@@ -7,7 +7,9 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<h4>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</h4>
+<div class="section" id="shebanq">
+<h4>What is SHEBANQ?</h4>
+<p><b>System for HEBrew Text: ANnotations for Queries and Markup</b></p>
 <p>This is a system for the study of the Hebrew Bible, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>
 in cooperation with the
 <a target="_blank" href="https://www.dbg.de/en">German Bible Society</a>
@@ -21,8 +23,11 @@ SHEBANQ introduces the idea of annotating the text with <i>queries</i>.
 They show up next to the text pages where the results are.
 By sharing your queries with others, you may find what you did not search for.</p>
 <p>But you can also add ordinary annotations!</p>
+<p><img src="{{=URL('static', 'images/shebanq_logo.png')}}" width="90%"/></p>
+</div>
 
-<h4>{{=T('Get started')}}</h4>
+<div class="section" id="get_started">
+<h4>Get started: read the text, view words, queries and notes, and move around</h4>
 <p>You can just read
 {{=A(T("The Text"), _href=URL('hebrew', 'text', vars=dict(book='Genesis', chapter=1, version='4', qget='v', wget='v')))}}.
 In the margin you find related queries, and you can follow them.
@@ -45,8 +50,11 @@ set
 <a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnxjcm9zc3JlZg__', tp='txt_tb1', nget='v'))}}">crossref</a>.
 The data that underlies the text can be viewed by pressing the <i>data</i> button.
 All this and more is explained in the {{=A('help', _href=URL('default', 'help'))}}.</p>
+<p><img src="{{=URL('static', 'images/text.png')}}" width="90%"/></p>
+</div>
 
-<h4>{{=T('Next step: make your own queries and notes')}}</h4>
+<div class="section" id="next_step">
+<h4>Next step: make your own queries and notes</h4>
 <p>You can contribute queries and notes yourself, but then you have to register/login.
 When writing a query, 
 by filling in your institution and your project you provide other users with a bit of context.
@@ -54,8 +62,11 @@ Precise, concise documentation is at your finger tips, e.g. the
 growing body of online documentation on <a target="_blank" href="http://shebanq-doc.readthedocs.org">readthedocs</a>.
 Once you are logged in, you can enter manual notes right away. Go to
 {{=A(T('notes view'), _href=URL('hebrew', 'text', vars=dict(nget='v', chapter=1, book='Genesis', tp='txt_tb1', version=4, mr='m')))}}.</p>
+<p><img src="{{=URL('static', 'images/queries.png')}}" width="90%"/></p>
+</div>
 
-<h4>{{=T('Advanced: share and publish your queries and notes')}}</h4>
+<div class="section" id="advanced">
+<h4>Advanced: share and publish your queries and notes</h4>
 <p>You can share publish your queries and notes, so that they show up
 in the margin of the chapters containing their results.
 In this way they are become a valuable resource for fellow Hebrew readers.
@@ -67,10 +78,12 @@ you can also <i>publish</i> it.
 Your query and its results on a particular version om the database will be frozen, so that
 others will see exactly the same results later on.
 When newer versions of the database arrive in SHEBANQ, you can run the same query on the new data.
-You can modify that version of your query and publish it separately from earlier versions.
-</p>
+You can modify that version of your query and publish it separately from earlier versions.</p>
+<p><img src="{{=URL('static', 'images/cite.png')}}" width="90%"/></p>
+</div>
 
-<h4>{{=T('Expert: engage in data analysis and disseminate your results')}}</h4>
+<div class="section" id="expert">
+<h4>Expert: engage in data analysis and disseminate your results</h4>
 <p>You can generate notes sets by means of software, possibly aided by 
 <a href="http://laf-fabric.readthedocs.org/en/latest/texts/welcome.html" target="_blank">laf-fabric</a>
 and
@@ -81,12 +94,19 @@ Quality results are candidates for the <i>Tools</i> page, such as
 <a target="_blank" href="{{=URL('tools', 'index', vars=dict(goto='parallel'))}}">parallel passages</a>
 and
 <a target="_blank" href="{{=URL('hebrew', 'note', vars=dict(version='4b', id='Mnx2YWxlbmNl', tp='txt_tb1', nget='v'))}}">verbal valence</a>,
-a note set generated from the verbal valence patterns as formulated by Janet Dyk.
-</p>
+a note set generated from the verbal valence patterns as formulated by Janet Dyk.</p>
+<p><img src="{{=URL('static', 'images/expert.png')}}" width="90%"/></p>
+</div>
 
-<p>You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
+<div class="section" id="free_software">
+<h4>Free software: use SHEBANQ as you like!</h4>
+<p>SHEBANQ is free software. 
+The tools used to run the SHEBANQ website, and the tools used to do the data preprocessing, and all the recipes are
+available online.
+You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
 Consult the menu item {{=A(T("Help/Sources"), _href=URL('default', 'sources'))}}. 
 The license is such that nothing stands in your way, as long as you stay non-commercial.</p>
+</div>
 
 {{block right_sidebar}}
 <div id="relapps">
@@ -110,7 +130,100 @@ The license is such that nothing stands in your way, as long as you stay non-com
 </div>
 </div>
 {{end}}
+
+{{block left_sidebar}}
+<p>&nbsp;</p>
+<dl>
+
+<dt class="exp"><a href="#" class="sectionc" tid="shebanq">What is SHEBANQ?</a></dt>
+<dd class="exp"><p><b>System for HEBrew Text: ANnotations for Queries and Markup</b></p></dd>
+<hr/>
+
+<dt class="exp"><a href="#" class="sectionc" tid="get_started">Get started</a></dt>
+<dd class="exp"><p>Read the text, view words, queries and notes, and move around</p></dd>
+<hr/>
+
+<dt class="exp"><a href="#" class="sectionc" tid="next_step">Next step</a></dt>
+<dd class="exp"><p>Make your own queries and notes</p></dd>
+<hr/>
+
+<dt class="exp"><a href="#" class="sectionc" tid="advanced">Advanced</a></dt>
+<dd class="exp"><p>Share and publish your queries and notes</p></dd>
+<hr/>
+
+<dt class="exp"><a href="#" class="sectionc" tid="expert">Expert</a></dt>
+<dd class="exp"><p>Engage in data analysis and disseminate your results</p></dd>
+<hr/>
+
+<dt class="exp"><a href="#" class="sectionc" tid="free_software">Free software</a></dt>
+<dd class="exp"><p>Use SHEBANQ as you like!</p></dd>
+<hr/>
+
+</dl>
+
+{{end}}
+
 <script type="text/javascript">
+var Request = {
+    parameter: function(name) {
+        return this.parameters()[name]
+    },
+    parameters: function(uri) {
+        var i, parameter, params, query, result;
+        result = {};
+        if (!uri) {
+            uri = window.location.search;
+        }
+        if (uri.indexOf("?") === -1) {
+            return {};
+        }
+        query = uri.slice(1);
+        params = query.split("&");
+        i = 0;
+        while (i < params.length) {
+            parameter = params[i].split("=");
+            result[parameter[0]] = parameter[1];
+            i++;
+        }
+        return result;
+    }
+}
+
+function sections_init() {
+    var gotosection = Request.parameter('goto');
+    $('a[tid="shebanq"]').click()
+    $('a[tid="'+gotosection+'"]').click()
+}
+
+var detailcontrols = '<a class="showc fa fa-chevron-right" href="#" title="Show details"></a><a class="hidec fa fa-chevron-down" href="#" title="Hide details"></a>'
+$('dt.exp').each(function() {
+    var orig = $(this).html()
+    $(this).html(detailcontrols+'&nbsp;'+orig)
+})
+$('dd.exp').show()
+$('.hidec').show()
+$('.showc').hide()
+$('.hidec').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.hide()
+    dt.find('.hidec').hide()
+    dt.find('.showc').show()
+})
+$('.showc').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.show()
+    dt.find('.hidec').show()
+    dt.find('.showc').hide()
+})
+$('div.section').hide()
+$('.sectionc').click(function(e) {e.preventDefault();
+    $('dt.exp').removeClass('thl')
+    $(this).closest('dt').addClass('thl')
+    $('div.section').hide()
+    $('#'+$(this).attr('tid')).show()
+})
 $(function () {
     var subtract = 150
     standard_height = window.innerHeight - subtract
@@ -120,5 +233,7 @@ $(function () {
     canvas_middle.css('height', standard_height+'px')
     canvas_right.css('overflow', 'auto')
     canvas_right.css('height', standard_height+'px')
+    sections_init()
+    $('.hidec')[0].click()
 })
 </script>

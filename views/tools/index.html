@@ -13,8 +13,7 @@
 Each tool is a notebook that reports on a research question.
 It contains the results,and provides a way to reproduce them.
 Notebooks contain code and documentation, and any data they refer to, is stored on
-this website.
-<p>
+this website.</p>
 </div>
 
 <div class="tool" id="parallel">
@@ -95,7 +94,6 @@ var Request = {
     }
 }
 
-var ll_url = "{{=XML(URL('tools', 'lexiconlist.json', host=True))}}"
 function tools_init() {
     var gototool = Request.parameter('goto');
     $('a[tid="tools"]').click()

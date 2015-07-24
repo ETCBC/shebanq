@@ -1282,6 +1282,10 @@ span.treehl {
 .selecthlo, .selecthlp, .selecthlw {
     background-color: #88ffff;
 }
+.thl {
+    border-radius: 6pt;
+    background-color: #fcc889;
+}
 #bol_lnk {
     float: left;
 }
