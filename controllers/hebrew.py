@@ -775,7 +775,7 @@ def chart(): # controller to produce a chart of query results or lexeme occurren
     if not authorized:
         result = get_chart(vr, [])
         result.update(qw=qw)
-        return result()
+        return result
     return from_cache(
         'chart_{}_{}_{}_'.format(vr, qw, iidrep),
         lambda: chart_c(vr, qw, iidrep),
@@ -1900,6 +1900,7 @@ def field():
     good = False
     mod_date_fld = None
     mod_dates = {}
+    mod_cls = ''
     extra = {}
     myid = auth.user.id if auth.user != None else None
     for x in [1]:
@@ -2204,7 +2205,7 @@ select * from book where name = '{}'
 ;
 '''.format(bookname), as_dict=True)
     book = bookrecords[0] if bookrecords else {}
-    if book:
+    if book and 'id' in book:
         chapterrecords = passage_dbs[vr].executesql(u'''
 select * from chapter where chapter_num = {} and book_id = {}
 ;
