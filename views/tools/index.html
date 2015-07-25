@@ -46,10 +46,24 @@ The outcomes have been added to SHEBANQ as the note set
 and give it the label <code>val_note</code>.</p>
 </div>
 
+<div class="tool" id="trees">
+<h4>Trees</h4>
+<img src="{{=URL('static', 'docs/tools/trees/images/trees.png')}}" align="right" width="50%"/>
+<p>This notebook composes syntax trees out of the ETCBC data. To this end, it imports the module <code>etcbc.trees</code> of LAF-Fabric,
+which contains the logic to synthesize trees from the data as it lies encoded in an EMDROS database and has been translated to LAF.
+<code>etcbc.trees</code> can also work for other data, such as the CALAP database of parts of the Syriac Peshitta.
+This notebook generates a tree for each sentence in the Hebrew Bible.<p>
+<p>The 
+<a target="_blank" href="{{=URL('static', 'docs/tools/trees/files/trees.txt.zip')}}" download="trees.txt.zip">results</a>
+have been used for a Data Oriented Parsing experiment, which is reported in the
+<a target="_blank" href="http://www.clinjournal.org/sites/clinjournal.org/files/08-Roorda-etal-CLIN2014.pdf">Computational Linguistics in the Netherlands Journal 4 (2014) 105-120</a> (a copy is also archived at
+<a target="_blank" href="http://arxiv.org/abs/1410.0286">arxiv.org</a>).</p>
+</div>
+
 <div class="tool" id="shebanq">
 <h4>SHEBANQ (itself)</h4>
-<img src="{{=URL('static', 'docs/tools/shebanq/images/shebanq.png')}}" align="right" width="50%"/>
-<p>SHEBANQ iss powered by various databases, that are derived from the ETCBC database.
+<img src="{{=URL('static', 'docs/tools/shebanq/images/shebanq.png')}}" align="right" width="30%"/>
+<p>SHEBANQ is powered by various databases, that are derived from the ETCBC database.
 Here is a collections of notebooks that carry out the conversion from the LAF representation of the ETCBC database
 up to the SQL files that can be imported in a MYSQL database.</p>
 <p>This is not stuff for the normal user, but for the ones that need to recreate and/or maintain SHEBANQ, or for archivists
@@ -81,21 +95,8 @@ The old model had no provisions for working with queries on multiple versions of
 </dl>
 </div>
 
-<div class="tool" id="trees">
-<h4>Trees</h4>
-<img src="{{=URL('static', 'docs/tools/trees/images/trees.png')}}" align="right" width="50%"/>
-<p>This notebook composes syntax trees out of the ETCBC data. To this end, it imports the module <code>etcbc.trees</code> of LAF-Fabric,
-which contains the logic to synthesize trees from the data as it lies encoded in an EMDROS database and has been translated to LAF.
-<code>etcbc.trees</code> can also work for other data, such as the CALAP database of parts of the Syriac Peshitta.
-This notebook generates a tree for each sentence in the Hebrew Bible.<p>
-<p>The 
-<a target="_blank" href="{{=URL('static', 'docs/tools/trees/files/trees.txt.zip')}}" download="trees.txt.zip">results</a>
-have been used for a Data Oriented Parsing experiment, which is reported in the
-<a target="_blank" href="http://www.clinjournal.org/sites/clinjournal.org/files/08-Roorda-etal-CLIN2014.pdf">Computational Linguistics in the Netherlands Journal 4 (2014) 105-120</a> (a copy is also archived at
-<a target="_blank" href="http://arxiv.org/abs/1410.0286">arxiv.org<a>).</p>
-</div>
-
 {{block left_sidebar}}
+<div id="tool_list">
 <p>&nbsp;</p>
 <dl>
 <dt class="exp"><a href="#" class="toolc" tid="tools">Tools</a></dt>
@@ -103,30 +104,35 @@ have been used for a Data Oriented Parsing experiment, which is reported in the
 <hr/>
 
 <dt class="exp">
-<a href="#" class="toolc" tid="parallel">Parallel Passages</a></dt>
-<dd class="exp"><p>An inventory of <i>parallel</i> passages in the Hebrew Bible.</p></dd>
+<a href="#" class="toolc" tid="parallel">Parallel Passages
 <img src="{{=URL('static', 'docs/tools/parallel/images/parallel-lr.png')}}"/>
+</a></dt>
+<dd class="exp"><p>An inventory of <i>parallel</i> passages in the Hebrew Bible.</p></dd>
 <hr/>
 
 <dt class="exp">
-<a href="#" class="toolc" tid="valence">Verbal Valence (bet)</a></dt>
-<dd class="exp"><p>Categorizing verbal <i>valence</i> patterns in the Hebrew Bible.</p></dd>
+<a href="#" class="toolc" tid="valence">Verbal Valence (bet)
 <img src="{{=URL('static', 'docs/tools/valence/images/flowchart-lr.png')}}"/>
+</a></dt>
+<dd class="exp"><p>Categorizing verbal <i>valence</i> patterns in the Hebrew Bible.</p></dd>
 <hr/>
 
 <dt class="exp">
-<a href="#" class="toolc" tid="trees">Trees</a></dt>
-<dd class="exp"><p>Constructing syntax trees for the sentences.</p></dd>
+<a href="#" class="toolc" tid="trees">Trees
 <img src="{{=URL('static', 'docs/tools/trees/images/trees-lr.png')}}"/>
+</a></dt>
+<dd class="exp"><p>Constructing syntax trees for the sentences.</p></dd>
 <hr/>
 
 <dt class="exp">
-<a href="#" class="toolc" tid="shebanq">SHEBANQ (itself)</a></dt>
-<dd class="exp"><p>Composing the data for SHEBANQ from LAF.</p></dd>
+<a href="#" class="toolc" tid="shebanq">SHEBANQ (itself)
 <img src="{{=URL('static', 'docs/tools/shebanq/images/shebanq-lr.png')}}"/>
+</a></dt>
+<dd class="exp"><p>Composing the data for SHEBANQ from LAF.</p></dd>
 <hr/>
 
 </dl>
+</div>
 
 {{end}}
 <script type="text/javascript">
@@ -191,14 +197,14 @@ $('.toolc').click(function(e) {e.preventDefault();
     $('#'+$(this).attr('tid')).show()
 })
 $(function () {
-    var subtract = 150
+    var subtract = 80
     standard_height = window.innerHeight - subtract
     var canvas_middle = $('.span9')
-    var canvas_right = $('#relapps')
+    var canvas_left = $('#tool_list')
     canvas_middle.css('overflow', 'auto')
     canvas_middle.css('height', standard_height+'px')
-    canvas_right.css('overflow', 'auto')
-    canvas_right.css('height', standard_height+'px')
+    canvas_left.css('overflow', 'auto')
+    canvas_left.css('height', standard_height+'px')
     tools_init()
 })
 </script>

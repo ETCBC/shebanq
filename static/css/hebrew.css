@@ -139,7 +139,7 @@ span.vreft {
     float: left;
     direction: ltr;
 }
-a.crossref {
+a.crossref,.nt_cmt a {
     color: #000088;
     background-color: #ffffff;
 }

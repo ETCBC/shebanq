@@ -8,6 +8,7 @@
 {{pass}}
 
 <div class="section" id="shebanq">
+<p><img src="{{=URL('static', 'images/shebanq_logo.png')}}" width="50%" align="right"/></p>
 <h4>What is SHEBANQ?</h4>
 <p><b>System for HEBrew Text: ANnotations for Queries and Markup</b></p>
 <p>This is a system for the study of the Hebrew Bible, produced by the <a target="_blank" href="http://godgeleerdheid.vu.nl/etcbc">ETCBC</a>
@@ -21,9 +22,8 @@ SHEBANQ lets you develop and share those queries with fellow researchers.
 Scholarly editions of the Bible usually dedicate space to a critical apparatus and various kinds of annotations. 
 SHEBANQ introduces the idea of annotating the text with <i>queries</i>.
 They show up next to the text pages where the results are.
-By sharing your queries with others, you may find what you did not search for.</p>
-<p>But you can also add ordinary annotations!</p>
-<p><img src="{{=URL('static', 'images/shebanq_logo.png')}}" width="70%"/></p>
+By sharing your queries with others, you may find what you did not search for.
+Of course you can also add ordinary annotations!</p>
 </div>
 
 <div class="section" id="get_started">
@@ -101,11 +101,13 @@ a note set generated from the verbal valence patterns as formulated by Janet Dyk
 <div class="section" id="free_software">
 <h4>Free software: use SHEBANQ as you like!</h4>
 <p>SHEBANQ is free software. 
-The tools used to run the SHEBANQ website, and the tools used to do the data preprocessing, and all the recipes are
-available online.
+The tools used to run the SHEBANQ website and to do the data preprocessing, and all the recipes are
+available online. Moreover, the data on which all is based, is Open Access and can be obtained from 
+<a target="_blank" href="http://dx.doi.org/10.17026/dans-2z3-arxf">DANS</a>.
 You can reproduce SHEBANQ and make it better, or write totally different applications for processing the ETCBC data.
 Consult the menu item {{=A(T("Help/Sources"), _href=URL('default', 'sources'))}}. 
 The license is such that nothing stands in your way, as long as you stay non-commercial.</p>
+<p><img src="{{=URL('static', 'images/cc_by_nc.png')}}" width="90%"/></p>
 </div>
 
 {{block right_sidebar}}
@@ -132,7 +134,7 @@ The license is such that nothing stands in your way, as long as you stay non-com
 {{end}}
 
 {{block left_sidebar}}
-<p>&nbsp;</p>
+<div id="sections">
 <dl>
 
 <dt class="exp"><a href="#" class="sectionc" tid="shebanq">What is SHEBANQ?</a></dt>
@@ -160,6 +162,7 @@ The license is such that nothing stands in your way, as long as you stay non-com
 <hr/>
 
 </dl>
+</div>
 
 {{end}}
 
@@ -229,10 +232,13 @@ $(function () {
     standard_height = window.innerHeight - subtract
     var canvas_middle = $('.span9')
     var canvas_right = $('#relapps')
+    var canvas_left = $('#sections')
     canvas_middle.css('overflow', 'auto')
     canvas_middle.css('height', standard_height+'px')
     canvas_right.css('overflow', 'auto')
     canvas_right.css('height', standard_height+'px')
+    canvas_left.css('overflow', 'auto')
+    canvas_left.css('height', standard_height+'px')
     sections_init()
     $('.hidec')[0].click()
 })

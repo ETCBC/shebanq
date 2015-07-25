@@ -435,7 +435,7 @@ def iid_decode(qw, iidrep, sep=u'|', rsep=None):
         except:
             (idpart, kw) = (None, None)
     if qw == 'w': (idpart, kw) = (iidrep, u'')
-    if qw == 'q': (idpart, kw) = (int(iidrep) if iidrep.isdigit() else None, u'')
+    if qw == 'q': (idpart, kw) = (int(iidrep) if iidrep.isdigit() else 0, u'')
     if rsep == None: result = (idpart, kw)
     else:
         if qw == 'n': result = rsep.join((str(idpart), kw))
