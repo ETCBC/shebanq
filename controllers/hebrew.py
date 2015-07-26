@@ -50,7 +50,7 @@ from mql import mql
 # books_{vr}_                                   list of books plus fixed book info 
 # blocks_{vr}_                                  list of 500w blocks plus boundary info
 # verse_boundaries                              for each verse its starting and ending monad (word number)
-# verses_{vr}_{mqw}_{bk/iid}_{ch/page}_{tp}_    verses on a material page, either for a chapter,
+# verses_{vr}_{mqwn}_{bk/iid}_{ch/page}_{tp}_   verses on a material page, either for a chapter,
 #                                                    or an occurrences page of a lexeme,
 #                                                    or a results page of a query execution
 #                                                    or a page with notes by a user with a keyword
@@ -431,9 +431,14 @@ values
     else:
         changed = True
         clear_cache(r'^items_n_{}_{}_{}_'.format(vr, bk, ch))
-        #for canr in new_notes:
-        #    for kw in (n[3] for n in new_notes[canr]):
-        #        clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'n', iid_encode('n', myid, kw=kw)))
+        if len(new_notes):
+            for kw in {new_notes[canr][3] for canr in new_notes}:
+                clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'n', iid_encode('n', myid, kw=kw)))
+        if len(del_notes):
+            for nid in del_notes:
+                if nid in old_notes:
+                    kw = old_notes[nid][3]
+                    clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'n', iid_encode('n', myid, kw=kw)))
     return changed
 
 def note_filter_notes(myid, notes, these_clause_atoms, msgs):
