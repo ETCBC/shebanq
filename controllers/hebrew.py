@@ -431,9 +431,9 @@ values
     else:
         changed = True
         clear_cache(r'^items_n_{}_{}_{}_'.format(vr, bk, ch))
-        for canr in new_notes:
-            for kw in (n[3] for n in new_notes[canr]):
-                clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'n', iid_encode('n', myid, kw=kw)))
+        #for canr in new_notes:
+        #    for kw in (n[3] for n in new_notes[canr]):
+        #        clear_cache(r'^verses_{}_{}_{}_'.format(vr, 'n', iid_encode('n', myid, kw=kw)))
     return changed
 
 def note_filter_notes(myid, notes, these_clause_atoms, msgs):
