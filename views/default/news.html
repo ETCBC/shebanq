@@ -35,6 +35,30 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
+<h2>2015-07-28</h2>
+<dt>Verse references</dt>
+<dd>It is now possible to refer to individual verses.
+SHEBANQ still displays whole chapters. If a verse number is specified, SHEBANQ will scroll to that verse.</dd>
+<dt>Note editing</dt>
+<dd>If you are logged in, it is now possible to preview your notes as others would see it.
+This is done be switching between edit mode and preview mode.</dd>
+<dt>References in notes</dt>
+<dd><p>Besides general markdown shaped hyperlinks, you can now also put internal links in your notes:
+<ul class="ldisc">
+    <li><i>chapter references</i><code>[see also Ex 5](Exodus 5)</code></li>
+    <li><i>verse references</i><code>[see also Ex 5:3](Exodus 5:3)</code></li>
+    <li><i>shebanq references</i><code>[see query Aramaic](shebanq:?id=515&amp;page=1&amp;version=4&amp;mr=r&amp;qw=q&amp;tp=txt_tb1)</code> 
+    You can get these links from the <i>Cite</i> drawer in the lower left corner (use the note link <span class="fa fw">&#xf02e;</span>)</li>
+    <li><i>tool references</i><code>[see crossref](tool=parallel)</code> </li>
+    <li><i>tool results references</i><code>[see crossref](tool:parallel/files/chapters/Genesis_5_vs_Genesis_9.html)</code></li> 
+</ul>
+</dd>
+<dt>Improved cross references</dt>
+<dd>There are now direct links to chapter diffs and cliques, straight from the crossref notes in SHEBANQ.
+It is now possibly to click around through all possible variants.</dd>
+</div>
+
+<div>
 <h2>2015-07-24</h2>
 <p>A minor update of the SHEBANQ website with:</p>
 <dl>
@@ -45,12 +69,6 @@ See for example the tool for finding
 or categorizing
 <a href="{{=URL('tools','index', vars=dict(goto='valence'))}}">Verbal Valence</a>.
 </p>
-<dt>References in notes</dt>
-<dd><p>Besides general markdown shaped hyperlinks, you can now also put <i>chapter references</i> in your notes.
-You enter them in the markdown way:
-<code>[see also Ex 5:3](Exodus 5)</code>
-Other people see it asa clickable link: <a href="{{=URL('hebrew', 'text', vars=dict(book='Exodus', chapter='5'))}}">see also Ex 5:3</a>.
-Note that you can only link to chapters, not to individual verses.</dd>
 <dt>Cross references</dt>
 <dd>The outcome of the 
 <a href="{{=URL('tools','index', vars=dict(goto='parallel'))}}">Parallel Passages</a>.
@@ -58,7 +76,7 @@ has been imported in SHEBANQ as a note set:
 <a href="{{=URL('hebrew','note', vars=dict(version='4b',id='Mnxjcm9zc3JlZg__', tp='txt_tb1', nget='v'))}}">crossref</a>.</p>
 </dd>
 <dt>Home page</dt>
-<dd>The home page was accumulating too much tex to see at once.
+<dd>The home page was accumulating too much text to see at once.
 It has been divided in sections.</dd>
 </dl>
 </div>

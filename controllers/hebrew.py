@@ -320,7 +320,7 @@ def verse():
     vr = get_request_val('material', '', 'version')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
-    vs = check_int('verse', 'verse', msgs)
+    vs = get_request_val('material', '', 'verse')
     if vs == None:
         return dict(good=False, msgs=msgs)
     return from_cache(
@@ -352,16 +352,99 @@ def cnotes():
     vr = get_request_val('material', '', 'version')
     bk = get_request_val('material', '', 'book')
     ch = get_request_val('material', '', 'chapter')
-    vs = check_int('verse', 'verse', msgs)
-    if vs == None:
-        return json.dumps(dict(good=False, msgs=msgs, users={}, notes={}, changed=False, logged_in=logged_in))
-    save = request.vars.save
+    vs = get_request_val('material', '', 'verse')
+    edit = check_bool('edit')
+    save = check_bool('save')
     clause_atoms = from_cache('clause_atoms_{}_{}_{}_{}_'.format(vr, bk, ch, vs), lambda: get_clause_atoms(vr, bk, ch, vs), None)
     these_clause_atoms = clause_atoms[(bk, ch, vs)]
     changed = False
-    if save == 'true':
+    if save:
         changed = note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs)
-    return cnotes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs, logged_in)
+    return cnotes_c(vr, bk, ch, vs, myid, these_clause_atoms, changed, msgs, logged_in, edit)
+
+def cnotes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs, logged_in, edit):
+    condition = u'''note.is_shared = 'T' or note.is_published = 'T' '''
+    if myid != None: condition += u''' or note.created_by = {} '''.format(myid)
+
+    note_sql = u'''
+select
+    note.id,
+    note.created_by as uid,
+    shebanq_web.auth_user.first_name as ufname,
+    shebanq_web.auth_user.last_name as ulname,
+    note.clause_atom,
+    note.is_shared,
+    note.is_published,
+    note.published_on,
+    note.status,
+    note.keywords,
+    note.ntext
+from note inner join shebanq_web.auth_user
+on note.created_by = shebanq_web.auth_user.id
+where
+    ({cond})
+and
+    note.version = '{vr}'
+and
+    note.book ='{bk}'
+and
+    note.chapter = {ch}
+and
+    note.verse = {vs}
+order by
+    modified_on desc
+;
+'''.format(
+    cond=condition,
+    vr=vr,
+    bk=bk,
+    ch=ch,
+    vs=vs,
+)
+
+    records = note_db.executesql(note_sql)
+    users = {}
+    nkey_index = {}
+    notes_proto = collections.defaultdict(lambda: {})
+    ca_users = collections.defaultdict(lambda: collections.OrderedDict())
+    if myid != None and edit:
+        users[myid] = u'me'
+        for ca in clause_atoms:
+            notes_proto[ca][myid] = [dict(uid=myid, nid=0, shared=True, pub=False, stat=u'o', kw='', ntxt=u'')]
+            ca_users[ca][myid] = None
+    good = True
+    if records == None:
+        msgs.append(('error', u'Cannot lookup notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
+        good = False
+    elif len(records) == 0:
+        msgs.append(('warning', u'No notes'))
+    else:
+        for (nid, uid, ufname, ulname, ca, shared, pub, pub_on, status, keywords, ntext) in records:
+            if (myid == None or (uid != myid) or not edit) and uid not in users:
+                users[uid] = u'{} {}'.format(ufname, ulname)
+            if uid not in ca_users[ca]: ca_users[ca][uid] = None
+            pub = pub == 'T'
+            shared = pub or shared == 'T'
+            ro = myid == None or uid != myid or not edit or (pub and (pub_on <= request.now - PUBLISH_FREEZE))
+            kws = keywords.strip().split()
+            for k in kws:
+                nkey_index[u'{} {}'.format(uid, k)] = iid_encode('n', uid, kw=k)
+            notes_proto.setdefault(ca, {}).setdefault(uid, []).append(dict(
+                uid=uid,
+                nid=nid,
+                ro=ro,
+                shared=shared,
+                pub=pub,
+                stat=status,
+                kw=keywords,
+                ntxt=ntext,
+            ))
+    notes = {}
+    for ca in notes_proto:
+        for uid in ca_users[ca]:
+            notes.setdefault(ca, []).extend(notes_proto[ca][uid])
+
+    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes, nkey_index=nkey_index, logged_in=logged_in))
 
 def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
     if myid == None:
@@ -537,91 +620,6 @@ from note where id in ({})
         pass
         #msgs.append(('info', u'Skipped empty new notes: {}'.format(emptynew)))
     return (good, old_notes, upd_notes, new_notes, del_notes)
-
-def cnotes_c(vr, bk, ch, vs, myid, clause_atoms, changed, msgs, logged_in):
-    condition = u'''note.is_shared = 'T' or note.is_published = 'T' '''
-    if myid != None: condition += u''' or note.created_by = {} '''.format(myid)
-
-    note_sql = u'''
-select
-    note.id,
-    note.created_by as uid,
-    shebanq_web.auth_user.first_name as ufname,
-    shebanq_web.auth_user.last_name as ulname,
-    note.clause_atom,
-    note.is_shared,
-    note.is_published,
-    note.published_on,
-    note.status,
-    note.keywords,
-    note.ntext
-from note inner join shebanq_web.auth_user
-on note.created_by = shebanq_web.auth_user.id
-where
-    ({cond})
-and
-    note.version = '{vr}'
-and
-    note.book ='{bk}'
-and
-    note.chapter = {ch}
-and
-    note.verse = {vs}
-order by
-    modified_on desc
-;
-'''.format(
-    cond=condition,
-    vr=vr,
-    bk=bk,
-    ch=ch,
-    vs=vs,
-)
-
-    records = note_db.executesql(note_sql)
-    users = {}
-    nkey_index = {}
-    notes_proto = collections.defaultdict(lambda: {})
-    ca_users = collections.defaultdict(lambda: collections.OrderedDict())
-    if myid != None:
-        users[myid] = u'me'
-        for ca in clause_atoms:
-            notes_proto[ca][myid] = [dict(uid=myid, nid=0, shared=True, pub=False, stat=u'o', kw='', ntxt=u'')]
-            ca_users[ca][myid] = None
-    good = True
-    if records == None:
-        msgs.append(('error', u'Cannot lookup notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
-        good = False
-    elif len(records) == 0:
-        #msgs.append(('warning', u'No notes for {} {}:{} in version {}'.format(bk, ch, vs, vr)))
-        msgs.append(('warning', u'No notes'))
-    else:
-        for (nid, uid, ufname, ulname, ca, shared, pub, pub_on, status, keywords, ntext) in records:
-            if (myid == None or (uid != myid)) and uid not in users:
-                users[uid] = u'{} {}'.format(ufname, ulname)
-            if uid not in ca_users[ca]: ca_users[ca][uid] = None
-            pub = pub == 'T'
-            shared = pub or shared == 'T'
-            ro = myid == None or uid != myid or (pub and (pub_on <= request.now - PUBLISH_FREEZE))
-            kws = keywords.strip().split()
-            for k in kws:
-                nkey_index[u'{} {}'.format(uid, k)] = iid_encode('n', uid, kw=k)
-            notes_proto.setdefault(ca, {}).setdefault(uid, []).append(dict(
-                uid=uid,
-                nid=nid,
-                ro=ro,
-                shared=shared,
-                pub=pub,
-                stat=status,
-                kw=keywords,
-                ntxt=ntext,
-            ))
-    notes = {}
-    for ca in notes_proto:
-        for uid in ca_users[ca]:
-            notes.setdefault(ca, []).extend(notes_proto[ca][uid])
-
-    return json.dumps(dict(good=good, changed=changed, msgs=msgs, users=users, notes=notes, nkey_index=nkey_index, logged_in=logged_in))
 
 def sidem():
     session.forget(response)
@@ -1689,6 +1687,12 @@ def check_int(var, label, msgs):
         msgs.append(('error', u'Not a valid {} verse'.format(label)))
         return None
     return int(val)
+
+def check_bool(var):
+    val = request.vars[var]
+    if val == None or len(val) > 10 or not val.isalpha() or val not in {'true', 'false'} or val == 'false':
+        return False
+    return True
 
 def check_id(var, tp, label, msgs, valrep=None):
     if valrep == None: valrep = request.vars[var]

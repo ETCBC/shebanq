@@ -59,7 +59,8 @@ jQuery(function(){
             <td class="clip_pv clr">\
                 <a lnk="" href="#" id="clip_pv_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
                 <a lnk="" href="#" id="clip_pv_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_pv_cn" title="page content" class="ctrl fa fa-file-text-o fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_nl" title="note link" class="ctrl fa fa-bookmark fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_cn" title="copy page content" class="ctrl fa fa-file-text-o fa-lg fa-fw"></a>\
             </td>\
         </tr>\
         <tr>\
@@ -74,7 +75,8 @@ jQuery(function(){
             <td class="clip_q"><span id="xc_q" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_q" class="detail">share link to query page</span></td>\
             <td class="clip_w"><span id="xc_w" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_w" class="detail">cite word with its occs on <i>this</i> data version</span></td>\
             <td class="clip_n"><span id="xc_n" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_n" class="detail">cite note set with its members</span></td>\
-            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings, or copy page contents to paste in mail, Evernote, etc.</span></td>\
+            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings, or as internal note link,\
+                or copy page contents to paste in mail, Evernote, etc.</span></td>\
         </tr>\
     </table>\
     <p id="cdiagpub"></p>\
@@ -89,7 +91,7 @@ jQuery(function(){
     jQuery('#socialdrawer td,#socialdrawer th').css({'width': '120px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
     jQuery('#socialdrawer .detail').hide()
 	// hover
-    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht').click(function(e) {e.preventDefault();
+    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_nl').click(function(e) {e.preventDefault();
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
     })
     $('#clip_pv_cn').click(function(e) {e.preventDefault();
@@ -106,6 +108,10 @@ jQuery(function(){
     $('#xc_pv').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_pv')) })
 	st.click(function(e){e.preventDefault();
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
+        var shebanq_url_note
+        var shebanq_url_note_pref = 'shebanq:'
+        var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()
+        var shebanq_url_side_vars = '&wget='+wb.vs.get('w')+'&qget='+wb.vs.get('q')+'&nget='+wb.vs.get('n')
         var shebanq_url = encodeURIComponent(shebanq_url_raw)
         var pvtitle
         $('#citeh').hide()
@@ -114,12 +120,14 @@ jQuery(function(){
         $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
         if (wb.mr == 'm') {
             pvtitle = title
+            shebanq_url_note = shebanq_url_note_pref+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+shebanq_url_show_vars+shebanq_url_side_vars
             $('.clip_qx').hide()
             $('.clip_q').hide()
             $('.clip_w').hide()
             $('.clip_n').hide()
         }
         else if (wb.mr == 'r') {
+            shebanq_url_note = shebanq_url_note_pref+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
             var vr = wb.version
             var iinfo = wb.sidebars.sidebar['r'+wb.qw].content.info
             if (wb.qw == 'q') {
@@ -189,6 +197,7 @@ jQuery(function(){
         }
         $('#clip_pv_md').attr('lnk', '['+pvtitle+']('+shebanq_url_raw+')')
         $('#clip_pv_ht').attr('lnk', shebanq_url_raw)
+        $('#clip_pv_nl').attr('lnk', shebanq_url_note)
         $('#clip_pv_cn').attr('lnk', shebanq_url_raw)
         $('#clip_pv_cn').attr('tit', pvtitle)
         jQuery(this).animate({height:'260px', width:'570px', opacity: 0.95}, 300);

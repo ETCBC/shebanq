@@ -51,8 +51,8 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
         <div class="nt_main_ctrl">
             <a title="show/hide all comments" href="#" class="nt_main_ctrl fa fa-comments fa-fw"></a>
             <span class="nt_main_sav">
-                <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
-                <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
+                <a tp="s" class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
+                <a tp="r" class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
             </span>
             <a href="#" title="clear diagnostic messages"><span id="trash_nt_main_msg" class="ctrl fa fa-trash fa-lg"></span></a>
             <span id="nt_main_msg" class="nt_main_msg"></span>
@@ -62,7 +62,7 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
             (pb, b, c, v) = verse.label()
             verse_control = u'<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=b, chapter=c, verse=v)
         }}
-            <div class="{{=tp}}">
+            <div class="{{=tp}}" tvid="{{=v}}">
             {{if material.mr == 'm':
                 vclass = 'vrefi' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
             }}
@@ -70,14 +70,15 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
             {{else:
                 vclass = 'vref' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
             }}
-                <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
+                <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" verse="{{=v}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
             {{pass}}{{
             if tp == 'txt_tb1':
                     }}<span class="nt_ctrl">
                         <a title="show/hide comments" href="#" class="nt_ctrl fa fa-comment fa-fw"></a>
                         <span class="nt_sav">
-                            <a class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
-                            <a class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
+                            <a tp="s" class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
+                            <a tp="e" class="ctrli fa fa-pencil fa-fw" href="#" title="edit"></a>
+                            <a tp="r" class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
                         </span>
                         <a href="#" title="clear diagnostic messages"><span id="trash_nt_msg_{{=b}}_{{=c}}_{{=v}}" class="ctrl ir fa fa-trash fa-lg"></span></a>
                         <span id="nt_msg_{{=b}}_{{=c}}_{{=v}}" class="nt_msg"></span>

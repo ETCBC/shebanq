@@ -160,11 +160,11 @@ for item in hebrewdata_lines_spec:
 
 specs = dict(
     material=(
-        '''version book chapter iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
+        '''version book chapter verse iid page mr qw tp''',
+        '''alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
         ),
-        {'': '''4 Genesis 1 None 1 x m txt_p'''},
+        {'': '''4 Genesis 1 1 None 1 x m txt_p'''},
     ),
     hebrewdata=('''
         ht
@@ -723,8 +723,8 @@ order by word_number
         self.word_data = word_data
         self.words = []
 
-    def chapter_link(self):
-        return (self.book_name, self.chapter_num)
+    def chapter_link(self): return (self.book_name, self.chapter_num)
+    def verse_link(self): return (self.book_name, self.chapter_num, self.verse_num)
 
     def label(self):
         return (self.book_name.replace(u'_', u' '), self.book_name, self.chapter_num, self.verse_num)

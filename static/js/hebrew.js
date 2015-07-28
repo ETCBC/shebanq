@@ -150,7 +150,7 @@ var wb      // holds the one and only page object
 var msg   // messages object
 
 /* url values for AJAX calls from this application */
-var page_view_url, query_url, word_url
+var host, statichost, page_view_url, query_url, word_url
 var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, notes_url, cnotes_url, field_url, fields_url, bol_url // urls from which to fetch additional material through AJAX, the values come from the server
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
@@ -445,7 +445,7 @@ function Material() { // Object corresponding to everything that controls the ma
         wb.iid = wb.vs.iid()
         if (
             wb.mr != wb.prev['mr'] || wb.qw != wb.prev['qw'] || wb.version != wb.prev['version'] ||
-            (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'])) ||
+            (wb.mr == 'm' && (wb.vs.book() != wb.prev['book'] || wb.vs.chapter() != wb.prev['chapter'] || wb.vs.verse() != wb.prev['verse'])) ||
             (wb.mr == 'r' && (wb.iid != wb.prev['iid'] || wb.vs.page() != wb.prev['page'] ))
         ) {
             reset_material_status()
@@ -496,6 +496,7 @@ function Material() { // Object corresponding to everything that controls the ma
                 that.content.add(response)
                 material_fetched[wb.vs.tp()] = true
                 that.process()
+                that.goto_verse()
             }, 'html')
         }
         else {
@@ -504,7 +505,15 @@ function Material() { // Object corresponding to everything that controls the ma
             if (true || wb.vs.tp() == 'txt_il') {
                 this.msettings.hebrewsettings.apply()
             }
+            this.goto_verse()
         }
+    }
+    this.goto_verse = function() { // go to the selected verse
+        $('.vhl').removeClass('vhl')
+        var vtarget = $('#material_'+wb.vs.tp()+'>'+((wb.mr == 'r')?'div[tvid]':'div[tvid="'+wb.vs.verse()+'"]')).filter(':first')
+        vtarget[0].scrollIntoView()
+        $('#navbar')[0].scrollIntoView()
+        vtarget.addClass('vhl')
     }
     this.process = function() { // process new material obtained by an AJAX call
         var mf = 0
@@ -517,7 +526,7 @@ function Material() { // Object corresponding to everything that controls the ma
                 wb.picker1[wb.qw].adapt(wb.iid, true)
             }
             $('a.cref').click(function(e) {e.preventDefault();
-                wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), mr: 'm'})
+                wb.vs.mstatesv({book: $(this).attr('book'), chapter: $(this).attr('chapter'), verse: $(this).attr('verse'), mr: 'm'})
                 wb.vs.addHist()
                 wb.go()
             })
@@ -632,7 +641,9 @@ function Notes(newcontent) {
     this.show =  
     this.verselist = {}
     this.version = wb.version
-    var sav_controls =  $('span.nt_main_sav')
+    this.sav_controls =  $('span.nt_main_sav')
+    this.sav_c = this.sav_controls.find('a[tp="s"]')
+    this.rev_c = this.sav_controls.find('a[tp="r"]')
     this.logged_in = false
     this.cctrl =  $('a.nt_main_ctrl')
 
@@ -657,11 +668,11 @@ function Notes(newcontent) {
                 notev.show_notes()
                 this.logged_in = notev.logged_in
             }
-            if (this.logged_in) {sav_controls.show()}
+            if (this.logged_in) {this.sav_controls.show()}
         }
         else {
             this.cctrl.removeClass('nt_loaded')
-            sav_controls.hide()
+            this.sav_controls.hide()
             for (var item in this.verselist) {
                 var notev = this.verselist[item]
                 notev.hide_notes()
@@ -672,15 +683,13 @@ function Notes(newcontent) {
         wb.vs.hstatesv('n', {get: (wb.vs.get('n') == 'v')?'x':'v'})
         that.apply()
     })
-    var sav_c = sav_controls.find('a').first()
-    var rev_c = sav_controls.find('a').last()
-    rev_c.click(function(e) {e.preventDefault();
+    this.rev_c.click(function(e) {e.preventDefault();
         for (var item in that.verselist) {
             var notev = that.verselist[item]
             notev.revert()
         }
     })
-    sav_c.click(function(e) {e.preventDefault();
+    this.sav_c.click(function(e) {e.preventDefault();
         for (var item in that.verselist) {
             var notev = that.verselist[item]
             notev.save()
@@ -697,6 +706,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.nnotes = 0
     this.mnotes = 0
     this.show = false
+    this.edt = false
     this.dirty = false
     this.version = vr
     this.book = bk
@@ -706,9 +716,13 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.dest = dest
     this.msgn = new Msg('nt_msg_'+this.book+'_'+this.chapter+'_'+this.verse)
     this.cctrl = this.ctrl.find('a.nt_ctrl')
+    this.sav_controls =  this.ctrl.find('span.nt_sav')
+    this.sav_c = this.sav_controls.find('a[tp="s"]')
+    this.edt_c = this.sav_controls.find('a[tp="e"]')
+    this.rev_c = this.sav_controls.find('a[tp="r"]')
 
     this.fetch = function() {
-        var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse}
+        var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse, edit: this.edt}
         this.msgn.msg(['info', 'fetching notes ...'])
         $.post(cnotes_url, senddata, function(json) {
             that.loaded = true
@@ -733,7 +747,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.orig_nkey_index = nkey_index
         this.orig_edit = []
         this.logged_in = logged_in
-        this.gen_html(false)
+        this.gen_html(true)
         this.dirty = false
         this.apply_dirty()
         this.decorate()
@@ -761,13 +775,22 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.dest.find('tr.nt_cmt').show()
         if (this.logged_in) {
             main_sav_controls.show()
-            sav_controls.show()
+            this.sav_controls.show()
+            if (this.edt) {
+                this.sav_c.show()
+                this.edt_c.hide()
+            }
+            else {
+                this.sav_c.hide()
+                this.edt_c.show()
+            }
         }
         var crossrefs = this.dest.find('a[b]')
         crossrefs.click(function(e) {e.preventDefault();
             var vals = {}
             vals['book'] = $(this).attr('b')
             vals['chapter'] = $(this).attr('c')
+            vals['verse'] = $(this).attr('v')
             vals['mr'] = 'm'
             wb.vs.mstatesv(vals)
             wb.vs.addHist()
@@ -811,7 +834,11 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 html += '<td class="nt_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
                 html += '<td class="nt_kw">'+escapeHTML(nline.kw)+'</td>'
                 var ntxt = escapeHTML(nline.ntxt)
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="$4" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="1" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(shebanq:([^)\n\t '"]+)\)/g, '<a href="'+host+'$2" class="fa fw">&#xf02e;$1</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(tool=([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+toolhost+'?goto=$2" class="fa fw">$1&#xf0e3;</a>')
+                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(tool:([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+statichost+'/tools/$2" class="fa fw">$1&#xf0e3;</a>')
                 ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2" class="fa fw">$1&#xf08e;</a>')
                 html += '<td class="nt_cmt">'+ntxt+'</td>'
                 html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+escapeHTML(user)+'</td>'
@@ -834,6 +861,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         return html
     }
     this.gen_html = function(replace) {
+        this.mnotes = 0
         if (replace) {
             this.dest.find('tr[ncanr]').remove()
         }
@@ -866,24 +894,12 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             })
             if (json.good) {
                 that.dest.find('tr[ncanr]').remove()
-                that.process(json.users, json.notes, json.changed, json.logged_in)
+                that.process(json.users, json.notes, json.nkey_index, json.changed, json.logged_in)
             }
         }, 'json')
     }
     this.dest.find('tr.nt_cmt').hide()
     var main_sav_controls =  $('span.nt_main_sav')
-    var sav_controls =  this.ctrl.find('span.nt_sav')
-    var sav_c = sav_controls.find('a').first()
-    var rev_c = sav_controls.find('a').last()
-    this.revert = function() {
-        this.gen_html(this.orig_users, this.orig_notes, true)
-        this.dirty = false
-        this.apply_dirty()
-        this.decorate()
-    }
-    rev_c.click(function(e) {e.preventDefault();
-        that.revert()
-    })
     this.is_dirty = function() {
         var notes = this.dest.find('tr[edit]')
         var dirty = false
@@ -923,13 +939,24 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             this.cctrl.removeClass('dirty')
         }
     }
+    this.sav_c.click(function(e) {e.preventDefault();
+        that.save()
+    })
+    this.edt_c.click(function(e) {e.preventDefault();
+        that.edit()
+    })
+    this.rev_c.click(function(e) {e.preventDefault();
+        that.revert()
+    })
     this.save = function() {
+        this.edt = false
         var data = {
             version: this.version,
             book: this.book,
             chapter: this.chapter,
             verse: this.verse,
             save: true,
+            edit: this.edt,
         }
         var notes = this.dest.find('tr[edit]')
         var notelines = []
@@ -965,19 +992,37 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         }
         if (notelines.length > 0) {
             data['notes'] = JSON.stringify(notelines)
-            this.sendnotes(data)
         }
         else {
             this.msgn.msg(['warning', 'No changes'])
         }
+        this.sendnotes(data)
     }
-    sav_c.click(function(e) {e.preventDefault();
-        that.save()
-    })
+    this.edit = function() {
+        this.edt = true
+        this.fetch()
+    }
+    this.revert = function() {
+        this.edt = false
+        var data = {
+            version: this.version,
+            book: this.book,
+            chapter: this.chapter,
+            verse: this.verse,
+            save: true,
+            edit: this.edt,
+        }
+        data['notes'] = JSON.stringify([])
+        this.sendnotes(data)
+        //this.gen_html(this.orig_users, this.orig_notes, true)
+        //this.dirty = false
+        //this.apply_dirty()
+        //this.decorate()
+    }
     this.hide_notes = function() {
         this.show = false
         this.cctrl.removeClass('nt_loaded')
-        sav_controls.hide()
+        this.sav_controls.hide()
         this.dest.find('tr.nt_cmt').hide()
         this.msgn.hide()
     }
@@ -991,7 +1036,15 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         else {
             this.dest.find('tr.nt_cmt').show()
             if (this.logged_in) {
-                sav_controls.show()
+                this.sav_controls.show()
+                if (this.edt) {
+                    this.sav_c.show()
+                    this.edt_c.hide()
+                }
+                else {
+                    this.sav_c.hide()
+                    this.edt_c.show()
+                }
             }
         }
     }
@@ -1003,7 +1056,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         if (that.show) {that.hide_notes()} else {that.show_notes()}
     })
     main_sav_controls.hide()
-    sav_controls.hide()
+    this.sav_controls.hide()
 }
 
 // MATERIAL: SELECTION
@@ -1119,6 +1172,7 @@ function SelectBook() { // book selection
                 var vals = {}
                 vals['book'] = $(this).attr('item')
                 vals['chapter'] = '1'
+                vals['verse'] = '1'
                 wb.vs.mstatesv(vals)
                 wb.vs.addHist()
                 wb.go()
@@ -1161,6 +1215,7 @@ function SelectItems(key) { // both for chapters and for result pages
     this.prev.click(function(e) {e.preventDefault();
         var vals = {}
         vals[that.key] = $(this).attr('contents')
+        vals['verse'] = '1'
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
         that.go()
@@ -1168,6 +1223,7 @@ function SelectItems(key) { // both for chapters and for result pages
     this.next.click(function(e) {e.preventDefault();
         var vals = {}
         vals[that.key] = $(this).attr('contents')
+        vals['verse'] = '1'
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
         that.go()
@@ -1227,6 +1283,7 @@ function SelectItems(key) { // both for chapters and for result pages
             if (!isloaded) {
                 var vals = {}
                 vals[that.key] = $(this).attr('item')
+                vals['verse'] = '1'
                 wb.vs.mstatesv(vals)
                 wb.vs.addHist()
                 that.go()
@@ -2447,7 +2504,7 @@ function ViewState(init, pref) {
     this.addHist = function() {
         var title
         if (that.mr() == 'm') {
-            title = '['+that.version()+'] '+that.book()+' '+that.chapter()
+            title = '['+that.version()+'] '+that.book()+' '+that.chapter()+' '+that.verse()
         }
         else {
             title = style[that.qw()]['Tag']+' '+that.iid()+' p'+that.page()
@@ -2496,6 +2553,7 @@ function ViewState(init, pref) {
     this.version = function() {return this.data['material']['']['version']}
     this.book = function() {return this.data['material']['']['book']}
     this.chapter = function() {return this.data['material']['']['chapter']}
+    this.verse = function() {return this.data['material']['']['verse']}
     this.page = function() {return this.data['material']['']['page']}
     this.get = function(qw) {return this.data['highlights'][qw]['get']}
     this.active = function(qw) {return this.data['highlights'][qw]['active']}

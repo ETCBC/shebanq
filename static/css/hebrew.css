@@ -83,6 +83,9 @@ ol.text {
     display: inline;
     vertical-align: text-bottom;
 }
+.vhl {
+    background-color: #ffffe0;
+}
 
 /* MATERIAL VIEW */
 
