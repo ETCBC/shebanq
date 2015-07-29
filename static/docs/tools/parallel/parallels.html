@@ -190,9 +190,9 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><img align="right" width="50%" src="images/parallel.png"/></p>
-<h1 id="Parallel-Passages-in-the-MT">Parallel Passages in the MT<a class="anchor-link" href="#Parallel-Passages-in-the-MT">&#182;</a></h1><p>We want to make a list of <strong>all</strong> parallel passages in the Masoretic text.
+<h1 id="Parallel-Passages-in-the-MT">Parallel Passages in the MT<a class="anchor-link" href="#Parallel-Passages-in-the-MT">&#182;</a></h1><p>We want to make a list of <strong>all</strong> parallel passages in the Masoretic Text (MT) of the Hebrew Bible.
 More precisely, we want to produce a set of <em>cliques</em>, a clique being a set of passages that are <em>quite</em> similar.</p>
-<p>Here is a quote triggered Dirk to write this notebook:</p>
+<p>Here is a quote that triggered Dirk to write this notebook:</p>
 <blockquote><p>Finally, the Old Testament Parallels module in Accordance is a helpful resource that enables the researcher to examine 435 sets of parallel texts, or in some cases very similar wording in different texts, in both the MT and translation, but the large number of sets of texts in this database should not fool one to think it is complete or even nearly complete for all parallel writings in the Hebrew Bible.</p>
 </blockquote>
 <p>Robert Rezetko and Ian Young.
@@ -201,9 +201,11 @@ More precisely, we want to produce a set of <em>cliques</em>, a clique being a s
   <a href="https://www.google.nl/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0CCgQFjAB&url=http%3A%2F%2Fwww.sbl-site.org%2Fassets%2Fpdfs%2Fpubs%2F9781628370461_OA.pdf&ei=2QSdVf-vAYSGzAPArJeYCg&usg=AFQjCNFA3TymYlsebQ0MwXq2FmJCSHNUtg&sig2=LaXuAC5k3V7fSXC6ZVx05w&bvm=bv.96952980,d.bGQ">PDF Open access available</a></p>
 <h1 id="Authors">Authors<a class="anchor-link" href="#Authors">&#182;</a></h1><p><a href="dirk.roorda@dans.knaw.nl">Dirk Roorda</a> while discussing ideas with 
 <a href="m.naaijer@vu.nl">Martijn Naaijer</a>.</p>
-<h1 id="Status">Status<a class="anchor-link" href="#Status">&#182;</a></h1><p><strong>Last modified: 2015-07-22</strong></p>
+<h1 id="Status">Status<a class="anchor-link" href="#Status">&#182;</a></h1><p><strong>Last modified: 2015-07-28</strong></p>
 <p>126 experiments have been carried out, of which 9 with promising results.
-All results can be easily inspected, just by clicking in your browser.</p>
+All results can be easily inspected, just by clicking in your browser.
+One of the experiments has been chosen as the basis for
+<a href="https://shebanq.ancient-data.org/hebrew/note?version=4b&id=Mnxjcm9zc3JlZg__&tp=txt_tb1&nget=v">crossref</a>annotations in SHEBANQ.</p>
 <h1 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h1><p>Click in a green cell to see interesting results. The numbers in the cell indicate</p>
 <ul>
 <li>the number of passages that have a variant elsewhere</li>
@@ -217,7 +219,7 @@ All results can be easily inspected, just by clicking in your browser.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># run this cell after all other cells</span>
@@ -232,7 +234,7 @@ All results can be easily inspected, just by clicking in your browser.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[48]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -908,15 +910,6 @@ All results can be easily inspected, just by clicking in your browser.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Experiments-and-results">Experiments and results<a class="anchor-link" href="#Experiments-and-results">&#182;</a></h1><p>We have conducted 126 experiments, all corresponding to a specific choice of parameters.
 Every experiment is an attempt to identify variants and collect them in <em>cliques</em>.</p>
 <p>The table gives an overview of the experiments conducted.</p>
@@ -1312,13 +1305,13 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  2.55s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/parallel/__log__parallel.txt
+  0.46s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  2.85s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/parallel/__log__parallel.txt
     12s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK parallel AT 2015-07-28T14-13-56
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK parallel AT 2015-07-28T14-13-56
+  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK parallel AT 2015-07-29T06-12-33
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK parallel AT 2015-07-29T06-12-33
 </pre>
 </div>
 </div>
@@ -1730,7 +1723,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">key_chunk</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
@@ -1791,6 +1784,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
             <span class="nb">len</span><span class="p">(</span><span class="n">cliques</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">passages</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">similars</span><span class="p">),</span>            
         <span class="p">))</span>
         <span class="n">meta_clique_pre2</span><span class="p">()</span>
+        <span class="n">meta_clique_poest</span><span class="p">()</span>
         <span class="k">return</span>
     <span class="n">msg</span><span class="p">(</span><span class="s">&#39;CLIQUES ({} {} {} M&gt;{} S&gt;{}): fetching similars and chunk candidates&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">CHUNK_LB</span><span class="p">,</span> <span class="n">CHUNK_DESC</span><span class="p">,</span> <span class="n">SIMILARITY_METHOD</span><span class="p">,</span> <span class="n">MATRIX_THRESHOLD</span><span class="p">,</span> <span class="n">SIMILARITY_THRESHOLD</span><span class="p">,</span>        
@@ -1871,7 +1865,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">css</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -2161,7 +2155,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">assess_exp</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">ll</span><span class="p">):</span>
@@ -2365,7 +2359,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">outputs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2549,7 +2543,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_verse</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ca</span><span class="o">=</span><span class="k">False</span><span class="p">):</span> <span class="k">return</span> <span class="n">get_verse_w</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">ca</span><span class="o">=</span><span class="n">ca</span><span class="p">)</span>
@@ -2771,7 +2765,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c">#reset_params()</span>
@@ -2791,32 +2785,37 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1h 24m 22s CHUNKING (O verse): already chunked into 23213 chunks
- 1h 24m 22s PREPARING (O verse SET): Already prepared
- 1h 24m 22s SIMILARITY (O verse SET M&gt;50): Using   269 M (269410078) comparisons with 24867 entries in matrix
- 1h 24m 22s SIMILARITY (O verse SET M&gt;50): similarities between 50.0 and 100.0. 4507 are 100%
- 1h 24m 22s CLIQUES (O verse SET M&gt;50 S&gt;65): Already loaded 1235 cliques out of 3141 candidates from 14357 comparisons
- 1h 24m 22s CLIQUES (O verse SET M&gt;50 S&gt;65): 14357 relevant similarities between 3141 passages
- 1h 24m 22s PRINT (O verse SET M&gt;50 S&gt;65): sorting out cliques
- 1h 24m 22s PRINT (O verse SET M&gt;50 S&gt;65): formatting 1235 cliques involving 284 binary chapter diffs
- 1h 24m 22s PRINT (O verse SET M&gt;50 S&gt;65): Chapter diffs needed: 284
- 1h 24m 22s PRINT (O verse SET M&gt;50 S&gt;65): Chapter diffs: 0 newly created and 284 already existing
- 1h 24m 25s PRINT (O verse SET M&gt;50 S&gt;65): formatted 1235 cliques (25 files) involving 284 binary chapter diffs
- 1h 24m 25s EXPERIMENT: Generating html report
- 1h 24m 25s EXPERIMENT:  21 messy results: deprecated
- 1h 24m 25s EXPERIMENT:  17 mixed quality: take care
- 1h 24m 25s EXPERIMENT:   7 unassessed quality: inspection needed
- 1h 24m 25s EXPERIMENT:  72 method deprecated
- 1h 24m 25s EXPERIMENT:   9 promising results: recommended
- 1h 24m 25s EXPERIMENT: Generated html report
- 1h 24m 25s CROSSREFS: Fetching crossrefs
- 1h 24m 25s CROSSREFS (O verse SET S&gt;65)
- 1h 24m 25s CROSSREFS (O verse SET S&gt;65): found 14357 pairs
- 1h 24m 25s CROSSREFS: Found 28714 crossreferences
- 1h 24m 25s CROSSREFS: Compiled cross references into 5495 notes
- 1h 24m 25s CROSSREFS: Added 568 chapter diffs
- 1h 24m 25s CROSSREFS: Added 3141 clique references
- 1h 24m 26s CROSSREFS: Generated 9205 notes
+<pre>    56s CHUNKING (O verse)
+    57s CHUNKING (O verse): Made 23213 chunks
+    57s PREPARING (O verse SET)
+    58s PREPARING (O verse SET): Done 23213 chunks.
+    58s SIMILARITY (O verse SET M&gt;50): Loaded:   269 M (269410078) comparisons with 24867 entries in matrix
+    58s SIMILARITY (O verse SET M&gt;50): similarities between 50.0 and 100.0. 4507 are 100%
+    58s CLIQUES (O verse SET M&gt;50 S&gt;65): fetching similars and chunk candidates
+    58s CLIQUES (O verse SET M&gt;50 S&gt;65): inspecting the similarity matrix
+    59s CLIQUES (O verse SET M&gt;50 S&gt;65): 14357 relevant similarities between 3141 passages
+    59s CLIQUES (O verse SET M&gt;50 S&gt;65): Loaded:  1235 cliques out of   3141 chunks from 14357 comparisons
+    59s CLIQUES (O verse SET M&gt;50 S&gt;65): 3141 members in 1235 cliques
+    59s PRINT (O verse SET M&gt;50 S&gt;65): sorting out cliques
+    59s PRINT (O verse SET M&gt;50 S&gt;65): formatting 1235 cliques involving 284 binary chapter diffs
+    59s PRINT (O verse SET M&gt;50 S&gt;65): Chapter diffs needed: 284
+    59s PRINT (O verse SET M&gt;50 S&gt;65): Chapter diffs: 0 newly created and 284 already existing
+ 1m 02s PRINT (O verse SET M&gt;50 S&gt;65): formatted 1235 cliques (25 files) involving 284 binary chapter diffs
+ 1m 02s EXPERIMENT: Generating html report
+ 1m 02s EXPERIMENT:  21 messy results: deprecated
+ 1m 02s EXPERIMENT:  17 mixed quality: take care
+ 1m 02s EXPERIMENT:   7 unassessed quality: inspection needed
+ 1m 02s EXPERIMENT:  72 method deprecated
+ 1m 02s EXPERIMENT:   9 promising results: recommended
+ 1m 02s EXPERIMENT: Generated html report
+ 1m 02s CROSSREFS: Fetching crossrefs
+ 1m 02s CROSSREFS (O verse SET S&gt;65)
+ 1m 02s CROSSREFS (O verse SET S&gt;65): found 14357 pairs
+ 1m 02s CROSSREFS: Found 28714 crossreferences
+ 1m 02s CROSSREFS: Compiled cross references into 5495 notes
+ 1m 02s CROSSREFS: Added 568 chapter diffs
+ 1m 02s CROSSREFS: Added 3141 clique references
+ 1m 03s CROSSREFS: Generated 9205 notes
 </pre>
 </div>
 </div>
@@ -2827,7 +2826,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">ecss</span><span class="p">)</span>
@@ -2841,7 +2840,7 @@ similar pairs out of it. From these pairs we lump together our cliques.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[51]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
