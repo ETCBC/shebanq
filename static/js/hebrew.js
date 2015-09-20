@@ -1141,7 +1141,7 @@ function SelectBook() { // book selection
             closeOnEscape: true,
             modal: false,
             title: 'choose book',
-            width: '460px',
+            width: '110px',
         })
     }
     this.gen_html = function() { // generate a new book selector
@@ -1236,7 +1236,7 @@ function SelectItems(key) { // both for chapters and for result pages
             closeOnEscape: true,
             modal: false,
             title: 'choose '+that.key,
-            width: '270px',
+            width: '200px',
         })
     }
     this.gen_html = function() { // generate a new page selector

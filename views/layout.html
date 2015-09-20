@@ -82,7 +82,7 @@
   <div class="navbar navbar-inverse">
     <div class="flash">{{=response.flash or ''}}</div>
     <div class="navbar-inner">
-      <div class="container">
+      <div class="container-fluid">
         {{is_mobile=request.user_agent().is_mobile}}
         <!-- the next tag is necessary for bootstrap menus, do not remove -->
         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="{{='display:none;' if not is_mobile else ''}}">
@@ -101,13 +101,13 @@
     </div>
   </div><!--/top navbar -->
 
-  <div class="container">
-    <div class="logos row">
+  <div class="container-fluid">
+    <div class="logos row-fluid">
         <div class="span12">
         </div>
     </div>
     <!-- Masthead ================================================== -->
-    <header class="mastheader row" id="header">
+    <header class="mastheader row-fluid" id="header">
       {{if response.title:}}
         <div class="span12">
             <div class="page-header">
@@ -120,7 +120,7 @@
 	{{pass}}
     </header>
 
-    <section id="main" class="main row" style="padding-bottom: 10px;">
+    <section id="main" class="main row-fluid" style="padding-bottom: 10px;">
         {{if left_sidebar_enabled:}}
         <div class="span3 left-sidebar">
             {{block left_sidebar}}
@@ -145,7 +145,7 @@
     </section><!--/main-->
 
     <!-- Footer ================================================== -->
-    <div class="row">
+    <div class="row-fluid">
         <footer class="footer span12" id="footer">
             <div class="footer-content"  style="bottom: -5px;" id="footer">
                 {{block footer}} <!-- this is default footer -->
