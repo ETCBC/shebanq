@@ -1,0 +1,18 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [L-DWD <PC>];this is to David;is;
+001;---;NmCl;;2;1;1731;nomin.;;;;;;nomin.;disc;main;;;cntMain;;  |  [MZMWR <PC>];this is a psalm;is;
+001;---;NmCl;;3;2;0;nomin.;;;;;;nomin.;disc;main;;;opnDrSpMain;; [N>M JHWH / L->DNJ <sp><PC>];this is the speech of YHWH;is;
+001;2sgm;ZIm0;;4;21;0;imperat.;;;;;;imperat.;disc;main;zero;;opnDrSpMain;;      |  [CB <Pr>] [L-JMJNJ <Co>];sit (in)!;sit (in);
+001;1sg-;xYq0;;5;21;573;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |      [<D <Cj>] [>CJT <Pr>] [>JBJK <Ob>] [HDM / L-RGLJK <sp><Ob>];while/until I put your hostile ones;put;
+002;3sgm;xYqX;;6;2;652;non-vol.;;;;;;non-vol.;disc;main;zero;;cntMain;;     [MVH <ZK <Ob>] [JCLX <Pr>] [JHWH <Su>] [M-YJWN <Co>];YHWH sends the staff of your power;sends;
+002;2sgm;ZIm0;;7;2;42;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;          |  [RDH <Pr>] [B-QRB >JBJK <Co>];tread/rule!;tread/rule;
+003;---;NmCl;;8;2;1652;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |      [<MK <Su>] [NDBT <PC>] [B-JWM XJLK / B-HDRJ QDC <sp><Ti>];your people is free wills;is;
+003;---;NmCl;;9;2;1732;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |          [M-RXM MCXR <Aj>] [LK <PC>] [VL JLDTJK <Su>];the dew of your youths is to you;is;
+004;3sgm;ZQtX;;10;2;1141;ind.;;;;;;ind.;disc;2nd;retro;;precGivInf;;         [NCB< <Pr>] [JHWH <Su>];now that/when YHWH has sworn;has sworn;
+004;3sgm;WxY0;;11;2;701;non-vol.;;;;;;non-vol.;disc;main;zero;;GivInf>Mn;;              |   |  [W-<Cj>] [L> <Ng>] [JNXM <Pr>];then/so he does not repent/console;does repent/console;
+004;---;NmCl;;12;22;0;nomin.;;;;;;nomin.;disc;main;;;opnDrSpMain;;              |  [>TH <Su>] [KHN <PC>] [L-<WLM <Ti>] [<L DBRTJ MLKJ_YDQ <Aj>];you are a priest;are;
+005;3sgm;XQtl;;13;2;791;ind.;;;;;;ind.;disc;2nd;retro;;precGivInf;;             [>DNJ / <L JMJNK <sp><Su>] [MXY <Pr>] [B-JWM >PW <Ti>] [MLKJM <Ob>];now that/when Adonai has broken kings;has broken;
+006;3sgm;ZYq0;;14;2;161;volit.;;;;;inhExpSu;non-vol.;disc;main;zero;;GivInf>Mn;;                 [JDJN <Pr>] [B--GWJM <Co>];he vindicates;vindicates;
+006;3sgm;ZQt0;;15;2;1121;ind.;;;;;;ind.;disc;2nd;retro;;opn2ndR;;                      |  [ML> <Pr>] [GWJWT <Ob>];he has been full (of) bodies;has been full (of);
+006;3sgm;ZQt0;;16;2;1151;ind.;;;;;;ind.;disc;2nd;retro;;cnt2ndR;;                      |  [MXY <Pr>] [R>C / <L >RY RBH <sp><Ob>];he has broken a head;has broken;
+007;3sgm;xYq0;;17;2;581;non-vol.;;;;;;non-vol.;disc;main;zero;;cntMain;;                     [M-NXL / B--DRK <sp><Co>] [JCTH <Pr>];he drinks;drinks;
+007;3sgm;xYq0;;18;2;603;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;                         [<L KN <Cj>] [JRJM <Pr>] [R>C <Ob>];therefore he causes a head to be high;causes to be high;

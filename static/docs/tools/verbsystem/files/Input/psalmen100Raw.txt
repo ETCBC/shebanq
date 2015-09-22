@@ -1,0 +1,17 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [MZMWR / L-TWDH <sp><PC>];this is a psalm;is;
+001;2plm;ZIm0;;2;2;0;imperat.;;;;;;imperat.;disc;main;zero;;opnDrSpMain;; [HRJ<W <Pr>] [L-JHWH <Co>];shout!;shout;
+001;---;Voct;;3;2;0;-;;;;;;-;;;;;;;  |  [KL H->RY <Vo>];o all of earth;;
+002;2plm;ZIm0;;4;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [<BDW <Pr>] [>T JHWH <Ob>] [B-FMXH <Co>];work/serve YHWH!;work/serve;
+002;2plm;ZIm0;;5;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [B>W <Pr>] [L-PNJW <Co>] [B-RNNH <Aj>];come (to)!;come (to);
+003;2plm;ZIm0;;6;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [D<W <Pr>];know!;know;
+003;---;CPen;ObCl;7;2;0;-;;;;;;-;;;;;opnDpLnMain;DepDm;  |  [KJ <Cj>] [JHWH <Fr>];that concerning YHWH;;
+003;---;NmCl;;8;2;0;nomin.;;;;;;nomin.;disc;main;;;;DepDm;  |       |  [HW> <Su>] [>LHJM <PC>];he is God;is;
+003;3sgm;XQtl;Coor;9;2;831;ind.;;;;KJ;;ind.;disc;2nd;retro;;crdDpLn>2ndR;DepDm;  |      [HW> <Su>] [<FNW <PO>];(that) he has made/done us;has made/done;
+003;---;NmCl;Coor;10;2;1692;nomin.;;;;KJ;;nomin.;disc;main;;;crdDpLn>Fg;DepDm;  |          [W-<Cj>] [L> <PC>] [>NXNW / <MW W-Y>N MR<JTW <ap><Su>];and (that) we are to him;are;
+004;2plm;ZIm0;;11;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [B>W <Pr>] [C<RJW <Co>] [B-TWDH <Aj>];come (to)!;come (to);
+004;---;Ellp;;12;2;0;-;;;;;;-;;;;;;;  |  [XYRTJW <Co>] [B-THLH <Aj>];;;
+004;2plm;ZIm0;;13;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [HWDW <Pr>] [LW <Co>];praise!;praise;
+004;2plm;ZIm0;;14;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [BRKW <Pr>] [CMW <Ob>];bless his name!;bless;
+005;-sgm;AjCl;;15;2;1653;nomin.;;;;;;nomin.;disc;main;;;opnSbLnMain;SubDm;     [KJ <Cj>] [VWB <PC>] [JHWH <Su>];given that YHWH is good;is;
+005;---;NmCl;Coor;16;2;1731;nomin.;;;;KJ;;nomin.;disc;main;;;crdSbLnMain;SubDm;         [L-<WLM <PC>] [XSDW <Su>];(given that) his loyalty is to eternity;is;
+005;---;NmCl;Coor;17;2;1731;nomin.;;;;KJ;;nomin.;disc;main;;;crdSbLnMain;SubDm;             [W-<Cj>] [<D DR W-DR <PC>] [>MWNTW <Su>];and (given that) his steadiness is unto a generation and..;is;

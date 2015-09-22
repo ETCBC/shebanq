@@ -1,0 +1,17 @@
+001;3sgm;XQtl;;1;1;0;ind.;;;;;;ind.;disc;2nd;retro;;precGivInf;; [JHWH <Su>] [MLK <Pr>];now that/when YHWH has been king;has been king;
+001;3sgm;xQt0;;2;1;971;ind.;;;;;;ind.;disc;2nd;retro;;ctGvInf2ndR;;      |   |   |  [G>WT <Co>] [LBC <Pr>];(now that/when) he has been clothed (with);has been clothed (with);
+001;3sgm;ZQtX;;3;1;1151;ind.;;;;;;ind.;disc;2nd;retro;;ctGvInf2ndR;;      |   |  [LBC <Pr>] [JHWH <Su>] [<Z <Co>];(now that/when) YHWH has been clothed (with);has been clothed (with);
+001;3sgm;ZQt0;;4;1;1151;ind.;;;;;;ind.;disc;2nd;retro;;ctGvInf2ndR;;      |   |      [HT>ZR <Pr>];(now that/when) he has girded;has girded;
+001;3sgf;xYqX;;5;1;612;non-vol.;;;;;;non-vol.;disc;main;zero;;GivInf>Mn;;      |  [>P <Mo>] [TKWN <Pr>] [TBL <Su>];yes, the world is prepared;is prepared;
+001;3sgf;xYq0;;6;1;601;non-vol.;;;;;;non-vol.;disc;main;zero;;cntMain;;      |      [BL <Ng>] [TMWV <Pr>];she does not totter;does totter;
+002;-sgm;Ptcp;;7;1;0;ind.;;;;;;ind.;disc;main;;;(re)openMain;;     [NKWN <PC>] [KS>K <Su>] [M->Z <Ti>];your seat is being prepared;is being prepared;
+002;---;NmCl;;8;1;1722;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |   |  [M-<WLM <PC>] [>TH <Su>];you are from eternity;are;
+003;3pl-;ZQtX;;9;1;1182;ind.;;;;;;ind.;disc;2nd;retro;;precGivInf;;          |  [NF>W <Pr>] [NHRWT <Su>];now that/when streams have lifted;have lifted;
+003;---;Voct;;10;1;0;-;;;;;;-;;;;;;;          |       |   |  [JHWH <Vo>];o YHWH;;
+003;3pl-;ZQtX;;11;1;1151;ind.;;;;;;ind.;disc;2nd;retro;;ctGvInf2ndR;;          |       |  [NF>W <Pr>] [NHRWT <Su>] [QWLM <Ob>];(now that/when) streams have lifted their sound;have lifted;
+003;3plm;ZYqX;;12;1;161;volit.;;;;;;volit.;disc;main;zero;;GivInf>Mn;;          |      [JF>W <Pr>] [NHRWT <Su>] [DKJM <Ob>];let streams lift their dashing;let lift;
+004;-sgm;AjCl;;13;1;1662;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |          [M-QLWT MJM RBJM >DJRJM / MCBRJ JM <sp><Co>] [>DJR <PC>] [B--MRWM <Lo>] [JHWH <Su>];YHWH is mighty;is;
+005;3pl-;XQtl;;14;1;822;ind.;;;;;;ind.;disc;2nd;retro;;opn2ndR;;         [<DTJK <Su>] [N>MNW <Pr>] [M>D <Mo>];your reminders have been believed;have been believed;
+005;3sgm;xQtX;;15;1;972;ind.;;;;;;ind.;disc;2nd;retro;;cnt2ndR;;             [L-BJTK <Aj>] [N>WH <Pr>] [QDC <Su>];a holiness has been lovely;has been lovely;
+005;---;Voct;;16;1;0;-;;;;;;-;;;;;;;                  |  [JHWH <Vo>];o YHWH;;
+005;---;Defc;;17;1;0;-;;;;;;-;;;;;;;                 [L->RK JMJM <Ti>];;;

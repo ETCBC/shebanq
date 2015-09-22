@@ -1,0 +1,13 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [CJR H-M<LWT <PC>];this is the song of the ascents;is;
+001;---;NmCl;;2;1;1731;nomin.;;;;;;nomin.;disc;main;;;cntMain;;  |  [L-DWD <PC>];this is to David;is;
+001;---;Voct;;3;2;0;-;;;;;;-;;;;;opnDrSp2ndR;; [JHWH <Vo>];o YHWH;;
+001;3sgm;xQtX;;4;2;0;ind.;;;;;;ind.;disc;2nd;retro;;;;      |  [L> <Ng>] [GBH <Pr>] [LBJ <Su>];my heart has not been high;has been high;
+001;3pl-;WxQX;;5;2;1061;ind.;;;;;;ind.;disc;2nd;retro;;cnt2ndR;;      |       |  [W-<Cj>] [L> <Ng>] [RMW <Pr>] [<JNJ <Su>];and my eyes have not been high;have been high;
+001;1sg-;WxQ0;;6;2;1061;ind.;;;;;;ind.;disc;2nd;retro;;cnt2ndR;;      |       |      [W-<Cj>] [L> <Ng>] [HLKTJ <Pr>] [B-GDLWT W-B-<Co>];and I have not walked;have walked;
+001;-plf;Ptcp;Attr;7;2;1603;ind.;;;;;;ind.;disc;main;;;opnAttrMain;AttrDm;      |       |          [NPL>WT <PC>] [MMNJ <Aj>];who/which are being miraculous;are being miraculous;
+002;1sg-;xQt0;;8;2;973;ind.;;;;;;ind.;disc;2nd;retro;;opnProt2ndR;prot.;      |      [>M <Cj>] [L> <Ng>] [CWJTJ <Pr>];if I have not caused to be like;have caused to be like;
+002;1sg-;WQt0;Coor;9;2;1471;non-vol.;;;;>M;;non-vol.;disc;2nd;retro;;cntProt2ndR;prot.;      |          [W-<Cj>] [DWMMTJ <Pr>] [NPCJ <Ob>] [K-GML / <LJ >MW <sp><Aj>];and (if) I have caused my soul to rest;have caused to rest;
+002;---;NmCl;Coor;10;2;1692;nomin.;;;;>M;;nomin.;disc;main;;;cntProt>Mn;prot.;      |              [K--GML / <LJ <sp><PC>] [NPCJ <Su>];(if) my soul is as the being dealt fully (with) one;is;
+003;2sgm;ZIm0;;11;2;0;imperat.;;;;;;imperat.;disc;main;zero;;(re)openMain;;     [JXL <Pr>];wait/hope;wait/hope;
+003;---;Voct;;12;2;0;-;;;;;;-;;;;;;;          |  [JFR>L <Vo>];o Israel;;
+003;---;Defc;;13;2;0;-;;;;;;-;;;;;;;         [>L JHWH <Co>] [M-<TH W-<D <WLM <Ti>];!;;

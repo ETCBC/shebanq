@@ -1,0 +1,13 @@
+001;2plm;ZIm0;;1;1;0;imperat.;;;;;;imperat.;disc;main;zero;;opnDrSpMain;; [HLLW <Pr>] [JH <Ob>];praise Yah!;praise;
+001;2plm;ZIm0;;2;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |  [HLLW <Pr>] [>L <Ob>] [B-QDCW <Lo>];praise God!;praise;
+001;2plm;ZIm0;;3;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-RQJ< <ZW <Lo>];praise him!;praise;
+002;2plm;ZIm0;;4;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-GBWRTJW <Aj>];praise him!;praise;
+002;2plm;ZIm0;;5;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [K-RB GDLW <Aj>];praise him!;praise;
+003;2plm;ZIm0;;6;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-TQ< CWPR <Aj>];praise him!;praise;
+003;2plm;ZIm0;;7;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-NBL W-KNWR <Aj>];praise him!;praise;
+004;2plm;ZIm0;;8;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-TP W-MXWL <Aj>];praise him!;praise;
+004;2plm;ZIm0;;9;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-MNJM W-<WGB <Aj>];praise him!;praise;
+005;2plm;ZIm0;;10;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-YLYLJ CM< <Aj>];praise him!;praise;
+005;2plm;ZIm0;;11;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |       |  [HLLWHW <PO>] [B-YLYLJ TRW<H <Aj>];praise him!;praise;
+006;3sgf;XYqt;;12;1;392;non-vol.;;volit.;volit.;;;volit.;disc;main;zero;;cntMain;;  |      [KL H-NCMH <Su>] [THLL <Pr>] [JH <Ob>];all of the breath should praise Yah;should praise;
+006;2plm;ZIm0;;13;1;0;imperat.;;;;;;imperat.;disc;main;zero;;(re)openMain;; [HLLW <Pr>] [JH <Ob>];praise Yah!;praise;

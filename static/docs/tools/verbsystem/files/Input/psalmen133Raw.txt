@@ -1,0 +1,13 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [CJR H-M<LWT <PC>];this is the song of the ascents;is;
+001;---;NmCl;;2;1;1731;nomin.;;;;;;nomin.;disc;main;;;cntMain;;  |  [L-DWD <PC>];this is to David;is;
+001;---;MSyn;;3;2;0;-;;;;;;-;disc;MAIN;;HNH;;; [HNH <Ij>];behold;;
+001;-sgm;AjCl;;4;2;0;nomin.;;;;;;nomin.;disc;MAIN;;MH;(re)openMain;;     [MH <Mo>] [VWB <PC>];how good is/are?;is/are;
+001;-sgm;AjCl;Coor;5;2;1731;nomin.;;;;;;nomin.;disc;MAIN;;MH;crdMain;;          |   |   |  [W-<Cj>] [MH <Mo>] [N<JM <PC>];and how pleasant is/are he/it/they?;is/are;
+001;---;InfC;SuCl;6;2;0;inf.;;;;;;inf.;;;;;opnDpLn;DepDm;          |   |  [CBT <Pr>] [>XJM <Su>] [GM JXD <Mo>];that brothers are sitting (in);are sitting (in);
+002;---;NmCl;;7;2;1731;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |  [K--CMN H-VWB / <L H-R>C <sp><PC>];this is as the oil;is;
+002;-sgm;Ptcp;Attr;8;2;1643;ind.;;;;;;ind.;disc;main;;;opnAttrMain;AttrDm;          |   |  [JRD <PC>] [<L H-ZQN / ZQN >HRN <ap><Co>];who/which is descending;is descending;
+002;-sgm;Ptcp;Attr;9;2;1633;ind.;;;;;;ind.;disc;main;;;opnAttrMain;AttrDm;          |   |      [C-<Cj>] [JRD <PC>] [<L PJ MDWTJW <Co>];who/which is descending;is descending;
+003;---;NmCl;;10;2;1731;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |  [K-VL XRMWN <PC>];this is as the dew of Hermon;is;
+003;-sgm;Ptcp;Attr;11;2;1643;ind.;;;;;;ind.;disc;main;;;opnAttrMain;AttrDm;          |      [C-<Cj>] [JRD <PC>] [<L HRRJ YJWN <Co>];who/which is descending;is descending;
+003;3sgm;xQtX;;12;2;1013;ind.;;;;;;ind.;disc;2nd;retro;;opnSbLn2ndR;SubDm;         [KJ <Cj>] [CM <Lo>] [YWH <Pr>] [JHWH <Su>] [>T H-BRKH <Ob>];given that YHWH has commanded the blessing;has commanded;
+003;---;Ellp;;13;2;0;-;;;;;;-;;;;;;SubDm;             [XJJM / <D H-<WLM <sp><Ob>]; lives;;

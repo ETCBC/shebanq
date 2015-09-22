@@ -1,0 +1,16 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [CJR H-M<LWT <Su>];the song of the ascents is;is;
+001;-plm;Ptcp;SuCl;2;2;0;ind.;;;;;;ind.;disc;main;;;opnDpLnMain;DepDm;  |  [H-<Re>] [BVXJM <PC>] [B-JHWH <Co>];they who are trusting;are trusting;
+001;---;NmCl;;3;2;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [K-HR YJWN <PC>];is/are as the mountain of Zion;is/are;
+001;3sgm;xYq0;Attr;4;2;653;non-vol.;;;;;;non-vol.;disc;main;zero;;opnAttrMain;AttrDm;      |   |   |  [L> <Ng>] [JMWV <Pr>];who/which does not totter;does totter;
+001;3sgm;xYq0;Coor;5;2;601;non-vol.;;;;;;non-vol.;disc;main;zero;;crdAttrMain;AttrDm;      |   |   |      [L-<WLM <Co>] [JCB <Pr>];who/which sits (in);sits (in);
+002;---;CPen;;6;2;1732;-;;;;;;-;;;;;cntMain;;      |   |  [JRWCLM <Fr>];concerning Jerusalem;;
+002;---;NmCl;;7;2;0;nomin.;;;;;;nomin.;disc;main;;;;;      |   |       |  [HRJM <Su>] [SBJB <PC>] [LH <Co>];mountains are a surrounding;are;
+002;---;NmCl;;8;2;1732;nomin.;;;;;;nomin.;disc;main;;;cntMain;;      |   |      [W-<Cj>] [JHWH <Su>] [SBJB <PC>] [L-<MW <Co>] [M-<TH W-<D <WLM <Ti>];and YHWH is a surrounding;is;
+003;3sgm;xYqX;;9;2;653;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |   |          [KJ <Cj>] [L> <Ng>] [JNWX <Pr>] [CBV H-RC< <Su>] [<L GWRL H-YDJQJM <Co>];given that the rod of the guilt does not settle;does settle;
+003;3plm;xYqX;Coor;10;2;602;non-vol.;;;;KJ;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |   |              [LM<N <Cj>] [L> <Ng>] [JCLXW <Pr>] [H-YDJQJM <Su>] [B-<WLTH <Co>] [JDJHM <Ob>];(given that) so that the just ones may not send their hands;may send;
+004;2sgm;ZIm0;;11;2;0;imperat.;;;;;;imperat.;disc;main;zero;;(re)openMain;;      |  [HJVJBH <Pr>];cause to be good;cause to be good;
+004;---;Voct;;12;2;0;-;;;;;;-;;;;;;;      |       |   |  [JHWH <Vo>];o YHWH;;
+004;---;Defc;;13;2;0;-;;;;;;-;;;;;;;      |       |  [L--VWBJM W-L-JCRJM / B-LBWTM <sp><Co>];!;;
+005;-plm;CPen;;14;2;0;-;;;;;;-;;;;;(re)openMain;;      |      [W-<Cj>] [H-<Re>] [MVJM <PC>] [<QLQLWTM <Ob>];now, concerning those who are stretching out their crooked ones;are stretching out;
+005;3sgm;ZYqX;;15;2;0;volit.;;;;;;volit.;disc;main;zero;;;;      |          [JWLJKM <PO>] [JHWH <Su>] [>T P<LJ H->WN <Aj>];let YHWH cause them to walk;let cause to walk;
+005;---;NmCl;;16;2;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;;     [CLWM <Su>] [<L JFR>L <PC>];peace is upon Israel;is;

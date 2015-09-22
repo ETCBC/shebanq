@@ -1,0 +1,18 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [CJR / L--M<LWT <sp><PC>];this is a song;is;
+001;1sg-;ZYq0;;2;2;0;coh.;;;;;;coh.;disc;main;zero;;opnDrSpMain;; [>F> <Pr>] [<JNJ <Ob>] [>L H-HRJM <Co>];let me lift my eyes;let lift;
+001;3sgm;xYqX;;3;2;582;non-vol.;;;;;;non-vol.;disc;MAIN;zero;MN >JN;cntMain;;     [M->JN <Co>] [JB> <Pr>] [<ZRJ <Su>];from where does my help come (to)?;does come (to);
+002;---;NmCl;;4;2;1681;nomin.;;;;;;nomin.;disc;main;;;cntMain;;          |  [<ZRJ <Su>] [M-<M JHWH / <FH CMJM W->RY <ap><PC>];my help is from with;is;
+003;3sgm;xYq0;;5;2;602;prohib.;;;;;;prohib.;disc;main;zero;;cntMain;;         [>L <Ng>] [JTN <Pr>] [L--MWV <Co>] [RGLK <Ob>];he should not give your foot;should give;
+003;3sgm;xYqX;;6;2;602;prohib.;;;;;;prohib.;disc;main;zero;;cntMain;;             [>L <Ng>] [JNWM <Pr>] [CMRK <Su>];your keeper should not slumber;should slumber;
+004;3sgm;xYq0;;7;2;601;non-vol.;;prohib.;x;;;non-vol.;disc;MAIN;zero;HNH;cntMain;;                 [HNH <Ij>] [L> <Ng>] [JNWM <Pr>];behold, he does not slumber;does slumber;
+004;3sgm;WxYX;Coor;8;2;691;non-vol.;;;;;;non-vol.;disc;MAIN;zero;;crdMain;;                      |  [W-<Cj>] [L> <Ng>] [JJCN <Pr>] [CWMR JFR>L <Su>];and the keeper of Israel does not sleep;does sleep;
+005;---;NmCl;;9;2;1682;nomin.;;;;;;nomin.;disc;main;;;cntMain;;                     [JHWH <Su>] [CMRK <PC>];YHWH is your keeper;is;
+005;---;NmCl;;10;2;1731;nomin.;;;;;;nomin.;disc;2nd;;;precArgum;;                         [JHWH <Su>] [YLK / <L JD JMJNK <sp><PC>];as/since YHWH is your shadow;is;
+006;3sgm;XxYq;;11;2;472;non-vol.;;;;;;non-vol.;disc;main;zero;;Argum>Mn;;                              |  [JWMM <Mo>] [H-CMC <Su>] [L> <Ng>] [JKKH <PO>];the sun does not strike you;does strike;
+006;---;Ellp;;12;2;0;-;;;;;;-;;;;;;;                              |      [W-<Cj>] [JRX <Su>] [B--LJLH <Ti>];and the moon;;
+007;3sgm;XYqt;;13;2;471;non-vol.;;;;;;non-vol.;disc;main;zero;;opnMain;;                             [JHWH <Su>] [JCMRK <PO>] [M-KL R< <Co>];YHWH keeps you;keeps;
+007;3sgm;ZYq0;;14;2;131;volit.;;non-vol.;non-vol.;;;non-vol.;disc;main;zero;;cntMain;;                                  |  [JCMR <Pr>] [>T NPCK <Ob>];he keeps your soul;keeps;
+008;3sgm;XYqt;;15;2;411;non-vol.;;;;;;non-vol.;disc;main;zero;;cntMain;;                                 [JHWH <Su>] [JCMR <Pr>];YHWH keeps;keeps;
+008;---;InfC;ObCl;16;2;0;inf.;;;;;;inf.;;;;;opnDpLn;DepDm;                                      |  [Y>TK <PO>];your going out;going out;
+008;---;InfC;Coor;17;2;0;inf.;;;;;;inf.;;;;;crdDpLn;DepDm;                                      |      [W-<Cj>] [BW>K <PO>];and your coming (to);coming (to);
+008;---;Defc;;18;2;0;-;;;;;;-;;;;;;;                                     [M-<TH W-<D <WLM <Ti>];;;

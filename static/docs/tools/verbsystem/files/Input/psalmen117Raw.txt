@@ -1,0 +1,7 @@
+001;2plm;ZIm0;;1;1;0;imperat.;;;;;;imperat.;disc;main;zero;;opnDrSpMain;; [HLLW <Pr>] [>T JHWH <Ob>];praise YHWH!;praise;
+001;---;Voct;;2;1;0;-;;;;;;-;;;;;;;  |   |  [KL GWJM <Vo>];o all of peoples;;
+001;2plm;ZIm0;;3;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;  |  [CBXWHW <PO>];praise him!;praise;
+001;---;Voct;;4;1;0;-;;;;;;-;;;;;;;  |       |  [KL H->MJM <Vo>];o all of clans;;
+002;3sgm;xQtX;;5;1;933;ind.;;;;;;ind.;disc;2nd;retro;;opnSbLn2ndR;SubDm;  |      [KJ <Cj>] [GBR <Pr>] [<LJNW <Co>] [XSDW <Su>];given that his loyalty has been superior;has been superior;
+002;---;NmCl;Coor;6;1;1691;nomin.;;;;KJ;;nomin.;disc;main;;;crdSbLn>Fg;SubDm;  |          [W-<Cj>] [>MT JHWH <Su>] [L-<WLM <PC>];and (given that) the trustworthiness of YHWH is to eternity;is;
+002;2plm;ZIm0;;7;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;; [HLLW <Pr>] [JH <Ob>];praise Yah!;praise;

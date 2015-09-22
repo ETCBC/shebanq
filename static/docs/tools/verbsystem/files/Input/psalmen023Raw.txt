@@ -1,0 +1,17 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [MZMWR / L-DWD <sp><PC>];this is a psalm;is;
+001;---;NmCl;;2;2;0;nomin.;;;;;;nomin.;disc;2nd;;;precArgum;; [JHWH <Su>] [R<J <PC>];as/since YHWH is my pasturer;is;
+001;1sg-;xYq0;;3;2;652;non-vol.;;;;;;non-vol.;disc;main;zero;;Argum>Mn;;      |   |  [L> <Ng>] [>XSR <Pr>];I do not diminish;do diminish;
+002;3sgm;xYq0;;4;2;651;non-vol.;;;;;;non-vol.;disc;main;zero;;opnMain;;      |  [B-N>WT DC> <Co>] [JRBJYNJ <PO>];he causes me to lie down;causes to lie down;
+002;3sgm;xYq0;;5;2;601;non-vol.;;;;;;non-vol.;disc;main;zero;;cntMain;;      |      [<L MJ MNXWT <Co>] [JNHLNJ <PO>];he leads me;leads;
+003;3sgm;xYq0;;6;2;601;non-vol.;;;;;;non-vol.;disc;main;zero;;cntMain;;      |           |  [NPCJ <Ob>] [JCWBB <Pr>];he causes my soul to return;causes to return;
+003;3sgm;ZYq0;;7;2;151;volit.;;non-vol.;non-vol.;;;non-vol.;disc;main;zero;;cntMain;;      |          [JNXNJ <PO>] [B-M<GLJ YDQ <Co>] [LM<N CMW <Aj>];he leads me;leads;
+004;1sg-;xYq0;;8;2;583;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |              [GM <Mo>] [KJ <Cj>] [>LK <Pr>] [B-GJ> YLMWT <Co>];also/even given that I walk;walk;
+004;1sg-;xYq0;;9;2;603;non-vol.;;;;;;non-vol.;disc;main;zero;;(re)openMain;;      |                  [L> <Ng>] [>JR> <Pr>] [R< <Ob>];I do not fear an evil one;do fear;
+004;---;NmCl;;10;2;1683;nomin.;;;;;;nomin.;disc;main;;;opnSbLnMain;SubDm;      |                      [KJ <Cj>] [>TH <Su>] [<MDJ <PC>];given that you are my company;are;
+004;---;CPen;Coor;11;2;472;-;;;;KJ;;-;;;;;crdSbLnMain;SubDm;      |                           |  [CBVK W-MC<NTK <Fr>];(given that) concerning your rod and..;;
+004;3plm;XYqt;;12;2;0;non-vol.;;;;;;non-vol.;disc;main;zero;;;SubDm;      |                           |      [HMH <Su>] [JNXMNJ <PO>];they repent/console me;repent/console;
+005;2sgm;ZYq0;Coor;13;2;201;juss.;;;;KJ;MDMblock;non-vol.;disc;main;zero;;crdSbLnMain;SubDm;      |                          [T<RK <Pr>] [L-PNJ <Aj>] [CLXN <Ob>] [NGD YRRJ <Aj>];(given that) you arrange a table;arrange;
+005;2sgm;ZQt0;Coor;14;2;1121;ind.;;;;KJ;;ind.;disc;2nd;retro;;crdSbLn>2ndR;SubDm;      |                               |  [DCNT <Pr>] [B--CMN <Co>] [R>CJ <Ob>];(given that) you have caused my head to grow fat;have caused to grow fat;
+005;---;NmCl;Coor;15;2;1662;nomin.;;;;KJ;;nomin.;disc;main;;;crdSbLnMain;SubDm;      |                              [KWSJ <Su>] [RWJH <PC>];(given that) my cup is a saturation;is;
+006;3plm;XYqt;;16;2;0;non-vol.;;;;;;non-vol.;disc;main;zero;;(re)openMain;;     [>K VWB W-XSD <Su>] [JRDPWNJ <PO>] [KL JMJ XJJ <Ti>];only good and.. pursue me;pursue;
+006;1sg-;WQt0;;17;2;1432;non-vol.;;non-vol.;x;;;consec.;disc;2nd;forwd;;opn2ndF;;         [W-<Cj>] [CBTJ <Pr>] [B-BJT JHWH <Co>] [L->RK JMJM <Ti>];so that I will return;will return;

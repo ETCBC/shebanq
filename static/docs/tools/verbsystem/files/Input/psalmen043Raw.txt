@@ -1,0 +1,17 @@
+001;2sgm;ZIm0;;1;1;0;imperat.;;;;;;imperat.;disc;main;zero;;opnDrSpMain;; [CPVNJ <PO>];judge me!;judge;
+001;---;Voct;;2;1;0;-;;;;;;-;;;;;;;      |   |   |   |  [>LHJM <Vo>];o God;;
+001;2sgm;WIm0;;3;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;      |   |   |  [W-<Cj>] [RJBH <Pr>] [RJBJ <Ob>] [M-GWJ L> XSJD <Co>];and contend my law-case!;contend;
+001;2sgm;xYq0;;4;1;571;non-vol.;;juss.;juss.;;;juss.;disc;main;zero;;cntMain;;      |   |  [M->JC MRMH W-<WLH <Co>] [TPLVNJ <PO>];you should cause me to escape;should cause to escape;
+002;---;NmCl;;5;1;1683;nomin.;;;;;;nomin.;disc;main;;;opnSbLnMain;SubDm;      |   |      [KJ <Cj>] [>TH <Su>] [>LHJ M<WZJ <PC>];given that you are God of my fort;are;
+002;2sgm;xQt0;;6;1;1013;ind.;;;;;;ind.;disc;MAIN;retro;LMH;(re)openMain;;      |   |          [LMH <Qu>] [ZNXTNJ <PO>];why have you rejected me?;have rejected;
+002;1sg-;xYq0;;7;1;612;non-vol.;;;;;;non-vol.;disc;MAIN;zero;LMH;cntMn>zero;;      |   |              [LMH <Qu>] [QDR <Mo>] [>THLK <Pr>] [B-LXY >WJB <Aj>];why do I walk?;do walk;
+003;2sgm;ZIm0;;8;1;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;      |  [CLX <Pr>] [>WRK / W-/ >MTK <pa><cj><Ob>];send your light!;send;
+003;3plm;XYqt;;9;1;392;non-vol.;;volit.;volit.;;;volit.;disc;main;zero;;cntMain;;      |      [HMH <Su>] [JNXWNJ <PO>];they should lead me;should lead;
+003;3plm;ZYq0;;10;1;131;volit.;;;;;;volit.;disc;main;zero;;cntMain;;      |          [JBJ>WNJ <PO>] [>L HR QDCK / W-/ >L MCKNWTJK <pa><cj><Co>];let them cause me to come (to);let cause to come (to);
+004;1sg-;WYq0;;11;1;0;coh.;coh.;;;;;coh.;disc;main;zero;;(re)openMain;;      |               |  [W-<Cj>] [>BW>H <Pr>] [>L MZBX >LHJM <Co>] [>L >L FMXT GJLJ <Co>];now, let me come (to);let come (to);
+004;1sg-;WYq0;;12;1;242;coh.;;;;;;final;disc;main;zero;;cntMain;;      |              [W-<Cj>] [>WDK <PO>] [B-KNWR >LHJM <Aj>] [>LHJ <Vo>];so that I may praise you;may praise;
+005;2sgf;xYq0;;13;1;0;non-vol.;;;;;;non-vol.;disc;MAIN;zero;MH;(re)openMain;;     [MH <Qu>] [TCTWXXJ <Pr>];how do you melt away?;do melt away;
+005;---;Voct;;14;1;0;-;;;;;;-;;;;;;;          |   |  [NPCJ <Vo>];o my soul;;
+005;2sgf;WxY0;;15;1;691;non-vol.;;;;;;non-vol.;disc;MAIN;zero;MH;cntMain;;          |  [W-<Cj>] [MH <Qu>] [THMJ <Pr>] [<LJ <Co>];and how do you make noise?;do make noise;
+005;2sgf;ZIm0;;16;1;41;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;         [HWXJLJ <Pr>] [L->LHJM <Co>];wait/hope!;wait/hope;
+005;1sg-;xYq0;;17;1;573;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;             [KJ <Cj>] [<WD <Mo>] [>WDNW / JCW<T PNJ / W-/ >LHJ <pa><cj><ss><PO>];given that I praise him;praise;

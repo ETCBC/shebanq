@@ -1,0 +1,14 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [CJR H-M<LWT <PC>];this is the song of the ascents;is;
+001;1sg-;xQt0;;2;2;0;ind.;;;;;;ind.;disc;2nd;retro;;opnDrSp2ndR;; [>LJK <Co>] [NF>TJ <Pr>] [>T <JNJ <Ob>];I have lifted my eyes;have lifted;
+001;-sgm;Ptcp;Attr;3;2;1603;ind.;;;;;;ind.;disc;main;;;opnAttrMain;AttrDm;      |   |  [H-<Re>] [JCBJ <PC>] [B--CMJM <Co>];who/which is sitting (in);is sitting (in);
+002;---;MSyn;;4;2;0;-;;;;;;-;disc;MAIN;;HNH;;;      |  [HNH <Ij>];behold;;
+002;---;CPen;;5;2;0;-;;;;;;-;;;;;opnSbLnMain;SubDm;      |      [K-<Cj>] [<JNJ <BDJM <Su>] [>L JD >DWNJHM <PC>];when/like eyes of servants are to the hand of their lord;are;
+002;---;CPen;Coor;6;2;0;-;;;;;;-;;;;;opnSbLn;SubDm;      |           |  [K-<Cj>] [<JNJ CPXH <Su>] [>L JD GBRTH <PC>];when/like eyes of a maidservant are to the hand of her mistress;are;
+002;---;NmCl;;7;2;0;nomin.;;;;;;nomin.;disc;main;;;;SubDm;      |          [KN <Mo>] [<JNJNW <Su>] [>L JHWH / >LHJNW <ap><PC>];thus our eyes are to YHWH;are;
+002;3sgm;xYq0;;8;2;653;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |              [<D C-<Cj>] [JXNNW <PO>];until he favours us;favours;
+003;2sgm;ZIm0;;9;21;0;imperat.;;;;;;imperat.;disc;main;zero;;(re)openMain;;     [XNNW <PO>];favour us!;favour;
+003;---;Voct;;10;21;0;-;;;;;;-;;;;;;;      |  [JHWH <Vo>];o YHWH;;
+003;2sgm;ZIm0;;11;21;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;     [XNNW <PO>];favour us!;favour;
+003;1pl-;xQt0;;12;21;933;ind.;;;;;;ind.;disc;2nd;retro;;opnSbLn2ndR;SubDm;         [KJ <Cj>] [RB <Aj>] [FB<NW <Pr>] [BWZ <Ob>];given that we have been sated (with) a contempt;have been sated (with);
+004;3sgf;xQtX;Coor;13;21;971;ind.;;;;KJ;;ind.;disc;2nd;retro;;crdSbLn2ndR;SubDm;             [RBT <Aj>] [FB<H <Pr>] [LH <Co>] [NPCNW <Su>] [H-L<G H-C>NNJM <Ob>];(given that) our soul has been sated (with) the derision of the at ease ones;has been sated (with);
+004;---;Ellp;;14;21;0;-;;;;;;-;;;;;;SubDm;                 [H-BWZ / L-G>-JWNJM <sp><Ob>]; the contempt;;

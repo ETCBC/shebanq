@@ -1,0 +1,15 @@
+001;---;NmCl;;1;1;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;; [CJR H-M<LWT <PC>];this is the song of the ascents;is;
+001;---;NmCl;;2;2;0;nomin.;;;;;;nomin.;disc;main;;;opnDrSpMain;; [>CRJ KL JR> JHWH <PC>];these are the happinesses of all of the afraid one;are;
+001;-sgm;Ptcp;Attr;3;2;1643;ind.;;;;;;ind.;disc;main;;;opnAttrMain;AttrDm;      |   |   |  [H-<Re>] [HLK <PC>] [B-DRKJW <Co>];who/which is walking;is walking;
+002;---;XPos;;4;2;0;-;;;;;;-;;;;;;;      |   |   |  [JGJ< KPJK <Ob>]; the toil of your palms;;
+002;2sgm;xYq0;;5;2;653;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |   |  [KJ <Cj>] [T>KL <Pr>];given that you eat;eat;
+002;---;NmCl;;6;2;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;;      |  [>CRJK <PC>];these are your happinesses;are;
+002;3sgm;WQt0;;7;2;1552;non-vol.;;;;;;non-vol.;disc;2nd;forwd;;opn2ndF;;      |       |   |   |  [W-<Cj>] [VWB <Pr>] [LK <Co>];then he will be good;will be good;
+003;---;NmCl;;8;2;1732;nomin.;;;;;;nomin.;disc;main;;;cntMain;;      |       |   |  [>CTK <Su>] [K-GPN PRJH / B-JRKTJ BJTK <sp><PC>];your woman is as a vine;is;
+003;---;NmCl;;9;2;1732;nomin.;;;;;;nomin.;disc;main;;;cntMain;;      |       |   |      [BNJK <Su>] [K-CTLJ ZJTJM <PC>] [SBJB / L-CLXNK <sp><Aj>];your sons are as layers of olives;are;
+004;---;MSyn;;10;2;0;-;;;;;;-;disc;MAIN;;HNH;;;      |       |  [HNH <Ij>];behold;;
+004;3sgm;xYqX;;11;2;0;non-vol.;;;;;;non-vol.;disc;main;zero;;opnSbLnMain;SubDm;      |       |      [KJ <Cj>] [KN <Mo>] [JBRK <Pr>] [GBR / JR> JHWH <sp><Su>];given that a vigorous man is blessed;is blessed;
+005;3sgm;ZYqX;;12;2;202;volit.;;;;;;volit.;disc;main;zero;;cntMain;;      |      [JBRKK <PO>] [JHWH <Su>] [M-YJWN <Aj>];let YHWH bless you;let bless;
+005;2sgm;WIm0;;13;2;22;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;      |          [W-<Cj>] [R>H <Pr>] [B-VWB JRWCLM <Co>] [KL JMJ XJJK <Ti>];and see!;see;
+006;2sgm;WIm0;;14;2;11;imperat.;;;;;;imperat.;disc;main;zero;;cntMain;;      |          [W-<Cj>] [R>H <Pr>] [BNJM / L-BNJK <sp><Ob>];and see sons!;see;
+006;---;NmCl;;15;2;0;nomin.;;;;;;nomin.;disc;main;;;(re)openMain;;     [CLWM <Su>] [<L JFR>L <PC>];peace is upon Israel;is;
