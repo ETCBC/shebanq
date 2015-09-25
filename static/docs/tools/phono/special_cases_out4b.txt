@@ -1,0 +1,236 @@
+  1 Genesis 4:1         nmpr sm           J:HW@75H               [yᵊhwˈāh]            =                     
+  2 Genesis 1:1         art               HA                     hˌa                  =                     
+  3 Genesis 1:7         prep              MI                     mˌi                  =                     
+  4 Genesis 1:7         subs sm           T.A74XAT               tˈaḥaṯ               =                     
+  5 Genesis 1:1         subs pm           C.@MA73JIM             ššāmˌayim            =                     
+  6 Genesis 17:11       subs sf           <@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
+  7 Genesis 4:1                           >ET&J:HW@75H $         ʔeṯ-[yᵊhwˈāh] .      =                     
+  8 Genesis 1:7         subs sm           MI-T.A74XAT            mittˈaḥaṯ            =                     
+
+  1 Genesis 4:1         nmpr sm           J:HW@75H                  => [yᵊhwˈāh]                 < =                           # Tetra with end of verse
+        orig                 J:HW@75H
+        trim                 j:hw@75h
+        tetra                 [ j:hw@75h ] 
+        masora                [ j:hw@75h ] 
+        accents               [ j:hw!@h ] 
+        default accent        [ j:hw!@h ] 
+        qamets qatan         primary accent present
+        qamets_qatan1         [ j:hw!@h ] 
+        qamets_qatan2         [ j:hw!@h ] 
+        qamets_qatan3         [ j:hw!@h ] 
+        qamets_qatan4a        [ j:hw!@h ] 
+        qamets_qatan4b        [ j:hw!@h ] 
+        qamets_qatan5         [ j:hw!@h ] 
+        furtive_patah         [ j:hw!@h ] 
+        mobile_schwa1         [ j%hw!@h ] 
+        mobile_schwa2         [ j%hw!@h ] 
+        dagesh_forte_lene     [ j%hw!@h ] 
+        dagesh_forte          [ j%hw!@h ] 
+        dagesh_lene           [ j%hw!@h ] 
+        silent_aleph          [ j%hw!@h ] 
+        last_ml               [ j%hw!@h ] 
+        dagesh_forte_h        [ j%hw!@h ] 
+        symbols               [ yᵊhwˈāh ] 
+        fixit                 [ yᵊhwˈāh ] 
+        cleanup              [yᵊhwˈāh]
+
+
+  2 Genesis 1:1         art               HA                        => hˌa                       < =                           # article in isolation
+        orig                 HA
+        trim                 ha
+        tetra                ha
+        masora               ha
+        accents              ha
+        default accent       h/a
+        qamets qatan         no qamets present
+        qamets_qatan1        h/a
+        qamets_qatan2        h/a
+        qamets_qatan3        h/a
+        qamets_qatan4a       h/a
+        qamets_qatan4b       h/a
+        qamets_qatan5        h/a
+        furtive_patah        h/a
+        mobile_schwa1        h/a
+        mobile_schwa2        h/a
+        dagesh_forte_lene    h/a
+        dagesh_forte         h/a
+        dagesh_lene          h/a
+        silent_aleph         h/a
+        last_ml              h/a
+        dagesh_forte_h       h/a
+        symbols              hˌa
+        fixit                hˌa
+        cleanup              hˌa
+
+
+  3 Genesis 1:7         prep              MI                        => mˌi                       < =                           # proclitic min
+        orig                 MI
+        trim                 mi
+        tetra                mi
+        masora               mi
+        accents              mi
+        default accent       m/i
+        qamets qatan         no qamets present
+        qamets_qatan1        m/i
+        qamets_qatan2        m/i
+        qamets_qatan3        m/i
+        qamets_qatan4a       m/i
+        qamets_qatan4b       m/i
+        qamets_qatan5        m/i
+        furtive_patah        m/i
+        mobile_schwa1        m/i
+        mobile_schwa2        m/i
+        dagesh_forte_lene    m/i
+        dagesh_forte         m/i
+        dagesh_lene          m/i
+        silent_aleph         m/i
+        last_ml              m/i
+        dagesh_forte_h       m/i
+        symbols              mˌi
+        fixit                mˌi
+        cleanup              mˌi
+
+
+  4 Genesis 1:7         subs sm           T.A74XAT                  => tˈaḥaṯ                    < =                           # word starting with BGDKPT after proclitic min
+        orig                 T.A74XAT
+        trim                 t.a74xat
+        tetra                t.a74xat
+        masora               t.a74xat
+        accents              t.!axat
+        default accent       t.!axat
+        qamets qatan         no qamets present
+        qamets_qatan1        t.!axat
+        qamets_qatan2        t.!axat
+        qamets_qatan3        t.!axat
+        qamets_qatan4a       t.!axat
+        qamets_qatan4b       t.!axat
+        qamets_qatan5        t.!axat
+        furtive_patah        t.!axat
+        mobile_schwa1        t.!axat
+        mobile_schwa2        t.!axat
+        dagesh_forte_lene    t.!axat
+        dagesh_forte         t.!axat
+        dagesh_lene          T!axat
+        silent_aleph         T!axat
+        last_ml              T!axat
+        dagesh_forte_h       T!axat
+        symbols              tˈaḥaṯ
+        fixit                tˈaḥaṯ
+        cleanup              tˈaḥaṯ
+
+
+  5 Genesis 1:1         subs pm           C.@MA73JIM                => ššāmˌayim                 < =                           # word after article in isolation
+        orig                 C.@MA73JIM
+        trim                 c.@ma73jim
+        tetra                c.@ma73jim
+        masora               c.@ma73jim
+        accents              c.@m/ajim
+        default accent       c.@m/ajim
+        qamets qatan         no exception for subs pm
+        qamets_qatan1        c.@m/ajim
+        qamets_qatan2        c.@m/ajim
+        qamets_qatan3        c.@m/ajim
+        qamets_qatan4a       c.@m/ajim
+        qamets_qatan4b       c.@m/ajim
+        qamets_qatan5        c.@m/ajim
+        furtive_patah        c.@m/ajim
+        mobile_schwa1        c.@m/ajim
+        mobile_schwa2        c.@m/ajim
+        dagesh_forte_lene    c.@m/ajim
+        dagesh_forte         c.@m/ajim
+        dagesh_lene          c.@m/ajim
+        silent_aleph         c.@m/ajim
+        last_ml              c.@m/ajim
+        dagesh_forte_h       c.@m/ajim
+        symbols              š.āmˌayim
+        fixit                ššāmˌayim
+        cleanup              ššāmˌayim
+
+
+  6 Genesis 17:11       subs sf           <@R:LAT:KE92M             => ʕorlaṯᵊḵˈem               < =                           # schwa in front of BGDKPT without dagesh
+        orig                 <@R:LAT:KE92M
+        trim                 <@r:lat:ke92m
+        tetra                <@r:lat:ke92m
+        masora               <@r:lat:ke92m
+        accents              <@r:lat:k!em
+        default accent       <@r:lat:k!em
+        qamets qatan         primary accent present
+        qamets_qatan1        <@r:lat:k!em
+        qamets_qatan2        <@r:lat:k!em
+        qamets_qatan3        <^r:lat:k!em
+        qamets_qatan4a       <^r:lat:k!em
+        qamets_qatan4b       <^r:lat:k!em
+        qamets_qatan5        <^r:lat:k!em
+        furtive_patah        <^r:lat:k!em
+        mobile_schwa1        <^r:lat:k!em
+        mobile_schwa2        <^r:lat%k!em
+        dagesh_forte_lene    <^r:lat%k!em
+        dagesh_forte         <^r:lat%k!em
+        dagesh_lene          <^r:lat%k!em
+        silent_aleph         <^r:lat%k!em
+        last_ml              <^r:lat%k!em
+        dagesh_forte_h       <^r:lat%k!em
+        symbols              ʕorlaṯᵊḵˈem
+        fixit                ʕorlaṯᵊḵˈem
+        cleanup              ʕorlaṯᵊḵˈem
+
+
+  7 Genesis 4:1                           >ET&J:HW@75H $            => ʔeṯ-[yᵊhwˈāh] .           < =                           # Tetra with end of verse
+        orig                 >ET&J:HW@75H $
+        trim                 >et&j:hw@75h $
+        tetra                >et& [ j:hw@75h ]  $
+        masora               >et& [ j:hw@75h ]  $
+        accents              >et& [ j:hw!@h ]  $
+        default accent       >et& [ j:hw!@h ]  $
+        qamets qatan         primary accent present
+        qamets_qatan1        >et& [ j:hw!@h ]  $
+        qamets_qatan2        >et& [ j:hw!@h ]  $
+        qamets_qatan3        >et& [ j:hw!@h ]  $
+        qamets_qatan4a       >et& [ j:hw!@h ]  $
+        qamets_qatan4b       >et& [ j:hw!@h ]  $
+        qamets_qatan5        >et& [ j:hw!@h ]  $
+        furtive_patah        >et& [ j:hw!@h ]  $
+        mobile_schwa1        >et& [ j%hw!@h ]  $
+        mobile_schwa2        >et& [ j%hw!@h ]  $
+        dagesh_forte_lene    >et& [ j%hw!@h ]  $
+        dagesh_forte         >et& [ j%hw!@h ]  $
+        dagesh_lene          >et& [ j%hw!@h ]  $
+        silent_aleph         >et& [ j%hw!@h ]  $
+        last_ml              >et& [ j%hw!@h ]  $
+        dagesh_forte_h       >et& [ j%hw!@h ]  $
+        symbols              ʔeṯ- [ yᵊhwˈāh ]  $
+        fixit                ʔeṯ- [ yᵊhwˈāh ]  $
+        cleanup              ʔeṯ-[yᵊhwˈāh] .
+
+
+  8 Genesis 1:7         subs sm           MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
+        orig                 MI-T.A74XAT
+        trim                 mi-t.a74xat
+        tetra                mi-t.a74xat
+        masora               mi-t.a74xat
+        accents              mi-t.!axat
+        default accent       mi-t.!axat
+        qamets qatan         no qamets present
+        qamets_qatan1        mi-t.!axat
+        qamets_qatan2        mi-t.!axat
+        qamets_qatan3        mi-t.!axat
+        qamets_qatan4a       mi-t.!axat
+        qamets_qatan4b       mi-t.!axat
+        qamets_qatan5        mi-t.!axat
+        furtive_patah        mi-t.!axat
+        mobile_schwa1        mi-t.!axat
+        mobile_schwa2        mi-t.!axat
+        dagesh_forte_lene    mi-TT!axat
+        dagesh_forte         mi-TT!axat
+        dagesh_lene          mi-TT!axat
+        silent_aleph         mi-TT!axat
+        last_ml              mi-TT!axat
+        dagesh_forte_h       mi-TT!axat
+        symbols              mi
+        fixit                mi
+        cleanup              mi
+        symbols              ttˈaḥaṯ
+        fixit                ttˈaḥaṯ
+        cleanup              ttˈaḥaṯ
+
+
