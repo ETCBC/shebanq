@@ -52,9 +52,20 @@ tp_labels = dict(
     txt_tb3='Abstract',
     txt_il='data',
 )
+tr_info = ['hb', 'ph']
+tr_labels = dict(
+    hb='hebrew',
+    ph='phonetic',
+)
+
 tab_views = len(tab_info)
 # next_tp is a mapping from a text type to the next: it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p 
 next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
+
+tr_views = len(tr_info)
+# next_tr is a mapping from a script type to the next: it goes hb => ph => hb 
+next_tr = dict((tr_info[i], tr_info[(i+1)%2]) for i in range(tr_views))
+
 nt_statorder = 'o*+?-!'
 nt_statclass = {
     'o': 'nt_info',
@@ -78,7 +89,7 @@ for (i,x) in enumerate(nt_statorder):
 
 field_names = dict(
     txt_il='''
-        word_heb word_vlex word_clex word_tran word_lex word_glex word_gloss
+        word_heb word_phono word_vlex word_clex word_tran word_lex word_glex word_gloss
         word_subpos word_pos word_pdp word_lang word_number
         word_gender word_gnumber word_person word_state word_tense word_stem
         word_nme word_pfm word_prs word_uvf word_vbe word_vbs
@@ -87,18 +98,21 @@ field_names = dict(
         clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_rela clause_typ clause_txt
         sentence_border sentence_number sentence_atom_number
         '''.strip().split(),
+    txt_p='''
+        word_phono word_phono_sep
+        '''.strip().split(),
     txt_tb1='''
-        word_heb word_number
+        word_heb word_phono word_phono_sep word_number
         phrase_border phrase_number phrase_function
         sentence_number clause_number clause_atom_number clause_atom_tab clause_txt clause_typ
         '''.strip().split(),
     txt_tb2='''
-        word_heb word_number
+        word_heb word_phono word_phono_sep word_number
         phrase_border phrase_function
         sentence_number clause_number clause_atom_number clause_atom_tab clause_atom_code clause_txt clause_typ
         '''.strip().split(),
     txt_tb3='''
-        word_heb word_number word_lex word_pos word_gender
+        word_heb word_phono word_phono_sep word_number word_lex word_pos word_gender
         phrase_border
         sentence_number clause_number clause_atom_number clause_atom_tab
         '''.strip().split(),
@@ -107,10 +121,14 @@ hfields = dict(
     txt_p=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_phono', 'phtext'),
+        ('word_phono_sep', 'phsep'),
     ],
     txt_tb1=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_phono', 'phtext'),
+        ('word_phono_sep', 'phsep'),
         ('phrase_number', 'phrase#'),
         ('phrase_function', 'function'),
         ('clause_txt', 'txt'),
@@ -120,6 +138,8 @@ hfields = dict(
     txt_tb2=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_phono', 'phtext'),
+        ('word_phono_sep', 'phsep'),
         ('phrase_number', 'phrase#'),
         ('phrase_function', 'function'),
         ('clause_txt', 'txt'),
@@ -138,8 +158,11 @@ hfields = dict(
     ],
 )
 
+notfillfields = {'word_phono', 'word_phono_sep'}
+
 hebrewdata_lines_spec = '''
     ht:ht=word_heb=text-h
+    pt:pt=word_phono=text-p
     hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
     tt:tt=word_tran=text-t
     tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
@@ -160,14 +183,16 @@ for item in hebrewdata_lines_spec:
 
 specs = dict(
     material=(
-        '''version book chapter verse iid page mr qw tp''',
-        '''alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il'''.format(
-            ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1))
+        '''version book chapter verse iid page mr qw tp tr''',
+        '''alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il enum:{}'''.format(
+            ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1)),
+            ','.join(tr_labels),
         ),
-        {'': '''4 Genesis 1 1 None 1 x m txt_p'''},
+        {'': '''4 Genesis 1 1 None 1 x m txt_p hb'''},
     ),
     hebrewdata=('''
         ht
+        pt
         hl hl_hlv hl_hlc
         tt
         tl tl_tlv tl_tlc
@@ -181,6 +206,7 @@ specs = dict(
         sn sn_an sn_n
     ''','''
         bool
+        bool
         bool bool bool
         bool
         bool bool bool
@@ -193,6 +219,7 @@ specs = dict(
         bool bool bool bool bool bool bool bool
         bool bool bool
     ''', {'': '''
+        v
         v
         v x v
         x
@@ -235,6 +262,10 @@ legend_tpl = '''
     <tr class="il l_ht">
         <td class="c l_ht"><input type="checkbox" id="ht" name="ht"/></td>
         <td class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text דְּבַ֥ר</span></a></td>
+    </tr>
+    <tr class="il l_pt">
+        <td class="c l_pt"><input type="checkbox" id="pt" name="pt"/></td>
+        <td class="il l_pt"><a target="_blank" href="{base_doc}/phono.html"><span class="l_pt">text dāvˈār</span></a></td>
     </tr>
 
     <tr class="il l_hl">
@@ -386,6 +417,9 @@ text_tpl = u'''<table class="il c">
     <tr class="il ht">
         <td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td>
     </tr>
+    <tr class="il pt">
+        <td class="il pt"><span m="{word_number}" class="pt">{word_phono}</span></td>
+    </tr>
     <tr class="il hl">
         <td class="il hl"><span l="{lexicon_id}" class="il hl_hlv">{word_vlex}</span>&nbsp;&nbsp;<span l="{lexicon_id}" class="il hl_hlc">{word_clex}</span></td>
     </tr>
@@ -529,7 +563,7 @@ def get_fields(tp, qw=qw):
         if tp == 'txt_p':
             fields = (
                 ('clause_atom', 'ca_nr'),
-                ('keywords', 'keyw'), ('status', 'status'), ('ntext', 'note'),
+                ('shebanq_note.note.keywords', 'keyw'), ('shebanq_note.note.status', 'status'), ('shebanq_note.note.ntext', 'note'),
             )
         else:
             fields = (
@@ -610,9 +644,12 @@ var viewinit = {initstate}
 var style = {style}
 var pref = {pref}
 var tp_labels = {tp_labels}
+var tr_labels = {tr_labels}
 var tab_info = {tab_info}
 var tab_views = {tab_views}
+var tr_info = {tr_info}
 var next_tp = {next_tp}
+var next_tr = {next_tr}
 var nt_statclass = {nt_statclass}
 var nt_statsym = {nt_statsym}
 var nt_statnext = {nt_statnext}
@@ -628,9 +665,12 @@ dynamics()
     dnrows = dnrows,
     versions = json.dumps(dict((v, self.versions[v]['date'] != '') for v in self.versions)),
     tp_labels = json.dumps(tp_labels),
+    tr_labels = json.dumps(tr_labels),
     tab_info = json.dumps(tab_info),
     tab_views = tab_views,
+    tr_info = json.dumps(tr_info),
     next_tp = json.dumps(next_tp),
+    next_tr = json.dumps(next_tr),
     nt_statclass = json.dumps(nt_statclass),
     nt_statsym = json.dumps(nt_statsym),
     nt_statnext = json.dumps(nt_statnext),
@@ -640,18 +680,24 @@ def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp
 
 def h_esc(material, fill=True):
     material = material.replace(
-        u'&', u'&amp;').replace(u'<', u'&lt;').replace(u'>', u'&gt;').replace(u'"', u'&quot').replace(
-        u"'", u'&apos;').replace(u'\\n', u'\n')
+        u'&', u'&amp;').replace(
+        u'<', u'&lt;').replace(
+        u'>', u'&gt;').replace(
+        u'"', u'&quot').replace(
+        u"'", u'&apos;').replace(
+        u'\\n', u'\n')
     if fill:
         if material == '': material = '&nbsp;'
     return material
 
 class Verses():
-    def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None):
+    def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None, tr=None):
+        if tr == None: tr = 'hb'
         self.version = vr
         passage_db = passage_dbs[vr]
         self.mr = mr
         self.tp = tp
+        self.tr = tr
         self.verses = []
         if self.mr == 'r' and (verse_ids == None or len(verse_ids) == 0): return
         verse_ids_str = u','.join((str(v) for v in verse_ids)) if verse_ids != None else None
@@ -675,8 +721,7 @@ order by verse.id
 '''.format(u', verse.xml' if tp == 'txt_p' else u'', condition)) 
 
         word_records = []
-        if tp != 'txt_p':
-            word_records = passage_db.executesql(u'''
+        word_records = passage_db.executesql(u'''
 select {}, verse_id, lexicon_id from word
 inner join word_verse on word_number = word_verse.anchor
 inner join verse on verse.id = word_verse.verse_id
@@ -687,18 +732,21 @@ order by word_number
 
         word_data = collections.defaultdict(lambda: [])
         for record in word_records:
-            word_data[record['verse_id']].append(dict((x,h_esc(unicode(y), not x.endswith('_border'))) for (x,y) in record.items()))
+            word_data[record['verse_id']].append(dict(
+                (x,h_esc(unicode(y), not (x.endswith('_border') or x in notfillfields))) for (x,y) in record.items()
+            ))
 
         for v in verse_info:
             v_id = int(v[0])
             xml = v[4] if tp == 'txt_p' else ''
-            self.verses.append(Verse(passage_dbs, vr, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, mr=mr)) 
+            self.verses.append(Verse(passage_dbs, vr, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, tr=tr, mr=mr)) 
 
 class Verse():
-    def __init__(self, passage_dbs, vr, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, mr=None):
+    def __init__(self, passage_dbs, vr, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, tr=None, mr=None):
         self.version = vr
         passage_db = passage_dbs[vr]
         self.tp = tp
+        self.tr = tr
         self.mr = mr
         self.book_name = book_name
         self.chapter_num = chapter_num
@@ -706,7 +754,7 @@ class Verse():
         if xml == None:
             xml = ''
         if word_data == None:
-            word_records = passage_db.executesql(u'''
+            wsql = u'''
 select {}, lexicon_id from word
 inner join word_verse on word_number = word_verse.anchor
 inner join verse on verse.id = word_verse.verse_id
@@ -715,10 +763,13 @@ inner join book on chapter.book_id = book.id
 where book.name = '{}' and chapter.chapter_num = {} and verse.verse_num = {}
 order by word_number
 ;
-'''.format(u','.join(field_names['txt_il']), book_name, chapter_num, verse_num), as_dict=True)
+'''.format(u','.join(field_names['txt_il']), book_name, chapter_num, verse_num)
+            word_records = passage_db.executesql(wsql, as_dict=True)
             word_data = []
             for record in word_records:
-                word_data.append(dict((x,h_esc(unicode(y), not x.endswith('_border'))) for (x,y) in record.items()))
+                word_data.append(dict(
+                    (x,h_esc(unicode(y), not (x.endswith('_border') or x in notfillfields))) for (x,y) in record.items(),
+                ))
         self.xml = xml
         self.word_data = word_data
         self.words = []
@@ -732,12 +783,17 @@ order by word_number
     def get_words(self):
         if (len(self.words) == 0):
             root = ET.fromstring(u'<verse>{}</verse>'.format(self.xml).encode('utf-8'))
+            i = 0
             for child in root:
                 monad_id = int(child.attrib['m'])
                 lex_id = child.attrib['l']
-                text = '' if child.text is None else child.text
+                text = '' if child.text == None else child.text
+                wdata = self.word_data[i]
+                phtext = wdata['word_phono']
+                phsep = wdata['word_phono_sep']
                 trailer = child.get('t', '')
-                self.words.append((monad_id, lex_id, text, trailer))
+                self.words.append((monad_id, lex_id, text, trailer, phtext, phsep))
+                i += 1
         return self.words
 
     def material(self, user_agent):
@@ -750,8 +806,13 @@ order by word_number
     def _plain_text(self, user_agent):
         material = []
         for word in self.get_words():
-            atext = adapted_text(word[2], user_agent)
-            material.append(u'''<span m="{}" l="{}">{}</span>{}'''.format(word[0], word[1], atext, word[3]))
+            if self.tr == 'hb':
+                atext = adapted_text(word[2], user_agent)
+                sep = word[3]
+            elif self.tr == 'ph':
+                atext = word[4]
+                sep = word[5]
+            material.append(u'''<span m="{}" l="{}">{}</span>{}'''.format(word[0], word[1], atext, sep))
         return u''.join(material)
 
     def _rich_text(self, user_agent):
@@ -829,7 +890,9 @@ order by word_number
                 result.append(u'''<span class="t1_phf1">{}</span><span class="t1_phfn">{}</span>'''.format(
                     word['phrase_function'], word['phrase_number'],
                 ))
-            result.append(u'''<span m="{}" l="{}">{}</span>'''.format(word['word_number'], word['lexicon_id'], word['word_heb']))
+            if self.tr == 'hb': wtext = word['word_heb']
+            elif self.tr == 'ph': wtext = word['word_phono']+word['word_phono_sep']
+            result.append(u'''<span m="{}" l="{}">{}</span>'''.format(word['word_number'], word['lexicon_id'], wtext))
         result.append(u'''
     </td>
     <td class="t1_tb1">{smalltab}</td>
@@ -861,7 +924,9 @@ order by word_number
         for word in words:
             if 'r' in word['phrase_border']:
                 result.append(u' <span class="phf2">{}</span> '.format(word['phrase_function']))
-            result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], word['word_heb']))
+            if self.tr == 'hb': wtext = word['word_heb']
+            elif self.tr == 'ph': wtext = word['word_phono']+word['word_phono_sep']
+            result.append(u'<span m="{}" l="{}">{}</span> '.format(word['word_number'], word['lexicon_id'], wtext))
         result.append(u'</dd>')
         return u''.join(result)
 

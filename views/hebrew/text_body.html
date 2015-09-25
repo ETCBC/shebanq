@@ -19,6 +19,11 @@
             <a title="next page" contents="" id="next_page" href="#"><span class="ctrl fa fa-arrow-right fa-lg"></span></a>
         </div>
         <div id="material_settings">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+{{for tr in tr_info:}}
+            <span><a href="#" id="m{{=tr}}" class="ctrl mtradio">{{=tr_labels[tr]}}</a></span>
+{{pass}}
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <span><a href="#" id="mtxt_p" class="ctrl mhradio">text</a></span>
 {{for t in range(1, tab_views+1):}}
             <span><a href="#" id="mtxt_tb{{=t}}" class="ctrl mhradio">{{=u'{} ({}/{})'.format(tp_labels['txt_tb{}'.format(t)], t, tab_views)}}</a></span>

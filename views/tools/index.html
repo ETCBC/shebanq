@@ -64,11 +64,26 @@ and give it the label <code>val_note</code>.</p>
 which contains the logic to synthesize trees from the data as it lies encoded in an EMDROS database and has been translated to LAF.
 <code>etcbc.trees</code> can also work for other data, such as the CALAP database of parts of the Syriac Peshitta.
 This notebook generates a tree for each sentence in the Hebrew Bible.<p>
+<p><a target="_blank" href="{{=URL('static', 'docs/tools/trees/trees.html')}}">View notebook</a>.</p>
 <p>The 
 <a target="_blank" href="{{=URL('static', 'docs/tools/trees/files/trees.txt.zip')}}" download="trees.txt.zip">results</a>
 have been used for a Data Oriented Parsing experiment, which is reported in the
 <a target="_blank" href="http://www.clinjournal.org/sites/clinjournal.org/files/08-Roorda-etal-CLIN2014.pdf">Computational Linguistics in the Netherlands Journal 4 (2014) 105-120</a> (a copy is also archived at
 <a target="_blank" href="http://arxiv.org/abs/1410.0286">arxiv.org</a>).</p>
+</div>
+
+<div class="tool" id="phono">
+<h4>Phonetic Transcription</h4>
+<img src="{{=URL('static', 'docs/tools/phono/images/phono.png')}}" align="right" width="50%"/>
+<p>This tool contains the notebook that computes a phonetic transcription for the Hebrew text.
+The transcription is computed by applying patterns on the one hand, and by using the corpus for solving ambiguities that
+are not covered by the rules.
+There will be mistakes, but you may help to correct them, by giving feed-back in the form of corrections
+that you can write straight into SHEBANQ as manual notes to the sentence where you see offending words.
+Just use Notes view.
+If you like to program you own transcription, you can use an extensive set of identified hard cases, that are the by-product
+of this work.</p>
+<p><a target="_blank" href="{{=URL('static', 'docs/tools/phono/phono.html')}}">View notebook</a>.</p>
 </div>
 
 <div class="tool" id="shebanq">
@@ -90,6 +105,18 @@ The passage database also contains a lexicon, which is linked to the word occurr
 <dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.html')}}">loganalysis</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.ipynb')}}" download="loganalysis.ipynb">(download)</a></dt>
 <dd>We read the apache2 log files, filter out irrelevant events, analyse remaining events, and produce usable statistics.
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.html')}}">lexicon</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.ipynb')}}" download="lexicon.ipynb">(download)</a></dt>
+<dd>This notebook prepares additional lexical data for LAF-Fabric: the lexicon and the pre-computed phonetic transcription.
+This data is added as an extra annotation package to the main ETCBC resource. 
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.html')}}">para_from_px</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.ipynb')}}" download="para_from_px.ipynb">(download)</a></dt>
+<dd>This notebook prepares additional syntactical data for LAF-Fabric: the paragraph structure.
+This data is added as an extra annotation package to the main ETCBC resource. 
 </dd>
 
 <dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/notes.html')}}">notes</a>
@@ -140,6 +167,13 @@ The old model had no provisions for working with queries on multiple versions of
 <img src="{{=URL('static', 'docs/tools/trees/images/trees-lr.png')}}"/>
 </a></dt>
 <dd class="exp"><p>Constructing syntax trees for the sentences.</p></dd>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="toolc" tid="phono">Phonetic Transcription
+<img src="{{=URL('static', 'docs/tools/phono/images/phono.png')}}"/>
+</a></dt>
+<dd class="exp"><p>Phonetic transcription of Hebrew Text.</p></dd>
 <hr/>
 
 <dt class="exp">

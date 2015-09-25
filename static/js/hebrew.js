@@ -68,6 +68,7 @@ material
     tp (text-or-tab setting: whether the material is shown as
        plain text (txt_p) or as tabbed text in several versions (txt_tb1, txt_tb2, etc.)
        there is also txt_il for interlinear data, but that is on demand per verse
+    tr (script or phonetic setting: whether the hebrew text is rendered in hebrew script or phonetically)
 
 hebrewdata
     a list of switches controlling which fields are shown in the interlinear data view
@@ -145,7 +146,7 @@ var muting_n = nsn.localStorage
 
 /* state variables */
 var vcolors, vdefaultcolors, dncols, dnrows, thebooks, thebooksorder, viewinit, style // parameters dumped by the server, mostly in json form
-var viewfluid, side_fetched, material_fetched // transitory flags indicating whether kinds of material and sidebars have loaded content
+var viewfluid, side_fetched, material_fetched, material_kind // transitory flags indicating whether kinds of material and sidebars have loaded content
 var wb      // holds the one and only page object
 var msg   // messages object
 
@@ -170,6 +171,7 @@ var edit_main_width = '40%' // the desired width of the main area when editing a
 var chart_width = '400px' // dialog width for charts
 var chart_cols = 30 // number of chapters in a row in a chart
 var tp_labels, tab_info, tab_views, next_tp; // number of tab views and dictionary to go cyclically from a text view to the next
+var tr_labels, tr_info, next_tr; // number of tab views and dictionary to go cyclically from a text view to the next
 var nt_statclass, nt_statsym, nt_statnext; // characteristics for tabbed views with notes
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
@@ -474,7 +476,7 @@ function Material() { // Object corresponding to everything that controls the ma
         }
     }
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
-        var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&qw='+wb.qw
+        var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()+'&qw='+wb.qw
         var do_fetch = false
         if (wb.mr == 'm') {
             vars += '&book='+wb.vs.book()
@@ -486,7 +488,9 @@ function Material() { // Object corresponding to everything that controls the ma
             vars += '&page='+wb.vs.page()
             do_fetch = (wb.qw == 'q')?(wb.iid >=0):(wb.iid != '-1')
         }
-        if (do_fetch && !material_fetched[wb.vs.tp()]) {
+        var tp = wb.vs.tp()
+        var tr = wb.vs.tr()
+        if (do_fetch && (!material_fetched[tp] || !(tp in material_kind) || material_kind[tp] != tr)) {
             this.message.msg('fetching data ...')
             wb.sidebars.after_material_fetch()
             $.get(material_url+vars, function(html) {
@@ -494,7 +498,8 @@ function Material() { // Object corresponding to everything that controls the ma
                 that.pselect.add(response)
                 that.message.add(response)
                 that.content.add(response)
-                material_fetched[wb.vs.tp()] = true
+                material_fetched[tp] = true
+                material_kind[tp] = tr
                 that.process()
                 that.goto_verse()
             }, 'html')
@@ -519,6 +524,24 @@ function Material() { // Object corresponding to everything that controls the ma
         var mf = 0
         for (var x in material_fetched) {if (material_fetched[x]) {mf += 1}} // count how many versions of this material already have been fetched
         var newcontent = $('#material_'+wb.vs.tp())
+        var textcontent = $('.txt_p,.txt_tb1,.txt_tb2,.txt_tb3')
+        var ttextcontent = $('.t1_txt,.lv2')
+        if (wb.vs.tr() == 'hb') {
+            textcontent.removeClass('pho')
+            textcontent.removeClass('phox')
+            ttextcontent.removeClass('pho')
+            textcontent.addClass('heb')
+            textcontent.addClass('hebx')
+            ttextcontent.addClass('heb')
+        }
+        else if (wb.vs.tr() == 'ph') {
+            textcontent.removeClass('heb')
+            textcontent.removeClass('hebx')
+            ttextcontent.removeClass('heb')
+            textcontent.addClass('pho')
+            textcontent.addClass('phox')
+            ttextcontent.addClass('pho')
+        }
         // because some processes like highlighting and assignment of verse number clicks must be suppressed on first time or on subsequent times
         if (wb.mr == 'r') {
             this.pselect.apply()
@@ -1533,11 +1556,13 @@ function MSettings(content) {
     })
     this.apply = function() {
         var hlradio = $('.mhradio')
-        var tlradio = $('.mhradio:not([id="txt_p"])')
+        var plradio = $('.mtradio')
         var new_tp = wb.vs.tp()
+        var new_tr = wb.vs.tr()
         var newc = $('#m'+new_tp)
+        var newp = $('#m'+new_tr)
         hlradio.removeClass('ison')
-        //tlradio.hide()
+        plradio.removeClass('ison')
         if (new_tp != 'txt_p' && new_tp != 'txt_il') {
             for (var i=1; i<=tab_views; i++) {
                 var mc = $('#mtxt_tb'+i)
@@ -1550,7 +1575,9 @@ function MSettings(content) {
             }
         }
         newc.show()
+        newp.show()
         newc.addClass('ison')
+        newp.addClass('ison')
         this.content.show()
         legend.hide()
         legendc.hide()
@@ -1583,10 +1610,32 @@ function MSettings(content) {
         wb.vs.addHist()
         that.apply()
     })
+    $('.mtradio').click(function(e) {e.preventDefault();
+        var old_tr = wb.vs.tr()
+        var new_tr = $(this).attr('id').substring(1)
+        if (old_tr == new_tr) {
+            new_tr = next_tr[old_tr]
+        }
+
+        wb.vs.mstatesv({tr: new_tr})
+        wb.vs.addHist()
+        that.apply()
+    })
     for (var i=1; i<=tab_views; i++) {
         var mc = $('#mtxt_tb'+i)
         mc.attr('title', tab_info['txt_tb'+i])
         if (i == 1) {
+            mc.show()
+        }
+        else {
+            mc.hide()
+        }
+    }
+    for (var l in tr_labels) {
+        var t = tr_info[l]
+        var mc = $('#m'+t)
+        mc.attr('title', tr_labels[t])
+        if (l == 'hb') {
             mc.show()
         }
         else {
@@ -2549,6 +2598,7 @@ function ViewState(init, pref) {
     this.mr = function() {return this.data['material']['']['mr']}
     this.qw = function() {return this.data['material']['']['qw']}
     this.tp = function() {return this.data['material']['']['tp']}
+    this.tr = function() {return this.data['material']['']['tr']}
     this.iid = function() {return this.data['material']['']['iid']}
     this.version = function() {return this.data['material']['']['version']}
     this.book = function() {return this.data['material']['']['book']}
@@ -2574,7 +2624,11 @@ function close_dialog(dia) {
 
 function reset_material_status() {
     material_fetched = {txt_p: false}
-    for (var i=1; i<= tab_views; i++) {material_fetched['txt_tb'+i] = false}
+    material_kind = {txt_p: ''}
+    for (var i=1; i<= tab_views; i++) {
+        material_fetched['txt_tb'+i] = false
+        material_kind['txt_tb'+i] = ''
+    }
 }
 
 /* GENERIC */

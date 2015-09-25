@@ -24,6 +24,8 @@
         furtive_patah         [ j:hw!@h ] 
         mobile_schwa1         [ j%hw!@h ] 
         mobile_schwa2         [ j%hw!@h ] 
+        mobile_schwa3         [ j%hw!@h ] 
+        mobile_schwa4         [ j%hw!@h ] 
         dagesh_forte_lene     [ j%hw!@h ] 
         dagesh_forte          [ j%hw!@h ] 
         dagesh_lene           [ j%hw!@h ] 
@@ -52,6 +54,8 @@
         furtive_patah        h/a
         mobile_schwa1        h/a
         mobile_schwa2        h/a
+        mobile_schwa3        h/a
+        mobile_schwa4        h/a
         dagesh_forte_lene    h/a
         dagesh_forte         h/a
         dagesh_lene          h/a
@@ -80,6 +84,8 @@
         furtive_patah        m/i
         mobile_schwa1        m/i
         mobile_schwa2        m/i
+        mobile_schwa3        m/i
+        mobile_schwa4        m/i
         dagesh_forte_lene    m/i
         dagesh_forte         m/i
         dagesh_lene          m/i
@@ -108,6 +114,8 @@
         furtive_patah        t.!axat
         mobile_schwa1        t.!axat
         mobile_schwa2        t.!axat
+        mobile_schwa3        t.!axat
+        mobile_schwa4        t.!axat
         dagesh_forte_lene    t.!axat
         dagesh_forte         t.!axat
         dagesh_lene          T!axat
@@ -136,6 +144,8 @@
         furtive_patah        c.@m/ajim
         mobile_schwa1        c.@m/ajim
         mobile_schwa2        c.@m/ajim
+        mobile_schwa3        c.@m/ajim
+        mobile_schwa4        c.@m/ajim
         dagesh_forte_lene    c.@m/ajim
         dagesh_forte         c.@m/ajim
         dagesh_lene          c.@m/ajim
@@ -164,6 +174,8 @@
         furtive_patah        <^r:lat:k!em
         mobile_schwa1        <^r:lat:k!em
         mobile_schwa2        <^r:lat%k!em
+        mobile_schwa3        <^r:lat%k!em
+        mobile_schwa4        <^r:lat%k!em
         dagesh_forte_lene    <^r:lat%k!em
         dagesh_forte         <^r:lat%k!em
         dagesh_lene          <^r:lat%k!em
@@ -192,6 +204,8 @@
         furtive_patah        >et& [ j:hw!@h ]  $
         mobile_schwa1        >et& [ j%hw!@h ]  $
         mobile_schwa2        >et& [ j%hw!@h ]  $
+        mobile_schwa3        >et& [ j%hw!@h ]  $
+        mobile_schwa4        >et& [ j%hw!@h ]  $
         dagesh_forte_lene    >et& [ j%hw!@h ]  $
         dagesh_forte         >et& [ j%hw!@h ]  $
         dagesh_lene          >et& [ j%hw!@h ]  $
@@ -220,6 +234,8 @@
         furtive_patah        mi-t.!axat
         mobile_schwa1        mi-t.!axat
         mobile_schwa2        mi-t.!axat
+        mobile_schwa3        mi-t.!axat
+        mobile_schwa4        mi-t.!axat
         dagesh_forte_lene    mi-TT!axat
         dagesh_forte         mi-TT!axat
         dagesh_lene          mi-TT!axat
