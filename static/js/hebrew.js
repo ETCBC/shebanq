@@ -522,8 +522,13 @@ function Material() { // Object corresponding to everything that controls the ma
     }
     this.process = function() { // process new material obtained by an AJAX call
         var mf = 0
+        var tp = wb.vs.tp()
+        var tr = wb.vs.tr()
         for (var x in material_fetched) {if (material_fetched[x]) {mf += 1}} // count how many versions of this material already have been fetched
-        var newcontent = $('#material_'+wb.vs.tp())
+        if (material_kind[tp] != '' && material_kind != tr) {                // and also whether the material has already been fetched in another transcription
+            mf += 1
+        }
+        var newcontent = $('#material_'+tp)
         var textcontent = $('.txt_p,.txt_tb1,.txt_tb2,.txt_tb3')
         var ttextcontent = $('.t1_txt,.lv2')
         if (wb.vs.tr() == 'hb') {
