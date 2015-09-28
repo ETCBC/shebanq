@@ -74,3 +74,11 @@ Jesaia 1:5	L@-X:@LI80J		loḥᵒlˈî	qamets qatan, assimilation in preposition
 Josua 7:21	H@->@95H:@LI73J		hāʔˈohᵒlˈî	qamets gadol, no assimilation in article
 Habakuk 3:2	P.@75<@L:K@03		pˈoʕolᵊḵā	qamets qatan in front of other qamets qatan (Lettinga 12th)
 Psalmi 11:3	P.@<@75L		pāʕˈāl	qamets gadol in verb
+Exodus 20:13	T.,IR:Y@7375X		ṯirṣˈāḥ	rafe on the taw with dagesh: cancels dagesh
+Samuel_II 11:1	HA-M.AL:>,KI81JM		hammalḵˈîm	rafe just before the kaf without dagesh: can be ignored
+Jesaia 22:10	WA-T.IT,:YW.03		wattiṯṣˌû	rafe just after the taf without dagesh: can be ignored
+Jeremia 20:17	W:-RAX:M@73H,		wᵊraḥmˌā	rafe just after the he: he is mater lectionis
+Psalm 119:99	L,I75J		lˈî	rafe just after the lamed: can be ignored
+Genesis 1:7	>ET&H@-R@QIJ<A01		ʔeṯ-hārāqîˌₐʕ	furtive pata and default accent
+Numeri 8:22	<:ABO75D@T@M03		ʕᵃvˈōḏāṯām	first qamets is gadol because of other occurrences, second qamets is gadol because of ending
+Samuel_I 23:4	JHW@80H_S		[yhwˈāh]	tetragrammaton with _S

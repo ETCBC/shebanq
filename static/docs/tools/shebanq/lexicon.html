@@ -336,32 +336,32 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 <pre>  0.00s LOADING API: please wait ... 
   0.00s DETAIL: COMPILING m: UP TO DATE
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.00s DETAIL: COMPILING a: UP TO DATE
+  0.01s DETAIL: COMPILING a: UP TO DATE
   0.01s DETAIL: load main: G.node_anchor_min
   0.15s DETAIL: load main: G.node_anchor_max
-  0.27s DETAIL: load main: G.node_sort
-  0.40s DETAIL: load main: G.node_sort_inv
+  0.28s DETAIL: load main: G.node_sort
+  0.41s DETAIL: load main: G.node_sort_inv
   1.00s DETAIL: load main: G.edges_from
-  1.15s DETAIL: load main: G.edges_to
-  1.32s DETAIL: load main: X. [node]  -&gt; 
-  2.88s DETAIL: load main: X. [node]  &lt;- 
-  3.87s DETAIL: load main: F.etcbc4_db_oid [node] 
-  4.86s DETAIL: load main: F.etcbc4_db_otype [node] 
-  5.79s DETAIL: load main: F.etcbc4_ft_g_lex [node] 
-  6.10s DETAIL: load main: F.etcbc4_ft_g_lex_utf8 [node] 
-  6.50s DETAIL: load main: F.etcbc4_ft_g_word [node] 
-  6.84s DETAIL: load main: F.etcbc4_ft_g_word_utf8 [node] 
-  7.30s DETAIL: load main: F.etcbc4_ft_gn [node] 
-  7.51s DETAIL: load main: F.etcbc4_ft_language [node] 
-  7.79s DETAIL: load main: F.etcbc4_ft_lex [node] 
-  8.06s DETAIL: load main: F.etcbc4_ft_lex_utf8 [node] 
-  8.43s DETAIL: load main: F.etcbc4_ft_ls [node] 
-  8.72s DETAIL: load main: F.etcbc4_ft_nu [node] 
-  8.98s DETAIL: load main: F.etcbc4_ft_ps [node] 
-  9.26s DETAIL: load main: F.etcbc4_ft_sp [node] 
-  9.54s DETAIL: load main: F.etcbc4_ft_st [node] 
-  9.76s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/lexicon/__log__lexicon.txt
-  9.76s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK lexicon AT 2015-09-25T14-22-56
+  1.16s DETAIL: load main: G.edges_to
+  1.33s DETAIL: load main: X. [node]  -&gt; 
+  2.93s DETAIL: load main: X. [node]  &lt;- 
+  3.98s DETAIL: load main: F.etcbc4_db_oid [node] 
+  5.03s DETAIL: load main: F.etcbc4_db_otype [node] 
+  6.01s DETAIL: load main: F.etcbc4_ft_g_lex [node] 
+  6.34s DETAIL: load main: F.etcbc4_ft_g_lex_utf8 [node] 
+  6.75s DETAIL: load main: F.etcbc4_ft_g_word [node] 
+  7.13s DETAIL: load main: F.etcbc4_ft_g_word_utf8 [node] 
+  7.59s DETAIL: load main: F.etcbc4_ft_gn [node] 
+  7.81s DETAIL: load main: F.etcbc4_ft_language [node] 
+  8.11s DETAIL: load main: F.etcbc4_ft_lex [node] 
+  8.39s DETAIL: load main: F.etcbc4_ft_lex_utf8 [node] 
+  8.80s DETAIL: load main: F.etcbc4_ft_ls [node] 
+  9.11s DETAIL: load main: F.etcbc4_ft_nu [node] 
+  9.39s DETAIL: load main: F.etcbc4_ft_ps [node] 
+  9.67s DETAIL: load main: F.etcbc4_ft_sp [node] 
+    10s DETAIL: load main: F.etcbc4_ft_st [node] 
+    10s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/lexicon/__log__lexicon.txt
+    10s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK lexicon AT 2015-09-28T15-20-14
 </pre>
 </div>
 </div>
@@ -463,7 +463,7 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.12s Reading lexicon ...
+<pre>  0.18s Reading lexicon ...
 </pre>
 </div>
 </div>
@@ -477,7 +477,7 @@ Lexicon hbo: there were 0 errors</pre>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.35s Done
+<pre>  0.59s Done
 </pre>
 </div>
 </div>
@@ -553,8 +553,8 @@ Lexicon hbo has  8518 entries
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.41s Reading ETCBC database etcbc4b ...
-    10s Done
+<pre>  0.68s Reading ETCBC database etcbc4b ...
+    22s Done
 </pre>
 </div>
 </div>
@@ -1257,24 +1257,24 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>gn
-	in text and not in lex: 1: [&apos;NA&apos;]
-	in lex and not in text: 1: [&apos;m,f&apos;]
-nu
+<pre>nu
 	in text and not in lex: 4: [&apos;NA&apos;, &apos;du&apos;, &apos;pl&apos;, &apos;sg&apos;]
 	in lex and not in text: 2: [&apos;p&apos;, &apos;s&apos;]
-ls
-	in text and not in lex: 2: [&apos;none&apos;, &apos;ques&apos;]
+ps
+	in text and not in lex: 5: [&apos;NA&apos;, &apos;p1&apos;, &apos;p2&apos;, &apos;p3&apos;, &apos;unknown&apos;]
+	in lex and not in text: 3: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;]
+st
+	in text and not in lex: 3: [&apos;NA&apos;, &apos;c&apos;, &apos;e&apos;]
 	in lex and not in text: 0: []
 sp
 	in text and not in lex: 0: []
 	in lex and not in text: 0: []
-st
-	in text and not in lex: 3: [&apos;NA&apos;, &apos;c&apos;, &apos;e&apos;]
+ls
+	in text and not in lex: 2: [&apos;none&apos;, &apos;ques&apos;]
 	in lex and not in text: 0: []
-ps
-	in text and not in lex: 5: [&apos;NA&apos;, &apos;p1&apos;, &apos;p2&apos;, &apos;p3&apos;, &apos;unknown&apos;]
-	in lex and not in text: 3: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;]
+gn
+	in text and not in lex: 1: [&apos;NA&apos;]
+	in lex and not in text: 1: [&apos;m,f&apos;]
 </pre>
 </div>
 </div>
@@ -1387,8 +1387,8 @@ There is a 1-1 correspondence between lex/strip and lex_utf8
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    17s Reading phonetic transcriptions
-    18s 426567 words
+<pre>    31s Reading phonetic transcriptions
+    32s 426567 words
 </pre>
 </div>
 </div>
@@ -1536,8 +1536,8 @@ The function is typically a transliteration, or a stripping action.</li>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    19s Writing annotation file ...
-    44s Done
+<pre>    33s Writing annotation file ...
+ 1m 01s Done
 </pre>
 </div>
 </div>
@@ -1586,20 +1586,20 @@ The function is typically a transliteration, or a stripping action.</li>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s DETAIL: COMPILING m: UP TO DATE
-  0.01s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.01s BEGIN COMPILE a: lexicon
-  0.01s DETAIL: load main: X. [node]  -&gt; 
-  2.09s DETAIL: load main: X. [e]  -&gt; 
-  4.99s DETAIL: load main: G.node_anchor_min
-  5.14s DETAIL: load main: G.node_anchor_max
-  5.29s DETAIL: load main: G.node_sort
-  5.43s DETAIL: load main: G.node_sort_inv
-  6.51s DETAIL: load main: G.edges_from
-  6.69s DETAIL: load main: G.edges_to
-  6.85s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-data/etcbc4b/bin/A/lexicon/__log__compile__.txt
-  6.85s PARSING ANNOTATION FILES
-  6.87s INFO: parsing lex.xml
- 1m 24s INFO: END PARSING
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  0.00s BEGIN COMPILE a: lexicon
+  0.00s DETAIL: load main: X. [node]  -&gt; 
+  1.94s DETAIL: load main: X. [e]  -&gt; 
+  4.80s DETAIL: load main: G.node_anchor_min
+  4.94s DETAIL: load main: G.node_anchor_max
+  5.06s DETAIL: load main: G.node_sort
+  5.19s DETAIL: load main: G.node_sort_inv
+  5.96s DETAIL: load main: G.edges_from
+  6.13s DETAIL: load main: G.edges_to
+  6.30s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-data/etcbc4b/bin/A/lexicon/__log__compile__.txt
+  6.30s PARSING ANNOTATION FILES
+  6.33s INFO: parsing lex.xml
+ 1m 26s INFO: END PARSING
          0 good   regions  and     0 faulty ones
          0 linked nodes    and     0 unlinked ones
          0 good   edges    and     0 faulty ones
@@ -1607,69 +1607,69 @@ The function is typically a transliteration, or a stripping action.</li>
    5971938 good   features and     0 faulty ones
     426567 distinct xml identifiers
 
- 1m 24s MODELING RESULT FILES
- 1m 24s INFO: CONNECTIVITY
- 1m 24s WRITING RESULT FILES for a
- 1m 24s DETAIL: write annox: F.etcbc4_lex_entry [node] 
- 1m 25s DETAIL: write annox: F.etcbc4_lex_entry_heb [node] 
- 1m 26s DETAIL: write annox: F.etcbc4_lex_entryid [node] 
- 1m 26s DETAIL: write annox: F.etcbc4_lex_g_entry [node] 
- 1m 27s DETAIL: write annox: F.etcbc4_lex_g_entry_heb [node] 
- 1m 28s DETAIL: write annox: F.etcbc4_lex_gloss [node] 
- 1m 29s DETAIL: write annox: F.etcbc4_lex_id [node] 
- 1m 29s DETAIL: write annox: F.etcbc4_lex_lan [node] 
- 1m 30s DETAIL: write annox: F.etcbc4_lex_nametype [node] 
- 1m 30s DETAIL: write annox: F.etcbc4_lex_phono [node] 
- 1m 31s DETAIL: write annox: F.etcbc4_lex_phono_sep [node] 
- 1m 32s DETAIL: write annox: F.etcbc4_lex_pos [node] 
- 1m 32s DETAIL: write annox: F.etcbc4_lex_root [node] 
- 1m 33s DETAIL: write annox: F.etcbc4_lex_subpos [node] 
- 1m 33s END   COMPILE a: lexicon
- 1m 33s INFO: USING DATA COMPILED AT: 2015-09-25T14-25-14
- 1m 33s DETAIL: keep main: G.node_anchor_min
- 1m 33s DETAIL: keep main: G.node_anchor_max
- 1m 33s DETAIL: keep main: G.node_sort
- 1m 33s DETAIL: keep main: G.node_sort_inv
- 1m 33s DETAIL: keep main: G.edges_from
- 1m 33s DETAIL: keep main: G.edges_to
- 1m 33s DETAIL: keep main: F.etcbc4_db_otype [node] 
- 1m 33s DETAIL: keep main: F.etcbc4_ft_g_word [node] 
- 1m 33s DETAIL: keep main: F.etcbc4_ft_g_word_utf8 [node] 
- 1m 33s DETAIL: keep main: F.etcbc4_ft_lex [node] 
- 1m 33s DETAIL: clear main: X. [node]  -&gt; 
- 1m 33s DETAIL: clear main: X. [node]  &lt;- 
- 1m 33s DETAIL: clear main: F.etcbc4_db_oid [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_g_lex [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_g_lex_utf8 [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_gn [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_language [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_lex_utf8 [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_ls [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_nu [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_ps [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_sp [node] 
- 1m 33s DETAIL: clear main: F.etcbc4_ft_st [node] 
- 1m 33s DETAIL: load main: F.etcbc4_ft_g_cons_utf8 [node] 
- 1m 33s DETAIL: load main: F.etcbc4_lex_g_entry [node] 
- 1m 33s DETAIL: load main: F.etcbc4_lex_gloss [node] 
- 1m 33s DETAIL: load main: F.etcbc4_lex_phono [node] 
- 1m 33s DETAIL: load main: F.etcbc4_lex_phono_sep [node] 
- 1m 33s DETAIL: load main: F.etcbc4_sft_book [node] 
- 1m 33s DETAIL: load main: F.etcbc4_sft_chapter [node] 
- 1m 34s DETAIL: load main: F.etcbc4_sft_verse [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_db_otype [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_ft_g_cons_utf8 [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_ft_g_word [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_ft_g_word_utf8 [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_ft_lex [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_lex_g_entry [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_lex_gloss [node] 
- 1m 34s DETAIL: load annox: F.etcbc4_lex_phono [node] 
- 1m 35s DETAIL: load annox: F.etcbc4_lex_phono_sep [node] 
- 1m 35s DETAIL: load annox: F.etcbc4_sft_book [node] 
- 1m 35s DETAIL: load annox: F.etcbc4_sft_chapter [node] 
- 1m 35s DETAIL: load annox: F.etcbc4_sft_verse [node] 
- 1m 35s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK gloss AT 2015-09-25T14-25-16
+ 1m 26s MODELING RESULT FILES
+ 1m 26s INFO: CONNECTIVITY
+ 1m 26s WRITING RESULT FILES for a
+ 1m 26s DETAIL: write annox: F.etcbc4_lex_entry [node] 
+ 1m 27s DETAIL: write annox: F.etcbc4_lex_entry_heb [node] 
+ 1m 28s DETAIL: write annox: F.etcbc4_lex_entryid [node] 
+ 1m 29s DETAIL: write annox: F.etcbc4_lex_g_entry [node] 
+ 1m 29s DETAIL: write annox: F.etcbc4_lex_g_entry_heb [node] 
+ 1m 30s DETAIL: write annox: F.etcbc4_lex_gloss [node] 
+ 1m 31s DETAIL: write annox: F.etcbc4_lex_id [node] 
+ 1m 32s DETAIL: write annox: F.etcbc4_lex_lan [node] 
+ 1m 32s DETAIL: write annox: F.etcbc4_lex_nametype [node] 
+ 1m 33s DETAIL: write annox: F.etcbc4_lex_phono [node] 
+ 1m 34s DETAIL: write annox: F.etcbc4_lex_phono_sep [node] 
+ 1m 34s DETAIL: write annox: F.etcbc4_lex_pos [node] 
+ 1m 35s DETAIL: write annox: F.etcbc4_lex_root [node] 
+ 1m 35s DETAIL: write annox: F.etcbc4_lex_subpos [node] 
+ 1m 35s END   COMPILE a: lexicon
+ 1m 35s INFO: USING DATA COMPILED AT: 2015-09-28T15-22-50
+ 1m 35s DETAIL: keep main: G.node_anchor_min
+ 1m 35s DETAIL: keep main: G.node_anchor_max
+ 1m 35s DETAIL: keep main: G.node_sort
+ 1m 35s DETAIL: keep main: G.node_sort_inv
+ 1m 35s DETAIL: keep main: G.edges_from
+ 1m 35s DETAIL: keep main: G.edges_to
+ 1m 35s DETAIL: keep main: F.etcbc4_db_otype [node] 
+ 1m 35s DETAIL: keep main: F.etcbc4_ft_g_word [node] 
+ 1m 35s DETAIL: keep main: F.etcbc4_ft_g_word_utf8 [node] 
+ 1m 35s DETAIL: keep main: F.etcbc4_ft_lex [node] 
+ 1m 35s DETAIL: clear main: X. [node]  -&gt; 
+ 1m 35s DETAIL: clear main: X. [node]  &lt;- 
+ 1m 35s DETAIL: clear main: F.etcbc4_db_oid [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_g_lex [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_g_lex_utf8 [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_gn [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_language [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_lex_utf8 [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_ls [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_nu [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_ps [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_sp [node] 
+ 1m 35s DETAIL: clear main: F.etcbc4_ft_st [node] 
+ 1m 35s DETAIL: load main: F.etcbc4_ft_g_cons_utf8 [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_lex_g_entry [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_lex_gloss [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_lex_phono [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_lex_phono_sep [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_sft_book [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_sft_chapter [node] 
+ 1m 36s DETAIL: load main: F.etcbc4_sft_verse [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_db_otype [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_ft_g_cons_utf8 [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_ft_g_word [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_ft_g_word_utf8 [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_ft_lex [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_lex_g_entry [node] 
+ 1m 36s DETAIL: load annox: F.etcbc4_lex_gloss [node] 
+ 1m 37s DETAIL: load annox: F.etcbc4_lex_phono [node] 
+ 1m 37s DETAIL: load annox: F.etcbc4_lex_phono_sep [node] 
+ 1m 37s DETAIL: load annox: F.etcbc4_sft_book [node] 
+ 1m 37s DETAIL: load annox: F.etcbc4_sft_chapter [node] 
+ 1m 37s DETAIL: load annox: F.etcbc4_sft_verse [node] 
+ 1m 37s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK gloss AT 2015-09-28T15-22-52
 </pre>
 </div>
 </div>
@@ -1764,7 +1764,7 @@ The function is typically a transliteration, or a stripping action.</li>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.59s Making interlinear glossed text ...
+<pre>  0.81s Making interlinear glossed text ...
     11s Done
 </pre>
 </div>
@@ -1878,7 +1878,7 @@ gloss = interval|water  |to |water    |
 Genesis 1:7
 ==================================================================================================================
 hebrew=  וַ| יַּ֣עַשׂ|  אֱלֹהִים֮|            אֶת| הָ| רָקִיעַ֒| וַ| יַּבְדֵּ֗ל|  בֵּ֤ין| הַ|  מַּ֨יִם֙|
-phono = wa |yyˈaʕaś |ʔᵉlōhîmˈ   |ʔeṯ            |hā |rāqîʕˌa  |wa |yyavdˈēl   |bˈên    |ha |mmˈayim   |
+phono = wa |yyˈaʕaś |ʔᵉlōhîmˈ   |ʔeṯ            |hā |rāqîˌₐʕ  |wa |yyavdˈēl   |bˈên    |ha |mmˈayim   |
 trans = WA-|J.A74&lt;AF|&gt;:ELOHIJM02|&gt;ET&amp;           |H@-|R@QIJ&lt;A01|WA-|J.AB:D.;81L|B.;70JN |HA-|M.A33JIM03|
 voclex= W: |&lt;@F@H   |&gt;:ELOHIJM  |&gt;;T            |HA |R@QIJ&lt;A  |W: |B.@DAL     |B.AJIN  |HA |MAJIM     |
 lexeme= W  |&lt;FH[    |&gt;LHJM/     |&gt;T             |H  |RQJ&lt;/    |W  |BDL[       |BJN/    |H  |MJM/      |
