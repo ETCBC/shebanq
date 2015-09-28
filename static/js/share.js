@@ -110,7 +110,7 @@ jQuery(function(){
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
         var shebanq_url_note
         var shebanq_url_note_pref = 'shebanq:'
-        var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()
+        var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()
         var shebanq_url_side_vars = '&wget='+wb.vs.get('w')+'&qget='+wb.vs.get('q')+'&nget='+wb.vs.get('n')
         var shebanq_url = encodeURIComponent(shebanq_url_raw)
         var pvtitle

@@ -450,7 +450,7 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
 <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;etcbc{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">),</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;phono&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
     <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
@@ -480,13 +480,13 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.01s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-    12s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4/phono/__log__phono.txt
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+    11s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/__log__phono.txt
     26s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-  1.06s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK phono AT 2015-09-28T15-11-28
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK phono AT 2015-09-28T15-11-28
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  1.63s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK phono AT 2015-09-28T19-34-58
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK phono AT 2015-09-28T19-34-58
 </pre>
 </div>
 </div>
@@ -1493,9 +1493,9 @@ This dictionary is keyed by the pre-transliterated form, and valued by the corre
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="n">dout</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;qamets qatan&#39;</span><span class="p">,</span> <span class="s">&#39;special verb form: qatan suppressed for {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">decl</span><span class="p">)))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">this_dout</span><span class="p">)</span> <span class="o">=</span> <span class="n">doplainqamets</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">this_dout</span><span class="p">)</span> <span class="o">=</span> <span class="n">doplainqamets</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
             <span class="n">dout</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">this_dout</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">result</span> <span class="o">=</span> <span class="n">doplainqamets</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">result</span> <span class="o">=</span> <span class="n">doplainqamets</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
 
 <span class="c"># check whether we have a pronominal suffix that requires suppressing qamets =&gt; qatan</span>
 
@@ -1826,8 +1826,8 @@ This involves looking at accents, verb paradigms and special cases among the non
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  1.46s Looking for non-verb qamets
-  7.40s 4023 lexemes and 13639 unique occurrences
+<pre>  2.84s Looking for non-verb qamets
+    12s 4020 lexemes and 13638 unique occurrences
 </pre>
 </div>
 </div>
@@ -1886,8 +1886,8 @@ This involves looking at accents, verb paradigms and special cases among the non
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  7.43s Filtering lexemes with varied occurrences
-  8.20s 215 interesting lexemes with 2435 unique occurrences
+<pre>    12s Filtering lexemes with varied occurrences
+    12s 216 interesting lexemes with 2438 unique occurrences
 </pre>
 </div>
 </div>
@@ -2035,9 +2035,9 @@ This involves looking at accents, verb paradigms and special cases among the non
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  8.36s Guessing between gadol and qatan
-  8.43s 140 lexemes with modified occurrences (281)
-  8.43s 0 patterns with conflicts
+<pre>    13s Guessing between gadol and qatan
+    13s 139 lexemes with modified occurrences (279)
+    13s 0 patterns with conflicts
 </pre>
 </div>
 </div>
@@ -2109,8 +2109,8 @@ For that we need a passage index.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  8.44s Compiling passage index
-  9.98s 23213 passages (verses)
+<pre>    13s Compiling passage index
+    14s 23213 passages (verses)
 </pre>
 </div>
 </div>
@@ -2586,7 +2586,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    10s 84 tests; 0 failed; 84 passed of which 67 exactly.
+<pre>    15s 84 tests; 0 failed; 84 passed of which 67 exactly.
 </pre>
 </div>
 </div>
@@ -2732,7 +2732,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    10s 10 tests; 0 failed; 10 passed of which 10 exactly.
+<pre>    15s 10 tests; 0 failed; 10 passed of which 10 exactly.
 </pre>
 </div>
 </div>
@@ -2742,14 +2742,14 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 <pre>MI-T.A74XAT =&gt; [&apos;mi&apos;, &apos;ttˈaḥaṯ&apos;]
 find_w: no &gt;ET&amp;J:HW@75H $ found in Genesis 4:1
 find_w: no &gt;ET&amp;J:HW@75H $ found in Genesis 4:1
-  1 Genesis 4:1         nmpr sm           J:HW@75H               [yᵊhwˈāh]            =                     
-  2 Genesis 1:1         art               HA                     hˌa                  =                     
-  3 Genesis 1:7         prep              MI                     mˌi                  =                     
-  4 Genesis 1:7         subs sm           T.A74XAT               tˈaḥaṯ               =                     
-  5 Genesis 1:1         subs pm           C.@MA73JIM             ššāmˌayim            =                     
-  6 Genesis 17:11       subs sf,km        &lt;@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
-  7 Genesis 48:10       subs df           &lt;;JN;70J               ʕênˈê                =                     
-  8 Samuel_I 23:4       verb qal impv 2sm 10QW.M                 ˈqûm                 =                     
+  1 Samuel_I 23:4       nmpr sm           JHW@80H_S              [yhwˈāh]             =                     
+  2 Genesis 4:1         nmpr sm           J:HW@75H               [yᵊhwˈāh]            =                     
+  3 Genesis 1:1         art               HA                     hˌa                  =                     
+  4 Genesis 1:7         prep              MI                     mˌi                  =                     
+  5 Genesis 1:7         subs sm           T.A74XAT               tˈaḥaṯ               =                     
+  6 Genesis 1:1         subs pm           C.@MA73JIM             ššāmˌayim            =                     
+  7 Genesis 48:9        verb piel impf 1s-,m &gt;:AB@R:AK;75M          ʔᵃvārᵃḵˈēm           =                     
+  8 Genesis 17:11       subs sf,km        &lt;@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
   9 Genesis 4:1                           &gt;ET&amp;J:HW@75H $         ʔeṯ-[yᵊhwˈāh] .      =                     
  10 Genesis 1:7         subs sm           MI-T.A74XAT            mittˈaḥaṯ            =                     
 </pre>
@@ -2822,8 +2822,8 @@ find_w: no &gt;ET&amp;J:HW@75H $ found in Genesis 4:1
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    11s Showing lexemes with varied occurrences
-    11s 140 lexemes with 1610 occurrences and 269 corrections written
+<pre>    15s Showing lexemes with varied occurrences
+    16s 139 lexemes with 1598 occurrences and 267 corrections written
 </pre>
 </div>
 </div>
@@ -2866,9 +2866,9 @@ find_w: no &gt;ET&amp;J:HW@75H $ found in Genesis 4:1
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    11s Generating HTML in special_nonverb_cases4.html
-    11s 140 lexemes
-    11s 1610 occurrences and 269 corrections
+<pre>    16s Generating HTML in special_nonverb_cases4b.html
+    16s 139 lexemes
+    16s 1598 occurrences and 267 corrections
 </pre>
 </div>
 </div>
@@ -2932,8 +2932,8 @@ We look at the verb paradigms to fill in the missing information.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    11s Finding qamets qatan special verb cases
-    15s 513 cases
+<pre>    16s Finding qamets qatan special verb cases
+    20s 513 cases
 </pre>
 </div>
 </div>
@@ -3005,10 +3005,10 @@ We look at the verb paradigms to fill in the missing information.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    15s Showing verb cases
-    15s Generating HTML in special_verb_cases4.html
-    15s 192 lexemes
-    15s 513 occurrences and 147 corrections
+<pre>    20s Showing verb cases
+    20s Generating HTML in special_verb_cases4b.html
+    20s 192 lexemes
+    20s 513 occurrences and 147 corrections
 </pre>
 </div>
 </div>
@@ -3149,31 +3149,31 @@ We look at the verb paradigms to fill in the missing information.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    16s Generating complete texts (transcribed and phonetic) ... 
-    19s  1000 verses 13314 61 0 29
-    22s  2000 verses 27402 120 2 66
-    25s  3000 verses 40958 164 6 111
-    28s  4000 verses 54138 228 11 133
-    31s  5000 verses 67144 288 18 165
-    34s  6000 verses 82439 367 22 195
-    37s  7000 verses 97539 426 30 212
-    41s  8000 verses 113737 495 33 239
-    45s  9000 verses 129590 537 37 264
-    48s 10000 verses 146204 587 37 308
-    51s 11000 verses 159797 709 38 348
-    54s 12000 verses 174179 847 42 377
-    57s 13000 verses 190539 972 48 421
- 1m 00s 14000 verses 205088 1119 55 469
- 1m 02s 15000 verses 218594 1238 56 502
- 1m 04s 16000 verses 227926 1284 64 528
- 1m 06s 17000 verses 235616 1324 78 557
- 1m 08s 18000 verses 243238 1341 81 591
- 1m 10s 19000 verses 250689 1374 92 624
- 1m 11s 20000 verses 260098 1415 93 679
- 1m 15s 21000 verses 275065 1477 96 693
- 1m 17s 22000 verses 286421 1531 99 712
- 1m 20s 23000 verses 301274 1585 103 743
- 1m 21s 23213 verses done 304772 1590 104 750
+<pre>    20s Generating complete texts (transcribed and phonetic) ... 
+    24s  1000 verses 13314 61 0 29
+    27s  2000 verses 27402 120 2 66
+    30s  3000 verses 40958 164 6 111
+    33s  4000 verses 54138 228 11 133
+    36s  5000 verses 67144 288 18 165
+    40s  6000 verses 82439 367 22 195
+    43s  7000 verses 97539 426 30 212
+    46s  8000 verses 113737 495 33 239
+    50s  9000 verses 129590 537 37 264
+    53s 10000 verses 146204 587 37 307
+    56s 11000 verses 159794 709 38 346
+    59s 12000 verses 174176 847 42 375
+ 1m 02s 13000 verses 190537 972 48 419
+ 1m 06s 14000 verses 205086 1119 55 466
+ 1m 09s 15000 verses 218592 1238 56 498
+ 1m 11s 16000 verses 227924 1284 64 524
+ 1m 13s 17000 verses 235614 1324 78 553
+ 1m 14s 18000 verses 243236 1341 81 587
+ 1m 16s 19000 verses 250687 1374 92 620
+ 1m 19s 20000 verses 260096 1415 93 674
+ 1m 22s 21000 verses 275063 1477 96 688
+ 1m 24s 22000 verses 286419 1531 99 707
+ 1m 27s 23000 verses 301274 1585 103 738
+ 1m 28s 23213 verses done 304772 1590 104 745
 </pre>
 </div>
 </div>
@@ -3187,7 +3187,7 @@ We look at the verb paradigms to fill in the missing information.</p>
    11511 default_accent
      964 fixit
     3191 furtive_patah
-   27352 last_ml
+   27353 last_ml
     2188 mappiq_heh
     1315 masora
    93041 mobile_schwa1
@@ -3195,8 +3195,13 @@ We look at the verb paradigms to fill in the missing information.</p>
      144 mobile_schwa3
     7507 mobile_schwa4
      104 qamets_prs_suppress_qatan
+    5530 qamets_qatan1
+     256 qamets_qatan2
+    2143 qamets_qatan3
+      28 qamets_qatan4a
+     248 qamets_qatan4b
      328 qamets_qatan5
-     750 qamets_qatan_corrections
+     745 qamets_qatan_corrections
     1590 qamets_verb_suppress_qatan
       12 rafe
    20812 silent_aleph
@@ -3274,10 +3279,10 @@ From the phono file we strip the passage indicators, and from the wordph we stri
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 21s Reading phono
- 1m 21s 23213 lines
- 1m 21s Reading wordph
- 1m 23s 23213 lines
+<pre> 1m 28s Reading phono
+ 1m 28s 23213 lines
+ 1m 28s Reading wordph
+ 1m 30s 23213 lines
 </pre>
 </div>
 </div>
@@ -3288,7 +3293,7 @@ From the phono file we strip the passage indicators, and from the wordph we stri
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="o">!</span>diff -qs <span class="o">{</span>phono_test_name<span class="o">}</span> <span class="o">{</span>word_test_name<span class="o">}</span>
@@ -3304,7 +3309,7 @@ From the phono file we strip the passage indicators, and from the wordph we stri
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Files /Users/dirk/SURFdrive/laf-fabric-output/etcbc4/phono/phono_x4.txt and /Users/dirk/SURFdrive/laf-fabric-output/etcbc4/phono/wordph_x4.txt are identical
+<pre>Files /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/phono_x4b.txt and /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/wordph_x4b.txt are identical
 </pre>
 </div>
 </div>
@@ -3326,7 +3331,7 @@ Here is a regular expression that finds all occurrences of the tetragrammaton, a
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">tetra_pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;([0-9]*j{n}*h{n}*w{n}*h{n}*)(?=(?:[ _][sp])?(?:[ &amp;$-]|\Z))&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">ncons</span><span class="p">))</span>
@@ -3372,7 +3377,7 @@ Not tetras matched  : 0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="s">&#39;{} {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">get_orig</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">sep</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">tetra_not_matched</span><span class="p">)))</span>
