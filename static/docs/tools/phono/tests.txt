@@ -82,3 +82,4 @@ Psalm 119:99	L,I75J		lˈî	rafe just after the lamed: can be ignored
 Genesis 1:7	>ET&H@-R@QIJ<A01		ʔeṯ-hārāqîˌₐʕ	furtive pata and default accent
 Numeri 8:22	<:ABO75D@T@M03		ʕᵃvˈōḏāṯām	first qamets is gadol because of other occurrences, second qamets is gadol because of ending
 Samuel_I 23:4	JHW@80H_S		[yhwˈāh]	tetragrammaton with _S
+Proverbia 10:10	<AY.@92BET		ʕaṣṣˈāveṯ	qamets is gadol

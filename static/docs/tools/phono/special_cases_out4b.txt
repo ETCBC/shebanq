@@ -6,8 +6,9 @@
   6 Genesis 1:1         subs pm           C.@MA73JIM             ššāmˌayim            =                     
   7 Genesis 48:9        verb piel impf 1s-,m >:AB@R:AK;75M          ʔᵃvārᵃḵˈēm           =                     
   8 Genesis 17:11       subs sf,km        <@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
-  9 Genesis 4:1                           >ET&J:HW@75H $         ʔeṯ-[yᵊhwˈāh] .      =                     
- 10 Genesis 1:7         subs sm           MI-T.A74XAT            mittˈaḥaṯ            =                     
+  9 Proverbia 10:10     subs sf           <AY.@92BET             ʕaṣṣˈoveṯ            =                     
+ 10 Genesis 4:1                           >ET&J:HW@75H $         ʔeṯ-[yᵊhwˈāh] .      =                     
+ 11 Genesis 1:7         subs sm           MI-T.A74XAT            mittˈaḥaṯ            =                     
 
   1 Samuel_I 23:4       nmpr sm           JHW@80H_S                 => [yhwˈāh]                  < =                           # peculiar representation of tetragrammaton
         orig                 JHW@80H_S
@@ -265,7 +266,40 @@
         cleanup              ʕorlaṯᵊḵˈem
 
 
-  9 Genesis 4:1                           >ET&J:HW@75H $            => ʔeṯ-[yᵊhwˈāh] .           < =                           # Tetra with end of verse
+  9 Proverbia 10:10     subs sf           <AY.@92BET                => ʕaṣṣˈoveṯ                 < =                           # the qamets should be gadol
+        orig                 <AY.@92BET
+        trim                 <ay.@92bet
+        tetra                <ay.@92bet
+        masora               <ay.@92bet
+        rafe                 <ay.@92bet
+        furtive_patah        <ay.@92bet
+        accents              <ay.!@bet
+        default accent       <ay.!@bet
+        qamets qatan         no special verb form: subs sf
+        qamets_qatan1        <ay.!@bet
+        qamets_qatan2        <ay.!@bet
+        qamets_qatan3        <ay.!@bet
+        qamets_qatan4a       <ay.!@bet
+        qamets_qatan4b       <ay.!@bet
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        <ay.!@bet
+        qamets qatan         correction: <ay.!@bet => <ay.!^bet
+        mobile_schwa1        <ay.!^bet
+        mobile_schwa2        <ay.!^bet
+        mobile_schwa3        <ay.!^bet
+        mobile_schwa4        <ay.!^bet
+        dagesh_forte_lene    <ay.!^bet
+        dagesh_forte         <ayy!^bet
+        dagesh_lene          <ayy!^bet
+        silent_aleph         <ayy!^bet
+        last_ml              <ayy!^bet
+        mappiq_heh           <ayy!^bet
+        symbols              ʕaṣṣˈoveṯ
+        fixit                ʕaṣṣˈoveṯ
+        cleanup              ʕaṣṣˈoveṯ
+
+
+ 10 Genesis 4:1                           >ET&J:HW@75H $            => ʔeṯ-[yᵊhwˈāh] .           < =                           # Tetra with end of verse
         orig                 >ET&J:HW@75H $
         trim                 >et&j:hw@75h $
         tetra                >et& [ j:hw@75h ]  $
@@ -297,7 +331,7 @@
         cleanup              ʔeṯ-[yᵊhwˈāh] .
 
 
- 10 Genesis 1:7         subs sm           MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
+ 11 Genesis 1:7         subs sm           MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
         orig                 MI-T.A74XAT
         trim                 mi-t.a74xat
         tetra                mi-t.a74xat
