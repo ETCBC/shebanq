@@ -670,10 +670,12 @@ def sidem_c(vr, qw, bk, ch, pub):
 def query():
     session.forget(response)
     iidrep = get_request_val('material', '', 'iid')
+    request.vars['mr'] = 'r'
+    request.vars['qw'] = 'q'
     if request.extension == 'json':
         (authorized, msg) = item_access_read(iidrep=iidrep)
         if not authorized:
-            result = dict(good=False, msg=[msg])
+            return dict(good=False, msg=[msg], data={})
         else:
             vr = get_request_val('material', '', 'version')
             msgs = []
@@ -682,8 +684,6 @@ def query():
             result = dict(good=qrecord != None, msg=msgs, data=qrecord)
             return dict(data=json.dumps(result))
     else:
-        request.vars['mr'] = 'r'
-        request.vars['qw'] = 'q'
         request.vars['page'] = 1
     return text()
 
@@ -2361,6 +2361,7 @@ def item_access_read(iidrep=get_request_val('material', '', 'iid')):
     if qw == 'q':
         if iidrep != None:
             (iid, kw) = iid_decode(qw, iidrep)
+            print 'iid=[{}] kw=[{}]'.format(iid, kw)
             if iid > 0: return query_auth_read(iid)
     return (None, u'Not a valid id {}'.format(iidrep))
 
