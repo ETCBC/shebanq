@@ -920,11 +920,24 @@ td.ll {
 td.l {
     border-left: 4pt solid #ff0000;
 }
-span.ht, span.l_ht {
+span.ht_ht, span.l_ht_ht {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: x-large;
     color: #000000;
     line-height: 1.5;
+}
+span.ht_hk, span.l_ht_hk {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    color: #cc0000;
+    line-height: 1.5;
+}
+span.i_ht {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: large;
+    color: #000000;
+    line-height: 1.2;
+    float: right;
 }
 span.pt, span.l_pt {
     font-family: Verdana, Arial, sans-serif;
@@ -949,8 +962,6 @@ span.hl_hlc, span.l_hl_hlc {
     font-size: large;
     color: #000000;
     line-height: 1.2;
-}
-.i_hl {
     float: right;
 }
 span.tt, span.l_tt {

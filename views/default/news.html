@@ -35,6 +35,30 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
+<h2>2015-10-02</h2>
+<dl>
+<dt>Ketiv-Qere</dt>
+<dd>
+Up till now, SHEBANQ only showed the unvocalized <i>ketiv</i> at places where there is a divergence between qere and ketiv.
+Now the vocalized <i>qere</i> is shown in the text, preceded by a masora circle.
+If you want to know what the ketiv is, click on the verse number to go to data view, and the ketiv will is given in the
+block of data that corresponds with the word in question.
+See for example
+<a href="{{=URL('hebrew','text', vars=dict(book='Genesis', chapter='12', verse='8', tp='txt_p'))}}">Genesis 12:8</a>.
+<dt>Phonetic transcriptions</dt>
+<dd>Quite a few improvements.
+Perfection is hard, it might not be attainable here.
+
+<b>Yet I welcome corrections, preferably as a note that you contribute to SHEBANQ below the offending transcription. 
+Please give it the keyword <i>phono</i>.</b>
+
+Currently I have a test set of over 2000 examples, which is a great help when making changes to the horribly intricate set
+of rules that is being applied!
+</dd>
+</dl>
+</div>
+
+<div>
 <h2>2015-09-25</h2>
 <dl>
 <dt>Phonetic transcriptions</dt>
@@ -390,7 +414,7 @@ your existing queries do on the new data version.</li>
 <dt>Bugfix: in Internet Explorer the dialogs for selecting books and chapters did not function.</dt>
 <dd>Thanks to Reinoud Oosting and Marjanne Kaajan for spotting this.
 In fact, this was not IE's fault, but mine: in the Javascript code for SHEBANQ there were a number of variables floating around
-that had not been declared with *var*.
+that had not been declared with <i>var</i>.
 Still, I do not promise that SHEBANQ works well with IE, but at the moment I do not see IE-specific bugs.</dd>
 </dl>
 </div>

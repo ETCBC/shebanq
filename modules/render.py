@@ -89,7 +89,7 @@ for (i,x) in enumerate(nt_statorder):
 
 field_names = dict(
     txt_il='''
-        word_heb word_phono word_vlex word_clex word_tran word_lex word_glex word_gloss
+        word_heb word_ktv word_phono word_vlex word_clex word_tran word_lex word_glex word_gloss
         word_subpos word_pos word_pdp word_lang word_number
         word_gender word_gnumber word_person word_state word_tense word_stem
         word_nme word_pfm word_prs word_uvf word_vbe word_vbs
@@ -102,17 +102,17 @@ field_names = dict(
         word_phono word_phono_sep
         '''.strip().split(),
     txt_tb1='''
-        word_heb word_phono word_phono_sep word_number
+        word_heb word_ktv word_phono word_phono_sep word_number
         phrase_border phrase_number phrase_function
         sentence_number clause_number clause_atom_number clause_atom_tab clause_txt clause_typ
         '''.strip().split(),
     txt_tb2='''
-        word_heb word_phono word_phono_sep word_number
+        word_heb word_ktv word_phono word_phono_sep word_number
         phrase_border phrase_function
         sentence_number clause_number clause_atom_number clause_atom_tab clause_atom_code clause_txt clause_typ
         '''.strip().split(),
     txt_tb3='''
-        word_heb word_phono word_phono_sep word_number word_lex word_pos word_gender
+        word_heb word_ktv word_phono word_phono_sep word_number word_lex word_pos word_gender
         phrase_border
         sentence_number clause_number clause_atom_number clause_atom_tab
         '''.strip().split(),
@@ -121,12 +121,14 @@ hfields = dict(
     txt_p=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_ktv', 'ktv'),
         ('word_phono', 'phtext'),
         ('word_phono_sep', 'phsep'),
     ],
     txt_tb1=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_ktv', 'ktv'),
         ('word_phono', 'phtext'),
         ('word_phono_sep', 'phsep'),
         ('phrase_number', 'phrase#'),
@@ -138,6 +140,7 @@ hfields = dict(
     txt_tb2=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_ktv', 'ktv'),
         ('word_phono', 'phtext'),
         ('word_phono_sep', 'phsep'),
         ('phrase_number', 'phrase#'),
@@ -150,6 +153,7 @@ hfields = dict(
     txt_tb3=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),
+        ('word_ktv', 'ktv'),
         ('word_lex', 'lexeme-t'),
         ('word_pos', 'part-of-speech'),
         ('word_gender', 'gender'),
@@ -161,7 +165,7 @@ hfields = dict(
 notfillfields = {'word_phono', 'word_phono_sep'}
 
 hebrewdata_lines_spec = '''
-    ht:ht=word_heb=text-h
+    ht:ht_ht=word_heb=text-h,ht_hk=word_ktv=ketiv
     pt:pt=word_phono=text-p
     hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
     tt:tt=word_tran=text-t
@@ -191,7 +195,7 @@ specs = dict(
         {'': '''4 Genesis 1 1 None 1 x m txt_p hb'''},
     ),
     hebrewdata=('''
-        ht
+        ht ht_ht ht_hk
         pt
         hl hl_hlv hl_hlc
         tt
@@ -205,7 +209,7 @@ specs = dict(
         cl cl_txt cl_typ cl_rela cl_tab cl_code cl_an cl_n
         sn sn_an sn_n
     ''','''
-        bool
+        bool bool bool
         bool
         bool bool bool
         bool
@@ -219,7 +223,7 @@ specs = dict(
         bool bool bool bool bool bool bool bool
         bool bool bool
     ''', {'': '''
-        v
+        v v v
         v
         v x v
         x
@@ -261,7 +265,13 @@ legend_tpl = '''
 <table id="legend" class="il">
     <tr class="il l_ht">
         <td class="c l_ht"><input type="checkbox" id="ht" name="ht"/></td>
-        <td class="il l_ht"><a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht">text דְּבַ֥ר</span></a></td>
+        <td class="il l_ht">
+            <span class="il l_ht_ht">text</span>&nbsp;&nbsp;
+            <input type="checkbox" id="ht_ht" name="ht_ht"/>
+                <a target="_blank" href="{base_doc}/g_word_utf8.html"><span class="l_ht_ht">דְּבַ֥ר</span></a>&nbsp;(qere) &nbsp;
+            <input type="checkbox" id="ht_hk" name="ht_hk"/>
+                <a target="_blank" href="{base_doc}/ketiv.html"><span class="l_ht_hk">כתב</span></a>&nbsp;(ketiv) &nbsp;
+        </td>
     </tr>
     <tr class="il l_pt">
         <td class="c l_pt"><input type="checkbox" id="pt" name="pt"/></td>
@@ -415,7 +425,7 @@ legend_tpl = '''
 
 text_tpl = u'''<table class="il c">
     <tr class="il ht">
-        <td class="il ht"><span m="{word_number}" class="ht">{word_heb}</span></td>
+        <td class="il ht"><span m="{word_number}" class="il ht_ht">{word_heb}</span>&nbsp;&nbsp;<span class="il ht_hk">{word_ktv}</span></td>
     </tr>
     <tr class="il pt">
         <td class="il pt"><span m="{word_number}" class="pt">{word_phono}</span></td>

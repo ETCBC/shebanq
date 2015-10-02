@@ -231,7 +231,7 @@ The <em>passage</em> database also contains a lexicon, which is linked to the wo
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.5.3
+<pre>  0.00s This is LAF-Fabric 4.5.4
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 
@@ -245,17 +245,30 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
-<span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4&#39;</span>
-<span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
+<span class="k">if</span> <span class="s">&#39;version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
     <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
 <span class="s">        oid otype monads minmonad maxmonad</span>
 <span class="s">        book chapter verse</span>
 <span class="s">        g_cons g_cons_utf8 g_word g_word_utf8 trailer_utf8</span>
+<span class="s">        g_qere_utf8 qtrailer_utf8</span>
 <span class="s">        language lex g_lex lex_utf8 sp pdp ls</span>
 <span class="s">        vt vs gn nu ps st</span>
 <span class="s">        nme pfm prs uvf vbe vbs</span>
@@ -265,9 +278,8 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 <span class="s">        code tab</span>
 <span class="s">        number</span>
 <span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-    <span class="s">&#39;primary&#39;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
     <span class="s">&#39;prepare&#39;</span><span class="p">:</span> <span class="n">prepare</span><span class="p">,</span>
-<span class="p">},</span> <span class="n">verbose</span><span class="o">=</span><span class="s">&#39;DETAIL&#39;</span><span class="p">)</span>
+<span class="p">},</span> <span class="n">verbose</span><span class="o">=</span><span class="s">&#39;NORMAL&#39;</span><span class="p">)</span>
 <span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="o">.</span><span class="n">localnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric&#39;</span><span class="p">))</span>
 </pre></div>
 
@@ -282,135 +294,15 @@ Feature doc: http://shebanq-doc.readthedocs.org/en/latest/texts/welcome.html
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.00s DETAIL: COMPILING m: UP TO DATE
-  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-  0.01s DETAIL: COMPILING a: UP TO DATE
-  0.01s INFO: USING DATA COMPILED AT: 2015-09-28T15-17-28
-  0.01s DETAIL: load main: G.node_anchor_min
-  0.20s DETAIL: load main: G.node_anchor_max
-  0.36s DETAIL: load main: G.node_sort
-  0.51s DETAIL: load main: G.node_sort_inv
-  1.12s DETAIL: load main: G.edges_from
-  1.28s DETAIL: load main: G.edges_to
-  1.47s DETAIL: load main: F.etcbc4_db_maxmonad [node] 
-  2.55s DETAIL: load main: F.etcbc4_db_minmonad [node] 
-  3.62s DETAIL: load main: F.etcbc4_db_monads [node] 
-  4.80s DETAIL: load main: F.etcbc4_db_oid [node] 
-  5.88s DETAIL: load main: F.etcbc4_db_otype [node] 
-  6.91s DETAIL: load main: F.etcbc4_ft_code [node] 
-  7.00s DETAIL: load main: F.etcbc4_ft_det [node] 
-  7.35s DETAIL: load main: F.etcbc4_ft_function [node] 
-  7.56s DETAIL: load main: F.etcbc4_ft_g_cons [node] 
-  7.85s DETAIL: load main: F.etcbc4_ft_g_cons_utf8 [node] 
-  8.28s DETAIL: load main: F.etcbc4_ft_g_lex [node] 
-  8.65s DETAIL: load main: F.etcbc4_ft_g_word [node] 
-  9.04s DETAIL: load main: F.etcbc4_ft_g_word_utf8 [node] 
-  9.54s DETAIL: load main: F.etcbc4_ft_gn [node] 
-  9.78s DETAIL: load main: F.etcbc4_ft_language [node] 
-    10s DETAIL: load main: F.etcbc4_ft_lex [node] 
-    10s DETAIL: load main: F.etcbc4_ft_lex_utf8 [node] 
-    11s DETAIL: load main: F.etcbc4_ft_ls [node] 
-    11s DETAIL: load main: F.etcbc4_ft_nme [node] 
-    11s DETAIL: load main: F.etcbc4_ft_nu [node] 
-    12s DETAIL: load main: F.etcbc4_ft_number [node] 
-    13s DETAIL: load main: F.etcbc4_ft_pdp [node] 
-    13s DETAIL: load main: F.etcbc4_ft_pfm [node] 
-    13s DETAIL: load main: F.etcbc4_ft_prs [node] 
-    13s DETAIL: load main: F.etcbc4_ft_ps [node] 
-    14s DETAIL: load main: F.etcbc4_ft_rela [node] 
-    14s DETAIL: load main: F.etcbc4_ft_sp [node] 
-    15s DETAIL: load main: F.etcbc4_ft_st [node] 
-    15s DETAIL: load main: F.etcbc4_ft_tab [node] 
-    15s DETAIL: load main: F.etcbc4_ft_trailer_utf8 [node] 
-    15s DETAIL: load main: F.etcbc4_ft_txt [node] 
-    15s DETAIL: load main: F.etcbc4_ft_typ [node] 
-    16s DETAIL: load main: F.etcbc4_ft_uvf [node] 
-    16s DETAIL: load main: F.etcbc4_ft_vbe [node] 
-    17s DETAIL: load main: F.etcbc4_ft_vbs [node] 
-    17s DETAIL: load main: F.etcbc4_ft_vs [node] 
-    17s DETAIL: load main: F.etcbc4_ft_vt [node] 
-    18s DETAIL: load main: F.etcbc4_lex_g_entry [node] 
-    18s DETAIL: load main: F.etcbc4_lex_g_entry_heb [node] 
-    18s DETAIL: load main: F.etcbc4_lex_gloss [node] 
-    18s DETAIL: load main: F.etcbc4_lex_phono [node] 
-    18s DETAIL: load main: F.etcbc4_lex_phono_sep [node] 
-    18s DETAIL: load main: F.etcbc4_sft_book [node] 
-    18s DETAIL: load main: F.etcbc4_sft_chapter [node] 
-    18s DETAIL: load main: F.etcbc4_sft_verse [node] 
-    18s DETAIL: load annox: F.etcbc4_db_maxmonad [node] 
-    18s DETAIL: load annox: F.etcbc4_db_minmonad [node] 
-    18s DETAIL: load annox: F.etcbc4_db_monads [node] 
-    18s DETAIL: load annox: F.etcbc4_db_oid [node] 
-    18s DETAIL: load annox: F.etcbc4_db_otype [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_code [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_det [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_function [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_g_cons [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_g_cons_utf8 [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_g_lex [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_g_word [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_g_word_utf8 [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_gn [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_language [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_lex [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_lex_utf8 [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_ls [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_nme [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_nu [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_number [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_pdp [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_pfm [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_prs [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_ps [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_rela [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_sp [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_st [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_tab [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_trailer_utf8 [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_txt [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_typ [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_uvf [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_vbe [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_vbs [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_vs [node] 
-    18s DETAIL: load annox: F.etcbc4_ft_vt [node] 
-    18s DETAIL: load annox: F.etcbc4_lex_g_entry [node] 
-    19s DETAIL: load annox: F.etcbc4_lex_g_entry_heb [node] 
-    20s DETAIL: load annox: F.etcbc4_lex_gloss [node] 
-    20s DETAIL: load annox: F.etcbc4_lex_phono [node] 
-    21s DETAIL: load annox: F.etcbc4_lex_phono_sep [node] 
-    21s DETAIL: load annox: F.etcbc4_sft_book [node] 
-    21s DETAIL: load annox: F.etcbc4_sft_chapter [node] 
-    21s DETAIL: load annox: F.etcbc4_sft_verse [node] 
-    21s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4/shebanq/__log__shebanq.txt
-    21s DETAIL: prep prep: G.node_sort
-    22s DETAIL: prep prep: G.node_sort_inv
-    23s DETAIL: prep prep: L.node_up
-    30s DETAIL: prep prep: L.node_down
-    40s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  0.01s INFO: USING DATA COMPILED AT: 2015-10-01T10-35-26
+    23s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/shebanq/__log__shebanq.txt
+    37s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
-  0.00s DETAIL: COMPILING m: UP TO DATE
-  0.01s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-  0.01s DETAIL: COMPILING a: UP TO DATE
-  0.01s INFO: USING DATA COMPILED AT: 2015-09-28T15-17-28
-  0.02s DETAIL: keep main: G.node_anchor_min
-  0.02s DETAIL: keep main: G.node_anchor_max
-  0.02s DETAIL: keep main: G.node_sort
-  0.02s DETAIL: keep main: G.node_sort_inv
-  0.02s DETAIL: keep main: G.edges_from
-  0.02s DETAIL: keep main: G.edges_to
-  0.02s DETAIL: keep main: F.etcbc4_db_otype [node] 
-  0.02s DETAIL: keep main: F.etcbc4_ft_number [node] 
-  0.02s DETAIL: keep main: F.etcbc4_sft_book [node] 
-  0.02s DETAIL: keep main: F.etcbc4_sft_chapter [node] 
-  0.02s DETAIL: keep main: F.etcbc4_sft_verse [node] 
-  0.02s DETAIL: keep annox: F.etcbc4_db_otype [node] 
-  0.02s DETAIL: keep annox: F.etcbc4_ft_number [node] 
-  0.03s DETAIL: keep annox: F.etcbc4_sft_book [node] 
-  0.03s DETAIL: keep annox: F.etcbc4_sft_chapter [node] 
-  0.03s DETAIL: keep annox: F.etcbc4_sft_verse [node] 
-  0.03s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2015-09-28T18-31-59
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2015-09-28T18-31-59
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  0.00s INFO: USING DATA COMPILED AT: 2015-10-01T10-35-26
+  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-02T14-54-30
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-02T14-54-30
 </pre>
 </div>
 </div>
@@ -540,9 +432,70 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Index-of-ketiv/qere">Index of ketiv/qere<a class="anchor-link" href="#Index-of-ketiv/qere">&#182;</a></h1><p>We make a list of the ketiv-qere items.
+It will be used by the <em>heb</em> and the <em>ktv</em> functions.</p>
+<p><em>heb()</em> provides the surface text of a word.
+When the qere is different from the ketiv, the vocalized qere is chosen.
+It is the value of <code>g_word_utf8</code> except when a qere is present, 
+in which case it is <code>g_qere_utf8</code>, preceded by a masora circle.
+This is the sign for the user to use data view to inspect the <em>ketiv</em>.</p>
+<p><em>ktv()</em> provides the surface text of a word, in case the ketiv is different from the qere.
+It is the value of <code>g_word_utf8</code> precisely when a qere is present, 
+otherwise it is empty.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">qeres</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">masora</span> <span class="o">=</span> <span class="s">&#39;֯&#39;</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Building qere index&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">g_qere_utf8</span><span class="o">.</span><span class="n">s</span><span class="p">():</span>
+    <span class="n">qeres</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">masora</span><span class="o">+</span><span class="n">F</span><span class="o">.</span><span class="n">g_qere_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">qtrailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Found {} qeres&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">qeres</span><span class="p">)))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>    34s Building qere index
+    34s Found 1892 qeres
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Field-types">Field types<a class="anchor-link" href="#Field-types">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">strip_id</span><span class="p">(</span><span class="n">entryid</span><span class="p">):</span>
@@ -552,9 +505,20 @@ The function is typically a transliteration, or a stripping action.</li>
     <span class="k">return</span> <span class="n">Transcription</span><span class="o">.</span><span class="n">to_hebrew</span><span class="p">(</span><span class="n">Transcription</span><span class="o">.</span><span class="n">suffix_and_finales</span><span class="p">(</span><span class="n">translit</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="k">def</span> <span class="nf">heb</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="n">trsep</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">qeres</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">trsep</span><span class="p">,</span> <span class="n">wrdrep</span><span class="p">)</span> <span class="o">=</span> <span class="n">qeres</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">trsep</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">wrdrep</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">trsep</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;ס&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">trsep</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;פ&#39;</span><span class="p">):</span> <span class="n">trsep</span> <span class="o">+=</span> <span class="s">&#39; &#39;</span>
-    <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">trsep</span>
+    <span class="k">return</span> <span class="n">wrdrep</span> <span class="o">+</span> <span class="n">trsep</span>
+
+<span class="k">def</span> <span class="nf">ktv</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">qeres</span><span class="p">:</span>
+        <span class="n">trsep</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trsep</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;ס&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">trsep</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;פ&#39;</span><span class="p">):</span> <span class="n">trsep</span> <span class="o">+=</span> <span class="s">&#39; &#39;</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">trsep</span>    
+    <span class="k">return</span> <span class="s">&#39;&#39;</span>
 
 <span class="k">def</span> <span class="nf">lang</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="s">&#39;hbo&#39;</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;Hebrew&#39;</span> <span class="k">else</span> <span class="s">&#39;arc&#39;</span>
@@ -586,6 +550,7 @@ The function is typically a transliteration, or a stripping action.</li>
 <span class="n">word_fields</span> <span class="o">=</span> <span class="p">(</span>
     <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">monads</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;number&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39; primary key&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">heb</span><span class="p">,</span> <span class="s">&#39;heb&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">ktv</span><span class="p">,</span> <span class="s">&#39;ktv&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">g_entry_heb</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;vlex&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lex_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;clex&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">g_word</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;tran&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
@@ -655,7 +620,7 @@ The code measures the maximum lengths of these fields, and it turns out that the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">field_limits</span> <span class="o">=</span> <span class="p">{</span>
@@ -767,11 +732,11 @@ The code measures the maximum lengths of these fields, and it turns out that the
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-drop database if exists shebanq_passage4;
+drop database if exists shebanq_passage4b;
 
-create database shebanq_passage4 character set utf8;
+create database shebanq_passage4b character set utf8;
 
-use shebanq_passage4;
+use shebanq_passage4b;
 
 create table book(
     id      int(4) primary key,
@@ -816,6 +781,7 @@ create table clause_atom(
 create table word(
     word_number int(4) primary key, 
     word_heb varchar(32), 
+    word_ktv varchar(32), 
     word_vlex varchar(32), 
     word_clex varchar(32), 
     word_tran varchar(32), 
@@ -909,7 +875,7 @@ create table word_verse(
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">langs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;hbo&#39;</span><span class="p">,</span> <span class="s">&#39;arc&#39;</span><span class="p">}</span>
@@ -985,15 +951,22 @@ create table word_verse(
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>Lexicon arc: there were 0 errors
-Lexicon hbo: there were 0 errors
+feature without value for lexical entry MCXH==/ in line 4779: 
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Lexicon arc has   707 entries
-Lexicon hbo has  8529 entries
+<pre>Lexicon arc has   708 entries
+Lexicon hbo has  8518 entries
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Lexicon hbo: there was 1 error
 </pre>
 </div>
 </div>
@@ -1026,7 +999,7 @@ Lexicon hbo has  8529 entries
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Fill the tables ... &quot;</span><span class="p">)</span>
@@ -1129,8 +1102,11 @@ Lexicon hbo has  8529 entries
 <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">():</span>
     <span class="n">otype</span> <span class="o">=</span> <span class="n">Fotypev</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">otype</span> <span class="o">==</span> <span class="s">&#39;word&#39;</span><span class="p">:</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">Ftextv</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-        <span class="n">trailer</span> <span class="o">=</span> <span class="n">Ftrailerv</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">qeres</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">trailer</span><span class="p">)</span> <span class="o">=</span> <span class="n">qeres</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">Ftextv</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">trailer</span> <span class="o">=</span> <span class="n">Ftrailerv</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">trailer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;ס&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">trailer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;פ&#39;</span><span class="p">):</span> <span class="n">trailer</span> <span class="o">+=</span> <span class="s">&#39; &#39;</span>
         <span class="n">lex</span> <span class="o">=</span> <span class="n">Flexv</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="n">lang</span> <span class="o">=</span> <span class="n">Flanguagev</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
@@ -1210,8 +1186,8 @@ Lexicon hbo has  8529 entries
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    16s Fill the tables ... 
-    28s Done
+<pre> 1m 01s Fill the tables ... 
+ 1m 14s Done
 </pre>
 </div>
 </div>
@@ -1224,17 +1200,17 @@ OK    lexicon        entry          : max size =      14 of    32
 OK    lexicon        entry_heb      : max size =      14 of    32
 OK    lexicon        entryid        : max size =      15 of    32
 OK    lexicon        entryid_heb    : max size =      15 of    32
-OK    lexicon        g_entry        : max size =      32 of    32
-OK    lexicon        g_entry_heb    : max size =      31 of    32
-OK    lexicon        gloss          : max size =      26 of    32
+OK    lexicon        g_entry        : max size =      24 of    32
+OK    lexicon        g_entry_heb    : max size =      23 of    32
+OK    lexicon        gloss          : max size =      27 of    32
 OK    lexicon        id             : max size =      16 of    32
 OK    lexicon        lan            : max size =       3 of     4
 OK    lexicon        nametype       : max size =      14 of    16
 OK    lexicon        pos            : max size =       4 of     8
-OK    lexicon        root           : max size =       4 of    32
+OK    lexicon        root           : max size =      11 of    32
 OK    lexicon        subpos         : max size =       4 of     8
 OK    verse          text           : max size =     434 of  1024
-OK    verse          xml            : max size =    2860 of  4096
+OK    verse          xml            : max size =    2858 of  4096
 All lexemes have been found in the lexicon
 </pre>
 </div>
@@ -1246,7 +1222,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="s">&#39;lexicon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]))</span>
@@ -1305,21 +1281,15 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Making verse index ...&quot;</span><span class="p">)</span>
-<span class="n">target_types</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">target_types</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;sentence&#39;</span><span class="p">,</span> <span class="s">&#39;sentence_atom&#39;</span><span class="p">,</span> 
     <span class="s">&#39;clause&#39;</span><span class="p">,</span> <span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> 
     <span class="s">&#39;phrase&#39;</span><span class="p">,</span> <span class="s">&#39;phrase_atom&#39;</span><span class="p">,</span> 
     <span class="s">&#39;subphrase&#39;</span><span class="p">,</span>
-    <span class="s">&#39;word&#39;</span><span class="p">,</span>
 <span class="p">}</span>
-
-<span class="n">object_index</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">())</span>
-<span class="n">verse_monads</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">verse_node</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">def</span> <span class="nf">get_set</span><span class="p">(</span><span class="n">monads</span><span class="p">):</span>
     <span class="n">monad_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -1350,118 +1320,17 @@ All lexemes have been found in the lexicon
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">cur_start</span><span class="p">,</span> <span class="n">cur_end</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">result</span>
 
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">():</span>
-    <span class="n">otype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">otype</span> <span class="o">==</span> <span class="s">&#39;verse&#39;</span><span class="p">:</span>
-        <span class="n">verse_monads</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_set</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">monads</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">otype</span> <span class="ow">in</span> <span class="n">target_types</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">get_set</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">monads</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span>
-            <span class="n">object_index</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">verse_monads</span><span class="p">:</span>
-    <span class="n">vobjects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">verse_monads</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span> <span class="n">vobjects</span> <span class="o">|=</span> <span class="n">object_index</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
-    <span class="n">verse_node</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">NN</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">vobjects</span><span class="p">))</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&quot;Verse index created for {} verses&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">verse_node</span><span class="p">)))</span>
+<span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">vn</span><span class="p">):</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">wn</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">vn</span><span class="p">):</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wn</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tt</span> <span class="ow">in</span> <span class="n">target_types</span><span class="p">:</span>
+            <span class="n">on</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">wn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">on</span> <span class="o">!=</span> <span class="k">None</span><span class="p">:</span> <span class="n">objects</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">objects</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>    41s Making verse index ...
- 1m 01s Verse index created for 23213 verses
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Check">Check<a class="anchor-link" href="#Check">&#182;</a></h1><p>We need to verify that each word occurrence does not occur in more than one object of the same type.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Checking whether words belong to multiple objects of the same type ...&quot;</span><span class="p">)</span>
-<span class="n">word_index</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">()))</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">():</span>
-    <span class="n">otype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">otype</span> <span class="ow">in</span> <span class="n">target_types</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">get_set</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">monads</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span>
-            <span class="n">word_index</span><span class="p">[</span><span class="n">otype</span><span class="p">][</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">errors</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="n">otype</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">word_index</span><span class="p">):</span>
-    <span class="n">good</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">monad</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">word_index</span><span class="p">[</span><span class="n">otype</span><span class="p">]):</span>
-        <span class="n">lt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_index</span><span class="p">[</span><span class="n">otype</span><span class="p">][</span><span class="n">m</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">lt</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span> <span class="n">good</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Monad {} belongs to {} {}s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lt</span><span class="p">,</span> <span class="n">otype</span><span class="p">))</span>
-            <span class="n">errors</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s">&quot;{} monads occur in only one {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">good</span><span class="p">,</span> <span class="n">otype</span><span class="p">))</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&quot;End checking, {} errors&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span>
-<span class="n">word_index</span> <span class="o">=</span> <span class="k">None</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 05s Checking whether words belong to multiple objects of the same type ...
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>426555 monads occur in only one clause
-426555 monads occur in only one clause_atom
-426555 monads occur in only one phrase
-426555 monads occur in only one phrase_atom
-426555 monads occur in only one sentence
-426555 monads occur in only one sentence_atom
-122845 monads occur in only one subphrase
-426555 monads occur in only one word</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 36s End checking, 0 errors
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1493,9 +1362,12 @@ All lexemes have been found in the lexicon
 <span class="k">def</span> <span class="nf">do_verse_info</span><span class="p">(</span><span class="n">verse</span><span class="p">):</span>
     <span class="n">vlabel</span> <span class="o">=</span> <span class="s">&#39;{} {}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">verse</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">verse</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">verse</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">verse</span><span class="p">))</span>
     <span class="n">wordf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;!{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vlabel</span><span class="p">))</span>
-    <span class="n">monads</span> <span class="o">=</span> <span class="n">verse_monads</span><span class="p">[</span><span class="n">verse</span><span class="p">]</span>
+<span class="c">#    monads = verse_monads[verse]</span>
+    <span class="n">monads</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">monads</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">verse</span><span class="p">)}</span>
+    
     <span class="p">(</span><span class="n">verse_startm</span><span class="p">,</span> <span class="n">verse_endm</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">monads</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">monads</span><span class="p">))</span>
-    <span class="n">objects</span> <span class="o">=</span> <span class="n">verse_node</span><span class="p">[</span><span class="n">verse</span><span class="p">]</span>
+<span class="c">#    objects = verse_node[verse]</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">get_objects</span><span class="p">(</span><span class="n">verse</span><span class="p">)</span>
     <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">verse_startm</span><span class="p">,</span> <span class="n">verse_endm</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">otype</span><span class="p">,</span> <span class="n">do_border</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
@@ -1626,47 +1498,47 @@ All lexemes have been found in the lexicon
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 41s Generating word info data ...
- 1m 41s 	Genesis
- 2m 00s 	Exodus
- 2m 18s 	Leviticus
- 2m 31s 	Numeri
- 2m 47s 	Deuteronomium
- 3m 01s 	Josua
- 3m 10s 	Judices
- 3m 20s 	Samuel_I
- 3m 34s 	Samuel_II
- 3m 48s 	Reges_I
- 4m 01s 	Reges_II
- 4m 13s 	Jesaia
- 4m 30s 	Jeremia
- 4m 50s 	Ezechiel
- 5m 06s 	Hosea
- 5m 08s 	Joel
- 5m 09s 	Amos
- 5m 11s 	Obadia
- 5m 11s 	Jona
- 5m 12s 	Micha
- 5m 14s 	Nahum
- 5m 15s 	Habakuk
- 5m 16s 	Zephania
- 5m 17s 	Haggai
- 5m 18s 	Sacharia
- 5m 22s 	Maleachi
- 5m 23s 	Psalmi
- 5m 47s 	Iob
- 5m 58s 	Proverbia
- 6m 05s 	Ruth
- 6m 06s 	Canticum
- 6m 07s 	Ecclesiastes
- 6m 10s 	Threni
- 6m 11s 	Esther
- 6m 14s 	Daniel
- 6m 19s 	Esra
- 6m 22s 	Nehemia
- 6m 27s 	Chronica_I
- 6m 36s 	Chronica_II
- 6m 48s Done
+<pre> 2m 52s Generating word info data ...
+ 2m 53s 	Genesis
+ 3m 11s 	Exodus
+ 3m 26s 	Leviticus
+ 3m 37s 	Numeri
+ 3m 53s 	Deuteronomium
+ 4m 06s 	Josua
+ 4m 16s 	Judices
+ 4m 26s 	Samuel_I
+ 4m 41s 	Samuel_II
+ 4m 52s 	Reges_I
+ 5m 06s 	Reges_II
+ 5m 19s 	Jesaia
+ 5m 36s 	Jeremia
+ 6m 02s 	Ezechiel
+ 6m 23s 	Hosea
+ 6m 25s 	Joel
+ 6m 26s 	Amos
+ 6m 28s 	Obadia
+ 6m 29s 	Jona
+ 6m 29s 	Micha
+ 6m 31s 	Nahum
+ 6m 31s 	Habakuk
+ 6m 32s 	Zephania
+ 6m 33s 	Haggai
+ 6m 33s 	Sacharia
+ 6m 37s 	Maleachi
+ 6m 37s 	Psalmi
+ 6m 55s 	Iob
+ 7m 05s 	Proverbia
+ 7m 14s 	Ruth
+ 7m 15s 	Canticum
+ 7m 17s 	Ecclesiastes
+ 7m 20s 	Threni
+ 7m 22s 	Esther
+ 7m 25s 	Daniel
+ 7m 31s 	Esra
+ 7m 37s 	Nehemia
+ 7m 44s 	Chronica_I
+ 7m 53s 	Chronica_II
+ 8m 06s Done
 </pre>
 </div>
 </div>
@@ -1677,7 +1549,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># check whether the field sizes are not exceeded</span>
@@ -1706,14 +1578,14 @@ All lexemes have been found in the lexicon
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>OK    word           word_heb       : max size =      27 of    32
-OK    word           word_vlex      : max size =      31 of    32
+OK    word           word_ktv       : max size =      16 of    32
+OK    word           word_vlex      : max size =      23 of    32
 OK    word           word_clex      : max size =      15 of    32
 OK    word           word_tran      : max size =      30 of    32
 OK    word           word_phono     : max size =      23 of    32
-OK    word           word_phono_sep : max size =       2 of     8
 OK    word           word_lex       : max size =      15 of    32
 OK    word           word_glex      : max size =      24 of    32
-OK    word           word_gloss     : max size =      25 of    32
+OK    word           word_gloss     : max size =      27 of    32
 OK    word           word_lang      : max size =       3 of     8
 OK    word           word_pos       : max size =       4 of     8
 OK    word           word_pdp       : max size =       4 of     8
@@ -1731,7 +1603,7 @@ OK    word           word_uvf       : max size =       6 of     8
 OK    word           word_vbe       : max size =       3 of     8
 OK    word           word_vbs       : max size =       6 of     8
 OK    word           subphrase_border: max size =       8 of    16
-OK    word           subphrase_number: max size =      29 of    32
+OK    word           subphrase_number: max size =      21 of    32
 OK    word           subphrase_rela : max size =       3 of     8
 OK    word           phrase_border  : max size =       5 of     8
 OK    word           phrase_atom_rela: max size =       4 of     8
@@ -1745,6 +1617,13 @@ OK    word           clause_rela    : max size =       4 of     8
 OK    word           clause_typ     : max size =       4 of     8
 OK    word           clause_txt     : max size =       7 of     8
 OK    word           sentence_border: max size =       5 of     8
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>ERROR word           word_phono_sep : max size =      12 of     8
 </pre>
 </div>
 </div>
@@ -1764,7 +1643,7 @@ OK    word           sentence_border: max size =       5 of     8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">limit_row</span> <span class="o">=</span> <span class="mi">2000</span>
@@ -1802,28 +1681,6 @@ OK    word           sentence_border: max size =       5 of     8
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre> 6m 57s Generating SQL ...
- 6m 57s 	table book
- 6m 57s 	table chapter
- 6m 57s 	table verse
- 6m 58s 	table clause_atom
- 6m 58s 	table lexicon
- 6m 58s 	table word
- 7m 00s 	table word_verse
- 7m 01s Done
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 

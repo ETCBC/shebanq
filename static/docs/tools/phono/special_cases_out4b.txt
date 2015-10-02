@@ -1,87 +1,164 @@
-  1 Samuel_I 23:4       nmpr sm           JHW@80H_S              [yhwˈāh]             =                     
-  2 Genesis 4:1         nmpr sm           J:HW@75H               [yᵊhwˈāh]            =                     
-  3 Genesis 1:1         art               HA                     hˌa                  =                     
-  4 Genesis 1:7         prep              MI                     mˌi                  =                     
-  5 Genesis 1:7         subs sm           T.A74XAT               tˈaḥaṯ               =                     
-  6 Genesis 1:1         subs pm           C.@MA73JIM             ššāmˌayim            =                     
-  7 Genesis 48:9        verb piel impf 1s-,m >:AB@R:AK;75M          ʔᵃvārᵃḵˈēm           =                     
-  8 Genesis 17:11       subs sf,km        <@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
-  9 Proverbia 10:10     subs sf           <AY.@92BET             ʕaṣṣˈoveṯ            =                     
- 10 Genesis 4:1                           >ET&J:HW@75H $         ʔeṯ-[yᵊhwˈāh] .      =                     
- 11 Genesis 1:7         subs sm           MI-T.A74XAT            mittˈaḥaṯ            =                     
+  1 Genesis 9:21          4419 subs sm,+h        >@H:@LO75W00           *ʔohᵒlˈô             =                     
+  2 Samuel_I 23:4       155387 nmpr sm,          JHW@80H_S              [yhwˈāh]             =                     
+  3 Genesis 4:1           1684 nmpr sm,          J:HW@75H00             [yᵊhwˈāh]            =                     
+  4 Genesis 4:1           1684 nmpr sm,          J:HW@75H00             [yᵊhwˈāh]            =                     
+  5 Genesis 1:1              5 art               HA-                    hˌa                  =                     
+  6 Genesis 1:7            107 subs sm,          MI-T.A74XAT            mittˈaḥaṯ            =                     
+  7 Genesis 1:7            106 prep              MI-                    mˌi                  =                     
+  8 Genesis 1:7            107 subs sm,          T.A74XAT               tˈaḥaṯ               =                     
+  9 Genesis 1:1              6 subs pm,          C.@MA73JIM             ššāmˌayim            =                     
+ 10 Genesis 48:9         27477 verb piel impf 1s-,+;m >:AB@R:AK;75M00        ʔᵃvārᵃḵˈēm           =                     
+ 11 Proverbia 10:10     349407 subs sf,          <AY.@92BET             ʕaṣṣˈāveṯ            =                     
+ 12 Genesis 17:11         7494 subs sf,+kem      <@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
+ 13 Joel 1:17           294291 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
 
-  1 Samuel_I 23:4       nmpr sm           JHW@80H_S                 => [yhwˈāh]                  < =                           # peculiar representation of tetragrammaton
-        orig                 JHW@80H_S
-        trim                 jhw@80h
-        tetra                 [ jhw@80h ] 
-        masora                [ jhw@80h ] 
-        rafe                  [ jhw@80h ] 
-        furtive_patah         [ jhw@80h ] 
-        accents               [ jhw!@h ] 
-        default accent        [ jhw!@h ] 
+  1 Genesis 9:21          4419 subs sm,+h        >@H:@LO75W00              => *ʔohᵒlˈô                  < =                           # ketiv qere
+        orig                 >@H:@LO75W
+        trim                 >@h:@lo75w
+        accents              >@h:@l!ow
+        punctuation          >@h:@l!ow
+        rafe                 >@h:@l!ow
+        furtive_patah        >@h:@l!ow
+        default accent       >@h:@l!ow
+        qamets qatan         no special verb form: subs sm
+        qamets_qatan1        >@h:@l!ow
+        qamets_qatan2        >@h:@l!ow
+        qamets_qatan3        >@h:@l!ow
+        qamets_qatan4a       >@h:@l!ow
+        qamets_qatan4b       >^h:@l!ow
+        qamets qatan         pronominal suffix: no qamets present
+        qamets_qatan5        >^h:@l!ow
+        qamets_qatan_corr    >^h:@l!ow
+        mobile_schwa1        >^h:@l!ow
+        mobile_schwa2        >^h:@l!ow
+        mobile_schwa3        >^h:@l!ow
+        mobile_schwa4        >^h:@l!ow
+        dagesh_forte_lene    >^h:@l!ow
+        dagesh_forte         >^h:@l!ow
+        dagesh_lene          >^h:@l!ow
+        silent_aleph         >^h:@l!ow
+        last_ml              >^h:@l!ow
+        mappiq_heh           >^h:@l!ow
+        symbols              *ʔohᵒlˈô
+        fixit_i              *ʔohᵒlˈô
+        fixit_w              *ʔohᵒlˈô
+        fixit                *ʔohᵒlˈô
+        punct                *ʔohᵒlˈô
+        cleanup              *ʔohᵒlˈô
+
+
+  2 Samuel_I 23:4       155387 nmpr sm,          JHW@80H_S                 => [yhwˈāh]                  < =                           # peculiar representation of tetragrammaton
+        orig                 [ JHW@80H ] §
+        trim                 [ jhw@80h ] §
+        accents              [ jhw!@h ] §
+        punctuation          [ jhw!@h ] §
+        rafe                 [ jhw!@h ] §
+        furtive_patah        [ jhw!@h ] §
+        default accent       [ jhw!@h ] §
         qamets qatan         no special verb form: nmpr sm
-        qamets_qatan1         [ jhw!@h ] 
-        qamets_qatan2         [ jhw!@h ] 
-        qamets_qatan3         [ jhw!@h ] 
-        qamets_qatan4a        [ jhw!@h ] 
-        qamets_qatan4b        [ jhw!@h ] 
+        qamets_qatan1        [ jhw!@h ] §
+        qamets_qatan2        [ jhw!@h ] §
+        qamets_qatan3        [ jhw!@h ] §
+        qamets_qatan4a       [ jhw!@h ] §
+        qamets_qatan4b       [ jhw!@h ] §
         qamets qatan         no pron suffix indicated
-        qamets_qatan5         [ jhw!@h ] 
-        mobile_schwa1         [ jhw!@h ] 
-        mobile_schwa2         [ jhw!@h ] 
-        mobile_schwa3         [ jhw!@h ] 
-        mobile_schwa4         [ jhw!@h ] 
-        dagesh_forte_lene     [ jhw!@h ] 
-        dagesh_forte          [ jhw!@h ] 
-        dagesh_lene           [ jhw!@h ] 
-        silent_aleph          [ jhw!@h ] 
-        last_ml               [ jhw!@h ] 
-        mappiq_heh            [ jhw!@h ] 
-        symbols               [ yhwˈāh ] 
-        fixit                 [ yhwˈāh ] 
-        cleanup              [yhwˈāh]
+        qamets_qatan5        [ jhw!@h ] §
+        qamets_qatan_corr    [ jhw!@h ] §
+        mobile_schwa1        [ jhw!@h ] §
+        mobile_schwa2        [ jhw!@h ] §
+        mobile_schwa3        [ jhw!@h ] §
+        mobile_schwa4        [ jhw!@h ] §
+        dagesh_forte_lene    [ jhw!@h ] §
+        dagesh_forte         [ jhw!@h ] §
+        dagesh_lene          [ jhw!@h ] §
+        silent_aleph         [ jhw!@h ] §
+        last_ml              [ jhw!@h ] §
+        mappiq_heh           [ jhw!@h ] §
+        symbols              [ yhwˈāh ] §
+        fixit_i              [ yhwˈāh ] §
+        fixit_w              [ yhwˈāh ] §
+        fixit                [ yhwˈāh ] §
+        punct                [ yhwˈāh ]  
+        cleanup              [yhwˈāh] 
 
 
-  2 Genesis 4:1         nmpr sm           J:HW@75H                  => [yᵊhwˈāh]                 < =                           # Tetra with end of verse
-        orig                 J:HW@75H
-        trim                 j:hw@75h
-        tetra                 [ j:hw@75h ] 
-        masora                [ j:hw@75h ] 
-        rafe                  [ j:hw@75h ] 
-        furtive_patah         [ j:hw@75h ] 
-        accents               [ j:hw!@h ] 
-        default accent        [ j:hw!@h ] 
+  3 Genesis 4:1           1684 nmpr sm,          J:HW@75H00                => [yᵊhwˈāh]                 < =                           # Tetra with end of verse
+        orig                 [ J:HW@75H ]
+        trim                 [ j:hw@75h ]
+        accents              [ j:hw!@h ]
+        punctuation          [ j:hw!@h ]
+        rafe                 [ j:hw!@h ]
+        furtive_patah        [ j:hw!@h ]
+        default accent       [ j:hw!@h ]
         qamets qatan         no special verb form: nmpr sm
-        qamets_qatan1         [ j:hw!@h ] 
-        qamets_qatan2         [ j:hw!@h ] 
-        qamets_qatan3         [ j:hw!@h ] 
-        qamets_qatan4a        [ j:hw!@h ] 
-        qamets_qatan4b        [ j:hw!@h ] 
+        qamets_qatan1        [ j:hw!@h ]
+        qamets_qatan2        [ j:hw!@h ]
+        qamets_qatan3        [ j:hw!@h ]
+        qamets_qatan4a       [ j:hw!@h ]
+        qamets_qatan4b       [ j:hw!@h ]
         qamets qatan         no pron suffix indicated
-        qamets_qatan5         [ j:hw!@h ] 
-        mobile_schwa1         [ j%hw!@h ] 
-        mobile_schwa2         [ j%hw!@h ] 
-        mobile_schwa3         [ j%hw!@h ] 
-        mobile_schwa4         [ j%hw!@h ] 
-        dagesh_forte_lene     [ j%hw!@h ] 
-        dagesh_forte          [ j%hw!@h ] 
-        dagesh_lene           [ j%hw!@h ] 
-        silent_aleph          [ j%hw!@h ] 
-        last_ml               [ j%hw!@h ] 
-        mappiq_heh            [ j%hw!@h ] 
-        symbols               [ yᵊhwˈāh ] 
-        fixit                 [ yᵊhwˈāh ] 
+        qamets_qatan5        [ j:hw!@h ]
+        qamets_qatan_corr    [ j:hw!@h ]
+        mobile_schwa1        [ j%hw!@h ]
+        mobile_schwa2        [ j%hw!@h ]
+        mobile_schwa3        [ j%hw!@h ]
+        mobile_schwa4        [ j%hw!@h ]
+        dagesh_forte_lene    [ j%hw!@h ]
+        dagesh_forte         [ j%hw!@h ]
+        dagesh_lene          [ j%hw!@h ]
+        silent_aleph         [ j%hw!@h ]
+        last_ml              [ j%hw!@h ]
+        mappiq_heh           [ j%hw!@h ]
+        symbols              [ yᵊhwˈāh ]
+        fixit_i              [ yᵊhwˈāh ]
+        fixit_w              [ yᵊhwˈāh ]
+        fixit                [ yᵊhwˈāh ]
+        punct                [ yᵊhwˈāh ]
         cleanup              [yᵊhwˈāh]
 
 
-  3 Genesis 1:1         art               HA                        => hˌa                       < =                           # article in isolation
+  4 Genesis 4:1           1684 nmpr sm,          J:HW@75H00                => [yᵊhwˈāh]                 < =                           # Tetra with end of verse
+        orig                 [ J:HW@75H ]
+        trim                 [ j:hw@75h ]
+        accents              [ j:hw!@h ]
+        punctuation          [ j:hw!@h ]
+        rafe                 [ j:hw!@h ]
+        furtive_patah        [ j:hw!@h ]
+        default accent       [ j:hw!@h ]
+        qamets qatan         no special verb form: nmpr sm
+        qamets_qatan1        [ j:hw!@h ]
+        qamets_qatan2        [ j:hw!@h ]
+        qamets_qatan3        [ j:hw!@h ]
+        qamets_qatan4a       [ j:hw!@h ]
+        qamets_qatan4b       [ j:hw!@h ]
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        [ j:hw!@h ]
+        qamets_qatan_corr    [ j:hw!@h ]
+        mobile_schwa1        [ j%hw!@h ]
+        mobile_schwa2        [ j%hw!@h ]
+        mobile_schwa3        [ j%hw!@h ]
+        mobile_schwa4        [ j%hw!@h ]
+        dagesh_forte_lene    [ j%hw!@h ]
+        dagesh_forte         [ j%hw!@h ]
+        dagesh_lene          [ j%hw!@h ]
+        silent_aleph         [ j%hw!@h ]
+        last_ml              [ j%hw!@h ]
+        mappiq_heh           [ j%hw!@h ]
+        symbols              [ yᵊhwˈāh ]
+        fixit_i              [ yᵊhwˈāh ]
+        fixit_w              [ yᵊhwˈāh ]
+        fixit                [ yᵊhwˈāh ]
+        punct                [ yᵊhwˈāh ]
+        cleanup              [yᵊhwˈāh]
+
+
+  5 Genesis 1:1              5 art               HA-                       => hˌa                       < =                           # article in isolation
         orig                 HA
         trim                 ha
-        tetra                ha
-        masora               ha
+        accents              ha
+        punctuation          ha
         rafe                 ha
         furtive_patah        ha
-        accents              ha
         default accent       h/a
         qamets qatan         no special verb form: art
         qamets_qatan1        h/a
@@ -91,6 +168,7 @@
         qamets_qatan4b       h/a
         qamets qatan         no pron suffix indicated
         qamets_qatan5        h/a
+        qamets_qatan_corr    h/a
         mobile_schwa1        h/a
         mobile_schwa2        h/a
         mobile_schwa3        h/a
@@ -102,243 +180,20 @@
         last_ml              h/a
         mappiq_heh           h/a
         symbols              hˌa
+        fixit_i              hˌa
+        fixit_w              hˌa
         fixit                hˌa
+        punct                hˌa
         cleanup              hˌa
 
 
-  4 Genesis 1:7         prep              MI                        => mˌi                       < =                           # proclitic min
-        orig                 MI
-        trim                 mi
-        tetra                mi
-        masora               mi
-        rafe                 mi
-        furtive_patah        mi
-        accents              mi
-        default accent       m/i
-        qamets qatan         no special verb form: prep
-        qamets_qatan1        m/i
-        qamets_qatan2        m/i
-        qamets_qatan3        m/i
-        qamets_qatan4a       m/i
-        qamets_qatan4b       m/i
-        qamets qatan         no pron suffix indicated
-        qamets_qatan5        m/i
-        mobile_schwa1        m/i
-        mobile_schwa2        m/i
-        mobile_schwa3        m/i
-        mobile_schwa4        m/i
-        dagesh_forte_lene    m/i
-        dagesh_forte         m/i
-        dagesh_lene          m/i
-        silent_aleph         m/i
-        last_ml              m/i
-        mappiq_heh           m/i
-        symbols              mˌi
-        fixit                mˌi
-        cleanup              mˌi
-
-
-  5 Genesis 1:7         subs sm           T.A74XAT                  => tˈaḥaṯ                    < =                           # word starting with BGDKPT after proclitic min
-        orig                 T.A74XAT
-        trim                 t.a74xat
-        tetra                t.a74xat
-        masora               t.a74xat
-        rafe                 t.a74xat
-        furtive_patah        t.a74xat
-        accents              t.!axat
-        default accent       t.!axat
-        qamets qatan         no special verb form: subs sm
-        qamets_qatan1        t.!axat
-        qamets_qatan2        t.!axat
-        qamets_qatan3        t.!axat
-        qamets_qatan4a       t.!axat
-        qamets_qatan4b       t.!axat
-        qamets qatan         no pron suffix indicated
-        qamets_qatan5        t.!axat
-        mobile_schwa1        t.!axat
-        mobile_schwa2        t.!axat
-        mobile_schwa3        t.!axat
-        mobile_schwa4        t.!axat
-        dagesh_forte_lene    t.!axat
-        dagesh_forte         t.!axat
-        dagesh_lene          T!axat
-        silent_aleph         T!axat
-        last_ml              T!axat
-        mappiq_heh           T!axat
-        symbols              tˈaḥaṯ
-        fixit                tˈaḥaṯ
-        cleanup              tˈaḥaṯ
-
-
-  6 Genesis 1:1         subs pm           C.@MA73JIM                => ššāmˌayim                 < =                           # word after article in isolation
-        orig                 C.@MA73JIM
-        trim                 c.@ma73jim
-        tetra                c.@ma73jim
-        masora               c.@ma73jim
-        rafe                 c.@ma73jim
-        furtive_patah        c.@ma73jim
-        accents              c.@m/ajim
-        default accent       c.@m/ajim
-        qamets qatan         no special verb form: subs pm
-        qamets_qatan1        c.@m/ajim
-        qamets_qatan2        c.@m/ajim
-        qamets_qatan3        c.@m/ajim
-        qamets_qatan4a       c.@m/ajim
-        qamets_qatan4b       c.@m/ajim
-        qamets qatan         no pron suffix indicated
-        qamets_qatan5        c.@m/ajim
-        mobile_schwa1        c.@m/ajim
-        mobile_schwa2        c.@m/ajim
-        mobile_schwa3        c.@m/ajim
-        mobile_schwa4        c.@m/ajim
-        dagesh_forte_lene    c.@m/ajim
-        dagesh_forte         c.@m/ajim
-        dagesh_lene          c.@m/ajim
-        silent_aleph         c.@m/ajim
-        last_ml              c.@m/ajim
-        mappiq_heh           c.@m/ajim
-        symbols              š.āmˌayim
-        fixit                ššāmˌayim
-        cleanup              ššāmˌayim
-
-
-  7 Genesis 48:9        verb piel impf 1s-,m >:AB@R:AK;75M             => ʔᵃvārᵃḵˈēm                < =                           # pronominal suffix after verb
-        orig                 >:AB@R:AK;75M
-        trim                 >:ab@r:ak;75m
-        tetra                >:ab@r:ak;75m
-        masora               >:ab@r:ak;75m
-        rafe                 >:ab@r:ak;75m
-        furtive_patah        >:ab@r:ak;75m
-        accents              >:ab@r:ak!;m
-        default accent       >:ab@r:ak!;m
-        qamets qatan         no special verb form: verb piel impf 1s-
-        qamets_qatan1        >:ab@r:ak!;m
-        qamets_qatan2        >:ab@r:ak!;m
-        qamets_qatan3        >:ab@r:ak!;m
-        qamets_qatan4a       >:ab@r:ak!;m
-        qamets_qatan4b       >:ab@r:ak!;m
-        qamets qatan         pron suffix m: no qamets qatan present
-        qamets_qatan5        >:ab@r:ak!;m
-        mobile_schwa1        >:ab@r:ak!;m
-        mobile_schwa2        >:ab@r:ak!;m
-        mobile_schwa3        >:ab@r:ak!;m
-        mobile_schwa4        >:ab@r:ak!;m
-        dagesh_forte_lene    >:ab@r:ak!;m
-        dagesh_forte         >:ab@r:ak!;m
-        dagesh_lene          >:ab@r:ak!;m
-        silent_aleph         >:ab@r:ak!;m
-        last_ml              >:ab@r:ak!;m
-        mappiq_heh           >:ab@r:ak!;m
-        symbols              ʔᵃvārᵃḵˈēm
-        fixit                ʔᵃvārᵃḵˈēm
-        cleanup              ʔᵃvārᵃḵˈēm
-
-
-  8 Genesis 17:11       subs sf,km        <@R:LAT:KE92M             => ʕorlaṯᵊḵˈem               < =                           # schwa in front of BGDKPT without dagesh
-        orig                 <@R:LAT:KE92M
-        trim                 <@r:lat:ke92m
-        tetra                <@r:lat:ke92m
-        masora               <@r:lat:ke92m
-        rafe                 <@r:lat:ke92m
-        furtive_patah        <@r:lat:ke92m
-        accents              <@r:lat:k!em
-        default accent       <@r:lat:k!em
-        qamets qatan         no special verb form: subs sf
-        qamets_qatan1        <@r:lat:k!em
-        qamets_qatan2        <@r:lat:k!em
-        qamets_qatan3        <^r:lat:k!em
-        qamets_qatan4a       <^r:lat:k!em
-        qamets_qatan4b       <^r:lat:k!em
-        qamets qatan         pron suffix km: no qamets qatan present
-        qamets_qatan5        <^r:lat:k!em
-        mobile_schwa1        <^r:lat:k!em
-        mobile_schwa2        <^r:lat%k!em
-        mobile_schwa3        <^r:lat%k!em
-        mobile_schwa4        <^r:lat%k!em
-        dagesh_forte_lene    <^r:lat%k!em
-        dagesh_forte         <^r:lat%k!em
-        dagesh_lene          <^r:lat%k!em
-        silent_aleph         <^r:lat%k!em
-        last_ml              <^r:lat%k!em
-        mappiq_heh           <^r:lat%k!em
-        symbols              ʕorlaṯᵊḵˈem
-        fixit                ʕorlaṯᵊḵˈem
-        cleanup              ʕorlaṯᵊḵˈem
-
-
-  9 Proverbia 10:10     subs sf           <AY.@92BET                => ʕaṣṣˈoveṯ                 < =                           # the qamets should be gadol
-        orig                 <AY.@92BET
-        trim                 <ay.@92bet
-        tetra                <ay.@92bet
-        masora               <ay.@92bet
-        rafe                 <ay.@92bet
-        furtive_patah        <ay.@92bet
-        accents              <ay.!@bet
-        default accent       <ay.!@bet
-        qamets qatan         no special verb form: subs sf
-        qamets_qatan1        <ay.!@bet
-        qamets_qatan2        <ay.!@bet
-        qamets_qatan3        <ay.!@bet
-        qamets_qatan4a       <ay.!@bet
-        qamets_qatan4b       <ay.!@bet
-        qamets qatan         no pron suffix indicated
-        qamets_qatan5        <ay.!@bet
-        qamets qatan         correction: <ay.!@bet => <ay.!^bet
-        mobile_schwa1        <ay.!^bet
-        mobile_schwa2        <ay.!^bet
-        mobile_schwa3        <ay.!^bet
-        mobile_schwa4        <ay.!^bet
-        dagesh_forte_lene    <ay.!^bet
-        dagesh_forte         <ayy!^bet
-        dagesh_lene          <ayy!^bet
-        silent_aleph         <ayy!^bet
-        last_ml              <ayy!^bet
-        mappiq_heh           <ayy!^bet
-        symbols              ʕaṣṣˈoveṯ
-        fixit                ʕaṣṣˈoveṯ
-        cleanup              ʕaṣṣˈoveṯ
-
-
- 10 Genesis 4:1                           >ET&J:HW@75H $            => ʔeṯ-[yᵊhwˈāh] .           < =                           # Tetra with end of verse
-        orig                 >ET&J:HW@75H $
-        trim                 >et&j:hw@75h $
-        tetra                >et& [ j:hw@75h ]  $
-        masora               >et& [ j:hw@75h ]  $
-        rafe                 >et& [ j:hw@75h ]  $
-        furtive_patah        >et& [ j:hw@75h ]  $
-        accents              >et& [ j:hw!@h ]  $
-        default accent       >et& [ j:hw!@h ]  $
-        qamets qatan         no special verb form invoked
-        qamets_qatan1        >et& [ j:hw!@h ]  $
-        qamets_qatan2        >et& [ j:hw!@h ]  $
-        qamets_qatan3        >et& [ j:hw!@h ]  $
-        qamets_qatan4a       >et& [ j:hw!@h ]  $
-        qamets_qatan4b       >et& [ j:hw!@h ]  $
-        qamets qatan         no pron suffix indicated
-        qamets_qatan5        >et& [ j:hw!@h ]  $
-        mobile_schwa1        >et& [ j%hw!@h ]  $
-        mobile_schwa2        >et& [ j%hw!@h ]  $
-        mobile_schwa3        >et& [ j%hw!@h ]  $
-        mobile_schwa4        >et& [ j%hw!@h ]  $
-        dagesh_forte_lene    >et& [ j%hw!@h ]  $
-        dagesh_forte         >et& [ j%hw!@h ]  $
-        dagesh_lene          >et& [ j%hw!@h ]  $
-        silent_aleph         >et& [ j%hw!@h ]  $
-        last_ml              >et& [ j%hw!@h ]  $
-        mappiq_heh           >et& [ j%hw!@h ]  $
-        symbols              ʔeṯ- [ yᵊhwˈāh ]  $
-        fixit                ʔeṯ- [ yᵊhwˈāh ]  $
-        cleanup              ʔeṯ-[yᵊhwˈāh] .
-
-
- 11 Genesis 1:7         subs sm           MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
+  6 Genesis 1:7            107 subs sm,          MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
         orig                 MI-T.A74XAT
         trim                 mi-t.a74xat
-        tetra                mi-t.a74xat
-        masora               mi-t.a74xat
-        rafe                 mi-t.a74xat
-        furtive_patah        mi-t.a74xat
         accents              mi-t.!axat
+        punctuation          mi-t.!axat
+        rafe                 mi-t.!axat
+        furtive_patah        mi-t.!axat
         default accent       mi-t.!axat
         qamets qatan         no special verb form: subs sm
         qamets_qatan1        mi-t.!axat
@@ -348,6 +203,7 @@
         qamets_qatan4b       mi-t.!axat
         qamets qatan         no pron suffix indicated
         qamets_qatan5        mi-t.!axat
+        qamets_qatan_corr    mi-t.!axat
         mobile_schwa1        mi-t.!axat
         mobile_schwa2        mi-t.!axat
         mobile_schwa3        mi-t.!axat
@@ -359,10 +215,257 @@
         last_ml              mi-TT!axat
         mappiq_heh           mi-TT!axat
         symbols              mi
+        fixit_i              mi
+        fixit_w              mi
         fixit                mi
+        punct                mi
         cleanup              mi
         symbols              ttˈaḥaṯ
+        fixit_i              ttˈaḥaṯ
+        fixit_w              ttˈaḥaṯ
         fixit                ttˈaḥaṯ
+        punct                ttˈaḥaṯ
         cleanup              ttˈaḥaṯ
+
+
+  7 Genesis 1:7            106 prep              MI-                       => mˌi                       < =                           # proclitic min
+        orig                 MI
+        trim                 mi
+        accents              mi
+        punctuation          mi
+        rafe                 mi
+        furtive_patah        mi
+        default accent       m/i
+        qamets qatan         no special verb form: prep
+        qamets_qatan1        m/i
+        qamets_qatan2        m/i
+        qamets_qatan3        m/i
+        qamets_qatan4a       m/i
+        qamets_qatan4b       m/i
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        m/i
+        qamets_qatan_corr    m/i
+        mobile_schwa1        m/i
+        mobile_schwa2        m/i
+        mobile_schwa3        m/i
+        mobile_schwa4        m/i
+        dagesh_forte_lene    m/i
+        dagesh_forte         m/i
+        dagesh_lene          m/i
+        silent_aleph         m/i
+        last_ml              m/i
+        mappiq_heh           m/i
+        symbols              mˌi
+        fixit_i              mˌi
+        fixit_w              mˌi
+        fixit                mˌi
+        punct                mˌi
+        cleanup              mˌi
+
+
+  8 Genesis 1:7            107 subs sm,          T.A74XAT                  => tˈaḥaṯ                    < =                           # word starting with BGDKPT after proclitic min
+        orig                 T.A74XAT
+        trim                 t.a74xat
+        accents              t.!axat
+        punctuation          t.!axat
+        rafe                 t.!axat
+        furtive_patah        t.!axat
+        default accent       t.!axat
+        qamets qatan         no special verb form: subs sm
+        qamets_qatan1        t.!axat
+        qamets_qatan2        t.!axat
+        qamets_qatan3        t.!axat
+        qamets_qatan4a       t.!axat
+        qamets_qatan4b       t.!axat
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        t.!axat
+        qamets_qatan_corr    t.!axat
+        mobile_schwa1        t.!axat
+        mobile_schwa2        t.!axat
+        mobile_schwa3        t.!axat
+        mobile_schwa4        t.!axat
+        dagesh_forte_lene    t.!axat
+        dagesh_forte         t.!axat
+        dagesh_lene          T!axat
+        silent_aleph         T!axat
+        last_ml              T!axat
+        mappiq_heh           T!axat
+        symbols              tˈaḥaṯ
+        fixit_i              tˈaḥaṯ
+        fixit_w              tˈaḥaṯ
+        fixit                tˈaḥaṯ
+        punct                tˈaḥaṯ
+        cleanup              tˈaḥaṯ
+
+
+  9 Genesis 1:1              6 subs pm,          C.@MA73JIM                => ššāmˌayim                 < =                           # word after article in isolation
+        orig                 C.@MA73JIM
+        trim                 c.@ma73jim
+        accents              c.@m/ajim
+        punctuation          c.@m/ajim
+        rafe                 c.@m/ajim
+        furtive_patah        c.@m/ajim
+        default accent       c.@m/ajim
+        qamets qatan         no special verb form: subs pm
+        qamets_qatan1        c.@m/ajim
+        qamets_qatan2        c.@m/ajim
+        qamets_qatan3        c.@m/ajim
+        qamets_qatan4a       c.@m/ajim
+        qamets_qatan4b       c.@m/ajim
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        c.@m/ajim
+        qamets_qatan_corr    c.@m/ajim
+        mobile_schwa1        c.@m/ajim
+        mobile_schwa2        c.@m/ajim
+        mobile_schwa3        c.@m/ajim
+        mobile_schwa4        c.@m/ajim
+        dagesh_forte_lene    c.@m/ajim
+        dagesh_forte         c.@m/ajim
+        dagesh_lene          c.@m/ajim
+        silent_aleph         c.@m/ajim
+        last_ml              c.@m/ajim
+        mappiq_heh           c.@m/ajim
+        symbols              š.āmˌayim
+        fixit_i              š.āmˌayim
+        fixit_w              š.āmˌayim
+        fixit                ššāmˌayim
+        punct                ššāmˌayim
+        cleanup              ššāmˌayim
+
+
+ 10 Genesis 48:9         27477 verb piel impf 1s-,+;m >:AB@R:AK;75M00           => ʔᵃvārᵃḵˈēm                < =                           # pronominal suffix after verb
+        orig                 >:AB@R:AK;75M
+        trim                 >:ab@r:ak;75m
+        accents              >:ab@r:ak!;m
+        punctuation          >:ab@r:ak!;m
+        rafe                 >:ab@r:ak!;m
+        furtive_patah        >:ab@r:ak!;m
+        default accent       >:ab@r:ak!;m
+        qamets qatan         no special verb form: verb piel impf 1s-
+        qamets_qatan1        >:ab@r:ak!;m
+        qamets_qatan2        >:ab@r:ak!;m
+        qamets_qatan3        >:ab@r:ak!;m
+        qamets_qatan4a       >:ab@r:ak!;m
+        qamets_qatan4b       >:ab@r:ak!;m
+        qamets qatan         pronominal suffix: no qamets present
+        qamets_qatan5        >:ab@r:ak!;m
+        qamets_qatan_corr    >:ab@r:ak!;m
+        mobile_schwa1        >:ab@r:ak!;m
+        mobile_schwa2        >:ab@r:ak!;m
+        mobile_schwa3        >:ab@r:ak!;m
+        mobile_schwa4        >:ab@r:ak!;m
+        dagesh_forte_lene    >:ab@r:ak!;m
+        dagesh_forte         >:ab@r:ak!;m
+        dagesh_lene          >:ab@r:ak!;m
+        silent_aleph         >:ab@r:ak!;m
+        last_ml              >:ab@r:ak!;m
+        mappiq_heh           >:ab@r:ak!;m
+        symbols              ʔᵃvārᵃḵˈēm
+        fixit_i              ʔᵃvārᵃḵˈēm
+        fixit_w              ʔᵃvārᵃḵˈēm
+        fixit                ʔᵃvārᵃḵˈēm
+        punct                ʔᵃvārᵃḵˈēm
+        cleanup              ʔᵃvārᵃḵˈēm
+
+
+ 11 Proverbia 10:10     349407 subs sf,          <AY.@92BET                => ʕaṣṣˈāveṯ                 < =                           # the qamets should be gadol
+        orig                 <AY.@92BET
+        trim                 <ay.@92bet
+        accents              <ay.!@bet
+        punctuation          <ay.!@bet
+        rafe                 <ay.!@bet
+        furtive_patah        <ay.!@bet
+        default accent       <ay.!@bet
+        qamets qatan         no special verb form: subs sf
+        qamets_qatan1        <ay.!@bet
+        qamets_qatan2        <ay.!@bet
+        qamets_qatan3        <ay.!@bet
+        qamets_qatan4a       <ay.!@bet
+        qamets_qatan4b       <ay.!@bet
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        <ay.!@bet
+        qamets_qatan_corr    <ay.!@bet
+        mobile_schwa1        <ay.!@bet
+        mobile_schwa2        <ay.!@bet
+        mobile_schwa3        <ay.!@bet
+        mobile_schwa4        <ay.!@bet
+        dagesh_forte_lene    <ay.!@bet
+        dagesh_forte         <ayy!@bet
+        dagesh_lene          <ayy!@bet
+        silent_aleph         <ayy!@bet
+        last_ml              <ayy!@bet
+        mappiq_heh           <ayy!@bet
+        symbols              ʕaṣṣˈāveṯ
+        fixit_i              ʕaṣṣˈāveṯ
+        fixit_w              ʕaṣṣˈāveṯ
+        fixit                ʕaṣṣˈāveṯ
+        punct                ʕaṣṣˈāveṯ
+        cleanup              ʕaṣṣˈāveṯ
+
+
+ 12 Genesis 17:11         7494 subs sf,+kem      <@R:LAT:KE92M             => ʕorlaṯᵊḵˈem               < =                           # schwa in front of BGDKPT without dagesh
+        orig                 <@R:LAT:KE92M
+        trim                 <@r:lat:ke92m
+        accents              <@r:lat:k!em
+        punctuation          <@r:lat:k!em
+        rafe                 <@r:lat:k!em
+        furtive_patah        <@r:lat:k!em
+        default accent       <@r:lat:k!em
+        qamets qatan         no special verb form: subs sf
+        qamets_qatan1        <@r:lat:k!em
+        qamets_qatan2        <@r:lat:k!em
+        qamets_qatan3        <^r:lat:k!em
+        qamets_qatan4a       <^r:lat:k!em
+        qamets_qatan4b       <^r:lat:k!em
+        qamets qatan         pronominal suffix: no qamets present
+        qamets_qatan5        <^r:lat:k!em
+        qamets_qatan_corr    <^r:lat:k!em
+        mobile_schwa1        <^r:lat:k!em
+        mobile_schwa2        <^r:lat%k!em
+        mobile_schwa3        <^r:lat%k!em
+        mobile_schwa4        <^r:lat%k!em
+        dagesh_forte_lene    <^r:lat%k!em
+        dagesh_forte         <^r:lat%k!em
+        dagesh_lene          <^r:lat%k!em
+        silent_aleph         <^r:lat%k!em
+        last_ml              <^r:lat%k!em
+        mappiq_heh           <^r:lat%k!em
+        symbols              ʕorlaṯᵊḵˈem
+        fixit_i              ʕorlaṯᵊḵˈem
+        fixit_w              ʕorlaṯᵊḵˈem
+        fixit                ʕorlaṯᵊḵˈem
+        punct                ʕorlaṯᵊḵˈem
+        cleanup              ʕorlaṯᵊḵˈem
+
+
+ 13 Joel 1:17           294291 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets gadol or qatan
+        orig                 <@B:C74W.
+        trim                 <@b:c74w.
+        accents              <@b:c!w.
+        punctuation          <@b:c!w.
+        rafe                 <@b:c!w.
+        furtive_patah        <@b:c!w.
+        default accent       <@b:c!w.
+        qamets qatan         special verb form: primary accent present
+        qamets qatan         special verb form: qatan suppressed for verb qal perf 3p-
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        <@b:c!w.
+        qamets_qatan_corr    <@b:c!w.
+        mobile_schwa1        <@b%c!w.
+        mobile_schwa2        <@b%c!w.
+        mobile_schwa3        <@b%c!w.
+        mobile_schwa4        <@b%c!w.
+        dagesh_forte_lene    <@b%c!w.
+        dagesh_forte         <@b%c!w.
+        dagesh_lene          <@b%c!w.
+        silent_aleph         <@b%c!w.
+        last_ml              <@b%c!w.
+        mappiq_heh           <@b%c!w.
+        symbols              ʕāvᵊšˈû
+        fixit_i              ʕāvᵊšˈû
+        fixit_w              ʕāvᵊšˈû
+        fixit                ʕāvᵊšˈû
+        punct                ʕāvᵊšˈû
+        cleanup              ʕāvᵊšˈû
 
 
