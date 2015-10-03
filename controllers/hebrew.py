@@ -2361,7 +2361,6 @@ def item_access_read(iidrep=get_request_val('material', '', 'iid')):
     if qw == 'q':
         if iidrep != None:
             (iid, kw) = iid_decode(qw, iidrep)
-            print 'iid=[{}] kw=[{}]'.format(iid, kw)
             if iid > 0: return query_auth_read(iid)
     return (None, u'Not a valid id {}'.format(iidrep))
 

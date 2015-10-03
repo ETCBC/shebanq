@@ -9,6 +9,9 @@ for (qw, tags) in (('w', 'words'), ('q', 'queries'), ('n', 'notes')):
                 <td id="colorpicker_i{{=qw}}"></td>
                 <td>{{=XML(colorpicker(qw, 'me', ''))}}</td>
                 {{pass}}
+                {{if qw == 'q':}}
+                <td id="theqid"></td>
+                {{pass}}
                 <td>{{
     for v in version_order:
         if versions[v]['date']:

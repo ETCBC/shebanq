@@ -1869,6 +1869,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             this.msgo = new Msg('dbmsg_'+qw)
             if (qw == 'q') {
                 this.info = q
+                $('#theqid').html(q.id)
                 var ufname = escapeHTML(q.ufname || '')
                 var ulname = escapeHTML(q.ulname || '')
                 var qname = escapeHTML(q.name || '')

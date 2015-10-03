@@ -164,6 +164,11 @@ table.item_w td,table.item_q td {
     margin: 0pt;
 }
 
+td#theqid {
+    font-size: x-small;
+    color: #999999;
+}
+
 /* VIEW SETTINGS */
 
 .qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.vradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {

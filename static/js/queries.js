@@ -668,7 +668,7 @@ function Tree() {
         icon.addClass('fa-check-circle')
     }
     this.viewinit = function() {
-        $('#lmsg').how()
+        $('#lmsg').show()
         $('.form_l').hide()
         $('.ctrl_l').hide()
         $('.treehl').removeClass('treehl')
