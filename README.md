@@ -1,5 +1,5 @@
-![shebanq](https://raw.githubusercontent.com/Dans-labs/shebanq/master/static/images/shebanq_logo.png)
-![shebanq](https://raw.githubusercontent.com/Dans-labs/shebanq/master/static/images/shebanq.png)
+![shebanq](https://raw.githubusercontent.com/etcbc/shebanq/master/static/images/shebanq_logo.png)
+![shebanq](https://raw.githubusercontent.com/etcbc/shebanq/master/static/images/shebanq.png)
 
 SHEBANQ
 =======
