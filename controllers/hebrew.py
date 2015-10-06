@@ -675,14 +675,14 @@ def query():
     if request.extension == 'json':
         (authorized, msg) = item_access_read(iidrep=iidrep)
         if not authorized:
-            return dict(good=False, msg=[msg], data={})
+            result = dict(good=False, msg=[msg], data={})
         else:
             vr = get_request_val('material', '', 'version')
             msgs = []
             (iid, kw) = iid_decode('q', iidrep)
             qrecord = get_query_info(False, iid, vr, msgs, with_ids=False, single_version=False, po=True)
             result = dict(good=qrecord != None, msg=msgs, data=qrecord)
-            return dict(data=json.dumps(result))
+        return dict(data=json.dumps(result))
     else:
         request.vars['page'] = 1
     return text()
