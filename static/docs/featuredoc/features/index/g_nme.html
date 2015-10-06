@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>g_nme &mdash; SHEBANQ doc 0.4.15 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SHEBANQ doc 0.4.15 documentation" href="../../index.html"/>
+        <link rel="up" title="Feature Values" href="0_index.html"/>
+        <link rel="next" title="g_nme_utf8" href="g_nme_utf8.html"/>
+        <link rel="prev" title="g_lex_utf8" href="g_lex_utf8.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SHEBANQ doc
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../texts/welcome.html">Welcome</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texts/mother.html">Mother</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texts/wordgrammar.html">Word grammar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texts/context.html">Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_hints.html">Features with <em>hints</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_overview.html">Features (by category)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_index.html">Features (by name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_code.html">Features (by code)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_index.html">Feature Values</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="book.html">book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter.html">chapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clause_kind.html">clause_kind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code.html">code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="det.html">det</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist.html">dist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_unit.html">dist_unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="domain.html">domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function.html">function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_cons.html">g_cons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_cons_utf8.html">g_cons_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_lex.html">g_lex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_lex_utf8.html">g_lex_utf8</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">g_nme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paradigmatic-related-to-graphical">paradigmatic related to graphical</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="g_nme_utf8.html">g_nme_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_pfm.html">g_pfm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_pfm_utf8.html">g_pfm_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_prs.html">g_prs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_prs_utf8.html">g_prs_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_uvf.html">g_uvf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_uvf_utf8.html">g_uvf_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbe.html">g_vbe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbe_utf8.html">g_vbe_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbs.html">g_vbs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbs_utf8.html">g_vbs_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_word.html">g_word</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_word_utf8.html">g_word_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gn.html">gn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="half_verse.html">half_verse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="is_root.html">is_root</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">label</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lex.html">lex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lex_utf8.html">lex_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ls.html">ls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maxmonad.html">maxmonad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minmonad.html">minmonad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monads.html">monads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mother_object_type.html">mother_object_type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nme.html">nme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nu.html">nu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oid.html">oid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="otype.html">otype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdp.html">pdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfm.html">pfm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phono.html">phono</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prs.html">prs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ps.html">ps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rela.html">rela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp.html">sp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="st.html">st</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tab.html">tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trailer_utf8.html">trailer_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txt.html">txt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typ.html">typ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uvf.html">uvf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vbe.html">vbe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vbs.html">vbs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verse.html">verse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vs.html">vs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vt.html">vt</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_cautions.html">Features with <em>cautions</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_graphical.html">Graphical</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SHEBANQ doc</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="0_index.html">Feature Values</a> &raquo;</li>
+      
+    <li>g_nme</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/features/index/g_nme.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="g-nme">
+<h1>g_nme<a class="headerlink" href="#g-nme" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python"><div class="highlight"><pre>108 DIFFERENT DEFINED VALUES IN TOTAL
+UNDEFINED VALUES
+
+DEFINED VALUES
+ x 245331
+/ x 122043
+/IJM x 12856
+/;J x 11402
+/@H x 8852
+/OWT x 5008
+/AT x 2941
+/@J x 2728
+/EJ x 2047
+/@T x 1907
+/IM x 1704
+/ET x 1677
+/OT x 1281
+/T x 1148
+/AJ x 930
+/T. x 719
+/AJIM x 354
+/OT@J x 349
+/OT;J x 316
+/OTEJ x 244
+/OWT;J x 229
+/IJN x 227
+/AJ. x 158
+/T.;J x 143
+/;T x 134
+/OWTEJ x 122
+/@JIM x 119
+/OTAJ x 119
+/OWT@J x 113
+/;JM x 88
+/OWTAJ x 83
+/J x 80
+/JM x 80
+/T.AJIM x 76
+/E x 72
+/; x 62
+/TAJIM x 62
+/OW x 53
+/:T x 45
+/T;J x 44
+/@TAJIM x 41
+/AT: x 37
+/T.;JM x 34
+/WT x 34
+/H x 32
+/@&gt; x 27
+/@T@J x 24
+/@N x 23
+/O&gt;WT x 22
+/@TEJ x 20
+/TJ x 20
+/T@JIM x 18
+/IN x 17
+/M x 17
+/@T@H x 16
+/@TAJ x 16
+/@ x 15
+/O&gt;T x 15
+/W x 13
+/@T@JIM x 11
+/O&gt;T;J x 11
+/JN x 10
+/- x 9
+/W.T x 9
+/T.@JIM x 8
+/@T;J x 7
+/O&gt;WT;J x 6
+/OT; x 6
+/:AT x 5
+/;J- x 5
+/AJIN x 5
+/O x 5
+/WTJ x 5
+/@J: x 4
+/OTAJIM x 4
+/UT x 4
+/:@T;J x 3
+/&gt; x 3
+/JWT x 3
+/O&gt;TAJ x 3
+/O&gt;WTEJ x 3
+/T.: x 3
+/JT x 2
+/N x 2
+/O&gt;T@J x 2
+/O&gt;TEJ x 2
+/OT@JIM x 2
+/OTE x 2
+/OWT; x 2
+/OWTE x 2
+/T.;JN x 2
+/WJM x 2
+/:@T x 1
+/&gt;T x 1
+/EH x 1
+/JK x 1
+/JTJ x 1
+/K x 1
+/NJ x 1
+/O&gt;WT@J x 1
+/TAJIN x 1
+/TH x 1
+/TM x 1
+/TN x 1
+/WJ x 1
+/WM x 1
+/WTJW x 1
+/_XMC x 1
+</pre></div>
+</div>
+<div class="section" id="paradigmatic-related-to-graphical">
+<h2>paradigmatic related to graphical<a class="headerlink" href="#paradigmatic-related-to-graphical" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>n/a (188830x)
+	[empty] (188830x)
+[empty] (121948x)
+	/ (121884x)
+	/J (38x)
+	/H (12x)
+	/- (6x)
+	/T (3x)
+	/&gt; (1x)
+	/K (1x)
+	/NJ (1x)
+	/W (1x)
+	/_XMC (1x)
+absent (56501x)
+	[empty] (56501x)
+J (15836x)              pl-m-c
+	/;J (10438x)
+	/@J (2357x)
+	/EJ (1808x)
+	/AJ (778x)
+	/AJ. (152x)
+	/ (113x)
+	/E (66x)
+	/; (58x)
+	/J (37x)
+	/W (11x)
+	/;J- (5x)
+	/@ (5x)
+	/@J: (4x)
+	/- (3x)
+	/WJ (1x)
+JM (14660x)             pl-m-a
+	/IJM (12856x)
+	/IM (1704x)
+	/JM (76x)
+	/M (16x)
+	/ (2x)
+	/WJM (2x)
+	/J (1x)
+	/JK (1x)
+	/JN (1x)
+	/WM (1x)
+H (8929x)               sg-f-a
+	/@H (8852x)
+	/@&gt; (27x)
+	/H (19x)
+	/ (15x)
+	/@ (8x)
+	/&gt; (2x)
+	/T (2x)
+	/EH (1x)
+	/J (1x)
+	/JM (1x)
+	/M (1x)
+T (8575x)               -f-
+	/AT (2941x)
+	/@T (1856x)
+	/ET (1677x)
+	/T (1106x)
+	/T. (719x)
+	/;T (134x)
+	/:T (45x)
+	/AT: (37x)
+	/@T@H (16x)
+	/TJ (11x)
+	/W.T (9x)
+	/:AT (5x)
+	/ (4x)
+	/UT (4x)
+	/T.: (3x)
+	/J (2x)
+	/H (1x)
+	/JT (1x)
+	/N (1x)
+	/TH (1x)
+	/TN (1x)
+	/WT (1x)
+WT (6363x)              pl-f-
+	/OWT (5008x)
+	/OT (1281x)
+	/WT (26x)
+	/O&gt;WT (22x)
+	/O&gt;T (15x)
+	/JWT (3x)
+	/T (3x)
+	/ (2x)
+	/JT (1x)
+	/WTJ (1x)
+	/WTJW (1x)
+J= (1770x)              du--c
+	/;J (964x)
+	/@J (371x)
+	/EJ (239x)
+	/AJ (152x)
+	/ (23x)
+	/AJ. (6x)
+	/E (6x)
+	/; (4x)
+	/@ (2x)
+	/J (1x)
+	/JM (1x)
+	/W (1x)
+WTJ (1672x)             pl-f-c
+	/OT@J (349x)
+	/OT;J (316x)
+	/OTEJ (244x)
+	/OWT;J (229x)
+	/OWTEJ (122x)
+	/OTAJ (119x)
+	/OWT@J (113x)
+	/OWTAJ (83x)
+	/T (33x)
+	/O&gt;T;J (11x)
+	/TJ (8x)
+	/WT (7x)
+	/O&gt;WT;J (6x)
+	/OT; (6x)
+	/WTJ (4x)
+	/:@T;J (3x)
+	/O&gt;TAJ (3x)
+	/O&gt;WTEJ (3x)
+	/O&gt;T@J (2x)
+	/O&gt;TEJ (2x)
+	/OTE (2x)
+	/OWT; (2x)
+	/OWTE (2x)
+	/&gt;T (1x)
+	/JTJ (1x)
+	/O&gt;WT@J (1x)
+JM= (562x)              du--a
+	/AJIM (354x)
+	/@JIM (119x)
+	/;JM (88x)
+	/JM (1x)
+TJM (257x)              du-f-c
+	/T.AJIM (76x)
+	/TAJIM (62x)
+	/@TAJIM (41x)
+	/T.;JM (34x)
+	/T@JIM (18x)
+	/@T@JIM (11x)
+	/T.@JIM (8x)
+	/OTAJIM (4x)
+	/OT@JIM (2x)
+	/TM (1x)
+TJ (256x)               du-f-c
+	/T.;J (143x)
+	/T;J (44x)
+	/@T@J (24x)
+	/@TEJ (20x)
+	/@TAJ (16x)
+	/@T;J (7x)
+	/T (1x)
+	/TJ (1x)
+JN (254x)               pl-m-a
+	/IJN (227x)
+	/IN (17x)
+	/JN (9x)
+	/JM (1x)
+W (53x)
+	/OW (48x)
+	/O (5x)
+T= (52x)
+	/@T (51x)
+	/:@T (1x)
+N (24x)
+	/@N (23x)
+	/N (1x)
+JN= (5x)
+	/AJIN (5x)
+W= (5x)
+	/OW (5x)
+TJN (3x)
+	/T.;JN (2x)
+	/TAJIN (1x)
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="g_nme_utf8.html" class="btn btn-neutral float-right" title="g_nme_utf8" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="g_lex_utf8.html" class="btn btn-neutral" title="g_lex_utf8" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Wido van Peursen.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.4.15',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

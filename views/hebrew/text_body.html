@@ -29,7 +29,7 @@
             <span><a href="#" id="mtxt_tb{{=t}}" class="ctrl mhradio">{{=u'{} ({}/{})'.format(tp_labels['txt_tb{}'.format(t)], t, tab_views)}}</a></span>
 {{pass}}
             <span><a id="datalegend_control" class="ctrl" href="#">legend</a></span>
-            <span id="datalegend" class="txt_il2">{{=XML(legend())}}</span>
+            <span id="datalegend" class="txt_il2">{{=XML(legend(URL('static/docs/featuredoc/features', 'comments')))}}</span>
         </div>
     </div>
     <div id="material_message"></div>

@@ -1,0 +1,35 @@
+Features with *hints*
+#####################
+
+Hints with example queries published on SHEBANQ or as LAF-Fabric notebook
+=========================================================================
+
+==============================  ===========================================================================================================  =================
+:doc:`code <code>`              `Direct Speech <http://shebanq.ancient-data.org/hebrew/query?id=518>`_                                       Martijn Naaijer
+:doc:`domain <domain>`          `Discourse Pattern Deviation <http://shebanq.ancient-data.org/hebrew/query?id=491>`_                         Oliver Glanz
+:doc:`number <number>`          `Incongruencies <http://shebanq.ancient-data.org/hebrew/query?id=519>`_                                      Reinoud Oosting
+:doc:`otype <otype>`            `Yesh <http://shebanq.ancient-data.org/hebrew/query?id=556>`_                                                Dirk Roorda
+:doc:`otype <otype>`            `NTN-FJM <http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/valence/ntn_analysis.ipynb>`_  Dirk Roorda
+:doc:`prs <prs>`                `Pronominal Suffixes (prs) <http://shebanq.ancient-data.org/hebrew/query?version=4&id=84>`_                  Oliver Glanz
+==============================  ===========================================================================================================  =================
+
+All features with hints
+=======================
+
+.. toctree::
+    :maxdepth: 1
+
+    code
+    domain
+    trailer_utf8
+    label
+    g_lex_utf8
+    g_lex
+    lex_utf8
+    lex
+    number
+    otype
+    prs
+    vbe
+    g_cons_utf8
+    g_word

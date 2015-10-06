@@ -1,0 +1,40 @@
+SHEBANQ Documentation |version|
+###############################
+.. image:: /files/logo.png
+   :target: http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71
+   :width: 200px
+   :align: left
+
+.. image:: /files/logo-dans.png
+   :target: http://www.persistent-identifier.nl/?identifier=urn:nbn:nl:ui:13-048i-71
+   :width: 200px
+   :align: right
+
+.. image:: /files/logo-alt.png
+   :target: http://www.godgeleerdheid.vu.nl/etcbc
+   :width: 200px
+   :align: right
+
+Contents:
+
+.. toctree::
+    :maxdepth: 4
+
+    texts/welcome
+    texts/mother
+    texts/wordgrammar
+    texts/context
+    features/comments/0_hints
+    features/comments/0_overview
+    features/comments/0_index
+    features/comments/0_code
+    features/index/0_index
+    features/comments/0_cautions
+    features/comments/0_graphical
+
+Indices and tables
+##################
+
+* :ref:`genindex`
+* :ref:`search`
+

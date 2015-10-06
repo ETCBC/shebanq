@@ -1,0 +1,73 @@
+Features (by name)
+###################
+
+Contents:
+
+.. toctree::
+    :maxdepth: 1
+
+    book
+    chapter
+    clause_kind
+    typ
+    code
+    det
+    dist
+    dist_unit
+    domain
+    gn
+    half_verse
+    trailer_utf8
+    is_root
+    language
+    lex_utf8
+    lex
+    g_lex_utf8
+    g_lex
+    ketiv
+    ls
+    maxmonad
+    minmonad
+    monads
+    mother_object_type
+    nme
+    g_nme_utf8
+    g_nme
+    nu
+    oid
+    otype
+    sp
+    ps
+    pdp
+    function
+    gloss
+    pfm
+    g_pfm_utf8
+    g_pfm
+    prs
+    g_prs_utf8
+    g_prs
+    rela
+    vbs
+    g_vbs_utf8
+    g_vbs
+    number
+    st
+    tab
+    txt
+    uvf
+    g_uvf_utf8
+    g_uvf
+    vbe
+    g_vbe_utf8
+    g_vbe
+    vs
+    vt
+    label
+    verse
+    vocalized_lexeme
+    g_cons_utf8
+    g_cons
+    phono
+    g_word_utf8
+    g_word

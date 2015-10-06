@@ -121,7 +121,7 @@
 # * **nametype** (= ``sm``) the type of named entity
 # * **subpos** (= ``ls``) subtype of part of speech (aka *lexical set*)
 
-# In[2]:
+# In[1]:
 
 import collections
 import laf

@@ -1,0 +1,17 @@
+Clause kind ``clause_kind``
+------------------------------------------------------
+:doc:`frequency table of values <../index/clause_kind>`
+
+.. caution::
+    I was unable to locate a definition of this feature
+
+This feature is ??
+
+This feature is present on objects of type *clause*.
+
+====== ==
+``VC`` ??
+``NC`` ??
+``WP`` ??
+====== ==
+

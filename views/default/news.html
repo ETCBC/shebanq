@@ -35,6 +35,19 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
+<h2>2015-10-06</h2>
+<dl>
+<dt>Documentation</dt>
+<dd>The feature documentation has been moved from readthedocs to within SHEBANQ.
+It still is a separate git repository within ETCBC, but the html build of the rst documentation is copied into the static directory of shebanq.
+</dd>
+<dt>Reorganisation</dt>
+<dd>The notebooks underlying the <i>tools</i> page and their supplementary data have been moved to a separate github repository,
+<i>shebanq-tools</i>, which is included in shebanq as a git submodule.</dd>
+</dl>
+</div>
+
+<div>
 <h2>2015-10-02</h2>
 <dl>
 <dt>Ketiv-Qere</dt>
@@ -203,7 +216,8 @@ boundaries cut through phrases.</p>
 I have put them in for SHEBANQ in order to show where the subphrases are.
 Subphrases may overlap, each word carries the numbers of all subphrases it belongs to.
 Subphrase-numbering is relative to the container phrase.
-See the <a target="_blank" href="http://shebanq-doc.readthedocs.org/en/latest/features/comments/number.html">feature documentation</a>.</p></dd>
+See the
+<a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments', 'number.html')}}">feature documentation</a>.</p></dd>
 </dl>
 </div>
 

@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>g_prs &mdash; SHEBANQ doc 0.4.15 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SHEBANQ doc 0.4.15 documentation" href="../../index.html"/>
+        <link rel="up" title="Feature Values" href="0_index.html"/>
+        <link rel="next" title="g_prs_utf8" href="g_prs_utf8.html"/>
+        <link rel="prev" title="g_pfm_utf8" href="g_pfm_utf8.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SHEBANQ doc
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../texts/welcome.html">Welcome</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texts/mother.html">Mother</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texts/wordgrammar.html">Word grammar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../texts/context.html">Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_hints.html">Features with <em>hints</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_overview.html">Features (by category)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_index.html">Features (by name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_code.html">Features (by code)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_index.html">Feature Values</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="book.html">book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter.html">chapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clause_kind.html">clause_kind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code.html">code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="det.html">det</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist.html">dist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_unit.html">dist_unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="domain.html">domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function.html">function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_cons.html">g_cons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_cons_utf8.html">g_cons_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_lex.html">g_lex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_lex_utf8.html">g_lex_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_nme.html">g_nme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_nme_utf8.html">g_nme_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_pfm.html">g_pfm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_pfm_utf8.html">g_pfm_utf8</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">g_prs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paradigmatic-related-to-graphical">paradigmatic related to graphical</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="g_prs_utf8.html">g_prs_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_uvf.html">g_uvf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_uvf_utf8.html">g_uvf_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbe.html">g_vbe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbe_utf8.html">g_vbe_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbs.html">g_vbs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_vbs_utf8.html">g_vbs_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_word.html">g_word</a></li>
+<li class="toctree-l2"><a class="reference internal" href="g_word_utf8.html">g_word_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gn.html">gn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="half_verse.html">half_verse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="is_root.html">is_root</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">label</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lex.html">lex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lex_utf8.html">lex_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ls.html">ls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maxmonad.html">maxmonad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minmonad.html">minmonad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monads.html">monads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mother_object_type.html">mother_object_type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nme.html">nme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nu.html">nu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oid.html">oid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="otype.html">otype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdp.html">pdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfm.html">pfm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phono.html">phono</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prs.html">prs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ps.html">ps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rela.html">rela</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp.html">sp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="st.html">st</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tab.html">tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trailer_utf8.html">trailer_utf8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txt.html">txt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typ.html">typ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uvf.html">uvf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vbe.html">vbe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vbs.html">vbs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verse.html">verse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vs.html">vs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vt.html">vt</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_cautions.html">Features with <em>cautions</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comments/0_graphical.html">Graphical</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SHEBANQ doc</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="0_index.html">Feature Values</a> &raquo;</li>
+      
+    <li>g_prs</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/features/index/g_prs.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="g-prs">
+<h1>g_prs<a class="headerlink" href="#g-prs" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python"><div class="highlight"><pre>128 DIFFERENT DEFINED VALUES IN TOTAL
+UNDEFINED VALUES
+
+DEFINED VALUES
+ x 381403
++OW x 7596
++IJ x 4671
++W x 4245
++@M x 3110
++K@ x 2960
++HEM x 2189
++:K@ x 2178
++ x 1981
++@H. x 1777
++KEM x 1652
++H@ x 1197
++EK@ x 1162
++@HEM x 829
++NW. x 795
++@K: x 758
++;HW. x 644
++@KEM x 599
++;NIJ x 566
++W. x 559
++;K: x 507
++;M x 495
++IK: x 454
++@NW. x 429
++HW. x 380
++;NW. x 372
++M x 314
++:KEM x 310
++NIJ x 308
++@H x 219
++:NIJ x 172
++;H. x 158
++HEN x 139
++ANIJ x 115
++:AK@ x 112
++K.@ x 102
++EH@ x 94
++K: x 88
++HIJ x 77
++@MOW x 60
++K x 55
++H x 52
++@HW. x 51
++:AKEM x 45
++K.EM x 38
++MOW x 35
++@NIJ x 34
++@N x 33
++AH. x 32
++:HOWN x 29
++OH x 26
++;MOW x 20
++&gt; x 19
++:K@H x 17
++@HEN x 17
++HOWN x 17
++@H;N x 16
++AM x 14
++HM x 12
++J x 12
++KEN x 11
++NW x 11
++HWN x 10
++@N@H x 9
++K.@H x 7
++KOWN x 7
++:AK@H x 6
++:HEN x 6
++:HOM x 6
++;KIJ x 6
++K@H x 6
++KM x 6
++@H;M x 5
++EK: x 5
++KIJ x 5
++KJ x 5
++N@&gt; x 5
++:KEN x 4
++:NW. x 4
++AN@&gt; x 4
++H. x 4
++NJ x 4
++:AHOWN x 3
++:KOM x 3
++H;N x 3
++HOM x 3
++KEN@H x 3
++:AHOM x 2
++:AKOM x 2
++:KOWN x 2
++;&gt; x 2
++;K x 2
++@H, x 2
++@H:N@H x 2
++A x 2
++AJ x 2
++EK@H x 2
++EN@H x 2
++HW x 2
++NH x 2
++:@K@ x 1
++:AKOWN x 1
++:H@ x 1
++:HEM x 1
++:HOWM x 1
++:HW. x 1
++;K;H x 1
++;N.@H x 1
++@&gt; x 1
++@HAM x 1
++@K@H x 1
++@KEN@H x 1
++AN x 1
++AN.IJ x 1
++D x 1
++EM x 1
++H.EM x 1
++H;M@H x 1
++H&gt; x 1
++HEN@H x 1
++IK x 1
++JNJ x 1
++MW. x 1
++N x 1
++N&gt; x 1
++WMW x 1
++WNJ x 1
++WW x 1
+</pre></div>
+</div>
+<div class="section" id="paradigmatic-related-to-graphical">
+<h2>paradigmatic related to graphical<a class="headerlink" href="#paradigmatic-related-to-graphical" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>absent (235931x)
+	[empty] (235931x)
+n/a (145472x)
+	[empty] (145472x)
+W (11904x)              p3-sg-m
+	+OW (7596x)
+	+W (4226x)
+	+H (30x)
+	+OH (26x)
+	+&gt; (18x)
+	+ (3x)
+	+J (3x)
+	+D (1x)
+	+WW (1x)
+K (7134x)               p2-sg-m
+	+K@ (2960x)
+	+:K@ (2178x)
+	+EK@ (1162x)
+	+@K: (526x)
+	+:AK@ (112x)
+	+K.@ (102x)
+	+K (46x)
+	+:K@H (17x)
+	+K.@H (7x)
+	+K: (7x)
+	+:AK@H (6x)
+	+K@H (6x)
+	+EK@H (2x)
+	+:@K@ (1x)
+	+@K@H (1x)
+	+W (1x)
+J (6563x)               p1-sg-
+	+IJ (4558x)
+	+ (1977x)
+	+W (14x)
+	+J (8x)
+	+A (2x)
+	+AJ (2x)
+	+H (2x)
+M (3938x)               p3-pl-m
+	+@M (3110x)
+	+;M (495x)
+	+M (314x)
+	+AM (14x)
+	+HM (2x)
+	+EM (1x)
+	+H (1x)
+	+NW (1x)
+H (3350x)               p3-sg-f
+	+@H. (1777x)
+	+H@ (1197x)
+	+@H (219x)
+	+EH@ (94x)
+	+AH. (32x)
+	+H (16x)
+	+H. (4x)
+	+W (3x)
+	+@H, (2x)
+	+ (1x)
+	+:H@ (1x)
+	+@&gt; (1x)
+	+H&gt; (1x)
+	+HW (1x)
+	+NH (1x)
+HM (3047x)              p3-pl-m
+	+HEM (2189x)
+	+@HEM (829x)
+	+HM (8x)
+	+:HOM (6x)
+	+@H;M (5x)
+	+HOM (3x)
+	+:AHOM (2x)
+	+:HEM (1x)
+	+:HOWM (1x)
+	+@HAM (1x)
+	+H.EM (1x)
+	+H;M@H (1x)
+KM (2657x)              p2-pl-m
+	+KEM (1652x)
+	+@KEM (599x)
+	+:KEM (310x)
+	+:AKEM (45x)
+	+K.EM (38x)
+	+KM (6x)
+	+:KOM (3x)
+	+:AKOM (2x)
+	+HM (2x)
+NW (1635x)              p1-pl-
+	+NW. (795x)
+	+@NW. (429x)
+	+;NW. (372x)
+	+W. (29x)
+	+:NW. (4x)
+	+NJ (2x)
+	+NW (2x)
+	+J (1x)
+	+NH (1x)
+HW (1611x)              p3-sg-m
+	+;HW. (644x)
+	+W. (530x)
+	+HW. (380x)
+	+@HW. (51x)
+	+H (3x)
+	+:HW. (1x)
+	+HW (1x)
+	+W (1x)
+NJ (1321x)              p1-sg-
+	+;NIJ (566x)
+	+NIJ (308x)
+	+:NIJ (172x)
+	+ANIJ (115x)
+	+IJ (113x)
+	+@NIJ (34x)
+	+NW (8x)
+	+NJ (2x)
+	+AN.IJ (1x)
+	+JNJ (1x)
+	+WNJ (1x)
+K= (1308x)              p2-sg-f
+	+;K: (507x)
+	+IK: (454x)
+	+@K: (232x)
+	+K: (81x)
+	+K (9x)
+	+;KIJ (6x)
+	+EK: (5x)
+	+KIJ (5x)
+	+KJ (5x)
+	+;K (2x)
+	+;K;H (1x)
+	+IK (1x)
+HN (192x)               p3-pl-f
+	+HEN (139x)
+	+@HEN (17x)
+	+@H;N (16x)
+	+HWN (8x)
+	+:HEN (6x)
+	+H;N (3x)
+	+@H:N@H (2x)
+	+HEN@H (1x)
+H= (161x)
+	+;H. (158x)
+	+;&gt; (2x)
+	+&gt; (1x)
+MW (117x)               p3-pl-m
+	+@MOW (60x)
+	+MOW (35x)
+	+;MOW (20x)
+	+MW. (1x)
+	+WMW (1x)
+HJ (77x)
+	+HIJ (77x)
+HWN (51x)
+	+:HOWN (29x)
+	+HOWN (17x)
+	+:AHOWN (3x)
+	+HWN (2x)
+N (47x)                 p3-pl-f
+	+@N (33x)
+	+@N@H (9x)
+	+EN@H (2x)
+	+;N.@H (1x)
+	+AN (1x)
+	+N (1x)
+KN (19x)                p2-pl-f
+	+KEN (11x)
+	+:KEN (4x)
+	+KEN@H (3x)
+	+@KEN@H (1x)
+KWN (10x)
+	+KOWN (7x)
+	+:KOWN (2x)
+	+:AKOWN (1x)
+N&gt; (10x)
+	+N@&gt; (5x)
+	+AN@&gt; (4x)
+	+N&gt; (1x)
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="g_prs_utf8.html" class="btn btn-neutral float-right" title="g_prs_utf8" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="g_pfm_utf8.html" class="btn btn-neutral" title="g_pfm_utf8" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Wido van Peursen.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.4.15',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

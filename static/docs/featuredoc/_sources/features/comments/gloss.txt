@@ -1,0 +1,25 @@
+Gloss ``gloss``
+---------------
+A short English translation of a single word, disregarding context.
+
+This feature is present on objects of type *word*.
+
+The *gloss* cannot be used to generate a proper translation.
+Many words have multiple meanings and a good translation chooses between them.
+The glosses are not guaranteed to mention all possible meanings, and they 
+do not contain heuristics which meanings should be selected in which contexts.
+
+The *gloss* is useful for users with limited knowledge of Hebrew to get an impression
+of what the text they are reading is about.
+
+.. note:: 
+    This is not a feature of the ETCBC4 Hebrew Text Database.
+    Every word occurrence in the database is linked to a lexicon entry.
+    The values of *gloss* are given in the lexicon only.
+
+.. hint::
+    In LAF-Fabric, the lexicon material is added, rather uneconomically, as extra features 
+    of the word occurrences. 
+    You can load these features by invoking the extra annotation package *lexicon*, and after
+    that the gloss can be used under the name ``gloss``.
+

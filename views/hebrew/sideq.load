@@ -89,7 +89,7 @@ statusmap = dict(
 </div>
 <div>
     <p><a class="ctrlb moredetail fa fa-chevron-right" href="#" title="more/less details"></a>Guides</p>
-    <p class="detail">{{=A('ETCBC4 feature doc', _target='_blank',_href='http://shebanq-doc.readthedocs.org/en/latest/features/comments/0_overview.html')}}</p>
+    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href=URL('static', 'docs/featuredocs/features/comments/0_overview.html'))}}</p>
     <p class="detail">{{=A('MQL quick reference guide (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-QuickRef.pdf'))}}</p>
     <p class="detail">{{=A('MQL Query Guide by Ulrik (pdf)', _target='_blank',_href=URL('static', 'docs/MQL-Query-Guide.pdf'))}}</p>
     <p class="detail">{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
