@@ -29,7 +29,7 @@
 {{pass}}
 {{pass}}
 <div>
-    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href=URL('static', 'docs/featuredocs/features/comments/0_overview.html'))}}</p>
+    <p>{{=A('ETCBC4 feature doc', _target='_blank',_href=URL('static', 'docs/featuredoc/features/comments/0_overview.html'))}}</p>
     <p>{{=A('ETCBC4 transcription table (pdf)', _target='_blank',_href=URL('static', 'docs/ETCBC4-transcription.pdf'))}}</p>
 </div>
 <script type="text/javascript">
