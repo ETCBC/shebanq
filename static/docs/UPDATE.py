@@ -201,6 +201,7 @@ def get_data_dir(source, version):
     return (API['data_dir'], API['my_file']('')[0:-5])
 
 def do_all(excl=None, force=False, net=True, mysql=True, clean=False, commit_msg='fixes'):
+    print(sys.argv)
     global orig_dir
     reset_time()
     orig_dir = os.getcwd()
