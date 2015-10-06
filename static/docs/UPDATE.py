@@ -416,5 +416,5 @@ def work():
     good = good and do_all(a_commands, **a_flags)
     return good
 
-sys.exit(not work())
+work()
 
