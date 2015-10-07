@@ -471,6 +471,7 @@ def iid_encode(qw, idpart, kw=None, sep=u'|'):
 
 def iid_decode(qw, iidrep, sep=u'|', rsep=None):
     idpart = iidrep
+    kw = u''
     if qw == 'n':
         try:
             (idpart, kw) = iidrep.replace('_','=').decode('base64').decode('utf8').split(sep, 1)

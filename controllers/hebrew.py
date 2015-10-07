@@ -457,7 +457,7 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
     if myid == None:
         msgs.append(('error', u'You have to be logged in when you save notes'))
         return
-    notes = json.loads(request.post_vars.notes)
+    notes = json.loads(request.post_vars.notes) if request.post_vars and request.post_vars.notes else []
     (good, old_notes, upd_notes, new_notes, del_notes) = note_filter_notes(myid, notes, these_clause_atoms, msgs)
 
     updated = 0
@@ -2127,7 +2127,7 @@ where query.id = {}
             flds['modified_on'] = request.now
         good = True
     if good:
-        execute = request.vars.execute
+        execute = not is_published and request.vars.execute
         xgood = True
         if execute == 'true':
             (xgood, nresults, xmonads, this_msgs, eversion) = mql(vr, newmql) 
