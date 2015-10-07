@@ -10,9 +10,28 @@
 
 # # LAF2SHEBANQ
 
+# <a href="dataflow.pdf" target="_blank"><img align="right"src="images/dataflow_dia_small.png"/></a>
+# 
 # This notebook constructs a relational database, *passage*, meant to support browsing of texts and highlighting of words.
 # It contains the texts themselves, verse by verse, and it contains book and chapter information.
 # The *passage* database also contains a lexicon, which is linked to the word occurrences.
+# 
+# One of the tasks of this notebook is to use other ETCBC data than is included in its main export, the `BHS4.mql` file.
+# 
+# This extra information consists of collected text files having information about
+# 
+# * paragraphs
+# * lexicon
+# * ketiv-qere
+# 
+# There is also the data for the phonetic represeantation of all words, which does not come from the ETCBC data directly, but has been produced by another tool,
+# [phono notebook](https://shebanq.ancient-data.org/hebrew/tools?goto=phono).
+# 
+# The diagram is an overview of how all the SHEBANQ data is derived from the ETCBC data.
+# Click on it to see a series of slides explaining how this data flow came into being.
+# 
+# In the `static/docs` directory of the SHEBANQ website is a script ``UPDATE.py`` that executes this diagram.
+# That is a handy example of how to convert a notebook to an executable python program and run it from the command line.
 # 
 # See the MySQL create statements below.
 

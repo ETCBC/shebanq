@@ -198,9 +198,23 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="dataflow.pdf" target="_blank"><img align="right"src="images/dataflow_dia_small.png"/></a></p>
 <p>This notebook constructs a relational database, <em>passage</em>, meant to support browsing of texts and highlighting of words.
 It contains the texts themselves, verse by verse, and it contains book and chapter information.
 The <em>passage</em> database also contains a lexicon, which is linked to the word occurrences.</p>
+<p>One of the tasks of this notebook is to use other ETCBC data than is included in its main export, the <code>BHS4.mql</code> file.</p>
+<p>This extra information consists of collected text files having information about</p>
+<ul>
+<li>paragraphs</li>
+<li>lexicon</li>
+<li>ketiv-qere</li>
+</ul>
+<p>There is also the data for the phonetic represeantation of all words, which does not come from the ETCBC data directly, but has been produced by another tool,
+<a href="https://shebanq.ancient-data.org/hebrew/tools?goto=phono">phono notebook</a>.</p>
+<p>The diagram is an overview of how all the SHEBANQ data is derived from the ETCBC data.
+Click on it to see a series of slides explaining how this data flow came into being.</p>
+<p>In the <code>static/docs</code> directory of the SHEBANQ website is a script <code>UPDATE.py</code> that executes this diagram.
+That is a handy example of how to convert a notebook to an executable python program and run it from the command line.</p>
 <p>See the MySQL create statements below.</p>
 
 </div>
