@@ -1099,11 +1099,21 @@ def words_page(viewsettings, vr, lan=None, letter=None):
     (letters, words) = from_cache('words_data_{}_'.format(vr), lambda: get_words_data(vr), None)
     return dict(versionstate=viewsettings.versionstate(), lan=lan, letter=letter, letters=letters, words=words.get(lan, {}).get(letter, []))
 
+# the query was:
+#
+#       select id, entry_heb, entryid_heb, lan, gloss from lexicon order by lan, entryid_heb
+#
+# normal sorting is not good enough: the pointed shin and sin turn out after the tav
+# I will sort with key entryid_heb where every pointed shin/sin is preceded by an unpointed one.
+# The unpointed one does turn up in the right place.
+ 
+def heb_key(x): return x.replace(u'שׁ', u'ששׁ').replace(u'שׂ', u'ששׂ')
+
 def get_words_data(vr):
-    ddata = passage_dbs[vr].executesql(u'''
-select id, entry_heb, entryid_heb, lan, gloss from lexicon order by lan, entryid_heb
+    ddata = sorted(passage_dbs[vr].executesql(u'''
+select id, entry_heb, entryid_heb, lan, gloss from lexicon
 ;
-''')
+'''), key=lambda x: (x[3], heb_key(x[2])))
     letters = dict(arc=[], hbo=[])
     words = dict(arc={}, hbo={})
     for (wid, e, eid, lan, gloss) in ddata:
@@ -2245,6 +2255,9 @@ def groupq(vr, input):
             r.append({'item': q, 'monads': json.dumps(sorted(list(monads[q['id']])))})
     return r
 
+# select * from lexicon where id in ({}) order by entryid_heb
+# again: modify the sorting because of shin and sin (see comments to function words_page)
+
 def groupw(vr, input):
     wids = collections.defaultdict(lambda: [])
     for x in input:
@@ -2252,10 +2265,10 @@ def groupw(vr, input):
     r = []
     if len(wids):
         wsql = u'''
-select * from lexicon where id in ({}) order by entryid_heb
+select * from lexicon where id in ({})
 ;
 '''.format(u','.join("'{}'".format(str(x)) for x in wids))
-        wordrecords = passage_dbs[vr].executesql(wsql, as_dict=True)
+        wordrecords = sorted(passage_dbs[vr].executesql(wsql, as_dict=True), key=lambda x: heb_key(x['entryid_heb']))
         for w in wordrecords:
             r.append({'item': w, 'monads': json.dumps(wids[w['id']])})
     return r
