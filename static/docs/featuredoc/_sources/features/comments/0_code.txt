@@ -25,6 +25,7 @@ Contents:
     g_pfm_utf8 <g_pfm_utf8>
     g_prs <g_prs>
     g_prs_utf8 <g_prs_utf8>
+    g_qere_utf8 <g_qere_utf8>
     g_uvf <g_uvf>
     g_uvf_utf8 <g_uvf_utf8>
     g_vbe <g_vbe>
@@ -36,6 +37,7 @@ Contents:
     gn <gn>
     half_verse <half_verse>
     is_root <is_root>
+    ketiv <ketiv>
     label <label>
     language <language>
     lex <lex>
@@ -50,12 +52,14 @@ Contents:
     number <number>
     oid <oid>
     otype <otype>
+    pargr <pargr>
     pdp <pdp>
     pfm <pfm>
     phono <phono>
     phono_sep <phono>
     prs <prs>
     ps <ps>
+    qtrailer_utf8 <qtrailer_utf8>
     rela <rela>
     sp <sp>
     st <st>

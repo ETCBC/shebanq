@@ -47,13 +47,13 @@ from etcbc.preprocess import prepare
 fabric = LafFabric()
 
 
-# In[ ]:
+# In[2]:
 
 source = 'etcbc'
 if 'version' not in locals(): version = '4b'
 
 
-# In[2]:
+# In[3]:
 
 API = fabric.load(source+version, 'lexicon', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
@@ -221,7 +221,7 @@ exec(fabric.localnames.format(var='fabric'))
 # It is the value of ``g_word_utf8`` precisely when a qere is present, 
 # otherwise it is empty.
 
-# In[3]:
+# In[4]:
 
 qeres = {}
 masora = '֯'
@@ -231,9 +231,31 @@ for w in F.g_qere_utf8.s():
 msg('Found {} qeres'.format(len(qeres)))
 
 
+# # Index of paragraphs
+# 
+# We make a list of paragraph numbers of clause_atoms. It will be used by the *para* function.
+
+# In[6]:
+
+paras = {}
+msg('Building para index')
+inf = infile('pargr_data.mql')
+first = True
+ca_index = {}
+for c in F.otype.s('clause_atom'):
+    ca_index[F.oid.v(c)] = c
+
+for line in inf:
+    if first:
+        first = False
+        continue
+    (oid, par) = line.rstrip('\n').split('\t')
+    paras[ca_index[oid]] = par
+
+
 # ## Field types
 
-# In[4]:
+# In[20]:
 
 def strip_id(entryid):
     return entryid.rstrip('/[=')
@@ -256,6 +278,8 @@ def ktv(n):
         if trsep.endswith('ס') or trsep.endswith('פ'): trsep += ' '
         return F.g_word_utf8.v(n) + trsep    
     return ''
+
+def para(n): return paras.get(n, '')
 
 def lang(n):
     return 'hbo' if F.language.v(n) == 'Hebrew' else 'arc'
@@ -327,6 +351,7 @@ word_fields = (
     (F.number.v, 'number', 'clause_atom', 'int', 4, '', False),
     (df(F.code.v), 'code', 'clause_atom', 'varchar', 8, '', True),
     (df(F.tab.v), 'tab', 'clause_atom', 'int', 4, '', False),
+    (para, 'pargr', 'clause_atom', 'varchar', 64, '', True),
     (F.number.v, 'number', 'clause', 'int', 4, '', False),
     (df(F.rela.v), 'rela', 'clause', 'varchar', 8, '', True),
     (df(F.typ.v), 'typ', 'clause', 'varchar', 8, '', True),
@@ -343,7 +368,7 @@ first_only = dict(('{}_{}'.format(f[2], f[1]), f[6]) for f in word_fields)
 # We have to make sure that the values fit within the declared sizes of these fields.
 # The code measures the maximum lengths of these fields, and it turns out that the text is maximally 434 chars and the xml 2186 chars.
 
-# In[5]:
+# In[21]:
 
 field_limits = {
     'book': {
@@ -445,7 +470,7 @@ print(text_create_sql)
 
 # # Lexicon file reading
 
-# In[6]:
+# In[9]:
 
 langs = {'hbo', 'arc'}
 lex_base = dict((lan, '{}/{}/{}.{}{}'.format(API['data_dir'], 'lexicon', lan, source, version)) for lan in langs)
@@ -519,7 +544,7 @@ for lan in sorted(lex_entries):
 # 
 # We also generate a file that can act as the basis of an extra annotation file with lexical information.
 
-# In[7]:
+# In[10]:
 
 msg("Fill the tables ... ")
 cur_id = {
@@ -695,7 +720,7 @@ else:
     print('All lexemes have been found in the lexicon')
 
 
-# In[8]:
+# In[11]:
 
 print('\n'.join(tables['lexicon'][0:10]))
 print('\n'.join(tables['clause_atom'][0:10]))
@@ -710,7 +735,7 @@ print('\n'.join(tables['clause_atom'][0:10]))
 # 
 # Conversely, we also construct an index from verses to nodes: given a verse, we make a list of all nodes belonging to that verse, in the canonical order.
 
-# In[9]:
+# In[12]:
 
 target_types = {
     'sentence', 'sentence_atom', 
@@ -760,7 +785,7 @@ def get_objects(vn):
 
 # # Fill the word info table with data
 
-# In[10]:
+# In[13]:
 
 msg("Generating word info data ...")
 wordf = outfile('word_data.tsv')
@@ -901,7 +926,7 @@ plainf.close()
 msg("Done")
 
 
-# In[12]:
+# In[22]:
 
 # check whether the field sizes are not exceeded
 
@@ -912,7 +937,7 @@ for f in word_fields:
     actual = field_sizes[tb][fl]
     exceeded = actual > limit
     outp = sys.stderr if exceeded else sys.stdout
-    outp.write('{:<5} {:<15}{:<15}: max size = {:>7} of {:>5}\n'.format(
+    outp.write('{:<5} {:<15}{:<20}: max size = {:>7} of {:>5}\n'.format(
         'ERROR' if exceeded else 'OK',
         tb, fl, actual, limit,
     ))
@@ -920,7 +945,7 @@ for f in word_fields:
 
 # # SQL generation
 
-# In[ ]:
+# In[23]:
 
 limit_row = 2000
 

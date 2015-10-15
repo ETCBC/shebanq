@@ -35,6 +35,41 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
+<h2>2015-10-15</h2>
+<dl>
+<dt>More features</dt>
+<dd><ul class="ldisc">
+<li>SHEBANQ showed more data than you could query on. There were several features, such as
+<a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments/phono.html')}}">phono</a>
+that SHEBANQ displayed for you, but you could not query it. Now you can.
+See for example the query
+{{=A(T("qamets qatan"), _href=URL('hebrew', 'query', vars=dict(id=968, page=1)))}}.</li>
+<li>There are also features that SHEBANQ did not show at all, but that were present in LAF-Fabric.
+One of them,
+<a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments/pargr.html')}}">pargr</a>,
+has been added to the data view of SHEBANQ, and you can query on it too.</li>
+<li>There is also a feature that is shown differently in SHEBANQ than it is in the database.
+This is
+<a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments/g_word_utf8.html')}}">g_word_utf8</a>,
+which in SHEBANQ normally shows the full-pointed Hebrew word.
+If the ketiv is different from the qere, this feature contains the ketiv, but SHEBANQ shows the full-pointed qere.
+This qere was not in the database, but now it is, and you can query it by means of
+<a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments/g_qere_utf8.html')}}">g_qere_utf8</a>,
+and the after-word material is
+then in
+<a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments/qtrailer_utf8.html')}}">qtrailer_utf8</a>.
+</li> 
+</ul>
+</dd>
+<dt>Phonetic transcriptions</dt>
+<dd>Minor improvements, especially in the qamets qatan/gadol area.
+<b>I welcome corrections, preferably as a note that you contribute to SHEBANQ below the offending transcription. 
+Please give it the keyword <i>phono</i>.</b>
+</dd>
+</dl>
+</div>
+
+<div>
 <h2>2015-10-06</h2>
 <dl>
 <dt>Documentation</dt>

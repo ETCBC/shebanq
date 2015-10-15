@@ -461,7 +461,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">if</span> <span class="s">&#39;version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
@@ -507,12 +507,12 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  9.78s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/__log__phono.txt
-    27s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  5.81s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/__log__phono.txt
+    14s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  1.83s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK phono AT 2015-10-02T14-54-03
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK phono AT 2015-10-02T14-54-03
+  0.50s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK phono AT 2015-10-15T18-43-42
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK phono AT 2015-10-15T18-43-42
 </pre>
 </div>
 </div>
@@ -535,7 +535,7 @@ For that we need a passage index.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Compiling passage index&quot;</span><span class="p">)</span>
@@ -564,8 +564,8 @@ For that we need a passage index.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.02s Compiling passage index
-  2.02s 23213 passages (verses)
+<pre>    19s Compiling passage index
+    20s 23213 passages (verses)
 </pre>
 </div>
 </div>
@@ -585,7 +585,7 @@ For that we need a passage index.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">kq_file</span> <span class="o">=</span> <span class="s">&#39;{}/kq/kq.{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">API</span><span class="p">[</span><span class="s">&#39;data_dir&#39;</span><span class="p">],</span> <span class="n">source</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
@@ -683,12 +683,12 @@ For that we need a passage index.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  2.15s Reading Ketiv-Qere data
-  2.17s Read 1892 ketiv-qere annotations
-  2.22s Parsed 1892 ketiv-qere annotations
-  2.22s All verses entries found in index
-  2.22s All ketivs found in the text
-  2.23s All ketivs found in the data
+<pre>    22s Reading Ketiv-Qere data
+    22s Read 1892 ketiv-qere annotations
+    22s Parsed 1892 ketiv-qere annotations
+    22s All verses entries found in index
+    22s All ketivs found in the text
+    22s All ketivs found in the data
 </pre>
 </div>
 </div>
@@ -729,7 +729,7 @@ Sometimes we want that extra bit, and sometimes not, and sometimes part of it.</
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># punctuation</span>
@@ -812,7 +812,7 @@ Sometimes we want that extra bit, and sometimes not, and sometimes part of it.</
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_orig</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">punct</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">set_pet</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">tetra</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">give_ketiv</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
@@ -902,7 +902,7 @@ In the final stage of the transformation process, these substitutions will be ap
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">specials</span> <span class="o">=</span> <span class="p">(</span>
@@ -1003,7 +1003,7 @@ In the final stage of the transformation process, these substitutions will be ap
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">dagesh_lenes</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;b.&#39;</span><span class="p">,</span> <span class="s">&#39;g.&#39;</span><span class="p">,</span> <span class="s">&#39;d.&#39;</span><span class="p">,</span> <span class="s">&#39;k.&#39;</span><span class="p">,</span> <span class="s">&#39;p.&#39;</span><span class="p">,</span> <span class="s">&#39;t.&#39;</span><span class="p">}</span>
@@ -1112,7 +1112,7 @@ which is not <code>c</code>, and the match succeeds.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># We want to test for vowels in look-behind conditions.</span>
@@ -1185,7 +1185,7 @@ If it occurs in other situations, we ignore it.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># rafe</span>
@@ -1219,7 +1219,7 @@ If it occurs in other situations, we ignore it.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># explicit accents</span>
@@ -1241,6 +1241,7 @@ If it occurs in other situations, we ignore it.</p>
     <span class="k">return</span> <span class="n">accent</span><span class="o">+</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c"># implicit accents</span>
+<span class="n">last_part</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;([^&amp;-]*)\Z&#39;</span><span class="p">)</span>
 <span class="n">default_accent1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;({v}`?{c}?\.?(?:\Z|[ ]))&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">svowel</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cons</span><span class="p">))</span>
 <span class="n">default_accent2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;({v}(?:\Z|[ ]))&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">lvowel1</span><span class="p">))</span>
 <span class="n">strip_accents</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;[0-9*]&#39;</span><span class="p">)</span>
@@ -1285,7 +1286,7 @@ If it occurs in other situations, we ignore it.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
@@ -1332,7 +1333,8 @@ If it occurs in other situations, we ignore it.</p>
 
 <span class="c"># implicit accents</span>
     <span class="k">if</span> <span class="n">count</span><span class="p">:</span> <span class="n">pre</span> <span class="o">=</span> <span class="n">result</span>
-    <span class="k">if</span> <span class="s">&#39;!&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span> <span class="ow">and</span> <span class="s">&#39;/&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>    
+    <span class="n">hotpart</span> <span class="o">=</span> <span class="n">last_part</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+    <span class="k">if</span> <span class="s">&#39;!&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hotpart</span> <span class="ow">and</span> <span class="s">&#39;/&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hotpart</span><span class="p">:</span>    
         <span class="n">result</span> <span class="o">=</span> <span class="n">default_accent1</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">default_accent_repl</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">default_accent2</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">default_accent_repl</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
@@ -1360,7 +1362,7 @@ If it occurs in other situations, we ignore it.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># qamets qatan  </span>
@@ -1448,7 +1450,7 @@ verb paradigms and exceptions. It is the first go at it.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">doplainqamets</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">accentless</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
@@ -1515,7 +1517,7 @@ In those cases it seems that the schwa in question is silent.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># mobile schwa</span>
@@ -1581,7 +1583,7 @@ In those cases it seems that the schwa in question is silent.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># silent aleph</span>
@@ -1637,7 +1639,7 @@ This dictionary is keyed by the pre-transliterated form, and valued by the corre
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qamets_corrections</span> <span class="o">=</span> <span class="p">{}</span> <span class="c"># list of translits that must be corrected</span>
@@ -1681,7 +1683,7 @@ This dictionary is keyed by the pre-transliterated form, and valued by the corre
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">undefs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;NA&#39;</span><span class="p">,</span> <span class="s">&#39;unknown&#39;</span><span class="p">,</span> <span class="s">&#39;n/a&#39;</span><span class="p">,</span> <span class="s">&#39;absent&#39;</span><span class="p">}</span>
@@ -1721,7 +1723,7 @@ This dictionary is keyed by the pre-transliterated form, and valued by the corre
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">declensed</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;subs&#39;</span><span class="p">,</span> <span class="s">&#39;nmpr&#39;</span><span class="p">,</span> <span class="s">&#39;adjv&#39;</span><span class="p">,</span> <span class="s">&#39;prps&#39;</span><span class="p">,</span> <span class="s">&#39;prde&#39;</span><span class="p">,</span> <span class="s">&#39;prin&#39;</span><span class="p">}</span>
@@ -1769,7 +1771,7 @@ It is a function with a big definition, so we have broken it in parts.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">interesting_stats</span> <span class="o">=</span> <span class="p">[</span>
@@ -1787,7 +1789,7 @@ It is a function with a big definition, so we have broken it in parts.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># if suppress_in_verb, phono will suppress qatan interpretation in certain verb paradigmatic forms</span>
@@ -1897,7 +1899,7 @@ It is a function with a big definition, so we have broken it in parts.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">phono_patterns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">dout</span><span class="p">):</span>
@@ -1971,7 +1973,7 @@ It is a function with a big definition, so we have broken it in parts.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">phono_symbols</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">dout</span><span class="p">):</span>
@@ -2039,7 +2041,7 @@ It is a function with a big definition, so we have broken it in parts.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">phono</span><span class="p">(</span>
@@ -2115,7 +2117,7 @@ This is rather crude, but it will do.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># we need the number of letters in a defined value of a morpho feature</span>
@@ -2155,7 +2157,7 @@ This is rather crude, but it will do.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># the qamets gadol/qatan skeleton</span>
@@ -2230,7 +2232,7 @@ This involves looking at accents, verb paradigms and special cases among the non
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># find lexemes which have an occurrence with a qamets (except verbs)</span>
@@ -2263,8 +2265,8 @@ This involves looking at accents, verb paradigms and special cases among the non
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  3.60s Looking for non-verb qamets
-  9.39s 4055 lexemes and 13450 unique occurrences
+<pre>    54s Looking for non-verb qamets
+    57s 4055 lexemes and 13450 unique occurrences
 </pre>
 </div>
 </div>
@@ -2284,7 +2286,7 @@ This involves looking at accents, verb paradigms and special cases among the non
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Filtering lexemes with varied occurrences&#39;</span><span class="p">)</span>
@@ -2322,8 +2324,8 @@ This involves looking at accents, verb paradigms and special cases among the non
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  9.42s Filtering lexemes with varied occurrences
-    11s 160 interesting lexemes with 1700 unique occurrences
+<pre> 1m 06s Filtering lexemes with varied occurrences
+ 1m 06s 160 interesting lexemes with 1700 unique occurrences
 </pre>
 </div>
 </div>
@@ -2343,7 +2345,7 @@ This involves looking at accents, verb paradigms and special cases among the non
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qamets_qatan_xc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -2422,7 +2424,7 @@ This involves looking at accents, verb paradigms and special cases among the non
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Guessing between gadol and qatan&#39;</span><span class="p">)</span>
@@ -2470,20 +2472,20 @@ This involves looking at accents, verb paradigms and special cases among the non
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    11s Guessing between gadol and qatan
-    11s 107 lexemes with modified occurrences (224)
-    11s 0 patterns with conflicts
+<pre> 1m 10s Guessing between gadol and qatan
+ 1m 10s 107 lexemes with modified occurrences (224)
+ 1m 10s 0 patterns with conflicts
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>BJT/: Override for syllable 1: o becomes ā
+<pre>JWMM: Override for syllable 2:  becomes ā
 JM/: Override for syllable 1: ā becomes o
 JRB&lt;M/: No override needed for syllable 1 which is ā
 JHWNTN/: Override for syllable 2:  becomes ā
-JWMM: Override for syllable 2:  becomes ā
+BJT/: Override for syllable 1: o becomes ā
 </pre>
 </div>
 </div>
@@ -2525,7 +2527,7 @@ If there are multiple longest ones, we want the first that occurs in the passage
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_hebrew</span><span class="p">(</span><span class="n">orig</span><span class="p">):</span>
@@ -2572,7 +2574,7 @@ If there are multiple longest ones, we want the first that occurs in the passage
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">h_esc</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
@@ -2683,7 +2685,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">vfname</span><span class="p">(</span><span class="n">inpath</span><span class="p">):</span>
@@ -2827,7 +2829,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">showcases</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">testsource</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
@@ -2931,7 +2933,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">tname</span> <span class="ow">in</span> <span class="p">[</span>
@@ -2958,10 +2960,10 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    11s 85 tests; 0 skipped; 0 failed; 85 passed of which 68 exactly.
-    12s 1574 tests; 0 skipped; 0 failed; 1574 passed of which 1401 exactly.
-    12s 513 tests; 0 skipped; 0 failed; 513 passed of which 490 exactly.
-    13s 209 tests; 0 skipped; 0 failed; 209 passed of which 179 exactly.
+<pre> 1m 20s 86 tests; 0 skipped; 0 failed; 86 passed of which 67 exactly.
+ 1m 21s 1574 tests; 0 skipped; 0 failed; 1574 passed of which 1401 exactly.
+ 1m 21s 513 tests; 0 skipped; 0 failed; 513 passed of which 490 exactly.
+ 1m 21s 209 tests; 0 skipped; 0 failed; 209 passed of which 179 exactly.
 </pre>
 </div>
 </div>
@@ -2981,7 +2983,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">special_tests</span> <span class="o">=</span> <span class="p">[</span>
@@ -2998,6 +3000,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
     <span class="nb">dict</span><span class="p">(</span><span class="n">ws</span><span class="o">=</span><span class="mi">155387</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s">&quot;peculiar representation of tetragrammaton&quot;</span><span class="p">),</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">passage</span><span class="o">=</span><span class="s">&#39;Proverbia 10:10&#39;</span><span class="p">,</span> <span class="n">orig</span><span class="o">=</span><span class="s">&#39;&lt;AY.@92BET&#39;</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s">&quot;the qamets should be gadol&quot;</span><span class="p">),</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">passage</span><span class="o">=</span><span class="s">&#39;Genesis 9:21&#39;</span><span class="p">,</span> <span class="n">orig</span><span class="o">=</span><span class="s">&#39;*&gt;HLH&#39;</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s">&#39;ketiv qere&#39;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">passage</span><span class="o">=</span><span class="s">&#39;Genesis 1:27&#39;</span><span class="p">,</span> <span class="n">orig</span><span class="o">=</span><span class="s">&#39;H@95-&gt;@D@M03&#39;</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="k">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s">&#39;qamets gadol&#39;</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="n">compiled_tests</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3024,7 +3027,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    13s 13 tests; 0 skipped; 0 failed; 13 passed of which 13 exactly.
+<pre> 1m 23s 14 tests; 0 skipped; 0 failed; 14 passed of which 14 exactly.
 </pre>
 </div>
 </div>
@@ -3035,15 +3038,16 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
   2 Samuel_I 23:4       155387 nmpr sm,          JHW@80H_S              [yhwˈāh]             =                     
   3 Genesis 4:1           1684 nmpr sm,          J:HW@75H00             [yᵊhwˈāh]            =                     
   4 Genesis 4:1           1684 nmpr sm,          J:HW@75H00             [yᵊhwˈāh]            =                     
-  5 Genesis 1:1              5 art               HA-                    hˌa                  =                     
-  6 Genesis 1:7            107 subs sm,          MI-T.A74XAT            mittˈaḥaṯ            =                     
-  7 Genesis 1:7            106 prep              MI-                    mˌi                  =                     
-  8 Genesis 1:7            107 subs sm,          T.A74XAT               tˈaḥaṯ               =                     
-  9 Genesis 1:1              6 subs pm,          C.@MA73JIM             ššāmˌayim            =                     
- 10 Genesis 48:9         27477 verb piel impf 1s-,+;m &gt;:AB@R:AK;75M00        ʔᵃvārᵃḵˈēm           =                     
- 11 Proverbia 10:10     349407 subs sf,          &lt;AY.@92BET             ʕaṣṣˈāveṯ            =                     
- 12 Genesis 17:11         7494 subs sf,+kem      &lt;@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
- 13 Joel 1:17           294291 verb qal perf 3p-, &lt;@B:C74W.              ʕāvᵊšˈû              =                     
+  5 Genesis 1:27           538 subs sm,          H@95-&gt;@D@M03           hˈāʔāḏˌām            =                     
+  6 Genesis 1:1              5 art               HA-                    hˌa                  =                     
+  7 Genesis 1:7            107 subs sm,          MI-T.A74XAT            mittˈaḥaṯ            =                     
+  8 Genesis 1:7            106 prep              MI-                    mˌi                  =                     
+  9 Genesis 1:7            107 subs sm,          T.A74XAT               tˈaḥaṯ               =                     
+ 10 Genesis 1:1              6 subs pm,          C.@MA73JIM             ššāmˌayim            =                     
+ 11 Genesis 48:9         27477 verb piel impf 1s-,+;m &gt;:AB@R:AK;75M00        ʔᵃvārᵃḵˈēm           =                     
+ 12 Proverbia 10:10     349407 subs sf,          &lt;AY.@92BET             ʕaṣṣˈāveṯ            =                     
+ 13 Genesis 17:11         7494 subs sf,+kem      &lt;@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
+ 14 Joel 1:17           294291 verb qal perf 3p-, &lt;@B:C74W.              ʕāvᵊšˈû              =                     
 </pre>
 </div>
 </div>
@@ -3064,7 +3068,7 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c">### msg(&#39;Showing lexemes with varied occurrences&#39;)</span>
@@ -3119,11 +3123,11 @@ If the node is found, it will be used to get the <code>lex_info</code>, if not, 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    13s 107 lexemes with 1190 occurrences and 224 corrections written
-    13s Generating HTML in qamets_nonverb_cases4b.html
-    13s Generating test set qamets nonverb in /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/qamets_nonverb_tests4b.txt
-    13s 107 lexemes
-    13s 1190 occurrences and 224 corrections
+<pre> 1m 26s 107 lexemes with 1190 occurrences and 224 corrections written
+ 1m 26s Generating HTML in qamets_nonverb_cases4b.html
+ 1m 26s Generating test set qamets nonverb in /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/qamets_nonverb_tests4b.txt
+ 1m 26s 107 lexemes
+ 1m 26s 1190 occurrences and 224 corrections
 </pre>
 </div>
 </div>
@@ -3148,7 +3152,7 @@ We look at the verb paradigms to fill in the missing information.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qq_verb_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -3186,8 +3190,8 @@ We look at the verb paradigms to fill in the missing information.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    13s Finding qamets qatan special verb cases
-    18s 524 cases
+<pre> 1m 28s Finding qamets qatan special verb cases
+ 1m 30s 524 cases
 </pre>
 </div>
 </div>
@@ -3207,7 +3211,7 @@ We look at the verb paradigms to fill in the missing information.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Showing verb cases&#39;</span><span class="p">)</span>
@@ -3250,11 +3254,11 @@ We look at the verb paradigms to fill in the missing information.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    18s Showing verb cases
-    18s Generating HTML in qamets_verb_cases4b.html
-    18s Generating test set qamets verb in /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/qamets_verb_tests4b.txt
-    18s 192 lexemes
-    18s 524 occurrences and 300 corrections
+<pre> 1m 32s Showing verb cases
+ 1m 32s Generating HTML in qamets_verb_cases4b.html
+ 1m 32s Generating test set qamets verb in /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/qamets_verb_tests4b.txt
+ 1m 32s 192 lexemes
+ 1m 32s 524 occurrences and 300 corrections
 </pre>
 </div>
 </div>
@@ -3277,7 +3281,7 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qq_prs_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -3311,8 +3315,8 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    18s Finding qamets qatan in pronominal suffixes
-    25s 197 potential cases
+<pre> 1m 34s Finding qamets qatan in pronominal suffixes
+ 1m 38s 197 potential cases
 </pre>
 </div>
 </div>
@@ -3332,7 +3336,7 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Showing prs cases&#39;</span><span class="p">)</span>
@@ -3375,11 +3379,11 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    25s Showing prs cases
-    25s Generating HTML in qamets_prs_cases4b.html
-    25s Generating test set qamets prs in /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/qamets_prs_tests4b.txt
-    25s 131 lexemes
-    25s 197 occurrences and 60 corrections
+<pre> 1m 39s Showing prs cases
+ 1m 40s Generating HTML in qamets_prs_cases4b.html
+ 1m 40s Generating test set qamets prs in /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/phono/qamets_prs_tests4b.txt
+ 1m 40s 131 lexemes
+ 1m 40s 197 occurrences and 60 corrections
 </pre>
 </div>
 </div>
@@ -3399,7 +3403,7 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">stats_prog</span><span class="p">():</span> <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">interesting_stats</span><span class="p">)</span>
@@ -3477,31 +3481,31 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    26s Generating complete texts (transcribed and phonetic) ... 
-    31s  1000 verses 13315 62 0 21
-    36s  2000 verses 27404 123 2 79
-    40s  3000 verses 40960 174 5 125
-    44s  4000 verses 54140 242 10 143
-    49s  5000 verses 67146 307 16 171
-    53s  6000 verses 82442 393 19 196
-    58s  7000 verses 97541 456 24 254
- 1m 03s  8000 verses 113738 528 26 287
- 1m 08s  9000 verses 129591 572 29 327
- 1m 13s 10000 verses 146206 623 29 438
- 1m 17s 11000 verses 159798 748 29 487
- 1m 21s 12000 verses 174181 890 33 524
- 1m 25s 13000 verses 190544 1017 37 576
- 1m 29s 14000 verses 205093 1167 41 622
- 1m 33s 15000 verses 218599 1289 42 728
- 1m 36s 16000 verses 227933 1335 50 777
- 1m 39s 17000 verses 235623 1378 64 824
- 1m 41s 18000 verses 243246 1395 67 861
- 1m 43s 19000 verses 250697 1428 78 901
- 1m 46s 20000 verses 260106 1469 79 955
- 1m 51s 21000 verses 275071 1532 82 974
- 1m 55s 22000 verses 286429 1589 84 1002
- 2m 00s 23000 verses 301285 1644 85 1069
- 2m 01s 23213 verses done 304783 1649 85 1075
+<pre> 1m 44s Generating complete texts (transcribed and phonetic) ... 
+ 1m 47s  1000 verses 13315 62 0 21
+ 1m 49s  2000 verses 27404 123 2 79
+ 1m 52s  3000 verses 40960 174 5 125
+ 1m 54s  4000 verses 54140 242 8 143
+ 1m 56s  5000 verses 67146 307 13 171
+ 1m 59s  6000 verses 82442 393 15 196
+ 2m 02s  7000 verses 97541 456 17 254
+ 2m 05s  8000 verses 113738 528 18 287
+ 2m 08s  9000 verses 129591 572 20 327
+ 2m 11s 10000 verses 146206 623 20 438
+ 2m 13s 11000 verses 159798 748 20 487
+ 2m 15s 12000 verses 174181 890 24 524
+ 2m 18s 13000 verses 190544 1017 28 576
+ 2m 21s 14000 verses 205093 1167 32 622
+ 2m 23s 15000 verses 218599 1289 33 728
+ 2m 25s 16000 verses 227933 1335 39 777
+ 2m 26s 17000 verses 235623 1378 48 827
+ 2m 28s 18000 verses 243246 1395 51 866
+ 2m 29s 19000 verses 250697 1428 59 906
+ 2m 31s 20000 verses 260106 1469 60 960
+ 2m 33s 21000 verses 275071 1532 63 979
+ 2m 35s 22000 verses 286429 1589 65 1007
+ 2m 38s 23000 verses 301285 1644 66 1075
+ 2m 39s 23213 verses done 304783 1649 66 1081
 </pre>
 </div>
 </div>
@@ -3513,7 +3517,7 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
    45235 dagesh_forte
    21511 dagesh_forte_lene
    59609 dagesh_lene
-   15018 default_accent
+   16321 default_accent
      968 fixit
     2658 furtive_patah
    28195 last_ml
@@ -3524,14 +3528,14 @@ We detect these cases and suppress the gamets-as-qatan interpretation there.</p>
     7702 mobile_schwa4
    25587 punct
    25498 punctuation
-      85 qamets_prs_suppress_qatan
-    5399 qamets_qatan1
-     251 qamets_qatan2
+      66 qamets_prs_suppress_qatan
+    5257 qamets_qatan1
+     243 qamets_qatan2
     1791 qamets_qatan3
       28 qamets_qatan4a
      256 qamets_qatan4b
-     277 qamets_qatan5
-    1075 qamets_qatan_corrections
+     209 qamets_qatan5
+    1081 qamets_qatan_corrections
     1649 qamets_verb_suppress_qatan
       12 rafe
    21098 silent_aleph
@@ -3612,17 +3616,17 @@ From the phono file we strip the passage indicators, and from the wordph we stri
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>12m 19s Reading phono
-12m 19s 23213 lines
-12m 20s Reading wordph
-12m 21s 23213 lines
+<pre> 2m 58s Reading phono
+ 2m 58s 23213 lines
+ 2m 58s Reading wordph
+ 2m 59s 23213 lines
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>ERROR: phono text and word info are CONSISTENT
+<pre>OK: phono text and word info are CONSISTENT
 </pre>
 </div>
 </div>

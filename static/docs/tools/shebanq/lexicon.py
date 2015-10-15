@@ -134,13 +134,13 @@ fabric = LafFabric()
 
 # ## Create annotations from lexicon file
 
-# In[4]:
+# In[2]:
 
 source = 'etcbc'
 if 'version' not in locals(): version = '4b'
 
 
-# In[2]:
+# In[4]:
 
 API=fabric.load(source+version, '--', 'lexicon', {
     "xmlids": {"node": True, "edge": False},
@@ -159,7 +159,7 @@ exec(fabric.localnames.format(var='fabric'))
 # 
 # First we read the lexicon, and perform some internal consistency checks, e.g. whether there are duplicate lexical entries.
 
-# In[3]:
+# In[ ]:
 
 langs = {'hbo', 'arc'}
 lex_base = dict((lan, '{}/{}/{}.{}{}'.format(API['data_dir'], 'lexicon', lan, source, version)) for lan in langs)
@@ -233,7 +233,7 @@ msg("Done")
 # 
 # We inspect all word occurrences of the etcbc4 database, inspect their language and lexeme values, and construct sets of lexemes that belong to each of the two languages, ``hbo`` and ``arc``.
 
-# In[4]:
+# In[ ]:
 
 lex_text = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: set())))
 do_value_compare = {'sp', 'ls', 'gn', 'ps', 'nu', 'st'}
@@ -279,7 +279,7 @@ for lan in sorted(lex_text):
 # * whether the lexica for ``hbo`` and ``arc`` share lexeme entries
 # * whether the lexical intersection of ``hbo`` and ``arc`` is equal to the textual intersection of ``hbo`` and ``arc``.
 
-# In[5]:
+# In[ ]:
 
 arc_lex = set(lex_entries['arc'])
 hbo_lex = set(lex_entries['hbo'])
@@ -307,7 +307,7 @@ print("Lexemes in the textual intersection of hbo and arc but not in the lexical
 # ## Match between lexicon and text
 # Let us now check whether all lexemes in the text occur in the lexicon and vice versa.
 
-# In[6]:
+# In[ ]:
 
 arc_text_min_lex = arc_text - arc_lex
 arc_lex_min_text = arc_lex - arc_text
@@ -345,7 +345,7 @@ for (myset, mymsg) in (
 # * the ``=`` is for disambiguation, we translate it to ``0``
 # * we prepend a language identifier, ``1`` for Hebrew, ``2`` for aramaic. 
 
-# In[7]:
+# In[ ]:
 
 max_len = 0
 chars = collections.Counter()
@@ -363,7 +363,7 @@ for c in sorted(chars):
 # 
 # Which features do the entries have, and what percentage of the entries has those features?
 
-# In[8]:
+# In[ ]:
 
 feature_count = collections.defaultdict(lambda: collections.Counter())
 inspect_prop = collections.defaultdict(
@@ -399,7 +399,7 @@ for lan in sorted(feature_count):
     print("{}\n{}\t".format(lan, feature_spec))
 
 
-# In[9]:
+# In[ ]:
 
 print("Detail feature values and occurrences")
 for lan in sorted(inspect_prop):
@@ -429,7 +429,7 @@ for lan in sorted(inspect_prop):
 # the textual feature **g_lex** (aka *graphical lexeme*).
 # The output file *inconsistent.csv* shows exactly what is going on.
 
-# In[10]:
+# In[ ]:
 
 consistent_props = {'sp', 'ls', 'gn', 'vc'}
 variable_gender = {'verb', 'adjv'}
@@ -470,7 +470,7 @@ for lan in sorted(text_langs):
 # If not, we will apply a value transformation that harmonizes the values in lexical entries with those in textual features.
 # We adapt the lexical values to the textual ones. We do this only for features whose value domains are enumerations.
 
-# In[11]:
+# In[ ]:
 
 for p in do_value_compare:
     print(p)
@@ -491,7 +491,7 @@ for p in do_value_compare:
 # 
 # As a preliminary check, we check whether there is a 1-1 correspondence between the ``lex`` and ``lex_utf8`` features.
 
-# In[12]:
+# In[ ]:
 
 def strip_id(entryid):
     return entryid.rstrip('/[=')
@@ -549,7 +549,7 @@ else:
 # ## name
 # The name of the field in the to be constructed annotation file.
 
-# In[13]:
+# In[ ]:
 
 lex_fields = (
     (None, 'id', 'id', None),
@@ -596,7 +596,7 @@ for lan in sorted(lex_entries):
 
 # ## Deliver lexical data
 
-# In[14]:
+# In[ ]:
 
 def get_lex(dummy):
     msg('Preparing lex data')
@@ -612,7 +612,7 @@ def get_lex(dummy):
 # 
 # We load the output of the phono notebook, which has provided for each word node a phonetc transcription.
 
-# In[15]:
+# In[ ]:
 
 def get_phono(file_name):
     msg('Reading phonetic transcriptions')
@@ -634,7 +634,7 @@ def get_phono(file_name):
 # De ketiv qere files use a particular form of verse labels.
 # We have to map them to the corresponding verse nodes.
 
-# In[16]:
+# In[ ]:
 
 msg("Making mappings between verse labels in KQ and verse nodes in LAF")
 vlab2vnode = {}
@@ -646,7 +646,7 @@ msg("{} verses".format(len(vlab2vnode)))
 
 # ## Method to read kq data
 
-# In[17]:
+# In[ ]:
 
 def get_kq(kq_file):
     msg("Reading Ketiv-Qere data")
@@ -738,7 +738,7 @@ def get_kq(kq_file):
 
 # # Compose the annotation package
 
-# In[18]:
+# In[ ]:
 
 lex = ExtraData(API)
 
@@ -779,26 +779,74 @@ msg("Done")
 
 # ## Checking: loading the new features
 
-# In[5]:
+# In[3]:
 
-API=fabric.load(source+version, 'lexicon', 'gloss', {
+API=fabric.load(source+version, 'lexicon', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
     "features": ('''
-        otype
+        oid otype
         book chapter verse
-        g_cons_utf8 g_word_utf8 g_word lex g_entry gloss
+        g_cons_utf8 g_word_utf8 g_word lex g_entry g_entry_heb nametype gloss
         phono phono_sep
         g_qere_utf8 qtrailer_utf8
     ''',
     '''
     '''),
-}, verbose='NORMAL',compile_annox=True)
+},
+    verbose='NORMAL',
+#    compile_annox=True,
+)
 exec(fabric.localnames.format(var='fabric'))
+
+
+# # Generating MQL
+# 
+# We generate an text file with the new feature data which we will insert
+# properly in the existing MQL dump of the ETCBC database.
+# 
+# The text file is structured as follows:
+# 
+# It consists of tab delimited lines, with a header line:
+# 
+#     object_type feature_name1 feature_name2 ...
+# 
+# followed by lines with the same number of fields.
+# The first field is the object id, the subsequent fields are the values of the corresponding features for that object.
+
+# In[8]:
+
+pm = outfile('word_data.mql')
+template = ('{}\t' * 7)+'{}\n'
+pm.write(template.format(
+    'word', 'phono', 'phono_sep', 'g_qere_utf8', 'qtrailer_utf8', 'g_entry', 'g_entry_heb', 'gloss', 'nametype',
+))
+chunk = 50000
+nw = 0
+iw = 0
+for w in F.otype.s('word'):
+    nw += 1
+    iw += 1
+    if iw == chunk: 
+        iw = 0
+        print('{:>5} words'.format(nw))
+    pm.write(template.format(
+        F.oid.v(w), 
+        F.phono.v(w),
+        F.phono_sep.v(w),
+        F.g_qere_utf8.v(w) or '',
+        (F.qtrailer_utf8.v(w) or '').replace('\n', '\\n'),
+        F.g_entry.v(w),
+        F.g_entry_heb.v(w),
+        F.gloss.v(w),
+        F.nametype.v(w),
+    ))
+print('{:>5} words'.format(nw))
+pm.close()
 
 
 # ## Making an interlinear glossed text
 
-# In[21]:
+# In[ ]:
 
 msg("Making interlinear glossed text ...")
 

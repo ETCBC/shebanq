@@ -1,4 +1,4 @@
-import os,sys, collections, glob, subprocess, time
+import os,sys, collections, glob, subprocess, time, re
 import nbformat
 from nbconvert import HTMLExporter
 from nbconvert import PythonExporter
@@ -87,6 +87,11 @@ server_user = 'dirkr'
 server = 'shebanq.ancient-data.org'
 server_path = '/home/dirkr/shebanq-install'
 
+#===== Other settings ========================================
+
+home_dir = os.path.expanduser('~')
+temp_dir = '{}/laf-fabric-tmp'.format(home_dir)
+
 #===== End Config ============================================
 
 html_exporter = HTMLExporter({"Exporter":{"template_file":"full"}})
@@ -120,13 +125,29 @@ def msg(msg, newline=True, withtime=True):
     sys.stderr.write(timed_msg)
     sys.stderr.flush()
 
-def do_cmd(cmd, dry=False):
+def do_cmd(cmd, dry=False, dyld=False):
+    # we need a trick: the environment variable DYLD_LIBRARY_PATH does not get exported! Then the mql commands will fail.
+    # so we put another variable, DYLDLIBRARYPATH in the environment with the value of DYLD_LIBRARY_PATH
+    # and prepend the command with EXPORT DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH
+    # I could not find a reason why this is so. Maybe the subprocess modifies DYLD_LIBRARY_PATH?
     good = True
     if dry:
         msg('DRY: {}'.format(cmd), withtime=False)
     else:
-        good = not subprocess.call(cmd, shell=True)
+        msg(cmd)
+        if dyld:
+            good = not subprocess.call(
+                'export DYLD_LIBRARY_PATH=$DYLDLIBRARYPATH; '+cmd, shell=True, env=dict(os.environ, DYLDLIBRARYPATH=os.environ.get('DYLD_LIBRARY_PATH', '')),
+            )
+        else:
+            good = not subprocess.call(cmd, shell=True)
     return good
+
+def must_update(src, dst, force=False):
+    can_update = os.path.exists(src)
+    return  can_update and (force or (not os.path.exists(dst)) or os.path.getmtime(dst) < os.path.getmtime(src))
+
+def has_db(dbname): return not subprocess.call("mysql -u root -e 'use {};' >& /dev/null".format(dbname), shell=True)
 
 def shebanq(m, net=False, netonly=False, dry=False):
     msg('begin {} ...'.format('shebanq'))
@@ -180,7 +201,7 @@ def nb_convert(inpath, fmt, force=False, dry=False):
         msg('Skipping {}\n'.format(inpath))
         return 0
     outpath = os.path.join(indir, inbase+nb_conv_fmt[fmt][0])
-    if os.path.exists(outpath) and not force and os.path.getmtime(outpath) >= os.path.getmtime(inpath): return 0
+    if not must_update(inpath, outpath, force=force): return 0
     msg('{}{} =({})=> '.format('DRY: 'if dry else '', inpath, fmt), withtime=False, newline=False)
     if not dry:
         nb = nbformat.read(inpath, 4)
@@ -191,6 +212,99 @@ def nb_convert(inpath, fmt, force=False, dry=False):
         with open(outpath, 'w') as h: h.write(body)
     msg(' {}'.format(outpath), withtime=False)
     return 0 if dry else 1
+
+def mql_transform(mql_src, mql_dst, extra_data_paths, dry=False):
+    (mql_src_dir, mql_src_file) = os.path.split(mql_src)
+    (mql_dst_dir, mql_dst_file) = os.path.split(mql_dst)
+    extra_data_files = ', '.join(os.path.split(x)[1] for x in extra_data_paths) 
+    msg('{}{} + {} ==> {}'.format('DRY: 'if dry else '', mql_src_file, extra_data_files, mql_dst_file), withtime=False, newline=True)
+    if dry: return 0
+
+    extra_spec = collections.defaultdict(lambda: set())
+    extra_data = collections.defaultdict(lambda: {})
+    # first read the extra feature data
+    # the first line specifies the object type and the feature names
+    # the subsequent lines have the object ids and the corresponding feature values
+    # the extra feature data may reside in several files, even for the same object type
+    nerrors = 0
+    for dfile in extra_data_paths:
+        dfilex = os.path.split(dfile)[1]
+        msg('Reading extra feature data from {}'.format(dfilex))
+        errors = collections.defaultdict(lambda: [])
+        nl = 0
+        this_extra_fields = []
+        df = open(dfile)
+        first = True
+        for line in df:
+            nl += 1
+            fields = line.rstrip('\n').split('\t')
+            if first:
+                extra_spec[fields[0]] |= set(fields[1:])
+                this_extra_fields = fields[1:]
+                msg('\t object type: {}; features: {}\n'.format(fields[0], ','.join(fields[1:])))
+                first = False
+            else:
+                if len(fields) != len(this_extra_fields) + 1:
+                    errors['incorrect number of fields'].append(nl)
+                    continue
+                for (i, f) in enumerate(this_extra_fields):
+                    extra_data[fields[0]][f] = fields[i+1].replace('\\n', '\n')
+        df.close()
+        for e in sorted(errors):
+            le = len(errors[e])
+            msg('ERROR: {}; {} x; first time at line {}'.format(e, le, errors[e][0]))
+            nerrors += le
+    if nerrors: return -1
+
+    # now start reading and writing the mql dump
+    # we have to adjust the object type definition and we have to adjust the object insertions
+    msg('Adding the extra feature data to the mql dump')
+    inf = open(mql_src)
+    outf = open(mql_dst, 'w')
+    status = 0
+    found_otype = None
+    found_oid = None
+    nl = 0
+    nc = 0
+    chunk = 1000000
+    for line in inf:
+        nl += 1
+        nc += 1
+        if nc == chunk:
+            nc = 0
+            msg('{:>8} lines'.format(nl))
+        if status == 0 or status == 1 or status == 3:
+            outf.write(line)
+        if status == 0:
+            if line.startswith('CREATE OBJECT TYPE'): status = 1
+            elif line.startswith('WITH OBJECT TYPE['):
+                found_otype = line[17:-2]
+                if found_otype in extra_spec: status = 3
+                else: found_otype = None
+        elif status == 1:                                           # status 1 and 2 for lines inside object type definitions
+            found_otype = line[1:-1]
+            if found_otype in extra_spec:
+                status = 2
+            else:
+                status = 0
+        elif status == 2:
+            if line.startswith(']'):
+                for ft in sorted(extra_spec[found_otype]): outf.write('  {} : string DEFAULT "";\n'.format(ft))
+                status = 0
+            outf.write(line)
+        elif status == 3:                                           # status 3 and 4 for lines specifying object feature data
+            if line.startswith('WITH ID_D='):
+                found_oid = line[10:-3]
+                status = 4
+        elif status == 4:
+            if line.startswith(']'):
+                for (ft, val) in sorted(extra_data[found_oid].items()): outf.write('{}:="{}";\n'.format(ft, val))
+                status = 3
+            outf.write(line)
+    inf.close()
+    outf.close()
+    msg('{:>8} lines. Done'.format(nl))
+    return 1
 
 def make_snapshots(fmt, force=False, dry=False):
     msg('Making {} snapshots of notebooks ...'.format(fmt))
@@ -223,9 +337,9 @@ def data_task(v, name, base, outpath, extra, force=False, dry=False, extra_inpat
     inpath = '{}.py'.format(name)
     good = True
     if not netonly and not sqlonly:
-        if os.path.exists(outpath) and not force and os.path.getmtime(outpath) >= os.path.getmtime(inpath) \
+        if not must_update(inpath, outpath, force=force) \
             and (extra_inpath == None or
-                os.path.exists(outpath) and not force and os.path.getmtime(outpath) >= os.path.getmtime(extra_inpath) \
+                not must_update(extra_inpath, outpath, force=force) \
             ):
             msg('Skipped, because result is up to date: {}'.format(outpath))
         else:
@@ -283,6 +397,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                 lexicon_output = '{}/{}{}/annotations/lexicon/_header_.xml'.format(data_dir, source, v)
                 passage_sql = '{}/shebanq/shebanq_passage{}.sql'.format(output_dir, v)
 
+                # to_db imports the generated sql into the local mysql and transfers the generated sql to the production server
                 def to_db():
                     os.chdir(output_dir)
                     this_good = False
@@ -297,8 +412,61 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             msg('DONE sending to server: {}'.format(passage_sql))
                         this_good = True
                     return this_good
+                # patch_mql patches the mql dump from emdros with the new features
+                def patch_mql():
+                    if not os.path.exists(temp_dir): os.makedirs(temp_dir)
+                    this_good = False
+                    extra_data_dir =  '{}/shebanq'.format(output_dir)
+                    extra_data_items = glob.glob('{}/*_data.mql'.format(extra_data_dir))
+                    mql_src_compressed = '{}/{}{}/mql/{}{}.mql.bz2'.format(data_dir, source, v, source, v)
+                    mql_dst_compressed = '{}/{}{}.mql.bz2'.format(temp_dir, source, v)
+                    mql_dst = '{}/{}{}.mql'.format(temp_dir, source, v)
+                    mql_extra_dst = '{}/x_{}{}.mql'.format(temp_dir, source, v)
+                    mql_extra_dst_compressed = '{}/x_{}{}.mql.bz2'.format(temp_dir, source, v)
+                    mql_extra_src_compressed = '{}/{}{}/mql/x_{}{}.mql.bz2'.format(data_dir, source, v, source, v)
+                    new_mql = False
+                    for x in [1]:
+                        if must_update(mql_src_compressed, mql_dst_compressed, force=force):
+                            if not do_cmd('cp {} {}'.format(mql_src_compressed, mql_dst_compressed), dry=dry): continue
+
+                        if must_update(mql_dst_compressed, mql_dst, force=force):
+                            if not do_cmd('bunzip2 -f -k {}'.format(mql_dst_compressed), dry=dry): continue
+
+                        if must_update(mql_dst, mql_extra_dst, force=force):
+                            tx = mql_transform(mql_dst, mql_extra_dst, extra_data_items, dry=dry)
+                            if tx == -1: continue
+                            new_mql = True
+
+                        if must_update(mql_extra_dst, mql_extra_dst_compressed, force=force):
+                            if not do_cmd('bzip2 -k {}'.format(mql_extra_dst), dry=dry): continue
+
+                        if must_update(mql_extra_dst_compressed, mql_extra_src_compressed, force=force):
+                            if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
+
+                        if sql and not netonly:
+                            emdros_db = 'shebanq_{}{}'.format(source, v)
+                            if new_mql or not has_db(emdros_db):
+                                msg('DROPPING old {} database'.format(emdros_db))
+                                if not do_cmd("mysql -u root -e 'drop database if exists {};'".format(emdros_db), dry=dry): continue 
+                                msg('IMPORTING new {} database with added feature data'.format(emdros_db))
+                                if not do_cmd('mql -n -b m -u root -e UTF8 <{}'.format(mql_extra_dst), dry=dry, dyld=True): continue 
+                                msg('DONE importing into MYSQL: {}'.format(mql_extra_dst))
+                            else:
+                                msg('No need to do a new import of {}'.format(emdros_db))
+                        if net and not sqlonly:
+                            if new_mql:
+                                msg('START sending to server: {}'.format(mql_extra_src_compressed))
+                                if not do_cmd('scp -r {} {}@{}:{}'.format(mql_extra_src_compressed, server_user, server, server_path), dry=dry): continue
+                                msg('DONE sending to server: {}'.format(mql_extra_src_compressed))
+                            else:
+                                msg('No need to send {} to server'.format(emdros_db))
+                        this_good = True
+                    return this_good
 
                 for x in [1]:
+                    if not patch_mql(): continue
+                    good = True
+                    continue
                     if not data_task(
                         v,
                         'phono', 'tools/phono', phono_output,

@@ -41,6 +41,7 @@ Genesis 1:16	HA-M.:>ORO73T	hammᵊʔōrˈōṯ	dagesh forte at word boundary
 Genesis 1:22	>ET&HA-M.A33JIM03	ʔeṯ-hammˌayim	ignore accent on final mem
 Genesis 1:22	B.A--J.AM.I80JM	bayyammˈîm	accent on last syllable
 Genesis 1:25	H@75->:AD@M@73H	hˈāʔᵃḏāmˈā	middle qamets is long a
+Genesis 1:27	H@95->@D@M03	hˈāʔāḏām	both qametses are long a, there is a meteg in the preceding article
 Genesis 1:28	W:-KIB:CU92H@	wᵊḵivšˈuhā	schwa quiescens
 Genesis 1:29	L:->@K:L@75H	lᵊʔoḵlˈā	qamets as long a and h as mater lectionis
 Genesis 1:30	W.95-L:-K@L&XAJ.A74T	ˈûlᵊḵol-ḥayyˈaṯ	qamets qatan in kol 

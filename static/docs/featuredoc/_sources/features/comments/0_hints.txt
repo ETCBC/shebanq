@@ -22,6 +22,7 @@ All features with hints
     code
     domain
     trailer_utf8
+    qtrailer_utf8
     label
     g_lex_utf8
     g_lex
@@ -33,3 +34,4 @@ All features with hints
     vbe
     g_cons_utf8
     g_word
+    g_word_utf8

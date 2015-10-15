@@ -281,7 +281,7 @@ fabric = LafFabric()
 
 # # Load the LAF data
 
-# In[ ]:
+# In[2]:
 
 if 'version' not in locals(): version = '4b'
 source = 'etcbc'
@@ -313,7 +313,7 @@ trans = Transcription()
 # We also want to be able to easily generate a test from an occurrence that we encounter, whether we have the node, or the transcription string with passage.
 # For that we need a passage index.
 
-# In[3]:
+# In[4]:
 
 msg("Compiling passage index")
 passage_index = {}
@@ -333,7 +333,7 @@ msg('{} passages (verses)'.format(len(passage_index)))
 
 # ## Load ketiv-qere information
 
-# In[4]:
+# In[5]:
 
 kq_file = '{}/kq/kq.{}{}'.format(API['data_dir'], source, version)
 qeres = {}
@@ -429,7 +429,7 @@ else:
 
 # ## Patterns
 
-# In[5]:
+# In[6]:
 
 # punctuation
 punctuation = re.compile('''
@@ -497,7 +497,7 @@ def set_pet_pattern_repl(match):
 
 # ## Actions
 
-# In[6]:
+# In[7]:
 
 def get_orig(w, punct=True, set_pet=False, tetra=True, give_ketiv=False):
     proto = F.g_word.v(w)
@@ -576,7 +576,7 @@ def partition_w(wnodes):
 # 
 # This is especially important for, but not only for, the BGDKPT letters.
 
-# In[7]:
+# In[8]:
 
 specials = (
     ('>', 'alef', 'ʔ'),
@@ -667,7 +667,7 @@ specials2 = (
 # 
 # The ``sound_dict`` is the resultig (ordered) mapping of all source characters to "phonetic" characters.
 
-# In[8]:
+# In[9]:
 
 dagesh_lenes = {'b.', 'g.', 'd.', 'k.', 'p.', 't.'}
 dagesh_lene_dict = dict()
@@ -782,7 +782,7 @@ for (sym, let, glyph) in specials2:
 # 
 # Python lacks *possessive* quantifiers in regular expressions, so again, this makes some expressions below more complicated than they were otherwise.
 
-# In[9]:
+# In[10]:
 
 # We want to test for vowels in look-behind conditions.
 # Python insists that look-behind conditions match patterns with fixed length.
@@ -841,7 +841,7 @@ acc = '[ˈˌ]'                              # primary and secundary accent
 # 
 # If there is an accent on the guttural, we ignore it in these cases, because the guttural does not initiate a syllable.
 
-# In[10]:
+# In[11]:
 
 # rafe
 
@@ -862,7 +862,7 @@ def furtive_patah_repl(match):
 # 
 # ### Patterns
 
-# In[11]:
+# In[12]:
 
 # explicit accents
 
@@ -883,6 +883,7 @@ def condense_accents_repl(match):
     return accent+match.group(1)
 
 # implicit accents
+last_part = re.compile('([^&-]*)\Z')
 default_accent1 = re.compile('({v}`?{c}?\.?(?:\Z|[ ]))'.format(v=svowel, c=cons))
 default_accent2 = re.compile('({v}(?:\Z|[ ]))'.format(v=lvowel1))
 strip_accents = re.compile('[0-9*]')
@@ -911,10 +912,9 @@ def verse_end_phono_repl(match):
     return match.group(1).replace(' ', '')
 
 
-
 # ### Actions
 
-# In[12]:
+# In[13]:
 
 stats = collections.Counter()
 
@@ -960,7 +960,8 @@ def doaccents(orig, debug=False, count=False):
 
 # implicit accents
     if count: pre = result
-    if '!' not in result and '/' not in result:    
+    hotpart = last_part.search(result).group(1) 
+    if '!' not in hotpart and '/' not in hotpart:    
         result = default_accent1.sub(default_accent_repl, result)
         if not '/' in result:
             result = default_accent2.sub(default_accent_repl, result)
@@ -976,7 +977,7 @@ def doaccents(orig, debug=False, count=False):
 # 
 # ### Patterns
 
-# In[13]:
+# In[14]:
 
 # qamets qatan  
 # NB: all patterns stipulate that the qamets (@) in question is unaccented
@@ -1049,7 +1050,7 @@ def qamets_qatan_verb_x_repl(match):
 # Here is the function that carries out rule based qamets qatan detection, without going into
 # verb paradigms and exceptions. It is the first go at it.
 
-# In[14]:
+# In[15]:
 
 def doplainqamets(word, accentless=False, debug=False, count=False):
     dout = []
@@ -1108,7 +1109,7 @@ def doplainqamets(word, accentless=False, debug=False, count=False):
 # As to rule 4, there are cases where the schwa in question is also followed by a final consonant with schwa.
 # In those cases it seems that the schwa in question is silent.
 
-# In[15]:
+# In[16]:
 
 # mobile schwa
 mobile_schwa1 = re.compile('''
@@ -1159,7 +1160,7 @@ def dages_forte_repl(match):
 
 # ## Mater lectionis and final fixes
 
-# In[16]:
+# In[17]:
 
 # silent aleph
 silent_aleph = re.compile('(?<=[^ &-])>(?!(?:[/!]|{v}))'.format(v=vowel))
@@ -1209,7 +1210,7 @@ def fixit_w_repl(match):
 # 
 # The ``phono()`` function that carries out the complete transliteration, looks by default in ``qamets_corrections``, but this can be overridden. These corrections will not be carried out for the special verb cases.
 
-# In[17]:
+# In[18]:
 
 qamets_corrections = {} # list of translits that must be corrected
 
@@ -1239,7 +1240,7 @@ def apply_corr(wordq, corr):
 # 
 # We need concise, normalized values for the lexical features.
 
-# In[18]:
+# In[19]:
 
 undefs = {'NA', 'unknown', 'n/a', 'absent'}
 
@@ -1265,7 +1266,7 @@ png['n/a'] = '-'
 # 
 # We need a label for lexical information such as part of speech, person, number, gender.
 
-# In[19]:
+# In[20]:
 
 declensed = {'subs', 'nmpr', 'adjv', 'prps', 'prde', 'prin'}
 
@@ -1301,7 +1302,7 @@ def get_prs(lex_info):
 # 
 # ## Phono parts
 
-# In[20]:
+# In[21]:
 
 interesting_stats = [
     'total',
@@ -1311,7 +1312,7 @@ interesting_stats = [
 ]
 
 
-# In[21]:
+# In[22]:
 
 # if suppress_in_verb, phono will suppress qatan interpretation in certain verb paradigmatic forms
 # if suppress_in_prs, phono will suppress qatan interpreation in pronominal suffixes
@@ -1413,7 +1414,7 @@ def phono_qamets(
     return (result, False)
 
 
-# In[22]:
+# In[23]:
 
 def phono_patterns(result, debug, count, dout):
     
@@ -1479,7 +1480,7 @@ def phono_patterns(result, debug, count, dout):
     return result
 
 
-# In[23]:
+# In[24]:
 
 def phono_symbols(ws, result, debug, count, dout):
 
@@ -1532,7 +1533,7 @@ def phono_symbols(ws, result, debug, count, dout):
 # ## Phono whole
 # Here the rule fabrics are woven together, exceptions invoked.
 
-# In[24]:
+# In[25]:
 
 def phono(
         ws, 
@@ -1590,7 +1591,7 @@ def phono(
 # to the number of consonants found in the paradigmatic material.
 # This is rather crude, but it will do.
 
-# In[25]:
+# In[26]:
 
 # we need the number of letters in a defined value of a morpho feature
 def len_suffix(v):
@@ -1616,7 +1617,7 @@ def len_morpho(w):
 # 
 # Next, we reduce the vowel skeleton to a skeleton pattern. We are not interested in all vowels, only in whether the vowel is a qamets (gadol or qatan), A-like, O-like, or other (which we dub E-like).
 
-# In[26]:
+# In[27]:
 
 # the qamets gadol/qatan skeleton
 qamets_qatan_skel = re.compile('([^@^])')
@@ -1673,7 +1674,7 @@ def get_full_skel(w, debug=False):
 # 
 # ### All candidates
 
-# In[27]:
+# In[28]:
 
 # find lexemes which have an occurrence with a qamets (except verbs)
 msg("Looking for non-verb qamets")
@@ -1697,7 +1698,7 @@ msg('{} lexemes and {} unique occurrences'.format(len(qq_lex), len(qq_words)))
 
 # ### Filtering interesting candidates
 
-# In[28]:
+# In[30]:
 
 msg('Filtering lexemes with varied occurrences')
 qq_varied = collections.defaultdict(lambda: [])
@@ -1726,7 +1727,7 @@ msg('{} interesting lexemes with {} unique occurrences'.format(len(qq_varied), n
 
 # ### Guess the qamets
 
-# In[29]:
+# In[31]:
 
 qamets_qatan_xc = dict(
     (x[0], x[1]) for x in (y.split(' => ') for y in qamets_qatan_x.strip().split('\n'))
@@ -1790,7 +1791,7 @@ def get_corr(fullskel, guess, debug=False):
 
 # ### Carrying out the guess work
 
-# In[30]:
+# In[32]:
 
 msg('Guessing between gadol and qatan')
 qamets_corrections = {}
@@ -1849,7 +1850,7 @@ msg('{} patterns with conflicts'.format(nconflicts))
 # If there are multiple, we want the longest.
 # If there are multiple longest ones, we want the first that occurs in the passage.
 
-# In[31]:
+# In[33]:
 
 def get_hebrew(orig):
     origm = Transcription.suffix_and_finales(orig)
@@ -1882,7 +1883,7 @@ def maketest(ws=None, orig=None, passage=None, expected=None, comment=None):
 # 
 # Here are some HTML/CSS definitions for pretty printing test results.
 
-# In[32]:
+# In[34]:
 
 def h_esc(txt):
     return txt.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
@@ -1978,7 +1979,7 @@ test_html_tail = '''</table>
 # If it is a ``passage``, the node will be looked up on the basis of it plus ``orig``.
 # If the node is found, it will be used to get the ``lex_info``, if not, the given ``lex_info`` will be used.
 
-# In[33]:
+# In[35]:
 
 def vfname(inpath):
     (indir, infile) = os.path.split(inpath)
@@ -2108,7 +2109,7 @@ def runtests(title, testsource, outfilename, htmlfilename, order=True, screen=Fa
 # 
 # It produces overviews of the cases where the corpus dependent rules have been applied.
 
-# In[34]:
+# In[36]:
 
 def showcases(title, stats, testsource, order=True):
     ctitle = title+' cases'
@@ -2197,7 +2198,7 @@ def showcases(title, stats, testsource, order=True):
 
 # ## Test the existing examples
 
-# In[35]:
+# In[37]:
 
 for tname in [
     'mixed',
@@ -2215,7 +2216,7 @@ for tname in [
 
 # ### Testing: Special cases
 
-# In[36]:
+# In[38]:
 
 special_tests = [
     dict(passage='Joel 1:17', orig='<@B:C74W.', comment='qamets gadol or qatan'),
@@ -2231,6 +2232,7 @@ special_tests = [
     dict(ws=155387, expected=None, comment="peculiar representation of tetragrammaton"),
     dict(passage='Proverbia 10:10', orig='<AY.@92BET', expected=None, comment="the qamets should be gadol"),
     dict(passage='Genesis 9:21', orig='*>HLH', expected=None, comment='ketiv qere'),
+    dict(passage='Genesis 1:27', orig='H@95->@D@M03', expected=None, comment='qamets gadol'),
 ]
 
 compiled_tests = []
@@ -2251,7 +2253,7 @@ runtests(
 # 
 # We have generated a number of corrections of the qamets interpretation in non verbs. We have applied exceptions to the corrections. Here is the list of representative occurrences where corrections and/or exceptions have been applied.
 
-# In[37]:
+# In[39]:
 
 ### msg('Showing lexemes with varied occurrences')
 qqi_filename = 'qamets_qatan_individuals'
@@ -2306,7 +2308,7 @@ showcases(
 # 
 # ### Look up the cases
 
-# In[38]:
+# In[40]:
 
 qq_verb_words = set()
 qq_verb_specials = []
@@ -2335,7 +2337,7 @@ msg('{} cases'.format(len(qq_verb_specials)))
 
 # ### Show the cases
 
-# In[39]:
+# In[41]:
 
 msg('Showing verb cases')
 
@@ -2375,7 +2377,7 @@ showcases(
 # 
 # ### Look up the cases
 
-# In[40]:
+# In[42]:
 
 qq_prs_words = set()
 qq_prs_specials = []
@@ -2400,7 +2402,7 @@ msg('{} potential cases'.format(len(qq_prs_specials)))
 
 # ### Show the cases
 
-# In[41]:
+# In[43]:
 
 msg('Showing prs cases')
 
@@ -2434,7 +2436,7 @@ showcases(
 
 # # Print the whole text
 
-# In[42]:
+# In[44]:
 
 def stats_prog(): return ' '.join(str(stats.get(stat, 0)) for stat in interesting_stats)
         

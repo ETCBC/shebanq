@@ -93,7 +93,7 @@ field_names = dict(
         word_nme word_pfm word_prs word_uvf word_vbe word_vbs
         subphrase_border subphrase_number subphrase_rela
         phrase_border phrase_number phrase_atom_number phrase_rela phrase_atom_rela phrase_function phrase_typ phrase_det
-        clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_rela clause_typ clause_txt
+        clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_atom_pargr clause_rela clause_typ clause_txt
         sentence_border sentence_number sentence_atom_number
         '''.strip().split(),
     txt_p='''
@@ -174,7 +174,7 @@ hebrewdata_lines_spec = '''
     wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
     sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
     ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_rela=phrase_rela=rela,ph_arela=phrase_atom_rela=rela_a,ph_an=phrase_atom_number=phrase_a#,ph_n=phrase_number=phrase#
-    cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
+    cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_par=clause_atom_pargr=par,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
     sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
 '''.strip().split()
 hebrewdata_lines = []
@@ -204,7 +204,7 @@ specs = dict(
         wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
         sp sp_rela sp_n
         ph ph_det ph_fun ph_typ ph_rela ph_arela ph_an ph_n
-        cl cl_txt cl_typ cl_rela cl_tab cl_code cl_an cl_n
+        cl cl_txt cl_typ cl_rela cl_tab cl_par cl_code cl_an cl_n
         sn sn_an sn_n
     ''','''
         bool bool bool
@@ -218,7 +218,7 @@ specs = dict(
         bool bool bool bool bool bool bool
         bool bool bool
         bool bool bool bool bool bool bool bool
-        bool bool bool bool bool bool bool bool
+        bool bool bool bool bool bool bool bool bool
         bool bool bool
     ''', {'': '''
         v v v
@@ -232,7 +232,7 @@ specs = dict(
         x x x v x v x
         v v v
         v v v x x v v v
-        v v v v v v v v
+        v v v v v v v v v
         v v v
     '''}),
     highlights=(
@@ -400,6 +400,8 @@ legend_tpl = '''
                 <a target="_blank" href="{base_doc}/rela.html"><span class="il l_cl_rela">rela</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_tab" name="cl_tab"/>
                 <a target="_blank" href="{base_doc}/tab.html"><span class="il a l_cl_tab">tab</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="cl_par" name="cl_par"/>
+                <a target="_blank" href="{base_doc}/pargr.html"><span class="il a l_cl_par">pargr</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_code" name="cl_code"/>
                 <a target="_blank" href="{base_doc}/code.html"><span class="il a l_cl_code">code</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_an" name="cl_an"/>
@@ -456,7 +458,7 @@ text_tpl = u'''<table class="il c">
         <td class="il ph {phrase_border}"><span class="il ph_det">{phrase_det}</span>&nbsp;<span class="il ph_fun">{phrase_function}</span>&nbsp;<span class="il ph_typ">{phrase_typ}</span>&nbsp;<span class="il ph_rela">{phrase_rela}</span>&nbsp;<span class="a il ph_arela">{phrase_atom_rela}</span>&nbsp;<span class="n a ph_an">{phrase_atom_number}</span>&nbsp;<span class="n ph_n">{phrase_number}</span></td>
     </tr>
     <tr class="il cl">
-        <td class="il cl {clause_border}"><span class="il cl_txt">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="il cl_rela">{clause_rela}</span>&nbsp;<span class="a cl_tab">{clause_atom_tab}</span>&nbsp;<span class="a cl_code">{clause_atom_code}</span>&nbsp;<span class="n a cl_an">{clause_atom_number}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td>
+        <td class="il cl {clause_border}"><span class="il cl_txt">{clause_txt}</span>&nbsp;<span class="il cl_typ">{clause_typ}</span>&nbsp;<span class="il cl_rela">{clause_rela}</span>&nbsp;<span class="a cl_tab">{clause_atom_tab}</span>&nbsp;<span class="a cl_par">{clause_atom_pargr}</span>&nbsp;<span class="a cl_code">{clause_atom_code}</span>&nbsp;<span class="n a cl_an">{clause_atom_number}</span>&nbsp;<span class="n cl_n">{clause_number}</span></td>
     </tr>
     <tr class="il sn">
         <td class="il sn {sentence_border}"><span class="n a sn_an">{sentence_atom_number}</span>&nbsp;<span class="n sn_n">{sentence_number}</span></td>

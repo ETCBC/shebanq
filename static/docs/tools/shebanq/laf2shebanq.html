@@ -259,7 +259,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
@@ -273,7 +273,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -309,14 +309,14 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.01s INFO: USING DATA COMPILED AT: 2015-10-01T10-35-26
-    23s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/shebanq/__log__shebanq.txt
-    37s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
+    13s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/shebanq/__log__shebanq.txt
+    22s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.00s INFO: USING DATA COMPILED AT: 2015-10-01T10-35-26
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-02T14-54-30
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-02T14-54-30
+  0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-15T19-41-59
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-15T19-41-59
 </pre>
 </div>
 </div>
@@ -467,7 +467,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qeres</span> <span class="o">=</span> <span class="p">{}</span>
@@ -488,8 +488,58 @@ otherwise it is empty.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    34s Building qere index
-    34s Found 1892 qeres
+<pre> 3m 34s Building qere index
+ 3m 34s Found 1892 qeres
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Index-of-paragraphs">Index of paragraphs<a class="anchor-link" href="#Index-of-paragraphs">&#182;</a></h1><p>We make a list of paragraph numbers of clause_atoms. It will be used by the <em>para</em> function.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">paras</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Building para index&#39;</span><span class="p">)</span>
+<span class="n">inf</span> <span class="o">=</span> <span class="n">infile</span><span class="p">(</span><span class="s">&#39;pargr_data.mql&#39;</span><span class="p">)</span>
+<span class="n">first</span> <span class="o">=</span> <span class="k">True</span>
+<span class="n">ca_index</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause_atom&#39;</span><span class="p">):</span>
+    <span class="n">ca_index</span><span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">oid</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span> <span class="o">=</span> <span class="n">c</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inf</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="k">False</span>
+        <span class="k">continue</span>
+    <span class="p">(</span><span class="n">oid</span><span class="p">,</span> <span class="n">par</span><span class="p">)</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">paras</span><span class="p">[</span><span class="n">ca_index</span><span class="p">[</span><span class="n">oid</span><span class="p">]]</span> <span class="o">=</span> <span class="n">par</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre> 9m 03s Building para index
 </pre>
 </div>
 </div>
@@ -509,7 +559,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">strip_id</span><span class="p">(</span><span class="n">entryid</span><span class="p">):</span>
@@ -533,6 +583,8 @@ otherwise it is empty.</p>
         <span class="k">if</span> <span class="n">trsep</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;ס&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">trsep</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;פ&#39;</span><span class="p">):</span> <span class="n">trsep</span> <span class="o">+=</span> <span class="s">&#39; &#39;</span>
         <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">trsep</span>    
     <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+<span class="k">def</span> <span class="nf">para</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">paras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">lang</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="s">&#39;hbo&#39;</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;Hebrew&#39;</span> <span class="k">else</span> <span class="s">&#39;arc&#39;</span>
@@ -604,6 +656,7 @@ otherwise it is empty.</p>
     <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;number&#39;</span><span class="p">,</span> <span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;code&#39;</span><span class="p">,</span> <span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">True</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;tab&#39;</span><span class="p">,</span> <span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">para</span><span class="p">,</span> <span class="s">&#39;pargr&#39;</span><span class="p">,</span> <span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">True</span><span class="p">),</span>
     <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;number&#39;</span><span class="p">,</span> <span class="s">&#39;clause&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;rela&#39;</span><span class="p">,</span> <span class="s">&#39;clause&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">True</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;typ&#39;</span><span class="p">,</span> <span class="s">&#39;clause&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">True</span><span class="p">),</span>
@@ -634,7 +687,7 @@ The code measures the maximum lengths of these fields, and it turns out that the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">field_limits</span> <span class="o">=</span> <span class="p">{</span>
@@ -835,6 +888,7 @@ create table word(
     clause_atom_number int(4), 
     clause_atom_code varchar(8), 
     clause_atom_tab int(4), 
+    clause_atom_pargr varchar(64), 
     clause_number int(4), 
     clause_rela varchar(8), 
     clause_typ varchar(8), 
@@ -889,7 +943,7 @@ create table word_verse(
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">langs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;hbo&#39;</span><span class="p">,</span> <span class="s">&#39;arc&#39;</span><span class="p">}</span>
@@ -1013,7 +1067,7 @@ Lexicon hbo has  8518 entries
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Fill the tables ... &quot;</span><span class="p">)</span>
@@ -1200,8 +1254,8 @@ Lexicon hbo has  8518 entries
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 01s Fill the tables ... 
- 1m 14s Done
+<pre>10m 52s Fill the tables ... 
+10m 58s Done
 </pre>
 </div>
 </div>
@@ -1236,7 +1290,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="s">&#39;lexicon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]))</span>
@@ -1295,7 +1349,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">target_types</span> <span class="o">=</span> <span class="p">{</span>
@@ -1360,7 +1414,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Generating word info data ...&quot;</span><span class="p">)</span>
@@ -1512,47 +1566,47 @@ All lexemes have been found in the lexicon
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 2m 52s Generating word info data ...
- 2m 53s 	Genesis
- 3m 11s 	Exodus
- 3m 26s 	Leviticus
- 3m 37s 	Numeri
- 3m 53s 	Deuteronomium
- 4m 06s 	Josua
- 4m 16s 	Judices
- 4m 26s 	Samuel_I
- 4m 41s 	Samuel_II
- 4m 52s 	Reges_I
- 5m 06s 	Reges_II
- 5m 19s 	Jesaia
- 5m 36s 	Jeremia
- 6m 02s 	Ezechiel
- 6m 23s 	Hosea
- 6m 25s 	Joel
- 6m 26s 	Amos
- 6m 28s 	Obadia
- 6m 29s 	Jona
- 6m 29s 	Micha
- 6m 31s 	Nahum
- 6m 31s 	Habakuk
- 6m 32s 	Zephania
- 6m 33s 	Haggai
- 6m 33s 	Sacharia
- 6m 37s 	Maleachi
- 6m 37s 	Psalmi
- 6m 55s 	Iob
- 7m 05s 	Proverbia
- 7m 14s 	Ruth
- 7m 15s 	Canticum
- 7m 17s 	Ecclesiastes
- 7m 20s 	Threni
- 7m 22s 	Esther
- 7m 25s 	Daniel
- 7m 31s 	Esra
- 7m 37s 	Nehemia
- 7m 44s 	Chronica_I
- 7m 53s 	Chronica_II
- 8m 06s Done
+<pre>11m 46s Generating word info data ...
+11m 46s 	Genesis
+11m 56s 	Exodus
+12m 04s 	Leviticus
+12m 10s 	Numeri
+12m 18s 	Deuteronomium
+12m 25s 	Josua
+12m 29s 	Judices
+12m 34s 	Samuel_I
+12m 41s 	Samuel_II
+12m 46s 	Reges_I
+12m 53s 	Reges_II
+12m 58s 	Jesaia
+13m 06s 	Jeremia
+13m 16s 	Ezechiel
+13m 25s 	Hosea
+13m 26s 	Joel
+13m 27s 	Amos
+13m 28s 	Obadia
+13m 28s 	Jona
+13m 28s 	Micha
+13m 29s 	Nahum
+13m 29s 	Habakuk
+13m 29s 	Zephania
+13m 30s 	Haggai
+13m 30s 	Sacharia
+13m 31s 	Maleachi
+13m 32s 	Psalmi
+13m 41s 	Iob
+13m 45s 	Proverbia
+13m 48s 	Ruth
+13m 49s 	Canticum
+13m 50s 	Ecclesiastes
+13m 51s 	Threni
+13m 52s 	Esther
+13m 53s 	Daniel
+13m 56s 	Esra
+13m 58s 	Nehemia
+14m 00s 	Chronica_I
+14m 05s 	Chronica_II
+14m 12s Done
 </pre>
 </div>
 </div>
@@ -1563,7 +1617,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># check whether the field sizes are not exceeded</span>
@@ -1575,7 +1629,7 @@ All lexemes have been found in the lexicon
     <span class="n">actual</span> <span class="o">=</span> <span class="n">field_sizes</span><span class="p">[</span><span class="n">tb</span><span class="p">][</span><span class="n">fl</span><span class="p">]</span>
     <span class="n">exceeded</span> <span class="o">=</span> <span class="n">actual</span> <span class="o">&gt;</span> <span class="n">limit</span>
     <span class="n">outp</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="k">if</span> <span class="n">exceeded</span> <span class="k">else</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
-    <span class="n">outp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{:&lt;5} {:&lt;15}{:&lt;15}: max size = {:&gt;7} of {:&gt;5}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">outp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{:&lt;5} {:&lt;15}{:&lt;20}: max size = {:&gt;7} of {:&gt;5}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="s">&#39;ERROR&#39;</span> <span class="k">if</span> <span class="n">exceeded</span> <span class="k">else</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
         <span class="n">tb</span><span class="p">,</span> <span class="n">fl</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span>
     <span class="p">))</span>
@@ -1591,53 +1645,48 @@ All lexemes have been found in the lexicon
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>OK    word           word_heb       : max size =      27 of    32
-OK    word           word_ktv       : max size =      16 of    32
-OK    word           word_vlex      : max size =      23 of    32
-OK    word           word_clex      : max size =      15 of    32
-OK    word           word_tran      : max size =      30 of    32
-OK    word           word_phono     : max size =      23 of    32
-OK    word           word_lex       : max size =      15 of    32
-OK    word           word_glex      : max size =      24 of    32
-OK    word           word_gloss     : max size =      27 of    32
-OK    word           word_lang      : max size =       3 of     8
-OK    word           word_pos       : max size =       4 of     8
-OK    word           word_pdp       : max size =       4 of     8
-OK    word           word_subpos    : max size =       4 of     8
-OK    word           word_tense     : max size =       4 of     8
-OK    word           word_stem      : max size =       4 of     8
-OK    word           word_gender    : max size =       7 of     8
-OK    word           word_gnumber   : max size =       7 of     8
-OK    word           word_person    : max size =       7 of     8
-OK    word           word_state     : max size =       2 of     8
-OK    word           word_nme       : max size =       6 of     8
-OK    word           word_pfm       : max size =       6 of     8
-OK    word           word_prs       : max size =       6 of     8
-OK    word           word_uvf       : max size =       6 of     8
-OK    word           word_vbe       : max size =       3 of     8
-OK    word           word_vbs       : max size =       6 of     8
-OK    word           subphrase_border: max size =       8 of    16
-OK    word           subphrase_number: max size =      21 of    32
-OK    word           subphrase_rela : max size =       3 of     8
-OK    word           phrase_border  : max size =       5 of     8
-OK    word           phrase_atom_rela: max size =       4 of     8
-OK    word           phrase_function: max size =       4 of     8
-OK    word           phrase_rela    : max size =       4 of     8
-OK    word           phrase_typ     : max size =       4 of     8
-OK    word           phrase_det     : max size =       3 of     8
-OK    word           clause_border  : max size =       5 of     8
-OK    word           clause_atom_code: max size =       3 of     8
-OK    word           clause_rela    : max size =       4 of     8
-OK    word           clause_typ     : max size =       4 of     8
-OK    word           clause_txt     : max size =       7 of     8
-OK    word           sentence_border: max size =       5 of     8
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>ERROR word           word_phono_sep : max size =      12 of     8
+<pre>OK    word           word_heb            : max size =      27 of    32
+OK    word           word_ktv            : max size =      16 of    32
+OK    word           word_vlex           : max size =      23 of    32
+OK    word           word_clex           : max size =      15 of    32
+OK    word           word_tran           : max size =      30 of    32
+OK    word           word_phono          : max size =      23 of    32
+OK    word           word_phono_sep      : max size =       2 of     8
+OK    word           word_lex            : max size =      15 of    32
+OK    word           word_glex           : max size =      24 of    32
+OK    word           word_gloss          : max size =      27 of    32
+OK    word           word_lang           : max size =       3 of     8
+OK    word           word_pos            : max size =       4 of     8
+OK    word           word_pdp            : max size =       4 of     8
+OK    word           word_subpos         : max size =       4 of     8
+OK    word           word_tense          : max size =       4 of     8
+OK    word           word_stem           : max size =       4 of     8
+OK    word           word_gender         : max size =       7 of     8
+OK    word           word_gnumber        : max size =       7 of     8
+OK    word           word_person         : max size =       7 of     8
+OK    word           word_state          : max size =       2 of     8
+OK    word           word_nme            : max size =       6 of     8
+OK    word           word_pfm            : max size =       6 of     8
+OK    word           word_prs            : max size =       6 of     8
+OK    word           word_uvf            : max size =       6 of     8
+OK    word           word_vbe            : max size =       3 of     8
+OK    word           word_vbs            : max size =       6 of     8
+OK    word           subphrase_border    : max size =       8 of    16
+OK    word           subphrase_number    : max size =      21 of    32
+OK    word           subphrase_rela      : max size =       3 of     8
+OK    word           phrase_border       : max size =       5 of     8
+OK    word           phrase_atom_rela    : max size =       4 of     8
+OK    word           phrase_function     : max size =       4 of     8
+OK    word           phrase_rela         : max size =       4 of     8
+OK    word           phrase_typ          : max size =       4 of     8
+OK    word           phrase_det          : max size =       3 of     8
+OK    word           clause_border       : max size =       5 of     8
+OK    word           clause_atom_code    : max size =       3 of     8
+OK    word           clause_atom_pargr   : max size =      39 of    64
+OK    word           clause_rela         : max size =       4 of     8
+OK    word           clause_typ          : max size =       4 of     8
+OK    word           clause_txt          : max size =       7 of     8
+OK    word           sentence_border     : max size =       5 of     8
 </pre>
 </div>
 </div>
@@ -1657,7 +1706,7 @@ OK    word           sentence_border: max size =       5 of     8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">limit_row</span> <span class="o">=</span> <span class="mi">2000</span>
@@ -1695,6 +1744,28 @@ OK    word           sentence_border: max size =       5 of     8
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>29m 33s Generating SQL ...
+29m 33s 	table book
+29m 33s 	table chapter
+29m 33s 	table verse
+29m 34s 	table clause_atom
+29m 34s 	table lexicon
+29m 34s 	table word
+29m 35s 	table word_verse
+29m 35s Done
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

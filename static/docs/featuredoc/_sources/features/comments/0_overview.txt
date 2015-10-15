@@ -76,15 +76,18 @@ Word features
 Orthography
 -----------
 
-==================================  ==========  ===========  ==============  ===========
-:doc:`g_cons <g_cons>`              word        consonantal  transliterated  ``>CR``
-:doc:`g_cons_utf8 <g_cons_utf8>`    word        consonantal  hebrew          ``אשׁר``
-:doc:`g_word <g_word>`              word        pointed      transliterated  ``>:ACER&``
-:doc:`g_word_utf8 <g_word_utf8>`    word        pointed      hebrew          ``אֲשֶׁר``
-:doc:`trailer_utf8 <trailer_utf8>`  after-word  pointed      hebrew          ``׃ ׆̇``
-:doc:`phono <phono>`                word        full         phonetic        ``dāvˈār``
-:doc:`phono_sep <phono>`            after-word  full         phonetic        ``.``
-==================================  ==========  ===========  ==============  ===========
+==================================  =================  ===========  ==============  ===========
+:doc:`g_cons <g_cons>`              word               consonantal  transliterated  ``>CR``
+:doc:`g_cons_utf8 <g_cons_utf8>`    word               consonantal  hebrew          ``אשׁר``
+:doc:`g_word <g_word>`              word               pointed      transliterated  ``>:ACER&``
+:doc:`g_word_utf8 <g_word_utf8>`    word               pointed      hebrew          ``אֲשֶׁר``
+:doc:`ketiv <ketiv>`                word (ketiv)       consonantal  hebrew          ``אֲשֶׁר``
+:doc:`g_qere_utf8 <g_qere_utf8>`    word (qere)        pointed      hebrew          ``אֲשֶׁר``
+:doc:`trailer_utf8 <trailer_utf8>`  after-word         pointed      hebrew          ``׃ ׆̇``
+:doc:`qtrailer_utf8 <trailer_utf8>` after-word (qere)  pointed      hebrew          ``׃ ׆̇``
+:doc:`phono <phono>`                word               full         phonetic        ``dāvˈār``
+:doc:`phono_sep <phono>`            after-word         full         phonetic        ``.``
+==================================  =================  ===========  ==============  ===========
 
 See :doc:`/features/comments/0_graphical` about the ``g_`` - and - ``utf8`` features.
 
@@ -172,6 +175,7 @@ Clause(-atom) features
 :doc:`code <code>`                clause atom relation         ``200`` ``477`` ``999``
 :doc:`is_root <is_root>`          ??
 :doc:`tab <tab>`                  hierarchical tabulation      ``0`` ``3`` ``10`` ``29``
+:doc:`pargr <pargr>`              paragraph number             ``1`` ``1.2`` ``2.3.4``
 ================================  ===========================  ===================================
 
 .. _phrase:

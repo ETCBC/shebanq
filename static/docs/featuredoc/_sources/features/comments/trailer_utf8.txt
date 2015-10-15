@@ -21,3 +21,9 @@ The value consists of spaces, newlines, punctuations and special marks that some
 
     This feature is only present with values in UNICODE Hebrew.
 
+See also:
+
+* :doc:`ketiv <ketiv>`. 
+* :doc:`g_qere_utf8 <g_qere_utf8>`. 
+* :doc:`g_word_utf8 <g_word_utf8>`. 
+* :doc:`qtrailer_utf8 <qtrailer_utf8>`. 

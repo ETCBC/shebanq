@@ -1043,6 +1043,12 @@ span.ph_det, span.l_ph_det {
 span.cl_typ, span.l_cl_typ {
     font-weight: bold;
 }
+span.cl_par, span.l_cl_par {
+    font-style: normal;
+    font-weight: bold;
+    font-size: small;
+    color: #aa0000;
+}
 
 /* DICTIONARY */
 

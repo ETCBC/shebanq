@@ -246,7 +246,19 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
 <span class="n">etcbc_source</span> <span class="o">=</span> <span class="s">&#39;etcbc{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
-<span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">etcbc_source</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;can&#39;</span><span class="p">,</span> <span class="p">{</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">etcbc_source</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;can&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">True</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
     <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
 <span class="s">        otype monads number label</span>
@@ -262,58 +274,6 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s LOADING API: please wait ... 
-  0.10s DETAIL: COMPILING m: UP TO DATE
-  0.75s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.75s DETAIL: COMPILING a: UP TO DATE
-  0.76s DETAIL: load main: G.node_anchor_min
-  0.88s DETAIL: load main: G.node_anchor_max
-  1.01s DETAIL: load main: G.node_sort
-  1.12s DETAIL: load main: G.node_sort_inv
-  1.68s DETAIL: load main: G.edges_from
-  1.83s DETAIL: load main: G.edges_to
-  2.00s DETAIL: load main: X. [node]  -&gt; 
-  3.61s DETAIL: load main: X. [node]  &lt;- 
-  4.72s DETAIL: load main: F.etcbc4_db_monads [node] 
-  5.76s DETAIL: load main: F.etcbc4_db_otype [node] 
-  6.68s DETAIL: load main: F.etcbc4_ft_number [node] 
-  7.49s DETAIL: load main: F.etcbc4_sft_label [node] 
-  7.54s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/can/__log__can.txt
-  7.54s DETAIL: prep prep: G.node_sort
-  7.68s DETAIL: prep prep: G.node_sort_inv
-  8.55s DETAIL: prep prep: L.node_up
-    14s DETAIL: prep prep: L.node_down
-    24s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-  0.00s LOADING API with EXTRAs: please wait ... 
-  0.00s DETAIL: COMPILING m: UP TO DATE
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.00s DETAIL: COMPILING a: UP TO DATE
-  0.01s DETAIL: keep main: G.node_anchor_min
-  0.01s DETAIL: keep main: G.node_anchor_max
-  0.01s DETAIL: keep main: G.node_sort
-  0.02s DETAIL: keep main: G.node_sort_inv
-  0.02s DETAIL: keep main: G.edges_from
-  0.02s DETAIL: keep main: G.edges_to
-  0.02s DETAIL: keep main: F.etcbc4_db_otype [node] 
-  0.02s DETAIL: keep main: F.etcbc4_ft_number [node] 
-  0.02s DETAIL: load main: F.etcbc4_sft_book [node] 
-  0.06s DETAIL: load main: F.etcbc4_sft_chapter [node] 
-  0.09s DETAIL: load main: F.etcbc4_sft_verse [node] 
-  0.11s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK can AT 2015-09-29T12-54-45
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK can AT 2015-09-29T12-54-45
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -326,7 +286,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">read_px</span><span class="p">(</span><span class="n">px_file</span><span class="p">):</span>
@@ -404,7 +364,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">px</span> <span class="o">=</span> <span class="n">ExtraData</span><span class="p">(</span><span class="n">API</span><span class="p">)</span>
@@ -421,23 +381,6 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre> 2m 44s Making mappings between clause atoms in PX and nodes in LAF
- 2m 46s End making mappings: 90315=90315 clauses
- 2m 47s Read 90274 paragraph annotations
- 2m 47s Could not find 43 label/line entries in index: [(&apos; IKON07,30&apos;, 115), (&apos; IKON07,31&apos;, 121), (&apos; IKON07,32&apos;, 124), (&apos; IKON07,33&apos;, 127), (&apos; IKON07,34&apos;, 129), (&apos; IKON07,35&apos;, 133), (&apos; IKON07,36&apos;, 135), (&apos; IKON07,37&apos;, 137), (&apos; IKON07,38&apos;, 141), (&apos; IKON07,39&apos;, 145), (&apos; IKON07,40&apos;, 149), (&apos; IKON07,41&apos;, 154), (&apos; IKON07,42&apos;, 158), (&apos; IKON07,43&apos;, 159), (&apos; IKON07,44&apos;, 160), (&apos; IKON07,45&apos;, 164), (&apos; IKON07,46&apos;, 165), (&apos; IKON07,47&apos;, 167), (&apos; IKON07,48&apos;, 172), (&apos; IKON07,49&apos;, 177), (&apos; IKON07,50&apos;, 179), (&apos; IKON07,51&apos;, 183), (&apos; JER 32,24&apos;, 103), (&apos; JER 32,25&apos;, 108), (&apos; JER 32,26&apos;, 110), (&apos; JER 32,27&apos;, 112), (&apos; JER 32,28&apos;, 115), (&apos; JER 32,29&apos;, 123), (&apos; JER 32,30&apos;, 128), (&apos; JER 32,31&apos;, 132), (&apos; JER 32,32&apos;, 136), (&apos; JER 32,33&apos;, 143), (&apos; JER 32,34&apos;, 146), (&apos; JER 32,35&apos;, 153), (&apos; JER 32,36&apos;, 157), (&apos; JER 32,37&apos;, 161), (&apos; JER 32,38&apos;, 163), (&apos; JER 32,39&apos;, 166), (&apos; JER 32,40&apos;, 171), (&apos; JER 32,41&apos;, 174), (&apos; JER 32,42&apos;, 178), (&apos; JER 32,43&apos;, 182), (&apos; JER 32,44&apos;, 189)]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -450,13 +393,13 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">etcbc_source</span><span class="p">,</span> <span class="s">&#39;px&#39;</span><span class="p">,</span> <span class="s">&#39;can&#39;</span><span class="p">,</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">etcbc_source</span><span class="p">,</span> <span class="s">&#39;px&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
     <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
-<span class="s">        otype number label</span>
+<span class="s">        oid otype number label</span>
 <span class="s">        instruction number_in_ch pargr</span>
 <span class="s">    &#39;&#39;&#39;</span><span class="p">,</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -478,59 +421,126 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s DETAIL: COMPILING m: UP TO DATE
-  0.00s INFO: USING DATA COMPILED AT: 2015-05-04T13-46-20
-  0.00s BEGIN COMPILE a: px
-  0.00s DETAIL: load main: X. [node]  -&gt; 
-  1.28s DETAIL: load main: X. [e]  -&gt; 
-  3.52s DETAIL: load main: G.node_anchor_min
-  3.58s DETAIL: load main: G.node_anchor_max
-  3.63s DETAIL: load main: G.node_sort
-  3.68s DETAIL: load main: G.node_sort_inv
-  4.12s DETAIL: load main: G.edges_from
-  4.19s DETAIL: load main: G.edges_to
-  4.27s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-data/etcbc4b/bin/A/px/__log__compile__.txt
-  4.27s PARSING ANNOTATION FILES
-  5.03s INFO: parsing para.xml
-  9.55s INFO: END PARSING
-         0 good   regions  and     0 faulty ones
-         0 linked nodes    and     0 unlinked ones
-         0 good   edges    and     0 faulty ones
-     90274 good   annots   and     0 faulty ones
-    270822 good   features and     0 faulty ones
-     90274 distinct xml identifiers
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  0.00s DETAIL: COMPILING a: UP TO DATE
+  0.01s INFO: USING DATA COMPILED AT: 2015-05-04T14-11-41
+  0.01s DETAIL: load main: G.node_anchor_min
+  0.12s DETAIL: load main: G.node_anchor_max
+  0.22s DETAIL: load main: G.node_sort
+  0.32s DETAIL: load main: G.node_sort_inv
+  0.73s DETAIL: load main: G.edges_from
+  0.85s DETAIL: load main: G.edges_to
+  0.97s DETAIL: load main: F.etcbc4_db_oid [node] 
+  1.70s DETAIL: load main: F.etcbc4_db_otype [node] 
+  2.38s DETAIL: load main: F.etcbc4_ft_number [node] 
+  2.83s DETAIL: load main: F.etcbc4_px_instruction [node] 
+  2.83s DETAIL: load main: F.etcbc4_px_number_in_ch [node] 
+  2.83s DETAIL: load main: F.etcbc4_px_pargr [node] 
+  2.83s DETAIL: load main: F.etcbc4_sft_label [node] 
+  2.86s DETAIL: load annox: F.etcbc4_db_oid [node] 
+  2.86s DETAIL: load annox: F.etcbc4_db_otype [node] 
+  2.86s DETAIL: load annox: F.etcbc4_ft_number [node] 
+  2.86s DETAIL: load annox: F.etcbc4_px_instruction [node] 
+  2.91s DETAIL: load annox: F.etcbc4_px_number_in_ch [node] 
+  2.96s DETAIL: load annox: F.etcbc4_px_pargr [node] 
+  3.00s DETAIL: load annox: F.etcbc4_sft_label [node] 
+  3.00s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/shebanq/__log__shebanq.txt
+  3.01s DETAIL: prep prep: G.node_sort
+  3.10s DETAIL: prep prep: G.node_sort_inv
+  3.56s DETAIL: prep prep: L.node_up
+  6.41s DETAIL: prep prep: L.node_down
+    12s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  0.00s LOADING API with EXTRAs: please wait ... 
+  0.00s DETAIL: COMPILING m: UP TO DATE
+  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
+  0.00s DETAIL: COMPILING a: UP TO DATE
+  0.00s INFO: USING DATA COMPILED AT: 2015-05-04T14-11-41
+  0.01s DETAIL: keep main: G.node_anchor_min
+  0.01s DETAIL: keep main: G.node_anchor_max
+  0.01s DETAIL: keep main: G.node_sort
+  0.01s DETAIL: keep main: G.node_sort_inv
+  0.01s DETAIL: keep main: G.edges_from
+  0.01s DETAIL: keep main: G.edges_to
+  0.01s DETAIL: keep main: F.etcbc4_db_otype [node] 
+  0.01s DETAIL: keep main: F.etcbc4_ft_number [node] 
+  0.01s DETAIL: keep annox: F.etcbc4_db_otype [node] 
+  0.01s DETAIL: keep annox: F.etcbc4_ft_number [node] 
+  0.01s DETAIL: load main: F.etcbc4_sft_book [node] 
+  0.03s DETAIL: load main: F.etcbc4_sft_chapter [node] 
+  0.05s DETAIL: load main: F.etcbc4_sft_verse [node] 
+  0.06s DETAIL: load annox: F.etcbc4_sft_book [node] 
+  0.07s DETAIL: load annox: F.etcbc4_sft_chapter [node] 
+  0.07s DETAIL: load annox: F.etcbc4_sft_verse [node] 
+  0.07s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX px FOR TASK shebanq AT 2015-10-15T07-57-39
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX px FOR TASK shebanq AT 2015-10-15T07-57-39
+</pre>
+</div>
+</div>
 
-  9.56s MODELING RESULT FILES
-  9.56s INFO: CONNECTIVITY
-  9.76s WRITING RESULT FILES for a
-  9.76s DETAIL: write annox: F.etcbc4_px_instruction [node] 
-  9.84s DETAIL: write annox: F.etcbc4_px_number_in_ch [node] 
-  9.91s DETAIL: write annox: F.etcbc4_px_pargr [node] 
-  9.98s END   COMPILE a: px
-    11s INFO: USING DATA COMPILED AT: 2015-05-04T14-11-41
-    11s DETAIL: keep main: G.node_anchor_min
-    11s DETAIL: keep main: G.node_anchor_max
-    11s DETAIL: keep main: G.node_sort
-    11s DETAIL: keep main: G.node_sort_inv
-    11s DETAIL: keep main: G.edges_from
-    11s DETAIL: keep main: G.edges_to
-    11s DETAIL: keep main: F.etcbc4_db_otype [node] 
-    11s DETAIL: keep main: F.etcbc4_ft_number [node] 
-    11s DETAIL: keep main: F.etcbc4_sft_label [node] 
-    11s DETAIL: clear main: X. [node]  -&gt; 
-    11s DETAIL: clear main: X. [node]  &lt;- 
-    11s DETAIL: clear main: F.etcbc4_db_monads [node] 
-    11s DETAIL: load main: F.etcbc4_px_instruction [node] 
-    11s DETAIL: load main: F.etcbc4_px_number_in_ch [node] 
-    11s DETAIL: load main: F.etcbc4_px_pargr [node] 
-    11s DETAIL: load annox: F.etcbc4_db_otype [node] 
-    11s DETAIL: load annox: F.etcbc4_ft_number [node] 
-    11s DETAIL: load annox: F.etcbc4_px_instruction [node] 
-    11s DETAIL: load annox: F.etcbc4_px_number_in_ch [node] 
-    11s DETAIL: load annox: F.etcbc4_px_pargr [node] 
-    11s DETAIL: load annox: F.etcbc4_sft_label [node] 
-    11s DETAIL: prep prep: G.node_sort
-    11s DETAIL: prep prep: G.node_sort_inv
-    11s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX px FOR TASK can AT 2015-05-04T14-11-42
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Generating-MQL">Generating MQL<a class="anchor-link" href="#Generating-MQL">&#182;</a></h1><p>We generate an text file with the new feature data which we will insert
+properly in the existing MQL dump of the ETCBC database.</p>
+<p>The text file is structured as follows:</p>
+<p>It consists of tab delimited lines, with a header line:</p>
+
+<pre><code>object_type feature_name1 feature_name2 ...
+
+</code></pre>
+<p>followed by lines with the same number of fields.
+The first field is the object id, the subsequent fields are the values of the corresponding features for that object.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">pm</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s">&#39;pargr_data.mql&#39;</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="s">&#39;pargr&#39;</span><span class="p">))</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">nc</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ic</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause_atom&#39;</span><span class="p">):</span>
+    <span class="n">nc</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">ic</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">ic</span> <span class="o">==</span> <span class="n">chunk</span><span class="p">:</span> 
+        <span class="n">ic</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&gt;5} clause atoms&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nc</span><span class="p">))</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">oid</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">pargr</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&gt;5} clause atoms&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nc</span><span class="p">))</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>10000 clause atoms
+20000 clause atoms
+30000 clause atoms
+40000 clause atoms
+50000 clause atoms
+60000 clause atoms
+70000 clause atoms
+80000 clause atoms
+90000 clause atoms
+90315 clause atoms
 </pre>
 </div>
 </div>
@@ -550,7 +560,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">ph</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s">&#39;paras.txt&#39;</span><span class="p">)</span>
@@ -573,126 +583,13 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="o">!</span>head -n <span class="m">100</span> <span class="o">{</span>my_file<span class="o">(</span><span class="s1">&#39;paras.txt&#39;</span><span class="o">)}</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre> GEN 01,01: instruction = 1; .N; para = 1
- GEN 01,02: instruction = 2; ..; para = 1
- GEN 01,02: instruction = 3; ..; para = 1
- GEN 01,02: instruction = 4; ..; para = 1
- GEN 01,03: instruction = 5; .#; para = 1.1
- GEN 01,03: instruction = 6; .q; para = 1.1.1
- GEN 01,03: instruction = 7; .#; para = 1.1.2
- GEN 01,04: instruction = 8; .#; para = 1.1.3
- GEN 01,04: instruction = 9; ..; para = 1.1.3
- GEN 01,04: instruction = 10; .#; para = 1.1.4
- GEN 01,05: instruction = 11; .#; para = 1.1.5
- GEN 01,05: instruction = 12; ..; para = 1.1.5
- GEN 01,05: instruction = 13; .#; para = 1.1.5.1
- GEN 01,05: instruction = 14; .#; para = 1.1.5.2
- GEN 01,05: instruction = 15; ..; para = 1.1.5.2
- GEN 01,06: instruction = 16; .#; para = 1.2
- GEN 01,06: instruction = 17; .q; para = 1.2.1
- GEN 01,06: instruction = 18; ..; para = 1.2.1
- GEN 01,07: instruction = 19; .#; para = 1.2.2
- GEN 01,07: instruction = 20; ..; para = 1.2.2
- GEN 01,07: instruction = 21; .e; para = 1.2.2
- GEN 01,07: instruction = 22; d.; para = 1.2.2
- GEN 01,07: instruction = 23; ..; para = 1.2.2
- GEN 01,07: instruction = 24; ..; para = 1.2.2
- GEN 01,08: instruction = 25; .#; para = 1.2.2.1
- GEN 01,08: instruction = 26; .#; para = 1.2.2.1.1
- GEN 01,08: instruction = 27; .#; para = 1.2.2.1.2
- GEN 01,08: instruction = 28; ..; para = 1.2.2.1.2
- GEN 01,09: instruction = 29; .#; para = 1.3
- GEN 01,09: instruction = 30; .q; para = 1.3.1
- GEN 01,09: instruction = 31; ..; para = 1.3.1
- GEN 01,09: instruction = 32; ..; para = 1.3
- GEN 01,10: instruction = 33; .#; para = 1.3.2
- GEN 01,10: instruction = 34; ..; para = 1.3.2
- GEN 01,10: instruction = 35; .#; para = 1.3.3
- GEN 01,10: instruction = 36; ..; para = 1.3.3
- GEN 01,11: instruction = 37; .#; para = 1.4
- GEN 01,11: instruction = 38; .q; para = 1.4.1
- GEN 01,11: instruction = 39; .e; para = 1.4.1
- GEN 01,11: instruction = 40; d.; para = 1.4.1
- GEN 01,11: instruction = 41; ..; para = 1.4.1
- GEN 01,11: instruction = 42; .e; para = 1.4.1
-
- GEN 01,11: instruction = 44; ..; para = 1.4
- GEN 01,12: instruction = 45; .#; para = 1.4.2
- GEN 01,12: instruction = 46; .e; para = 1.4.2
- GEN 01,12: instruction = 47; d.; para = 1.4.2
- GEN 01,12: instruction = 48; ..; para = 1.4.2
- GEN 01,12: instruction = 49; .e; para = 1.4.2
- GEN 01,12: instruction = 50; d.; para = 1.4.2
- GEN 01,12: instruction = 51; .#; para = 1.4.3
- GEN 01,12: instruction = 52; ..; para = 1.4.3
- GEN 01,13: instruction = 53; .#; para = 1.4.3.1
- GEN 01,13: instruction = 54; .#; para = 1.4.3.2
- GEN 01,13: instruction = 55; ..; para = 1.4.3.2
- GEN 01,14: instruction = 56; .#; para = 1.5
- GEN 01,14: instruction = 57; .q; para = 1.5.1
- GEN 01,14: instruction = 58; ..; para = 1.5.1
- GEN 01,14: instruction = 59; ..; para = 1.5.1
- GEN 01,15: instruction = 60; ..; para = 1.5.1
- GEN 01,15: instruction = 61; ..; para = 1.5.1
- GEN 01,15: instruction = 62; ..; para = 1.5
- GEN 01,16: instruction = 63; .#; para = 1.5.2
- GEN 01,16: instruction = 64; l.; para = 1.5.2
- GEN 01,16: instruction = 65; l.; para = 1.5.2
- GEN 01,16: instruction = 66; l.; para = 1.5.2
- GEN 01,17: instruction = 67; .#; para = 1.5.2.1
- GEN 01,17: instruction = 68; ..; para = 1.5.2.1
- GEN 01,18: instruction = 69; ..; para = 1.5.2.1
- GEN 01,18: instruction = 70; ..; para = 1.5.2.1
- GEN 01,18: instruction = 71; .#; para = 1.5.3
- GEN 01,18: instruction = 72; ..; para = 1.5.3
- GEN 01,19: instruction = 73; .#; para = 1.5.3.1
- GEN 01,19: instruction = 74; .#; para = 1.5.3.2
- GEN 01,19: instruction = 75; ..; para = 1.5.3.2
- GEN 01,20: instruction = 76; .#; para = 1.6
- GEN 01,20: instruction = 77; .q; para = 1.6.1
- GEN 01,20: instruction = 78; ..; para = 1.6.1
- GEN 01,21: instruction = 79; .#; para = 1.6.2
- GEN 01,21: instruction = 80; ..; para = 1.6.2
- GEN 01,21: instruction = 81; ..; para = 1.6.2
- GEN 01,21: instruction = 82; .e; para = 1.6.2
- GEN 01,21: instruction = 83; d.; para = 1.6.2
- GEN 01,21: instruction = 84; l.; para = 1.6.2
- GEN 01,21: instruction = 85; .#; para = 1.6.3
- GEN 01,21: instruction = 86; ..; para = 1.6.3
- GEN 01,22: instruction = 87; .#; para = 1.6.3.1
- GEN 01,22: instruction = 88; ..; para = 1.6.3.1
- GEN 01,22: instruction = 89; .q; para = 1.6.3.1.1
- GEN 01,22: instruction = 90; ..; para = 1.6.3.1.1
- GEN 01,22: instruction = 91; ..; para = 1.6.3.1.1
- GEN 01,22: instruction = 92; ..; para = 1.6.3.1.1
- GEN 01,23: instruction = 93; .#; para = 1.6.3.2
- GEN 01,23: instruction = 94; .#; para = 1.6.3.3
- GEN 01,23: instruction = 95; ..; para = 1.6.3.3
- GEN 01,24: instruction = 96; .#; para = 1.7
- GEN 01,24: instruction = 97; .q; para = 1.7.1
- GEN 01,24: instruction = 98; l.; para = 1.7.1
- GEN 01,24: instruction = 99; ..; para = 1.7
- GEN 01,25: instruction = 100; .#; para = 1.7.2
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
