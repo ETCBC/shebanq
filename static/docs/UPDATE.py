@@ -68,6 +68,7 @@ tools/verbsystem/files
 ''',
     python='''
 tools/phono/phono.ipynb
+tools/shebanq/para_from_px.ipynb
 tools/shebanq/lexicon.ipynb
 tools/shebanq/laf2shebanq.ipynb
 ''',
@@ -213,7 +214,7 @@ def nb_convert(inpath, fmt, force=False, dry=False):
     msg(' {}'.format(outpath), withtime=False)
     return 0 if dry else 1
 
-def mql_transform(mql_src, mql_dst, extra_data_paths, dry=False):
+def mql_transform(mql_src, mql_dst, source, v, extra_data_paths, dry=False):
     (mql_src_dir, mql_src_file) = os.path.split(mql_src)
     (mql_dst_dir, mql_dst_file) = os.path.split(mql_dst)
     extra_data_files = ', '.join(os.path.split(x)[1] for x in extra_data_paths) 
@@ -267,6 +268,8 @@ def mql_transform(mql_src, mql_dst, extra_data_paths, dry=False):
     nl = 0
     nc = 0
     chunk = 1000000
+    dbnamei = source+v
+    dbnameo = 'shebanq_'+source+v
     for line in inf:
         nl += 1
         nc += 1
@@ -274,6 +277,7 @@ def mql_transform(mql_src, mql_dst, extra_data_paths, dry=False):
             nc = 0
             msg('{:>8} lines'.format(nl))
         if status == 0 or status == 1 or status == 3:
+            if nl < 10: line = line.replace("'"+dbnamei, "'"+dbnameo)
             outf.write(line)
         if status == 0:
             if line.startswith('CREATE OBJECT TYPE'): status = 1
@@ -393,6 +397,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
 
                 msg('Calling LAF-API for {}{}'.format(source, v))
                 (data_dir, output_dir) = get_data_dir(source, v)
+                para_output = '{}/{}{}/annotations/para/_header_.xml'.format(data_dir, source, v)
                 phono_output = '{}/ph/phono.{}{}'.format(data_dir, source, v)
                 lexicon_output = '{}/{}{}/annotations/lexicon/_header_.xml'.format(data_dir, source, v)
                 passage_sql = '{}/shebanq/shebanq_passage{}.sql'.format(output_dir, v)
@@ -433,7 +438,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             if not do_cmd('bunzip2 -f -k {}'.format(mql_dst_compressed), dry=dry): continue
 
                         if must_update(mql_dst, mql_extra_dst, force=force):
-                            tx = mql_transform(mql_dst, mql_extra_dst, extra_data_items, dry=dry)
+                            tx = mql_transform(mql_dst, mql_extra_dst, source, v, extra_data_items, dry=dry)
                             if tx == -1: continue
                             new_mql = True
 
@@ -464,12 +469,17 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                     return this_good
 
                 for x in [1]:
-                    if not patch_mql(): continue
                     good = True
-                    continue
                     if not data_task(
                         v,
                         'phono', 'tools/phono', phono_output,
+                        None,
+                        force=force, dry=dry,
+                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
+                    ): continue
+                    if not data_task(
+                        v,
+                        'para_from_px', 'tools/shebanq', para_output,
                         None,
                         force=force, dry=dry,
                         net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
@@ -490,6 +500,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                         extra_inpath=lexicon_output,
                         net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
                     ): continue
+                    if not patch_mql(): continue
                     good = True
 
         if not good: continue

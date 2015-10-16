@@ -31,6 +31,7 @@ Contents:
     minmonad
     monads
     mother_object_type
+    nametype
     nme
     g_nme_utf8
     g_nme

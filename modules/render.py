@@ -88,7 +88,7 @@ for (i,x) in enumerate(nt_statorder):
 field_names = dict(
     txt_il='''
         word_heb word_ktv word_phono word_vlex word_clex word_tran word_lex word_glex word_gloss
-        word_subpos word_pos word_pdp word_lang word_number
+        word_nmtp word_subpos word_pos word_pdp word_lang word_number
         word_gender word_gnumber word_person word_state word_tense word_stem
         word_nme word_pfm word_prs word_uvf word_vbe word_vbs
         subphrase_border subphrase_number subphrase_rela
@@ -169,7 +169,7 @@ hebrewdata_lines_spec = '''
     tt:tt=word_tran=text-t
     tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
     gl:gl=word_gloss=gloss
-    wd1:wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
+    wd1:wd1_nmtp=word_nmtp=nametype,wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
     wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
     sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
@@ -199,7 +199,7 @@ specs = dict(
         tt
         tl tl_tlv tl_tlc
         gl
-        wd1 wd1_subpos wd1_pos wd1_pdp wd1_lang wd1_n
+        wd1 wd1_nmtp wd1_subpos wd1_pos wd1_pdp wd1_lang wd1_n
         wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
         wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
         sp sp_rela sp_n
@@ -207,7 +207,7 @@ specs = dict(
         cl cl_txt cl_typ cl_rela cl_tab cl_par cl_code cl_an cl_n
         sn sn_an sn_n
     ''','''
-        bool bool bool
+        bool bool bool bool
         bool
         bool bool bool
         bool
@@ -221,7 +221,7 @@ specs = dict(
         bool bool bool bool bool bool bool bool bool
         bool bool bool
     ''', {'': '''
-        v v v
+        v v v v
         v
         v x v
         x
@@ -310,6 +310,8 @@ legend_tpl = '''
     <tr class="il l_wd1">
         <td class="c l_wd1"><input type="checkbox" id="wd1" name="wd1"/></td>
         <td class="il l_wd1">
+            <input type="checkbox" id="wd1_nmtp" name="wd1_nmtp"/>
+                <a target="_blank" href="{base_doc}/nametype.html"><span class="il l_wd1_nmtp">nametype</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_subpos" name="wd1_subpos"/>
                 <a target="_blank" href="{base_doc}/ls.html"><span class="il l_wd1_subpos">lexical set</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_pos" name="wd1_pos"/>
@@ -443,7 +445,7 @@ text_tpl = u'''<table class="il c">
         <td class="il gl"><span class="gl">{word_gloss}</span></td>
     </tr>
     <tr class="il wd1">
-        <td class="il wd1"><span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_pdp">{word_pdp}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td>
+        <td class="il wd1"><span class="il wd1_nmtp">{word_nmtp}</span>&nbsp;<span class="il wd1_subpos">{word_subpos}</span>&nbsp;<span class="il wd1_pos">{word_pos}</span>&nbsp;<span class="il wd1_pdp">{word_pdp}</span>&nbsp;<span class="il wd1_lang">{word_lang}</span>&nbsp;<span class="n wd1_n">{word_number}</span></td>
     </tr>
     <tr class="il wd2">
         <td class="il wd2"><span class="il wd2_gender">{word_gender}</span>&nbsp;<span class="il wd2_gnumber">{word_gnumber}</span>&nbsp;<span class="il wd2_person">{word_person}</span>&nbsp;<span class="il wd2_state">{word_state}</span>&nbsp;<span class="il wd2_tense">{word_tense}</span>&nbsp;<span class="il wd2_stem">{word_stem}</span></td>

@@ -137,10 +137,10 @@ fabric = LafFabric()
 # In[2]:
 
 source = 'etcbc'
-if 'version' not in locals(): version = '4b'
+if 'version' not in locals(): version = '4'
 
 
-# In[4]:
+# In[3]:
 
 API=fabric.load(source+version, '--', 'lexicon', {
     "xmlids": {"node": True, "edge": False},
@@ -159,7 +159,7 @@ exec(fabric.localnames.format(var='fabric'))
 # 
 # First we read the lexicon, and perform some internal consistency checks, e.g. whether there are duplicate lexical entries.
 
-# In[ ]:
+# In[4]:
 
 langs = {'hbo', 'arc'}
 lex_base = dict((lan, '{}/{}/{}.{}{}'.format(API['data_dir'], 'lexicon', lan, source, version)) for lan in langs)
@@ -197,16 +197,20 @@ def read_lex(lan):
                 if feature.strip().isnumeric():
                     comps = ('_n', feature.strip())
                 else:
-                    lex_errfile.write('feature without value for lexical entry {} in line {}: {}\n'.format(entry, ln, feature))
+                    lex_errfile.write('feature without value for lexical entry {} in line {}: {}\n'.format(
+                            entry, ln, feature,
+                    ))
                     e += 1
                     continue
             (key, value) = comps
             value = value.replace(chr(254), ':')
             if key in features:
-                lex_errfile.write('duplicate feature for lexical entry {} in line {}: {}={}\n'.format(entry, ln, key, value))
+                lex_errfile.write('duplicate feature for lexical entry {} in line {}: {}={}\n'.format(
+                        entry, ln, key, value,
+                ))
                 e += 1
                 continue
-            features[key] = value
+            features[key] = value.replace('\\', '/')
         if 'sp' in features and features['sp'] == 'verb':
             if 'gl' in features:
                 gloss = features['gl']
@@ -233,7 +237,7 @@ msg("Done")
 # 
 # We inspect all word occurrences of the etcbc4 database, inspect their language and lexeme values, and construct sets of lexemes that belong to each of the two languages, ``hbo`` and ``arc``.
 
-# In[ ]:
+# In[5]:
 
 lex_text = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: set())))
 do_value_compare = {'sp', 'ls', 'gn', 'ps', 'nu', 'st'}
@@ -279,7 +283,7 @@ for lan in sorted(lex_text):
 # * whether the lexica for ``hbo`` and ``arc`` share lexeme entries
 # * whether the lexical intersection of ``hbo`` and ``arc`` is equal to the textual intersection of ``hbo`` and ``arc``.
 
-# In[ ]:
+# In[6]:
 
 arc_lex = set(lex_entries['arc'])
 hbo_lex = set(lex_entries['hbo'])
@@ -307,7 +311,7 @@ print("Lexemes in the textual intersection of hbo and arc but not in the lexical
 # ## Match between lexicon and text
 # Let us now check whether all lexemes in the text occur in the lexicon and vice versa.
 
-# In[ ]:
+# In[7]:
 
 arc_text_min_lex = arc_text - arc_lex
 arc_lex_min_text = arc_lex - arc_text
@@ -345,7 +349,7 @@ for (myset, mymsg) in (
 # * the ``=`` is for disambiguation, we translate it to ``0``
 # * we prepend a language identifier, ``1`` for Hebrew, ``2`` for aramaic. 
 
-# In[ ]:
+# In[8]:
 
 max_len = 0
 chars = collections.Counter()
@@ -363,7 +367,7 @@ for c in sorted(chars):
 # 
 # Which features do the entries have, and what percentage of the entries has those features?
 
-# In[ ]:
+# In[9]:
 
 feature_count = collections.defaultdict(lambda: collections.Counter())
 inspect_prop = collections.defaultdict(
@@ -429,7 +433,7 @@ for lan in sorted(inspect_prop):
 # the textual feature **g_lex** (aka *graphical lexeme*).
 # The output file *inconsistent.csv* shows exactly what is going on.
 
-# In[ ]:
+# In[10]:
 
 consistent_props = {'sp', 'ls', 'gn', 'vc'}
 variable_gender = {'verb', 'adjv'}
@@ -470,7 +474,7 @@ for lan in sorted(text_langs):
 # If not, we will apply a value transformation that harmonizes the values in lexical entries with those in textual features.
 # We adapt the lexical values to the textual ones. We do this only for features whose value domains are enumerations.
 
-# In[ ]:
+# In[11]:
 
 for p in do_value_compare:
     print(p)
@@ -491,7 +495,7 @@ for p in do_value_compare:
 # 
 # As a preliminary check, we check whether there is a 1-1 correspondence between the ``lex`` and ``lex_utf8`` features.
 
-# In[ ]:
+# In[12]:
 
 def strip_id(entryid):
     return entryid.rstrip('/[=')
@@ -549,7 +553,7 @@ else:
 # ## name
 # The name of the field in the to be constructed annotation file.
 
-# In[ ]:
+# In[14]:
 
 lex_fields = (
     (None, 'id', 'id', None),
@@ -596,7 +600,7 @@ for lan in sorted(lex_entries):
 
 # ## Deliver lexical data
 
-# In[ ]:
+# In[15]:
 
 def get_lex(dummy):
     msg('Preparing lex data')
@@ -612,7 +616,7 @@ def get_lex(dummy):
 # 
 # We load the output of the phono notebook, which has provided for each word node a phonetc transcription.
 
-# In[ ]:
+# In[16]:
 
 def get_phono(file_name):
     msg('Reading phonetic transcriptions')
@@ -634,7 +638,7 @@ def get_phono(file_name):
 # De ketiv qere files use a particular form of verse labels.
 # We have to map them to the corresponding verse nodes.
 
-# In[ ]:
+# In[17]:
 
 msg("Making mappings between verse labels in KQ and verse nodes in LAF")
 vlab2vnode = {}
@@ -646,7 +650,7 @@ msg("{} verses".format(len(vlab2vnode)))
 
 # ## Method to read kq data
 
-# In[ ]:
+# In[18]:
 
 def get_kq(kq_file):
     msg("Reading Ketiv-Qere data")
@@ -738,7 +742,7 @@ def get_kq(kq_file):
 
 # # Compose the annotation package
 
-# In[ ]:
+# In[19]:
 
 lex = ExtraData(API)
 
@@ -779,7 +783,7 @@ msg("Done")
 
 # ## Checking: loading the new features
 
-# In[3]:
+# In[20]:
 
 API=fabric.load(source+version, 'lexicon', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
@@ -813,10 +817,10 @@ exec(fabric.localnames.format(var='fabric'))
 # followed by lines with the same number of fields.
 # The first field is the object id, the subsequent fields are the values of the corresponding features for that object.
 
-# In[8]:
+# In[21]:
 
 pm = outfile('word_data.mql')
-template = ('{}\t' * 7)+'{}\n'
+template = ('{}\t' * 8)+'{}\n'
 pm.write(template.format(
     'word', 'phono', 'phono_sep', 'g_qere_utf8', 'qtrailer_utf8', 'g_entry', 'g_entry_heb', 'gloss', 'nametype',
 ))
@@ -842,6 +846,15 @@ for w in F.otype.s('word'):
     ))
 print('{:>5} words'.format(nw))
 pm.close()
+
+
+# In[22]:
+
+ntps = collections.Counter()
+for w in F.otype.s('word'):
+    ntps[F.nametype.v(w)] += 1
+for ntp in sorted(ntps, key=lambda x: -ntps[x]):
+    print('{:<10}: {:>5}x'.format(ntp, ntps[ntp]))
 
 
 # ## Making an interlinear glossed text

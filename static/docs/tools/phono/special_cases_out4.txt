@@ -1,16 +1,17 @@
   1 Genesis 9:21          4419 subs sm,+h        >@H:@LO75W00           *ʔohᵒlˈô             =                     
   2 Genesis 4:1           1684 nmpr sm,          J:HW@75H00             [yᵊhwˈāh]            =                     
   3 Genesis 4:1           1684 nmpr sm,          J:HW@75H00             [yᵊhwˈāh]            =                     
-  4 Genesis 1:1              5 art               HA-                    hˌa                  =                     
-  5 Genesis 1:7            107 subs sm,          MI-T.A74XAT            mittˈaḥaṯ            =                     
-  6 Genesis 1:7            106 prep              MI-                    mˌi                  =                     
-  7 Genesis 1:7            107 subs sm,          T.A74XAT               tˈaḥaṯ               =                     
-  8 Genesis 1:1              6 subs pm,          C.@MA73JIM             ššāmˌayim            =                     
-  9 Proverbia 10:10     349398 subs sf,          <AY.@92BET             ʕaṣṣˈāveṯ            =                     
- 10 Genesis 17:11         7494 subs sf,+kem      <@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
- 11 Genesis 48:10        27477 subs df,          <;JN;70J               ʕênˈê                =                     
- 12 Joel 1:17           294284 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
- 13 Samuel_I 23:4       155387 verb qal impv 2sm, 10QW.M                 ˈqûm                 =                     
+  4 Genesis 1:27           538 subs sm,          H@95->@D@M03           hˈāʔāḏˌām            =                     
+  5 Genesis 1:1              5 art               HA-                    hˌa                  =                     
+  6 Genesis 1:7            107 subs sm,          MI-T.A74XAT            mittˈaḥaṯ            =                     
+  7 Genesis 1:7            106 prep              MI-                    mˌi                  =                     
+  8 Genesis 1:7            107 subs sm,          T.A74XAT               tˈaḥaṯ               =                     
+  9 Genesis 1:1              6 subs pm,          C.@MA73JIM             ššāmˌayim            =                     
+ 10 Proverbia 10:10     349398 subs sf,          <AY.@92BET             ʕaṣṣˈāveṯ            =                     
+ 11 Genesis 17:11         7494 subs sf,+kem      <@R:LAT:KE92M          ʕorlaṯᵊḵˈem          =                     
+ 12 Genesis 48:10        27477 subs df,          <;JN;70J               ʕênˈê                =                     
+ 13 Joel 1:17           294284 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
+ 14 Samuel_I 23:4       155387 verb qal impv 2sm, 10QW.M                 ˈqûm                 =                     
 
   1 Genesis 9:21          4419 subs sm,+h        >@H:@LO75W00              => *ʔohᵒlˈô                  < =                           # ketiv qere
         orig                 >@H:@LO75W
@@ -117,7 +118,48 @@
         cleanup              [yᵊhwˈāh]
 
 
-  4 Genesis 1:1              5 art               HA-                       => hˌa                       < =                           # article in isolation
+  4 Genesis 1:27           538 subs sm,          H@95->@D@M03              => hˈāʔāḏˌām                 < =                           # qamets gadol
+        orig                 H@95->@D@M03
+        trim                 h@95->@d@m03
+        accents              h!@->@d@m
+        punctuation          h!@->@d@m
+        rafe                 h!@->@d@m
+        furtive_patah        h!@->@d@m
+        default accent       h!@->@d/@m
+        qamets qatan         no special verb form: subs sm
+        qamets_qatan1        h!@->@d/@m
+        qamets_qatan2        h!@->@d/@m
+        qamets_qatan3        h!@->@d/@m
+        qamets_qatan4a       h!@->@d/@m
+        qamets_qatan4b       h!@->@d/@m
+        qamets qatan         no pron suffix indicated
+        qamets_qatan5        h!@->@d/@m
+        qamets_qatan_corr    h!@->@d/@m
+        mobile_schwa1        h!@->@d/@m
+        mobile_schwa2        h!@->@d/@m
+        mobile_schwa3        h!@->@d/@m
+        mobile_schwa4        h!@->@d/@m
+        dagesh_forte_lene    h!@->@d/@m
+        dagesh_forte         h!@->@d/@m
+        dagesh_lene          h!@->@d/@m
+        silent_aleph         h!@->@d/@m
+        last_ml              h!@->@d/@m
+        mappiq_heh           h!@->@d/@m
+        symbols              hˈā
+        fixit_i              hˈā
+        fixit_w              hˈā
+        fixit                hˈā
+        punct                hˈā
+        cleanup              hˈā
+        symbols              ʔāḏˌām
+        fixit_i              ʔāḏˌām
+        fixit_w              ʔāḏˌām
+        fixit                ʔāḏˌām
+        punct                ʔāḏˌām
+        cleanup              ʔāḏˌām
+
+
+  5 Genesis 1:1              5 art               HA-                       => hˌa                       < =                           # article in isolation
         orig                 HA
         trim                 ha
         accents              ha
@@ -152,7 +194,7 @@
         cleanup              hˌa
 
 
-  5 Genesis 1:7            107 subs sm,          MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
+  6 Genesis 1:7            107 subs sm,          MI-T.A74XAT               => mittˈaḥaṯ                 < =                           # proclitic min combined with word starting with BGDKPT
         orig                 MI-T.A74XAT
         trim                 mi-t.a74xat
         accents              mi-t.!axat
@@ -193,7 +235,7 @@
         cleanup              ttˈaḥaṯ
 
 
-  6 Genesis 1:7            106 prep              MI-                       => mˌi                       < =                           # proclitic min
+  7 Genesis 1:7            106 prep              MI-                       => mˌi                       < =                           # proclitic min
         orig                 MI
         trim                 mi
         accents              mi
@@ -228,7 +270,7 @@
         cleanup              mˌi
 
 
-  7 Genesis 1:7            107 subs sm,          T.A74XAT                  => tˈaḥaṯ                    < =                           # word starting with BGDKPT after proclitic min
+  8 Genesis 1:7            107 subs sm,          T.A74XAT                  => tˈaḥaṯ                    < =                           # word starting with BGDKPT after proclitic min
         orig                 T.A74XAT
         trim                 t.a74xat
         accents              t.!axat
@@ -263,7 +305,7 @@
         cleanup              tˈaḥaṯ
 
 
-  8 Genesis 1:1              6 subs pm,          C.@MA73JIM                => ššāmˌayim                 < =                           # word after article in isolation
+  9 Genesis 1:1              6 subs pm,          C.@MA73JIM                => ššāmˌayim                 < =                           # word after article in isolation
         orig                 C.@MA73JIM
         trim                 c.@ma73jim
         accents              c.@m/ajim
@@ -298,7 +340,7 @@
         cleanup              ššāmˌayim
 
 
-  9 Proverbia 10:10     349398 subs sf,          <AY.@92BET                => ʕaṣṣˈāveṯ                 < =                           # the qamets should be gadol
+ 10 Proverbia 10:10     349398 subs sf,          <AY.@92BET                => ʕaṣṣˈāveṯ                 < =                           # the qamets should be gadol
         orig                 <AY.@92BET
         trim                 <ay.@92bet
         accents              <ay.!@bet
@@ -333,7 +375,7 @@
         cleanup              ʕaṣṣˈāveṯ
 
 
- 10 Genesis 17:11         7494 subs sf,+kem      <@R:LAT:KE92M             => ʕorlaṯᵊḵˈem               < =                           # schwa in front of BGDKPT without dagesh
+ 11 Genesis 17:11         7494 subs sf,+kem      <@R:LAT:KE92M             => ʕorlaṯᵊḵˈem               < =                           # schwa in front of BGDKPT without dagesh
         orig                 <@R:LAT:KE92M
         trim                 <@r:lat:ke92m
         accents              <@r:lat:k!em
@@ -368,7 +410,7 @@
         cleanup              ʕorlaṯᵊḵˈem
 
 
- 11 Genesis 48:10        27477 subs df,          <;JN;70J                  => ʕênˈê                     < =                           # pronominal suffix after verb
+ 12 Genesis 48:10        27477 subs df,          <;JN;70J                  => ʕênˈê                     < =                           # pronominal suffix after verb
         orig                 <;JN;70J
         trim                 <;jn;70j
         accents              <;jn!;j
@@ -403,7 +445,7 @@
         cleanup              ʕênˈê
 
 
- 12 Joel 1:17           294284 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets gadol or qatan
+ 13 Joel 1:17           294284 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets gadol or qatan
         orig                 <@B:C74W.
         trim                 <@b:c74w.
         accents              <@b:c!w.
@@ -434,7 +476,7 @@
         cleanup              ʕāvᵊšˈû
 
 
- 13 Samuel_I 23:4       155387 verb qal impv 2sm, 10QW.M                    => ˈqûm                      < =                           # peculiar representation of tetragrammaton
+ 14 Samuel_I 23:4       155387 verb qal impv 2sm, 10QW.M                    => ˈqûm                      < =                           # peculiar representation of tetragrammaton
         orig                 10QW.M
         trim                 10qw.m
         accents              !qw.m

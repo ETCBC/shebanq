@@ -76,18 +76,18 @@ Word features
 Orthography
 -----------
 
-==================================  =================  ===========  ==============  ===========
-:doc:`g_cons <g_cons>`              word               consonantal  transliterated  ``>CR``
-:doc:`g_cons_utf8 <g_cons_utf8>`    word               consonantal  hebrew          ``אשׁר``
-:doc:`g_word <g_word>`              word               pointed      transliterated  ``>:ACER&``
-:doc:`g_word_utf8 <g_word_utf8>`    word               pointed      hebrew          ``אֲשֶׁר``
-:doc:`ketiv <ketiv>`                word (ketiv)       consonantal  hebrew          ``אֲשֶׁר``
-:doc:`g_qere_utf8 <g_qere_utf8>`    word (qere)        pointed      hebrew          ``אֲשֶׁר``
-:doc:`trailer_utf8 <trailer_utf8>`  after-word         pointed      hebrew          ``׃ ׆̇``
-:doc:`qtrailer_utf8 <trailer_utf8>` after-word (qere)  pointed      hebrew          ``׃ ׆̇``
-:doc:`phono <phono>`                word               full         phonetic        ``dāvˈār``
-:doc:`phono_sep <phono>`            after-word         full         phonetic        ``.``
-==================================  =================  ===========  ==============  ===========
+===================================  =================  ===========  ==============  ===========
+:doc:`g_cons <g_cons>`               word               consonantal  transliterated  ``>CR``
+:doc:`g_cons_utf8 <g_cons_utf8>`     word               consonantal  hebrew          ``אשׁר``
+:doc:`g_word <g_word>`               word               pointed      transliterated  ``>:ACER&``
+:doc:`g_word_utf8 <g_word_utf8>`     word               pointed      hebrew          ``אֲשֶׁר``
+:doc:`ketiv <ketiv>`                 word (ketiv)       consonantal  hebrew          ``אֲשֶׁר``
+:doc:`g_qere_utf8 <g_qere_utf8>`     word (qere)        pointed      hebrew          ``אֲשֶׁר``
+:doc:`trailer_utf8 <trailer_utf8>`   after-word         pointed      hebrew          ``׃ ׆̇``
+:doc:`qtrailer_utf8 <trailer_utf8>`  after-word (qere)  pointed      hebrew          ``׃ ׆̇``
+:doc:`phono <phono>`                 word               full         phonetic        ``dāvˈār``
+:doc:`phono_sep <phono>`             after-word         full         phonetic        ``.``
+===================================  =================  ===========  ==============  ===========
 
 See :doc:`/features/comments/0_graphical` about the ``g_`` - and - ``utf8`` features.
 
@@ -110,6 +110,7 @@ Lexical
 :doc:`sp <sp>`              part of speech                   ``verb`` ``subs``
 :doc:`pdp <pdp>`            phrase dependent part of speech  ``verb`` ``subs``
 :doc:`ls <ls>`              lexical set                      ``quot`` ``ques``
+:doc:`nametype <nametype>`  type of named entity             ``pers`` ``topo``
 ==========================  ===============================  ======================
 
 .. _morphology:

@@ -35,7 +35,7 @@
 # 
 # See the MySQL create statements below.
 
-# In[1]:
+# In[3]:
 
 import sys
 import collections
@@ -47,13 +47,13 @@ from etcbc.preprocess import prepare
 fabric = LafFabric()
 
 
-# In[2]:
+# In[4]:
 
 source = 'etcbc'
 if 'version' not in locals(): version = '4b'
 
 
-# In[3]:
+# In[9]:
 
 API = fabric.load(source+version, 'lexicon', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
@@ -65,7 +65,7 @@ API = fabric.load(source+version, 'lexicon', 'shebanq', {
         language lex g_lex lex_utf8 sp pdp ls
         vt vs gn nu ps st
         nme pfm prs uvf vbe vbs
-        g_entry g_entry_heb gloss
+        g_entry g_entry_heb gloss nametype
         phono phono_sep
         function typ rela txt det
         code tab
@@ -221,7 +221,7 @@ exec(fabric.localnames.format(var='fabric'))
 # It is the value of ``g_word_utf8`` precisely when a qere is present, 
 # otherwise it is empty.
 
-# In[4]:
+# In[10]:
 
 qeres = {}
 masora = '֯'
@@ -235,7 +235,7 @@ msg('Found {} qeres'.format(len(qeres)))
 # 
 # We make a list of paragraph numbers of clause_atoms. It will be used by the *para* function.
 
-# In[6]:
+# In[11]:
 
 paras = {}
 msg('Building para index')
@@ -255,7 +255,7 @@ for line in inf:
 
 # ## Field types
 
-# In[20]:
+# In[18]:
 
 def strip_id(entryid):
     return entryid.rstrip('/[=')
@@ -324,6 +324,7 @@ word_fields = (
     (df(F.sp.v), 'pos', 'word', 'varchar', 8, '', False),
     (df(F.pdp.v), 'pdp', 'word', 'varchar', 8, '', False),
     (df(F.ls.v), 'subpos', 'word', 'varchar', 8, '', False),
+    (df(F.nametype.v), 'nmtp', 'word', 'varchar', 32, '', False),
     (df(F.vt.v), 'tense', 'word', 'varchar', 8, '', False),
     (df(F.vs.v), 'stem', 'word', 'varchar', 8, '', False),
     (df(F.gn.v), 'gender', 'word', 'varchar', 8, '', False),
@@ -368,7 +369,7 @@ first_only = dict(('{}_{}'.format(f[2], f[1]), f[6]) for f in word_fields)
 # We have to make sure that the values fit within the declared sizes of these fields.
 # The code measures the maximum lengths of these fields, and it turns out that the text is maximally 434 chars and the xml 2186 chars.
 
-# In[21]:
+# In[13]:
 
 field_limits = {
     'book': {
@@ -470,7 +471,7 @@ print(text_create_sql)
 
 # # Lexicon file reading
 
-# In[9]:
+# In[14]:
 
 langs = {'hbo', 'arc'}
 lex_base = dict((lan, '{}/{}/{}.{}{}'.format(API['data_dir'], 'lexicon', lan, source, version)) for lan in langs)
@@ -544,7 +545,7 @@ for lan in sorted(lex_entries):
 # 
 # We also generate a file that can act as the basis of an extra annotation file with lexical information.
 
-# In[10]:
+# In[15]:
 
 msg("Fill the tables ... ")
 cur_id = {
@@ -720,7 +721,7 @@ else:
     print('All lexemes have been found in the lexicon')
 
 
-# In[11]:
+# In[16]:
 
 print('\n'.join(tables['lexicon'][0:10]))
 print('\n'.join(tables['clause_atom'][0:10]))
@@ -735,7 +736,7 @@ print('\n'.join(tables['clause_atom'][0:10]))
 # 
 # Conversely, we also construct an index from verses to nodes: given a verse, we make a list of all nodes belonging to that verse, in the canonical order.
 
-# In[12]:
+# In[17]:
 
 target_types = {
     'sentence', 'sentence_atom', 

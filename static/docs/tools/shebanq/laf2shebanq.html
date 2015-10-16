@@ -222,7 +222,7 @@ That is a handy example of how to convert a notebook to an executable python pro
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">sys</span>
@@ -259,7 +259,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
@@ -273,7 +273,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -286,7 +286,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <span class="s">        language lex g_lex lex_utf8 sp pdp ls</span>
 <span class="s">        vt vs gn nu ps st</span>
 <span class="s">        nme pfm prs uvf vbe vbs</span>
-<span class="s">        g_entry g_entry_heb gloss</span>
+<span class="s">        g_entry g_entry_heb gloss nametype</span>
 <span class="s">        phono phono_sep</span>
 <span class="s">        function typ rela txt det</span>
 <span class="s">        code tab</span>
@@ -310,13 +310,12 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
   0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
-    13s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/shebanq/__log__shebanq.txt
-    22s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+    12s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
   0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-15T19-41-59
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-15T19-41-59
+  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-16T00-12-16
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-16T00-12-16
 </pre>
 </div>
 </div>
@@ -467,7 +466,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qeres</span> <span class="o">=</span> <span class="p">{}</span>
@@ -488,8 +487,8 @@ otherwise it is empty.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 3m 34s Building qere index
- 3m 34s Found 1892 qeres
+<pre>  9.34s Building qere index
+  9.35s Found 1892 qeres
 </pre>
 </div>
 </div>
@@ -510,7 +509,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">paras</span> <span class="o">=</span> <span class="p">{}</span>
@@ -539,7 +538,7 @@ otherwise it is empty.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 9m 03s Building para index
+<pre>    12s Building para index
 </pre>
 </div>
 </div>
@@ -559,7 +558,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">strip_id</span><span class="p">(</span><span class="n">entryid</span><span class="p">):</span>
@@ -629,6 +628,7 @@ otherwise it is empty.</p>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;pos&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">pdp</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;pdp&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;subpos&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">nametype</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;nmtp&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">vt</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;tense&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">vs</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;stem&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">gn</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;gender&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
@@ -687,7 +687,7 @@ The code measures the maximum lengths of these fields, and it turns out that the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">field_limits</span> <span class="o">=</span> <span class="p">{</span>
@@ -861,6 +861,7 @@ create table word(
     word_pos varchar(8), 
     word_pdp varchar(8), 
     word_subpos varchar(8), 
+    word_nmtp varchar(8), 
     word_tense varchar(8), 
     word_stem varchar(8), 
     word_gender varchar(8), 
@@ -943,7 +944,7 @@ create table word_verse(
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">langs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;hbo&#39;</span><span class="p">,</span> <span class="s">&#39;arc&#39;</span><span class="p">}</span>
@@ -1067,7 +1068,7 @@ Lexicon hbo has  8518 entries
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Fill the tables ... &quot;</span><span class="p">)</span>
@@ -1254,8 +1255,8 @@ Lexicon hbo has  8518 entries
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>10m 52s Fill the tables ... 
-10m 58s Done
+<pre>    39s Fill the tables ... 
+    45s Done
 </pre>
 </div>
 </div>
@@ -1290,7 +1291,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="s">&#39;lexicon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]))</span>
@@ -1349,7 +1350,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">target_types</span> <span class="o">=</span> <span class="p">{</span>

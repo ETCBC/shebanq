@@ -47,6 +47,7 @@ Contents:
     minmonad <minmonad>
     monads <monads>
     mother_object_type <mother_object_type>
+    nametype <nametype>
     nme <nme>
     nu <nu>
     number <number>

@@ -315,7 +315,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
-<span class="k">if</span> <span class="s">&#39;version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
+<span class="k">if</span> <span class="s">&#39;version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4&#39;</span>
 </pre></div>
 
 </div>
@@ -325,7 +325,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -352,13 +352,13 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  9.51s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/lexicon/__log__lexicon.txt
-    19s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
+  7.92s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4/lexicon/__log__lexicon.txt
+    18s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.52s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK lexicon AT 2015-10-15T08-06-09
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK lexicon AT 2015-10-15T08-06-09
+  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
+  0.64s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK lexicon AT 2015-10-16T00-25-18
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK lexicon AT 2015-10-16T00-25-18
 </pre>
 </div>
 </div>
@@ -379,7 +379,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">langs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;hbo&#39;</span><span class="p">,</span> <span class="s">&#39;arc&#39;</span><span class="p">}</span>
@@ -418,16 +418,20 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
                 <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
                     <span class="n">comps</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;_n&#39;</span><span class="p">,</span> <span class="n">feature</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">lex_errfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;feature without value for lexical entry {} in line {}: {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">ln</span><span class="p">,</span> <span class="n">feature</span><span class="p">))</span>
+                    <span class="n">lex_errfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;feature without value for lexical entry {} in line {}: {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">entry</span><span class="p">,</span> <span class="n">ln</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span>
+                    <span class="p">))</span>
                     <span class="n">e</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">continue</span>
             <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="n">comps</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">254</span><span class="p">),</span> <span class="s">&#39;:&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-                <span class="n">lex_errfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;duplicate feature for lexical entry {} in line {}: {}={}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">ln</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                <span class="n">lex_errfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;duplicate feature for lexical entry {} in line {}: {}={}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">entry</span><span class="p">,</span> <span class="n">ln</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+                <span class="p">))</span>
                 <span class="n">e</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">continue</span>
-            <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s">&#39;sp&#39;</span> <span class="ow">in</span> <span class="n">features</span> <span class="ow">and</span> <span class="n">features</span><span class="p">[</span><span class="s">&#39;sp&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;verb&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s">&#39;gl&#39;</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
                 <span class="n">gloss</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s">&#39;gl&#39;</span><span class="p">]</span>
@@ -454,6 +458,43 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>  2.99s Reading lexicon ...
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Lexicon arc: there were 0 errors
+Lexicon hbo: there were 0 errors</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>  3.15s Done
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+Lexicon arc has   707 entries
+Lexicon hbo has  8529 entries
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -467,7 +508,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">lex_text</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">())))</span>
@@ -505,6 +546,29 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>  5.58s Reading ETCBC database etcbc4 ...
+    12s Done
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Language arc has   707 lexemes in the etcbc4 text
+Language hbo has  8518 lexemes in the etcbc4 text
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -525,7 +589,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">arc_lex</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lex_entries</span><span class="p">[</span><span class="s">&#39;arc&#39;</span><span class="p">])</span>
@@ -555,6 +619,23 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The intersection of hbo and arc in the etcbc4 text contains 459 lexemes
+The intersection of hbo and arc in the lexicon     contains 460 lexemes
+Lexemes in the lexical intersection of hbo and arc but not in the textual intersection: 1x: {&apos;&gt;XCDRPN/&apos;}
+Lexemes in the textual intersection of hbo and arc but not in the lexical intersection: 0x: set()
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -568,7 +649,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">arc_text_min_lex</span> <span class="o">=</span> <span class="n">arc_text</span> <span class="o">-</span> <span class="n">arc_lex</span>
@@ -587,6 +668,24 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>arc: lexemes in text but not in lexicon: 0x
+arc: lexemes in lexicon but not in text: 0x
+hbo: lexemes in text but not in lexicon: 0x
+hbo: lexemes in lexicon but not in text: 11x
+	&lt;JR_HHRS/, &gt;BVJX/, &gt;XCDRPN/, &gt;XCTRN/, BL&lt;DJ/, BLTJ/, BN_JMJNJ/, MHRH, MQYT/, MRPH/, TPWYH/
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -620,7 +719,7 @@ This is important, because theis feature has the potential of identifying lexeme
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">max_len</span> <span class="o">=</span> <span class="mi">0</span>
@@ -639,6 +738,47 @@ This is important, because theis feature has the potential of identifying lexeme
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>max len = 15
+/ :  164066 x
+&lt; :   44908 x
+= :   21567 x
+&gt; :   92403 x
+B :   65345 x
+C :   45874 x
+D :   32704 x
+F :   12124 x
+G :   10082 x
+H :  111040 x
+J :   74212 x
+K :   36357 x
+L :   89073 x
+M :   76174 x
+N :   57356 x
+P :   18271 x
+Q :   16322 x
+R :   68119 x
+S :    7658 x
+T :   34956 x
+V :    6299 x
+W :   99672 x
+X :   27611 x
+Y :   14980 x
+Z :    9141 x
+[ :   73659 x
+_ :     705 x
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -652,7 +792,7 @@ This is important, because theis feature has the potential of identifying lexeme
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">feature_count</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">())</span>
@@ -690,6 +830,47 @@ This is important, because theis feature has the potential of identifying lexeme
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Feature occurrences in the lexicon
+arc
+	gl      : 100.00%
+	sp      : 100.00%
+	vc      : 100.00%
+	gn      :  36.35%
+	ls      :   6.79%
+	sm      :   5.80%
+	nu      :   2.69%
+	ps      :   1.41%
+	rt      :   0.71%
+	co      :   0.14%
+	kb      :   0.14%	
+hbo
+	sp      :  99.99%
+	vc      :  86.99%
+	gl      :  71.11%
+	gn      :  44.50%
+	sm      :  30.26%
+	fc      :  26.96%
+	ls      :   3.79%
+	rt      :   2.66%
+	nu      :   0.27%
+	st      :   0.23%
+	ps      :   0.16%
+	kb      :   0.04%
+	vw      :   0.02%
+	co      :   0.01%	
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -736,7 +917,7 @@ The output file <em>inconsistent.csv</em> shows exactly what is going on.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">consistent_props</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;sp&#39;</span><span class="p">,</span> <span class="s">&#39;ls&#39;</span><span class="p">,</span> <span class="s">&#39;gn&#39;</span><span class="p">,</span> <span class="s">&#39;vc&#39;</span><span class="p">}</span>
@@ -775,6 +956,34 @@ The output file <em>inconsistent.csv</em> shows exactly what is going on.</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>arc
+
+    gn      :   10 inconsistent lexemes
+        subs: 10x
+    ls      :    0 inconsistent lexemes
+    sp      :    0 inconsistent lexemes
+    vc      :  262 inconsistent lexemes
+hbo
+
+    gn      :   61 inconsistent lexemes
+        nmpr: 11x
+        subs: 50x
+    ls      :    0 inconsistent lexemes
+    sp      :    0 inconsistent lexemes
+    vc      : 3862 inconsistent lexemes
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -790,7 +999,7 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">do_value_compare</span><span class="p">:</span>
@@ -802,6 +1011,37 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>st
+	in text and not in lex: 3: [&apos;NA&apos;, &apos;c&apos;, &apos;e&apos;]
+	in lex and not in text: 0: []
+nu
+	in text and not in lex: 5: [&apos;NA&apos;, &apos;du&apos;, &apos;pl&apos;, &apos;sg&apos;, &apos;unknown&apos;]
+	in lex and not in text: 2: [&apos;p&apos;, &apos;s&apos;]
+gn
+	in text and not in lex: 2: [&apos;NA&apos;, &apos;unknown&apos;]
+	in lex and not in text: 1: [&apos;m,f&apos;]
+ps
+	in text and not in lex: 5: [&apos;NA&apos;, &apos;p1&apos;, &apos;p2&apos;, &apos;p3&apos;, &apos;unknown&apos;]
+	in lex and not in text: 3: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;]
+sp
+	in text and not in lex: 0: []
+	in lex and not in text: 0: []
+ls
+	in text and not in lex: 2: [&apos;none&apos;, &apos;ques&apos;]
+	in lex and not in text: 0: []
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -824,7 +1064,7 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">strip_id</span><span class="p">(</span><span class="n">entryid</span><span class="p">):</span>
@@ -852,6 +1092,21 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>There are 6457 lexemes, ignoring homonyms
+There is a 1-1 correspondence between lex/strip and lex_utf8
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -898,7 +1153,7 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">lex_fields</span> <span class="o">=</span> <span class="p">(</span>
@@ -960,7 +1215,7 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_lex</span><span class="p">(</span><span class="n">dummy</span><span class="p">):</span>
@@ -990,7 +1245,7 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_phono</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
@@ -1024,7 +1279,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Making mappings between verse labels in KQ and verse nodes in LAF&quot;</span><span class="p">)</span>
@@ -1036,6 +1291,21 @@ We have to map them to the corresponding verse nodes.</p>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre> 1m 17s Making mappings between verse labels in KQ and verse nodes in LAF
+ 1m 18s 23213 verses
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1051,7 +1321,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_kq</span><span class="p">(</span><span class="n">kq_file</span><span class="p">):</span>
@@ -1158,7 +1428,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">lex</span> <span class="o">=</span> <span class="n">ExtraData</span><span class="p">(</span><span class="n">API</span><span class="p">)</span>
@@ -1202,6 +1472,31 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre> 1m 22s Writing annotation package ...
+ 1m 22s Reading phonetic transcriptions
+ 1m 23s 426555 words
+ 1m 27s Reading Ketiv-Qere data
+ 1m 27s Read 1892 ketiv-qere annotations
+ 1m 27s Parsed 1892 ketiv-qere annotations
+ 1m 27s All verses entries found in index
+ 1m 27s All ketivs found in the text
+ 1m 27s All ketivs found in the data
+ 1m 27s Preparing lex data
+ 1m 28s 426555 words
+ 1m 43s Done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -1214,7 +1509,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -1246,10 +1541,27 @@ We have to map them to the corresponding verse nodes.</p>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
-  4.51s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/shebanq/__log__shebanq.txt
-  4.52s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-15T08-06-40
+  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
+  0.00s BEGIN COMPILE a: lexicon
+  4.25s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-data/etcbc4/bin/A/lexicon/__log__compile__.txt
+  4.25s PARSING ANNOTATION FILES
+  4.27s INFO: parsing ph.xml
+    14s INFO: parsing kq.xml
+    14s INFO: parsing lex.xml
+    48s INFO: END PARSING
+         0 good   regions  and     0 faulty ones
+         0 linked nodes    and     0 unlinked ones
+         0 good   edges    and     0 faulty ones
+    855002 good   annots   and     0 faulty ones
+   5975554 good   features and     0 faulty ones
+    855002 distinct xml identifiers
+
+    48s MODELING RESULT FILES
+    48s INFO: CONNECTIVITY
+    48s WRITING RESULT FILES for a
+    54s END   COMPILE a: lexicon
+    54s INFO: USING DATA COMPILED AT: 2015-10-16T00-27-58
+    58s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2015-10-16T00-28-01
 </pre>
 </div>
 </div>
@@ -1279,11 +1591,11 @@ The first field is the object id, the subsequent fields are the values of the co
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">pm</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s">&#39;word_data.mql&#39;</span><span class="p">)</span>
-<span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span>
 <span class="n">pm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;phono&#39;</span><span class="p">,</span> <span class="s">&#39;phono_sep&#39;</span><span class="p">,</span> <span class="s">&#39;g_qere_utf8&#39;</span><span class="p">,</span> <span class="s">&#39;qtrailer_utf8&#39;</span><span class="p">,</span> <span class="s">&#39;g_entry&#39;</span><span class="p">,</span> <span class="s">&#39;g_entry_heb&#39;</span><span class="p">,</span> <span class="s">&#39;gloss&#39;</span><span class="p">,</span> <span class="s">&#39;nametype&#39;</span><span class="p">,</span>
 <span class="p">))</span>
@@ -1329,7 +1641,46 @@ The first field is the object id, the subsequent fields are the values of the co
 300000 words
 350000 words
 400000 words
-426567 words
+426555 words
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">ntps</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">):</span>
+    <span class="n">ntps</span><span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">nametype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">ntp</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ntps</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">ntps</span><span class="p">[</span><span class="n">x</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;10}: {:&gt;5}x&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ntp</span><span class="p">,</span> <span class="n">ntps</span><span class="p">[</span><span class="n">ntp</span><span class="p">]))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>          : 390983x
+pers      : 21514x
+topo      :  6352x
+pers,gens,topo:  4477x
+ppde      :  2505x
+pers,gens :   345x
+gens      :   251x
+gens,topo :   108x
+mens      :    20x
 </pre>
 </div>
 </div>
