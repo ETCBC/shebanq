@@ -443,7 +443,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             new_mql = True
 
                         if must_update(mql_extra_dst, mql_extra_dst_compressed, force=force):
-                            if not do_cmd('bzip2 -k {}'.format(mql_extra_dst), dry=dry): continue
+                            if not do_cmd('bzip2 -f -k {}'.format(mql_extra_dst), dry=dry): continue
 
                         if must_update(mql_extra_dst_compressed, mql_extra_src_compressed, force=force):
                             if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
