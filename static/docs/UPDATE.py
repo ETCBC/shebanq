@@ -442,12 +442,6 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             if tx == -1: continue
                             new_mql = True
 
-                        if must_update(mql_extra_dst, mql_extra_dst_compressed, force=force):
-                            if not do_cmd('bzip2 -f -k {}'.format(mql_extra_dst), dry=dry): continue
-
-                        if must_update(mql_extra_dst_compressed, mql_extra_src_compressed, force=force):
-                            if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
-
                         if sql and not netonly:
                             emdros_db = 'shebanq_{}{}'.format(source, v)
                             if new_mql or not has_db(emdros_db):
@@ -458,6 +452,13 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                                 msg('DONE importing into MYSQL: {}'.format(mql_extra_dst))
                             else:
                                 msg('No need to do a new import of {}'.format(emdros_db))
+
+                        if must_update(mql_extra_dst, mql_extra_dst_compressed, force=force):
+                            if not do_cmd('bzip2 -f -k {}'.format(mql_extra_dst), dry=dry): continue
+
+                        if must_update(mql_extra_dst_compressed, mql_extra_src_compressed, force=force):
+                            if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
+
                         if net and not sqlonly:
                             if new_mql:
                                 msg('START sending to server: {}'.format(mql_extra_src_compressed))

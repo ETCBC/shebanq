@@ -11,21 +11,21 @@
 
 service apache2 stop
 cd /home/www-data/shebanq
-if [ "$1" == "-f" ]; then
-    echo clear cache
-    rm -r cache
-fi
 if [ "$1" == "-de" ]; then
     echo "dropping etcbc database version 4"
     mysql --defaults-extra-file=/root/mysqldumpopt -e 'drop database if exists shebanq_etcbc4;'
     echo "dropping etcbc database version 4b"
     mysql --defaults-extra-file=/root/mysqldumpopt -e 'drop database if exists shebanq_etcbc4b;'
+    echo "unzipping etcbc database dump for version 4"
+    bunzip2 -f -k /home/dirkr/shebanq-install/x_etcbc4.mql.bz2
+    echo "unzipping etcbc database dump for version 4b"
+    bunzip2 -f -k /home/dirkr/shebanq-install/x_etcbc4b.mql.bz2
     echo "importing etcbc database for version 4"
-    mql -b m -u root -p `cat mqlimportopt` -e UTF8 < /home/dirkr/shebanq-install/shebanq_etcbc4.sql
+    mql -n -b m -u root -p `cat /root/mqlimportopt` -e UTF8 < /home/dirkr/shebanq-install/x_etcbc4.mql
     echo "importing etcbc database for version 4b"
-    mql -b m -u root -p `cat mqlimportopt` -e UTF8 < /home/dirkr/shebanq-install/shebanq_etcbc4b.sql
+    mql -n -b m -u root -p `cat /root/mqlimportopt` -e UTF8 < /home/dirkr/shebanq-install/x_etcbc4b.mql
 fi
-if [ "$1" == "-d" || "$1" == "-de" ]; then
+if [ "$1" == "-d" -o "$1" == "-de" ]; then
     echo "loading passage database for version 4"
     mysql --defaults-extra-file=/root/mysqldumpopt < /home/dirkr/shebanq-install/shebanq_passage4.sql
     echo "loading passage database for version 4b"
