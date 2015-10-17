@@ -516,9 +516,11 @@ function Material() { // Object corresponding to everything that controls the ma
     this.goto_verse = function() { // go to the selected verse
         $('.vhl').removeClass('vhl')
         var vtarget = $('#material_'+wb.vs.tp()+'>'+((wb.mr == 'r')?'div[tvid]':'div[tvid="'+wb.vs.verse()+'"]')).filter(':first')
-        vtarget[0].scrollIntoView()
-        $('#navbar')[0].scrollIntoView()
-        vtarget.addClass('vhl')
+        if (vtarget != undefined && vtarget[0] != undefined) {
+            vtarget[0].scrollIntoView()
+            $('#navbar')[0].scrollIntoView()
+            vtarget.addClass('vhl')
+        }
     }
     this.process = function() { // process new material obtained by an AJAX call
         var mf = 0
@@ -728,6 +730,7 @@ function Notes(newcontent) {
     $('span.nt_main_sav').hide()
     this.apply()
 }
+
 function Notev(vr, bk, ch, vs, ctrl, dest) {
     var that = this
     this.loaded = false
@@ -813,18 +816,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 this.edt_c.show()
             }
         }
-        var crossrefs = this.dest.find('a[b]')
-        crossrefs.click(function(e) {e.preventDefault();
-            var vals = {}
-            vals['book'] = $(this).attr('b')
-            vals['chapter'] = $(this).attr('c')
-            vals['verse'] = $(this).attr('v')
-            vals['mr'] = 'm'
-            wb.vs.mstatesv(vals)
-            wb.vs.addHist()
-            wb.go()
-        })
-        crossrefs.addClass('crossref')
+        decorate_crossrefs(this.dest)
     }
     this.gen_html_ca = function(canr) {
         var notes = this.orig_notes[canr]
@@ -861,13 +853,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             if (ro) {
                 html += '<td class="nt_stat"><span class="fa fa-'+statsym+' fa-fw" code="'+nline.stat+'"></span></td>'
                 html += '<td class="nt_kw">'+escapeHTML(nline.kw)+'</td>'
-                var ntxt = escapeHTML(nline.ntxt)
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="$4" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="1" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(shebanq:([^)\n\t '"]+)\)/g, '<a href="'+host+'$2" class="fa fw">&#xf02e;$1</a>')
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(tool=([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+toolhost+'?goto=$2" class="fa fw">$1&#xf0e3;</a>')
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(tool:([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+statichost+'/tools/$2" class="fa fw">$1&#xf0e3;</a>')
-                ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2" class="fa fw">$1&#xf08e;</a>')
+                var ntxt = special_links_m(escapeHTML(nline.ntxt))
                 html += '<td class="nt_cmt">'+ntxt+'</td>'
                 html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+escapeHTML(user)+'</td>'
                 html += '<td class="nt_pub">'
@@ -2162,7 +2148,10 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 var qx = q.versions[vr];
                 $('#nameqm').html(escapeHTML(q.name || ''))
                 $('#nameq').val(q.name)
-                $('#descm').html(q.description_md)
+                d_md = special_links(q.description_md)
+                var descm = $('#descm')
+                descm.html(d_md)
+                decorate_crossrefs(descm)
                 $('#descq').val(q.description)
                 $('#mqlq').val(qx.mql)
                 $('#executed_on').html(qx.executed_on)
@@ -2666,6 +2655,44 @@ function toggle_detail(wdg, detail, extra) {
     }
     wdg.removeClass(thiscl)
     wdg.addClass(othercl)
+}
+
+/* MARKDOWN and CROSSREFS */
+
+function decorate_crossrefs(dest) {
+    var crossrefs = dest.find('a[b]')
+    crossrefs.click(function(e) {e.preventDefault();
+        var vals = {}
+        vals['book'] = $(this).attr('b')
+        vals['chapter'] = $(this).attr('c')
+        vals['verse'] = $(this).attr('v')
+        vals['mr'] = 'm'
+        wb.vs.mstatesv(vals)
+        wb.vs.addHist()
+        wb.go()
+    })
+    crossrefs.addClass('crossref')
+}
+
+function special_links(d_md) {
+    d_md = d_md.replace(/(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g, '$1b="$2" c="$3" v="$4" href="#" class="fa fw" $5>&#xf100;$6&#xf101;$7')
+    d_md = d_md.replace(/(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g, '$1b="$2" c="$3" v="1" href="#" class="fa fw" $4>&#xf100;$5&#xf101;$6')
+    d_md = d_md.replace(/(href=['"])shebanq:([^)\n\t '"]+)(['"])/g, '$1'+host+'$2$3 class="fa fw fa-bookmark" ')
+    d_md = d_md.replace(/(href=['"])feature:([^)\n\t '"]+)(['"])/g, '$1'+featurehost+'/$2.html$3 target="_blank" class="fa fw fa-file-text" ')
+    d_md = d_md.replace(/(href=['"])tool=([^)\n\t '"]+)(['"])/g, '$1'+toolhost+'?goto=$2$3 target="_blank" class="fa fw fa-gavel" ')
+    d_md = d_md.replace(/(href=['"])tool:([^)\n\t '"]+)(['"])/g, '$1'+statichost+'/tools/$2$3 target="_blank" class="fa fw fa-external-link" ')
+    return d_md
+}
+
+function special_links_m(ntxt) {
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="$4" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="1" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(shebanq:([^)\n\t '"]+)\)/g, '<a href="'+host+'$2" class="fa fw">&#xf02e;$1</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(feature:([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+featurehost+'/$2.html" class="fa fw">$1&#xf15c;</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(tool=([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+toolhost+'?goto=$2" class="fa fw">$1&#xf0e3;</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(tool:([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+statichost+'/tools/$2" class="fa fw">$1&#xf0e3;</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2" class="fa fw">$1&#xf08e;</a>')
+    return ntxt
 }
 
 function put_markdown(wdg) {

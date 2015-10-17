@@ -1,6 +1,7 @@
 <script type="text/javascript">
 var host = "{{=XML(URL('hebrew', 'text', host=True))}}"
 var statichost = "{{=XML(URL('static', 'docs', host=True))}}"
+var featurehost = "{{=XML(URL('static', 'docs/featuredoc/features/comments', host=True))}}"
 var toolhost = "{{=XML(URL('tools', 'index', host=True))}}"
 var query_url = "{{=XML(URL('hebrew','query','',host=True))}}"
 var queries_url = "{{=XML(URL('hebrew', 'queries', extension=''))}}"

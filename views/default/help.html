@@ -70,7 +70,7 @@ def body_line(level, title, image):
     if level < 3:
         bline = '''<hr/><h{level}><a name="{anchor}">{title}</a></h{level}>'''.format(level=level, anchor=make_anchor(title), title=title)
     else:
-        bline = '''<hr/><h{level}><a name="{anchor}">{title}</a></h{level}><p><img src="{url}.{image:03}.jpg"/></p>'''.format(
+        bline = '''<hr/><h{level}><a name="{anchor}">{title}</a></h{level}><p><img src="{url}.{image:03}.jpeg"/></p>'''.format(
             level=level,
             anchor=make_anchor(title),
             title=title,
