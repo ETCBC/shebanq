@@ -1,11 +1,12 @@
 import sys
 sys.path.append('/opt/emdros/lib/emdros')
 import EmdrosPy
-from get_db_config import config
+from get_db_config import config, emdros_versions
 
 db='shebanq_etcbc'
 
-EMDROS_VERSION = "emdros 3.4.0" # copied manually from /opt/emdros/include/emdros/version-emdros.h
+OLD_EMDROS_VERSIONS = set(emdros_versions[0:-1])
+EMDROS_VERSION = emdros_versions[-1]
 
 def sanitize(query, msgs):
     comps = query.split('/*')
@@ -59,9 +60,9 @@ def mo_results(straw):
 
 def mql(vr, query):
     env = EmdrosPy.EmdrosEnv(EmdrosPy.kOKConsole, EmdrosPy.kCSUTF8, config['shebanq_host'], config['shebanq_user'], config['shebanq_passwd'], db+vr, EmdrosPy.kMySQL)
-    compiler_result = 0
+    compiler_result = False
     msgs = []
-    good = env.executeString(sanitize(query, msgs) , compiler_result, 0, 0)[1]
+    good = env.executeString(sanitize(query, msgs) , compiler_result, False, False)[1]
     if not good:
         msgs.append(('error',  env.getCompilerError()))
         return (False, None, None, msgs, EMDROS_VERSION)

@@ -2154,6 +2154,17 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 decorate_crossrefs(descm)
                 $('#descq').val(q.description)
                 $('#mqlq').val(qx.mql)
+                var ev = $('#eversion')
+                var evtd = ev.closest('td')
+                ev.html(qx.eversion)
+                if (qx.eversion in json.oldeversions) {
+                    evtd.addClass('oldexeversion')
+                    evtd.attr('title', 'this is not the newest version')
+                }
+                else {
+                    evtd.removeClass('oldexeversion')
+                    evtd.attr('title', 'this is the newest version')
+                }
                 $('#executed_on').html(qx.executed_on)
                 $('#xmodified_on').html(qx.xmodified_on)
                 $('#qresults').html(qx.results)

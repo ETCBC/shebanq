@@ -11,6 +11,7 @@ from render import Verses, Verse, Viewsettings, \
                    tp_labels, tab_views, tr_info, tr_labels, \
                    iid_encode, iid_decode, nt_statclass
 from mql import mql
+from get_db_config import emdros_versions
 
 # Note on caching
 #
@@ -856,6 +857,7 @@ def sideq():
             qr = dict(),
             q=json.dumps(dict()),
             msgs=json.dumps(msgs),
+            oldeversions=set(emdros_versions[0:-1]),
         )
     q_record = get_query_info(auth.user != None, iid, vr, msgs, with_ids=True, single_version=False, po=True)
     if q_record == None:
@@ -866,6 +868,7 @@ def sideq():
             qr = dict(),
             q=json.dumps(dict()),
             msgs=json.dumps(msgs),
+            oldeversions=set(emdros_versions[0:-1]),
         )
 
     (authorized, msg) = query_auth_write(iid=iid)
@@ -877,6 +880,7 @@ def sideq():
         qr = q_record,
         q=json.dumps(q_record),
         msgs=json.dumps(msgs),
+        oldeversions=set(emdros_versions[0:-1]),
     )
 
 def sidew():
@@ -2177,7 +2181,8 @@ update {} set{} where query_id = {} and version = '{}'
             clear_cache(r'^items_q_{}_'.format(vr))
         q_record = get_query_info(auth.user != None, qid, vr, msgs, with_ids=False, single_version=False, po=True)
 
-    return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=q_record)))
+    oldeversions=dict((x, 1) for x in emdros_versions[0:-1])
+    return dict(data=json.dumps(dict(msgs=msgs, good=good and xgood, q=q_record, oldeversions=oldeversions)))
 
 def datetime_str(fields):
     for f in ('created_on', 'modified_on', 'shared_on', 'xmodified_on', 'executed_on', 'published_on'):

@@ -82,7 +82,8 @@ statusmap = dict(
             <tr class="detail"><td><span class="flabel">words</span></td><td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultmonads"') if v == vr else ''}}>{{=qrinfo['resultmonads']}}</span></td></tr>
             <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"') if v == vr else ''}}>{{=qrinfo['xmodified_on']}}</span></td></tr>
             <tr class="detail"><td><span class="flabel">executed</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"') if v == vr else ''}}>{{=qrinfo['executed_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">engine</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="eversion"') if v == vr else ''}}>{{=qrinfo['eversion']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">engine</span></td><td>&nbsp;</td><td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldeversions else ''}}"
+                title="this is {{='not ' if qrinfo['eversion'] in oldeversions else ''}}the newest version"><span {{=XML('id="eversion"') if v == vr else ''}}>{{=qrinfo['eversion']}}</span></td></tr>
         </table>
     </div>
 {{pass}}

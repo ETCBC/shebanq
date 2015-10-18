@@ -1316,6 +1316,9 @@ div.msg_error {
 .s_x.fa {
     color: #0055a0
 }
+.oldexeversion {
+    background-color: #ffff00;
+}
 .flabel {
     font-size: small;
     font-weight: bold;

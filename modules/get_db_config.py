@@ -1,3 +1,10 @@
+# Here are the emdros versions that have been used.
+# The last one is the current version
+emdros_versions = [
+    'emdros 3.4.0',
+    '3.4.1.pre12',
+]
+# copied manually from /opt/emdros/include/emdros/version-emdros.h
 config = dict(shebanq_user='shebanq')
 config_path = '/opt/emdros/cfg/mql.cfg'
 with open(config_path) as p:

@@ -35,8 +35,18 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
-<h2>2015-10-17</h2>
+<h2>2015-10-18</h2>
 <dl>
+<dt>Emdros update</dt>
+<dd><p>The query engine that executes your SHEBANQ queries, has been updated from version 3.4.0 to version 3.4.1.pre12.
+There was a bug in boolean combinations of feature conditions.
+If you have used <code>AND</code> and <code>OR</code> and <code>NOT</code> in your queries, it might be the case that the outcome is now different.
+It will do no harm to re-run the query, if it has not been published.
+If the query in question has been published, you might want to create a new query to try it out again.
+If the number of results is the same as the previous run, then probably you have not been affected by this bug.<p>
+<p>The metadata of the queries show the version of the query engine that has been used to obtain the results.
+If that version is not the newest version, the version will be highlighted.</p> 
+</dd>
 <dt>More features</dt>
 <dd><ul class="ldisc">
 <li>SHEBANQ showed more data than you could query on. There were several features, such as
