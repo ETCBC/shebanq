@@ -45,13 +45,13 @@ versions = {
         'name': 'etcbc4',
         'date': '2014-07-14',
         'desc': 'First version of the ETCBC4 database in SHEBANQ',
-        'notes': 'The data for this version is a snapshot. At some locations the encoding is not yet finished. We needed a reasonable version then because of the deadline for SHEBANQ as a project.',
+        'notes': 'The data for this version is a snapshot. At some locations the encoding is not yet finished. We needed a reasonable version then because of the deadline for SHEBANQ as a project. The underlying data has been archived at DANS.',
     },
     '4b': {
         'name': 'etcbc4b',
         'date': '2015-05-04',
-        'desc': 'Current version of the ETCBC4 database, somehwere between versions 4 and 4s',
-        'notes': 'This version is updated periodically until version 4s is available; it can be used as a preview to version 4s',
+        'desc': 'Current version of the ETCBC4 database, somewhere between versions 4 and 4s',
+        'notes': 'The data for this version is a snapshot. The encoding has been finished, but some checks are still in progress. We needed a reasonable version because more projects are using this data, and some of them report at the SBL annual meeting in November 2015. The underlying data will be archived at DANS shortly.',
     },
     '4s': {
         'name': 'etcbc4s',

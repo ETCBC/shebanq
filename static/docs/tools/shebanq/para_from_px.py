@@ -27,7 +27,7 @@ source = 'etcbc'
 if 'version' not in locals(): version = '4b'
 
 
-# In[5]:
+# In[ ]:
 
 API=fabric.load(source+version, '--', 'shebanq', {
     "xmlids": {"node": True, "edge": False},
@@ -43,7 +43,7 @@ exec(fabric.localnames.format(var='fabric'))
 
 # # Method to read px data
 
-# In[6]:
+# In[ ]:
 
 def read_px(px_file):
     msg("Making mappings between clause atoms in PX and nodes in LAF")
@@ -108,7 +108,7 @@ def read_px(px_file):
 # 
 # 
 
-# In[8]:
+# In[ ]:
 
 px = ExtraData(API)
 px.deliver_annots(
@@ -126,9 +126,9 @@ px.deliver_annots(
 
 # ## Checking: loading the new features
 
-# In[9]:
+# In[4]:
 
-API=fabric.load(source+version, 'px', 'shebanq', {
+API=fabric.load(source+version, 'para', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
     "features": ('''
         oid otype number label
@@ -155,7 +155,7 @@ exec(fabric.localnames.format(var='fabric'))
 # followed by lines with the same number of fields.
 # The first field is the object id, the subsequent fields are the values of the corresponding features for that object.
 
-# In[10]:
+# In[5]:
 
 pm = outfile('pargr_data.mql')
 pm.write('{}\t{}\n'.format('clause_atom', 'pargr'))
@@ -175,7 +175,7 @@ pm.close()
 
 # ## Inspecting all objects that got new features
 
-# In[14]:
+# In[6]:
 
 pfile = 'paras.txt'
 ph = outfile(pfile)

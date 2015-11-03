@@ -38,7 +38,7 @@ flags = {'m': 'string', 'versions': 'string', 'net': 'bool', 'netonly': 'bool', 
 #
 # dry=False|True : if True, do a dry run: show the commands executed on the command line, but do not execute them
 #
-# v= comma separated list of versions: if absent, do all versions, otherwise only do indicated versions
+# versions= comma separated list of versions: if absent, do all versions, otherwise only do indicated versions
 #
 # net=False|True : if False, skip all network operations
 #
@@ -381,14 +381,18 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                     if not featuredoc(net=net, netonly=netonly, clean=clean, dry=dry): continue
                 if not netonly and not sqlonly: 
                     if not make_snapshots('html', force=force, dry=dry): continue
-                if not netonly and not sqlonly:
-                    if not make_snapshots('python', force=force, dry=dry): continue
                 good = True
             if not good: continue
 
         # data
 
         if {'data', 'all'} & cmds:
+            good = False
+            for x in [1]:
+                if not netonly and not sqlonly:
+                    if not make_snapshots('python', force=force, dry=dry): continue
+                good = True
+            if not good: continue
             source = 'etcbc'
             for v in sorted(versions):
                 if not good: continue
@@ -401,6 +405,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                 phono_output = '{}/ph/phono.{}{}'.format(data_dir, source, v)
                 lexicon_output = '{}/{}{}/annotations/lexicon/_header_.xml'.format(data_dir, source, v)
                 passage_sql = '{}/shebanq/shebanq_passage{}.sql'.format(output_dir, v)
+                passage_sql_compressed = '{}.gz'.format(passage_sql)
 
                 # to_db imports the generated sql into the local mysql and transfers the generated sql to the production server
                 def to_db():
@@ -412,9 +417,11 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             if not do_cmd('mysql -u root < {}'.format(passage_sql), dry=dry): continue 
                             msg('DONE importing into MYSQL: {}'.format(passage_sql))
                         if net and not sqlonly:
-                            msg('START sending to server: {}'.format(passage_sql))
-                            if not do_cmd('scp -r {} {}@{}:{}'.format(passage_sql, server_user, server, server_path), dry=dry): continue
-                            msg('DONE sending to server: {}'.format(passage_sql))
+                            if must_update(passage_sql, passage_sql_compressed, force=force):
+                                if not do_cmd('gzip -f -k {}'.format(passage_sql), dry=dry): continue
+                            msg('START sending to server: {}'.format(passage_sql_compressed))
+                            if not do_cmd('scp -r {} {}@{}:{}'.format(passage_sql_compressed, server_user, server, server_path), dry=dry): continue
+                            msg('DONE sending to server: {}'.format(passage_sql_compressed))
                         this_good = True
                     return this_good
                 # patch_mql patches the mql dump from emdros with the new features
@@ -431,6 +438,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                     mql_extra_src_compressed = '{}/{}{}/mql/x_{}{}.mql.bz2'.format(data_dir, source, v, source, v)
                     new_mql = False
                     for x in [1]:
+                        print(must_update(mql_src_compressed, mql_dst_compressed, force=force))
                         if must_update(mql_src_compressed, mql_dst_compressed, force=force):
                             if not do_cmd('cp {} {}'.format(mql_src_compressed, mql_dst_compressed), dry=dry): continue
 
@@ -442,8 +450,8 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             if tx == -1: continue
                             new_mql = True
 
+                        emdros_db = 'shebanq_{}{}'.format(source, v)
                         if sql and not netonly:
-                            emdros_db = 'shebanq_{}{}'.format(source, v)
                             if new_mql or not has_db(emdros_db):
                                 msg('DROPPING old {} database'.format(emdros_db))
                                 if not do_cmd("mysql -u root -e 'drop database if exists {};'".format(emdros_db), dry=dry): continue 
@@ -460,12 +468,13 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
 
                         if net and not sqlonly:
+                            cmd = 'scp -r {} {}@{}:{}'.format(mql_extra_src_compressed, server_user, server, server_path)
                             if new_mql:
                                 msg('START sending to server: {}'.format(mql_extra_src_compressed))
-                                if not do_cmd('scp -r {} {}@{}:{}'.format(mql_extra_src_compressed, server_user, server, server_path), dry=dry): continue
+                                if not do_cmd(cmd, dry=dry): continue
                                 msg('DONE sending to server: {}'.format(mql_extra_src_compressed))
                             else:
-                                msg('No need to send {} to server'.format(emdros_db))
+                                msg('No need to send {} to server\nCommand would have been\n{}'.format(emdros_db, cmd))
                         this_good = True
                     return this_good
 

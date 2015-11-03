@@ -1,26 +1,26 @@
-  1 Chronica_II 28:8    420478 verb qal perf 3p-, B.@Z:Z74W.             bāzᵊzˈû              =                     
+  1 Chronica_II 28:8    420479 verb qal perf 3p-, B.@Z:Z74W.             bāzᵊzˈû              =                     
   2 Numeri 31:32         89509 verb qal perf 3p-, B.@Z:Z73W.             bāzᵊzˌû              =                     
-  3 Ezechiel 24:5       276638 verb qal perf 3p-, B.@C:L71W.             bāšᵊlˌû              =                     
-  4 Psalmi 22:5         313597 verb qal perf 3p-, B.@V:X74W.             bāṭᵊḥˈû              =                     
+  3 Ezechiel 24:5       276639 verb qal perf 3p-, B.@C:L71W.             bāšᵊlˌû              =                     
+  4 Psalmi 22:5         313598 verb qal perf 3p-, B.@V:X74W.             bāṭᵊḥˈû              =                     
   5 Jesaia 33:23        223232 verb qal perf 3p-, B.@71Z:ZW.             bˌāzᵊzû              =                     
   6 Samuel_II 20:2      173123 verb qal perf 3p-, D.@B:Q74W.             dāvᵊqˈû              =                     
-  7 Psalmi 63:9         320666 verb qal perf 3sf, D.@B:Q@74H             dāvᵊqˈā              =                     
-  8 Psalmi 44:26        317850 verb qal perf 3sf, D.@B:Q@73H             dāvᵊqˌā              =                     
-  9 Psalmi 119:25       331486 verb qal perf 3sf, D.@75B:Q@74H           dˈāvᵊqˈā             =                     
- 10 Ruth 1:14           356061 verb qal perf 3sf, D.@71B:Q@H             dˌāvᵊqā              =                     
+  7 Psalmi 63:9         320667 verb qal perf 3sf, D.@B:Q@74H             dāvᵊqˈā              =                     
+  8 Psalmi 44:26        317851 verb qal perf 3sf, D.@B:Q@73H             dāvᵊqˌā              =                     
+  9 Psalmi 119:25       331487 verb qal perf 3sf, D.@75B:Q@74H           dˈāvᵊqˈā             =                     
+ 10 Ruth 1:14           356062 verb qal perf 3sf, D.@71B:Q@H             dˌāvᵊqā              =                     
  11 Numeri 4:6           71851 verb qal perf 3p-, P@R:F94W.              fārᵊśˈû              =                     
- 12 Micha 3:3           300084 verb qal perf 3p-, P@R:FW.03              fārᵊśˌû              =                     
- 13 Chronica_II 24:7    418343 verb qal perf 3p-, P@R:Y73W.              fārᵊṣˌû              =                     
+ 12 Micha 3:3           300085 verb qal perf 3p-, P@R:FW.03              fārᵊśˌû              =                     
+ 13 Chronica_II 24:7    418344 verb qal perf 3p-, P@R:Y73W.              fārᵊṣˌû              =                     
  14 Samuel_I 23:27      155925 verb qal perf 3p-, P@C:V71W.              fāšᵊṭˌû              =                     
  15 Jesaia 34:14        223475 verb qal perf 3p-, P@G:C70W.              fāḡᵊšˈû              =                     
  16 Deuteronomium 20:11 104563 verb qal perf 3sf, P@T:X@73H              fāṯᵊḥˌā              =                     
  17 Ezechiel 7:16       267400 verb qal perf 3p-, P@75L:VW.03            fˈālᵊṭû              =                     
  18 Deuteronomium 22:17 105588 verb qal perf 3p-, P@95R:FW.03            fˈārᵊśû              =                     
- 19 Canticum 6:11       358829 verb qal perf 3sf, P@75R:X@74H            fˈārᵊḥˈā             =                     
- 20 Hosea 7:13          292538 verb qal perf 3p-, P@74C:<W.              fˈāšᵊʕû              =                     
+ 19 Canticum 6:11       358830 verb qal perf 3sf, P@75R:X@74H            fˈārᵊḥˈā             =                     
+ 20 Hosea 7:13          292539 verb qal perf 3p-, P@74C:<W.              fˈāšᵊʕû              =                     
  21 Samuel_I 30:1       159443 verb qal perf 3p-, P@75C:V81W.            fˈāšᵊṭˈû             =                     
- 22 Canticum 4:1        358219 verb qal perf 3p-, G.@L:C73W.             gālᵊšˌû              =                     
- 23 Psalmi 119:20       331447 verb qal perf 3sf, G.@R:S@74H             gārᵊsˈā              =                     
+ 22 Canticum 4:1        358220 verb qal perf 3p-, G.@L:C73W.             gālᵊšˌû              =                     
+ 23 Psalmi 119:20       331448 verb qal perf 3sf, G.@R:S@74H             gārᵊsˈā              =                     
  24 Deuteronomium 19:14 104176 verb qal perf 3p-, G.@B:L73W.             gāvᵊlˌû              =                     
  25 Jeremia 9:2         239426 verb qal perf 3p-, G.@B:R74W.             gāvᵊrˈû              =                     
  26 Genesis 7:20          3440 verb qal perf 3p-, G.@B:R73W.             gāvᵊrˌû              =                     
@@ -30,11 +30,11 @@
  30 Jeremia 5:27        237590 verb qal perf 3p-, G.@D:L73W.             gāḏᵊlˌû              =                     
  31 Genesis 49:26        28101 verb qal perf 3p-, G.@75B:RW.03           gˈāvᵊrû              =                     
  32 Genesis 7:19          3416 verb qal perf 3p-, G.@75B:R91W.           gˈāvᵊrˈû             =                     
- 33 Iob 21:7            341217 verb qal perf 3p-, G.@71B:RW.             gˌāvᵊrû              =                     
- 34 Esra 10:11          382966 verb nif impv 2pm, HIB.@75D:LW.03         hibbˈāḏᵊlû           =                     
+ 33 Iob 21:7            341218 verb qal perf 3p-, G.@71B:RW.             gˌāvᵊrû              =                     
+ 34 Esra 10:11          382967 verb nif impv 2pm, HIB.@75D:LW.03         hibbˈāḏᵊlû           =                     
  35 Numeri 16:21         80446 verb nif impv 2pm, HIB.@74D:L80W.         hibbˈāḏᵊlˈû          =                     
- 36 Ezechiel 36:32      283066 verb nif impv 2pm, HIK.@L:M91W.           hikkālᵊmˈû           =                     
- 37 Sacharia 2:11       305536 verb nif impv 2sf, HIM.@L:VI92J           himmālᵊṭˈî           =                     
+ 36 Ezechiel 36:32      283067 verb nif impv 2pm, HIK.@L:M91W.           hikkālᵊmˈû           =                     
+ 37 Sacharia 2:11       305537 verb nif impv 2sf, HIM.@L:VI92J           himmālᵊṭˈî           =                     
  38 Jeremia 50:15       262128 verb nif impv 2pm, HIN.@74Q:MW.           hinnˈāqᵊmû           =                     
  39 Jesaia 48:14        228981 verb nif impv 2pm, HIQ.@B:Y70W.           hiqqāvᵊṣˈû           =                     
  40 Genesis 49:2         27794 verb nif impv 2pm, HIQ.@B:Y71W.           hiqqāvᵊṣˌû           =                     
@@ -49,42 +49,42 @@
  49 Jesaia 16:8         217574 verb qal perf 3p-, H@L:M74W.              hālᵊmˈû              =                     
  50 Judices 5:26        130315 verb qal perf 3sf, H@L:M@70H              hālᵊmˈā              =                     
  51 Judices 5:22        130254 verb qal perf 3p-, H@L:M73W.              hālᵊmˌû              =                     
- 52 Ezechiel 16:39      271697 verb qal perf 3p-, H@R:S70W.              hārᵊsˈû              =                     
+ 52 Ezechiel 16:39      271698 verb qal perf 3p-, H@R:S70W.              hārᵊsˈû              =                     
  53 Jeremia 47:6        260340 verb nif impv 2sf, H;R@G:<I73J            hērāḡᵊʕˌî            =                     
  54 Genesis 42:16        23686 verb nif impv 2pm, H;>@74S:R80W.          hēʔˈāsᵊrˈû           =                     
  55 Numeri 31:3          88895 verb nif impv 2pm, H;X@L:Y94W.            hēḥālᵊṣˈû            =                     
- 56 Ezechiel 26:4       277442 verb qal perf 3p-, H@75R:SW.03            hˈārᵊsû              =                     
- 57 Psalmi 72:20        322511 verb qal perf 3p-, K.@L.71W.              kāllˌû               =                     
- 58 Ezechiel 27:4       277857 verb qal perf 3p-, K.@L:L73W.             kālᵊlˌû              =                     
- 59 Psalmi 20:9         313411 verb qal perf 3p-, K.@R:<74W.             kārᵊʕˈû              =                     
+ 56 Ezechiel 26:4       277443 verb qal perf 3p-, H@75R:SW.03            hˈārᵊsû              =                     
+ 57 Psalmi 72:20        322512 verb qal perf 3p-, K.@L.71W.              kāllˌû               =                     
+ 58 Ezechiel 27:4       277858 verb qal perf 3p-, K.@L:L73W.             kālᵊlˌû              =                     
+ 59 Psalmi 20:9         313412 verb qal perf 3p-, K.@R:<74W.             kārᵊʕˈû              =                     
  60 Judices 7:6         131571 verb qal perf 3p-, K.@R:<71W.             kārᵊʕˌû              =                     
- 61 Psalmi 109:24       330197 verb qal perf 3p-, K.@C:L74W.             kāšᵊlˈû              =                     
+ 61 Psalmi 109:24       330198 verb qal perf 3p-, K.@C:L74W.             kāšᵊlˈû              =                     
  62 Jeremia 46:6        259787 verb qal perf 3p-, K.@C:L73W.             kāšᵊlˌû              =                     
- 63 Ezechiel 17:7       272286 verb qal perf 3sf, K.@75P:N@94H           kˈāfᵊnˈā             =                     
+ 63 Ezechiel 17:7       272287 verb qal perf 3sf, K.@75P:N@94H           kˈāfᵊnˈā             =                     
  64 Reges_I 21:19       193422 verb qal perf 3p-, L@Q:Q70W.              lāqᵊqˈû              =                     
  65 Numeri 4:12          71975 verb qal perf 3p-, L@Q:XW.04              lāqᵊḥˌû              ~ lāqᵊḥˈû             
  66 Genesis 31:34        17003 verb qal perf 3sf, L@Q:X@74H              lāqᵊḥˈā              =                     
  67 Numeri 4:9           71912 verb qal perf 3p-, L@Q:X74W.05            lāqᵊḥˈû              ~ lāqᵊḥˈˈû            
  68 Genesis 43:15        24420 verb qal perf 3p-, L@Q:X71W.              lāqᵊḥˌû              =                     
  69 Jesaia 40:2         225581 verb qal perf 3sf, L@Q:X@H03              lāqᵊḥˌā              =                     
- 70 Psalmi 65:14        320932 verb qal perf 3p-, L@B:C64W.              lāvᵊšˈû              =                     
- 71 Chronica_I 12:19    397998 verb qal perf 3sf, L@B:C@81H              lāvᵊšˈā              =                     
+ 70 Psalmi 65:14        320933 verb qal perf 3p-, L@B:C64W.              lāvᵊšˈû              =                     
+ 71 Chronica_I 12:19    397999 verb qal perf 3sf, L@B:C@81H              lāvᵊšˈā              =                     
  72 Judices 6:34        131214 verb qal perf 3sf, L@B:C@73H              lāvᵊšˌā              =                     
  73 Exodus 12:7          34800 verb qal perf 3p-, L@75Q:XW.03            lˈāqᵊḥû              =                     
  74 Deuteronomium 21:3  104823 verb qal perf 3p-, L@75Q:X83W.            lˈāqᵊḥˈû             =                     
  75 Exodus 16:4          37449 verb qal perf 3p-, L@75Q:VW.03            lˈāqᵊṭû              =                     
  76 Numeri 11:8          76920 verb qal perf 3p-, L@75Q:V61W.            lˈāqᵊṭˈû             =                     
  77 Exodus 16:22         37820 verb qal perf 3p-, L@75Q:V71W.            lˈāqᵊṭˌû             =                     
- 78 Ezechiel 44:19      288187 verb qal perf 3p-, L@75B:CW.03            lˈāvᵊšû              =                     
- 79 Chronica_II 24:20   418662 verb qal perf 3sf, L@75B:C@H03            lˈāvᵊšā              =                     
+ 78 Ezechiel 44:19      288188 verb qal perf 3p-, L@75B:CW.03            lˈāvᵊšû              =                     
+ 79 Chronica_II 24:20   418663 verb qal perf 3sf, L@75B:C@H03            lˈāvᵊšā              =                     
  80 Jeremia 5:25        237563 verb qal perf 3p-, M@N:<71W.              mānᵊʕˌû              =                     
  81 Samuel_II 2:7       161105 verb qal perf 3p-, M@C:X94W.              māšᵊḥˈû              =                     
  82 Samuel_II 5:17      163239 verb qal perf 3p-, M@C:X63W.              māšᵊḥˌû              =                     
  83 Genesis 47:20        27029 verb qal perf 3p-, M@K:R70W.              māḵᵊrˈû              =                     
- 84 Ruth 4:3            357162 verb qal perf 3sf, M@K:R@74H              māḵᵊrˈā              =                     
+ 84 Ruth 4:3            357163 verb qal perf 3sf, M@K:R@74H              māḵᵊrˈā              =                     
  85 Genesis 37:36        20832 verb qal perf 3p-, M@K:R71W.              māḵᵊrˌû              =                     
  86 Jesaia 3:12         213078 verb qal perf 3p-, M@74C:LW.              mˈāšᵊlû              =                     
- 87 Iob 21:33           341458 verb qal perf 3p-, M@75T:QW.&             mˈāṯᵊqû-             ~ mˈāṯᵊqû             
+ 87 Iob 21:33           341459 verb qal perf 3p-, M@75T:QW.&             mˈāṯᵊqû-             ~ mˈāṯᵊqû             
  88 Exodus 21:35         40544 verb qal perf 3p-, M@63K:R61W.            mˌāḵᵊrˈû             =                     
  89 Numeri 20:14         82832 verb qal perf 3sf,+nw. M:Y@>@75T:NW.00        mᵊṣāʔˈāṯᵊnû          =                     
  90 Jesaia 1:18         212321 verb nif impf 1p-, NIW.@75K:X@73H         niwwˈāḵᵊḥˌā          =                     
@@ -95,7 +95,7 @@
  95 Numeri 5:27          73311 verb qal perf 3sf, N@P:L@73H              nāfᵊlˌā              =                     
  96 Jeremia 15:9        242350 verb qal perf 3sf, N@P:X@71H              nāfᵊḥˌā              =                     
  97 Jesaia 33:3         222969 verb qal perf 3p-, N@P:Y73W.              nāfᵊṣˌû              =                     
- 98 Ezechiel 23:18      275975 verb qal perf 3sf, N@Q:<@71H              nāqᵊʕˌā              =                     
+ 98 Ezechiel 23:18      275976 verb qal perf 3sf, N@Q:<@71H              nāqᵊʕˌā              =                     
  99 Genesis 37:17        20473 verb qal perf 3p-, N@S:<74W.              nāsᵊʕˈû              =                     
 100 Numeri 10:21         76556 verb qal perf 3p-, N@S:<W.03              nāsᵊʕˌû              =                     
 101 Jesaia 24:4         219746 verb qal perf 3sf, N@B:L@73H              nāvᵊlˌā              =                     
@@ -103,15 +103,15 @@
 103 Jesaia 19:21        218500 verb qal perf 3p-, N@D:RW.&               nāḏᵊrû-              ~ nāḏᵊrˌû             
 104 Judices 20:41       140827 verb qal perf 3sf, N@G:<@71H              nāḡᵊʕˌā              =                     
 105 Jesaia 65:21        234360 verb qal perf 3p-, N@V:<74W.              nāṭᵊʕˈû              =                     
-106 Psalmi 80:16        324535 verb qal perf 3sf, N@V:<@74H              nāṭᵊʕˈā              =                     
+106 Psalmi 80:16        324536 verb qal perf 3sf, N@V:<@74H              nāṭᵊʕˈā              =                     
 107 Jeremia 31:5        250698 verb qal perf 3p-, N@V:<71W.              nāṭᵊʕˌû              =                     
-108 Ezechiel 27:19      278089 verb qal perf 3p-, N@T@92N.W.             nāṯˈānnû             =                     
+108 Ezechiel 27:19      278090 verb qal perf 3p-, N@T@92N.W.             nāṯˈānnû             =                     
 109 Samuel_II 21:10     173974 verb qal perf 3sf, N@T:N@H04              nāṯᵊnˌā              ~ nāṯᵊnāˈ             
 110 Numeri 4:6           71845 verb qal perf 3p-, N@T:N74W.              nāṯᵊnˈû              =                     
 111 Leviticus 25:19      67484 verb qal perf 3sf, N@T:N@70H              nāṯᵊnˈā              =                     
 112 Exodus 39:18         51355 verb qal perf 3p-, N@T:N73W.              nāṯᵊnˌû              =                     
 113 Reges_I 10:10       184551 verb qal perf 3sf, N@T:N@71H              nāṯᵊnˌā              =                     
-114 Iob 30:13           343208 verb qal perf 3p-, N@T:S81W.              nāṯᵊsˈû              =                     
+114 Iob 30:13           343209 verb qal perf 3p-, N@T:S81W.              nāṯᵊsˈû              =                     
 115 Jeremia 23:12       246156 verb qal perf 3p-, N@74P:LW.              nˈāfᵊlû              =                     
 116 Jesaia 21:9         218848 verb qal perf 3sf, N@75P:L@H03            nˈāfᵊlā              =                     
 117 Jeremia 20:4        244604 verb qal perf 3p-, N@75P:L91W.            nˈāfᵊlˈû             =                     
@@ -119,29 +119,29 @@
 119 Numeri 10:5          76318 verb qal perf 3p-, N@75S:<W.03            nˈāsᵊʕû              =                     
 120 Deuteronomium 10:6   99238 verb qal perf 3p-, N@75S:<91W.            nˈāsᵊʕˈû             =                     
 121 Jesaia 24:4         219742 verb qal perf 3sf, N@75B:L@H03            nˈāvᵊlā              =                     
-122 Proverbia 7:13      348692 verb qal perf 3sf, N@74C:Q@H&             nˈāšᵊqā-             ~ nˈāšᵊqā             
+122 Proverbia 7:13      348693 verb qal perf 3sf, N@74C:Q@H&             nˈāšᵊqā-             ~ nˈāšᵊqā             
 123 Samuel_I 6:9        144342 verb qal perf 3sf, N@74G:<@H              nˈāḡᵊʕā              =                     
-124 Proverbia 22:12     352805 verb qal perf 3p-, N@74Y:RW.              nˈāṣᵊrû              =                     
+124 Proverbia 22:12     352806 verb qal perf 3p-, N@74Y:RW.              nˈāṣᵊrû              =                     
 125 Numeri 4:12          71988 verb qal perf 3p-, N@75T:NW.03            nˈāṯᵊnû              =                     
 126 Genesis 3:12          1398 verb qal perf 3sf, N@75T:N@H&             nˈāṯᵊnā-             ~ nˈāṯᵊnā             
 127 Exodus 12:7          34805 verb qal perf 3p-, N@75T:N91W.            nˈāṯᵊnˈû             =                     
 128 Reges_II 25:10      211525 verb qal perf 3p-, N@75T:YW.03            nˈāṯᵊṣû              =                     
 129 Judices 18:1        138305 verb qal perf 3sf, N@63P:L@H              nˌāfᵊlā              =                     
 130 Josua 6:5           115446 verb qal perf 3sf, N@63P:L@61H            nˌāfᵊlˈā             =                     
-131 Ezechiel 25:4       277110 verb qal perf 3p-, N@71T:NW.              nˌāṯᵊnû              =                     
+131 Ezechiel 25:4       277111 verb qal perf 3p-, N@71T:NW.              nˌāṯᵊnû              =                     
 132 Exodus 30:12         45709 verb qal perf 3p-, N@63T:N61W.            nˌāṯᵊnˈû             =                     
-133 Proverbia 31:20     355666 verb qal perf 3sf, P.@R:F@74H             pārᵊśˈā              =                     
-134 Chronica_I 4:38     393334 verb qal perf 3p-, P.@R:Y73W.             pārᵊṣˌû              =                     
+133 Proverbia 31:20     355667 verb qal perf 3sf, P.@R:F@74H             pārᵊśˈā              =                     
+134 Chronica_I 4:38     393335 verb qal perf 3p-, P.@R:Y73W.             pārᵊṣˌû              =                     
 135 Reges_I 8:50        183244 verb qal perf 3p-, P.@C:<W.&              pāšᵊʕû-              ~ pāšᵊʕˌû             
 136 Judices 9:44        133788 verb qal perf 3p-, P.@C:V85W.             pāšᵊṭˈû              =                     
 137 Jesaia 14:7         216929 verb qal perf 3p-, P.@Y:X73W.             pāṣᵊḥˌû              =                     
-138 Proverbia 31:26     355724 verb qal perf 3sf, P.@T:X@74H             pāṯᵊḥˈā              =                     
+138 Proverbia 31:26     355725 verb qal perf 3sf, P.@T:X@74H             pāṯᵊḥˈā              =                     
 139 Jesaia 33:23        223224 verb qal perf 3p-, P.@74R:FW.             pˈārᵊśû              =                     
-140 Canticum 7:13       359007 verb qal perf 3sf, P.@75R:X@70H           pˈārᵊḥˈā             =                     
-141 Micha 2:13          300021 verb qal perf 3p-, P.@75R:YW.03           pˈārᵊṣû              =                     
+140 Canticum 7:13       359008 verb qal perf 3sf, P.@75R:X@70H           pˈārᵊḥˈā             =                     
+141 Micha 2:13          300022 verb qal perf 3p-, P.@75R:YW.03           pˈārᵊṣû              =                     
 142 Jeremia 2:8         235500 verb qal perf 3p-, P.@74C:<W.             pˈāšᵊʕû              =                     
 143 Judices 9:44        133799 verb qal perf 3p-, P.@75C:V91W.           pˈāšᵊṭˈû             =                     
-144 Psalmi 37:14        316340 verb qal perf 3p-, P.@75T:X74W.           pˈāṯᵊḥˈû             =                     
+144 Psalmi 37:14        316341 verb qal perf 3p-, P.@75T:X74W.           pˈāṯᵊḥˈû             =                     
 145 Jesaia 1:2          212090 verb qal perf 3p-, P.@71C:<W.             pˌāšᵊʕû              =                     
 146 Jesaia 46:2         228329 verb qal perf 3p-, Q@R:S70W.              qārᵊsˈû              =                     
 147 Numeri 14:6          78520 verb qal perf 3p-, Q@R:<73W.              qārᵊʕˌû              =                     
@@ -153,32 +153,32 @@
 153 Jeremia 15:14       242449 verb qal perf 3sf, Q@D:X@71H              qāḏᵊḥˌā              =                     
 154 Jesaia 50:2         229648 verb qal perf 3sf, Q@Y:R@70H              qāṣᵊrˈā              =                     
 155 Jesaia 59:1         232206 verb qal perf 3sf, Q@Y:R@71H              qāṣᵊrˌā              =                     
-156 Psalmi 107:42       329830 verb qal perf 3sf, Q@74P:Y@H              qˈāfᵊṣā              =                     
-157 Psalmi 35:15        315944 verb qal perf 3p-, Q@75R:<71W.            qˈārᵊʕˌû             =                     
-158 Ezechiel 39:11      284564 verb qal perf 3p-, Q@74B:RW.              qˈāvᵊrû              =                     
+156 Psalmi 107:42       329831 verb qal perf 3sf, Q@74P:Y@H              qˈāfᵊṣā              =                     
+157 Psalmi 35:15        315945 verb qal perf 3p-, Q@75R:<71W.            qˈārᵊʕˌû             =                     
+158 Ezechiel 39:11      284565 verb qal perf 3p-, Q@74B:RW.              qˈāvᵊrû              =                     
 159 Genesis 49:31        28206 verb qal perf 3p-, Q@95B:R62W.            qˈāvᵊrˈû             =                     
 160 Jesaia 13:21        216779 verb qal perf 3p-, R@B:YW.&               rāvᵊṣû-              ~ rāvᵊṣˌû             
 161 Leviticus 24:14      67011 verb qal perf 3p-, R@G:M71W.              rāḡᵊmˌû              =                     
 162 Deuteronomium 2:25   94227 verb qal perf 3p-, R@G:Z71W.              rāḡᵊzˌû              =                     
 163 Jesaia 14:9         216948 verb qal perf 3sf, R@G:Z@71H              rāḡᵊzˌā              =                     
-164 Psalmi 2:1          310728 verb qal perf 3p-, R@G:C74W.              rāḡᵊšˈû              =                     
+164 Psalmi 2:1          310729 verb qal perf 3p-, R@G:C74W.              rāḡᵊšˈû              =                     
 165 Jesaia 22:9         219096 verb qal perf 3p-, R@92B.W.               rˈābbû               =                     
 166 Genesis 18:20         8155 verb qal perf 3sf, R@92B.@H               rˈābbā               =                     
-167 Iob 22:12           341587 verb qal perf 3p-, R@75M.W.00             rˈāmmû               =                     
+167 Iob 22:12           341588 verb qal perf 3p-, R@75M.W.00             rˈāmmû               =                     
 168 Deuteronomium 29:19 109927 verb qal perf 3sf, R@70B:Y@H              rˈāvᵊṣā              =                     
-169 Joel 2:10           294515 verb qal perf 3sf, R@74G:Z@H              rˈāḡᵊzā              =                     
+169 Joel 2:10           294516 verb qal perf 3sf, R@74G:Z@H              rˈāḡᵊzā              =                     
 170 Jeremia 33:9        252719 verb qal perf 3p-, R@75G:Z81W.            rˈāḡᵊzˈû             =                     
 171 Genesis 46:6         26094 verb qal perf 3p-, R@75K:CW.03            rˈāḵᵊšû              =                     
-172 Psalmi 17:10        312562 verb qal perf 3p-, S.@G:R92W.             ssāḡᵊrˈû             =                     
-173 Threni 2:15         364258 verb qal perf 3p-, S@75P:Q63W.            sˈāfᵊqˌû             =                     
-174 Chronica_II 29:7    421074 verb qal perf 3p-, S@75G:R62W.            sˈāḡᵊrˈû             =                     
+172 Psalmi 17:10        312563 verb qal perf 3p-, S.@G:R92W.             ssāḡᵊrˈû             =                     
+173 Threni 2:15         364259 verb qal perf 3p-, S@75P:Q63W.            sˈāfᵊqˌû             =                     
+174 Chronica_II 29:7    421075 verb qal perf 3p-, S@75G:R62W.            sˈāḡᵊrˈû             =                     
 175 Leviticus 15:28      62060 verb qal perf 3sf, S@71P:R@H              sˌāfᵊrā              =                     
 176 Jesaia 63:5         233536 verb qal perf 3sf,+nij S:M@K@75T:NIJ00        sᵊmāḵˈāṯᵊnî          =                     
 177 Jesaia 54:4         230819 verb nif impf 2sf, T.IK.@L:MI73J          tikkālᵊmˌî           =                     
-178 Nehemia 4:14        385327 verb nif impf 2pm, T.IQ.@B:Y74W.          tiqqāvᵊṣˈû           =                     
-179 Zephania 2:3        303501 verb nif impf 2pm, T.IS.@74T:R80W.        tissˈāṯᵊrˈû          =                     
-180 Ruth 3:3            356802 verb nif impf 2sf, T.IW.@D:<I74J          tiwwāḏᵊʕˈî           =                     
-181 Hosea 4:15          291935 verb nif impf 2pm, T.IC.@B:<73W.          tiššāvᵊʕˌû           =                     
+178 Nehemia 4:14        385328 verb nif impf 2pm, T.IQ.@B:Y74W.          tiqqāvᵊṣˈû           =                     
+179 Zephania 2:3        303502 verb nif impf 2pm, T.IS.@74T:R80W.        tissˈāṯᵊrˈû          =                     
+180 Ruth 3:3            356803 verb nif impf 2sf, T.IW.@D:<I74J          tiwwāḏᵊʕˈî           =                     
+181 Hosea 4:15          291936 verb nif impf 2pm, T.IC.@B:<73W.          tiššāvᵊʕˌû           =                     
 182 Samuel_I 31:10      160395 verb qal perf 3p-, T.@Q:<80W.             tāqᵊʕˈû              =                     
 183 Josua 6:16          115722 verb qal perf 3p-, T.@Q:<71W.             tāqᵊʕˌû              =                     
 184 Judices 18:9        138519 verb nif impf 2pm, T.;<@74Y:L80W.         tēʕˈāṣᵊlˈû           =                     
@@ -186,52 +186,52 @@
 186 Josua 10:25         118944 verb nif impf 2pm, T.;X@92T.W.            tēḥˈāttû             =                     
 187 Josua 8:23          117393 verb qal perf 3p-, T.@74P:FW.             tˈāfᵊśû              =                     
 188 Reges_II 7:13       199321 verb qal perf 3p-, T.@92M.W.              tˈāmmû               =                     
-189 Nahum 3:19          302158 verb qal perf 3p-, T.@70Q:<W.             tˈāqᵊʕû              =                     
+189 Nahum 3:19          302159 verb qal perf 3p-, T.@70Q:<W.             tˈāqᵊʕû              =                     
 190 Numeri 16:30         80623 verb qal perf 3sf, B@L:<@70H              vālᵊʕˈā              =                     
 191 Jesaia 34:15        223498 verb qal perf 3sf, B@Q:<@73H              vāqᵊʕˌā              =                     
-192 Ecclesiastes 12:3   363278 verb qal perf 3p-, B@V:L70W.              vāṭᵊlˈû              =                     
-193 Psalmi 22:6         313607 verb qal perf 3p-, B@V:X74W.              vāṭᵊḥˈû              =                     
-194 Ezechiel 26:12      277594 verb qal perf 3p-, B@75Z:ZW.03            vˈāzᵊzû              =                     
+192 Ecclesiastes 12:3   363279 verb qal perf 3p-, B@V:L70W.              vāṭᵊlˈû              =                     
+193 Psalmi 22:6         313608 verb qal perf 3p-, B@V:X74W.              vāṭᵊḥˈû              =                     
+194 Ezechiel 26:12      277595 verb qal perf 3p-, B@75Z:ZW.03            vˈāzᵊzû              =                     
 195 Judices 20:36       140711 verb qal perf 3p-, B@75V:XW.03            vˈāṭᵊḥû              =                     
-196 Chronica_I 5:20     393776 verb qal perf 3p-, B@71V:XW.              vˌāṭᵊḥû              =                     
+196 Chronica_I 5:20     393777 verb qal perf 3p-, B@71V:XW.              vˌāṭᵊḥû              =                     
 197 Samuel_I 2:9        142223 verb nif impf 3pm, JID.@92M.W.            yiddˈāmmû            =                     
-198 Psalmi 35:4         315815 verb nif impf 3pm, JIK.@L:MW.02           yikkālᵊmˈû           =                     
-199 Ezechiel 43:10      287315 verb nif impf 3pm, JIK.@L:M73W.           yikkālᵊmˌû           =                     
-200 Chronica_II 7:14    410359 verb nif impf 3pm, JIK.@N:<63W.           yikkānᵊʕˌû           =                     
+198 Psalmi 35:4         315816 verb nif impf 3pm, JIK.@L:MW.02           yikkālᵊmˈû           =                     
+199 Ezechiel 43:10      287316 verb nif impf 3pm, JIK.@L:M73W.           yikkālᵊmˌû           =                     
+200 Chronica_II 7:14    410360 verb nif impf 3pm, JIK.@N:<63W.           yikkānᵊʕˌû           =                     
 201 Jeremia 6:15        237919 verb nif impf 3pm, JIK.@C:L73W.           yikkāšᵊlˌû           =                     
-202 Psalmi 69:7         321681 verb nif impf 3pm, JIK.@74L:MW.           yikkˈālᵊmû           =                     
+202 Psalmi 69:7         321682 verb nif impf 3pm, JIK.@74L:MW.           yikkˈālᵊmû           =                     
 203 Jesaia 41:11        226209 verb nif impf 3pm, JIK.@74L:M80W.         yikkˈālᵊmˈû          =                     
-204 Hosea 5:5           292051 verb nif impf 3pm, JIK.@75C:LW.03         yikkˈāšᵊlû           =                     
-205 Daniel 11:35        377620 verb nif impf 3pm, JIK.@75C:L81W.         yikkˈāšᵊlˈû          =                     
-206 Hosea 14:10         294050 verb nif impf 3pm, JIK.@71C:LW.           yikkˌāšᵊlû           =                     
-207 Daniel 11:41        377777 verb nif impf 3pm, JIM.@L:V74W.           yimmālᵊṭˈû           =                     
+204 Hosea 5:5           292052 verb nif impf 3pm, JIK.@75C:LW.03         yikkˈāšᵊlû           =                     
+205 Daniel 11:35        377621 verb nif impf 3pm, JIK.@75C:L81W.         yikkˈāšᵊlˈû          =                     
+206 Hosea 14:10         294051 verb nif impf 3pm, JIK.@71C:LW.           yikkˌāšᵊlû           =                     
+207 Daniel 11:41        377778 verb nif impf 3pm, JIM.@L:V74W.           yimmālᵊṭˈû           =                     
 208 Leviticus 25:42      67908 verb nif impf 3pm, JIM.@K:R73W.           yimmāḵᵊrˌû           =                     
 209 Leviticus 26:39      68798 verb nif impf 3pm, JIM.@75Q.W.00          yimmˈāqqû            =                     
-210 Amos 3:12           296149 verb nif impf 3pm, JIN.@Y:L62W.           yinnāṣᵊlˈû           =                     
-211 Chronica_II 18:14   415233 verb nif impf 3pm, JIN.@T:N73W.           yinnāṯᵊnˌû           =                     
+210 Amos 3:12           296150 verb nif impf 3pm, JIN.@Y:L62W.           yinnāṣᵊlˈû           =                     
+211 Chronica_II 18:14   415234 verb nif impf 3pm, JIN.@T:N73W.           yinnāṯᵊnˌû           =                     
 212 Jeremia 18:14       243914 verb nif impf 3pm, JIN.@T:C81W.           yinnāṯᵊšˈû           =                     
 213 Leviticus 22:2       65364 verb nif impf 3pm, JIN.@75Z:RW.03         yinnˈāzᵊrû           =                     
-214 Nehemia 7:3         386379 verb nif impf 3pm, JIP.@75T:X62W.         yippˈāṯᵊḥˈû          =                     
-215 Iob 24:24           342160 verb nif impf 3pm, JIQ.@P:Y92W.N          yiqqāfᵊṣˈûn          =                     
-216 Chronica_I 13:2     398496 verb nif impf 3pm, JIQ.@B:Y73W.           yiqqāvᵊṣˌû           =                     
+214 Nehemia 7:3         386380 verb nif impf 3pm, JIP.@75T:X62W.         yippˈāṯᵊḥˈû          =                     
+215 Iob 24:24           342161 verb nif impf 3pm, JIQ.@P:Y92W.N          yiqqāfᵊṣˈûn          =                     
+216 Chronica_I 13:2     398497 verb nif impf 3pm, JIQ.@B:Y73W.           yiqqāvᵊṣˌû           =                     
 217 Jesaia 60:7         232708 verb nif impf 3pm, JIQ.@74B:YW.           yiqqˈāvᵊṣû           =                     
 218 Reges_I 8:5         182166 verb nif impf 3pm, JIS.@P:R91W.           yissāfᵊrˈû           =                     
-219 Amos 9:3            297849 verb nif impf 3pm, JIS.@63T:R61W.         yissˌāṯᵊrˈû          =                     
-220 Psalmi 10:2         311768 verb nif impf 3pm, JIT.@P:F65W.05         yittāfᵊśˈû           ~ yittāfᵊśˈˈû         
-221 Psalmi 102:28       327986 verb qal impf 3pm, JIT.@75M.W.00          yittˈāmmû            =                     
-222 Ezechiel 18:29      273233 verb nif impf 3pm, JIT.@75K:N.W.03        yittˈāḵᵊnnû          =                     
-223 Proverbia 2:21      347414 verb nif impf 3pm, JIW.@71T:RW.           yiwwˌāṯᵊrû           =                     
-224 Amos 6:9            297062 verb nif impf 3pm, JIW.@63T:R61W.         yiwwˌāṯᵊrˈû          =                     
-225 Ezechiel 18:22      273097 verb nif impf 3pm, JIZ.@K:R73W.           yizzāḵᵊrˌû           =                     
-226 Psalmi 9:20         311739 verb nif impf 3pm, JIC.@P:V71W.           yiššāfᵊṭˌû           =                     
-227 Psalmi 18:45        313092 verb nif impf 3pm, JIC.@74M:<W.           yiššˈāmᵊʕû           =                     
+219 Amos 9:3            297850 verb nif impf 3pm, JIS.@63T:R61W.         yissˌāṯᵊrˈû          =                     
+220 Psalmi 10:2         311769 verb nif impf 3pm, JIT.@P:F65W.05         yittāfᵊśˈû           ~ yittāfᵊśˈˈû         
+221 Psalmi 102:28       327987 verb qal impf 3pm, JIT.@75M.W.00          yittˈāmmû            =                     
+222 Ezechiel 18:29      273234 verb nif impf 3pm, JIT.@75K:N.W.03        yittˈāḵᵊnnû          =                     
+223 Proverbia 2:21      347415 verb nif impf 3pm, JIW.@71T:RW.           yiwwˌāṯᵊrû           =                     
+224 Amos 6:9            297063 verb nif impf 3pm, JIW.@63T:R61W.         yiwwˌāṯᵊrˈû          =                     
+225 Ezechiel 18:22      273098 verb nif impf 3pm, JIZ.@K:R73W.           yizzāḵᵊrˌû           =                     
+226 Psalmi 9:20         311740 verb nif impf 3pm, JIC.@P:V71W.           yiššāfᵊṭˌû           =                     
+227 Psalmi 18:45        313093 verb nif impf 3pm, JIC.@74M:<W.           yiššˈāmᵊʕû           =                     
 228 Samuel_II 22:45     174726 verb nif impf 3pm, JIC.@71M:<W.           yiššˌāmᵊʕû           =                     
-229 Psalmi 139:17       334492 verb qal perf 3p-, J.@Q:R74W.             yyāqᵊrˈû             =                     
+229 Psalmi 139:17       334493 verb qal perf 3p-, J.@Q:R74W.             yyāqᵊrˈû             =                     
 230 Samuel_I 26:21      158085 verb qal perf 3sf, J@Q:R@71H              yāqᵊrˌā              =                     
 231 Deuteronomium 25:9  106968 verb qal perf 3sf, J@R:Q@73H              yārᵊqˌā              =                     
 232 Deuteronomium 3:20   94930 verb qal perf 3p-, J@R:C74W.              yārᵊšˈû              =                     
 233 Deuteronomium 30:5  110270 verb qal perf 3p-, J@R:C71W.              yārᵊšˌû              =                     
-234 Ezechiel 37:11      283411 verb qal perf 3p-, J@B:C94W.              yāvᵊšˈû              =                     
+234 Ezechiel 37:11      283412 verb qal perf 3p-, J@B:C94W.              yāvᵊšˈû              =                     
 235 Jeremia 23:10       246121 verb qal perf 3p-, J@B:C73W.              yāvᵊšˌû              =                     
 236 Genesis 8:14          3848 verb qal perf 3sf, J@B:C@73H              yāvᵊšˌā              =                     
 237 Genesis 11:6          5081 verb qal impf 3pm, J@Z:M73W.              yāzᵊmˌû              =                     
@@ -249,61 +249,61 @@
 249 Samuel_I 2:30       142722 verb qal impf 3pm, J;Q@75L.W.00           yēqˈāllû             =                     
 250 Genesis 42:20        23750 verb nif impf 3pm, J;>@M:N71W.            yēʔāmᵊnˌû            =                     
 251 Leviticus 11:13      58065 verb nif impf 3pm, J;>@K:L73W.            yēʔāḵᵊlˌû            =                     
-252 Daniel 11:34        377607 verb nif impf 3pm, J;<@Z:R73W.            yēʕāzᵊrˌû            =                     
-253 Psalmi 60:7         320286 verb nif impf 3pm, J;X@L:Y74W.N           yēḥālᵊṣˈûn           =                     
+252 Daniel 11:34        377608 verb nif impf 3pm, J;<@Z:R73W.            yēʕāzᵊrˌû            =                     
+253 Psalmi 60:7         320287 verb nif impf 3pm, J;X@L:Y74W.N           yēḥālᵊṣˈûn           =                     
 254 Jeremia 31:37       251367 verb nif impf 3pm, J;X@Q:R71W.            yēḥāqᵊrˌû            =                     
-255 Iob 21:13           341274 verb nif impf 3pm, J;X@75T.W.00           yēḥˈāttû             =                     
-256 Psalmi 141:9        334799 verb qal perf 3p-, J@74Q:CW.              yˈāqᵊšû              =                     
+255 Iob 21:13           341275 verb nif impf 3pm, J;X@75T.W.00           yēḥˈāttû             =                     
+256 Psalmi 141:9        334800 verb qal perf 3p-, J@74Q:CW.              yˈāqᵊšû              =                     
 257 Jesaia 14:21        217119 verb qal perf 3p-, J@74R:CW.              yˈārᵊšû              =                     
-258 Joel 1:20           294338 verb qal perf 3p-, J@75B:CW.03            yˈāvᵊšû              =                     
+258 Joel 1:20           294339 verb qal perf 3p-, J@75B:CW.03            yˈāvᵊšû              =                     
 259 Numeri 14:31         79026 verb qal perf 3p-, J@75D:<W.03            yˈāḏᵊʕû              =                     
 260 Jeremia 8:7         239103 verb qal perf 3sf, J@75D:<@H03            yˈāḏᵊʕā              =                     
 261 Genesis 42:23        23814 verb qal perf 3p-, J@95D:<80W.            yˈāḏᵊʕˈû             =                     
-262 Hosea 2:10          291262 verb qal perf 3sf, J@75D:<@80H            yˈāḏᵊʕˈā             =                     
-263 Psalmi 82:5         324784 verb qal perf 3p-, J@75D:<63W.05          yˈāḏᵊʕˌû             ~ yˈāḏᵊʕˌˈû           
+262 Hosea 2:10          291263 verb qal perf 3sf, J@75D:<@80H            yˈāḏᵊʕˈā             =                     
+263 Psalmi 82:5         324785 verb qal perf 3p-, J@75D:<63W.05          yˈāḏᵊʕˌû             ~ yˈāḏᵊʕˌˈû           
 264 Exodus 7:24          32289 verb qal perf 3p-, J@75K:LW.03            yˈāḵᵊlû              =                     
 265 Exodus 15:23         37236 verb qal perf 3p-, J@75K:L81W.            yˈāḵᵊlˈû             =                     
 266 Genesis 36:7         19665 verb qal perf 3sf, J@95K:L@61H            yˈāḵᵊlˈā             =                     
 267 Genesis 13:6          5967 verb qal perf 3p-, J@75K:L73W.            yˈāḵᵊlˌû             =                     
-268 Psalmi 44:4         317637 verb qal perf 3p-, J@71R:CW.              yˌārᵊšû              =                     
+268 Psalmi 44:4         317638 verb qal perf 3p-, J@71R:CW.              yˌārᵊšû              =                     
 269 Jesaia 15:4         217378 verb qal perf 3sf, J@71R:<@H              yˌārᵊʕā              =                     
-270 Iob 24:16           342075 verb qal perf 3p-, J@71D:<W.              yˌāḏᵊʕû              =                     
-271 Proverbia 9:13      349274 verb qal perf 3sf, J@71D:<@H              yˌāḏᵊʕā              =                     
-272 Psalmi 36:13        316200 verb qal perf 3p-, J@71K:LW.              yˌāḵᵊlû              =                     
-273 Zephania 2:9        303618 verb qal impf 3pm,+m J:B@Z.80W.M            yᵊvāzzˈûm            =                     
-274 Habakuk 2:8         302588 verb qal impf 3pm,+k@ J:C@L.73W.K@           yᵊšāllˌûḵā           =                     
-275 Proverbia 31:16     355630 verb qal perf 3sf, Z@M:M@74H              zāmᵊmˈā              =                     
-276 Proverbia 23:22     353203 verb qal perf 3sf, Z@Q:N@71H              zāqᵊnˌā              =                     
+270 Iob 24:16           342076 verb qal perf 3p-, J@71D:<W.              yˌāḏᵊʕû              =                     
+271 Proverbia 9:13      349275 verb qal perf 3sf, J@71D:<@H              yˌāḏᵊʕā              =                     
+272 Psalmi 36:13        316201 verb qal perf 3p-, J@71K:LW.              yˌāḵᵊlû              =                     
+273 Zephania 2:9        303619 verb qal impf 3pm,+m J:B@Z.80W.M            yᵊvāzzˈûm            =                     
+274 Habakuk 2:8         302589 verb qal impf 3pm,+k@ J:C@L.73W.K@           yᵊšāllˌûḵā           =                     
+275 Proverbia 31:16     355631 verb qal perf 3sf, Z@M:M@74H              zāmᵊmˈā              =                     
+276 Proverbia 23:22     353204 verb qal perf 3sf, Z@Q:N@71H              zāqᵊnˌā              =                     
 277 Leviticus 1:11       52716 verb qal perf 3p-, Z@R:Q83W.              zārᵊqˈû              =                     
 278 Leviticus 1:5        52598 verb qal perf 3p-, Z@R:Q63W.              zārᵊqˌû              =                     
 279 Jeremia 12:13       241049 verb qal perf 3p-, Z@R:<70W.              zārᵊʕˈû              =                     
 280 Reges_II 3:22       196297 verb qal perf 3sf, Z@R:X@74H              zārᵊḥˈā              =                     
 281 Exodus 22:2          40621 verb qal perf 3sf, Z@R:X@71H              zārᵊḥˌā              =                     
 282 Exodus 34:15         48097 verb qal perf 3p-, Z@B:XW.03              zāvᵊḥˌû              =                     
-283 Nehemia 9:17        388116 verb qal perf 3p-, Z@K:R70W.              zāḵᵊrˈû              =                     
+283 Nehemia 9:17        388117 verb qal perf 3p-, Z@K:R70W.              zāḵᵊrˈû              =                     
 284 Ezechiel 6:9        266945 verb qal perf 3p-, Z@K:R63W.              zāḵᵊrˌû              =                     
-285 Hosea 7:9           292478 verb qal perf 3sf, Z@74R:Q@H              zˈārᵊqā              =                     
-286 Nahum 3:17          302127 verb qal perf 3sf, Z@75R:X@H03            zˈārᵊḥā              =                     
+285 Hosea 7:9           292479 verb qal perf 3sf, Z@74R:Q@H              zˈārᵊqā              =                     
+286 Nahum 3:17          302128 verb qal perf 3sf, Z@75R:X@H03            zˈārᵊḥā              =                     
 287 Judices 8:34        132828 verb qal perf 3p-, Z@75K:RW.03            zˈāḵᵊrû              =                     
-288 Threni 1:9          363672 verb qal perf 3sf, Z@75K:R@H03            zˈāḵᵊrā              =                     
-289 Threni 1:7          363620 verb qal perf 3sf, Z@75K:R@74H            zˈāḵᵊrˈā             =                     
+288 Threni 1:9          363673 verb qal perf 3sf, Z@75K:R@H03            zˈāḵᵊrā              =                     
+289 Threni 1:7          363621 verb qal perf 3sf, Z@75K:R@74H            zˈāḵᵊrˈā             =                     
 290 Leviticus 17:5       63114 verb qal perf 3p-, Z@63B:X61W.            zˌāvᵊḥˈû             =                     
 291 Jesaia 9:2          215169 verb qal perf 3p-, F@M:X70W.              śāmᵊḥˈû              =                     
 292 Jesaia 14:8         216933 verb qal perf 3p-, F@M:X71W.              śāmᵊḥˌû              =                     
-293 Hosea 13:6          293772 verb qal perf 3p-, F@B:<73W.              śāvᵊʕˌû              =                     
-294 Psalmi 123:4        332895 verb qal perf 3sf, F@75B:<@H&             śˈāvᵊʕā-             ~ śˈāvᵊʕā             
+293 Hosea 13:6          293773 verb qal perf 3p-, F@B:<73W.              śāvᵊʕˌû              =                     
+294 Psalmi 123:4        332896 verb qal perf 3sf, F@75B:<@H&             śˈāvᵊʕā-             ~ śˈāvᵊʕā             
 295 Jeremia 46:10       259862 verb qal perf 3sf, F@74B:<@80H            śˈāvᵊʕˈā             =                     
 296 Exodus 18:22         38922 verb qal perf 3p-, C@P:V74W.              šāfᵊṭˈû              =                     
 297 Exodus 18:26         39014 verb qal perf 3p-, C@P:V71W.              šāfᵊṭˌû              =                     
-298 Ezechiel 26:12      277591 verb qal perf 3p-, C@L:L74W.              šālᵊlˈû              =                     
+298 Ezechiel 26:12      277592 verb qal perf 3p-, C@L:L74W.              šālᵊlˈû              =                     
 299 Jesaia 60:20        232974 verb qal perf 3p-, C@L:M73W.              šālᵊmˌû              =                     
-300 Iob 1:4             336083 verb qal perf 3p-, C@L:X81W.              šālᵊḥˈû              =                     
+300 Iob 1:4             336084 verb qal perf 3p-, C@L:X81W.              šālᵊḥˈû              =                     
 301 Genesis 38:25        21302 verb qal perf 3sf, C@L:X@70H              šālᵊḥˈā              =                     
 302 Jeremia 14:3        241702 verb qal perf 3p-, C@L:X71W.              šālᵊḥˌû              =                     
 303 Reges_I 21:11       193241 verb qal perf 3sf, C@L:X@71H              šālᵊḥˌā              =                     
-304 Nehemia 5:15        385772 verb qal perf 3p-, C@L:V74W.              šālᵊṭˈû              =                     
+304 Nehemia 5:15        385773 verb qal perf 3p-, C@L:V74W.              šālᵊṭˈû              =                     
 305 Jesaia 52:14        230498 verb qal perf 3p-, C@M:M70W.              šāmᵊmˈû              =                     
-306 Ezechiel 26:16      277692 verb qal perf 3p-, C@M:M73W.              šāmᵊmˌû              =                     
+306 Ezechiel 26:16      277693 verb qal perf 3p-, C@M:M73W.              šāmᵊmˌû              =                     
 307 Jeremia 5:28        237593 verb qal perf 3p-, C@M:N74W.              šāmᵊnˈû              =                     
 308 Leviticus 22:9       65514 verb qal perf 3p-, C@M:R74W.              šāmᵊrˈû              =                     
 309 Exodus 31:16         46431 verb qal perf 3p-, C@M:R71W.              šāmᵊrˌû              =                     
@@ -311,61 +311,61 @@
 311 Josua 24:27         127296 verb qal perf 3sf, C@M:<@81H              šāmᵊʕˈā              =                     
 312 Exodus 3:18          30045 verb qal perf 3p-, C@M:<73W.              šāmᵊʕˌû              =                     
 313 Samuel_II 6:6       163544 verb qal perf 3p-, C@M:V73W.              šāmᵊṭˌû              =                     
-314 Psalmi 64:4         320731 verb qal perf 3p-, C@N:N74W.              šānᵊnˈû              =                     
-315 Amos 9:5            297916 verb qal perf 3sf, C@Q:<@73H              šāqᵊʕˌā              =                     
-316 Chronica_II 14:5    413556 verb qal perf 3sf, C@Q:V@74H              šāqᵊṭˈā              =                     
+314 Psalmi 64:4         320732 verb qal perf 3p-, C@N:N74W.              šānᵊnˈû              =                     
+315 Amos 9:5            297917 verb qal perf 3sf, C@Q:<@73H              šāqᵊʕˌā              =                     
+316 Chronica_II 14:5    413557 verb qal perf 3sf, C@Q:V@74H              šāqᵊṭˈā              =                     
 317 Josua 11:23         119999 verb qal perf 3sf, C@Q:V@73H              šāqᵊṭˌā              =                     
-318 Ezechiel 27:36      278346 verb qal perf 3p-, C@R:Q73W.              šārᵊqˌû              =                     
+318 Ezechiel 27:36      278347 verb qal perf 3p-, C@R:Q73W.              šārᵊqˌû              =                     
 319 Genesis 1:21           396 verb qal perf 3p-, C@R:Y63W.              šārᵊṣˌû              =                     
-320 Ezechiel 17:23      272647 verb qal perf 3p-, C@K:N74W.              šāḵᵊnˈû              =                     
-321 Sacharia 8:8        307086 verb qal perf 3p-, C@K:N73W.              šāḵᵊnˌû              =                     
+320 Ezechiel 17:23      272648 verb qal perf 3p-, C@K:N74W.              šāḵᵊnˈû              =                     
+321 Sacharia 8:8        307087 verb qal perf 3p-, C@K:N73W.              šāḵᵊnˌû              =                     
 322 Jeremia 23:27       246447 verb qal perf 3p-, C@K:X94W.              šāḵᵊḥˈû              =                     
 323 Jeremia 3:21        236458 verb qal perf 3p-, C@K:X73W.              šāḵᵊḥˌû              =                     
-324 Hosea 2:15          291374 verb qal perf 3sf, C@K:X@73H              šāḵᵊḥˌā              =                     
-325 Psalmi 16:6         312419 verb qal perf 3sf, C@75P:R@71H            šˈāfᵊrˌā             =                     
+324 Hosea 2:15          291375 verb qal perf 3sf, C@K:X@73H              šāḵᵊḥˌā              =                     
+325 Psalmi 16:6         312420 verb qal perf 3sf, C@75P:R@71H            šˈāfᵊrˌā             =                     
 326 Numeri 35:24         92265 verb qal perf 3p-, C@75P:VW.03            šˈāfᵊṭû              =                     
 327 Deuteronomium 19:12 104139 verb qal perf 3p-, C@75L:XW.03            šˈālᵊḥû              =                     
-328 Proverbia 9:3       349177 verb qal perf 3sf, C@75L:X@74H            šˈālᵊḥˈā             =                     
-329 Esther 9:16         369538 verb qal perf 3p-, C@75L:X73W.            šˈālᵊḥˌû             =                     
+328 Proverbia 9:3       349178 verb qal perf 3sf, C@75L:X@74H            šˈālᵊḥˈā             =                     
+329 Esther 9:16         369539 verb qal perf 3p-, C@75L:X73W.            šˈālᵊḥˌû             =                     
 330 Leviticus 26:32      68666 verb qal perf 3p-, C@75M:M70W.            šˈāmᵊmˈû             =                     
 331 Genesis 18:19         8130 verb qal perf 3p-, C@75M:RW.03            šˈāmᵊrû              =                     
 332 Numeri 18:4          81376 verb qal perf 3p-, C@75M:R81W.            šˈāmᵊrˈû             =                     
-333 Psalmi 119:167      332569 verb qal perf 3sf, C@75M:R@74H            šˈāmᵊrˈā             =                     
-334 Iob 10:12           338687 verb qal perf 3sf, C@75M:R@71H            šˈāmᵊrˌā             =                     
+333 Psalmi 119:167      332570 verb qal perf 3sf, C@75M:R@74H            šˈāmᵊrˈā             =                     
+334 Iob 10:12           338688 verb qal perf 3sf, C@75M:R@71H            šˈāmᵊrˌā             =                     
 335 Exodus 6:9           31417 verb qal perf 3p-, C@75M:<W.03            šˈāmᵊʕû              =                     
 336 Leviticus 5:1        54290 verb qal perf 3sf, C@75M:<@H03            šˈāmᵊʕā              =                     
-337 Chronica_II 9:1     411022 verb qal perf 3sf, C@75M:<@H02            šˈāmᵊʕā              ~ šˈāmᵊʕāˈ            
+337 Chronica_II 9:1     411023 verb qal perf 3sf, C@75M:<@H02            šˈāmᵊʕā              ~ šˈāmᵊʕāˈ            
 338 Genesis 43:25        24647 verb qal perf 3p-, C@75M:<80W.            šˈāmᵊʕˈû             =                     
 339 Exodus 15:14         37075 verb qal perf 3p-, C@75M:<71W.            šˈāmᵊʕˌû             =                     
-340 Iob 13:1            339248 verb qal perf 3sf, C@75M:<@71H            šˈāmᵊʕˌā             =                     
-341 Chronica_I 13:9     398643 verb qal perf 3p-, C@75M:V73W.            šˈāmᵊṭˌû             =                     
-342 Threni 2:15         364264 verb qal perf 3p-, C@75R:QW.03            šˈārᵊqû              =                     
+340 Iob 13:1            339249 verb qal perf 3sf, C@75M:<@71H            šˈāmᵊʕˌā             =                     
+341 Chronica_I 13:9     398644 verb qal perf 3p-, C@75M:V73W.            šˈāmᵊṭˌû             =                     
+342 Threni 2:15         364265 verb qal perf 3p-, C@75R:QW.03            šˈārᵊqû              =                     
 343 Genesis 8:17          3899 verb qal perf 3p-, C@95R:Y74W.            šˈārᵊṣˈû             =                     
 344 Jeremia 5:5         237190 verb qal perf 3p-, C@74B:RW.              šˈāvᵊrû              =                     
-345 Psalmi 69:21        321820 verb qal perf 3sf, C@75B:R@71H            šˈāvᵊrˌā             =                     
+345 Psalmi 69:21        321821 verb qal perf 3sf, C@75B:R@71H            šˈāvᵊrˌā             =                     
 346 Jesaia 13:21        216787 verb qal perf 3p-, C@70K:NW.              šˈāḵᵊnû              =                     
-347 Psalmi 120:6        332688 verb qal perf 3sf, C@75K:N@H&             šˈāḵᵊnā-             ~ šˈāḵᵊnā             
-348 Psalmi 94:17        326896 verb qal perf 3sf, C@75K:N@73H            šˈāḵᵊnˌā             =                     
+347 Psalmi 120:6        332689 verb qal perf 3sf, C@75K:N@H&             šˈāḵᵊnā-             ~ šˈāḵᵊnā             
+348 Psalmi 94:17        326897 verb qal perf 3sf, C@75K:N@73H            šˈāḵᵊnˌā             =                     
 349 Jesaia 29:9         221487 verb qal perf 3p-, C@75K:R74W.            šˈāḵᵊrˈû             =                     
-350 Psalmi 69:3         321637 verb qal perf 3sf,+nij C:V@P@75T:NIJ00        šᵊṭāfˈāṯᵊnî          =                     
+350 Psalmi 69:3         321638 verb qal perf 3sf,+nij C:V@P@75T:NIJ00        šᵊṭāfˈāṯᵊnî          =                     
 351 Genesis 19:20         8880 verb nif impf 1s-, >IM.@L:V@63H           ʔimmālᵊṭˌā           =                     
 352 Samuel_I 20:29      154032 verb nif impf 1s-, >IM.@71L:V@H           ʔimmˌālᵊṭā           =                     
 353 Judices 16:28       137889 verb nif impf 1s-, >IN.@Q:M@94H           ʔinnāqᵊmˈā           =                     
 354 Jesaia 1:24         212418 verb nif impf 1s-, >IN.@Q:M@73H           ʔinnāqᵊmˌā           =                     
-355 Psalmi 69:15        321760 verb nif impf 1s-, >IN.@Y:L@71H           ʔinnāṣᵊlˌā           =                     
+355 Psalmi 69:15        321761 verb nif impf 1s-, >IN.@Y:L@71H           ʔinnāṣᵊlˌā           =                     
 356 Samuel_I 12:7       147347 verb nif impf 1s-, >IC.@P:V@71H           ʔiššāfᵊṭˌā           =                     
 357 Numeri 14:14         78674 verb qal perf 3p-, >@M:R81W.              ʔāmᵊrˈû              =                     
 358 Genesis 24:14        11396 verb qal perf 3sf, >@M:R@74H              ʔāmᵊrˈā              =                     
 359 Reges_II 20:14      208507 verb qal perf 3p-, >@M:R74W.05            ʔāmᵊrˈû              ~ ʔāmᵊrˈˈû            
 360 Genesis 12:12         5721 verb qal perf 3p-, >@M:R73W.              ʔāmᵊrˌû              =                     
 361 Numeri 5:22          73193 verb qal perf 3sf, >@M:R@71H              ʔāmᵊrˌā              =                     
-362 Psalmi 142:7        334889 verb qal perf 3p-, >@M:Y74W.              ʔāmᵊṣˈû              =                     
+362 Psalmi 142:7        334890 verb qal perf 3p-, >@M:Y74W.              ʔāmᵊṣˈû              =                     
 363 Samuel_II 22:18     174474 verb qal perf 3p-, >@M:Y73W.              ʔāmᵊṣˌû              =                     
 364 Numeri 30:4          88602 verb qal perf 3sf, >@S:R@71H              ʔāsᵊrˌā              =                     
 365 Jesaia 24:4         219741 verb qal perf 3sf, >@B:L@70H              ʔāvᵊlˈā              =                     
 366 Jesaia 3:26         213265 verb qal perf 3p-, >@B:L73W.              ʔāvᵊlˌû              =                     
 367 Jeremia 12:11       241010 verb qal perf 3sf, >@B:L@71H              ʔāvᵊlˌā              =                     
-368 Proverbia 6:8       348307 verb qal perf 3sf, >@G:R@71H              ʔāḡᵊrˌā              =                     
+368 Proverbia 6:8       348308 verb qal perf 3sf, >@G:R@71H              ʔāḡᵊrˌā              =                     
 369 Exodus 29:33         45247 verb qal perf 3p-, >@K:L70W.              ʔāḵᵊlˈû              =                     
 370 Leviticus 26:38      68778 verb qal perf 3sf, >@K:L@74H              ʔāḵᵊlˈā              =                     
 371 Exodus 12:8          34822 verb qal perf 3p-, >@K:L71W.              ʔāḵᵊlˌû              =                     
@@ -376,143 +376,143 @@
 376 Genesis 38:22        21246 verb qal perf 3p-, >@75M:R80W.            ʔˈāmᵊrˈû             =                     
 377 Genesis 16:13         7272 verb qal perf 3sf, >@95M:R@81H            ʔˈāmᵊrˈā             =                     
 378 Genesis 20:5          9328 verb qal perf 3sf, >@95M:R@73H            ʔˈāmᵊrˌā             =                     
-379 Psalmi 12:5         312083 verb qal perf 3p-, >@75M:R63W.05          ʔˈāmᵊrˌû             ~ ʔˈāmᵊrˌˈû           
+379 Psalmi 12:5         312084 verb qal perf 3p-, >@75M:R63W.05          ʔˈāmᵊrˌû             ~ ʔˈāmᵊrˌˈû           
 380 Numeri 30:5          88617 verb qal perf 3sf, >@95S:R@74H            ʔˈāsᵊrˈā             =                     
-381 Joel 1:9            294173 verb qal perf 3p-, >@75B:LW.03            ʔˈāvᵊlû              =                     
+381 Joel 1:9            294174 verb qal perf 3p-, >@75B:LW.03            ʔˈāvᵊlû              =                     
 382 Jesaia 19:8         218252 verb qal perf 3p-, >@74B:L80W.            ʔˈāvᵊlˈû             =                     
 383 Deuteronomium 32:36 111900 verb qal perf 3sf, >@74Z:LAT              ʔˈāzᵊlaṯ             =                     
-384 Iob 14:11           339605 verb qal perf 3p-, >@75Z:LW.&             ʔˈāzᵊlû-             ~ ʔˈāzᵊlû             
+384 Iob 14:11           339606 verb qal perf 3p-, >@75Z:LW.&             ʔˈāzᵊlû-             ~ ʔˈāzᵊlû             
 385 Numeri 5:6           72817 verb qal perf 3sf, >@75C:M@73H            ʔˈāšᵊmˌā             =                     
-386 Threni 4:7          365033 verb qal perf 3p-, >@70D:MW.              ʔˈāḏᵊmû              =                     
+386 Threni 4:7          365034 verb qal perf 3p-, >@70D:MW.              ʔˈāḏᵊmû              =                     
 387 Exodus 23:11         41184 verb qal perf 3p-, >@75K:LW.03            ʔˈāḵᵊlû              =                     
 388 Numeri 21:28         83663 verb qal perf 3sf, >@75K:L@H03            ʔˈāḵᵊlā              =                     
 389 Genesis 14:24         6652 verb qal perf 3p-, >@95K:L74W.            ʔˈāḵᵊlˈû             =                     
 390 Jesaia 10:17        215818 verb qal perf 3sf, >@75K:L@91H            ʔˈāḵᵊlˈā             =                     
-391 Proverbia 30:15     355284 verb qal perf 3p-, >@71M:RW.              ʔˌāmᵊrû              =                     
-392 Ezechiel 26:2       277405 verb qal perf 3sf, >@63M:R@H              ʔˌāmᵊrā              =                     
+391 Proverbia 30:15     355285 verb qal perf 3p-, >@71M:RW.              ʔˌāmᵊrû              =                     
+392 Ezechiel 26:2       277406 verb qal perf 3sf, >@63M:R@H              ʔˌāmᵊrā              =                     
 393 Samuel_I 2:4        142157 verb qal perf 3p-, >@71Z:RW.              ʔˌāzᵊrû              =                     
-394 Sacharia 12:6       308485 verb qal perf 3p-, >@63K:L61W.            ʔˌāḵᵊlˈû             =                     
-395 Psalmi 69:10        321705 verb qal perf 3sf,+nij >:AK@L@92T:NIJ         ʔᵃḵālˈāṯᵊnî          =                     
-396 Psalmi 127:1        333129 verb qal perf 3p-, <@M:L74W.              ʕāmᵊlˈû              =                     
-397 Psalmi 92:6         326594 verb qal perf 3p-, <@M:Q71W.              ʕāmᵊqˌû              =                     
+394 Sacharia 12:6       308486 verb qal perf 3p-, >@63K:L61W.            ʔˌāḵᵊlˈû             =                     
+395 Psalmi 69:10        321706 verb qal perf 3sf,+nij >:AK@L@92T:NIJ         ʔᵃḵālˈāṯᵊnî          =                     
+396 Psalmi 127:1        333130 verb qal perf 3p-, <@M:L74W.              ʕāmᵊlˈû              =                     
+397 Psalmi 92:6         326595 verb qal perf 3p-, <@M:Q71W.              ʕāmᵊqˌû              =                     
 398 Deuteronomium 22:19 105610 verb qal perf 3p-, <@N:C63W.              ʕānᵊšˌû              =                     
 399 Josua 4:13          114701 verb qal perf 3p-, <@B:R62W.              ʕāvᵊrˈû              =                     
 400 Samuel_II 19:19     172406 verb qal perf 3sf, <@B:R@74H              ʕāvᵊrˈā              =                     
 401 Josua 3:16          114340 verb qal perf 3p-, <@B:R73W.              ʕāvᵊrˌû              =                     
 402 Samuel_I 14:23      148828 verb qal perf 3sf, <@B:R@73H              ʕāvᵊrˌā              =                     
-403 Joel 1:17           294291 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
-404 Chronica_I 12:22    398090 verb qal perf 3p-, <@Z:R70W.              ʕāzᵊrˈû              =                     
-405 Sacharia 1:15       305300 verb qal perf 3p-, <@Z:R71W.              ʕāzᵊrˌû              =                     
-406 Iob 33:4            344060 verb qal perf 3sf,+nij <@F@92T:NIJ            ʕāśˈāṯᵊnî            =                     
+403 Joel 1:17           294292 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
+404 Chronica_I 12:22    398091 verb qal perf 3p-, <@Z:R70W.              ʕāzᵊrˈû              =                     
+405 Sacharia 1:15       305301 verb qal perf 3p-, <@Z:R71W.              ʕāzᵊrˌû              =                     
+406 Iob 33:4            344061 verb qal perf 3sf,+nij <@F@92T:NIJ            ʕāśˈāṯᵊnî            =                     
 407 Leviticus 25:21      67526 verb qal perf 3sf, <@F@T03                ʕāśˌāṯ               =                     
-408 Ezechiel 22:29      275669 verb qal perf 3p-, <@C:Q73W.              ʕāšᵊqˌû              =                     
-409 Psalmi 31:10        315026 verb qal perf 3sf, <@C:C@73H              ʕāšᵊšˌā              =                     
+408 Ezechiel 22:29      275670 verb qal perf 3p-, <@C:Q73W.              ʕāšᵊqˌû              =                     
+409 Psalmi 31:10        315027 verb qal perf 3sf, <@C:C@73H              ʕāšᵊšˌā              =                     
 410 Jesaia 31:1         222465 verb qal perf 3p-, <@Y:M74W.              ʕāṣᵊmˈû              =                     
 411 Jeremia 5:6         237216 verb qal perf 3p-, <@Y:M73W.              ʕāṣᵊmˌû              =                     
-412 Iob 29:9            342927 verb qal perf 3p-, <@Y:R74W.              ʕāṣᵊrˈû              =                     
-413 Chronica_II 20:37   416795 verb qal perf 3p-, <@Y:R73W.              ʕāṣᵊrˌû              =                     
-414 Proverbia 16:26     351246 verb qal perf 3sf, <@74M:L@H              ʕˈāmᵊlā              =                     
+412 Iob 29:9            342928 verb qal perf 3p-, <@Y:R74W.              ʕāṣᵊrˈû              =                     
+413 Chronica_II 20:37   416796 verb qal perf 3p-, <@Y:R73W.              ʕāṣᵊrˌû              =                     
+414 Proverbia 16:26     351247 verb qal perf 3sf, <@74M:L@H              ʕˈāmᵊlā              =                     
 415 Samuel_I 13:7       147943 verb qal perf 3p-, <@75B:RW.03            ʕˈāvᵊrû              =                     
-416 Psalmi 103:16       328142 verb qal perf 3sf, <@75B:R@H&             ʕˈāvᵊrā-             ~ ʕˈāvᵊrā             
+416 Psalmi 103:16       328143 verb qal perf 3sf, <@75B:R@H&             ʕˈāvᵊrā-             ~ ʕˈāvᵊrā             
 417 Jeremia 5:28        237596 verb qal perf 3p-, <@75B:R74W.            ʕˈāvᵊrˈû             =                     
-418 Ezechiel 22:29      275655 verb qal perf 3p-, <@74C:QW.              ʕˈāšᵊqû              =                     
-419 Psalmi 6:8          311226 verb qal perf 3sf, <@75C:C@74H            ʕˈāšᵊšˈā             =                     
-420 Iob 30:25           343324 verb qal perf 3sf, <@75G:M@71H            ʕˈāḡᵊmˌā             =                     
+418 Ezechiel 22:29      275656 verb qal perf 3p-, <@74C:QW.              ʕˈāšᵊqû              =                     
+419 Psalmi 6:8          311227 verb qal perf 3sf, <@75C:C@74H            ʕˈāšᵊšˈā             =                     
+420 Iob 30:25           343325 verb qal perf 3sf, <@75G:M@71H            ʕˈāḡᵊmˌā             =                     
 421 Jeremia 15:8        242325 verb qal perf 3p-, <@75Y:MW.&             ʕˈāṣᵊmû-             ~ ʕˈāṣᵊmû             
 422 Jesaia 16:8         217583 verb qal perf 3p-, <@71B:RW.              ʕˌāvᵊrû              =                     
-423 Psalmi 22:5         313599 verb qal perf 3p-, 11B.@V:X81W.           ˈbāṭᵊḥˈû             =                     
-424 Iob 9:25            338482 verb qal perf 3p-, 11B.@75R:X81W.         ˈbˈārᵊḥˈû            =                     
-425 Proverbia 31:13     355599 verb qal perf 3sf, 13D.@R:C@H             ˈdārᵊšā              =                     
-426 Iob 24:2            341921 verb qal perf 3p-, 11G.@Z:L81W.           ˈgāzᵊlˈû             =                     
-427 Psalmi 2:10         310812 verb nif impv 2pm, 11HIW.@S:R81W.         ˈhiwwāsᵊrˈû          =                     
-428 Psalmi 107:12       329552 verb qal perf 3p-, 11K.@C:L81W.           ˈkāšᵊlˈû             =                     
-429 Psalmi 36:13        316194 verb qal perf 3p-, 13N@P:LW.              ˈnāfᵊlû              =                     
-430 Psalmi 78:22        323708 verb qal perf 3p-, 11B@V:X81W.            ˈvāṭᵊḥˈû             =                     
-431 Proverbia 4:19      347944 verb qal perf 3p-, 11J@D:<81W.            ˈyāḏᵊʕˈû             =                     
-432 Psalmi 106:7        329017 verb qal perf 3p-, 13Z@K:RW.              ˈzāḵᵊrû              =                     
-433 Psalmi 78:10        323562 verb qal perf 3p-, 13C@M:RW.              ˈšāmᵊrû              =                     
-434 Iob 29:11           342945 verb qal perf 3sf, 13C@M:<@H              ˈšāmᵊʕā              =                     
-435 Psalmi 106:25       329195 verb qal perf 3p-, 11C@M:<81W.            ˈšāmᵊʕˈû             =                     
-436 Psalmi 106:21       329148 verb qal perf 3p-, 13C@K:XW.              ˈšāḵᵊḥû              =                     
-437 Psalmi 35:21        315998 verb qal perf 3p-, 13>@M:RW.              ˈʔāmᵊrû              =                     
-438 Psalmi 64:6         320759 verb qal perf 3p-, 11>@M:R81W.            ˈʔāmᵊrˈû             =                     
-439 Proverbia 30:20     355347 verb qal perf 3sf, 13>@K:L@H              ˈʔāḵᵊlā              =                     
-440 Iob 17:11           340383 verb qal perf 3p-, 13<@B:RW.              ˈʕāvᵊrû              =                     
-441 Psalmi 73:7         322573 verb qal perf 3p-, 11<@B:R81W.            ˈʕāvᵊrˈû             =                     
-442 Iob 37:21           345393 verb qal perf 3sf, 11<@B:R@81H            ˈʕāvᵊrˈā             =                     
-443 Psalmi 139:17       334496 verb qal perf 3p-, 11<@Y:MW.              ˈʕāṣᵊmû              =                     
-444 Psalmi 40:6         317057 verb qal perf 3p-, 11<@Y:M81W.            ˈʕāṣᵊmˈû             =                     
-445 Iob 21:7            341215 verb qal perf 3p-, 11<@T:Q81W.            ˈʕāṯᵊqˈû             =                     
-446 Psalmi 6:8          311230 verb qal perf 3sf, 11<@75T:Q@81H          ˈʕˈāṯᵊqˈā            =                     
-447 Psalmi 71:24        322291 verb qal perf 3p-, 11X@P:R81W.            ˈḥāfᵊrˈû             =                     
-448 Obadia 1:18         298461 verb qal perf 3p-, D@L:Q71W.              ḏālᵊqˌû              =                     
+423 Psalmi 22:5         313600 verb qal perf 3p-, 11B.@V:X81W.           ˈbāṭᵊḥˈû             =                     
+424 Iob 9:25            338483 verb qal perf 3p-, 11B.@75R:X81W.         ˈbˈārᵊḥˈû            =                     
+425 Proverbia 31:13     355600 verb qal perf 3sf, 13D.@R:C@H             ˈdārᵊšā              =                     
+426 Iob 24:2            341922 verb qal perf 3p-, 11G.@Z:L81W.           ˈgāzᵊlˈû             =                     
+427 Psalmi 2:10         310813 verb nif impv 2pm, 11HIW.@S:R81W.         ˈhiwwāsᵊrˈû          =                     
+428 Psalmi 107:12       329553 verb qal perf 3p-, 11K.@C:L81W.           ˈkāšᵊlˈû             =                     
+429 Psalmi 36:13        316195 verb qal perf 3p-, 13N@P:LW.              ˈnāfᵊlû              =                     
+430 Psalmi 78:22        323709 verb qal perf 3p-, 11B@V:X81W.            ˈvāṭᵊḥˈû             =                     
+431 Proverbia 4:19      347945 verb qal perf 3p-, 11J@D:<81W.            ˈyāḏᵊʕˈû             =                     
+432 Psalmi 106:7        329018 verb qal perf 3p-, 13Z@K:RW.              ˈzāḵᵊrû              =                     
+433 Psalmi 78:10        323563 verb qal perf 3p-, 13C@M:RW.              ˈšāmᵊrû              =                     
+434 Iob 29:11           342946 verb qal perf 3sf, 13C@M:<@H              ˈšāmᵊʕā              =                     
+435 Psalmi 106:25       329196 verb qal perf 3p-, 11C@M:<81W.            ˈšāmᵊʕˈû             =                     
+436 Psalmi 106:21       329149 verb qal perf 3p-, 13C@K:XW.              ˈšāḵᵊḥû              =                     
+437 Psalmi 35:21        315999 verb qal perf 3p-, 13>@M:RW.              ˈʔāmᵊrû              =                     
+438 Psalmi 64:6         320760 verb qal perf 3p-, 11>@M:R81W.            ˈʔāmᵊrˈû             =                     
+439 Proverbia 30:20     355348 verb qal perf 3sf, 13>@K:L@H              ˈʔāḵᵊlā              =                     
+440 Iob 17:11           340384 verb qal perf 3p-, 13<@B:RW.              ˈʕāvᵊrû              =                     
+441 Psalmi 73:7         322574 verb qal perf 3p-, 11<@B:R81W.            ˈʕāvᵊrˈû             =                     
+442 Iob 37:21           345394 verb qal perf 3sf, 11<@B:R@81H            ˈʕāvᵊrˈā             =                     
+443 Psalmi 139:17       334497 verb qal perf 3p-, 11<@Y:MW.              ˈʕāṣᵊmû              =                     
+444 Psalmi 40:6         317058 verb qal perf 3p-, 11<@Y:M81W.            ˈʕāṣᵊmˈû             =                     
+445 Iob 21:7            341216 verb qal perf 3p-, 11<@T:Q81W.            ˈʕāṯᵊqˈû             =                     
+446 Psalmi 6:8          311231 verb qal perf 3sf, 11<@75T:Q@81H          ˈʕˈāṯᵊqˈā            =                     
+447 Psalmi 71:24        322292 verb qal perf 3p-, 11X@P:R81W.            ˈḥāfᵊrˈû             =                     
+448 Obadia 1:18         298462 verb qal perf 3p-, D@L:Q71W.              ḏālᵊqˌû              =                     
 449 Jesaia 19:3         218176 verb qal perf 3p-, D@R:C70W.              ḏārᵊšˈû              =                     
 450 Deuteronomium 19:18 104258 verb qal perf 3p-, D@R:C71W.              ḏārᵊšˌû              =                     
 451 Deuteronomium 28:60 109287 verb qal perf 3p-, D@B:Q73W.              ḏāvᵊqˌû              =                     
 452 Jesaia 34:15        223500 verb qal perf 3sf, D@G:R@74H              ḏāḡᵊrˈā              =                     
-453 Psalmi 35:15        315947 verb qal perf 3p-, D@75M.W.00             ḏˈāmmû               =                     
-454 Chronica_II 25:20   419396 verb qal perf 3p-, D@75R:C80W.            ḏˈārᵊšˈû             =                     
+453 Psalmi 35:15        315948 verb qal perf 3p-, D@75M.W.00             ḏˈāmmû               =                     
+454 Chronica_II 25:20   419397 verb qal perf 3p-, D@75R:C80W.            ḏˈārᵊšˈû             =                     
 455 Jesaia 3:9          213053 verb qal perf 3p-, G@M:L71W.              ḡāmᵊlˌû              =                     
-456 Zephania 3:3        303770 verb qal perf 3p-, G@R:M73W.              ḡārᵊmˌû              =                     
+456 Zephania 3:3        303771 verb qal perf 3p-, G@R:M73W.              ḡārᵊmˌû              =                     
 457 Samuel_II 11:23     166229 verb qal perf 3p-, G@B:R70W.              ḡāvᵊrˈû              =                     
-458 Ezechiel 22:29      275658 verb qal perf 3p-, G@Z:L73W.              ḡāzᵊlˌû              =                     
-459 Esra 9:6            382414 verb qal perf 3sf, G@D:L@73H              ḡāḏᵊlˌā              =                     
+458 Ezechiel 22:29      275659 verb qal perf 3p-, G@Z:L73W.              ḡāzᵊlˌû              =                     
+459 Esra 9:6            382415 verb qal perf 3sf, G@D:L@73H              ḡāḏᵊlˌā              =                     
 460 Genesis 19:13         8702 verb qal perf 3sf, G@95D:L@70H            ḡˈāḏᵊlˈā             =                     
-461 Psalmi 35:7         315850 verb qal perf 3p-, X@P:R71W.              ḥāfᵊrˌû              =                     
+461 Psalmi 35:7         315851 verb qal perf 3p-, X@P:R71W.              ḥāfᵊrˌû              =                     
 462 Jeremia 50:12       262070 verb qal perf 3sf, X@P:R@73H              ḥāfᵊrˌā              =                     
-463 Psalmi 55:22        319561 verb qal perf 3p-, X@L:Q70W.05            ḥālᵊqˈû              ~ ḥālᵊqˈˈû            
+463 Psalmi 55:22        319562 verb qal perf 3p-, X@L:Q70W.05            ḥālᵊqˈû              ~ ḥālᵊqˈˈû            
 464 Josua 18:2          122865 verb qal perf 3p-, X@L:Q73W.              ḥālᵊqˌû              =                     
 465 Deuteronomium 25:9  106962 verb qal perf 3sf, X@L:Y@70H              ḥālᵊṣˈā              =                     
-466 Ezechiel 22:26      275588 verb qal perf 3p-, X@M:S74W.              ḥāmᵊsˈû              =                     
-467 Zephania 3:4        303781 verb qal perf 3p-, X@M:S73W.              ḥāmᵊsˌû              =                     
-468 Psalmi 129:3        333269 verb qal perf 3p-, X@R:C74W.              ḥārᵊšˈû              =                     
+466 Ezechiel 22:26      275589 verb qal perf 3p-, X@M:S74W.              ḥāmᵊsˈû              =                     
+467 Zephania 3:4        303782 verb qal perf 3p-, X@M:S73W.              ḥāmᵊsˌû              =                     
+468 Psalmi 129:3        333270 verb qal perf 3p-, X@R:C74W.              ḥārᵊšˈû              =                     
 469 Reges_I 20:23       192429 verb qal perf 3p-, X@Z:Q74W.              ḥāzᵊqˈû              =                     
-470 Maleachi 3:13       310407 verb qal perf 3p-, X@Z:Q71W.              ḥāzᵊqˌû              =                     
+470 Maleachi 3:13       310408 verb qal perf 3p-, X@Z:Q71W.              ḥāzᵊqˌû              =                     
 471 Reges_II 14:5       203691 verb qal perf 3sf, X@Z:Q@71H              ḥāzᵊqˌā              =                     
 472 Judices 5:7         130031 verb qal perf 3p-, X@D:L94W.              ḥāḏᵊlˈû              =                     
 473 Judices 5:6         130023 verb qal perf 3p-, X@D:L73W.              ḥāḏᵊlˌû              =                     
 474 Ezechiel 7:18       267426 verb qal perf 3p-, X@G:R74W.              ḥāḡᵊrˈû              =                     
-475 Ezechiel 27:31      278272 verb qal perf 3p-, X@G:R73W.              ḥāḡᵊrˌû              =                     
+475 Ezechiel 27:31      278273 verb qal perf 3p-, X@G:R73W.              ḥāḡᵊrˌû              =                     
 476 Deuteronomium 32:29 111813 verb qal perf 3p-, X@K:M73W.              ḥāḵᵊmˌû              =                     
 477 Genesis 26:15        13265 verb qal perf 3p-, X@75P:RW.03            ḥˈāfᵊrû              =                     
 478 Jesaia 24:23        220023 verb qal perf 3sf, X@75P:R@H03            ḥˈāfᵊrā              =                     
-479 Threni 4:3          364967 verb qal perf 3p-, X@74L:YW.              ḥˈālᵊṣû              =                     
-480 Canticum 2:13       357935 verb qal perf 3sf, X@75N:V@74H            ḥˈānᵊṭˈā             =                     
+479 Threni 4:3          364968 verb qal perf 3p-, X@74L:YW.              ḥˈālᵊṣû              =                     
+480 Canticum 2:13       357936 verb qal perf 3sf, X@75N:V@74H            ḥˈānᵊṭˈā             =                     
 481 Jeremia 50:36       262520 verb qal perf 3p-, X@75T.W.00             ḥˈāttû               =                     
 482 Jeremia 48:1        260378 verb qal perf 3sf, X@75T.@H00             ḥˈāttā               =                     
 483 Genesis 14:3          6253 verb qal perf 3p-, X@75B:R80W.            ḥˈāvᵊrˈû             =                     
 484 Josua 17:13         122686 verb qal perf 3p-, X@95Z:QW.03            ḥˈāzᵊqû              =                     
 485 Samuel_II 16:21     170227 verb qal perf 3p-, X@74Z:Q80W.            ḥˈāzᵊqˈû             =                     
 486 Genesis 34:8         18588 verb qal perf 3sf, X@75C:Q@70H            ḥˈāšᵊqˈā             =                     
-487 Iob 3:17            336986 verb qal perf 3p-, X@74D:LW.              ḥˈāḏᵊlû              =                     
+487 Iob 3:17            336987 verb qal perf 3p-, X@74D:LW.              ḥˈāḏᵊlû              =                     
 488 Jesaia 15:3         217350 verb qal perf 3p-, X@74G:RW.              ḥˈāḡᵊrû              =                     
-489 Proverbia 31:17     355639 verb qal perf 3sf, X@75G:R@74H            ḥˈāḡᵊrˈā             =                     
-490 Sacharia 9:2        307490 verb qal perf 3sf, X@75K:M@73H            ḥˈāḵᵊmˌā             =                     
+489 Proverbia 31:17     355640 verb qal perf 3sf, X@75G:R@74H            ḥˈāḡᵊrˈā             =                     
+490 Sacharia 9:2        307491 verb qal perf 3sf, X@75K:M@73H            ḥˈāḵᵊmˌā             =                     
 491 Leviticus 26:37      68753 verb qal perf 3p-, K@C:L94W.              ḵāšᵊlˈû              =                     
 492 Jesaia 59:14        232453 verb qal perf 3sf, K@C:L@70H              ḵāšᵊlˈā              =                     
 493 Jesaia 3:8          213023 verb qal perf 3sf, K@C:L@H03              ḵāšᵊlˌā              =                     
 494 Reges_I 19:18       191807 verb qal perf 3p-, K@75R:<W.03            ḵˈārᵊʕû              =                     
-495 Sacharia 9:15       307732 verb qal perf 3p-, K@75B:CW.03            ḵˈāvᵊšû              =                     
+495 Sacharia 9:15       307733 verb qal perf 3p-, K@75B:CW.03            ḵˈāvᵊšû              =                     
 496 Jeremia 6:21        238034 verb qal perf 3p-, K@74C:LW.              ḵˈāšᵊlû              =                     
 497 Jesaia 8:15         214976 verb qal perf 3p-, K@71C:LW.              ḵˌāšᵊlû              =                     
 498 Samuel_I 10:6       146358 verb qal perf 3sf, Y@L:X@70H              ṣālᵊḥˈā              =                     
 499 Samuel_II 19:18     172398 verb qal perf 3p-, Y@L:X71W.              ṣālᵊḥˌû              =                     
 500 Jesaia 44:4         227380 verb qal perf 3p-, Y@M:X73W.              ṣāmᵊḥˌû              =                     
 501 Genesis 38:26        21335 verb qal perf 3sf, Y@75D:Q@74H            ṣˈāḏᵊqˈā             =                     
-502 Psalmi 19:10        313270 verb qal perf 3p-, Y@75D:Q71W.            ṣˈāḏᵊqˌû             =                     
-503 Psalmi 119:69       331815 verb qal perf 3p-, V@P:L64W.              ṭāfᵊlˈû              =                     
+502 Psalmi 19:10        313271 verb qal perf 3p-, Y@75D:Q71W.            ṣˈāḏᵊqˌû             =                     
+503 Psalmi 119:69       331816 verb qal perf 3p-, V@P:L64W.              ṭāfᵊlˈû              =                     
 504 Jeremia 18:22       244078 verb qal perf 3p-, V@M:N71W.              ṭāmᵊnˌû              =                     
-505 Psalmi 9:16         311693 verb qal perf 3p-, V@B:<74W.              ṭāvᵊʕˈû              =                     
-506 Proverbia 9:2       349170 verb qal perf 3sf, V@B:X@74H              ṭāvᵊḥˈā              =                     
-507 Psalmi 31:5         314973 verb qal perf 3p-, V@74M:NW.              ṭˈāmᵊnû              =                     
-508 Psalmi 140:6        334607 verb qal perf 3p-, V@75M:N75W.&           ṭˈāmᵊnˈû-            ~ ṭˈāmᵊnˈû            
+505 Psalmi 9:16         311694 verb qal perf 3p-, V@B:<74W.              ṭāvᵊʕˈû              =                     
+506 Proverbia 9:2       349171 verb qal perf 3sf, V@B:X@74H              ṭāvᵊḥˈā              =                     
+507 Psalmi 31:5         314974 verb qal perf 3p-, V@74M:NW.              ṭˈāmᵊnû              =                     
+508 Psalmi 140:6        334608 verb qal perf 3p-, V@75M:N75W.&           ṭˈāmᵊnˈû-            ~ ṭˈāmᵊnˈû            
 509 Jesaia 45:17        228151 verb nif impf 2pm, TIK.@L:M73W.           ṯikkālᵊmˌû           =                     
 510 Leviticus 26:23      68525 verb nif impf 2pm, TIW.@S:R73W.           ṯiwwāsᵊrˌû           =                     
 511 Leviticus 19:12      63975 verb nif impf 2pm, TIC.@B:<71W.           ṯiššāvᵊʕˌû           =                     
 512 Numeri 10:3          76289 verb qal perf 3p-, T@Q:<73W.              ṯāqᵊʕˌû              =                     
 513 Deuteronomium 21:19 105181 verb qal perf 3p-, T@71P:FW.              ṯˌāfᵊśû              =                     
 
-  1 Chronica_II 28:8    420478 verb qal perf 3p-, B.@Z:Z74W.                => bāzᵊzˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+  1 Chronica_II 28:8    420479 verb qal perf 3p-, B.@Z:Z74W.                => bāzᵊzˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 B.@Z:Z74W.
         trim                 b.@z:z74w.
         accents              b.@z:z!w.
@@ -573,7 +573,7 @@
         cleanup              bāzᵊzˌû
 
 
-  3 Ezechiel 24:5       276638 verb qal perf 3p-, B.@C:L71W.                => bāšᵊlˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+  3 Ezechiel 24:5       276639 verb qal perf 3p-, B.@C:L71W.                => bāšᵊlˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 B.@C:L71W.
         trim                 b.@c:l71w.
         accents              b.@c:l/w.
@@ -603,7 +603,7 @@
         cleanup              bāšᵊlˌû
 
 
-  4 Psalmi 22:5         313597 verb qal perf 3p-, B.@V:X74W.                => bāṭᵊḥˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+  4 Psalmi 22:5         313598 verb qal perf 3p-, B.@V:X74W.                => bāṭᵊḥˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 B.@V:X74W.
         trim                 b.@v:x74w.
         accents              b.@v:x!w.
@@ -695,7 +695,7 @@
         cleanup              dāvᵊqˈû
 
 
-  7 Psalmi 63:9         320666 verb qal perf 3sf, D.@B:Q@74H                => dāvᵊqˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+  7 Psalmi 63:9         320667 verb qal perf 3sf, D.@B:Q@74H                => dāvᵊqˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 D.@B:Q@74H
         trim                 d.@b:q@74h
         accents              d.@b:q!@h
@@ -726,7 +726,7 @@
         cleanup              dāvᵊqˈā
 
 
-  8 Psalmi 44:26        317850 verb qal perf 3sf, D.@B:Q@73H                => dāvᵊqˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+  8 Psalmi 44:26        317851 verb qal perf 3sf, D.@B:Q@73H                => dāvᵊqˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 D.@B:Q@73H
         trim                 d.@b:q@73h
         accents              d.@b:q/@h
@@ -756,7 +756,7 @@
         cleanup              dāvᵊqˌā
 
 
-  9 Psalmi 119:25       331486 verb qal perf 3sf, D.@75B:Q@74H              => dˈāvᵊqˈā                  < =                           # qamets: no need to suppress qatan
+  9 Psalmi 119:25       331487 verb qal perf 3sf, D.@75B:Q@74H              => dˈāvᵊqˈā                  < =                           # qamets: no need to suppress qatan
         orig                 D.@75B:Q@74H
         trim                 d.@75b:q@74h
         accents              d.!@b:q!@h
@@ -787,7 +787,7 @@
         cleanup              dˈāvᵊqˈā
 
 
- 10 Ruth 1:14           356061 verb qal perf 3sf, D.@71B:Q@H                => dˌāvᵊqā                   < =                           # qamets: no need to suppress qatan
+ 10 Ruth 1:14           356062 verb qal perf 3sf, D.@71B:Q@H                => dˌāvᵊqā                   < =                           # qamets: no need to suppress qatan
         orig                 D.@71B:Q@H
         trim                 d.@71b:q@h
         accents              d./@b:q@h
@@ -848,7 +848,7 @@
         cleanup              fārᵊśˈû
 
 
- 12 Micha 3:3           300084 verb qal perf 3p-, P@R:FW.03                 => fārᵊśˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 12 Micha 3:3           300085 verb qal perf 3p-, P@R:FW.03                 => fārᵊśˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 P@R:FW.03
         trim                 p@r:fw.03
         accents              p@r:fw.
@@ -878,7 +878,7 @@
         cleanup              fārᵊśˌû
 
 
- 13 Chronica_II 24:7    418343 verb qal perf 3p-, P@R:Y73W.                 => fārᵊṣˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 13 Chronica_II 24:7    418344 verb qal perf 3p-, P@R:Y73W.                 => fārᵊṣˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 P@R:Y73W.
         trim                 p@r:y73w.
         accents              p@r:y/w.
@@ -1061,7 +1061,7 @@
         cleanup              fˈārᵊśû
 
 
- 19 Canticum 6:11       358829 verb qal perf 3sf, P@75R:X@74H               => fˈārᵊḥˈā                  < =                           # qamets: no need to suppress qatan
+ 19 Canticum 6:11       358830 verb qal perf 3sf, P@75R:X@74H               => fˈārᵊḥˈā                  < =                           # qamets: no need to suppress qatan
         orig                 P@75R:X@74H
         trim                 p@75r:x@74h
         accents              p!@r:x!@h
@@ -1092,7 +1092,7 @@
         cleanup              fˈārᵊḥˈā
 
 
- 20 Hosea 7:13          292538 verb qal perf 3p-, P@74C:<W.                 => fˈāšᵊʕû                   < =                           # qamets: no need to suppress qatan
+ 20 Hosea 7:13          292539 verb qal perf 3p-, P@74C:<W.                 => fˈāšᵊʕû                   < =                           # qamets: no need to suppress qatan
         orig                 P@74C:<W.
         trim                 p@74c:<w.
         accents              p!@c:<w.
@@ -1154,7 +1154,7 @@
         cleanup              fˈāšᵊṭˈû
 
 
- 22 Canticum 4:1        358219 verb qal perf 3p-, G.@L:C73W.                => gālᵊšˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 22 Canticum 4:1        358220 verb qal perf 3p-, G.@L:C73W.                => gālᵊšˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 G.@L:C73W.
         trim                 g.@l:c73w.
         accents              g.@l:c/w.
@@ -1184,7 +1184,7 @@
         cleanup              gālᵊšˌû
 
 
- 23 Psalmi 119:20       331447 verb qal perf 3sf, G.@R:S@74H                => gārᵊsˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+ 23 Psalmi 119:20       331448 verb qal perf 3sf, G.@R:S@74H                => gārᵊsˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 G.@R:S@74H
         trim                 g.@r:s@74h
         accents              g.@r:s!@h
@@ -1490,7 +1490,7 @@
         cleanup              gˈāvᵊrˈû
 
 
- 33 Iob 21:7            341217 verb qal perf 3p-, G.@71B:RW.                => gˌāvᵊrû                   < =                           # qamets: no need to suppress qatan
+ 33 Iob 21:7            341218 verb qal perf 3p-, G.@71B:RW.                => gˌāvᵊrû                   < =                           # qamets: no need to suppress qatan
         orig                 G.@71B:RW.
         trim                 g.@71b:rw.
         accents              g./@b:rw.
@@ -1520,7 +1520,7 @@
         cleanup              gˌāvᵊrû
 
 
- 34 Esra 10:11          382966 verb nif impv 2pm, HIB.@75D:LW.03            => hibbˈāḏᵊlû                < =                           # qamets: no need to suppress qatan
+ 34 Esra 10:11          382967 verb nif impv 2pm, HIB.@75D:LW.03            => hibbˈāḏᵊlû                < =                           # qamets: no need to suppress qatan
         orig                 HIB.@75D:LW.03
         trim                 hib.@75d:lw.03
         accents              hib.!@d:lw.
@@ -1582,7 +1582,7 @@
         cleanup              hibbˈāḏᵊlˈû
 
 
- 36 Ezechiel 36:32      283066 verb nif impv 2pm, HIK.@L:M91W.              => hikkālᵊmˈû                < =                           # qamets: gadol maintained because of verb paradigm
+ 36 Ezechiel 36:32      283067 verb nif impv 2pm, HIK.@L:M91W.              => hikkālᵊmˈû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 HIK.@L:M91W.
         trim                 hik.@l:m91w.
         accents              hik.@l:m!w.
@@ -1613,7 +1613,7 @@
         cleanup              hikkālᵊmˈû
 
 
- 37 Sacharia 2:11       305536 verb nif impv 2sf, HIM.@L:VI92J              => himmālᵊṭˈî                < =                           # qamets: gadol maintained because of verb paradigm
+ 37 Sacharia 2:11       305537 verb nif impv 2sf, HIM.@L:VI92J              => himmālᵊṭˈî                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 HIM.@L:VI92J
         trim                 him.@l:vi92j
         accents              him.@l:v!ij
@@ -2073,7 +2073,7 @@
         cleanup              hālᵊmˌû
 
 
- 52 Ezechiel 16:39      271697 verb qal perf 3p-, H@R:S70W.                 => hārᵊsˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 52 Ezechiel 16:39      271698 verb qal perf 3p-, H@R:S70W.                 => hārᵊsˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 H@R:S70W.
         trim                 h@r:s70w.
         accents              h@r:s!w.
@@ -2196,7 +2196,7 @@
         cleanup              hēḥālᵊṣˈû
 
 
- 56 Ezechiel 26:4       277442 verb qal perf 3p-, H@75R:SW.03               => hˈārᵊsû                   < =                           # qamets: no need to suppress qatan
+ 56 Ezechiel 26:4       277443 verb qal perf 3p-, H@75R:SW.03               => hˈārᵊsû                   < =                           # qamets: no need to suppress qatan
         orig                 H@75R:SW.03
         trim                 h@75r:sw.03
         accents              h!@r:sw.
@@ -2227,7 +2227,7 @@
         cleanup              hˈārᵊsû
 
 
- 57 Psalmi 72:20        322511 verb qal perf 3p-, K.@L.71W.                 => kāllˌû                    < =                           # qamets: gadol maintained because of verb paradigm
+ 57 Psalmi 72:20        322512 verb qal perf 3p-, K.@L.71W.                 => kāllˌû                    < =                           # qamets: gadol maintained because of verb paradigm
         orig                 K.@L.71W.
         trim                 k.@l.71w.
         accents              k.@l./w.
@@ -2257,7 +2257,7 @@
         cleanup              kāllˌû
 
 
- 58 Ezechiel 27:4       277857 verb qal perf 3p-, K.@L:L73W.                => kālᵊlˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 58 Ezechiel 27:4       277858 verb qal perf 3p-, K.@L:L73W.                => kālᵊlˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 K.@L:L73W.
         trim                 k.@l:l73w.
         accents              k.@l:l/w.
@@ -2287,7 +2287,7 @@
         cleanup              kālᵊlˌû
 
 
- 59 Psalmi 20:9         313411 verb qal perf 3p-, K.@R:<74W.                => kārᵊʕˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 59 Psalmi 20:9         313412 verb qal perf 3p-, K.@R:<74W.                => kārᵊʕˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 K.@R:<74W.
         trim                 k.@r:<74w.
         accents              k.@r:<!w.
@@ -2348,7 +2348,7 @@
         cleanup              kārᵊʕˌû
 
 
- 61 Psalmi 109:24       330197 verb qal perf 3p-, K.@C:L74W.                => kāšᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 61 Psalmi 109:24       330198 verb qal perf 3p-, K.@C:L74W.                => kāšᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 K.@C:L74W.
         trim                 k.@c:l74w.
         accents              k.@c:l!w.
@@ -2409,7 +2409,7 @@
         cleanup              kāšᵊlˌû
 
 
- 63 Ezechiel 17:7       272286 verb qal perf 3sf, K.@75P:N@94H              => kˈāfᵊnˈā                  < =                           # qamets: no need to suppress qatan
+ 63 Ezechiel 17:7       272287 verb qal perf 3sf, K.@75P:N@94H              => kˈāfᵊnˈā                  < =                           # qamets: no need to suppress qatan
         orig                 K.@75P:N@94H
         trim                 k.@75p:n@94h
         accents              k.!@p:n!@h
@@ -2623,7 +2623,7 @@
         cleanup              lāqᵊḥˌā
 
 
- 70 Psalmi 65:14        320932 verb qal perf 3p-, L@B:C64W.                 => lāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 70 Psalmi 65:14        320933 verb qal perf 3p-, L@B:C64W.                 => lāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 L@B:C64W.
         trim                 l@b:c64w.
         accents              l@b:c!w.
@@ -2654,7 +2654,7 @@
         cleanup              lāvᵊšˈû
 
 
- 71 Chronica_I 12:19    397998 verb qal perf 3sf, L@B:C@81H                 => lāvᵊšˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+ 71 Chronica_I 12:19    397999 verb qal perf 3sf, L@B:C@81H                 => lāvᵊšˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 L@B:C@81H
         trim                 l@b:c@81h
         accents              l@b:c!@h
@@ -2870,7 +2870,7 @@
         cleanup              lˈāqᵊṭˌû
 
 
- 78 Ezechiel 44:19      288187 verb qal perf 3p-, L@75B:CW.03               => lˈāvᵊšû                   < =                           # qamets: no need to suppress qatan
+ 78 Ezechiel 44:19      288188 verb qal perf 3p-, L@75B:CW.03               => lˈāvᵊšû                   < =                           # qamets: no need to suppress qatan
         orig                 L@75B:CW.03
         trim                 l@75b:cw.03
         accents              l!@b:cw.
@@ -2901,7 +2901,7 @@
         cleanup              lˈāvᵊšû
 
 
- 79 Chronica_II 24:20   418662 verb qal perf 3sf, L@75B:C@H03               => lˈāvᵊšā                   < =                           # qamets: no need to suppress qatan
+ 79 Chronica_II 24:20   418663 verb qal perf 3sf, L@75B:C@H03               => lˈāvᵊšā                   < =                           # qamets: no need to suppress qatan
         orig                 L@75B:C@H03
         trim                 l@75b:c@h03
         accents              l!@b:c@h
@@ -3054,7 +3054,7 @@
         cleanup              māḵᵊrˈû
 
 
- 84 Ruth 4:3            357162 verb qal perf 3sf, M@K:R@74H                 => māḵᵊrˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+ 84 Ruth 4:3            357163 verb qal perf 3sf, M@K:R@74H                 => māḵᵊrˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 M@K:R@74H
         trim                 m@k:r@74h
         accents              m@k:r!@h
@@ -3146,7 +3146,7 @@
         cleanup              mˈāšᵊlû
 
 
- 87 Iob 21:33           341458 verb qal perf 3p-, M@75T:QW.&                => mˈāṯᵊqû-                  < ~ mˈāṯᵊqû                   # qamets: no need to suppress qatan
+ 87 Iob 21:33           341459 verb qal perf 3p-, M@75T:QW.&                => mˈāṯᵊqû-                  < ~ mˈāṯᵊqû                   # qamets: no need to suppress qatan
         orig                 M@75T:QW.&
         trim                 m@75t:qw.&
         accents              m!@t:qw.&
@@ -3482,7 +3482,7 @@
         cleanup              nāfᵊṣˌû
 
 
- 98 Ezechiel 23:18      275975 verb qal perf 3sf, N@Q:<@71H                 => nāqᵊʕˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+ 98 Ezechiel 23:18      275976 verb qal perf 3sf, N@Q:<@71H                 => nāqᵊʕˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 N@Q:<@71H
         trim                 n@q:<@71h
         accents              n@q:</@h
@@ -3725,7 +3725,7 @@
         cleanup              nāṭᵊʕˈû
 
 
-106 Psalmi 80:16        324535 verb qal perf 3sf, N@V:<@74H                 => nāṭᵊʕˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+106 Psalmi 80:16        324536 verb qal perf 3sf, N@V:<@74H                 => nāṭᵊʕˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 N@V:<@74H
         trim                 n@v:<@74h
         accents              n@v:<!@h
@@ -3786,7 +3786,7 @@
         cleanup              nāṭᵊʕˌû
 
 
-108 Ezechiel 27:19      278089 verb qal perf 3p-, N@T@92N.W.                => nāṯˈānnû                  < =                           # qamets: no need to suppress qatan
+108 Ezechiel 27:19      278090 verb qal perf 3p-, N@T@92N.W.                => nāṯˈānnû                  < =                           # qamets: no need to suppress qatan
         orig                 N@T@92N.W.
         trim                 n@t@92n.w.
         accents              n@t!@n.w.
@@ -3969,7 +3969,7 @@
         cleanup              nāṯᵊnˌā
 
 
-114 Iob 30:13           343208 verb qal perf 3p-, N@T:S81W.                 => nāṯᵊsˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+114 Iob 30:13           343209 verb qal perf 3p-, N@T:S81W.                 => nāṯᵊsˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 N@T:S81W.
         trim                 n@t:s81w.
         accents              n@t:s!w.
@@ -4217,7 +4217,7 @@
         cleanup              nˈāvᵊlā
 
 
-122 Proverbia 7:13      348692 verb qal perf 3sf, N@74C:Q@H&                => nˈāšᵊqā-                  < ~ nˈāšᵊqā                   # qamets: no need to suppress qatan
+122 Proverbia 7:13      348693 verb qal perf 3sf, N@74C:Q@H&                => nˈāšᵊqā-                  < ~ nˈāšᵊqā                   # qamets: no need to suppress qatan
         orig                 N@74C:Q@H&
         trim                 n@74c:q@h&
         accents              n!@c:q@h&
@@ -4279,7 +4279,7 @@
         cleanup              nˈāḡᵊʕā
 
 
-124 Proverbia 22:12     352805 verb qal perf 3p-, N@74Y:RW.                 => nˈāṣᵊrû                   < =                           # qamets: no need to suppress qatan
+124 Proverbia 22:12     352806 verb qal perf 3p-, N@74Y:RW.                 => nˈāṣᵊrû                   < =                           # qamets: no need to suppress qatan
         orig                 N@74Y:RW.
         trim                 n@74y:rw.
         accents              n!@y:rw.
@@ -4495,7 +4495,7 @@
         cleanup              nˌāfᵊlˈā
 
 
-131 Ezechiel 25:4       277110 verb qal perf 3p-, N@71T:NW.                 => nˌāṯᵊnû                   < =                           # qamets: no need to suppress qatan
+131 Ezechiel 25:4       277111 verb qal perf 3p-, N@71T:NW.                 => nˌāṯᵊnû                   < =                           # qamets: no need to suppress qatan
         orig                 N@71T:NW.
         trim                 n@71t:nw.
         accents              n/@t:nw.
@@ -4556,7 +4556,7 @@
         cleanup              nˌāṯᵊnˈû
 
 
-133 Proverbia 31:20     355666 verb qal perf 3sf, P.@R:F@74H                => pārᵊśˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+133 Proverbia 31:20     355667 verb qal perf 3sf, P.@R:F@74H                => pārᵊśˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 P.@R:F@74H
         trim                 p.@r:f@74h
         accents              p.@r:f!@h
@@ -4587,7 +4587,7 @@
         cleanup              pārᵊśˈā
 
 
-134 Chronica_I 4:38     393334 verb qal perf 3p-, P.@R:Y73W.                => pārᵊṣˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+134 Chronica_I 4:38     393335 verb qal perf 3p-, P.@R:Y73W.                => pārᵊṣˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 P.@R:Y73W.
         trim                 p.@r:y73w.
         accents              p.@r:y/w.
@@ -4708,7 +4708,7 @@
         cleanup              pāṣᵊḥˌû
 
 
-138 Proverbia 31:26     355724 verb qal perf 3sf, P.@T:X@74H                => pāṯᵊḥˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+138 Proverbia 31:26     355725 verb qal perf 3sf, P.@T:X@74H                => pāṯᵊḥˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 P.@T:X@74H
         trim                 p.@t:x@74h
         accents              p.@t:x!@h
@@ -4770,7 +4770,7 @@
         cleanup              pˈārᵊśû
 
 
-140 Canticum 7:13       359007 verb qal perf 3sf, P.@75R:X@70H              => pˈārᵊḥˈā                  < =                           # qamets: no need to suppress qatan
+140 Canticum 7:13       359008 verb qal perf 3sf, P.@75R:X@70H              => pˈārᵊḥˈā                  < =                           # qamets: no need to suppress qatan
         orig                 P.@75R:X@70H
         trim                 p.@75r:x@70h
         accents              p.!@r:x!@h
@@ -4801,7 +4801,7 @@
         cleanup              pˈārᵊḥˈā
 
 
-141 Micha 2:13          300021 verb qal perf 3p-, P.@75R:YW.03              => pˈārᵊṣû                   < =                           # qamets: no need to suppress qatan
+141 Micha 2:13          300022 verb qal perf 3p-, P.@75R:YW.03              => pˈārᵊṣû                   < =                           # qamets: no need to suppress qatan
         orig                 P.@75R:YW.03
         trim                 p.@75r:yw.03
         accents              p.!@r:yw.
@@ -4894,7 +4894,7 @@
         cleanup              pˈāšᵊṭˈû
 
 
-144 Psalmi 37:14        316340 verb qal perf 3p-, P.@75T:X74W.              => pˈāṯᵊḥˈû                  < =                           # qamets: no need to suppress qatan
+144 Psalmi 37:14        316341 verb qal perf 3p-, P.@75T:X74W.              => pˈāṯᵊḥˈû                  < =                           # qamets: no need to suppress qatan
         orig                 P.@75T:X74W.
         trim                 p.@75t:x74w.
         accents              p.!@t:x!w.
@@ -5260,7 +5260,7 @@
         cleanup              qāṣᵊrˌā
 
 
-156 Psalmi 107:42       329830 verb qal perf 3sf, Q@74P:Y@H                 => qˈāfᵊṣā                   < =                           # qamets: no need to suppress qatan
+156 Psalmi 107:42       329831 verb qal perf 3sf, Q@74P:Y@H                 => qˈāfᵊṣā                   < =                           # qamets: no need to suppress qatan
         orig                 Q@74P:Y@H
         trim                 q@74p:y@h
         accents              q!@p:y@h
@@ -5291,7 +5291,7 @@
         cleanup              qˈāfᵊṣā
 
 
-157 Psalmi 35:15        315944 verb qal perf 3p-, Q@75R:<71W.               => qˈārᵊʕˌû                  < =                           # qamets: no need to suppress qatan
+157 Psalmi 35:15        315945 verb qal perf 3p-, Q@75R:<71W.               => qˈārᵊʕˌû                  < =                           # qamets: no need to suppress qatan
         orig                 Q@75R:<71W.
         trim                 q@75r:<71w.
         accents              q!@r:</w.
@@ -5322,7 +5322,7 @@
         cleanup              qˈārᵊʕˌû
 
 
-158 Ezechiel 39:11      284564 verb qal perf 3p-, Q@74B:RW.                 => qˈāvᵊrû                   < =                           # qamets: no need to suppress qatan
+158 Ezechiel 39:11      284565 verb qal perf 3p-, Q@74B:RW.                 => qˈāvᵊrû                   < =                           # qamets: no need to suppress qatan
         orig                 Q@74B:RW.
         trim                 q@74b:rw.
         accents              q!@b:rw.
@@ -5504,7 +5504,7 @@
         cleanup              rāḡᵊzˌā
 
 
-164 Psalmi 2:1          310728 verb qal perf 3p-, R@G:C74W.                 => rāḡᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+164 Psalmi 2:1          310729 verb qal perf 3p-, R@G:C74W.                 => rāḡᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 R@G:C74W.
         trim                 r@g:c74w.
         accents              r@g:c!w.
@@ -5597,7 +5597,7 @@
         cleanup              rˈābbā
 
 
-167 Iob 22:12           341587 verb qal perf 3p-, R@75M.W.00                => rˈāmmû                    < =                           # qamets: no need to suppress qatan
+167 Iob 22:12           341588 verb qal perf 3p-, R@75M.W.00                => rˈāmmû                    < =                           # qamets: no need to suppress qatan
         orig                 R@75M.W.
         trim                 r@75m.w.
         accents              r!@m.w.
@@ -5659,7 +5659,7 @@
         cleanup              rˈāvᵊṣā
 
 
-169 Joel 2:10           294515 verb qal perf 3sf, R@74G:Z@H                 => rˈāḡᵊzā                   < =                           # qamets: no need to suppress qatan
+169 Joel 2:10           294516 verb qal perf 3sf, R@74G:Z@H                 => rˈāḡᵊzā                   < =                           # qamets: no need to suppress qatan
         orig                 R@74G:Z@H
         trim                 r@74g:z@h
         accents              r!@g:z@h
@@ -5752,7 +5752,7 @@
         cleanup              rˈāḵᵊšû
 
 
-172 Psalmi 17:10        312562 verb qal perf 3p-, S.@G:R92W.                => ssāḡᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+172 Psalmi 17:10        312563 verb qal perf 3p-, S.@G:R92W.                => ssāḡᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 S.@G:R92W.
         trim                 s.@g:r92w.
         accents              s.@g:r!w.
@@ -5783,7 +5783,7 @@
         cleanup              ssāḡᵊrˈû
 
 
-173 Threni 2:15         364258 verb qal perf 3p-, S@75P:Q63W.               => sˈāfᵊqˌû                  < =                           # qamets: no need to suppress qatan
+173 Threni 2:15         364259 verb qal perf 3p-, S@75P:Q63W.               => sˈāfᵊqˌû                  < =                           # qamets: no need to suppress qatan
         orig                 S@75P:Q63W.
         trim                 s@75p:q63w.
         accents              s!@p:q/w.
@@ -5814,7 +5814,7 @@
         cleanup              sˈāfᵊqˌû
 
 
-174 Chronica_II 29:7    421074 verb qal perf 3p-, S@75G:R62W.               => sˈāḡᵊrˈû                  < =                           # qamets: no need to suppress qatan
+174 Chronica_II 29:7    421075 verb qal perf 3p-, S@75G:R62W.               => sˈāḡᵊrˈû                  < =                           # qamets: no need to suppress qatan
         orig                 S@75G:R62W.
         trim                 s@75g:r62w.
         accents              s!@g:r!w.
@@ -5936,7 +5936,7 @@
         cleanup              tikkālᵊmˌî
 
 
-178 Nehemia 4:14        385327 verb nif impf 2pm, T.IQ.@B:Y74W.             => tiqqāvᵊṣˈû                < =                           # qamets: gadol maintained because of verb paradigm
+178 Nehemia 4:14        385328 verb nif impf 2pm, T.IQ.@B:Y74W.             => tiqqāvᵊṣˈû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 T.IQ.@B:Y74W.
         trim                 t.iq.@b:y74w.
         accents              t.iq.@b:y!w.
@@ -5967,7 +5967,7 @@
         cleanup              tiqqāvᵊṣˈû
 
 
-179 Zephania 2:3        303501 verb nif impf 2pm, T.IS.@74T:R80W.           => tissˈāṯᵊrˈû               < =                           # qamets: no need to suppress qatan
+179 Zephania 2:3        303502 verb nif impf 2pm, T.IS.@74T:R80W.           => tissˈāṯᵊrˈû               < =                           # qamets: no need to suppress qatan
         orig                 T.IS.@74T:R80W.
         trim                 t.is.@74t:r80w.
         accents              t.is.!@t:r!w.
@@ -5998,7 +5998,7 @@
         cleanup              tissˈāṯᵊrˈû
 
 
-180 Ruth 3:3            356802 verb nif impf 2sf, T.IW.@D:<I74J             => tiwwāḏᵊʕˈî                < =                           # qamets: gadol maintained because of verb paradigm
+180 Ruth 3:3            356803 verb nif impf 2sf, T.IW.@D:<I74J             => tiwwāḏᵊʕˈî                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 T.IW.@D:<I74J
         trim                 t.iw.@d:<i74j
         accents              t.iw.@d:<!ij
@@ -6029,7 +6029,7 @@
         cleanup              tiwwāḏᵊʕˈî
 
 
-181 Hosea 4:15          291935 verb nif impf 2pm, T.IC.@B:<73W.             => tiššāvᵊʕˌû                < =                           # qamets: gadol maintained because of verb paradigm
+181 Hosea 4:15          291936 verb nif impf 2pm, T.IC.@B:<73W.             => tiššāvᵊʕˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 T.IC.@B:<73W.
         trim                 t.ic.@b:<73w.
         accents              t.ic.@b:</w.
@@ -6275,7 +6275,7 @@
         cleanup              tˈāmmû
 
 
-189 Nahum 3:19          302158 verb qal perf 3p-, T.@70Q:<W.                => tˈāqᵊʕû                   < =                           # qamets: no need to suppress qatan
+189 Nahum 3:19          302159 verb qal perf 3p-, T.@70Q:<W.                => tˈāqᵊʕû                   < =                           # qamets: no need to suppress qatan
         orig                 T.@70Q:<W.
         trim                 t.@70q:<w.
         accents              t.!@q:<w.
@@ -6367,7 +6367,7 @@
         cleanup              vāqᵊʕˌā
 
 
-192 Ecclesiastes 12:3   363278 verb qal perf 3p-, B@V:L70W.                 => vāṭᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+192 Ecclesiastes 12:3   363279 verb qal perf 3p-, B@V:L70W.                 => vāṭᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 B@V:L70W.
         trim                 b@v:l70w.
         accents              b@v:l!w.
@@ -6398,7 +6398,7 @@
         cleanup              vāṭᵊlˈû
 
 
-193 Psalmi 22:6         313607 verb qal perf 3p-, B@V:X74W.                 => vāṭᵊḥˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+193 Psalmi 22:6         313608 verb qal perf 3p-, B@V:X74W.                 => vāṭᵊḥˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 B@V:X74W.
         trim                 b@v:x74w.
         accents              b@v:x!w.
@@ -6429,7 +6429,7 @@
         cleanup              vāṭᵊḥˈû
 
 
-194 Ezechiel 26:12      277594 verb qal perf 3p-, B@75Z:ZW.03               => vˈāzᵊzû                   < =                           # qamets: no need to suppress qatan
+194 Ezechiel 26:12      277595 verb qal perf 3p-, B@75Z:ZW.03               => vˈāzᵊzû                   < =                           # qamets: no need to suppress qatan
         orig                 B@75Z:ZW.03
         trim                 b@75z:zw.03
         accents              b!@z:zw.
@@ -6491,7 +6491,7 @@
         cleanup              vˈāṭᵊḥû
 
 
-196 Chronica_I 5:20     393776 verb qal perf 3p-, B@71V:XW.                 => vˌāṭᵊḥû                   < =                           # qamets: no need to suppress qatan
+196 Chronica_I 5:20     393777 verb qal perf 3p-, B@71V:XW.                 => vˌāṭᵊḥû                   < =                           # qamets: no need to suppress qatan
         orig                 B@71V:XW.
         trim                 b@71v:xw.
         accents              b/@v:xw.
@@ -6552,7 +6552,7 @@
         cleanup              yiddˈāmmû
 
 
-198 Psalmi 35:4         315815 verb nif impf 3pm, JIK.@L:MW.02              => yikkālᵊmˈû                < =                           # qamets: gadol maintained because of verb paradigm
+198 Psalmi 35:4         315816 verb nif impf 3pm, JIK.@L:MW.02              => yikkālᵊmˈû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIK.@L:MW.02
         trim                 jik.@l:mw.02
         accents              jik.@l:m!w.
@@ -6583,7 +6583,7 @@
         cleanup              yikkālᵊmˈû
 
 
-199 Ezechiel 43:10      287315 verb nif impf 3pm, JIK.@L:M73W.              => yikkālᵊmˌû                < =                           # qamets: gadol maintained because of verb paradigm
+199 Ezechiel 43:10      287316 verb nif impf 3pm, JIK.@L:M73W.              => yikkālᵊmˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIK.@L:M73W.
         trim                 jik.@l:m73w.
         accents              jik.@l:m/w.
@@ -6613,7 +6613,7 @@
         cleanup              yikkālᵊmˌû
 
 
-200 Chronica_II 7:14    410359 verb nif impf 3pm, JIK.@N:<63W.              => yikkānᵊʕˌû                < =                           # qamets: gadol maintained because of verb paradigm
+200 Chronica_II 7:14    410360 verb nif impf 3pm, JIK.@N:<63W.              => yikkānᵊʕˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIK.@N:<63W.
         trim                 jik.@n:<63w.
         accents              jik.@n:</w.
@@ -6673,7 +6673,7 @@
         cleanup              yikkāšᵊlˌû
 
 
-202 Psalmi 69:7         321681 verb nif impf 3pm, JIK.@74L:MW.              => yikkˈālᵊmû                < =                           # qamets: no need to suppress qatan
+202 Psalmi 69:7         321682 verb nif impf 3pm, JIK.@74L:MW.              => yikkˈālᵊmû                < =                           # qamets: no need to suppress qatan
         orig                 JIK.@74L:MW.
         trim                 jik.@74l:mw.
         accents              jik.!@l:mw.
@@ -6735,7 +6735,7 @@
         cleanup              yikkˈālᵊmˈû
 
 
-204 Hosea 5:5           292051 verb nif impf 3pm, JIK.@75C:LW.03            => yikkˈāšᵊlû                < =                           # qamets: no need to suppress qatan
+204 Hosea 5:5           292052 verb nif impf 3pm, JIK.@75C:LW.03            => yikkˈāšᵊlû                < =                           # qamets: no need to suppress qatan
         orig                 JIK.@75C:LW.03
         trim                 jik.@75c:lw.03
         accents              jik.!@c:lw.
@@ -6766,7 +6766,7 @@
         cleanup              yikkˈāšᵊlû
 
 
-205 Daniel 11:35        377620 verb nif impf 3pm, JIK.@75C:L81W.            => yikkˈāšᵊlˈû               < =                           # qamets: no need to suppress qatan
+205 Daniel 11:35        377621 verb nif impf 3pm, JIK.@75C:L81W.            => yikkˈāšᵊlˈû               < =                           # qamets: no need to suppress qatan
         orig                 JIK.@75C:L81W.
         trim                 jik.@75c:l81w.
         accents              jik.!@c:l!w.
@@ -6797,7 +6797,7 @@
         cleanup              yikkˈāšᵊlˈû
 
 
-206 Hosea 14:10         294050 verb nif impf 3pm, JIK.@71C:LW.              => yikkˌāšᵊlû                < =                           # qamets: no need to suppress qatan
+206 Hosea 14:10         294051 verb nif impf 3pm, JIK.@71C:LW.              => yikkˌāšᵊlû                < =                           # qamets: no need to suppress qatan
         orig                 JIK.@71C:LW.
         trim                 jik.@71c:lw.
         accents              jik./@c:lw.
@@ -6827,7 +6827,7 @@
         cleanup              yikkˌāšᵊlû
 
 
-207 Daniel 11:41        377777 verb nif impf 3pm, JIM.@L:V74W.              => yimmālᵊṭˈû                < =                           # qamets: gadol maintained because of verb paradigm
+207 Daniel 11:41        377778 verb nif impf 3pm, JIM.@L:V74W.              => yimmālᵊṭˈû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIM.@L:V74W.
         trim                 jim.@l:v74w.
         accents              jim.@l:v!w.
@@ -6919,7 +6919,7 @@
         cleanup              yimmˈāqqû
 
 
-210 Amos 3:12           296149 verb nif impf 3pm, JIN.@Y:L62W.              => yinnāṣᵊlˈû                < =                           # qamets: gadol maintained because of verb paradigm
+210 Amos 3:12           296150 verb nif impf 3pm, JIN.@Y:L62W.              => yinnāṣᵊlˈû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIN.@Y:L62W.
         trim                 jin.@y:l62w.
         accents              jin.@y:l!w.
@@ -6950,7 +6950,7 @@
         cleanup              yinnāṣᵊlˈû
 
 
-211 Chronica_II 18:14   415233 verb nif impf 3pm, JIN.@T:N73W.              => yinnāṯᵊnˌû                < =                           # qamets: gadol maintained because of verb paradigm
+211 Chronica_II 18:14   415234 verb nif impf 3pm, JIN.@T:N73W.              => yinnāṯᵊnˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIN.@T:N73W.
         trim                 jin.@t:n73w.
         accents              jin.@t:n/w.
@@ -7042,7 +7042,7 @@
         cleanup              yinnˈāzᵊrû
 
 
-214 Nehemia 7:3         386379 verb nif impf 3pm, JIP.@75T:X62W.            => yippˈāṯᵊḥˈû               < =                           # qamets: no need to suppress qatan
+214 Nehemia 7:3         386380 verb nif impf 3pm, JIP.@75T:X62W.            => yippˈāṯᵊḥˈû               < =                           # qamets: no need to suppress qatan
         orig                 JIP.@75T:X62W.
         trim                 jip.@75t:x62w.
         accents              jip.!@t:x!w.
@@ -7073,7 +7073,7 @@
         cleanup              yippˈāṯᵊḥˈû
 
 
-215 Iob 24:24           342160 verb nif impf 3pm, JIQ.@P:Y92W.N             => yiqqāfᵊṣˈûn               < =                           # qamets: gadol maintained because of verb paradigm
+215 Iob 24:24           342161 verb nif impf 3pm, JIQ.@P:Y92W.N             => yiqqāfᵊṣˈûn               < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIQ.@P:Y92W.N
         trim                 jiq.@p:y92w.n
         accents              jiq.@p:y!w.n
@@ -7104,7 +7104,7 @@
         cleanup              yiqqāfᵊṣˈûn
 
 
-216 Chronica_I 13:2     398496 verb nif impf 3pm, JIQ.@B:Y73W.              => yiqqāvᵊṣˌû                < =                           # qamets: gadol maintained because of verb paradigm
+216 Chronica_I 13:2     398497 verb nif impf 3pm, JIQ.@B:Y73W.              => yiqqāvᵊṣˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIQ.@B:Y73W.
         trim                 jiq.@b:y73w.
         accents              jiq.@b:y/w.
@@ -7196,7 +7196,7 @@
         cleanup              yissāfᵊrˈû
 
 
-219 Amos 9:3            297849 verb nif impf 3pm, JIS.@63T:R61W.            => yissˌāṯᵊrˈû               < =                           # qamets: no need to suppress qatan
+219 Amos 9:3            297850 verb nif impf 3pm, JIS.@63T:R61W.            => yissˌāṯᵊrˈû               < =                           # qamets: no need to suppress qatan
         orig                 JIS.@63T:R61W.
         trim                 jis.@63t:r61w.
         accents              jis./@t:r!w.
@@ -7227,7 +7227,7 @@
         cleanup              yissˌāṯᵊrˈû
 
 
-220 Psalmi 10:2         311768 verb nif impf 3pm, JIT.@P:F65W.05            => yittāfᵊśˈû                < ~ yittāfᵊśˈˈû               # qamets: gadol maintained because of verb paradigm
+220 Psalmi 10:2         311769 verb nif impf 3pm, JIT.@P:F65W.05            => yittāfᵊśˈû                < ~ yittāfᵊśˈˈû               # qamets: gadol maintained because of verb paradigm
         orig                 JIT.@P:F65W.
         trim                 jit.@p:f65w.
         accents              jit.@p:f!w.
@@ -7258,7 +7258,7 @@
         cleanup              yittāfᵊśˈû
 
 
-221 Psalmi 102:28       327986 verb qal impf 3pm, JIT.@75M.W.00             => yittˈāmmû                 < =                           # qamets: no need to suppress qatan
+221 Psalmi 102:28       327987 verb qal impf 3pm, JIT.@75M.W.00             => yittˈāmmû                 < =                           # qamets: no need to suppress qatan
         orig                 JIT.@75M.W.
         trim                 jit.@75m.w.
         accents              jit.!@m.w.
@@ -7289,7 +7289,7 @@
         cleanup              yittˈāmmû
 
 
-222 Ezechiel 18:29      273233 verb nif impf 3pm, JIT.@75K:N.W.03           => yittˈāḵᵊnnû               < =                           # qamets: no need to suppress qatan
+222 Ezechiel 18:29      273234 verb nif impf 3pm, JIT.@75K:N.W.03           => yittˈāḵᵊnnû               < =                           # qamets: no need to suppress qatan
         orig                 JIT.@75K:N.W.03
         trim                 jit.@75k:n.w.03
         accents              jit.!@k:n.w.
@@ -7320,7 +7320,7 @@
         cleanup              yittˈāḵᵊnnû
 
 
-223 Proverbia 2:21      347414 verb nif impf 3pm, JIW.@71T:RW.              => yiwwˌāṯᵊrû                < =                           # qamets: no need to suppress qatan
+223 Proverbia 2:21      347415 verb nif impf 3pm, JIW.@71T:RW.              => yiwwˌāṯᵊrû                < =                           # qamets: no need to suppress qatan
         orig                 JIW.@71T:RW.
         trim                 jiw.@71t:rw.
         accents              jiw./@t:rw.
@@ -7350,7 +7350,7 @@
         cleanup              yiwwˌāṯᵊrû
 
 
-224 Amos 6:9            297062 verb nif impf 3pm, JIW.@63T:R61W.            => yiwwˌāṯᵊrˈû               < =                           # qamets: no need to suppress qatan
+224 Amos 6:9            297063 verb nif impf 3pm, JIW.@63T:R61W.            => yiwwˌāṯᵊrˈû               < =                           # qamets: no need to suppress qatan
         orig                 JIW.@63T:R61W.
         trim                 jiw.@63t:r61w.
         accents              jiw./@t:r!w.
@@ -7381,7 +7381,7 @@
         cleanup              yiwwˌāṯᵊrˈû
 
 
-225 Ezechiel 18:22      273097 verb nif impf 3pm, JIZ.@K:R73W.              => yizzāḵᵊrˌû                < =                           # qamets: gadol maintained because of verb paradigm
+225 Ezechiel 18:22      273098 verb nif impf 3pm, JIZ.@K:R73W.              => yizzāḵᵊrˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIZ.@K:R73W.
         trim                 jiz.@k:r73w.
         accents              jiz.@k:r/w.
@@ -7411,7 +7411,7 @@
         cleanup              yizzāḵᵊrˌû
 
 
-226 Psalmi 9:20         311739 verb nif impf 3pm, JIC.@P:V71W.              => yiššāfᵊṭˌû                < =                           # qamets: gadol maintained because of verb paradigm
+226 Psalmi 9:20         311740 verb nif impf 3pm, JIC.@P:V71W.              => yiššāfᵊṭˌû                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 JIC.@P:V71W.
         trim                 jic.@p:v71w.
         accents              jic.@p:v/w.
@@ -7441,7 +7441,7 @@
         cleanup              yiššāfᵊṭˌû
 
 
-227 Psalmi 18:45        313092 verb nif impf 3pm, JIC.@74M:<W.              => yiššˈāmᵊʕû                < =                           # qamets: no need to suppress qatan
+227 Psalmi 18:45        313093 verb nif impf 3pm, JIC.@74M:<W.              => yiššˈāmᵊʕû                < =                           # qamets: no need to suppress qatan
         orig                 JIC.@74M:<W.
         trim                 jic.@74m:<w.
         accents              jic.!@m:<w.
@@ -7502,7 +7502,7 @@
         cleanup              yiššˌāmᵊʕû
 
 
-229 Psalmi 139:17       334492 verb qal perf 3p-, J.@Q:R74W.                => yyāqᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+229 Psalmi 139:17       334493 verb qal perf 3p-, J.@Q:R74W.                => yyāqᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 J.@Q:R74W.
         trim                 j.@q:r74w.
         accents              j.@q:r!w.
@@ -7654,7 +7654,7 @@
         cleanup              yārᵊšˌû
 
 
-234 Ezechiel 37:11      283411 verb qal perf 3p-, J@B:C94W.                 => yāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+234 Ezechiel 37:11      283412 verb qal perf 3p-, J@B:C94W.                 => yāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 J@B:C94W.
         trim                 j@b:c94w.
         accents              j@b:c!w.
@@ -8201,7 +8201,7 @@
         cleanup              yēʔāḵᵊlˌû
 
 
-252 Daniel 11:34        377607 verb nif impf 3pm, J;<@Z:R73W.               => yēʕāzᵊrˌû                 < =                           # qamets: gadol maintained because of verb paradigm
+252 Daniel 11:34        377608 verb nif impf 3pm, J;<@Z:R73W.               => yēʕāzᵊrˌû                 < =                           # qamets: gadol maintained because of verb paradigm
         orig                 J;<@Z:R73W.
         trim                 j;<@z:r73w.
         accents              j;<@z:r/w.
@@ -8231,7 +8231,7 @@
         cleanup              yēʕāzᵊrˌû
 
 
-253 Psalmi 60:7         320286 verb nif impf 3pm, J;X@L:Y74W.N              => yēḥālᵊṣˈûn                < =                           # qamets: gadol maintained because of verb paradigm
+253 Psalmi 60:7         320287 verb nif impf 3pm, J;X@L:Y74W.N              => yēḥālᵊṣˈûn                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 J;X@L:Y74W.N
         trim                 j;x@l:y74w.n
         accents              j;x@l:y!w.n
@@ -8292,7 +8292,7 @@
         cleanup              yēḥāqᵊrˌû
 
 
-255 Iob 21:13           341274 verb nif impf 3pm, J;X@75T.W.00              => yēḥˈāttû                  < =                           # qamets: no need to suppress qatan
+255 Iob 21:13           341275 verb nif impf 3pm, J;X@75T.W.00              => yēḥˈāttû                  < =                           # qamets: no need to suppress qatan
         orig                 J;X@75T.W.
         trim                 j;x@75t.w.
         accents              j;x!@t.w.
@@ -8323,7 +8323,7 @@
         cleanup              yēḥˈāttû
 
 
-256 Psalmi 141:9        334799 verb qal perf 3p-, J@74Q:CW.                 => yˈāqᵊšû                   < =                           # qamets: no need to suppress qatan
+256 Psalmi 141:9        334800 verb qal perf 3p-, J@74Q:CW.                 => yˈāqᵊšû                   < =                           # qamets: no need to suppress qatan
         orig                 J@74Q:CW.
         trim                 j@74q:cw.
         accents              j!@q:cw.
@@ -8385,7 +8385,7 @@
         cleanup              yˈārᵊšû
 
 
-258 Joel 1:20           294338 verb qal perf 3p-, J@75B:CW.03               => yˈāvᵊšû                   < =                           # qamets: no need to suppress qatan
+258 Joel 1:20           294339 verb qal perf 3p-, J@75B:CW.03               => yˈāvᵊšû                   < =                           # qamets: no need to suppress qatan
         orig                 J@75B:CW.03
         trim                 j@75b:cw.03
         accents              j!@b:cw.
@@ -8509,7 +8509,7 @@
         cleanup              yˈāḏᵊʕˈû
 
 
-262 Hosea 2:10          291262 verb qal perf 3sf, J@75D:<@80H               => yˈāḏᵊʕˈā                  < =                           # qamets: no need to suppress qatan
+262 Hosea 2:10          291263 verb qal perf 3sf, J@75D:<@80H               => yˈāḏᵊʕˈā                  < =                           # qamets: no need to suppress qatan
         orig                 J@75D:<@80H
         trim                 j@75d:<@80h
         accents              j!@d:<!@h
@@ -8540,7 +8540,7 @@
         cleanup              yˈāḏᵊʕˈā
 
 
-263 Psalmi 82:5         324784 verb qal perf 3p-, J@75D:<63W.05             => yˈāḏᵊʕˌû                  < ~ yˈāḏᵊʕˌˈû                 # qamets: no need to suppress qatan
+263 Psalmi 82:5         324785 verb qal perf 3p-, J@75D:<63W.05             => yˈāḏᵊʕˌû                  < ~ yˈāḏᵊʕˌˈû                 # qamets: no need to suppress qatan
         orig                 J@75D:<63W.
         trim                 j@75d:<63w.
         accents              j!@d:</w.
@@ -8695,7 +8695,7 @@
         cleanup              yˈāḵᵊlˌû
 
 
-268 Psalmi 44:4         317637 verb qal perf 3p-, J@71R:CW.                 => yˌārᵊšû                   < =                           # qamets: no need to suppress qatan
+268 Psalmi 44:4         317638 verb qal perf 3p-, J@71R:CW.                 => yˌārᵊšû                   < =                           # qamets: no need to suppress qatan
         orig                 J@71R:CW.
         trim                 j@71r:cw.
         accents              j/@r:cw.
@@ -8755,7 +8755,7 @@
         cleanup              yˌārᵊʕā
 
 
-270 Iob 24:16           342075 verb qal perf 3p-, J@71D:<W.                 => yˌāḏᵊʕû                   < =                           # qamets: no need to suppress qatan
+270 Iob 24:16           342076 verb qal perf 3p-, J@71D:<W.                 => yˌāḏᵊʕû                   < =                           # qamets: no need to suppress qatan
         orig                 J@71D:<W.
         trim                 j@71d:<w.
         accents              j/@d:<w.
@@ -8785,7 +8785,7 @@
         cleanup              yˌāḏᵊʕû
 
 
-271 Proverbia 9:13      349274 verb qal perf 3sf, J@71D:<@H                 => yˌāḏᵊʕā                   < =                           # qamets: no need to suppress qatan
+271 Proverbia 9:13      349275 verb qal perf 3sf, J@71D:<@H                 => yˌāḏᵊʕā                   < =                           # qamets: no need to suppress qatan
         orig                 J@71D:<@H
         trim                 j@71d:<@h
         accents              j/@d:<@h
@@ -8815,7 +8815,7 @@
         cleanup              yˌāḏᵊʕā
 
 
-272 Psalmi 36:13        316200 verb qal perf 3p-, J@71K:LW.                 => yˌāḵᵊlû                   < =                           # qamets: no need to suppress qatan
+272 Psalmi 36:13        316201 verb qal perf 3p-, J@71K:LW.                 => yˌāḵᵊlû                   < =                           # qamets: no need to suppress qatan
         orig                 J@71K:LW.
         trim                 j@71k:lw.
         accents              j/@k:lw.
@@ -8845,7 +8845,7 @@
         cleanup              yˌāḵᵊlû
 
 
-273 Zephania 2:9        303618 verb qal impf 3pm,+m J:B@Z.80W.M               => yᵊvāzzˈûm                 < =                           # qamets: gadol maintained because of verb paradigm
+273 Zephania 2:9        303619 verb qal impf 3pm,+m J:B@Z.80W.M               => yᵊvāzzˈûm                 < =                           # qamets: gadol maintained because of verb paradigm
         orig                 J:B@Z.80W.M
         trim                 j:b@z.80w.m
         accents              j:b@z.!w.m
@@ -8876,7 +8876,7 @@
         cleanup              yᵊvāzzˈûm
 
 
-274 Habakuk 2:8         302588 verb qal impf 3pm,+k@ J:C@L.73W.K@              => yᵊšāllˌûḵā                < =                           # qamets: gadol maintained because of verb paradigm
+274 Habakuk 2:8         302589 verb qal impf 3pm,+k@ J:C@L.73W.K@              => yᵊšāllˌûḵā                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 J:C@L.73W.K@
         trim                 j:c@l.73w.k@
         accents              j:c@l./w.k@
@@ -8906,7 +8906,7 @@
         cleanup              yᵊšāllˌûḵā
 
 
-275 Proverbia 31:16     355630 verb qal perf 3sf, Z@M:M@74H                 => zāmᵊmˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+275 Proverbia 31:16     355631 verb qal perf 3sf, Z@M:M@74H                 => zāmᵊmˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 Z@M:M@74H
         trim                 z@m:m@74h
         accents              z@m:m!@h
@@ -8937,7 +8937,7 @@
         cleanup              zāmᵊmˈā
 
 
-276 Proverbia 23:22     353203 verb qal perf 3sf, Z@Q:N@71H                 => zāqᵊnˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+276 Proverbia 23:22     353204 verb qal perf 3sf, Z@Q:N@71H                 => zāqᵊnˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 Z@Q:N@71H
         trim                 z@q:n@71h
         accents              z@q:n/@h
@@ -9150,7 +9150,7 @@
         cleanup              zāvᵊḥˌû
 
 
-283 Nehemia 9:17        388116 verb qal perf 3p-, Z@K:R70W.                 => zāḵᵊrˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+283 Nehemia 9:17        388117 verb qal perf 3p-, Z@K:R70W.                 => zāḵᵊrˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 Z@K:R70W.
         trim                 z@k:r70w.
         accents              z@k:r!w.
@@ -9211,7 +9211,7 @@
         cleanup              zāḵᵊrˌû
 
 
-285 Hosea 7:9           292478 verb qal perf 3sf, Z@74R:Q@H                 => zˈārᵊqā                   < =                           # qamets: no need to suppress qatan
+285 Hosea 7:9           292479 verb qal perf 3sf, Z@74R:Q@H                 => zˈārᵊqā                   < =                           # qamets: no need to suppress qatan
         orig                 Z@74R:Q@H
         trim                 z@74r:q@h
         accents              z!@r:q@h
@@ -9242,7 +9242,7 @@
         cleanup              zˈārᵊqā
 
 
-286 Nahum 3:17          302127 verb qal perf 3sf, Z@75R:X@H03               => zˈārᵊḥā                   < =                           # qamets: no need to suppress qatan
+286 Nahum 3:17          302128 verb qal perf 3sf, Z@75R:X@H03               => zˈārᵊḥā                   < =                           # qamets: no need to suppress qatan
         orig                 Z@75R:X@H03
         trim                 z@75r:x@h03
         accents              z!@r:x@h
@@ -9304,7 +9304,7 @@
         cleanup              zˈāḵᵊrû
 
 
-288 Threni 1:9          363672 verb qal perf 3sf, Z@75K:R@H03               => zˈāḵᵊrā                   < =                           # qamets: no need to suppress qatan
+288 Threni 1:9          363673 verb qal perf 3sf, Z@75K:R@H03               => zˈāḵᵊrā                   < =                           # qamets: no need to suppress qatan
         orig                 Z@75K:R@H03
         trim                 z@75k:r@h03
         accents              z!@k:r@h
@@ -9335,7 +9335,7 @@
         cleanup              zˈāḵᵊrā
 
 
-289 Threni 1:7          363620 verb qal perf 3sf, Z@75K:R@74H               => zˈāḵᵊrˈā                  < =                           # qamets: no need to suppress qatan
+289 Threni 1:7          363621 verb qal perf 3sf, Z@75K:R@74H               => zˈāḵᵊrˈā                  < =                           # qamets: no need to suppress qatan
         orig                 Z@75K:R@74H
         trim                 z@75k:r@74h
         accents              z!@k:r!@h
@@ -9458,7 +9458,7 @@
         cleanup              śāmᵊḥˌû
 
 
-293 Hosea 13:6          293772 verb qal perf 3p-, F@B:<73W.                 => śāvᵊʕˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+293 Hosea 13:6          293773 verb qal perf 3p-, F@B:<73W.                 => śāvᵊʕˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 F@B:<73W.
         trim                 f@b:<73w.
         accents              f@b:</w.
@@ -9488,7 +9488,7 @@
         cleanup              śāvᵊʕˌû
 
 
-294 Psalmi 123:4        332895 verb qal perf 3sf, F@75B:<@H&                => śˈāvᵊʕā-                  < ~ śˈāvᵊʕā                   # qamets: no need to suppress qatan
+294 Psalmi 123:4        332896 verb qal perf 3sf, F@75B:<@H&                => śˈāvᵊʕā-                  < ~ śˈāvᵊʕā                   # qamets: no need to suppress qatan
         orig                 F@75B:<@H&
         trim                 f@75b:<@h&
         accents              f!@b:<@h&
@@ -9611,7 +9611,7 @@
         cleanup              šāfᵊṭˌû
 
 
-298 Ezechiel 26:12      277591 verb qal perf 3p-, C@L:L74W.                 => šālᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+298 Ezechiel 26:12      277592 verb qal perf 3p-, C@L:L74W.                 => šālᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@L:L74W.
         trim                 c@l:l74w.
         accents              c@l:l!w.
@@ -9672,7 +9672,7 @@
         cleanup              šālᵊmˌû
 
 
-300 Iob 1:4             336083 verb qal perf 3p-, C@L:X81W.                 => šālᵊḥˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+300 Iob 1:4             336084 verb qal perf 3p-, C@L:X81W.                 => šālᵊḥˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@L:X81W.
         trim                 c@l:x81w.
         accents              c@l:x!w.
@@ -9794,7 +9794,7 @@
         cleanup              šālᵊḥˌā
 
 
-304 Nehemia 5:15        385772 verb qal perf 3p-, C@L:V74W.                 => šālᵊṭˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+304 Nehemia 5:15        385773 verb qal perf 3p-, C@L:V74W.                 => šālᵊṭˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@L:V74W.
         trim                 c@l:v74w.
         accents              c@l:v!w.
@@ -9856,7 +9856,7 @@
         cleanup              šāmᵊmˈû
 
 
-306 Ezechiel 26:16      277692 verb qal perf 3p-, C@M:M73W.                 => šāmᵊmˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+306 Ezechiel 26:16      277693 verb qal perf 3p-, C@M:M73W.                 => šāmᵊmˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@M:M73W.
         trim                 c@m:m73w.
         accents              c@m:m/w.
@@ -10100,7 +10100,7 @@
         cleanup              šāmᵊṭˌû
 
 
-314 Psalmi 64:4         320731 verb qal perf 3p-, C@N:N74W.                 => šānᵊnˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+314 Psalmi 64:4         320732 verb qal perf 3p-, C@N:N74W.                 => šānᵊnˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@N:N74W.
         trim                 c@n:n74w.
         accents              c@n:n!w.
@@ -10131,7 +10131,7 @@
         cleanup              šānᵊnˈû
 
 
-315 Amos 9:5            297916 verb qal perf 3sf, C@Q:<@73H                 => šāqᵊʕˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+315 Amos 9:5            297917 verb qal perf 3sf, C@Q:<@73H                 => šāqᵊʕˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@Q:<@73H
         trim                 c@q:<@73h
         accents              c@q:</@h
@@ -10161,7 +10161,7 @@
         cleanup              šāqᵊʕˌā
 
 
-316 Chronica_II 14:5    413556 verb qal perf 3sf, C@Q:V@74H                 => šāqᵊṭˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+316 Chronica_II 14:5    413557 verb qal perf 3sf, C@Q:V@74H                 => šāqᵊṭˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@Q:V@74H
         trim                 c@q:v@74h
         accents              c@q:v!@h
@@ -10222,7 +10222,7 @@
         cleanup              šāqᵊṭˌā
 
 
-318 Ezechiel 27:36      278346 verb qal perf 3p-, C@R:Q73W.                 => šārᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+318 Ezechiel 27:36      278347 verb qal perf 3p-, C@R:Q73W.                 => šārᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@R:Q73W.
         trim                 c@r:q73w.
         accents              c@r:q/w.
@@ -10282,7 +10282,7 @@
         cleanup              šārᵊṣˌû
 
 
-320 Ezechiel 17:23      272647 verb qal perf 3p-, C@K:N74W.                 => šāḵᵊnˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+320 Ezechiel 17:23      272648 verb qal perf 3p-, C@K:N74W.                 => šāḵᵊnˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@K:N74W.
         trim                 c@k:n74w.
         accents              c@k:n!w.
@@ -10313,7 +10313,7 @@
         cleanup              šāḵᵊnˈû
 
 
-321 Sacharia 8:8        307086 verb qal perf 3p-, C@K:N73W.                 => šāḵᵊnˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+321 Sacharia 8:8        307087 verb qal perf 3p-, C@K:N73W.                 => šāḵᵊnˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@K:N73W.
         trim                 c@k:n73w.
         accents              c@k:n/w.
@@ -10404,7 +10404,7 @@
         cleanup              šāḵᵊḥˌû
 
 
-324 Hosea 2:15          291374 verb qal perf 3sf, C@K:X@73H                 => šāḵᵊḥˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+324 Hosea 2:15          291375 verb qal perf 3sf, C@K:X@73H                 => šāḵᵊḥˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 C@K:X@73H
         trim                 c@k:x@73h
         accents              c@k:x/@h
@@ -10434,7 +10434,7 @@
         cleanup              šāḵᵊḥˌā
 
 
-325 Psalmi 16:6         312419 verb qal perf 3sf, C@75P:R@71H               => šˈāfᵊrˌā                  < =                           # qamets: no need to suppress qatan
+325 Psalmi 16:6         312420 verb qal perf 3sf, C@75P:R@71H               => šˈāfᵊrˌā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75P:R@71H
         trim                 c@75p:r@71h
         accents              c!@p:r/@h
@@ -10527,7 +10527,7 @@
         cleanup              šˈālᵊḥû
 
 
-328 Proverbia 9:3       349177 verb qal perf 3sf, C@75L:X@74H               => šˈālᵊḥˈā                  < =                           # qamets: no need to suppress qatan
+328 Proverbia 9:3       349178 verb qal perf 3sf, C@75L:X@74H               => šˈālᵊḥˈā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75L:X@74H
         trim                 c@75l:x@74h
         accents              c!@l:x!@h
@@ -10558,7 +10558,7 @@
         cleanup              šˈālᵊḥˈā
 
 
-329 Esther 9:16         369538 verb qal perf 3p-, C@75L:X73W.               => šˈālᵊḥˌû                  < =                           # qamets: no need to suppress qatan
+329 Esther 9:16         369539 verb qal perf 3p-, C@75L:X73W.               => šˈālᵊḥˌû                  < =                           # qamets: no need to suppress qatan
         orig                 C@75L:X73W.
         trim                 c@75l:x73w.
         accents              c!@l:x/w.
@@ -10682,7 +10682,7 @@
         cleanup              šˈāmᵊrˈû
 
 
-333 Psalmi 119:167      332569 verb qal perf 3sf, C@75M:R@74H               => šˈāmᵊrˈā                  < =                           # qamets: no need to suppress qatan
+333 Psalmi 119:167      332570 verb qal perf 3sf, C@75M:R@74H               => šˈāmᵊrˈā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75M:R@74H
         trim                 c@75m:r@74h
         accents              c!@m:r!@h
@@ -10713,7 +10713,7 @@
         cleanup              šˈāmᵊrˈā
 
 
-334 Iob 10:12           338687 verb qal perf 3sf, C@75M:R@71H               => šˈāmᵊrˌā                  < =                           # qamets: no need to suppress qatan
+334 Iob 10:12           338688 verb qal perf 3sf, C@75M:R@71H               => šˈāmᵊrˌā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75M:R@71H
         trim                 c@75m:r@71h
         accents              c!@m:r/@h
@@ -10806,7 +10806,7 @@
         cleanup              šˈāmᵊʕā
 
 
-337 Chronica_II 9:1     411022 verb qal perf 3sf, C@75M:<@H02               => šˈāmᵊʕā                   < ~ šˈāmᵊʕāˈ                  # qamets: no need to suppress qatan
+337 Chronica_II 9:1     411023 verb qal perf 3sf, C@75M:<@H02               => šˈāmᵊʕā                   < ~ šˈāmᵊʕāˈ                  # qamets: no need to suppress qatan
         orig                 C@75M:<@H02
         trim                 c@75m:<@h02
         accents              c!@m:<@h!
@@ -10899,7 +10899,7 @@
         cleanup              šˈāmᵊʕˌû
 
 
-340 Iob 13:1            339248 verb qal perf 3sf, C@75M:<@71H               => šˈāmᵊʕˌā                  < =                           # qamets: no need to suppress qatan
+340 Iob 13:1            339249 verb qal perf 3sf, C@75M:<@71H               => šˈāmᵊʕˌā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75M:<@71H
         trim                 c@75m:<@71h
         accents              c!@m:</@h
@@ -10930,7 +10930,7 @@
         cleanup              šˈāmᵊʕˌā
 
 
-341 Chronica_I 13:9     398643 verb qal perf 3p-, C@75M:V73W.               => šˈāmᵊṭˌû                  < =                           # qamets: no need to suppress qatan
+341 Chronica_I 13:9     398644 verb qal perf 3p-, C@75M:V73W.               => šˈāmᵊṭˌû                  < =                           # qamets: no need to suppress qatan
         orig                 C@75M:V73W.
         trim                 c@75m:v73w.
         accents              c!@m:v/w.
@@ -10961,7 +10961,7 @@
         cleanup              šˈāmᵊṭˌû
 
 
-342 Threni 2:15         364264 verb qal perf 3p-, C@75R:QW.03               => šˈārᵊqû                   < =                           # qamets: no need to suppress qatan
+342 Threni 2:15         364265 verb qal perf 3p-, C@75R:QW.03               => šˈārᵊqû                   < =                           # qamets: no need to suppress qatan
         orig                 C@75R:QW.03
         trim                 c@75r:qw.03
         accents              c!@r:qw.
@@ -11054,7 +11054,7 @@
         cleanup              šˈāvᵊrû
 
 
-345 Psalmi 69:21        321820 verb qal perf 3sf, C@75B:R@71H               => šˈāvᵊrˌā                  < =                           # qamets: no need to suppress qatan
+345 Psalmi 69:21        321821 verb qal perf 3sf, C@75B:R@71H               => šˈāvᵊrˌā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75B:R@71H
         trim                 c@75b:r@71h
         accents              c!@b:r/@h
@@ -11116,7 +11116,7 @@
         cleanup              šˈāḵᵊnû
 
 
-347 Psalmi 120:6        332688 verb qal perf 3sf, C@75K:N@H&                => šˈāḵᵊnā-                  < ~ šˈāḵᵊnā                   # qamets: no need to suppress qatan
+347 Psalmi 120:6        332689 verb qal perf 3sf, C@75K:N@H&                => šˈāḵᵊnā-                  < ~ šˈāḵᵊnā                   # qamets: no need to suppress qatan
         orig                 C@75K:N@H&
         trim                 c@75k:n@h&
         accents              c!@k:n@h&
@@ -11147,7 +11147,7 @@
         cleanup              šˈāḵᵊnā-
 
 
-348 Psalmi 94:17        326896 verb qal perf 3sf, C@75K:N@73H               => šˈāḵᵊnˌā                  < =                           # qamets: no need to suppress qatan
+348 Psalmi 94:17        326897 verb qal perf 3sf, C@75K:N@73H               => šˈāḵᵊnˌā                  < =                           # qamets: no need to suppress qatan
         orig                 C@75K:N@73H
         trim                 c@75k:n@73h
         accents              c!@k:n/@h
@@ -11209,7 +11209,7 @@
         cleanup              šˈāḵᵊrˈû
 
 
-350 Psalmi 69:3         321637 verb qal perf 3sf,+nij C:V@P@75T:NIJ00           => šᵊṭāfˈāṯᵊnî               < =                           # qamets: no need to suppress qatan
+350 Psalmi 69:3         321638 verb qal perf 3sf,+nij C:V@P@75T:NIJ00           => šᵊṭāfˈāṯᵊnî               < =                           # qamets: no need to suppress qatan
         orig                 C:V@P@75T:NIJ
         trim                 c:v@p@75t:nij
         accents              c:v@p!@t:nij
@@ -11361,7 +11361,7 @@
         cleanup              ʔinnāqᵊmˌā
 
 
-355 Psalmi 69:15        321760 verb nif impf 1s-, >IN.@Y:L@71H              => ʔinnāṣᵊlˌā                < =                           # qamets: gadol maintained because of verb paradigm
+355 Psalmi 69:15        321761 verb nif impf 1s-, >IN.@Y:L@71H              => ʔinnāṣᵊlˌā                < =                           # qamets: gadol maintained because of verb paradigm
         orig                 >IN.@Y:L@71H
         trim                 >in.@y:l@71h
         accents              >in.@y:l/@h
@@ -11574,7 +11574,7 @@
         cleanup              ʔāmᵊrˌā
 
 
-362 Psalmi 142:7        334889 verb qal perf 3p-, >@M:Y74W.                 => ʔāmᵊṣˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+362 Psalmi 142:7        334890 verb qal perf 3p-, >@M:Y74W.                 => ʔāmᵊṣˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 >@M:Y74W.
         trim                 >@m:y74w.
         accents              >@m:y!w.
@@ -11756,7 +11756,7 @@
         cleanup              ʔāvᵊlˌā
 
 
-368 Proverbia 6:8       348307 verb qal perf 3sf, >@G:R@71H                 => ʔāḡᵊrˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+368 Proverbia 6:8       348308 verb qal perf 3sf, >@G:R@71H                 => ʔāḡᵊrˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 >@G:R@71H
         trim                 >@g:r@71h
         accents              >@g:r/@h
@@ -12094,7 +12094,7 @@
         cleanup              ʔˈāmᵊrˌā
 
 
-379 Psalmi 12:5         312083 verb qal perf 3p-, >@75M:R63W.05             => ʔˈāmᵊrˌû                  < ~ ʔˈāmᵊrˌˈû                 # qamets: no need to suppress qatan
+379 Psalmi 12:5         312084 verb qal perf 3p-, >@75M:R63W.05             => ʔˈāmᵊrˌû                  < ~ ʔˈāmᵊrˌˈû                 # qamets: no need to suppress qatan
         orig                 >@75M:R63W.
         trim                 >@75m:r63w.
         accents              >!@m:r/w.
@@ -12156,7 +12156,7 @@
         cleanup              ʔˈāsᵊrˈā
 
 
-381 Joel 1:9            294173 verb qal perf 3p-, >@75B:LW.03               => ʔˈāvᵊlû                   < =                           # qamets: no need to suppress qatan
+381 Joel 1:9            294174 verb qal perf 3p-, >@75B:LW.03               => ʔˈāvᵊlû                   < =                           # qamets: no need to suppress qatan
         orig                 >@75B:LW.03
         trim                 >@75b:lw.03
         accents              >!@b:lw.
@@ -12249,7 +12249,7 @@
         cleanup              ʔˈāzᵊlaṯ
 
 
-384 Iob 14:11           339605 verb qal perf 3p-, >@75Z:LW.&                => ʔˈāzᵊlû-                  < ~ ʔˈāzᵊlû                   # qamets: no need to suppress qatan
+384 Iob 14:11           339606 verb qal perf 3p-, >@75Z:LW.&                => ʔˈāzᵊlû-                  < ~ ʔˈāzᵊlû                   # qamets: no need to suppress qatan
         orig                 >@75Z:LW.&
         trim                 >@75z:lw.&
         accents              >!@z:lw.&
@@ -12311,7 +12311,7 @@
         cleanup              ʔˈāšᵊmˌā
 
 
-386 Threni 4:7          365033 verb qal perf 3p-, >@70D:MW.                 => ʔˈāḏᵊmû                   < =                           # qamets: no need to suppress qatan
+386 Threni 4:7          365034 verb qal perf 3p-, >@70D:MW.                 => ʔˈāḏᵊmû                   < =                           # qamets: no need to suppress qatan
         orig                 >@70D:MW.
         trim                 >@70d:mw.
         accents              >!@d:mw.
@@ -12466,7 +12466,7 @@
         cleanup              ʔˈāḵᵊlˈā
 
 
-391 Proverbia 30:15     355284 verb qal perf 3p-, >@71M:RW.                 => ʔˌāmᵊrû                   < =                           # qamets: no need to suppress qatan
+391 Proverbia 30:15     355285 verb qal perf 3p-, >@71M:RW.                 => ʔˌāmᵊrû                   < =                           # qamets: no need to suppress qatan
         orig                 >@71M:RW.
         trim                 >@71m:rw.
         accents              >/@m:rw.
@@ -12496,7 +12496,7 @@
         cleanup              ʔˌāmᵊrû
 
 
-392 Ezechiel 26:2       277405 verb qal perf 3sf, >@63M:R@H                 => ʔˌāmᵊrā                   < =                           # qamets: no need to suppress qatan
+392 Ezechiel 26:2       277406 verb qal perf 3sf, >@63M:R@H                 => ʔˌāmᵊrā                   < =                           # qamets: no need to suppress qatan
         orig                 >@63M:R@H
         trim                 >@63m:r@h
         accents              >/@m:r@h
@@ -12556,7 +12556,7 @@
         cleanup              ʔˌāzᵊrû
 
 
-394 Sacharia 12:6       308485 verb qal perf 3p-, >@63K:L61W.               => ʔˌāḵᵊlˈû                  < =                           # qamets: no need to suppress qatan
+394 Sacharia 12:6       308486 verb qal perf 3p-, >@63K:L61W.               => ʔˌāḵᵊlˈû                  < =                           # qamets: no need to suppress qatan
         orig                 >@63K:L61W.
         trim                 >@63k:l61w.
         accents              >/@k:l!w.
@@ -12587,7 +12587,7 @@
         cleanup              ʔˌāḵᵊlˈû
 
 
-395 Psalmi 69:10        321705 verb qal perf 3sf,+nij >:AK@L@92T:NIJ            => ʔᵃḵālˈāṯᵊnî               < =                           # qamets: no need to suppress qatan
+395 Psalmi 69:10        321706 verb qal perf 3sf,+nij >:AK@L@92T:NIJ            => ʔᵃḵālˈāṯᵊnî               < =                           # qamets: no need to suppress qatan
         orig                 >:AK@L@92T:NIJ
         trim                 >:ak@l@92t:nij
         accents              >:ak@l!@t:nij
@@ -12618,7 +12618,7 @@
         cleanup              ʔᵃḵālˈāṯᵊnî
 
 
-396 Psalmi 127:1        333129 verb qal perf 3p-, <@M:L74W.                 => ʕāmᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+396 Psalmi 127:1        333130 verb qal perf 3p-, <@M:L74W.                 => ʕāmᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@M:L74W.
         trim                 <@m:l74w.
         accents              <@m:l!w.
@@ -12649,7 +12649,7 @@
         cleanup              ʕāmᵊlˈû
 
 
-397 Psalmi 92:6         326594 verb qal perf 3p-, <@M:Q71W.                 => ʕāmᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+397 Psalmi 92:6         326595 verb qal perf 3p-, <@M:Q71W.                 => ʕāmᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@M:Q71W.
         trim                 <@m:q71w.
         accents              <@m:q/w.
@@ -12831,7 +12831,7 @@
         cleanup              ʕāvᵊrˌā
 
 
-403 Joel 1:17           294291 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+403 Joel 1:17           294292 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@B:C74W.
         trim                 <@b:c74w.
         accents              <@b:c!w.
@@ -12862,7 +12862,7 @@
         cleanup              ʕāvᵊšˈû
 
 
-404 Chronica_I 12:22    398090 verb qal perf 3p-, <@Z:R70W.                 => ʕāzᵊrˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+404 Chronica_I 12:22    398091 verb qal perf 3p-, <@Z:R70W.                 => ʕāzᵊrˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@Z:R70W.
         trim                 <@z:r70w.
         accents              <@z:r!w.
@@ -12893,7 +12893,7 @@
         cleanup              ʕāzᵊrˈû
 
 
-405 Sacharia 1:15       305300 verb qal perf 3p-, <@Z:R71W.                 => ʕāzᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+405 Sacharia 1:15       305301 verb qal perf 3p-, <@Z:R71W.                 => ʕāzᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@Z:R71W.
         trim                 <@z:r71w.
         accents              <@z:r/w.
@@ -12923,7 +12923,7 @@
         cleanup              ʕāzᵊrˌû
 
 
-406 Iob 33:4            344060 verb qal perf 3sf,+nij <@F@92T:NIJ               => ʕāśˈāṯᵊnî                 < =                           # qamets: no need to suppress qatan
+406 Iob 33:4            344061 verb qal perf 3sf,+nij <@F@92T:NIJ               => ʕāśˈāṯᵊnî                 < =                           # qamets: no need to suppress qatan
         orig                 <@F@92T:NIJ
         trim                 <@f@92t:nij
         accents              <@f!@t:nij
@@ -12984,7 +12984,7 @@
         cleanup              ʕāśˌāṯ
 
 
-408 Ezechiel 22:29      275669 verb qal perf 3p-, <@C:Q73W.                 => ʕāšᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+408 Ezechiel 22:29      275670 verb qal perf 3p-, <@C:Q73W.                 => ʕāšᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@C:Q73W.
         trim                 <@c:q73w.
         accents              <@c:q/w.
@@ -13014,7 +13014,7 @@
         cleanup              ʕāšᵊqˌû
 
 
-409 Psalmi 31:10        315026 verb qal perf 3sf, <@C:C@73H                 => ʕāšᵊšˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+409 Psalmi 31:10        315027 verb qal perf 3sf, <@C:C@73H                 => ʕāšᵊšˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@C:C@73H
         trim                 <@c:c@73h
         accents              <@c:c/@h
@@ -13105,7 +13105,7 @@
         cleanup              ʕāṣᵊmˌû
 
 
-412 Iob 29:9            342927 verb qal perf 3p-, <@Y:R74W.                 => ʕāṣᵊrˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+412 Iob 29:9            342928 verb qal perf 3p-, <@Y:R74W.                 => ʕāṣᵊrˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@Y:R74W.
         trim                 <@y:r74w.
         accents              <@y:r!w.
@@ -13136,7 +13136,7 @@
         cleanup              ʕāṣᵊrˈû
 
 
-413 Chronica_II 20:37   416795 verb qal perf 3p-, <@Y:R73W.                 => ʕāṣᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+413 Chronica_II 20:37   416796 verb qal perf 3p-, <@Y:R73W.                 => ʕāṣᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@Y:R73W.
         trim                 <@y:r73w.
         accents              <@y:r/w.
@@ -13166,7 +13166,7 @@
         cleanup              ʕāṣᵊrˌû
 
 
-414 Proverbia 16:26     351246 verb qal perf 3sf, <@74M:L@H                 => ʕˈāmᵊlā                   < =                           # qamets: no need to suppress qatan
+414 Proverbia 16:26     351247 verb qal perf 3sf, <@74M:L@H                 => ʕˈāmᵊlā                   < =                           # qamets: no need to suppress qatan
         orig                 <@74M:L@H
         trim                 <@74m:l@h
         accents              <!@m:l@h
@@ -13228,7 +13228,7 @@
         cleanup              ʕˈāvᵊrû
 
 
-416 Psalmi 103:16       328142 verb qal perf 3sf, <@75B:R@H&                => ʕˈāvᵊrā-                  < ~ ʕˈāvᵊrā                   # qamets: no need to suppress qatan
+416 Psalmi 103:16       328143 verb qal perf 3sf, <@75B:R@H&                => ʕˈāvᵊrā-                  < ~ ʕˈāvᵊrā                   # qamets: no need to suppress qatan
         orig                 <@75B:R@H&
         trim                 <@75b:r@h&
         accents              <!@b:r@h&
@@ -13290,7 +13290,7 @@
         cleanup              ʕˈāvᵊrˈû
 
 
-418 Ezechiel 22:29      275655 verb qal perf 3p-, <@74C:QW.                 => ʕˈāšᵊqû                   < =                           # qamets: no need to suppress qatan
+418 Ezechiel 22:29      275656 verb qal perf 3p-, <@74C:QW.                 => ʕˈāšᵊqû                   < =                           # qamets: no need to suppress qatan
         orig                 <@74C:QW.
         trim                 <@74c:qw.
         accents              <!@c:qw.
@@ -13321,7 +13321,7 @@
         cleanup              ʕˈāšᵊqû
 
 
-419 Psalmi 6:8          311226 verb qal perf 3sf, <@75C:C@74H               => ʕˈāšᵊšˈā                  < =                           # qamets: no need to suppress qatan
+419 Psalmi 6:8          311227 verb qal perf 3sf, <@75C:C@74H               => ʕˈāšᵊšˈā                  < =                           # qamets: no need to suppress qatan
         orig                 <@75C:C@74H
         trim                 <@75c:c@74h
         accents              <!@c:c!@h
@@ -13352,7 +13352,7 @@
         cleanup              ʕˈāšᵊšˈā
 
 
-420 Iob 30:25           343324 verb qal perf 3sf, <@75G:M@71H               => ʕˈāḡᵊmˌā                  < =                           # qamets: no need to suppress qatan
+420 Iob 30:25           343325 verb qal perf 3sf, <@75G:M@71H               => ʕˈāḡᵊmˌā                  < =                           # qamets: no need to suppress qatan
         orig                 <@75G:M@71H
         trim                 <@75g:m@71h
         accents              <!@g:m/@h
@@ -13444,7 +13444,7 @@
         cleanup              ʕˌāvᵊrû
 
 
-423 Psalmi 22:5         313599 verb qal perf 3p-, 11B.@V:X81W.              => ˈbāṭᵊḥˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+423 Psalmi 22:5         313600 verb qal perf 3p-, 11B.@V:X81W.              => ˈbāṭᵊḥˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11B.@V:X81W.
         trim                 11b.@v:x81w.
         accents              !b.@v:x!w.
@@ -13475,7 +13475,7 @@
         cleanup              ˈbāṭᵊḥˈû
 
 
-424 Iob 9:25            338482 verb qal perf 3p-, 11B.@75R:X81W.            => ˈbˈārᵊḥˈû                 < =                           # qamets: no need to suppress qatan
+424 Iob 9:25            338483 verb qal perf 3p-, 11B.@75R:X81W.            => ˈbˈārᵊḥˈû                 < =                           # qamets: no need to suppress qatan
         orig                 11B.@75R:X81W.
         trim                 11b.@75r:x81w.
         accents              !b.!@r:x!w.
@@ -13506,7 +13506,7 @@
         cleanup              ˈbˈārᵊḥˈû
 
 
-425 Proverbia 31:13     355599 verb qal perf 3sf, 13D.@R:C@H                => ˈdārᵊšā                   < =                           # qamets: gadol maintained because of verb paradigm
+425 Proverbia 31:13     355600 verb qal perf 3sf, 13D.@R:C@H                => ˈdārᵊšā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13D.@R:C@H
         trim                 13d.@r:c@h
         accents              !d.@r:c@h
@@ -13537,7 +13537,7 @@
         cleanup              ˈdārᵊšā
 
 
-426 Iob 24:2            341921 verb qal perf 3p-, 11G.@Z:L81W.              => ˈgāzᵊlˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+426 Iob 24:2            341922 verb qal perf 3p-, 11G.@Z:L81W.              => ˈgāzᵊlˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11G.@Z:L81W.
         trim                 11g.@z:l81w.
         accents              !g.@z:l!w.
@@ -13568,7 +13568,7 @@
         cleanup              ˈgāzᵊlˈû
 
 
-427 Psalmi 2:10         310812 verb nif impv 2pm, 11HIW.@S:R81W.            => ˈhiwwāsᵊrˈû               < =                           # qamets: gadol maintained because of verb paradigm
+427 Psalmi 2:10         310813 verb nif impv 2pm, 11HIW.@S:R81W.            => ˈhiwwāsᵊrˈû               < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11HIW.@S:R81W.
         trim                 11hiw.@s:r81w.
         accents              !hiw.@s:r!w.
@@ -13599,7 +13599,7 @@
         cleanup              ˈhiwwāsᵊrˈû
 
 
-428 Psalmi 107:12       329552 verb qal perf 3p-, 11K.@C:L81W.              => ˈkāšᵊlˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+428 Psalmi 107:12       329553 verb qal perf 3p-, 11K.@C:L81W.              => ˈkāšᵊlˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11K.@C:L81W.
         trim                 11k.@c:l81w.
         accents              !k.@c:l!w.
@@ -13630,7 +13630,7 @@
         cleanup              ˈkāšᵊlˈû
 
 
-429 Psalmi 36:13        316194 verb qal perf 3p-, 13N@P:LW.                 => ˈnāfᵊlû                   < =                           # qamets: gadol maintained because of verb paradigm
+429 Psalmi 36:13        316195 verb qal perf 3p-, 13N@P:LW.                 => ˈnāfᵊlû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13N@P:LW.
         trim                 13n@p:lw.
         accents              !n@p:lw.
@@ -13661,7 +13661,7 @@
         cleanup              ˈnāfᵊlû
 
 
-430 Psalmi 78:22        323708 verb qal perf 3p-, 11B@V:X81W.               => ˈvāṭᵊḥˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+430 Psalmi 78:22        323709 verb qal perf 3p-, 11B@V:X81W.               => ˈvāṭᵊḥˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11B@V:X81W.
         trim                 11b@v:x81w.
         accents              !b@v:x!w.
@@ -13692,7 +13692,7 @@
         cleanup              ˈvāṭᵊḥˈû
 
 
-431 Proverbia 4:19      347944 verb qal perf 3p-, 11J@D:<81W.               => ˈyāḏᵊʕˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+431 Proverbia 4:19      347945 verb qal perf 3p-, 11J@D:<81W.               => ˈyāḏᵊʕˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11J@D:<81W.
         trim                 11j@d:<81w.
         accents              !j@d:<!w.
@@ -13723,7 +13723,7 @@
         cleanup              ˈyāḏᵊʕˈû
 
 
-432 Psalmi 106:7        329017 verb qal perf 3p-, 13Z@K:RW.                 => ˈzāḵᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
+432 Psalmi 106:7        329018 verb qal perf 3p-, 13Z@K:RW.                 => ˈzāḵᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13Z@K:RW.
         trim                 13z@k:rw.
         accents              !z@k:rw.
@@ -13754,7 +13754,7 @@
         cleanup              ˈzāḵᵊrû
 
 
-433 Psalmi 78:10        323562 verb qal perf 3p-, 13C@M:RW.                 => ˈšāmᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
+433 Psalmi 78:10        323563 verb qal perf 3p-, 13C@M:RW.                 => ˈšāmᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13C@M:RW.
         trim                 13c@m:rw.
         accents              !c@m:rw.
@@ -13785,7 +13785,7 @@
         cleanup              ˈšāmᵊrû
 
 
-434 Iob 29:11           342945 verb qal perf 3sf, 13C@M:<@H                 => ˈšāmᵊʕā                   < =                           # qamets: gadol maintained because of verb paradigm
+434 Iob 29:11           342946 verb qal perf 3sf, 13C@M:<@H                 => ˈšāmᵊʕā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13C@M:<@H
         trim                 13c@m:<@h
         accents              !c@m:<@h
@@ -13816,7 +13816,7 @@
         cleanup              ˈšāmᵊʕā
 
 
-435 Psalmi 106:25       329195 verb qal perf 3p-, 11C@M:<81W.               => ˈšāmᵊʕˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+435 Psalmi 106:25       329196 verb qal perf 3p-, 11C@M:<81W.               => ˈšāmᵊʕˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11C@M:<81W.
         trim                 11c@m:<81w.
         accents              !c@m:<!w.
@@ -13847,7 +13847,7 @@
         cleanup              ˈšāmᵊʕˈû
 
 
-436 Psalmi 106:21       329148 verb qal perf 3p-, 13C@K:XW.                 => ˈšāḵᵊḥû                   < =                           # qamets: gadol maintained because of verb paradigm
+436 Psalmi 106:21       329149 verb qal perf 3p-, 13C@K:XW.                 => ˈšāḵᵊḥû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13C@K:XW.
         trim                 13c@k:xw.
         accents              !c@k:xw.
@@ -13878,7 +13878,7 @@
         cleanup              ˈšāḵᵊḥû
 
 
-437 Psalmi 35:21        315998 verb qal perf 3p-, 13>@M:RW.                 => ˈʔāmᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
+437 Psalmi 35:21        315999 verb qal perf 3p-, 13>@M:RW.                 => ˈʔāmᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13>@M:RW.
         trim                 13>@m:rw.
         accents              !>@m:rw.
@@ -13909,7 +13909,7 @@
         cleanup              ˈʔāmᵊrû
 
 
-438 Psalmi 64:6         320759 verb qal perf 3p-, 11>@M:R81W.               => ˈʔāmᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+438 Psalmi 64:6         320760 verb qal perf 3p-, 11>@M:R81W.               => ˈʔāmᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11>@M:R81W.
         trim                 11>@m:r81w.
         accents              !>@m:r!w.
@@ -13940,7 +13940,7 @@
         cleanup              ˈʔāmᵊrˈû
 
 
-439 Proverbia 30:20     355347 verb qal perf 3sf, 13>@K:L@H                 => ˈʔāḵᵊlā                   < =                           # qamets: gadol maintained because of verb paradigm
+439 Proverbia 30:20     355348 verb qal perf 3sf, 13>@K:L@H                 => ˈʔāḵᵊlā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13>@K:L@H
         trim                 13>@k:l@h
         accents              !>@k:l@h
@@ -13971,7 +13971,7 @@
         cleanup              ˈʔāḵᵊlā
 
 
-440 Iob 17:11           340383 verb qal perf 3p-, 13<@B:RW.                 => ˈʕāvᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
+440 Iob 17:11           340384 verb qal perf 3p-, 13<@B:RW.                 => ˈʕāvᵊrû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 13<@B:RW.
         trim                 13<@b:rw.
         accents              !<@b:rw.
@@ -14002,7 +14002,7 @@
         cleanup              ˈʕāvᵊrû
 
 
-441 Psalmi 73:7         322573 verb qal perf 3p-, 11<@B:R81W.               => ˈʕāvᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+441 Psalmi 73:7         322574 verb qal perf 3p-, 11<@B:R81W.               => ˈʕāvᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11<@B:R81W.
         trim                 11<@b:r81w.
         accents              !<@b:r!w.
@@ -14033,7 +14033,7 @@
         cleanup              ˈʕāvᵊrˈû
 
 
-442 Iob 37:21           345393 verb qal perf 3sf, 11<@B:R@81H               => ˈʕāvᵊrˈā                  < =                           # qamets: gadol maintained because of verb paradigm
+442 Iob 37:21           345394 verb qal perf 3sf, 11<@B:R@81H               => ˈʕāvᵊrˈā                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11<@B:R@81H
         trim                 11<@b:r@81h
         accents              !<@b:r!@h
@@ -14064,7 +14064,7 @@
         cleanup              ˈʕāvᵊrˈā
 
 
-443 Psalmi 139:17       334496 verb qal perf 3p-, 11<@Y:MW.                 => ˈʕāṣᵊmû                   < =                           # qamets: gadol maintained because of verb paradigm
+443 Psalmi 139:17       334497 verb qal perf 3p-, 11<@Y:MW.                 => ˈʕāṣᵊmû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11<@Y:MW.
         trim                 11<@y:mw.
         accents              !<@y:mw.
@@ -14095,7 +14095,7 @@
         cleanup              ˈʕāṣᵊmû
 
 
-444 Psalmi 40:6         317057 verb qal perf 3p-, 11<@Y:M81W.               => ˈʕāṣᵊmˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+444 Psalmi 40:6         317058 verb qal perf 3p-, 11<@Y:M81W.               => ˈʕāṣᵊmˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11<@Y:M81W.
         trim                 11<@y:m81w.
         accents              !<@y:m!w.
@@ -14126,7 +14126,7 @@
         cleanup              ˈʕāṣᵊmˈû
 
 
-445 Iob 21:7            341215 verb qal perf 3p-, 11<@T:Q81W.               => ˈʕāṯᵊqˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+445 Iob 21:7            341216 verb qal perf 3p-, 11<@T:Q81W.               => ˈʕāṯᵊqˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11<@T:Q81W.
         trim                 11<@t:q81w.
         accents              !<@t:q!w.
@@ -14157,7 +14157,7 @@
         cleanup              ˈʕāṯᵊqˈû
 
 
-446 Psalmi 6:8          311230 verb qal perf 3sf, 11<@75T:Q@81H             => ˈʕˈāṯᵊqˈā                 < =                           # qamets: no need to suppress qatan
+446 Psalmi 6:8          311231 verb qal perf 3sf, 11<@75T:Q@81H             => ˈʕˈāṯᵊqˈā                 < =                           # qamets: no need to suppress qatan
         orig                 11<@75T:Q@81H
         trim                 11<@75t:q@81h
         accents              !<!@t:q!@h
@@ -14188,7 +14188,7 @@
         cleanup              ˈʕˈāṯᵊqˈā
 
 
-447 Psalmi 71:24        322291 verb qal perf 3p-, 11X@P:R81W.               => ˈḥāfᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
+447 Psalmi 71:24        322292 verb qal perf 3p-, 11X@P:R81W.               => ˈḥāfᵊrˈû                  < =                           # qamets: gadol maintained because of verb paradigm
         orig                 11X@P:R81W.
         trim                 11x@p:r81w.
         accents              !x@p:r!w.
@@ -14219,7 +14219,7 @@
         cleanup              ˈḥāfᵊrˈû
 
 
-448 Obadia 1:18         298461 verb qal perf 3p-, D@L:Q71W.                 => ḏālᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+448 Obadia 1:18         298462 verb qal perf 3p-, D@L:Q71W.                 => ḏālᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 D@L:Q71W.
         trim                 d@l:q71w.
         accents              d@l:q/w.
@@ -14371,7 +14371,7 @@
         cleanup              ḏāḡᵊrˈā
 
 
-453 Psalmi 35:15        315947 verb qal perf 3p-, D@75M.W.00                => ḏˈāmmû                    < =                           # qamets: no need to suppress qatan
+453 Psalmi 35:15        315948 verb qal perf 3p-, D@75M.W.00                => ḏˈāmmû                    < =                           # qamets: no need to suppress qatan
         orig                 D@75M.W.
         trim                 d@75m.w.
         accents              d!@m.w.
@@ -14402,7 +14402,7 @@
         cleanup              ḏˈāmmû
 
 
-454 Chronica_II 25:20   419396 verb qal perf 3p-, D@75R:C80W.               => ḏˈārᵊšˈû                  < =                           # qamets: no need to suppress qatan
+454 Chronica_II 25:20   419397 verb qal perf 3p-, D@75R:C80W.               => ḏˈārᵊšˈû                  < =                           # qamets: no need to suppress qatan
         orig                 D@75R:C80W.
         trim                 d@75r:c80w.
         accents              d!@r:c!w.
@@ -14463,7 +14463,7 @@
         cleanup              ḡāmᵊlˌû
 
 
-456 Zephania 3:3        303770 verb qal perf 3p-, G@R:M73W.                 => ḡārᵊmˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+456 Zephania 3:3        303771 verb qal perf 3p-, G@R:M73W.                 => ḡārᵊmˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 G@R:M73W.
         trim                 g@r:m73w.
         accents              g@r:m/w.
@@ -14524,7 +14524,7 @@
         cleanup              ḡāvᵊrˈû
 
 
-458 Ezechiel 22:29      275658 verb qal perf 3p-, G@Z:L73W.                 => ḡāzᵊlˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+458 Ezechiel 22:29      275659 verb qal perf 3p-, G@Z:L73W.                 => ḡāzᵊlˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 G@Z:L73W.
         trim                 g@z:l73w.
         accents              g@z:l/w.
@@ -14554,7 +14554,7 @@
         cleanup              ḡāzᵊlˌû
 
 
-459 Esra 9:6            382414 verb qal perf 3sf, G@D:L@73H                 => ḡāḏᵊlˌā                   < =                           # qamets: gadol maintained because of verb paradigm
+459 Esra 9:6            382415 verb qal perf 3sf, G@D:L@73H                 => ḡāḏᵊlˌā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 G@D:L@73H
         trim                 g@d:l@73h
         accents              g@d:l/@h
@@ -14615,7 +14615,7 @@
         cleanup              ḡˈāḏᵊlˈā
 
 
-461 Psalmi 35:7         315850 verb qal perf 3p-, X@P:R71W.                 => ḥāfᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+461 Psalmi 35:7         315851 verb qal perf 3p-, X@P:R71W.                 => ḥāfᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 X@P:R71W.
         trim                 x@p:r71w.
         accents              x@p:r/w.
@@ -14675,7 +14675,7 @@
         cleanup              ḥāfᵊrˌā
 
 
-463 Psalmi 55:22        319561 verb qal perf 3p-, X@L:Q70W.05               => ḥālᵊqˈû                   < ~ ḥālᵊqˈˈû                  # qamets: gadol maintained because of verb paradigm
+463 Psalmi 55:22        319562 verb qal perf 3p-, X@L:Q70W.05               => ḥālᵊqˈû                   < ~ ḥālᵊqˈˈû                  # qamets: gadol maintained because of verb paradigm
         orig                 X@L:Q70W.
         trim                 x@l:q70w.
         accents              x@l:q!w.
@@ -14767,7 +14767,7 @@
         cleanup              ḥālᵊṣˈā
 
 
-466 Ezechiel 22:26      275588 verb qal perf 3p-, X@M:S74W.                 => ḥāmᵊsˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+466 Ezechiel 22:26      275589 verb qal perf 3p-, X@M:S74W.                 => ḥāmᵊsˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 X@M:S74W.
         trim                 x@m:s74w.
         accents              x@m:s!w.
@@ -14798,7 +14798,7 @@
         cleanup              ḥāmᵊsˈû
 
 
-467 Zephania 3:4        303781 verb qal perf 3p-, X@M:S73W.                 => ḥāmᵊsˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+467 Zephania 3:4        303782 verb qal perf 3p-, X@M:S73W.                 => ḥāmᵊsˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 X@M:S73W.
         trim                 x@m:s73w.
         accents              x@m:s/w.
@@ -14828,7 +14828,7 @@
         cleanup              ḥāmᵊsˌû
 
 
-468 Psalmi 129:3        333269 verb qal perf 3p-, X@R:C74W.                 => ḥārᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+468 Psalmi 129:3        333270 verb qal perf 3p-, X@R:C74W.                 => ḥārᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 X@R:C74W.
         trim                 x@r:c74w.
         accents              x@r:c!w.
@@ -14890,7 +14890,7 @@
         cleanup              ḥāzᵊqˈû
 
 
-470 Maleachi 3:13       310407 verb qal perf 3p-, X@Z:Q71W.                 => ḥāzᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+470 Maleachi 3:13       310408 verb qal perf 3p-, X@Z:Q71W.                 => ḥāzᵊqˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 X@Z:Q71W.
         trim                 x@z:q71w.
         accents              x@z:q/w.
@@ -15042,7 +15042,7 @@
         cleanup              ḥāḡᵊrˈû
 
 
-475 Ezechiel 27:31      278272 verb qal perf 3p-, X@G:R73W.                 => ḥāḡᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
+475 Ezechiel 27:31      278273 verb qal perf 3p-, X@G:R73W.                 => ḥāḡᵊrˌû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 X@G:R73W.
         trim                 x@g:r73w.
         accents              x@g:r/w.
@@ -15164,7 +15164,7 @@
         cleanup              ḥˈāfᵊrā
 
 
-479 Threni 4:3          364967 verb qal perf 3p-, X@74L:YW.                 => ḥˈālᵊṣû                   < =                           # qamets: no need to suppress qatan
+479 Threni 4:3          364968 verb qal perf 3p-, X@74L:YW.                 => ḥˈālᵊṣû                   < =                           # qamets: no need to suppress qatan
         orig                 X@74L:YW.
         trim                 x@74l:yw.
         accents              x!@l:yw.
@@ -15195,7 +15195,7 @@
         cleanup              ḥˈālᵊṣû
 
 
-480 Canticum 2:13       357935 verb qal perf 3sf, X@75N:V@74H               => ḥˈānᵊṭˈā                  < =                           # qamets: no need to suppress qatan
+480 Canticum 2:13       357936 verb qal perf 3sf, X@75N:V@74H               => ḥˈānᵊṭˈā                  < =                           # qamets: no need to suppress qatan
         orig                 X@75N:V@74H
         trim                 x@75n:v@74h
         accents              x!@n:v!@h
@@ -15412,7 +15412,7 @@
         cleanup              ḥˈāšᵊqˈā
 
 
-487 Iob 3:17            336986 verb qal perf 3p-, X@74D:LW.                 => ḥˈāḏᵊlû                   < =                           # qamets: no need to suppress qatan
+487 Iob 3:17            336987 verb qal perf 3p-, X@74D:LW.                 => ḥˈāḏᵊlû                   < =                           # qamets: no need to suppress qatan
         orig                 X@74D:LW.
         trim                 x@74d:lw.
         accents              x!@d:lw.
@@ -15474,7 +15474,7 @@
         cleanup              ḥˈāḡᵊrû
 
 
-489 Proverbia 31:17     355639 verb qal perf 3sf, X@75G:R@74H               => ḥˈāḡᵊrˈā                  < =                           # qamets: no need to suppress qatan
+489 Proverbia 31:17     355640 verb qal perf 3sf, X@75G:R@74H               => ḥˈāḡᵊrˈā                  < =                           # qamets: no need to suppress qatan
         orig                 X@75G:R@74H
         trim                 x@75g:r@74h
         accents              x!@g:r!@h
@@ -15505,7 +15505,7 @@
         cleanup              ḥˈāḡᵊrˈā
 
 
-490 Sacharia 9:2        307490 verb qal perf 3sf, X@75K:M@73H               => ḥˈāḵᵊmˌā                  < =                           # qamets: no need to suppress qatan
+490 Sacharia 9:2        307491 verb qal perf 3sf, X@75K:M@73H               => ḥˈāḵᵊmˌā                  < =                           # qamets: no need to suppress qatan
         orig                 X@75K:M@73H
         trim                 x@75k:m@73h
         accents              x!@k:m/@h
@@ -15659,7 +15659,7 @@
         cleanup              ḵˈārᵊʕû
 
 
-495 Sacharia 9:15       307732 verb qal perf 3p-, K@75B:CW.03               => ḵˈāvᵊšû                   < =                           # qamets: no need to suppress qatan
+495 Sacharia 9:15       307733 verb qal perf 3p-, K@75B:CW.03               => ḵˈāvᵊšû                   < =                           # qamets: no need to suppress qatan
         orig                 K@75B:CW.03
         trim                 k@75b:cw.03
         accents              k!@b:cw.
@@ -15873,7 +15873,7 @@
         cleanup              ṣˈāḏᵊqˈā
 
 
-502 Psalmi 19:10        313270 verb qal perf 3p-, Y@75D:Q71W.               => ṣˈāḏᵊqˌû                  < =                           # qamets: no need to suppress qatan
+502 Psalmi 19:10        313271 verb qal perf 3p-, Y@75D:Q71W.               => ṣˈāḏᵊqˌû                  < =                           # qamets: no need to suppress qatan
         orig                 Y@75D:Q71W.
         trim                 y@75d:q71w.
         accents              y!@d:q/w.
@@ -15904,7 +15904,7 @@
         cleanup              ṣˈāḏᵊqˌû
 
 
-503 Psalmi 119:69       331815 verb qal perf 3p-, V@P:L64W.                 => ṭāfᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+503 Psalmi 119:69       331816 verb qal perf 3p-, V@P:L64W.                 => ṭāfᵊlˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 V@P:L64W.
         trim                 v@p:l64w.
         accents              v@p:l!w.
@@ -15965,7 +15965,7 @@
         cleanup              ṭāmᵊnˌû
 
 
-505 Psalmi 9:16         311693 verb qal perf 3p-, V@B:<74W.                 => ṭāvᵊʕˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+505 Psalmi 9:16         311694 verb qal perf 3p-, V@B:<74W.                 => ṭāvᵊʕˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 V@B:<74W.
         trim                 v@b:<74w.
         accents              v@b:<!w.
@@ -15996,7 +15996,7 @@
         cleanup              ṭāvᵊʕˈû
 
 
-506 Proverbia 9:2       349170 verb qal perf 3sf, V@B:X@74H                 => ṭāvᵊḥˈā                   < =                           # qamets: gadol maintained because of verb paradigm
+506 Proverbia 9:2       349171 verb qal perf 3sf, V@B:X@74H                 => ṭāvᵊḥˈā                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 V@B:X@74H
         trim                 v@b:x@74h
         accents              v@b:x!@h
@@ -16027,7 +16027,7 @@
         cleanup              ṭāvᵊḥˈā
 
 
-507 Psalmi 31:5         314973 verb qal perf 3p-, V@74M:NW.                 => ṭˈāmᵊnû                   < =                           # qamets: no need to suppress qatan
+507 Psalmi 31:5         314974 verb qal perf 3p-, V@74M:NW.                 => ṭˈāmᵊnû                   < =                           # qamets: no need to suppress qatan
         orig                 V@74M:NW.
         trim                 v@74m:nw.
         accents              v!@m:nw.
@@ -16058,7 +16058,7 @@
         cleanup              ṭˈāmᵊnû
 
 
-508 Psalmi 140:6        334607 verb qal perf 3p-, V@75M:N75W.&              => ṭˈāmᵊnˈû-                 < ~ ṭˈāmᵊnˈû                  # qamets: no need to suppress qatan
+508 Psalmi 140:6        334608 verb qal perf 3p-, V@75M:N75W.&              => ṭˈāmᵊnˈû-                 < ~ ṭˈāmᵊnˈû                  # qamets: no need to suppress qatan
         orig                 V@75M:N75W.&
         trim                 v@75m:n75w.&
         accents              v!@m:n!w.&

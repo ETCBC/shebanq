@@ -1,52 +1,52 @@
-  1 Zephania 3:19       304067 subs sf,+@m       B.@C:T.@75M00          boštˈām              =                     
+  1 Zephania 3:19       304068 subs sf,+@m       B.@C:T.@75M00          boštˈām              =                     
   2 Exodus 8:5           32500 subs pm,+k@       B.@T.E92JK@            bāttˈeʸḵā            =                     
-  3 Iob 29:25           343075 subs s-,+@m       D.AR:K.@M02            darkām               ~ darkāmˈ             
-  4 Psalmi 93:3         326724 subs sm,+@m       D.@K:J@75M00           doḵyˈām              =                     
-  5 Psalmi 28:4         314611 subs sm,+@m       P@<:@L@M02             foʕᵒlām              ~ foʕᵒlāmˈ            
-  6 Psalmi 90:16        326377 subs sm,+ek@      P@<:@LE92K@            foʕᵒlˈeḵā            =                     
+  3 Iob 29:25           343076 subs s-,+@m       D.AR:K.@M02            darkām               ~ darkāmˈ             
+  4 Psalmi 93:3         326725 subs sm,+@m       D.@K:J@75M00           doḵyˈām              =                     
+  5 Psalmi 28:4         314612 subs sm,+@m       P@<:@L@M02             foʕᵒlām              ~ foʕᵒlāmˈ            
+  6 Psalmi 90:16        326378 subs sm,+ek@      P@<:@LE92K@            foʕᵒlˈeḵā            =                     
   7 Jeremia 50:29       262397 subs sm,+@h.      P@<:@L@80H.            foʕᵒlˈāh             =                     
-  8 Iob 37:12           345302 verb qal infc ---,+@m P@<:@L@92M             foʕᵒlˈām             =                     
+  8 Iob 37:12           345303 verb qal infc ---,+@m P@<:@L@92M             foʕᵒlˈām             =                     
   9 Jeremia 25:14       247322 subs sm,+@m       P@<:@L@73M             foʕᵒlˌām             =                     
  10 Samuel_I 1:23       142008 verb qal infc ---,+@h. G.@M:L@73H.            gomlˌāh              =                     
  11 Deuteronomium 15:14 102271 subs sf,+:k@      G.@R:N:K@73            gornᵊḵˌā             =                     
  12 Deuteronomium 3:24   95019 subs sm,+:k@      G.@D:L:K@80            goḏlᵊḵˈā             =                     
- 13 Ezechiel 32:30      280728 subs sf,+@m       G.:B75W.R@T@M03        gᵊvˈûrāṯām           =                     
+ 13 Ezechiel 32:30      280729 subs sf,+@m       G.:B75W.R@T@M03        gᵊvˈûrāṯām           =                     
  14 Numeri 3:4           70956 verb hif infc ---,+@m HAQ:RIB@M04            haqrivˌām            ~ haqrivāmˈ           
  15 Samuel_II 11:25     166302 verb qal impv 2sm,+@h. H@R:S@73H.             horsˌāh              =                     
  16 Deuteronomium 9:3    98456 verb hif perf 2sm,+@m HA75>ABAD:T.@M03       hˈaʔavaḏtām          =                     
- 17 Ezechiel 46:18      289498 verb hif infc ---,+@m HO75WNOT@M03           hˈônōṯām             =                     
+ 17 Ezechiel 46:18      289499 verb hif infc ---,+@m HO75WNOT@M03           hˈônōṯām             =                     
  18 Judices 2:18        128574 verb hif perf 3sm,+@m HO75WCIJ<@M03          hˈôšîʕām             =                     
  19 Jeremia 35:2        253749 verb hif perf 2sm,+@m H:ABI75>OWT@M03        hᵃvˈiʔôṯām           =                     
  20 Reges_I 8:34        182833 verb hif perf 2sm,+@m H:AC;75BOT@M03         hᵃšˈēvōṯām           =                     
  21 Leviticus 5:12       54564 verb hif perf 3sm,+@h. H:EBIJ>@H.02           hᵉvîʔāh              ~ hᵉvîʔāhˈ            
  22 Jesaia 22:21        219294 subs sf,+ek@      K.UT.@N:T.E81K@        kuttontˈeḵā          =                     
- 23 Iob 31:39           343771 subs sm,+@h.      K.O73X@H.              kˌōḥāh               =                     
+ 23 Iob 31:39           343772 subs sm,+@h.      K.O73X@H.              kˌōḥāh               =                     
  24 Exodus 35:29         49015 subs sm,+@m       LIB.@M02               libbām               ~ libbāmˈ             
  25 Jesaia 47:8         228624 subs sm,+@h.      L:B@80B@H.             lᵊvˈāvāh             =                     
- 26 Psalmi 140:4        334585 subs s-,+@m       L:COWN@M02             lᵊšônām              ~ lᵊšônāmˈ            
+ 26 Psalmi 140:4        334586 subs s-,+@m       L:COWN@M02             lᵊšônām              ~ lᵊšônāmˈ            
  27 Samuel_II 12:30     167041 subs sm,+@m       MAL:K.@M04             malkˌām              ~ malkāmˈ             
- 28 Nehemia 9:35        388621 subs sf,+@m       MAL:KW.T@M04           malᵊḵûṯˌām           ~ malᵊḵûṯāmˈ          
+ 28 Nehemia 9:35        388622 subs sf,+@m       MAL:KW.T@M04           malᵊḵûṯˌām           ~ malᵊḵûṯāmˈ          
  29 Numeri 33:52         91287 subs pf,+@m       MAS.;75KOT@M03         massˈēḵōṯām          =                     
- 30 Ezechiel 32:27      280664 subs sf,+@m       MIL:XAM:T.@M04         milḥamtˌām           ~ milḥamtāmˈ          
+ 30 Ezechiel 32:27      280665 subs sf,+@m       MIL:XAM:T.@M04         milḥamtˌām           ~ milḥamtāmˈ          
  31 Exodus 40:15         52091 subs sf,+@m       M@C:X@T@91M            mošḥāṯˈām            =                     
  32 Leviticus 22:25      65824 subs sm,+@m       M@C:X@T@70M            mošḥāṯˈām            =                     
- 33 Amos 2:4            295714 verb qal infc ---,+@m M@>:@S@62M             moʔᵒsˈām             =                     
+ 33 Amos 2:4            295715 verb qal infc ---,+@m M@>:@S@62M             moʔᵒsˈām             =                     
  34 Exodus 21:8          40145 verb qal infc ---,+@h. M@K:R@73H.             moḵrˌāh              =                     
- 35 Proverbia 31:17     355642 subs dm,+h@       M@T:NE92JH@            moṯnˈeʸhā            =                     
+ 35 Proverbia 31:17     355643 subs dm,+h@       M@T:NE92JH@            moṯnˈeʸhā            =                     
  36 Reges_II 4:29       197061 subs dm,+k@       M@T:NE81JK@            moṯnˈeʸḵā            =                     
  37 Samuel_I 30:17      159821 subs sf,+@m       M@75X:@R@T@92M         mˈoḥᵒrāṯˈām          =                     
- 38 Esther 2:20         366545 subs sf,+@h.      MO75WLAD:T.@H.03       mˈôlaḏtāh            =                     
+ 38 Esther 2:20         366546 subs sf,+@h.      MO75WLAD:T.@H.03       mˈôlaḏtāh            =                     
  39 Genesis 36:43        20154 subs pm,+@m       MO75C:BOT@M03          mˈōšᵊvōṯām           =                     
  40 Jeremia 23:10       246126 subs sf,+@m       M:R75W.Y@T@M03         mᵊrˈûṣāṯām           =                     
- 41 Ezechiel 43:8       287267 subs sf,+@m       M:Z75W.Z@T@M03         mᵊzˈûzāṯām           =                     
+ 41 Ezechiel 43:8       287268 subs sf,+@m       M:Z75W.Z@T@M03         mᵊzˈûzāṯām           =                     
  42 Samuel_I 15:1       149529 verb qal infc ---,+:@k@ M:C@X:@K@74            mᵊšoḥᵒḵˈā            =                     
  43 Jesaia 66:4         234528 subs pf,+@m       M:G75W.ROT@M03         mᵊḡˈûrōṯām           =                     
  44 Genesis 11:2          4978 verb qal infc ---,+@m N@S:<@74M              nosʕˈām              =                     
  45 Numeri 10:34         76757 verb qal infc ---,+@m N@S:<@73M              nosʕˌām              =                     
  46 Jeremia 12:14       241085 verb qal ptca -sm,+@m NO75T:C@M03            nˈōṯᵊšām             =                     
- 47 Nehemia 5:14        385719 subs sm,+@m       P.EX@M02               peḥām                ~ peḥāmˈ              
- 48 Psalmi 77:13        323360 subs sm,+ek@      P.@<:@LE92K@           poʕᵒlˈeḵā            =                     
- 49 Iob 36:9            344949 subs sm,+@m       P.@<:@L@92M            poʕᵒlˈām             =                     
+ 47 Nehemia 5:14        385720 subs sm,+@m       P.EX@M02               peḥām                ~ peḥāmˈ              
+ 48 Psalmi 77:13        323361 subs sm,+ek@      P.@<:@LE92K@           poʕᵒlˈeḵā            =                     
+ 49 Iob 36:9            344950 subs sm,+@m       P.@<:@L@92M            poʕᵒlˈām             =                     
  50 Leviticus 2:5        52966 subs sm,+ek@      Q@R:B.@NE92K@          qorbānˈeḵā           =                     
  51 Numeri 7:3           73934 subs sm,+@m       Q@R:B.@N@61M           qorbānˈām            =                     
  52 Numeri 5:15          72988 subs sm,+@h.      Q@R:B.@N@H.03          qorbānˌāh            =                     
@@ -57,83 +57,83 @@
  57 Exodus 15:13         37074 subs sm,+ek@      Q@D:CE75K@00           qoḏšˈeḵā             =                     
  58 Deuteronomium 26:15 107513 subs sm,+:k@      Q@D:C:K@61             qoḏšᵊḵˈā             =                     
  59 Jesaia 63:15        233703 subs sm,+:k@      Q@D:C:K@73             qoḏšᵊḵˌā             =                     
- 60 Threni 3:63         364907 subs sf,+@m       QI75JM@T@M03           qˈîmāṯām             =                     
+ 60 Threni 3:63         364908 subs sf,+@m       QI75JM@T@M03           qˈîmāṯām             =                     
  61 Judices 18:2        138327 subs pf,+@m       Q:YOWT@M04             qᵊṣôṯˌām             ~ qᵊṣôṯāmˈ            
- 62 Psalmi 90:10        326321 subs sm,+@m       R@H:B.@M               rohbˌām              =                     
+ 62 Psalmi 90:10        326322 subs sm,+@m       R@H:B.@M               rohbˌām              =                     
  63 Jesaia 14:3         216877 subs sm,+ek@      R@G:ZE92K@             roḡzˈeḵā             =                     
  64 Genesis 6:15          2883 subs sm,+@h.      R@X:B.@80H.            roḥbˈāh              =                     
- 65 Ezechiel 42:11      286896 subs sm,+@n       R@X:B.@92N             roḥbˈān              =                     
+ 65 Ezechiel 42:11      286897 subs sm,+@n       R@X:B.@92N             roḥbˈān              =                     
  66 Deuteronomium 3:11   94719 subs sm,+@h.      R@X:B.@73H.            roḥbˌāh              =                     
  67 Jeremia 2:27        235834 subs sf,+@m       R@75<@T@M03            rˈāʕāṯām             =                     
  68 Jeremia 50:26       262340 verb qal impv 2pm,+h@ S@L.71W.H@             sollˌûhā             =                     
  69 Leviticus 2:2        52903 subs sf,+@h.      S.@L:T.@H.03           ssoltˌāh             =                     
  70 Jesaia 33:23        223222 subs sm,+@m       T.@R:N@M03             tornˌām              =                     
- 71 Threni 4:8          365042 subs sm,+@m       T.@75>:@R@80M          tˈoʔᵒrˈām            =                     
+ 71 Threni 4:8          365043 subs sm,+@m       T.@75>:@R@80M          tˈoʔᵒrˈām            =                     
  72 Genesis 35:1         19065 verb qal infc ---,+k@ B@R:X:AK@80            vorḥᵃḵˈā             =                     
  73 Jesaia 34:3         223286 subs sm,+@m       B@>:C@92M              vošˈām               =                     
  74 Exodus 10:6          33907 subs pm,+k@       B@T.E61JK@             vāttˈeʸḵā            =                     
  75 Exodus 8:17          32763 subs pm,+k@       B@T.E73JK@             vāttˌeʸḵā            =                     
- 76 Esther 9:25         369761 verb qal infc ---,+@h. BO>@H.02               vōʔāh                ~ vōʔāhˈ              
- 77 Ezechiel 28:17      278614 subs sm,+ek@      J@P:JE80K@             yofyˈeḵā             =                     
- 78 Esther 1:11         365696 subs sm,+@h.      J@P:J@80H.             yofyˈāh              =                     
+ 76 Esther 9:25         369762 verb qal infc ---,+@h. BO>@H.02               vōʔāh                ~ vōʔāhˈ              
+ 77 Ezechiel 28:17      278615 subs sm,+ek@      J@P:JE80K@             yofyˈeḵā             =                     
+ 78 Esther 1:11         365697 subs sm,+@h.      J@P:J@80H.             yofyˈāh              =                     
  79 Genesis 43:29        24725 verb qal impf 3sm,+:k@ J@X:N:K@73             yoḥnᵊḵˌā             =                     
  80 Josua 11:23         119986 verb qal wayq 3sm,+@h. J.IT.:N@H.04           yyittᵊnˌāh           ~ yyittᵊnāhˈ          
  81 Exodus 4:7           30284 verb hif wayq 3sm,+@h. J.O75WYI>@H.03         yyˈôṣiʔāh            =                     
  82 Leviticus 12:8       58839 subs s-,+@h.      J@D@H.02               yāḏāh                ~ yāḏāhˈ              
- 83 Chronica_II 26:13   419827 subs s-,+@m       J@D@M04                yāḏˌām               ~ yāḏāmˈ              
- 84 Habakuk 2:8         302588 verb qal impf 3pm,+k@ J:C@L.73W.K@           yᵊšāllˌûḵā           =                     
- 85 Psalmi 94:20        326915 verb qal impf 3sm,+:k@ J:X@B:R:K@             yᵊḥovrᵊḵˌā           =                     
+ 83 Chronica_II 26:13   419828 subs s-,+@m       J@D@M04                yāḏˌām               ~ yāḏāmˈ              
+ 84 Habakuk 2:8         302589 verb qal impf 3pm,+k@ J:C@L.73W.K@           yᵊšāllˌûḵā           =                     
+ 85 Psalmi 94:20        326916 verb qal impf 3sm,+:k@ J:X@B:R:K@             yᵊḥovrᵊḵˌā           =                     
  86 Ezechiel 7:19       267448 subs sm,+@m       Z:H@B@M02              zᵊhāvām              ~ zᵊhāvāmˈ            
- 87 Psalmi 44:4         317640 subs s-,+@m       Z:ROW<@M02             zᵊrôʕām              ~ zᵊrôʕāmˈ            
+ 87 Psalmi 44:4         317641 subs s-,+@m       Z:ROW<@M02             zᵊrôʕām              ~ zᵊrôʕāmˈ            
  88 Deuteronomium 23:25 106306 subs sm,+ek@      F@B:<E92K@             śovʕˈeḵā             =                     
- 89 Ruth 2:18           356628 subs sm,+@h.      F.@B:<@75H.00          śśovʕˈāh             =                     
+ 89 Ruth 2:18           356629 subs sm,+@h.      F.@B:<@75H.00          śśovʕˈāh             =                     
  90 Deuteronomium 24:3  106373 verb qal perf 3sm,+@h. F:N;>@H.02             śᵊnēʔāh              ~ śᵊnēʔāhˈ            
  91 Jeremia 27:3        248501 verb piel perf 2sm,+@m CIL.AX:T.@M04          šillaḥtˌām           ~ šillaḥtāmˈ          
  92 Ezechiel 9:8        268287 verb qal infc ---,+:k@ C@P:K.:K@71            šofkᵊḵˌā             =                     
- 93 Psalmi 51:6         318911 verb qal infc ---,+ek@ C@P:VE75K@00           šofṭˈeḵā             =                     
+ 93 Psalmi 51:6         318912 verb qal infc ---,+ek@ C@P:VE75K@00           šofṭˈeḵā             =                     
  94 Genesis 38:17        21145 verb qal infc ---,+ek@ C@L:XE75K@00           šolḥˈeḵā             =                     
  95 Genesis 2:15           960 verb qal infc ---,+@h. C@M:R@75H.00           šomrˈāh              =                     
  96 Josua 10:18         118769 verb qal infc ---,+@m C@M:R@75M00            šomrˈām              =                     
  97 Genesis 34:7         18557 verb qal infc ---,+@m C@M:<@80M              šomʕˈām              =                     
  98 Jeremia 36:16       254619 verb qal infc ---,+@m C@M:<@M03              šomʕˌām              =                     
  99 Reges_II 22:19      209687 verb qal infc ---,+k@ C@M:<:AK@83            šomʕᵃḵˈā             =                     
-100 Proverbia 3:8       347500 subs s-,+ek@      C@R.E92K@              šorrˈeḵā             =                     
+100 Proverbia 3:8       347501 subs sm,+ek@      C@R.E92K@              šorrˈeḵā             =                     
 101 Judices 5:14        130131 subs sm,+@m       C@R:C@M03              šoršˌām              =                     
-102 Ezechiel 17:7       272287 subs pm,+h@       C@R:@CE74JH@           šorᵒšˈeʸhā           =                     
+102 Ezechiel 17:7       272288 subs pm,+h@       C@R:@CE74JH@           šorᵒšˈeʸhā           =                     
 103 Deuteronomium 6:7    97090 verb qal infc ---,+:k@ C@K:B.:K@73            šoḵbᵊḵˌā             =                     
 104 Numeri 12:4          77652 subs sf,+@m       C:L@C:T.@75M00         šᵊloštˈām            =                     
 105 Leviticus 18:20      63629 subs sf,+:k@      C:K@B:T.:K@73          šᵊḵovtᵊḵˌā           =                     
-106 Psalmi 15:1         312296 subs sm,+ek@      >@H:@LE92K@            ʔohᵒlˈeḵā            =                     
-107 Hosea 9:10          292943 subs s-,+@m       >@H:@B@75M00           ʔohᵒvˈām             =                     
-108 Esther 1:17         365848 verb qal infc ---,+@m >@M:R@81M              ʔomrˈām              =                     
-109 Psalmi 42:11        317506 verb qal infc ---,+@m >@M:R@71M              ʔomrˌām              =                     
-110 Hosea 7:6           292430 subs sm,+@m       >@R:B.@92M             ʔorbˈām              =                     
+106 Psalmi 15:1         312297 subs sm,+ek@      >@H:@LE92K@            ʔohᵒlˈeḵā            =                     
+107 Hosea 9:10          292944 subs s-,+@m       >@H:@B@75M00           ʔohᵒvˈām             =                     
+108 Esther 1:17         365849 verb qal infc ---,+@m >@M:R@81M              ʔomrˈām              =                     
+109 Psalmi 42:11        317507 verb qal infc ---,+@m >@M:R@71M              ʔomrˌām              =                     
+110 Hosea 7:6           292431 subs sm,+@m       >@R:B.@92M             ʔorbˈām              =                     
 111 Exodus 25:17         42197 subs sm,+@h.      >@R:K.@80H.            ʔorkˈāh              =                     
 112 Genesis 13:17         6185 subs sm,+@h.      >@R:K.@73H.            ʔorkˌāh              =                     
-113 Chronica_II 3:11    407925 subs sm,+@m       >@R:K.@73M             ʔorkˌām              =                     
-114 Ezechiel 42:11      286894 subs sm,+@n       >@R:K.@73N             ʔorkˌān              =                     
-115 Psalmi 44:19        317787 subs sm,+ek@      >@R:XE75K@00           ʔorḥˈeḵā             =                     
+113 Chronica_II 3:11    407926 subs sm,+@m       >@R:K.@73M             ʔorkˌām              =                     
+114 Ezechiel 42:11      286895 subs sm,+@n       >@R:K.@73N             ʔorkˌān              =                     
+115 Psalmi 44:19        317788 subs sm,+ek@      >@R:XE75K@00           ʔorḥˈeḵā             =                     
 116 Exodus 23:16         41293 verb qal infc ---,+:k@ >@S:P.:K@71            ʔospᵊḵˌā             =                     
-117 Hosea 10:10         293203 verb qal infc ---,+@m >@S:R@73M              ʔosrˌām              =                     
+117 Hosea 10:10         293204 verb qal infc ---,+@m >@S:R@73M              ʔosrˌām              =                     
 118 Samuel_I 25:24      157029 subs df,+k@       >@Z:NE80JK@            ʔoznˈeʸḵā            =                     
 119 Samuel_I 20:12      153687 subs sf,+ek@      >@Z:NE75K@00           ʔoznˈeḵā             =                     
 120 Jeremia 6:10        237804 subs sf,+@m       >@Z:N@80M              ʔoznˈām              =                     
 121 Ezechiel 3:10       265692 subs df,+k@       >@Z:NE71JK@            ʔoznˌeʸḵā            =                     
 122 Leviticus 8:24       56545 subs sf,+@m       >@Z:N@M03              ʔoznˌām              =                     
-123 Psalmi 31:3         314945 subs sf,+:k@      >@Z:N:K@02             ʔoznᵊḵˈā             =                     
+123 Psalmi 31:3         314946 subs sf,+:k@      >@Z:N:K@02             ʔoznᵊḵˈā             =                     
 124 Reges_II 19:16      207731 subs sf,+:k@      >@Z:N:K@03             ʔoznᵊḵˌā             =                     
 125 Leviticus 25:37      67835 subs sm,+ek@      >@K:LE75K@00           ʔoḵlˈeḵā             =                     
-126 Psalmi 104:21       328426 subs sm,+@m       >@K:L@75M00            ʔoḵlˈām              =                     
+126 Psalmi 104:21       328427 subs sm,+@m       >@K:L@75M00            ʔoḵlˈām              =                     
 127 Genesis 14:11         6420 subs sm,+@m       >@K:L@73M              ʔoḵlˌām              =                     
 128 Leviticus 22:16      65641 verb qal infc ---,+@m >@K:L@73M              ʔoḵlˌām              =                     
 129 Numeri 30:9          88702 subs sm,+@h.      >IJC@H.02              ʔîšāh                ~ ʔîšāhˈ              
 130 Judices 21:22       141430 subs pm,+@m       >:ABOWT@M04            ʔᵃvôṯˌām             ~ ʔᵃvôṯāmˈ            
 131 Reges_I 9:9         183883 subs pm,+@m       >:ABOT@M02             ʔᵃvōṯām              ~ ʔᵃvōṯāmˈ            
-132 Psalmi 16:4         312388 subs pf,+@m       <AY.:BOWT@M02          ʕaṣṣᵊvôṯām           ~ ʕaṣṣᵊvôṯāmˈ         
+132 Psalmi 16:4         312389 subs pf,+@m       <AY.:BOWT@M02          ʕaṣṣᵊvôṯām           ~ ʕaṣṣᵊvôṯāmˈ         
 133 Exodus 4:31          30796 subs sm,+@m       <@N:J@80M              ʕonyˈām              =                     
-134 Threni 1:7          363623 subs sm,+@h.      <@N:J@H.03             ʕonyˌāh              =                     
+134 Threni 1:7          363624 subs sm,+@h.      <@N:J@H.03             ʕonyˌāh              =                     
 135 Genesis 17:23         7739 subs sf,+@m       <@R:L@T@81M            ʕorlāṯˈām            =                     
-136 Iob 5:13            337406 verb qal infc ---,+@m <@R:M@92M              ʕormˈām              =                     
+136 Iob 5:13            337407 verb qal infc ---,+@m <@R:M@92M              ʕormˈām              =                     
 137 Jesaia 48:4         228844 subs sm,+ek@      <@R:P.E80K@            ʕorpˈeḵā             =                     
 138 Jeremia 7:26        238750 subs sm,+@m       <@R:P.@80M             ʕorpˈām              =                     
 139 Reges_II 17:14      205852 subs sm,+@m       <@R:P.@M03             ʕorpˌām              =                     
@@ -141,74 +141,74 @@
 141 Deuteronomium 27:3  107709 verb qal infc ---,+ek@ <@B:RE92K@             ʕovrˈeḵā             =                     
 142 Reges_II 2:9        195439 verb qal infc ---,+@m <@B:R@81M              ʕovrˈām              =                     
 143 Deuteronomium 29:11 109722 verb qal infc ---,+:k@ <@B:R:K@81             ʕovrᵊḵˈā             =                     
-144 Psalmi 74:13        322901 subs sm,+:k@      <@Z.:K@74              ʕozzᵊḵˈā             =                     
+144 Psalmi 74:13        322902 subs sm,+:k@      <@Z.:K@74              ʕozzᵊḵˈā             =                     
 145 Exodus 15:13         37071 subs sm,+:k@      <@Z.:K@73              ʕozzᵊḵˌā             =                     
-146 Psalmi 105:14       328683 verb qal infc ---,+@m <@C:Q@92M              ʕošqˈām              =                     
-147 Proverbia 14:24     350595 subs sm,+@m       <@C:R@92M              ʕošrˈām              =                     
+146 Psalmi 105:14       328684 verb qal infc ---,+@m <@C:Q@92M              ʕošqˈām              =                     
+147 Proverbia 14:24     350596 subs sm,+@m       <@C:R@92M              ʕošrˈām              =                     
 148 Jesaia 14:3         216874 subs sm,+:k@      <@Y:B.:K@73            ʕoṣbᵊḵˌā             =                     
 149 Leviticus 10:19      57812 subs sf,+@m       <O75L@T@M03            ʕˈōlāṯām             =                     
 150 Numeri 8:22          75659 subs sf,+@m       <:ABO75D@T@M03         ʕᵃvˈōḏāṯām           =                     
-151 Ezechiel 32:27      280673 subs pm,+@m       <:AWO75NOT@M03         ʕᵃwˈōnōṯām           =                     
-152 Chronica_II 22:5    417345 subs sf,+@m       <:AY@T@M02             ʕᵃṣāṯām              ~ ʕᵃṣāṯāmˈ            
-153 Psalmi 105:33       328840 subs s-,+@m       13G.AP:N@M             ˈgafnām              =                     
-154 Psalmi 80:6         324447 verb hif perf 2sm,+@m 13HE>:EKAL:T.@M        ˈheʔᵉḵaltām          =                     
-155 Proverbia 31:20     355665 subs sf,+@h.      13K.AP.@H.             ˈkappāh              =                     
-156 Psalmi 104:24       328448 subs sm,+@m       13K.UL.@M              ˈkullām              =                     
-157 Psalmi 105:25       328775 subs sm,+@m       13LIB.@M               ˈlibbām              =                     
-158 Psalmi 49:12        318512 subs pm,+@m       13MIC:K.:NOT@M         ˈmiškᵊnōṯām          =                     
-159 Chronica_II 8:14    410904 subs pf,+@m       14MIC:M:ROWT@M         mišmᵊrôṯˌām          ~ ˈmišmᵊrôṯām         
+151 Ezechiel 32:27      280674 subs pm,+@m       <:AWO75NOT@M03         ʕᵃwˈōnōṯām           =                     
+152 Chronica_II 22:5    417346 subs sf,+@m       <:AY@T@M02             ʕᵃṣāṯām              ~ ʕᵃṣāṯāmˈ            
+153 Psalmi 105:33       328841 subs s-,+@m       13G.AP:N@M             ˈgafnām              =                     
+154 Psalmi 80:6         324448 verb hif perf 2sm,+@m 13HE>:EKAL:T.@M        ˈheʔᵉḵaltām          =                     
+155 Proverbia 31:20     355666 subs sf,+@h.      13K.AP.@H.             ˈkappāh              =                     
+156 Psalmi 104:24       328449 subs sm,+@m       13K.UL.@M              ˈkullām              =                     
+157 Psalmi 105:25       328776 subs sm,+@m       13LIB.@M               ˈlibbām              =                     
+158 Psalmi 49:12        318513 subs pm,+@m       13MIC:K.:NOT@M         ˈmiškᵊnōṯām          =                     
+159 Chronica_II 8:14    410905 subs pf,+@m       14MIC:M:ROWT@M         mišmᵊrôṯˌām          ~ ˈmišmᵊrôṯām         
 160 Numeri 18:9          81505 subs sm,+@m       14Q@R:B.@N@M           qorbānˌām            ~ ˈqorbānām           
-161 Psalmi 5:8          311093 subs sm,+:k@      11Q@D:C:K@81           ˈqoḏšᵊḵˈā            =                     
-162 Psalmi 104:29       328500 subs s-,+@m       13RW.X@M               ˈrûḥām               =                     
-163 Iob 28:27           342833 verb qal perf 3sm,+@h. 13R@>@H.               ˈrāʔāh               =                     
-164 Proverbia 3:14      347555 subs sm,+@h.      13SAX:R@H.             ˈsaḥrāh              =                     
-165 Proverbia 6:25      348462 subs sm,+@h.      13J@P:J@H.             ˈyofyāh              =                     
-166 Psalmi 106:27       329212 subs sm,+@m       13ZAR:<@M              ˈzarʕām              =                     
-167 Psalmi 90:5         326261 verb qal perf 2sm,+@m 13Z:RAM:T.@M           ˈzramtām             =                     
+161 Psalmi 5:8          311094 subs sm,+:k@      11Q@D:C:K@81           ˈqoḏšᵊḵˈā            =                     
+162 Psalmi 104:29       328501 subs s-,+@m       13RW.X@M               ˈrûḥām               =                     
+163 Iob 28:27           342834 verb qal perf 3sm,+@h. 13R@>@H.               ˈrāʔāh               =                     
+164 Proverbia 3:14      347556 subs sm,+@h.      13SAX:R@H.             ˈsaḥrāh              =                     
+165 Proverbia 6:25      348463 subs sm,+@h.      13J@P:J@H.             ˈyofyāh              =                     
+166 Psalmi 106:27       329213 subs sm,+@m       13ZAR:<@M              ˈzarʕām              =                     
+167 Psalmi 90:5         326262 verb qal perf 2sm,+@m 13Z:RAM:T.@M           ˈzramtām             =                     
 168 Deuteronomium 24:4  106409 verb piel perf 3sm,+@h. 14CIL.:X@H.            šillᵊḥˌāh            ~ ˈšillᵊḥāh           
-169 Psalmi 130:2        333327 subs df,+k@       13>@Z:NEJK@            ˈʔozneʸḵā            =                     
-170 Iob 36:10           344956 subs sf,+@m       13>@Z:N@M              ˈʔoznām              =                     
-171 Psalmi 71:2         322059 subs sf,+:k@      11>@Z:N:K@81           ˈʔoznᵊḵˈā            =                     
-172 Psalmi 78:12        323579 subs pm,+@m       13>:ABOWT@M            ˈʔᵃvôṯām             =                     
-173 Psalmi 49:7         318465 subs sm,+@m       11<@C:R@81M            ˈʕošrˈām             =                     
-174 Psalmi 49:14        318534 subs s-,+@m       13DAR:K.@M             ˈḏarkām              =                     
-175 Psalmi 37:15        316354 subs sf,+@m       13XAR:B.@M             ˈḥarbām              =                     
-176 Psalmi 107:27       329689 subs sf,+@m       11X@K:M@T@81M          ˈḥoḵmāṯˈām           =                     
-177 Iob 6:4             337592 subs sf,+@m       13X:AM@T@M             ˈḥᵃmāṯām             =                     
-178 Psalmi 132:15       333562 subs sm,+@h.      13Y;JD@H.              ˈṣêḏāh               =                     
-179 Proverbia 9:2       349171 subs sm,+@h.      13VIB:X@H.             ˈṭivḥāh              =                     
-180 Psalmi 51:6         318908 verb qal infc ---,+ek@ D@B:RE81K@             ḏovrˈeḵā             =                     
+169 Psalmi 130:2        333328 subs df,+k@       13>@Z:NEJK@            ˈʔozneʸḵā            =                     
+170 Iob 36:10           344957 subs sf,+@m       13>@Z:N@M              ˈʔoznām              =                     
+171 Psalmi 71:2         322060 subs sf,+:k@      11>@Z:N:K@81           ˈʔoznᵊḵˈā            =                     
+172 Psalmi 78:12        323580 subs pm,+@m       13>:ABOWT@M            ˈʔᵃvôṯām             =                     
+173 Psalmi 49:7         318466 subs sm,+@m       11<@C:R@81M            ˈʕošrˈām             =                     
+174 Psalmi 49:14        318535 subs s-,+@m       13DAR:K.@M             ˈḏarkām              =                     
+175 Psalmi 37:15        316355 subs sf,+@m       13XAR:B.@M             ˈḥarbām              =                     
+176 Psalmi 107:27       329690 subs sf,+@m       11X@K:M@T@81M          ˈḥoḵmāṯˈām           =                     
+177 Iob 6:4             337593 subs sf,+@m       13X:AM@T@M             ˈḥᵃmāṯām             =                     
+178 Psalmi 132:15       333563 subs sm,+@h.      13Y;JD@H.              ˈṣêḏāh               =                     
+179 Proverbia 9:2       349172 subs sm,+@h.      13VIB:X@H.             ˈṭivḥāh              =                     
+180 Psalmi 51:6         318909 verb qal infc ---,+ek@ D@B:RE81K@             ḏovrˈeḵā             =                     
 181 Jesaia 5:17         213697 subs sm,+@m       D@B:R@92M              ḏovrˈām              =                     
-182 Iob 39:12           345924 subs sf,+:k@      G@R:N:K@71             ḡornᵊḵˌā             =                     
+182 Iob 39:12           345925 subs sf,+:k@      G@R:N:K@71             ḡornᵊḵˌā             =                     
 183 Deuteronomium 9:26   99029 subs sm,+ek@      G@D:LE92K@             ḡoḏlˈeḵā             =                     
 184 Numeri 5:7           72825 subs sf,+@m       XAV.@>T@M02            ḥaṭṭāṯām             ~ ḥaṭṭāṯāmˈ           
 185 Ezechiel 10:2       268403 subs dm,+k@       X@P:NE70JK@            ḥofnˈeʸḵā            =                     
 186 Samuel_II 4:4       162676 verb qal infc ---,+@h. X@P:Z@71H.             ḥofzˌāh              =                     
 187 Judices 18:2        138343 verb qal infc ---,+@h. X@Q:R@80H.             ḥoqrˈāh              =                     
-188 Ezechiel 30:21      279645 verb qal infc ---,+@h. X@B:C@71H.             ḥovšˌāh              =                     
-189 Ezechiel 30:21      279647 verb qal infc ---,+@h. X@Z:Q@73H.             ḥozqˌāh              =                     
-190 Hosea 2:13          291324 subs sm,+@h.      X@D:C@74H.             ḥoḏšˈāh              =                     
+188 Ezechiel 30:21      279646 verb qal infc ---,+@h. X@B:C@71H.             ḥovšˌāh              =                     
+189 Ezechiel 30:21      279648 verb qal infc ---,+@h. X@Z:Q@73H.             ḥozqˌāh              =                     
+190 Hosea 2:13          291325 subs sm,+@h.      X@D:C@74H.             ḥoḏšˈāh              =                     
 191 Jeremia 2:24        235776 subs sm,+@h.      X@D:C@73H.             ḥoḏšˌāh              =                     
 192 Reges_I 2:6         177418 subs sf,+ek@      X@K:M@TE92K@           ḥoḵmāṯˈeḵā           =                     
 193 Samuel_II 20:22     173619 subs sf,+@h.      X@K:M@T@81H.           ḥoḵmāṯˈāh            =                     
 194 Jeremia 49:7        261257 subs sf,+@m       X@K:M@T@75M00          ḥoḵmāṯˈām            =                     
-195 Ezechiel 28:5       278422 subs sf,+:k@      X@K:M@T:K@91           ḥoḵmāṯᵊḵˈā           =                     
-196 Ezechiel 28:17      278616 subs sf,+:k@      X@K:M@T:K@73           ḥoḵmāṯᵊḵˌā           =                     
-197 Ezechiel 28:4       278406 subs sf,+:k@      X@K:M@75T:K@03         ḥoḵmˈāṯᵊḵā           =                     
+195 Ezechiel 28:5       278423 subs sf,+:k@      X@K:M@T:K@91           ḥoḵmāṯᵊḵˈā           =                     
+196 Ezechiel 28:17      278617 subs sf,+:k@      X@K:M@T:K@73           ḥoḵmāṯᵊḵˌā           =                     
+197 Ezechiel 28:4       278407 subs sf,+:k@      X@K:M@75T:K@03         ḥoḵmˈāṯᵊḵā           =                     
 198 Jesaia 43:3         226975 subs sm,+:k@      K@P:R:K@03             ḵofrᵊḵˌā             =                     
-199 Ezechiel 31:14      280040 subs sm,+@m       KUL.@M04               ḵullˌām              ~ ḵullāmˈ             
+199 Ezechiel 31:14      280041 subs sm,+@m       KUL.@M04               ḵullˌām              ~ ḵullāmˈ             
 200 Jeremia 31:34       251289 subs sm,+@m       KW.L.@M04              ḵûllˌām              ~ ḵûllāmˈ             
 201 Deuteronomium 21:12 105017 subs pm,+h@       YIP.@R:NE75JH@00       ṣippornˈeʸhā         =                     
-202 Chronica_II 2:15    407647 subs sm,+ek@      Y@R:K.E80K@            ṣorkˈeḵā             =                     
+202 Chronica_II 2:15    407648 subs sm,+ek@      Y@R:K.E80K@            ṣorkˈeḵā             =                     
 203 Samuel_I 1:6        141639 subs sf,+@h.      Y@75R@T@H.03           ṣˈārāṯāh             =                     
-204 Nehemia 9:27        388399 subs sf,+@m       Y@75R@T@M03            ṣˈārāṯām             =                     
+204 Nehemia 9:27        388400 subs sf,+@m       Y@75R@T@M03            ṣˈārāṯām             =                     
 205 Leviticus 12:4       58761 subs sm,+@h.      V@H:@R@75H.00          ṭohᵒrˈāh             =                     
 206 Deuteronomium 20:19 104723 verb qal infc ---,+@h. T@P:F@81H.             ṯofśˈāh              =                     
 207 Samuel_I 23:26      155913 verb qal infc ---,+@m T@P:F@75M00            ṯofśˈām              =                     
-208 Ezechiel 29:7       278954 verb qal infc ---,+@m T@P:F@63M              ṯofśˌām              =                     
-209 Ezechiel 43:8       287282 subs pf,+@m       TO75W<:ABOWT@M03       ṯˈôʕᵃvôṯām           =                     
+208 Ezechiel 29:7       278955 verb qal infc ---,+@m T@P:F@63M              ṯofśˌām              =                     
+209 Ezechiel 43:8       287283 subs pf,+@m       TO75W<:ABOWT@M03       ṯˈôʕᵃvôṯām           =                     
 
-  1 Zephania 3:19       304067 subs sf,+@m       B.@C:T.@75M00             => boštˈām                   < =                           # qamets: no need to suppress qatan
+  1 Zephania 3:19       304068 subs sf,+@m       B.@C:T.@75M00             => boštˈām                   < =                           # qamets: no need to suppress qatan
         orig                 B.@C:T.@75M
         trim                 b.@c:t.@75m
         accents              b.@c:t.!@m
@@ -279,7 +279,7 @@
         cleanup              bāttˈeʸḵā
 
 
-  3 Iob 29:25           343075 subs s-,+@m       D.AR:K.@M02               => darkām                    < ~ darkāmˈ                   # qamets: gadol maintained in pronominal suffix
+  3 Iob 29:25           343076 subs s-,+@m       D.AR:K.@M02               => darkām                    < ~ darkāmˈ                   # qamets: gadol maintained in pronominal suffix
         orig                 D.AR:K.@M02
         trim                 d.ar:k.@m02
         accents              d.ar:k.@m!
@@ -315,7 +315,7 @@
         cleanup              darkām
 
 
-  4 Psalmi 93:3         326724 subs sm,+@m       D.@K:J@75M00              => doḵyˈām                   < =                           # qamets: no need to suppress qatan
+  4 Psalmi 93:3         326725 subs sm,+@m       D.@K:J@75M00              => doḵyˈām                   < =                           # qamets: no need to suppress qatan
         orig                 D.@K:J@75M
         trim                 d.@k:j@75m
         accents              d.@k:j!@m
@@ -350,7 +350,7 @@
         cleanup              doḵyˈām
 
 
-  5 Psalmi 28:4         314611 subs sm,+@m       P@<:@L@M02                => foʕᵒlām                   < ~ foʕᵒlāmˈ                  # qamets: gadol maintained in pronominal suffix
+  5 Psalmi 28:4         314612 subs sm,+@m       P@<:@L@M02                => foʕᵒlām                   < ~ foʕᵒlāmˈ                  # qamets: gadol maintained in pronominal suffix
         orig                 P@<:@L@M02
         trim                 p@<:@l@m02
         accents              p@<:@l@m!
@@ -386,7 +386,7 @@
         cleanup              foʕᵒlām
 
 
-  6 Psalmi 90:16        326377 subs sm,+ek@      P@<:@LE92K@               => foʕᵒlˈeḵā                 < =                           # qamets: no need to suppress qatan
+  6 Psalmi 90:16        326378 subs sm,+ek@      P@<:@LE92K@               => foʕᵒlˈeḵā                 < =                           # qamets: no need to suppress qatan
         orig                 P@<:@LE92K@
         trim                 p@<:@le92k@
         accents              p@<:@l!ek@
@@ -456,7 +456,7 @@
         cleanup              foʕᵒlˈāh
 
 
-  8 Iob 37:12           345302 verb qal infc ---,+@m P@<:@L@92M                => foʕᵒlˈām                  < =                           # qamets: no need to suppress qatan
+  8 Iob 37:12           345303 verb qal infc ---,+@m P@<:@L@92M                => foʕᵒlˈām                  < =                           # qamets: no need to suppress qatan
         orig                 P@<:@L@92M
         trim                 p@<:@l@92m
         accents              p@<:@l!@m
@@ -631,7 +631,7 @@
         cleanup              goḏlᵊḵˈā
 
 
- 13 Ezechiel 32:30      280728 subs sf,+@m       G.:B75W.R@T@M03           => gᵊvˈûrāṯām                < =                           # qamets: gadol maintained in pronominal suffix
+ 13 Ezechiel 32:30      280729 subs sf,+@m       G.:B75W.R@T@M03           => gᵊvˈûrāṯām                < =                           # qamets: gadol maintained in pronominal suffix
         orig                 G.:B75W.R@T@M03
         trim                 g.:b75w.r@t@m03
         accents              g.:b!w.r@t@m
@@ -773,7 +773,7 @@
         cleanup              hˈaʔavaḏtām
 
 
- 17 Ezechiel 46:18      289498 verb hif infc ---,+@m HO75WNOT@M03              => hˈônōṯām                  < =                           # qamets: gadol maintained in pronominal suffix
+ 17 Ezechiel 46:18      289499 verb hif infc ---,+@m HO75WNOT@M03              => hˈônōṯām                  < =                           # qamets: gadol maintained in pronominal suffix
         orig                 HO75WNOT@M03
         trim                 ho75wnot@m03
         accents              h!ownot@m
@@ -988,7 +988,7 @@
         cleanup              kuttontˈeḵā
 
 
- 23 Iob 31:39           343771 subs sm,+@h.      K.O73X@H.                 => kˌōḥāh                    < =                           # qamets: gadol maintained in pronominal suffix
+ 23 Iob 31:39           343772 subs sm,+@h.      K.O73X@H.                 => kˌōḥāh                    < =                           # qamets: gadol maintained in pronominal suffix
         orig                 K.O73X@H.
         trim                 k.o73x@h.
         accents              k./ox@h.
@@ -1096,7 +1096,7 @@
         cleanup              lᵊvˈāvāh
 
 
- 26 Psalmi 140:4        334585 subs s-,+@m       L:COWN@M02                => lᵊšônām                   < ~ lᵊšônāmˈ                  # qamets: gadol maintained in pronominal suffix
+ 26 Psalmi 140:4        334586 subs s-,+@m       L:COWN@M02                => lᵊšônām                   < ~ lᵊšônāmˈ                  # qamets: gadol maintained in pronominal suffix
         orig                 L:COWN@M02
         trim                 l:cown@m02
         accents              l:cown@m!
@@ -1167,7 +1167,7 @@
         cleanup              malkˌām
 
 
- 28 Nehemia 9:35        388621 subs sf,+@m       MAL:KW.T@M04              => malᵊḵûṯˌām                < ~ malᵊḵûṯāmˈ                # qamets: gadol maintained in pronominal suffix
+ 28 Nehemia 9:35        388622 subs sf,+@m       MAL:KW.T@M04              => malᵊḵûṯˌām                < ~ malᵊḵûṯāmˈ                # qamets: gadol maintained in pronominal suffix
         orig                 MAL:KW.T@M04
         trim                 mal:kw.t@m04
         accents              mal:kw.t@m
@@ -1238,7 +1238,7 @@
         cleanup              massˈēḵōṯām
 
 
- 30 Ezechiel 32:27      280664 subs sf,+@m       MIL:XAM:T.@M04            => milḥamtˌām                < ~ milḥamtāmˈ                # qamets: gadol maintained in pronominal suffix
+ 30 Ezechiel 32:27      280665 subs sf,+@m       MIL:XAM:T.@M04            => milḥamtˌām                < ~ milḥamtāmˈ                # qamets: gadol maintained in pronominal suffix
         orig                 MIL:XAM:T.@M04
         trim                 mil:xam:t.@m04
         accents              mil:xam:t.@m
@@ -1343,7 +1343,7 @@
         cleanup              mošḥāṯˈām
 
 
- 33 Amos 2:4            295714 verb qal infc ---,+@m M@>:@S@62M                => moʔᵒsˈām                  < =                           # qamets: no need to suppress qatan
+ 33 Amos 2:4            295715 verb qal infc ---,+@m M@>:@S@62M                => moʔᵒsˈām                  < =                           # qamets: no need to suppress qatan
         orig                 M@>:@S@62M
         trim                 m@>:@s@62m
         accents              m@>:@s!@m
@@ -1413,7 +1413,7 @@
         cleanup              moḵrˌāh
 
 
- 35 Proverbia 31:17     355642 subs dm,+h@       M@T:NE92JH@               => moṯnˈeʸhā                 < =                           # qamets: no need to suppress qatan
+ 35 Proverbia 31:17     355643 subs dm,+h@       M@T:NE92JH@               => moṯnˈeʸhā                 < =                           # qamets: no need to suppress qatan
         orig                 M@T:NE92JH@
         trim                 m@t:ne92jh@
         accents              m@t:n!ejh@
@@ -1518,7 +1518,7 @@
         cleanup              mˈoḥᵒrāṯˈām
 
 
- 38 Esther 2:20         366545 subs sf,+@h.      MO75WLAD:T.@H.03          => mˈôlaḏtāh                 < =                           # qamets: gadol maintained in pronominal suffix
+ 38 Esther 2:20         366546 subs sf,+@h.      MO75WLAD:T.@H.03          => mˈôlaḏtāh                 < =                           # qamets: gadol maintained in pronominal suffix
         orig                 MO75WLAD:T.@H.03
         trim                 mo75wlad:t.@h.03
         accents              m!owlad:t.@h.
@@ -1626,7 +1626,7 @@
         cleanup              mᵊrˈûṣāṯām
 
 
- 41 Ezechiel 43:8       287267 subs sf,+@m       M:Z75W.Z@T@M03            => mᵊzˈûzāṯām                < =                           # qamets: gadol maintained in pronominal suffix
+ 41 Ezechiel 43:8       287268 subs sf,+@m       M:Z75W.Z@T@M03            => mᵊzˈûzāṯām                < =                           # qamets: gadol maintained in pronominal suffix
         orig                 M:Z75W.Z@T@M03
         trim                 m:z75w.z@t@m03
         accents              m:z!w.z@t@m
@@ -1839,7 +1839,7 @@
         cleanup              nˈōṯᵊšām
 
 
- 47 Nehemia 5:14        385719 subs sm,+@m       P.EX@M02                  => peḥām                     < ~ peḥāmˈ                    # qamets: gadol maintained in pronominal suffix
+ 47 Nehemia 5:14        385720 subs sm,+@m       P.EX@M02                  => peḥām                     < ~ peḥāmˈ                    # qamets: gadol maintained in pronominal suffix
         orig                 P.EX@M02
         trim                 p.ex@m02
         accents              p.ex@m!
@@ -1875,7 +1875,7 @@
         cleanup              peḥām
 
 
- 48 Psalmi 77:13        323360 subs sm,+ek@      P.@<:@LE92K@              => poʕᵒlˈeḵā                 < =                           # qamets: no need to suppress qatan
+ 48 Psalmi 77:13        323361 subs sm,+ek@      P.@<:@LE92K@              => poʕᵒlˈeḵā                 < =                           # qamets: no need to suppress qatan
         orig                 P.@<:@LE92K@
         trim                 p.@<:@le92k@
         accents              p.@<:@l!ek@
@@ -1910,7 +1910,7 @@
         cleanup              poʕᵒlˈeḵā
 
 
- 49 Iob 36:9            344949 subs sm,+@m       P.@<:@L@92M               => poʕᵒlˈām                  < =                           # qamets: no need to suppress qatan
+ 49 Iob 36:9            344950 subs sm,+@m       P.@<:@L@92M               => poʕᵒlˈām                  < =                           # qamets: no need to suppress qatan
         orig                 P.@<:@L@92M
         trim                 p.@<:@l@92m
         accents              p.@<:@l!@m
@@ -2295,7 +2295,7 @@
         cleanup              qoḏšᵊḵˌā
 
 
- 60 Threni 3:63         364907 subs sf,+@m       QI75JM@T@M03              => qˈîmāṯām                  < =                           # qamets: gadol maintained in pronominal suffix
+ 60 Threni 3:63         364908 subs sf,+@m       QI75JM@T@M03              => qˈîmāṯām                  < =                           # qamets: gadol maintained in pronominal suffix
         orig                 QI75JM@T@M03
         trim                 qi75jm@t@m03
         accents              q!ijm@t@m
@@ -2366,7 +2366,7 @@
         cleanup              qᵊṣôṯˌām
 
 
- 62 Psalmi 90:10        326321 subs sm,+@m       R@H:B.@M                  => rohbˌām                   < =                           # qamets: no need to suppress qatan
+ 62 Psalmi 90:10        326322 subs sm,+@m       R@H:B.@M                  => rohbˌām                   < =                           # qamets: no need to suppress qatan
         orig                 R@H:B.@M
         trim                 r@h:b.@m
         accents              r@h:b.@m
@@ -2471,7 +2471,7 @@
         cleanup              roḥbˈāh
 
 
- 65 Ezechiel 42:11      286896 subs sm,+@n       R@X:B.@92N                => roḥbˈān                   < =                           # qamets: no need to suppress qatan
+ 65 Ezechiel 42:11      286897 subs sm,+@n       R@X:B.@92N                => roḥbˈān                   < =                           # qamets: no need to suppress qatan
         orig                 R@X:B.@92N
         trim                 r@x:b.@92n
         accents              r@x:b.!@n
@@ -2682,7 +2682,7 @@
         cleanup              tornˌām
 
 
- 71 Threni 4:8          365042 subs sm,+@m       T.@75>:@R@80M             => tˈoʔᵒrˈām                 < =                           # qamets: no need to suppress qatan
+ 71 Threni 4:8          365043 subs sm,+@m       T.@75>:@R@80M             => tˈoʔᵒrˈām                 < =                           # qamets: no need to suppress qatan
         orig                 T.@75>:@R@80M
         trim                 t.@75>:@r@80m
         accents              t.!@>:@r!@m
@@ -2859,7 +2859,7 @@
         cleanup              vāttˌeʸḵā
 
 
- 76 Esther 9:25         369761 verb qal infc ---,+@h. BO>@H.02                  => vōʔāh                     < ~ vōʔāhˈ                    # qamets: gadol maintained in pronominal suffix
+ 76 Esther 9:25         369762 verb qal infc ---,+@h. BO>@H.02                  => vōʔāh                     < ~ vōʔāhˈ                    # qamets: gadol maintained in pronominal suffix
         orig                 BO>@H.02
         trim                 bo>@h.02
         accents              bo>@h.!
@@ -2895,7 +2895,7 @@
         cleanup              vōʔāh
 
 
- 77 Ezechiel 28:17      278614 subs sm,+ek@      J@P:JE80K@                => yofyˈeḵā                  < =                           # qamets: no need to suppress qatan
+ 77 Ezechiel 28:17      278615 subs sm,+ek@      J@P:JE80K@                => yofyˈeḵā                  < =                           # qamets: no need to suppress qatan
         orig                 J@P:JE80K@
         trim                 j@p:je80k@
         accents              j@p:j!ek@
@@ -2930,7 +2930,7 @@
         cleanup              yofyˈeḵā
 
 
- 78 Esther 1:11         365696 subs sm,+@h.      J@P:J@80H.                => yofyˈāh                   < =                           # qamets: no need to suppress qatan
+ 78 Esther 1:11         365697 subs sm,+@h.      J@P:J@80H.                => yofyˈāh                   < =                           # qamets: no need to suppress qatan
         orig                 J@P:J@80H.
         trim                 j@p:j@80h.
         accents              j@p:j!@h.
@@ -3107,7 +3107,7 @@
         cleanup              yāḏāh
 
 
- 83 Chronica_II 26:13   419827 subs s-,+@m       J@D@M04                   => yāḏˌām                    < ~ yāḏāmˈ                    # qamets: gadol maintained in pronominal suffix
+ 83 Chronica_II 26:13   419828 subs s-,+@m       J@D@M04                   => yāḏˌām                    < ~ yāḏāmˈ                    # qamets: gadol maintained in pronominal suffix
         orig                 J@D@M04
         trim                 j@d@m04
         accents              j@d@m
@@ -3142,7 +3142,7 @@
         cleanup              yāḏˌām
 
 
- 84 Habakuk 2:8         302588 verb qal impf 3pm,+k@ J:C@L.73W.K@              => yᵊšāllˌûḵā                < =                           # qamets: no need to suppress qatan
+ 84 Habakuk 2:8         302589 verb qal impf 3pm,+k@ J:C@L.73W.K@              => yᵊšāllˌûḵā                < =                           # qamets: no need to suppress qatan
         orig                 J:C@L.73W.K@
         trim                 j:c@l.73w.k@
         accents              j:c@l./w.k@
@@ -3172,7 +3172,7 @@
         cleanup              yᵊšāllˌûḵā
 
 
- 85 Psalmi 94:20        326915 verb qal impf 3sm,+:k@ J:X@B:R:K@                => yᵊḥovrᵊḵˌā                < =                           # qamets: no need to suppress qatan
+ 85 Psalmi 94:20        326916 verb qal impf 3sm,+:k@ J:X@B:R:K@                => yᵊḥovrᵊḵˌā                < =                           # qamets: no need to suppress qatan
         orig                 J:X@B:R:K@
         trim                 j:x@b:r:k@
         accents              j:x@b:r:k@
@@ -3243,7 +3243,7 @@
         cleanup              zᵊhāvām
 
 
- 87 Psalmi 44:4         317640 subs s-,+@m       Z:ROW<@M02                => zᵊrôʕām                   < ~ zᵊrôʕāmˈ                  # qamets: gadol maintained in pronominal suffix
+ 87 Psalmi 44:4         317641 subs s-,+@m       Z:ROW<@M02                => zᵊrôʕām                   < ~ zᵊrôʕāmˈ                  # qamets: gadol maintained in pronominal suffix
         orig                 Z:ROW<@M02
         trim                 z:row<@m02
         accents              z:row<@m!
@@ -3314,7 +3314,7 @@
         cleanup              śovʕˈeḵā
 
 
- 89 Ruth 2:18           356628 subs sm,+@h.      F.@B:<@75H.00             => śśovʕˈāh                  < =                           # qamets: no need to suppress qatan
+ 89 Ruth 2:18           356629 subs sm,+@h.      F.@B:<@75H.00             => śśovʕˈāh                  < =                           # qamets: no need to suppress qatan
         orig                 F.@B:<@75H.
         trim                 f.@b:<@75h.
         accents              f.@b:<!@h.
@@ -3455,7 +3455,7 @@
         cleanup              šofkᵊḵˌā
 
 
- 93 Psalmi 51:6         318911 verb qal infc ---,+ek@ C@P:VE75K@00              => šofṭˈeḵā                  < =                           # qamets: no need to suppress qatan
+ 93 Psalmi 51:6         318912 verb qal infc ---,+ek@ C@P:VE75K@00              => šofṭˈeḵā                  < =                           # qamets: no need to suppress qatan
         orig                 C@P:VE75K@
         trim                 c@p:ve75k@
         accents              c@p:v!ek@
@@ -3700,7 +3700,7 @@
         cleanup              šomʕᵃḵˈā
 
 
-100 Proverbia 3:8       347500 subs s-,+ek@      C@R.E92K@                 => šorrˈeḵā                  < =                           # qamets: no need to suppress qatan
+100 Proverbia 3:8       347501 subs sm,+ek@      C@R.E92K@                 => šorrˈeḵā                  < =                           # qamets: no need to suppress qatan
         orig                 C@R.E92K@
         trim                 c@r.e92k@
         accents              c@r.!ek@
@@ -3708,7 +3708,7 @@
         rafe                 c@r.!ek@
         furtive_patah        c@r.!ek@
         default accent       c@r.!ek@
-        qamets qatan         no special verb form: subs s-
+        qamets qatan         no special verb form: subs sm
         qamets_qatan1        c@r.!ek@
         qamets_qatan2        c^r.!ek@
         qamets_qatan3        c^r.!ek@
@@ -3770,7 +3770,7 @@
         cleanup              šoršˌām
 
 
-102 Ezechiel 17:7       272287 subs pm,+h@       C@R:@CE74JH@              => šorᵒšˈeʸhā                < =                           # qamets: no need to suppress qatan
+102 Ezechiel 17:7       272288 subs pm,+h@       C@R:@CE74JH@              => šorᵒšˈeʸhā                < =                           # qamets: no need to suppress qatan
         orig                 C@R:@CE74JH@
         trim                 c@r:@ce74jh@
         accents              c@r:@c!ejh@
@@ -3910,7 +3910,7 @@
         cleanup              šᵊḵovtᵊḵˌā
 
 
-106 Psalmi 15:1         312296 subs sm,+ek@      >@H:@LE92K@               => ʔohᵒlˈeḵā                 < =                           # qamets: no need to suppress qatan
+106 Psalmi 15:1         312297 subs sm,+ek@      >@H:@LE92K@               => ʔohᵒlˈeḵā                 < =                           # qamets: no need to suppress qatan
         orig                 >@H:@LE92K@
         trim                 >@h:@le92k@
         accents              >@h:@l!ek@
@@ -3945,7 +3945,7 @@
         cleanup              ʔohᵒlˈeḵā
 
 
-107 Hosea 9:10          292943 subs s-,+@m       >@H:@B@75M00              => ʔohᵒvˈām                  < =                           # qamets: no need to suppress qatan
+107 Hosea 9:10          292944 subs s-,+@m       >@H:@B@75M00              => ʔohᵒvˈām                  < =                           # qamets: no need to suppress qatan
         orig                 >@H:@B@75M
         trim                 >@h:@b@75m
         accents              >@h:@b!@m
@@ -3980,7 +3980,7 @@
         cleanup              ʔohᵒvˈām
 
 
-108 Esther 1:17         365848 verb qal infc ---,+@m >@M:R@81M                 => ʔomrˈām                   < =                           # qamets: no need to suppress qatan
+108 Esther 1:17         365849 verb qal infc ---,+@m >@M:R@81M                 => ʔomrˈām                   < =                           # qamets: no need to suppress qatan
         orig                 >@M:R@81M
         trim                 >@m:r@81m
         accents              >@m:r!@m
@@ -4015,7 +4015,7 @@
         cleanup              ʔomrˈām
 
 
-109 Psalmi 42:11        317506 verb qal infc ---,+@m >@M:R@71M                 => ʔomrˌām                   < =                           # qamets: no need to suppress qatan
+109 Psalmi 42:11        317507 verb qal infc ---,+@m >@M:R@71M                 => ʔomrˌām                   < =                           # qamets: no need to suppress qatan
         orig                 >@M:R@71M
         trim                 >@m:r@71m
         accents              >@m:r/@m
@@ -4050,7 +4050,7 @@
         cleanup              ʔomrˌām
 
 
-110 Hosea 7:6           292430 subs sm,+@m       >@R:B.@92M                => ʔorbˈām                   < =                           # qamets: no need to suppress qatan
+110 Hosea 7:6           292431 subs sm,+@m       >@R:B.@92M                => ʔorbˈām                   < =                           # qamets: no need to suppress qatan
         orig                 >@R:B.@92M
         trim                 >@r:b.@92m
         accents              >@r:b.!@m
@@ -4155,7 +4155,7 @@
         cleanup              ʔorkˌāh
 
 
-113 Chronica_II 3:11    407925 subs sm,+@m       >@R:K.@73M                => ʔorkˌām                   < =                           # qamets: no need to suppress qatan
+113 Chronica_II 3:11    407926 subs sm,+@m       >@R:K.@73M                => ʔorkˌām                   < =                           # qamets: no need to suppress qatan
         orig                 >@R:K.@73M
         trim                 >@r:k.@73m
         accents              >@r:k./@m
@@ -4190,7 +4190,7 @@
         cleanup              ʔorkˌām
 
 
-114 Ezechiel 42:11      286894 subs sm,+@n       >@R:K.@73N                => ʔorkˌān                   < =                           # qamets: no need to suppress qatan
+114 Ezechiel 42:11      286895 subs sm,+@n       >@R:K.@73N                => ʔorkˌān                   < =                           # qamets: no need to suppress qatan
         orig                 >@R:K.@73N
         trim                 >@r:k.@73n
         accents              >@r:k./@n
@@ -4225,7 +4225,7 @@
         cleanup              ʔorkˌān
 
 
-115 Psalmi 44:19        317787 subs sm,+ek@      >@R:XE75K@00              => ʔorḥˈeḵā                  < =                           # qamets: no need to suppress qatan
+115 Psalmi 44:19        317788 subs sm,+ek@      >@R:XE75K@00              => ʔorḥˈeḵā                  < =                           # qamets: no need to suppress qatan
         orig                 >@R:XE75K@
         trim                 >@r:xe75k@
         accents              >@r:x!ek@
@@ -4295,7 +4295,7 @@
         cleanup              ʔospᵊḵˌā
 
 
-117 Hosea 10:10         293203 verb qal infc ---,+@m >@S:R@73M                 => ʔosrˌām                   < =                           # qamets: no need to suppress qatan
+117 Hosea 10:10         293204 verb qal infc ---,+@m >@S:R@73M                 => ʔosrˌām                   < =                           # qamets: no need to suppress qatan
         orig                 >@S:R@73M
         trim                 >@s:r@73m
         accents              >@s:r/@m
@@ -4505,7 +4505,7 @@
         cleanup              ʔoznˌām
 
 
-123 Psalmi 31:3         314945 subs sf,+:k@      >@Z:N:K@02                => ʔoznᵊḵˈā                  < =                           # qamets: no need to suppress qatan
+123 Psalmi 31:3         314946 subs sf,+:k@      >@Z:N:K@02                => ʔoznᵊḵˈā                  < =                           # qamets: no need to suppress qatan
         orig                 >@Z:N:K@02
         trim                 >@z:n:k@02
         accents              >@z:n:k!@
@@ -4610,7 +4610,7 @@
         cleanup              ʔoḵlˈeḵā
 
 
-126 Psalmi 104:21       328426 subs sm,+@m       >@K:L@75M00               => ʔoḵlˈām                   < =                           # qamets: no need to suppress qatan
+126 Psalmi 104:21       328427 subs sm,+@m       >@K:L@75M00               => ʔoḵlˈām                   < =                           # qamets: no need to suppress qatan
         orig                 >@K:L@75M
         trim                 >@k:l@75m
         accents              >@k:l!@m
@@ -4822,7 +4822,7 @@
         cleanup              ʔᵃvōṯām
 
 
-132 Psalmi 16:4         312388 subs pf,+@m       <AY.:BOWT@M02             => ʕaṣṣᵊvôṯām                < ~ ʕaṣṣᵊvôṯāmˈ               # qamets: gadol maintained in pronominal suffix
+132 Psalmi 16:4         312389 subs pf,+@m       <AY.:BOWT@M02             => ʕaṣṣᵊvôṯām                < ~ ʕaṣṣᵊvôṯāmˈ               # qamets: gadol maintained in pronominal suffix
         orig                 <AY.:BOWT@M02
         trim                 <ay.:bowt@m02
         accents              <ay.:bowt@m!
@@ -4893,7 +4893,7 @@
         cleanup              ʕonyˈām
 
 
-134 Threni 1:7          363623 subs sm,+@h.      <@N:J@H.03                => ʕonyˌāh                   < =                           # qamets: no need to suppress qatan
+134 Threni 1:7          363624 subs sm,+@h.      <@N:J@H.03                => ʕonyˌāh                   < =                           # qamets: no need to suppress qatan
         orig                 <@N:J@H.03
         trim                 <@n:j@h.03
         accents              <@n:j@h.
@@ -4963,7 +4963,7 @@
         cleanup              ʕorlāṯˈām
 
 
-136 Iob 5:13            337406 verb qal infc ---,+@m <@R:M@92M                 => ʕormˈām                   < =                           # qamets: no need to suppress qatan
+136 Iob 5:13            337407 verb qal infc ---,+@m <@R:M@92M                 => ʕormˈām                   < =                           # qamets: no need to suppress qatan
         orig                 <@R:M@92M
         trim                 <@r:m@92m
         accents              <@r:m!@m
@@ -5243,7 +5243,7 @@
         cleanup              ʕovrᵊḵˈā
 
 
-144 Psalmi 74:13        322901 subs sm,+:k@      <@Z.:K@74                 => ʕozzᵊḵˈā                  < =                           # qamets: no need to suppress qatan
+144 Psalmi 74:13        322902 subs sm,+:k@      <@Z.:K@74                 => ʕozzᵊḵˈā                  < =                           # qamets: no need to suppress qatan
         orig                 <@Z.:K@74
         trim                 <@z.:k@74
         accents              <@z.:k!@
@@ -5313,7 +5313,7 @@
         cleanup              ʕozzᵊḵˌā
 
 
-146 Psalmi 105:14       328683 verb qal infc ---,+@m <@C:Q@92M                 => ʕošqˈām                   < =                           # qamets: no need to suppress qatan
+146 Psalmi 105:14       328684 verb qal infc ---,+@m <@C:Q@92M                 => ʕošqˈām                   < =                           # qamets: no need to suppress qatan
         orig                 <@C:Q@92M
         trim                 <@c:q@92m
         accents              <@c:q!@m
@@ -5348,7 +5348,7 @@
         cleanup              ʕošqˈām
 
 
-147 Proverbia 14:24     350595 subs sm,+@m       <@C:R@92M                 => ʕošrˈām                   < =                           # qamets: no need to suppress qatan
+147 Proverbia 14:24     350596 subs sm,+@m       <@C:R@92M                 => ʕošrˈām                   < =                           # qamets: no need to suppress qatan
         orig                 <@C:R@92M
         trim                 <@c:r@92m
         accents              <@c:r!@m
@@ -5490,7 +5490,7 @@
         cleanup              ʕᵃvˈōḏāṯām
 
 
-151 Ezechiel 32:27      280673 subs pm,+@m       <:AWO75NOT@M03            => ʕᵃwˈōnōṯām                < =                           # qamets: gadol maintained in pronominal suffix
+151 Ezechiel 32:27      280674 subs pm,+@m       <:AWO75NOT@M03            => ʕᵃwˈōnōṯām                < =                           # qamets: gadol maintained in pronominal suffix
         orig                 <:AWO75NOT@M03
         trim                 <:awo75not@m03
         accents              <:aw!onot@m
@@ -5526,7 +5526,7 @@
         cleanup              ʕᵃwˈōnōṯām
 
 
-152 Chronica_II 22:5    417345 subs sf,+@m       <:AY@T@M02                => ʕᵃṣāṯām                   < ~ ʕᵃṣāṯāmˈ                  # qamets: gadol maintained in pronominal suffix
+152 Chronica_II 22:5    417346 subs sf,+@m       <:AY@T@M02                => ʕᵃṣāṯām                   < ~ ʕᵃṣāṯāmˈ                  # qamets: gadol maintained in pronominal suffix
         orig                 <:AY@T@M02
         trim                 <:ay@t@m02
         accents              <:ay@t@m!
@@ -5562,7 +5562,7 @@
         cleanup              ʕᵃṣāṯām
 
 
-153 Psalmi 105:33       328840 subs s-,+@m       13G.AP:N@M                => ˈgafnām                   < =                           # qamets: gadol maintained in pronominal suffix
+153 Psalmi 105:33       328841 subs s-,+@m       13G.AP:N@M                => ˈgafnām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13G.AP:N@M
         trim                 13g.ap:n@m
         accents              !g.ap:n@m
@@ -5598,7 +5598,7 @@
         cleanup              ˈgafnām
 
 
-154 Psalmi 80:6         324447 verb hif perf 2sm,+@m 13HE>:EKAL:T.@M           => ˈheʔᵉḵaltām               < =                           # qamets: gadol maintained in pronominal suffix
+154 Psalmi 80:6         324448 verb hif perf 2sm,+@m 13HE>:EKAL:T.@M           => ˈheʔᵉḵaltām               < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13HE>:EKAL:T.@M
         trim                 13he>:ekal:t.@m
         accents              !he>:ekal:t.@m
@@ -5634,7 +5634,7 @@
         cleanup              ˈheʔᵉḵaltām
 
 
-155 Proverbia 31:20     355665 subs sf,+@h.      13K.AP.@H.                => ˈkappāh                   < =                           # qamets: gadol maintained in pronominal suffix
+155 Proverbia 31:20     355666 subs sf,+@h.      13K.AP.@H.                => ˈkappāh                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13K.AP.@H.
         trim                 13k.ap.@h.
         accents              !k.ap.@h.
@@ -5670,7 +5670,7 @@
         cleanup              ˈkappāh
 
 
-156 Psalmi 104:24       328448 subs sm,+@m       13K.UL.@M                 => ˈkullām                   < =                           # qamets: gadol maintained in pronominal suffix
+156 Psalmi 104:24       328449 subs sm,+@m       13K.UL.@M                 => ˈkullām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13K.UL.@M
         trim                 13k.ul.@m
         accents              !k.ul.@m
@@ -5706,7 +5706,7 @@
         cleanup              ˈkullām
 
 
-157 Psalmi 105:25       328775 subs sm,+@m       13LIB.@M                  => ˈlibbām                   < =                           # qamets: gadol maintained in pronominal suffix
+157 Psalmi 105:25       328776 subs sm,+@m       13LIB.@M                  => ˈlibbām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13LIB.@M
         trim                 13lib.@m
         accents              !lib.@m
@@ -5742,7 +5742,7 @@
         cleanup              ˈlibbām
 
 
-158 Psalmi 49:12        318512 subs pm,+@m       13MIC:K.:NOT@M            => ˈmiškᵊnōṯām               < =                           # qamets: gadol maintained in pronominal suffix
+158 Psalmi 49:12        318513 subs pm,+@m       13MIC:K.:NOT@M            => ˈmiškᵊnōṯām               < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13MIC:K.:NOT@M
         trim                 13mic:k.:not@m
         accents              !mic:k.:not@m
@@ -5778,7 +5778,7 @@
         cleanup              ˈmiškᵊnōṯām
 
 
-159 Chronica_II 8:14    410904 subs pf,+@m       14MIC:M:ROWT@M            => mišmᵊrôṯˌām               < ~ ˈmišmᵊrôṯām               # qamets: gadol maintained in pronominal suffix
+159 Chronica_II 8:14    410905 subs pf,+@m       14MIC:M:ROWT@M            => mišmᵊrôṯˌām               < ~ ˈmišmᵊrôṯām               # qamets: gadol maintained in pronominal suffix
         orig                 14MIC:M:ROWT@M
         trim                 14mic:m:rowt@m
         accents              mic:m:rowt@m
@@ -5848,7 +5848,7 @@
         cleanup              qorbānˌām
 
 
-161 Psalmi 5:8          311093 subs sm,+:k@      11Q@D:C:K@81              => ˈqoḏšᵊḵˈā                 < =                           # qamets: no need to suppress qatan
+161 Psalmi 5:8          311094 subs sm,+:k@      11Q@D:C:K@81              => ˈqoḏšᵊḵˈā                 < =                           # qamets: no need to suppress qatan
         orig                 11Q@D:C:K@81
         trim                 11q@d:c:k@81
         accents              !q@d:c:k!@
@@ -5883,7 +5883,7 @@
         cleanup              ˈqoḏšᵊḵˈā
 
 
-162 Psalmi 104:29       328500 subs s-,+@m       13RW.X@M                  => ˈrûḥām                    < =                           # qamets: gadol maintained in pronominal suffix
+162 Psalmi 104:29       328501 subs s-,+@m       13RW.X@M                  => ˈrûḥām                    < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13RW.X@M
         trim                 13rw.x@m
         accents              !rw.x@m
@@ -5919,7 +5919,7 @@
         cleanup              ˈrûḥām
 
 
-163 Iob 28:27           342833 verb qal perf 3sm,+@h. 13R@>@H.                  => ˈrāʔāh                    < =                           # qamets: gadol maintained in pronominal suffix
+163 Iob 28:27           342834 verb qal perf 3sm,+@h. 13R@>@H.                  => ˈrāʔāh                    < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13R@>@H.
         trim                 13r@>@h.
         accents              !r@>@h.
@@ -5955,7 +5955,7 @@
         cleanup              ˈrāʔāh
 
 
-164 Proverbia 3:14      347555 subs sm,+@h.      13SAX:R@H.                => ˈsaḥrāh                   < =                           # qamets: gadol maintained in pronominal suffix
+164 Proverbia 3:14      347556 subs sm,+@h.      13SAX:R@H.                => ˈsaḥrāh                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13SAX:R@H.
         trim                 13sax:r@h.
         accents              !sax:r@h.
@@ -5991,7 +5991,7 @@
         cleanup              ˈsaḥrāh
 
 
-165 Proverbia 6:25      348462 subs sm,+@h.      13J@P:J@H.                => ˈyofyāh                   < =                           # qamets: gadol maintained in pronominal suffix
+165 Proverbia 6:25      348463 subs sm,+@h.      13J@P:J@H.                => ˈyofyāh                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13J@P:J@H.
         trim                 13j@p:j@h.
         accents              !j@p:j@h.
@@ -6027,7 +6027,7 @@
         cleanup              ˈyofyāh
 
 
-166 Psalmi 106:27       329212 subs sm,+@m       13ZAR:<@M                 => ˈzarʕām                   < =                           # qamets: gadol maintained in pronominal suffix
+166 Psalmi 106:27       329213 subs sm,+@m       13ZAR:<@M                 => ˈzarʕām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13ZAR:<@M
         trim                 13zar:<@m
         accents              !zar:<@m
@@ -6063,7 +6063,7 @@
         cleanup              ˈzarʕām
 
 
-167 Psalmi 90:5         326261 verb qal perf 2sm,+@m 13Z:RAM:T.@M              => ˈzramtām                  < =                           # qamets: gadol maintained in pronominal suffix
+167 Psalmi 90:5         326262 verb qal perf 2sm,+@m 13Z:RAM:T.@M              => ˈzramtām                  < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13Z:RAM:T.@M
         trim                 13z:ram:t.@m
         accents              !z:ram:t.@m
@@ -6134,7 +6134,7 @@
         cleanup              šillᵊḥˌāh
 
 
-169 Psalmi 130:2        333327 subs df,+k@       13>@Z:NEJK@               => ˈʔozneʸḵā                 < =                           # qamets: no need to suppress qatan
+169 Psalmi 130:2        333328 subs df,+k@       13>@Z:NEJK@               => ˈʔozneʸḵā                 < =                           # qamets: no need to suppress qatan
         orig                 13>@Z:NEJK@
         trim                 13>@z:nejk@
         accents              !>@z:nejk@
@@ -6169,7 +6169,7 @@
         cleanup              ˈʔozneʸḵā
 
 
-170 Iob 36:10           344956 subs sf,+@m       13>@Z:N@M                 => ˈʔoznām                   < =                           # qamets: gadol maintained in pronominal suffix
+170 Iob 36:10           344957 subs sf,+@m       13>@Z:N@M                 => ˈʔoznām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13>@Z:N@M
         trim                 13>@z:n@m
         accents              !>@z:n@m
@@ -6205,7 +6205,7 @@
         cleanup              ˈʔoznām
 
 
-171 Psalmi 71:2         322059 subs sf,+:k@      11>@Z:N:K@81              => ˈʔoznᵊḵˈā                 < =                           # qamets: no need to suppress qatan
+171 Psalmi 71:2         322060 subs sf,+:k@      11>@Z:N:K@81              => ˈʔoznᵊḵˈā                 < =                           # qamets: no need to suppress qatan
         orig                 11>@Z:N:K@81
         trim                 11>@z:n:k@81
         accents              !>@z:n:k!@
@@ -6240,7 +6240,7 @@
         cleanup              ˈʔoznᵊḵˈā
 
 
-172 Psalmi 78:12        323579 subs pm,+@m       13>:ABOWT@M               => ˈʔᵃvôṯām                  < =                           # qamets: gadol maintained in pronominal suffix
+172 Psalmi 78:12        323580 subs pm,+@m       13>:ABOWT@M               => ˈʔᵃvôṯām                  < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13>:ABOWT@M
         trim                 13>:abowt@m
         accents              !>:abowt@m
@@ -6276,7 +6276,7 @@
         cleanup              ˈʔᵃvôṯām
 
 
-173 Psalmi 49:7         318465 subs sm,+@m       11<@C:R@81M               => ˈʕošrˈām                  < =                           # qamets: no need to suppress qatan
+173 Psalmi 49:7         318466 subs sm,+@m       11<@C:R@81M               => ˈʕošrˈām                  < =                           # qamets: no need to suppress qatan
         orig                 11<@C:R@81M
         trim                 11<@c:r@81m
         accents              !<@c:r!@m
@@ -6311,7 +6311,7 @@
         cleanup              ˈʕošrˈām
 
 
-174 Psalmi 49:14        318534 subs s-,+@m       13DAR:K.@M                => ˈḏarkām                   < =                           # qamets: gadol maintained in pronominal suffix
+174 Psalmi 49:14        318535 subs s-,+@m       13DAR:K.@M                => ˈḏarkām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13DAR:K.@M
         trim                 13dar:k.@m
         accents              !dar:k.@m
@@ -6347,7 +6347,7 @@
         cleanup              ˈḏarkām
 
 
-175 Psalmi 37:15        316354 subs sf,+@m       13XAR:B.@M                => ˈḥarbām                   < =                           # qamets: gadol maintained in pronominal suffix
+175 Psalmi 37:15        316355 subs sf,+@m       13XAR:B.@M                => ˈḥarbām                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13XAR:B.@M
         trim                 13xar:b.@m
         accents              !xar:b.@m
@@ -6383,7 +6383,7 @@
         cleanup              ˈḥarbām
 
 
-176 Psalmi 107:27       329689 subs sf,+@m       11X@K:M@T@81M             => ˈḥoḵmāṯˈām                < =                           # qamets: no need to suppress qatan
+176 Psalmi 107:27       329690 subs sf,+@m       11X@K:M@T@81M             => ˈḥoḵmāṯˈām                < =                           # qamets: no need to suppress qatan
         orig                 11X@K:M@T@81M
         trim                 11x@k:m@t@81m
         accents              !x@k:m@t!@m
@@ -6418,7 +6418,7 @@
         cleanup              ˈḥoḵmāṯˈām
 
 
-177 Iob 6:4             337592 subs sf,+@m       13X:AM@T@M                => ˈḥᵃmāṯām                  < =                           # qamets: gadol maintained in pronominal suffix
+177 Iob 6:4             337593 subs sf,+@m       13X:AM@T@M                => ˈḥᵃmāṯām                  < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13X:AM@T@M
         trim                 13x:am@t@m
         accents              !x:am@t@m
@@ -6454,7 +6454,7 @@
         cleanup              ˈḥᵃmāṯām
 
 
-178 Psalmi 132:15       333562 subs sm,+@h.      13Y;JD@H.                 => ˈṣêḏāh                    < =                           # qamets: gadol maintained in pronominal suffix
+178 Psalmi 132:15       333563 subs sm,+@h.      13Y;JD@H.                 => ˈṣêḏāh                    < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13Y;JD@H.
         trim                 13y;jd@h.
         accents              !y;jd@h.
@@ -6490,7 +6490,7 @@
         cleanup              ˈṣêḏāh
 
 
-179 Proverbia 9:2       349171 subs sm,+@h.      13VIB:X@H.                => ˈṭivḥāh                   < =                           # qamets: gadol maintained in pronominal suffix
+179 Proverbia 9:2       349172 subs sm,+@h.      13VIB:X@H.                => ˈṭivḥāh                   < =                           # qamets: gadol maintained in pronominal suffix
         orig                 13VIB:X@H.
         trim                 13vib:x@h.
         accents              !vib:x@h.
@@ -6526,7 +6526,7 @@
         cleanup              ˈṭivḥāh
 
 
-180 Psalmi 51:6         318908 verb qal infc ---,+ek@ D@B:RE81K@                => ḏovrˈeḵā                  < =                           # qamets: no need to suppress qatan
+180 Psalmi 51:6         318909 verb qal infc ---,+ek@ D@B:RE81K@                => ḏovrˈeḵā                  < =                           # qamets: no need to suppress qatan
         orig                 D@B:RE81K@
         trim                 d@b:re81k@
         accents              d@b:r!ek@
@@ -6596,7 +6596,7 @@
         cleanup              ḏovrˈām
 
 
-182 Iob 39:12           345924 subs sf,+:k@      G@R:N:K@71                => ḡornᵊḵˌā                  < =                           # qamets: no need to suppress qatan
+182 Iob 39:12           345925 subs sf,+:k@      G@R:N:K@71                => ḡornᵊḵˌā                  < =                           # qamets: no need to suppress qatan
         orig                 G@R:N:K@71
         trim                 g@r:n:k@71
         accents              g@r:n:k/@
@@ -6807,7 +6807,7 @@
         cleanup              ḥoqrˈāh
 
 
-188 Ezechiel 30:21      279645 verb qal infc ---,+@h. X@B:C@71H.                => ḥovšˌāh                   < =                           # qamets: no need to suppress qatan
+188 Ezechiel 30:21      279646 verb qal infc ---,+@h. X@B:C@71H.                => ḥovšˌāh                   < =                           # qamets: no need to suppress qatan
         orig                 X@B:C@71H.
         trim                 x@b:c@71h.
         accents              x@b:c/@h.
@@ -6842,7 +6842,7 @@
         cleanup              ḥovšˌāh
 
 
-189 Ezechiel 30:21      279647 verb qal infc ---,+@h. X@Z:Q@73H.                => ḥozqˌāh                   < =                           # qamets: no need to suppress qatan
+189 Ezechiel 30:21      279648 verb qal infc ---,+@h. X@Z:Q@73H.                => ḥozqˌāh                   < =                           # qamets: no need to suppress qatan
         orig                 X@Z:Q@73H.
         trim                 x@z:q@73h.
         accents              x@z:q/@h.
@@ -6877,7 +6877,7 @@
         cleanup              ḥozqˌāh
 
 
-190 Hosea 2:13          291324 subs sm,+@h.      X@D:C@74H.                => ḥoḏšˈāh                   < =                           # qamets: no need to suppress qatan
+190 Hosea 2:13          291325 subs sm,+@h.      X@D:C@74H.                => ḥoḏšˈāh                   < =                           # qamets: no need to suppress qatan
         orig                 X@D:C@74H.
         trim                 x@d:c@74h.
         accents              x@d:c!@h.
@@ -7052,7 +7052,7 @@
         cleanup              ḥoḵmāṯˈām
 
 
-195 Ezechiel 28:5       278422 subs sf,+:k@      X@K:M@T:K@91              => ḥoḵmāṯᵊḵˈā                < =                           # qamets: no need to suppress qatan
+195 Ezechiel 28:5       278423 subs sf,+:k@      X@K:M@T:K@91              => ḥoḵmāṯᵊḵˈā                < =                           # qamets: no need to suppress qatan
         orig                 X@K:M@T:K@91
         trim                 x@k:m@t:k@91
         accents              x@k:m@t:k!@
@@ -7087,7 +7087,7 @@
         cleanup              ḥoḵmāṯᵊḵˈā
 
 
-196 Ezechiel 28:17      278616 subs sf,+:k@      X@K:M@T:K@73              => ḥoḵmāṯᵊḵˌā                < =                           # qamets: no need to suppress qatan
+196 Ezechiel 28:17      278617 subs sf,+:k@      X@K:M@T:K@73              => ḥoḵmāṯᵊḵˌā                < =                           # qamets: no need to suppress qatan
         orig                 X@K:M@T:K@73
         trim                 x@k:m@t:k@73
         accents              x@k:m@t:k/@
@@ -7122,7 +7122,7 @@
         cleanup              ḥoḵmāṯᵊḵˌā
 
 
-197 Ezechiel 28:4       278406 subs sf,+:k@      X@K:M@75T:K@03            => ḥoḵmˈāṯᵊḵā                < =                           # qamets: no need to suppress qatan
+197 Ezechiel 28:4       278407 subs sf,+:k@      X@K:M@75T:K@03            => ḥoḵmˈāṯᵊḵā                < =                           # qamets: no need to suppress qatan
         orig                 X@K:M@75T:K@03
         trim                 x@k:m@75t:k@03
         accents              x@k:m!@t:k@
@@ -7192,7 +7192,7 @@
         cleanup              ḵofrᵊḵˌā
 
 
-199 Ezechiel 31:14      280040 subs sm,+@m       KUL.@M04                  => ḵullˌām                   < ~ ḵullāmˈ                   # qamets: gadol maintained in pronominal suffix
+199 Ezechiel 31:14      280041 subs sm,+@m       KUL.@M04                  => ḵullˌām                   < ~ ḵullāmˈ                   # qamets: gadol maintained in pronominal suffix
         orig                 KUL.@M04
         trim                 kul.@m04
         accents              kul.@m
@@ -7297,7 +7297,7 @@
         cleanup              ṣippornˈeʸhā
 
 
-202 Chronica_II 2:15    407647 subs sm,+ek@      Y@R:K.E80K@               => ṣorkˈeḵā                  < =                           # qamets: no need to suppress qatan
+202 Chronica_II 2:15    407648 subs sm,+ek@      Y@R:K.E80K@               => ṣorkˈeḵā                  < =                           # qamets: no need to suppress qatan
         orig                 Y@R:K.E80K@
         trim                 y@r:k.e80k@
         accents              y@r:k.!ek@
@@ -7368,7 +7368,7 @@
         cleanup              ṣˈārāṯāh
 
 
-204 Nehemia 9:27        388399 subs sf,+@m       Y@75R@T@M03               => ṣˈārāṯām                  < =                           # qamets: gadol maintained in pronominal suffix
+204 Nehemia 9:27        388400 subs sf,+@m       Y@75R@T@M03               => ṣˈārāṯām                  < =                           # qamets: gadol maintained in pronominal suffix
         orig                 Y@75R@T@M03
         trim                 y@75r@t@m03
         accents              y!@r@t@m
@@ -7509,7 +7509,7 @@
         cleanup              ṯofśˈām
 
 
-208 Ezechiel 29:7       278954 verb qal infc ---,+@m T@P:F@63M                 => ṯofśˌām                   < =                           # qamets: no need to suppress qatan
+208 Ezechiel 29:7       278955 verb qal infc ---,+@m T@P:F@63M                 => ṯofśˌām                   < =                           # qamets: no need to suppress qatan
         orig                 T@P:F@63M
         trim                 t@p:f@63m
         accents              t@p:f/@m
@@ -7544,7 +7544,7 @@
         cleanup              ṯofśˌām
 
 
-209 Ezechiel 43:8       287282 subs pf,+@m       TO75W<:ABOWT@M03          => ṯˈôʕᵃvôṯām                < =                           # qamets: gadol maintained in pronominal suffix
+209 Ezechiel 43:8       287283 subs pf,+@m       TO75W<:ABOWT@M03          => ṯˈôʕᵃvôṯām                < =                           # qamets: gadol maintained in pronominal suffix
         orig                 TO75W<:ABOWT@M03
         trim                 to75w<:abowt@m03
         accents              t!ow<:abowt@m
