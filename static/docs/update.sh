@@ -10,6 +10,16 @@
 # -de includes the actions for -d and that includes the actions for no arguments.
 
 service apache2 stop
+
+git pull origin master
+cd /home/www-data/web2py
+python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
+cd /home/www-data/shebanq
+cp -R /usr/local/lib/python2.7/dist-packages/guppy modules
+chown -R www-data:www-data /home/www-data/web2py
+chown -R www-data:www-data /home/www-data/shebanq
+sleep 1
+
 cd /home/www-data/shebanq
 if [ "$1" == "-de" ]; then
     echo "dropping etcbc database version 4"
@@ -35,12 +45,5 @@ if [ "$1" == "-d" -o "$1" == "-de" ]; then
     echo "loading passage database for version 4b"
     mysql --defaults-extra-file=/root/mysqldumpopt < /home/dirkr/shebanq-install/shebanq_passage4b.sql
 fi
-git pull origin master
-cd /home/www-data/web2py
-python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
-cd /home/www-data/shebanq
-cp -R /usr/local/lib/python2.7/dist-packages/guppy modules
-chown -R www-data:www-data /home/www-data/web2py
-chown -R www-data:www-data /home/www-data/shebanq
 sleep 2
 service apache2 start
