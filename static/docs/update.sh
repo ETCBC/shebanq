@@ -11,6 +11,7 @@
 
 service apache2 stop
 
+cd /home/www-data/shebanq
 git pull origin master
 cd /home/www-data/web2py
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
