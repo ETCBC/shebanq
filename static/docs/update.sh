@@ -27,11 +27,11 @@ if [ "$1" == "-de" ]; then
 fi
 if [ "$1" == "-d" -o "$1" == "-de" ]; then
     echo "unzipping passage database for version 4"
-    gunzip -f -k /home/dirkr/shebanq-install/shebanq_passage4.sql.gz
+    gunzip -f /home/dirkr/shebanq-install/shebanq_passage4.sql.gz
     echo "loading passage database for version 4"
     mysql --defaults-extra-file=/root/mysqldumpopt < /home/dirkr/shebanq-install/shebanq_passage4.sql
     echo "unzipping passage database for version 4b"
-    gunzip -f -k /home/dirkr/shebanq-install/shebanq_passage4b.sql.gz
+    gunzip -f /home/dirkr/shebanq-install/shebanq_passage4b.sql.gz
     echo "loading passage database for version 4b"
     mysql --defaults-extra-file=/root/mysqldumpopt < /home/dirkr/shebanq-install/shebanq_passage4b.sql
 fi
