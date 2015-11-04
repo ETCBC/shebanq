@@ -30,7 +30,7 @@ flags = {'m': 'string', 'versions': 'string', 'net': 'bool', 'netonly': 'bool', 
 #
 # docs: build docs from shebanq-doc repo, do shebanq-doc repo: git add commit -m fixes push, copy built html to shebanq
 #
-# data: tools: generate html, generate python, run data producing notebooks, import passage dbs into local mysql, scp them to server
+# data: tools: generate html, generate python, run data producing notebooks, import passage dbs into local mysql, scp them to servers
 #
 # all: do everything
 #
@@ -85,7 +85,10 @@ featuredoc_dst = 'featuredoc'
 #===== Server settings ========================================
 
 server_user = 'dirkr'
-server = 'shebanq.ancient-data.org'
+servers = [
+#    'shebanq.ancient-data.org',
+    'clarin11.dans.knaw.nl',
+]
 server_path = '/home/dirkr/shebanq-install'
 
 #===== Other settings ========================================
@@ -407,7 +410,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                 passage_sql = '{}/shebanq/shebanq_passage{}.sql'.format(output_dir, v)
                 passage_sql_compressed = '{}.gz'.format(passage_sql)
 
-                # to_db imports the generated sql into the local mysql and transfers the generated sql to the production server
+                # to_db imports the generated sql into the local mysql and transfers the generated sql to the production servers
                 def to_db():
                     os.chdir(output_dir)
                     this_good = False
@@ -419,9 +422,10 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                         if net and not sqlonly:
                             if must_update(passage_sql, passage_sql_compressed, force=force):
                                 if not do_cmd('gzip -f -k {}'.format(passage_sql), dry=dry): continue
-                            msg('START sending to server: {}'.format(passage_sql_compressed))
-                            if not do_cmd('scp -r {} {}@{}:{}'.format(passage_sql_compressed, server_user, server, server_path), dry=dry): continue
-                            msg('DONE sending to server: {}'.format(passage_sql_compressed))
+                            for server in servers:
+                                msg('START sending to server {}: {}'.format(server, passage_sql_compressed))
+                                if not do_cmd('scp -r {} {}@{}:{}'.format(passage_sql_compressed, server_user, server, server_path), dry=dry): continue
+                                msg('DONE sending to server {}: {}'.format(server, passage_sql_compressed))
                         this_good = True
                     return this_good
                 # patch_mql patches the mql dump from emdros with the new features
@@ -468,13 +472,14 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
 
                         if net and not sqlonly:
-                            cmd = 'scp -r {} {}@{}:{}'.format(mql_extra_src_compressed, server_user, server, server_path)
-                            if new_mql:
-                                msg('START sending to server: {}'.format(mql_extra_src_compressed))
-                                if not do_cmd(cmd, dry=dry): continue
-                                msg('DONE sending to server: {}'.format(mql_extra_src_compressed))
-                            else:
-                                msg('No need to send {} to server\nCommand would have been\n{}'.format(emdros_db, cmd))
+                            for server in servers:
+                                cmd = 'scp -r {} {}@{}:{}'.format(mql_extra_src_compressed, server_user, server, server_path)
+                                if new_mql:
+                                    msg('START sending to server {}: {}'.format(server, mql_extra_src_compressed))
+                                    if not do_cmd(cmd, dry=dry): continue
+                                    msg('DONE sending to server {}: {}'.format(server, mql_extra_src_compressed))
+                                else:
+                                    msg('No need to send {} to server {}\nCommand would have been\n{}'.format(emdros_db, server, cmd))
                         this_good = True
                     return this_good
 
