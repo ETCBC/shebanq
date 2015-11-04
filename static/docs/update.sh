@@ -16,18 +16,24 @@
 
 # MYSQL_PDIR: directory with config files for talking with mysql
 # SH_ADIR   : directory where the web app shebanq resides (and also web2py itself)
+# INCOMING  : directory where installation files arrive
+# UNPACK    : directory where installation files are unpacked
+
+INCOMING="/home/dirkr/shebanq-install"
 
 if [ "$HOSTNAME" == "PPJV003" ]; then
         ON_LWEB=1
         MYSQL_PDIR="/root"
         SH_ADIR="/home/www-data"
         MQL_OPTS="-u root"
+        UNPACK="/home/dirkr/shebanq-unpack"
 fi
 if [ "$HOSTNAME" == "clarin11.dans.knaw.nl" ]; then
         ON_CLARIN=1
         MYSQL_PDIR="/opt/emdros/cfg"
         SH_ADIR="/opt/web-apps"
         MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
+        UNPACK="/data/shebanq/unpack"
 fi
 
 if [ $ON_CLARIN ]; then
@@ -49,29 +55,35 @@ fi
 sleep 1
 
 cd $SH_ADIR/shebanq
+mkdir -p $UNPACK
+
 if [ "$1" == "-de" ]; then
     echo "dropping etcbc database version 4"
     mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_etcbc4;'
     echo "dropping etcbc database version 4b"
     mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_etcbc4b;'
     echo "unzipping etcbc database dump for version 4"
-    bunzip2 -f -k /home/dirkr/shebanq-install/x_etcbc4.mql.bz2
+    cp $INCOMING/x_etcbc4.mql.bz2 $UNPACK
+    bunzip2 -f $UNPACK/x_etcbc4.mql.bz2
     echo "unzipping etcbc database dump for version 4b"
-    bunzip2 -f -k /home/dirkr/shebanq-install/x_etcbc4b.mql.bz2
+    cp $INCOMING/x_etcbc4b.mql.bz2 $UNPACK
+    bunzip2 -f $UNPACK/x_etcbc4b.mql.bz2
     echo "importing etcbc database for version 4"
-    mql -n -b m -p `cat $MYSQL_PDIR/mqlimportopt` $MQL_OPTS -e UTF8 < /home/dirkr/shebanq-install/x_etcbc4.mql
+    mql -n -b m -p `cat $MYSQL_PDIR/mqlimportopt` $MQL_OPTS -e UTF8 < $UNPACK/x_etcbc4.mql
     echo "importing etcbc database for version 4b"
-    mql -n -b m -p `cat $MYSQL_PDIR/mqlimportopt` $MQL_OPTS -e UTF8 < /home/dirkr/shebanq-install/x_etcbc4b.mql
+    mql -n -b m -p `cat $MYSQL_PDIR/mqlimportopt` $MQL_OPTS -e UTF8 < $UNPACK/x_etcbc4b.mql
 fi
 if [ "$1" == "-d" -o "$1" == "-de" ]; then
     echo "unzipping passage database for version 4"
-    gunzip -f /home/dirkr/shebanq-install/shebanq_passage4.sql.gz
+    cp $INCOMING/shebanq_passage4.sql.gz $UNPACK
+    gunzip -f $UNPACK/shebanq_passage4.sql.gz
     echo "loading passage database for version 4"
-    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < /home/dirkr/shebanq-install/shebanq_passage4.sql
+    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_passage4.sql
     echo "unzipping passage database for version 4b"
-    gunzip -f /home/dirkr/shebanq-install/shebanq_passage4b.sql.gz
+    cp $INCOMING/shebanq_passage4b.sql.gz $UNPACK
+    gunzip -f $UNPACK/shebanq_passage4b.sql.gz
     echo "loading passage database for version 4b"
-    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < /home/dirkr/shebanq-install/shebanq_passage4b.sql
+    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_passage4b.sql
 fi
 sleep 2
 
