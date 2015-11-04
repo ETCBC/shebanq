@@ -58,16 +58,16 @@ cd $SH_ADIR/shebanq
 mkdir -p $UNPACK
 
 if [ "$1" == "-de" ]; then
-    echo "dropping etcbc database version 4"
-    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_etcbc4;'
-    echo "dropping etcbc database version 4b"
-    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_etcbc4b;'
     echo "unzipping etcbc database dump for version 4"
     cp $INCOMING/x_etcbc4.mql.bz2 $UNPACK
     bunzip2 -f $UNPACK/x_etcbc4.mql.bz2
     echo "unzipping etcbc database dump for version 4b"
     cp $INCOMING/x_etcbc4b.mql.bz2 $UNPACK
     bunzip2 -f $UNPACK/x_etcbc4b.mql.bz2
+    echo "dropping etcbc database version 4"
+    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_etcbc4;'
+    echo "dropping etcbc database version 4b"
+    mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_etcbc4b;'
     echo "importing etcbc database for version 4"
     mql -n -b m -p `cat $MYSQL_PDIR/mqlimportopt` $MQL_OPTS -e UTF8 < $UNPACK/x_etcbc4.mql
     echo "importing etcbc database for version 4b"
