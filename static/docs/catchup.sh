@@ -51,8 +51,8 @@ mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists
 mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'create database shebanq_web;'
 mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'create database shebanq_note;'
 echo "loading databases shebanq_web and shebanq_note"
-mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_web.sql
-mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_note.sql
+echo "use shebanq_web" | cat - $UNPACK/shebanq_web.sql | mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt
+echo "use shebanq_note" | cat - $UNPACK/shebanq_note.sql | mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt
 sleep 2
 
 if [ $ON_CLARIN ]; then
