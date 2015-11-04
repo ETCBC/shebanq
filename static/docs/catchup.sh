@@ -48,8 +48,8 @@ gunzip -f $UNPACK/shebanq_note.sql.gz
 echo "dropping and creating databases shebanq_web and shebanq_note"
 mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_note;'
 mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'drop database if exists shebanq_web;'
-mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'create shebanq_web;'
-mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'create shebanq_note;'
+mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'create database shebanq_web;'
+mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt -e 'create database shebanq_note;'
 echo "loading databases shebanq_web and shebanq_note"
 mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_web.sql
 mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_note.sql
