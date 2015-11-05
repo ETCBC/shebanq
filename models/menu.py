@@ -42,7 +42,6 @@ on_devel = False
 if served_on.endswith('local'): on_local = True
 elif served_on == 'PPVJ003': on_prod = True
 elif served_on == 'clarin11.dans.knaw.nl': on_devel = True
-print served_on
 
 #response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace('_', ' ').capitalize()
@@ -62,6 +61,7 @@ response.google_analytics_id = None
 #########################################################################
 
 response.menu = [
+    (served_on, False, None, []),
     ('SHEBANQ', False, URL('default', 'index'), []),
     (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Words'), False, URL('hebrew', 'words'), []),
