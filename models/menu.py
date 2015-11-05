@@ -35,12 +35,12 @@ response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
                   )
 
 
-served_on = request.env.remote_addr
+served_on = request.env.HTTP_HOST
 on_local = False
 on_prod = False
 on_devel = False
 if served_on == '127.0.0.1': on_local = True
-elif served_on == 'PPVJ003': on_prod = True
+elif served_on == '37.48.78.25': on_prod = True
 elif served_on == 'clarin11.dans.knaw.nl': on_devel = True
 
 #response.title = request.application.replace('_',' ').title()
