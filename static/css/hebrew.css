@@ -1,9 +1,11 @@
 /* LAYOUT */
 
 .navbar-devel {
+    color: #ffff00;
     background-color: #aa4400;
 }
 .navbar-local {
+    color: #ffff00;
     background-color: #006688;
 }
 
