@@ -35,13 +35,13 @@ response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
                   )
 
 
-served_on = request.env.HTTP_HOST
+served_on = request.env.SERVER_NAME
 on_local = False
 on_prod = False
 on_devel = False
-if served_on == '127.0.0.1': on_local = True
-elif served_on == '37.48.78.25': on_prod = True
-elif served_on == 'clarin11.dans.knaw.nl': on_devel = True
+if served_on.endswith('local'): on_local = True
+elif served_on == 'shebanq.ancient-data.org': on_prod = True
+else: on_devel = True
 
 #response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace('_', ' ').capitalize()
@@ -61,7 +61,7 @@ response.google_analytics_id = None
 #########################################################################
 
 response.menu = [
-    (served_on, False, None, []),
+    ('' if on_prod else served_on, False, None, []),
     ('SHEBANQ', False, URL('default', 'index'), []),
     (T('The Text'), False, URL('hebrew', 'text', vars=dict(mr='m')), []),
     (T('Words'), False, URL('hebrew', 'words'), []),
