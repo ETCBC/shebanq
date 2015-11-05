@@ -82,7 +82,7 @@
   <div class="navbar navbar-inverse">
     <div class="flash">{{=response.flash or ''}}</div>
     <div class="navbar-inner">
-      <div class="container-fluid">
+      <div class="container-fluid {{='' if on_prod else 'navbar-devel' if on_devel else 'navbar-local'}}">
         {{is_mobile=request.user_agent().is_mobile}}
         <!-- the next tag is necessary for bootstrap menus, do not remove -->
         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="{{='display:none;' if not is_mobile else ''}}">
