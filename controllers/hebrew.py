@@ -119,7 +119,7 @@ select book_id, ca_num, first_m
 from clause_atom 
 ;
 '''
-    ca_data = passage_dbs[vr].executesql(sql)
+    ca_data = passage_dbs[vr].executesql(sql) if vr in passage_dbs else []
     clause_atom_first = {}
     for (bid, can, fm) in ca_data:
         bnm = book_name[bid]
@@ -146,7 +146,7 @@ where
 order by
     word.clause_atom_number
 ;
-'''.format(bk, ch, vs))
+'''.format(bk, ch, vs)) if vr in passage_dbs else []
 
     for (can,) in ca_data:
         clause_atoms.setdefault((bk, ch, vs), []).append(can)
@@ -168,18 +168,23 @@ order by
 #    return sections
 
 def get_books(vr): # get book information: number of chapters per book
-    books_data = passage_dbs[vr].executesql(u'''
+    if vr in passage_dbs:
+        books_data = passage_dbs[vr].executesql(u'''
 select book.id, book.name, max(chapter_num) from chapter inner join book on chapter.book_id = book.id group by name order by book.id
 ;
 ''')
-    books_order = [x[1] for x in books_data]
-    books = dict((x[1], x[2]) for x in books_data)
-    book_id = dict((x[1], x[0]) for x in books_data)
-    book_name = dict((x[0], x[1]) for x in books_data)
-    return (books, books_order, book_id, book_name)
+        books_order = [x[1] for x in books_data]
+        books = dict((x[1], x[2]) for x in books_data)
+        book_id = dict((x[1], x[0]) for x in books_data)
+        book_name = dict((x[0], x[1]) for x in books_data)
+        result = (books, books_order, book_id, book_name)
+    else:
+        result = ({}, [], {}, {})
+    return result
 
 def get_blocks(vr): # get block info: for each monad: to which block it belongs, for each block: book and chapter number of first word.
 # possibly there are gaps between books.
+    if vr not in passage_dbs: return ([], {})
     book_monads = passage_dbs[vr].executesql(u'''
 select name, first_m, last_m from book
 ;
@@ -755,7 +760,7 @@ order by
                 hflist=u', '.join(u'word.{}'.format(hf[0]) for hf in hfields),
                 monads=u','.join(str(x) for x in monads),
             )
-            data = passage_dbs[vr].executesql(sql)
+            data = passage_dbs[vr].executesql(sql) if vr in passage_dbs else []
     else:
         head_row = ['book', 'chapter', 'verse'] + [hf[1] for hf in hfields]
         kw_sql = kw.replace(u"'", u"''")
@@ -776,7 +781,7 @@ where shebanq_note.note.keywords like '% {kw} %' and shebanq_note.note.version =
             vr=vr,
             ex=extra,
         )
-        data = passage_dbs[vr].executesql(sql)
+        data = passage_dbs[vr].executesql(sql) if vr in passage_dbs else []
     return dict(filename=filename, data=csv([head_row]+list(data)))
 
 def chart(): # controller to produce a chart of query results or lexeme occurrences
@@ -1114,6 +1119,7 @@ def words_page(viewsettings, vr, lan=None, letter=None):
 def heb_key(x): return x.replace(u'שׁ', u'ששׁ').replace(u'שׂ', u'ששׂ')
 
 def get_words_data(vr):
+    if vr not in passage_dbs: return ({}, {})
     ddata = sorted(passage_dbs[vr].executesql(u'''
 select id, entry_heb, entryid_heb, lan, gloss from lexicon
 ;
@@ -2232,7 +2238,7 @@ def getpassage(no_controller=True):
     vr = get_request_val('material', '', 'version')
     bookname = get_request_val('material', '', 'book')
     chapternum = get_request_val('material', '', 'chapter')
-    if bookname == None or chapternum == None: return ({},{})
+    if bookname == None or chapternum == None or vr not in passage_dbs: return ({},{})
     bookrecords = passage_dbs[vr].executesql(u'''
 select * from book where name = '{}'
 ;
@@ -2264,6 +2270,7 @@ def groupq(vr, input):
 # again: modify the sorting because of shin and sin (see comments to function words_page)
 
 def groupw(vr, input):
+    if vr not in passage_dbs: return []
     wids = collections.defaultdict(lambda: [])
     for x in input:
         wids[x[1]].append(x[0])
@@ -2368,7 +2375,7 @@ where anchor BETWEEN {chapter_first_m} AND {chapter_last_m}
 '''.format(
          chapter_last_m=chapter['last_m'],
          chapter_first_m=chapter['first_m'],
-    ))
+    )) if vr in passage_dbs else []
 
 def item_access_read(iidrep=get_request_val('material', '', 'iid')):
     mr = get_request_val('material', '', 'mr')
@@ -2399,7 +2406,7 @@ select * from query where id = {}
 
 def word_auth_read(vr, iid):
     authorized = None
-    if not iid:
+    if not iid or vr not in passage_dbs:
         authorized = False
     else:
         words = passage_dbs[vr].executesql(u'''
@@ -2409,7 +2416,7 @@ select * from lexicon where id = '{}'
         word = words[0] if words else {}
         if word:
             authorized = True
-    msg = u'No word with id {}'.format(iid) if authorized == None else u''
+    msg = u'No word with id {}'.format(iid) if authorized == None else 'No data version {}'.format(vr) if vr not in passage_dbs else u''
     return (authorized, msg)
 
 def query_auth_write(iid):
@@ -2501,7 +2508,7 @@ def load_w_occs(vr, lexeme_id):
     monads = passage_dbs[vr].executesql(u'''
 select anchor from word_verse where lexicon_id = '{}' order by anchor
 ;
-'''.format(lexeme_id))
+'''.format(lexeme_id)) if vr in passage_dbs else []
     return collapse_into_ranges(monads)
 
 def count_n_notes(uid, kw):
@@ -2582,7 +2589,7 @@ select first_m, last_m from verse order by id
 ;
 '''),
         None,
-    )
+    ) if vr in passage_dbs else []
     m = 0 # monad range index, walking through monad_sets
     v = 0 # verse id, walking through verse_boundaries
     nvp = 0 # number of verses added to current page

@@ -707,7 +707,7 @@ class Verses():
     def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None, tr=None):
         if tr == None: tr = 'hb'
         self.version = vr
-        passage_db = passage_dbs[vr]
+        passage_db = passage_dbs[vr] if vr in passage_dbs else None
         self.mr = mr
         self.tp = tp
         self.tr = tr
@@ -731,7 +731,7 @@ inner join book on chapter.book_id=book.id
 {}
 order by verse.id
 ;
-'''.format(u', verse.xml' if tp == 'txt_p' else u'', condition)) 
+'''.format(u', verse.xml' if tp == 'txt_p' else u'', condition)) if passage_db else [] 
 
         word_records = []
         word_records = passage_db.executesql(u'''
@@ -741,7 +741,7 @@ inner join verse on verse.id = word_verse.verse_id
 {}
 order by word_number
 ;
-'''.format(','.join(field_names[tp]), wcondition), as_dict=True)
+'''.format(','.join(field_names[tp]), wcondition), as_dict=True) if passage_db else []
 
         word_data = collections.defaultdict(lambda: [])
         for record in word_records:
@@ -757,7 +757,7 @@ order by word_number
 class Verse():
     def __init__(self, passage_dbs, vr, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, tr=None, mr=None):
         self.version = vr
-        passage_db = passage_dbs[vr]
+        passage_db = passage_dbs[vr] if vr in passage_dbs else None
         self.tp = tp
         self.tr = tr
         self.mr = mr
@@ -777,7 +777,7 @@ where book.name = '{}' and chapter.chapter_num = {} and verse.verse_num = {}
 order by word_number
 ;
 '''.format(u','.join(field_names['txt_il']), book_name, chapter_num, verse_num)
-            word_records = passage_db.executesql(wsql, as_dict=True)
+            word_records = passage_db.executesql(wsql, as_dict=True) if passage_db else []
             word_data = []
             for record in word_records:
                 word_data.append(dict(
