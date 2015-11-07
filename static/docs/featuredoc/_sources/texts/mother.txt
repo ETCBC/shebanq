@@ -6,7 +6,7 @@ Definition
 *mother* is a relation between objects, representing a linguistic relation of dependence.
 In the ETCBC4 database, the mother relation exists between objects of many different kinds.
 
-In the `mother notebook <http://nbviewer.ipython.org/github/ETCBC/laf-fabric-nbs/blob/master/trees/mother.ipynb>`_
+In the `mother notebook <https://shebanq.ancient-data.org/shebanq/static/docs/tools/shebanq/mother.html>`_
 there is a count of the types that the mother relationship bridges::
 
     Mothers   of type clause              : 11684x
@@ -85,4 +85,4 @@ we store the lengths (if non-zero) in a dictionary (``mother_len``)::
         if nms: mother_len[c] = nms
 
 This example is taken from the
-`tree notebook <http://nbviewer.ipython.org/github/ETCBC/laf-fabric-nbs/blob/master/trees/trees_etcbc4.ipynb>`_.
+`tree tool <https://shebanq.ancient-data.org/tools?goto=trees>`_.

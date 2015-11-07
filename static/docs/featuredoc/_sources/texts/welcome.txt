@@ -17,7 +17,7 @@ However, these descriptions are not self-contained, and they have been written f
 
 We are in the process of adding more in-depth reference material, not only about the text and its features, but also about
 the lexicon.
-A sneak peek into the lexicon preparation is in `this notebook <http://nbviewer.ipython.org/github/ETCBC/laf-fabric-nbs/blob/master/extradata/lexicon.ipynb>`_.
+More information about the lexicon preparation is in `this notebook <https://shebanq.ancient-data.org/shebanq/static/docs/tools/shebanq/lexicon.html>`_.
 
 Authors
 =======

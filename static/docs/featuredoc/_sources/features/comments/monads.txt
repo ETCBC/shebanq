@@ -26,5 +26,5 @@ does not show all monad sets that the objects of the ETCBC4 data have, because t
 It does contain, however, the top of the list, where you see some monad sets that are shared by 8 objects.
 
 If you want to see which objects make up such a case, look at
-`this notebook <http://nbviewer.ipython.org/github/ETCBC/laf-fabric-nbs/blob/master/featuredoc/monadsets.ipynb>`_
+`this notebook <https://shebanq.ancient-data.org/shebanq/static/docs/tools/shebanq/monadsets.html>`_
 which looks up such a case by means of LAF-Fabric.

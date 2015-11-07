@@ -38,7 +38,7 @@ so that the resulting clause atom relations codes constitute a useful collection
 
 See for example
 Gino Kalkman's
-`analysis of syntax in the poetry of the Psalms <http://nbviewer.ipython.org/github/ETCBC/Biblical_Hebrew_Analysis/blob/master/PhD/Introduction.ipynb>`_
+`analysis of syntax in the poetry of the Psalms <https://shebanq.ancient-data.org/tools?goto=verbsystem>`_
 
 .. caution::
     The notions distributional and functional should be explained somewhere, 

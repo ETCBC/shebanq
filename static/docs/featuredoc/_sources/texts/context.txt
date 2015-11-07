@@ -189,7 +189,7 @@ Process the results::
         ))
     outf.close()
 
-See a more elaborate example in the `NTN FJM notebook <http://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/valence/ntn_analysis.ipynb>`_ 
+See a more elaborate example in the `verbal valence tool <https://shebanq.ancient-data.org/tools?goto=valence>`_ 
 
 Once you got these tricks, the power is yours. Start by making small variations to this notebook, and then, as your programming skills get
 sharpened, see how far you can get.

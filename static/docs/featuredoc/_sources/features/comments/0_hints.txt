@@ -9,7 +9,7 @@ Hints with example queries published on SHEBANQ or as LAF-Fabric notebook
 :doc:`domain <domain>`             `Discourse Pattern Deviation <https://shebanq.ancient-data.org/hebrew/query?id=491>`_                          Oliver Glanz
 :doc:`number <number>`             `Incongruencies <https://shebanq.ancient-data.org/hebrew/query?id=519>`_                                       Reinoud Oosting
 :doc:`otype <otype>`               `Yesh <https://shebanq.ancient-data.org/hebrew/query?id=556>`_                                                 Dirk Roorda
-:doc:`otype <otype>`               `NTN-FJM <https://nbviewer.ipython.org/github/etcbc/laf-fabric-nbs/blob/master/valence/ntn_analysis.ipynb>`_   Dirk Roorda
+:doc:`otype <otype>`               `Valence <https://shebanq.ancient-data.org/tools?goto=valence>`_                                               Janet Dyk
 :doc:`prs <prs>`                   `Pronominal Suffixes (prs) <https://shebanq.ancient-data.org/hebrew/query?version=4&id=84>`_                   Oliver Glanz
 =================================  ============================================================================================================   =================
 
