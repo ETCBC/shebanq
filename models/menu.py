@@ -68,7 +68,13 @@ response.menu = [
     (T('Queries'), False, URL('hebrew', 'queries'), []),
     (T('Notes'), False, URL('hebrew', 'notes'), []),
     (T('Tools'), False, URL('tools', 'index'), []),
-    (T('Help'), False, URL('default', 'help'), []),
+    (T('Help'), False, None, [
+        (T('SHEBANQ user manual'), False, URL('default', 'help'), []),
+        (T('ETCBC feature doc'), False, URL('static', 'docs/featuredoc/features/comments/0_overview.html'), []),
+        (T('MQL quick reference guide (pdf)'), False, URL('static', 'docs/MQL-QuickRef.pdf'), []),
+        (T('MQL Query Guide by Ulrik (pdf)'), False, URL('static', 'docs/MQL-Query-Guide.pdf'), []),
+        (T('ETCBC4 transcription table (pdf)'), False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),
+    ]),
     (T('News'), False, URL('default', 'news'), []),
     (T('Sources'), False, URL('default', 'sources'), []),
 ]
