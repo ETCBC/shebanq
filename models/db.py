@@ -49,7 +49,7 @@ versions = {
     },
     '4b': {
         'name': 'etcbc4b',
-        'date': '2015-05-04',
+        'date': '2015-11-03',
         'desc': 'Current version of the ETCBC4 database, somewhere between versions 4 and 4s',
         'notes': 'The data for this version is a snapshot. The encoding has been finished, but some checks are still in progress. We needed a reasonable version because more projects are using this data, and some of them report at the SBL annual meeting in November 2015. The underlying data will be archived at DANS shortly.',
     },
