@@ -5,6 +5,8 @@ from gluon.custom_import import track_changes; track_changes(True)
 
 EXPIRE = 3600*24*30
 
+def myerror(): return 1/0
+
 def index():
     session.forget(response)
     response.title = T("SHEBANQ")
