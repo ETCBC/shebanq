@@ -2710,7 +2710,7 @@ function put_markdown(wdg) {
     var did = wdg.attr('did')
     var src = $('#dv_'+did)
     var mdw = $('#dm_'+did)
-    mdw.html(markdown.toHTML(src.val()))
+    mdw.html(special_links(markdown.toHTML(src.val())))
 }
 
 function Msg(destination, on_clear) {
