@@ -102,21 +102,34 @@ that need to know the provenance of the data that powers SHEBANQ.<p>
 It contains the texts themselves, verse by verse, and it contains book and chapter information.
 The passage database also contains a lexicon, which is linked to the word occurrences.</dd>
 
-<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.html')}}">loganalysis</a>
-    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.ipynb')}}" download="loganalysis.ipynb">(download)</a></dt>
-<dd>We read the apache2 log files, filter out irrelevant events, analyse remaining events, and produce usable statistics.
-</dd>
-
 <dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.html')}}">lexicon</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.ipynb')}}" download="lexicon.ipynb">(download)</a></dt>
 <dd>This notebook prepares additional lexical data for LAF-Fabric: the lexicon and the pre-computed phonetic transcription.
 This data is added as an extra annotation package to the main ETCBC resource. 
 </dd>
 
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/ketiv_qere.html')}}">ketiv_qere</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/ketiv_qere.ipynb')}}" download="ketiv_qere.ipynb">(download)</a></dt>
+<dd>This notebook prepares ketiv/qere information for shebanq.
+This data is added as a set of annotations inside the <i>lexicon</i> annotation package to the main ETCBC resource. 
+</dd>
+
 <dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.html')}}">para_from_px</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.ipynb')}}" download="para_from_px.ipynb">(download)</a></dt>
 <dd>This notebook prepares additional syntactical data for LAF-Fabric: the paragraph structure.
 This data is added as an extra annotation package to the main ETCBC resource. 
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/font-rendering.html')}}">font-rendering</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/font-rendering.ipynb')}}" download="font-rendering.ipynb">(download)</a></dt>
+<dd>This notebook grapples with the font rendering for several Hebrew fonts, in several browsers and in various contexts. 
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/VerblessMothers.html')}}">VerblessMothers</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/VerblessMothers.ipynb')}}" download="VerblessMothers.ipynb">(download)</a></dt>
+<dd>This is an example of a check on the ETCBC encoding itself. Somebody discovered an instance of an object clause dependent on a verbless main clause.
+That is strange, and probably a coding error. This notebook is written to collect all instances of this error.
+(There are 52 instances in version 4b of the etcbc data.
 </dd>
 
 <dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/notes.html')}}">notes</a>
@@ -128,6 +141,11 @@ This data is added as an extra annotation package to the main ETCBC resource.
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/versions.ipynb')}}" download="versions.ipynb">(download)</a></dt>
 <dd>This notebook defines a new datamodel for queries in SHEBANQ, and it converts data according to the old model to data according to the new model.
 The old model had no provisions for working with queries on multiple versions of the data. The new model remedies that.
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.html')}}">loganalysis</a>
+    <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/loganalysis.ipynb')}}" download="loganalysis.ipynb">(download)</a></dt>
+<dd>We read the apache2 log files, filter out irrelevant events, analyse remaining events, and produce usable statistics.
 </dd>
 
 </dl>
