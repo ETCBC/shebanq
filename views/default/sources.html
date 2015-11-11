@@ -145,6 +145,18 @@ We are also open to implement mutual deep linking with other biblical data sourc
 They may contribute queries that highlight research questions and solutions, and they may contribute notes to individual
 clauses in the text.</p>
 
+<h5>Contributing corrections</h5>
+<p>The ETCBC data encoding is not perfect. Practices have changed over the years, and although many checks are performed after every modification,
+there remain issues. 
+If you spot issues, you can highlight them directly by making an annotation.
+You can also use queries to find more instances of the kind of coding error you have detected.
+As an example of how that may look, see the case of <i>verbless mothers of object clauses</i>, an issue that is present in version 4b of the
+etcbc data. Start with this
+{{=A(T('query'), _href=URL('hebrew', 'query', vars=dict(id=981, tp='txt_p', version='4b', mr='r')))}}
+or this
+{{=A(T('note set'), _href=URL('hebrew', 'note', vars=dict(id='Mnx2ZXJibGVzc19tb3RoZXI_', nget='v', tp='txt_tb1', version='4b', mr='r')))}}.</p>
+</p>
+
 <h5>Contributing note sets</h5>
 <p>Notes are the preferred way to add observations and comments that are not carved in stone.
 They can also be used to view the outcomes of algorithms operating on the Hebrew Bible in context.
