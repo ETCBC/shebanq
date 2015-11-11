@@ -14,7 +14,7 @@
 # SH_ADIR   : directory where the web app shebanq resides (and also web2py itself)
 # INCOMING  : directory where installation files arrive
 
-INCOMING="/home/dirkr/shebanq-install"
+INCOMING="/home/dirkr"
 
 if [ "$HOSTNAME" == "PPJV003" ]; then
         ON_LWEB=1
