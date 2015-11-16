@@ -186,7 +186,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Verbless-mothers">Verbless mothers<a class="anchor-link" href="#Verbless-mothers">&#182;</a></h1><p>Joint work of Martijn Naaijer and Dirk Roorda.</p>
+<h1 id="Verbless-mothers">Verbless mothers<a class="anchor-link" href="#Verbless-mothers">&#182;</a></h1><p>Joint work of Martijn Naaijer and Dirk Roorda and Constantijn Sikkel.</p>
 <p>During preparation of his contribution to SBL 2015 Martijn Naaijer discovered coding errors in the ETCBC4b database.
 Here we collect those instances.</p>
 <h1 id="Specification">Specification<a class="anchor-link" href="#Specification">&#182;</a></h1><p>There are pairs of mother-daugther clauses, where the daughter is an object clause and the mother has no verbs.
@@ -198,10 +198,12 @@ In this notebook we look up all those cases in two ways:</p>
 <li>by means of an MQL query,
 <a href="https://shebanq.ancient-data.org/hebrew/query?version=4b&id=981">see query in SHEBANQ</a>.</li>
 </ol>
-<h1 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h1><p>There are 52 results, and they all seem to involve some sort of coding error.</p>
+<h1 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h1><p>There are 26 results, and they all seem to involve some sort of coding error.</p>
 <h1 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">&#182;</a></h1><p>Both methods for collecting the cases do not give the same result set.
-The walk yields 52 results, and the query yields 47 of them and misses 5.
-All those cases involve gaps in one of the clauses.</p>
+The walk yields 26 results, and the query yields 25 of them and misses 1.
+All those cases involve gaps in one of the clauses.
+So the query should have been reformulated to allow for mothers and daughters to have a more general
+spatial relationship.</p>
 <p>This may serve as a warning how tricky it is to write MQL queries of which you can be confident that they cover all cases.
 The walk is much more robust, in that you can carefully collect the parts of the solution in isolation.</p>
 
@@ -210,7 +212,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># discrepancies between the two methods</span>
@@ -225,7 +227,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[34]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -237,28 +239,6 @@ The walk is much more robust, in that you can carefully collect the parts of the
 <h1>In Walk but not in MQL query</h1>
 <table class="t">
 <tr class="t"><td class="v">1</td><td class="v">Judices 7:12</td><td class="t"><span title="1" class="m">כַּ</span><span title="1" class="m"></span><span title="1" class="m">חֹ֛ול</span> <span title="2" class="d">שֶׁ</span><span title="2" class="d">עַל</span>־<span title="2" class="d">שְׂפַ֥ת</span> <span title="2" class="d">הַ</span><span title="2" class="d">יָּ֖ם</span> <span title="1" class="m">לָ</span><span title="1" class="m">רֹֽב</span>׃
-</td></tr>
-<tr class="t"><td class="v">2</td><td class="v">Jeremia 43:11</td><td class="t">וְהִכָּ֖ה אֶת־אֶ֣רֶץ מִצְרָ֑יִם אֲשֶׁ֧ר לַמָּ֣וֶת לַמָּ֗וֶת <span title="4" class="m">וַ</span><span title="5" class="d">אֲשֶׁ֤ר</span> <span title="5" class="d">לַ</span><span title="5" class="d"></span><span title="5" class="d">שְּׁבִי֙</span> <span title="4" class="m">לַ</span><span title="4" class="m"></span><span title="4" class="m">שֶּׁ֔בִי</span> וַאֲשֶׁ֥ר לַחֶ֖רֶב לֶחָֽרֶב׃
-</td></tr>
-<tr class="t"><td class="v">3</td><td class="v">Jeremia 43:11</td><td class="t">וְהִכָּ֖ה אֶת־אֶ֣רֶץ מִצְרָ֑יִם אֲשֶׁ֧ר לַמָּ֣וֶת לַמָּ֗וֶת וַאֲשֶׁ֤ר לַשְּׁבִי֙ לַשֶּׁ֔בִי <span title="6" class="m">וַ</span><span title="7" class="d">אֲשֶׁ֥ר</span> <span title="7" class="d">לַ</span><span title="7" class="d"></span><span title="7" class="d">חֶ֖רֶב</span> <span title="6" class="m">לֶ</span><span title="6" class="m"></span><span title="6" class="m">חָֽרֶב</span>׃
-</td></tr>
-<tr class="t"><td class="v">4</td><td class="v">Obadia 1:19 - Obadia 1:20</td><td class="t">וְיָרְשׁוּ֙ אֶת־שְׂדֵ֣ה אֶפְרַ֔יִם וְאֵ֖ת שְׂדֵ֣ה שֹׁמְרֹ֑ון וּבִנְיָמִ֖ן אֶת־הַגִּלְעָֽד׃
-<span title="3" class="m">וְ</span><span title="3" class="m">גָלֻ֣ת</span> <span title="3" class="m">הַֽ</span><span title="3" class="m">חֵל</span>־<span title="3" class="m">הַ֠</span><span title="3" class="m">זֶּה</span> <span title="3" class="m">לִ</span><span title="3" class="m">בְנֵ֨י</span> <span title="3" class="m">יִשְׂרָאֵ֤ל</span> <span title="4" class="d">אֲשֶֽׁר</span>־<span title="4" class="d">כְּנַעֲנִים֙</span> <span title="3" class="m">עַד</span>־<span title="3" class="m">צָ֣רְפַ֔ת</span> </td></tr>
-<tr class="t"><td class="v">5</td><td class="v">Chronica_I 6:52 - Chronica_I 6:62</td><td class="t">וַיִּתְּנ֨וּ לָהֶ֜ם אֶת־עָרֵ֧י הַמִּקְלָ֛ט אֶת־שְׁכֶ֥ם וְאֶת־מִגְרָשֶׁ֖יהָ בְּהַ֣ר אֶפְרָ֑יִם וְאֶת־גֶּ֖זֶר וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶֽת־יָקְמְעָם֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־בֵּ֥ית חֹורֹ֖ון וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־אַיָּלֹון֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־גַּת־רִמֹּ֖ון וְאֶת־מִגְרָשֶֽׁיהָ׃ פ 
-וּמִֽמַּחֲצִית֙ מַטֵּ֣ה מְנַשֶּׁ֔ה אֶת־עָנֵר֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־בִּלְעָ֖ם וְאֶת־מִגְרָשֶׁ֑יהָ לְמִשְׁפַּ֥חַת לִבְנֵי־קְהָ֖ת הַנֹּותָרִֽים׃ פ 
-לִבְנֵי֮ גֵּרְשֹׁום֒ מִמִּשְׁפַּ֗חַת חֲצִי֙ מַטֵּ֣ה מְנַשֶּׁ֔ה אֶת־גֹּולָ֥ן בַּבָּשָׁ֖ן וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־עַשְׁתָּרֹ֖ות וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-וּמִמַּטֵּ֣ה יִשָׂשכָ֔ר אֶת־קֶ֖דֶשׁ וְאֶת־מִגְרָשֶׁ֑יהָ אֶת־דָּבְרַ֖ת וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־רָאמֹות֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־עָנֵ֖ם וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-וּמִמַּטֵּ֣ה אָשֵׁ֔ר אֶת־מָשָׁ֖ל וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־עַבְדֹּ֖ון וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־חוּקֹק֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־רְחֹ֖ב וְאֶת־מִגְרָשֶֽׁיהָ׃
-וּמִמַּטֵּ֣ה נַפְתָּלִ֗י אֶת־קֶ֤דֶשׁ בַּגָּלִיל֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־חַמֹּ֖ון וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־קִרְיָתַ֖יִם וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-<span title="12" class="m">לִ</span><span title="12" class="m">בְנֵ֣י</span> <span title="12" class="m">מְרָרִי֮</span> <span title="13" class="d">הַ</span><span title="13" class="d">נֹּותָרִים֒</span> <span title="13" class="d">מִ</span><span title="13" class="d">מַּטֵּ֣ה</span> <span title="13" class="d">זְבוּלֻ֔ן</span> <span title="12" class="m">אֶת</span>־<span title="12" class="m">רִמֹּונֹ֖ו</span> <span title="12" class="m">וְ</span><span title="12" class="m">אֶת</span>־<span title="12" class="m">מִגְרָשֶׁ֑יהָ</span> <span title="12" class="m">אֶת</span>־<span title="12" class="m">תָּבֹ֖ור</span> <span title="12" class="m">וְ</span><span title="12" class="m">אֶת</span>־<span title="12" class="m">מִגְרָשֶֽׁיהָ</span>׃
-וּמֵעֵ֜בֶר לְיַרְדֵּ֣ן יְרֵחֹו֮ לְמִזְרַ֣ח הַיַּרְדֵּן֒ מִמַּטֵּ֣ה רְאוּבֵ֔ן אֶת־בֶּ֥צֶר בַּמִּדְבָּ֖ר וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־יַ֖הְצָה וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־קְדֵמֹות֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־מֵיפַ֖עַת וְאֶת־מִגְרָשֶֽׁיהָ׃
-וּמִ֨מַּטֵּה־גָ֔ד אֶת־רָאמֹ֥ות בַּגִּלְעָ֖ד וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶֽת־מַחֲנַ֖יִם וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־חֶשְׁבֹּון֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־יַעְזֵ֖יר וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
 </td></tr>
 
 </table>
@@ -273,7 +253,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># all results</span>
@@ -288,111 +268,57 @@ The walk is much more robust, in that you can carefully collect the parts of the
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[38]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
 <p class="l"><span class="m">verbless mother clause</span> <span class="d">daughter object clause</span></p>
 
 <table class="t">
-<tr class="t"><td class="v">1</td><td class="v">Genesis 14:23 - Genesis 14:24</td><td class="t">אִם־מִחוּט֙ וְעַ֣ד שְׂרֹֽוךְ־נַ֔עַל וְאִם־אֶקַּ֖ח מִכָּל־אֲשֶׁר־לָ֑ךְ <span title="4" class="m">רַ֚ק</span> <span title="5" class="d">אֲשֶׁ֣ר</span> <span title="5" class="d">אָֽכְל֣וּ</span> <span title="5" class="d">הַ</span><span title="5" class="d">נְּעָרִ֔ים</span> וְחֵ֨לֶק֙ הָֽאֲנָשִׁ֔ים אֲשֶׁ֥ר הָלְכ֖וּ אִתִּ֑י עָנֵר֙ אֶשְׁכֹּ֣ל וּמַמְרֵ֔א </td></tr>
+<tr class="t"><td class="v">1</td><td class="v">Genesis 33:13</td><td class="t"><span title="1" class="m">אֲדֹנִ֤י</span> <span title="1" class="m">יֹדֵ֨עַ֙</span> <span title="2" class="d">כִּֽי</span>־<span title="2" class="d">הַ</span><span title="2" class="d">יְלָדִ֣ים</span> <span title="2" class="d">רַכִּ֔ים</span> וְהַצֹּ֥אן וְהַבָּקָ֖ר עָלֹ֣ות עָלָ֑י </td></tr>
 <tr class="t"><td class="v">2</td><td class="v">Genesis 43:27</td><td class="t"><span title="1" class="m">הֲ</span><span title="1" class="m">שָׁלֹ֛ום</span> <span title="1" class="m">אֲבִיכֶ֥ם</span> <span title="1" class="m">הַ</span><span title="1" class="m">זָּקֵ֖ן</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">אֲמַרְתֶּ֑ם</span> </td></tr>
 <tr class="t"><td class="v">3</td><td class="v">Genesis 43:29</td><td class="t"><span title="1" class="m">הֲ</span><span title="1" class="m">זֶה֙</span> <span title="1" class="m">אֲחִיכֶ֣ם</span> <span title="1" class="m">הַ</span><span title="1" class="m">קָּטֹ֔ן</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">אֲמַרְתֶּ֖ם</span> <span title="2" class="d">אֵלָ֑י</span> </td></tr>
-<tr class="t"><td class="v">4</td><td class="v">Genesis 49:15</td><td class="t">וַיַּ֤רְא מְנֻחָה֙ כִּ֣י טֹ֔וב <span title="3" class="m">וְ</span><span title="3" class="m">אֶת</span>־<span title="3" class="m">הָ</span><span title="3" class="m">אָ֖רֶץ</span> <span title="4" class="d">כִּ֣י</span> <span title="4" class="d">נָעֵ֑מָה</span> </td></tr>
-<tr class="t"><td class="v">5</td><td class="v">Exodus 5:2</td><td class="t"><span title="1" class="m">מִ֤י</span> <span title="1" class="m">יְהוָה֙</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">אֶשְׁמַ֣ע</span> <span title="2" class="d">בְּ</span><span title="2" class="d">קֹלֹ֔ו</span> לְשַׁלַּ֖ח אֶת־יִשְׂרָאֵ֑ל </td></tr>
-<tr class="t"><td class="v">6</td><td class="v">Exodus 6:26</td><td class="t"><span title="1" class="m">ה֥וּא</span> <span title="1" class="m">אַהֲרֹ֖ן</span> <span title="1" class="m">וּ</span><span title="1" class="m">מֹשֶׁ֑ה</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">אָמַ֤ר</span> <span title="2" class="d">יְהוָה֙</span> <span title="2" class="d">לָהֶ֔ם</span> </td></tr>
-<tr class="t"><td class="v">7</td><td class="v">Exodus 8:17</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">גַ֥ם</span> <span title="1" class="m">הָ</span><span title="1" class="m">אֲדָמָ֖ה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">הֵ֥ם</span> <span title="2" class="d">עָלֶֽיהָ</span>׃
+<tr class="t"><td class="v">4</td><td class="v">Exodus 5:2</td><td class="t"><span title="1" class="m">מִ֤י</span> <span title="1" class="m">יְהוָה֙</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">אֶשְׁמַ֣ע</span> <span title="2" class="d">בְּ</span><span title="2" class="d">קֹלֹ֔ו</span> לְשַׁלַּ֖ח אֶת־יִשְׂרָאֵ֑ל </td></tr>
+<tr class="t"><td class="v">5</td><td class="v">Exodus 6:26</td><td class="t"><span title="1" class="m">ה֥וּא</span> <span title="1" class="m">אַהֲרֹ֖ן</span> <span title="1" class="m">וּ</span><span title="1" class="m">מֹשֶׁ֑ה</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">אָמַ֤ר</span> <span title="2" class="d">יְהוָה֙</span> <span title="2" class="d">לָהֶ֔ם</span> </td></tr>
+<tr class="t"><td class="v">6</td><td class="v">Exodus 8:17</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">גַ֥ם</span> <span title="1" class="m">הָ</span><span title="1" class="m">אֲדָמָ֖ה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">הֵ֥ם</span> <span title="2" class="d">עָלֶֽיהָ</span>׃
 </td></tr>
-<tr class="t"><td class="v">8</td><td class="v">Exodus 9:26</td><td class="t"><span title="1" class="m">רַ֚ק</span> <span title="1" class="m">בְּ</span><span title="1" class="m">אֶ֣רֶץ</span> <span title="1" class="m">גֹּ֔שֶׁן</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">שָׁ֖ם</span> <span title="2" class="d">בְּנֵ֣י</span> <span title="2" class="d">יִשְׂרָאֵ֑ל</span> </td></tr>
-<tr class="t"><td class="v">9</td><td class="v">Exodus 16:15</td><td class="t"><span title="1" class="m">ה֣וּא</span> <span title="1" class="m">הַ</span><span title="1" class="m">לֶּ֔חֶם</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">נָתַ֧ן</span> <span title="2" class="d">יְהוָ֛ה</span> <span title="2" class="d">לָכֶ֖ם</span> <span title="2" class="d">לְ</span><span title="2" class="d">אָכְלָֽה</span>׃
+<tr class="t"><td class="v">7</td><td class="v">Exodus 9:26</td><td class="t"><span title="1" class="m">רַ֚ק</span> <span title="1" class="m">בְּ</span><span title="1" class="m">אֶ֣רֶץ</span> <span title="1" class="m">גֹּ֔שֶׁן</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">שָׁ֖ם</span> <span title="2" class="d">בְּנֵ֣י</span> <span title="2" class="d">יִשְׂרָאֵ֑ל</span> </td></tr>
+<tr class="t"><td class="v">8</td><td class="v">Exodus 16:15</td><td class="t"><span title="1" class="m">ה֣וּא</span> <span title="1" class="m">הַ</span><span title="1" class="m">לֶּ֔חֶם</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">נָתַ֧ן</span> <span title="2" class="d">יְהוָ֛ה</span> <span title="2" class="d">לָכֶ֖ם</span> <span title="2" class="d">לְ</span><span title="2" class="d">אָכְלָֽה</span>׃
 </td></tr>
-<tr class="t"><td class="v">10</td><td class="v">Exodus 16:16</td><td class="t"><span title="1" class="m">זֶ֤ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">דָּבָר֙</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">צִוָּ֣ה</span> <span title="2" class="d">יְהוָ֔ה</span> </td></tr>
-<tr class="t"><td class="v">11</td><td class="v">Exodus 16:32</td><td class="t"><span title="1" class="m">זֶ֤ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">דָּבָר֙</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">צִוָּ֣ה</span> <span title="2" class="d">יְהוָ֔ה</span> </td></tr>
-<tr class="t"><td class="v">12</td><td class="v">Exodus 18:14</td><td class="t"><span title="1" class="m">מָֽה</span>־<span title="1" class="m">הַ</span><span title="1" class="m">דָּבָ֤ר</span> <span title="1" class="m">הַ</span><span title="1" class="m">זֶּה֙</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">אַתָּ֤ה</span> <span title="2" class="d">עֹשֶׂה֙</span> <span title="2" class="d">לָ</span><span title="2" class="d"></span><span title="2" class="d">עָ֔ם</span> </td></tr>
-<tr class="t"><td class="v">13</td><td class="v">Exodus 25:3</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">זֹאת֙</span> <span title="1" class="m">הַ</span><span title="1" class="m">תְּרוּמָ֔ה</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">תִּקְח֖וּ</span> <span title="2" class="d">מֵ</span><span title="2" class="d">אִתָּ֑ם</span> זָהָ֥ב וָכֶ֖סֶף וּנְחֹֽשֶׁת׃
+<tr class="t"><td class="v">9</td><td class="v">Exodus 16:16</td><td class="t"><span title="1" class="m">זֶ֤ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">דָּבָר֙</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">צִוָּ֣ה</span> <span title="2" class="d">יְהוָ֔ה</span> </td></tr>
+<tr class="t"><td class="v">10</td><td class="v">Exodus 16:32</td><td class="t"><span title="1" class="m">זֶ֤ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">דָּבָר֙</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">צִוָּ֣ה</span> <span title="2" class="d">יְהוָ֔ה</span> </td></tr>
+<tr class="t"><td class="v">11</td><td class="v">Exodus 18:14</td><td class="t"><span title="1" class="m">מָֽה</span>־<span title="1" class="m">הַ</span><span title="1" class="m">דָּבָ֤ר</span> <span title="1" class="m">הַ</span><span title="1" class="m">זֶּה֙</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">אַתָּ֤ה</span> <span title="2" class="d">עֹשֶׂה֙</span> <span title="2" class="d">לָ</span><span title="2" class="d"></span><span title="2" class="d">עָ֔ם</span> </td></tr>
+<tr class="t"><td class="v">12</td><td class="v">Exodus 25:3</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">זֹאת֙</span> <span title="1" class="m">הַ</span><span title="1" class="m">תְּרוּמָ֔ה</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">תִּקְח֖וּ</span> <span title="2" class="d">מֵ</span><span title="2" class="d">אִתָּ֑ם</span> זָהָ֥ב וָכֶ֖סֶף וּנְחֹֽשֶׁת׃
 וּתְכֵ֧לֶת וְאַרְגָּמָ֛ן וְתֹולַ֥עַת שָׁנִ֖י וְשֵׁ֥שׁ וְעִזִּֽים׃
 וְעֹרֹ֨ת אֵילִ֧ם מְאָדָּמִ֛ים וְעֹרֹ֥ת תְּחָשִׁ֖ים וַעֲצֵ֥י שִׁטִּֽים׃
 שֶׁ֖מֶן לַמָּאֹ֑ר בְּשָׂמִים֙ לְשֶׁ֣מֶן הַמִּשְׁחָ֔ה וְלִקְטֹ֖רֶת הַסַּמִּֽים׃
 אַבְנֵי־שֹׁ֕הַם וְאַבְנֵ֖י מִלֻּאִ֑ים לָאֵפֹ֖ד וְלַחֹֽשֶׁן׃
 </td></tr>
-<tr class="t"><td class="v">14</td><td class="v">Exodus 25:9</td><td class="t"><span title="1" class="m">כְּ</span><span title="1" class="m">כֹ֗ל</span> <span title="2" class="d">אֲשֶׁ֤ר</span> <span title="2" class="d">אֲנִי֙</span> <span title="2" class="d">מַרְאֶ֣ה</span> <span title="2" class="d">אֹותְךָ֔</span> <span title="2" class="d">אֵ֚ת</span> <span title="2" class="d">תַּבְנִ֣ית</span> <span title="2" class="d">הַ</span><span title="2" class="d">מִּשְׁכָּ֔ן</span> <span title="2" class="d">וְ</span><span title="2" class="d">אֵ֖ת</span> <span title="2" class="d">תַּבְנִ֣ית</span> <span title="2" class="d">כָּל</span>־<span title="2" class="d">כֵּלָ֑יו</span> וְכֵ֖ן תַּעֲשֽׂוּ׃ ס 
+<tr class="t"><td class="v">13</td><td class="v">Exodus 25:35</td><td class="t"><span title="1" class="m">לְ</span><span title="1" class="m">שֵׁ֨שֶׁת֙</span> <span title="1" class="m">הַ</span><span title="1" class="m">קָּנִ֔ים</span> <span title="2" class="d">הַ</span><span title="2" class="d">יֹּצְאִ֖ים</span> <span title="2" class="d">מִן</span>־<span title="2" class="d">הַ</span><span title="2" class="d">מְּנֹרָֽה</span>׃
 </td></tr>
-<tr class="t"><td class="v">15</td><td class="v">Exodus 25:35</td><td class="t"><span title="1" class="m">לְ</span><span title="1" class="m">שֵׁ֨שֶׁת֙</span> <span title="1" class="m">הַ</span><span title="1" class="m">קָּנִ֔ים</span> <span title="2" class="d">הַ</span><span title="2" class="d">יֹּצְאִ֖ים</span> <span title="2" class="d">מִן</span>־<span title="2" class="d">הַ</span><span title="2" class="d">מְּנֹרָֽה</span>׃
+<tr class="t"><td class="v">14</td><td class="v">Exodus 35:4</td><td class="t"><span title="1" class="m">זֶ֣ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">דָּבָ֔ר</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">צִוָּ֥ה</span> <span title="2" class="d">יְהוָ֖ה</span> לֵאמֹֽר׃
 </td></tr>
-<tr class="t"><td class="v">16</td><td class="v">Exodus 35:4</td><td class="t"><span title="1" class="m">זֶ֣ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">דָּבָ֔ר</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">צִוָּ֥ה</span> <span title="2" class="d">יְהוָ֖ה</span> לֵאמֹֽר׃
+<tr class="t"><td class="v">15</td><td class="v">Deuteronomium 9:29</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">הֵ֥ם</span> <span title="1" class="m">עַמְּךָ֖</span> <span title="1" class="m">וְ</span><span title="1" class="m">נַחֲלָתֶ֑ךָ</span> <span title="2" class="d">אֲשֶׁ֤ר</span> <span title="2" class="d">הֹוצֵ֨אתָ֙</span> <span title="2" class="d">בְּ</span><span title="2" class="d">כֹחֲךָ֣</span> <span title="2" class="d">הַ</span><span title="2" class="d">גָּדֹ֔ל</span> <span title="2" class="d">וּ</span><span title="2" class="d">בִֽ</span><span title="2" class="d">זְרֹעֲךָ֖</span> <span title="2" class="d">הַ</span><span title="2" class="d">נְּטוּיָֽה</span>׃ פ 
 </td></tr>
-<tr class="t"><td class="v">17</td><td class="v">Deuteronomium 9:29</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">הֵ֥ם</span> <span title="1" class="m">עַמְּךָ֖</span> <span title="1" class="m">וְ</span><span title="1" class="m">נַחֲלָתֶ֑ךָ</span> <span title="2" class="d">אֲשֶׁ֤ר</span> <span title="2" class="d">הֹוצֵ֨אתָ֙</span> <span title="2" class="d">בְּ</span><span title="2" class="d">כֹחֲךָ֣</span> <span title="2" class="d">הַ</span><span title="2" class="d">גָּדֹ֔ל</span> <span title="2" class="d">וּ</span><span title="2" class="d">בִֽ</span><span title="2" class="d">זְרֹעֲךָ֖</span> <span title="2" class="d">הַ</span><span title="2" class="d">נְּטוּיָֽה</span>׃ פ 
+<tr class="t"><td class="v">16</td><td class="v">Josua 1:9</td><td class="t"><span title="1" class="m">כִּ֤י</span> <span title="1" class="m">עִמְּךָ֙</span> <span title="1" class="m">יְהוָ֣ה</span> <span title="1" class="m">אֱלֹהֶ֔יךָ</span> <span title="1" class="m">בְּ</span><span title="1" class="m">כֹ֖ל</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">תֵּלֵֽךְ</span>׃ פ 
 </td></tr>
-<tr class="t"><td class="v">18</td><td class="v">Deuteronomium 18:20</td><td class="t"><span title="1" class="m">אַ֣ךְ</span> <span title="1" class="m">הַ</span><span title="1" class="m">נָּבִ֡יא</span> <span title="2" class="d">אֲשֶׁ֣ר</span> <span title="2" class="d">יָזִיד֩</span> לְדַבֵּ֨ר דָּבָ֜ר בִּשְׁמִ֗י אֵ֣ת אֲשֶׁ֤ר לֹֽא־צִוִּיתִיו֙ לְדַבֵּ֔ר וַאֲשֶׁ֣ר יְדַבֵּ֔ר בְּשֵׁ֖ם אֱלֹהִ֣ים אֲחֵרִ֑ים וּמֵ֖ת הַנָּבִ֥יא הַהֽוּא׃
+<tr class="t"><td class="v">17</td><td class="v">Judices 7:12</td><td class="t"><span title="1" class="m">כַּ</span><span title="1" class="m"></span><span title="1" class="m">חֹ֛ול</span> <span title="2" class="d">שֶׁ</span><span title="2" class="d">עַל</span>־<span title="2" class="d">שְׂפַ֥ת</span> <span title="2" class="d">הַ</span><span title="2" class="d">יָּ֖ם</span> <span title="1" class="m">לָ</span><span title="1" class="m">רֹֽב</span>׃
 </td></tr>
-<tr class="t"><td class="v">19</td><td class="v">Deuteronomium 28:69</td><td class="t">אֵלֶּה֩ דִבְרֵ֨י הַבְּרִ֜ית אֲֽשֶׁר־צִוָּ֧ה יְהוָ֣ה אֶת־מֹשֶׁ֗ה לִכְרֹ֛ת אֶת־בְּנֵ֥י יִשְׂרָאֵ֖ל בְּאֶ֣רֶץ מֹואָ֑ב <span title="4" class="m">מִ</span><span title="4" class="m">לְּ</span><span title="4" class="m">בַ֣ד</span> <span title="4" class="m">הַ</span><span title="4" class="m">בְּרִ֔ית</span> <span title="5" class="d">אֲשֶׁר</span>־<span title="5" class="d">כָּרַ֥ת</span> <span title="5" class="d">אִתָּ֖ם</span> <span title="5" class="d">בְּ</span><span title="5" class="d">חֹרֵֽב</span>׃ פ 
+<tr class="t"><td class="v">18</td><td class="v">Reges_I 9:13</td><td class="t"><span title="1" class="m">מָ֚ה</span> <span title="1" class="m">הֶ</span><span title="1" class="m">עָרִ֣ים</span> <span title="1" class="m">הָ</span><span title="1" class="m">אֵ֔לֶּה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">נָתַ֥תָּה</span> <span title="2" class="d">לִּ֖י</span> אָחִ֑י </td></tr>
+<tr class="t"><td class="v">19</td><td class="v">Reges_I 9:15</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">זֶ֨ה</span> <span title="1" class="m">דְבַר</span>־<span title="1" class="m">הַ</span><span title="1" class="m">מַּ֜ס</span> <span title="2" class="d">אֲשֶֽׁר</span>־<span title="2" class="d">הֶעֱלָ֣ה</span> ׀ <span title="2" class="d">הַ</span><span title="2" class="d">מֶּ֣לֶךְ</span> <span title="2" class="d">שְׁלֹמֹ֗ה</span> לִבְנֹות֩ אֶת־בֵּ֨ית יְהוָ֤ה וְאֶת־בֵּיתֹו֙ וְאֶת־הַמִּלֹּ֔וא וְאֵ֖ת חֹומַ֣ת יְרוּשָׁלִָ֑ם וְאֶת־חָצֹ֥ר וְאֶת־מְגִדֹּ֖ו וְאֶת־גָּֽזֶר׃
 </td></tr>
-<tr class="t"><td class="v">20</td><td class="v">Josua 1:9</td><td class="t"><span title="1" class="m">כִּ֤י</span> <span title="1" class="m">עִמְּךָ֙</span> <span title="1" class="m">יְהוָ֣ה</span> <span title="1" class="m">אֱלֹהֶ֔יךָ</span> <span title="1" class="m">בְּ</span><span title="1" class="m">כֹ֖ל</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">תֵּלֵֽךְ</span>׃ פ 
+<tr class="t"><td class="v">20</td><td class="v">Reges_II 1:7</td><td class="t"><span title="1" class="m">מֶ֚ה</span> <span title="1" class="m">מִשְׁפַּ֣ט</span> <span title="1" class="m">הָ</span><span title="1" class="m">אִ֔ישׁ</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">עָלָ֖ה</span> לִקְרַאתְכֶ֑ם וַיְדַבֵּ֣ר אֲלֵיכֶ֔ם אֶת־הַדְּבָרִ֖ים הָאֵֽלֶּה׃
 </td></tr>
-<tr class="t"><td class="v">21</td><td class="v">Josua 1:17</td><td class="t"><span title="1" class="m">כְּ</span><span title="1" class="m">כֹ֤ל</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">שָׁמַ֨עְנוּ֙</span> <span title="2" class="d">אֶל</span>־<span title="2" class="d">מֹשֶׁ֔ה</span> כֵּ֖ן נִשְׁמַ֣ע אֵלֶ֑יךָ רַ֠ק יִֽהְיֶ֞ה יְהוָ֤ה אֱלֹהֶ֨יךָ֙ עִמָּ֔ךְ כַּאֲשֶׁ֥ר הָיָ֖ה עִם־מֹשֶֽׁה׃
+<tr class="t"><td class="v">21</td><td class="v">Reges_II 18:19</td><td class="t"><span title="1" class="m">מָ֧ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">בִּטָּחֹ֛ון</span> <span title="1" class="m">הַ</span><span title="1" class="m">זֶּ֖ה</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">בָּטָֽחְתָּ</span>׃
 </td></tr>
-<tr class="t"><td class="v">22</td><td class="v">Josua 2:19</td><td class="t"><span title="1" class="m">כֹּ֣ל</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">יֵצֵא֩</span> <span title="2" class="d">מִ</span><span title="2" class="d">דַּלְתֵ֨י</span> <span title="2" class="d">בֵיתֵ֧ךְ</span> ׀ <span title="2" class="d">הַ</span><span title="2" class="d">ח֛וּצָה</span> דָּמֹ֥ו בְרֹאשֹׁ֖ו וַאֲנַ֣חְנוּ נְקִיִּ֑ם </td></tr>
-<tr class="t"><td class="v">23</td><td class="v">Josua 2:19</td><td class="t"><span title="1" class="m">וְ֠</span><span title="1" class="m">כֹל</span> <span title="2" class="d">אֲשֶׁ֨ר</span> <span title="2" class="d">יִֽהְיֶ֤ה</span> <span title="2" class="d">אִתָּךְ֙</span> <span title="2" class="d">בַּ</span><span title="2" class="d"></span><span title="2" class="d">בַּ֔יִת</span> דָּמֹ֣ו בְרֹאשֵׁ֔נוּ אִם־יָ֖ד תִּֽהְיֶה־בֹּֽו׃
+<tr class="t"><td class="v">22</td><td class="v">Reges_II 18:21</td><td class="t"><span title="1" class="m">כֵּ֚ן</span> <span title="1" class="m">פַּרְעֹ֣ה</span> <span title="1" class="m">מֶֽלֶךְ</span>־<span title="1" class="m">מִצְרַ֔יִם</span> <span title="1" class="m">לְ</span><span title="1" class="m">כָֽל</span>־<span title="2" class="d">הַ</span><span title="2" class="d">בֹּטְחִ֖ים</span> <span title="2" class="d">עָלָֽיו</span>׃
 </td></tr>
-<tr class="t"><td class="v">24</td><td class="v">Judices 7:12</td><td class="t"><span title="1" class="m">כַּ</span><span title="1" class="m"></span><span title="1" class="m">חֹ֛ול</span> <span title="2" class="d">שֶׁ</span><span title="2" class="d">עַל</span>־<span title="2" class="d">שְׂפַ֥ת</span> <span title="2" class="d">הַ</span><span title="2" class="d">יָּ֖ם</span> <span title="1" class="m">לָ</span><span title="1" class="m">רֹֽב</span>׃
+<tr class="t"><td class="v">23</td><td class="v">Reges_II 18:35</td><td class="t"><span title="1" class="m">מִ֚י</span> <span title="1" class="m">בְּ</span><span title="1" class="m">כָל</span>־<span title="1" class="m">אֱלֹהֵ֣י</span> <span title="1" class="m">הָֽ</span><span title="1" class="m">אֲרָצֹ֔ות</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">הִצִּ֥ילוּ</span> <span title="2" class="d">אֶת</span>־<span title="2" class="d">אַרְצָ֖ם</span> <span title="2" class="d">מִ</span><span title="2" class="d">יָּדִ֑י</span> </td></tr>
+<tr class="t"><td class="v">24</td><td class="v">Psalmi 103:14</td><td class="t">כִּי־ה֖וּא יָדַ֣ע יִצְרֵ֑נוּ <span title="2" class="m">זָ֝כ֗וּר</span> <span title="3" class="d">כִּי</span>־<span title="3" class="d">עָפָ֥ר</span> <span title="3" class="d">אֲנָֽחְנוּ</span>׃
 </td></tr>
-<tr class="t"><td class="v">25</td><td class="v">Samuel_I 16:7</td><td class="t">וַיֹּ֨אמֶר יְהוָ֜ה אֶל־שְׁמוּאֵ֗ל <span title="2" class="m">כִּ֣י</span> ׀ <span title="2" class="m">לֹ֗א</span> <span title="3" class="d">אֲשֶׁ֤ר</span> <span title="3" class="d">יִרְאֶה֙</span> <span title="3" class="d">הָ</span><span title="3" class="d">אָדָ֔ם</span> </td></tr>
-<tr class="t"><td class="v">26</td><td class="v">Reges_I 9:13</td><td class="t"><span title="1" class="m">מָ֚ה</span> <span title="1" class="m">הֶ</span><span title="1" class="m">עָרִ֣ים</span> <span title="1" class="m">הָ</span><span title="1" class="m">אֵ֔לֶּה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">נָתַ֥תָּה</span> <span title="2" class="d">לִּ֖י</span> אָחִ֑י </td></tr>
-<tr class="t"><td class="v">27</td><td class="v">Reges_I 9:15</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">זֶ֨ה</span> <span title="1" class="m">דְבַר</span>־<span title="1" class="m">הַ</span><span title="1" class="m">מַּ֜ס</span> <span title="2" class="d">אֲשֶֽׁר</span>־<span title="2" class="d">הֶעֱלָ֣ה</span> ׀ <span title="2" class="d">הַ</span><span title="2" class="d">מֶּ֣לֶךְ</span> <span title="2" class="d">שְׁלֹמֹ֗ה</span> לִבְנֹות֩ אֶת־בֵּ֨ית יְהוָ֤ה וְאֶת־בֵּיתֹו֙ וְאֶת־הַמִּלֹּ֔וא וְאֵ֖ת חֹומַ֣ת יְרוּשָׁלִָ֑ם וְאֶת־חָצֹ֥ר וְאֶת־מְגִדֹּ֖ו וְאֶת־גָּֽזֶר׃
+<tr class="t"><td class="v">25</td><td class="v">Ecclesiastes 4:3</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">טֹוב֙</span> <span title="1" class="m">מִ</span><span title="1" class="m">שְּׁנֵיהֶ֔ם</span> <span title="2" class="d">אֵ֥ת</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">עֲדֶ֖ן</span> <span title="2" class="d">לֹ֣א</span> <span title="2" class="d">הָיָ֑ה</span> אֲשֶׁ֤ר לֹֽא־רָאָה֙ אֶת־הַמַּעֲשֶׂ֣ה הָרָ֔ע אֲשֶׁ֥ר נַעֲשָׂ֖ה תַּ֥חַת הַשָּֽׁמֶשׁ׃
 </td></tr>
-<tr class="t"><td class="v">28</td><td class="v">Reges_II 1:4</td><td class="t"><span title="1" class="m">הַ</span><span title="1" class="m">מִּטָּ֞ה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">עָלִ֥יתָ</span> <span title="2" class="d">שָּׁ֛ם</span> לֹֽא־תֵרֵ֥ד מִמֶּ֖נָּה </td></tr>
-<tr class="t"><td class="v">29</td><td class="v">Reges_II 1:6</td><td class="t"><span title="1" class="m">הַ</span><span title="1" class="m">מִּטָּ֞ה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">עָלִ֥יתָ</span> <span title="2" class="d">שָּׁ֛ם</span> לֹֽא־תֵרֵ֥ד מִמֶּ֖נָּה </td></tr>
-<tr class="t"><td class="v">30</td><td class="v">Reges_II 1:7</td><td class="t"><span title="1" class="m">מֶ֚ה</span> <span title="1" class="m">מִשְׁפַּ֣ט</span> <span title="1" class="m">הָ</span><span title="1" class="m">אִ֔ישׁ</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">עָלָ֖ה</span> לִקְרַאתְכֶ֑ם וַיְדַבֵּ֣ר אֲלֵיכֶ֔ם אֶת־הַדְּבָרִ֖ים הָאֵֽלֶּה׃
-</td></tr>
-<tr class="t"><td class="v">31</td><td class="v">Reges_II 1:16</td><td class="t"><span title="1" class="m">הַ</span><span title="1" class="m">מִּטָּ֞ה</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">עָלִ֥יתָ</span> <span title="2" class="d">שָּׁ֛ם</span> לֹֽא־תֵרֵ֥ד מִמֶּ֖נָּה </td></tr>
-<tr class="t"><td class="v">32</td><td class="v">Reges_II 9:27</td><td class="t">וַיִּרְדֹּ֨ף אַחֲרָ֜יו יֵה֗וּא <span title="2" class="m">אֶל</span>־<span title="2" class="m">הַ</span><span title="2" class="m">מֶּרְכָּבָ֗ה</span> <span title="2" class="m">בְּ</span><span title="2" class="m">מַֽעֲלֵה־גוּר֙</span> <span title="3" class="d">אֲשֶׁ֣ר</span> <span title="3" class="d">אֶֽת</span>־<span title="3" class="d">יִבְלְעָ֔ם</span> </td></tr>
-<tr class="t"><td class="v">33</td><td class="v">Reges_II 18:19</td><td class="t"><span title="1" class="m">מָ֧ה</span> <span title="1" class="m">הַ</span><span title="1" class="m">בִּטָּחֹ֛ון</span> <span title="1" class="m">הַ</span><span title="1" class="m">זֶּ֖ה</span> <span title="2" class="d">אֲשֶׁ֥ר</span> <span title="2" class="d">בָּטָֽחְתָּ</span>׃
-</td></tr>
-<tr class="t"><td class="v">34</td><td class="v">Reges_II 18:21</td><td class="t"><span title="1" class="m">כֵּ֚ן</span> <span title="1" class="m">פַּרְעֹ֣ה</span> <span title="1" class="m">מֶֽלֶךְ</span>־<span title="1" class="m">מִצְרַ֔יִם</span> <span title="1" class="m">לְ</span><span title="1" class="m">כָֽל</span>־<span title="2" class="d">הַ</span><span title="2" class="d">בֹּטְחִ֖ים</span> <span title="2" class="d">עָלָֽיו</span>׃
-</td></tr>
-<tr class="t"><td class="v">35</td><td class="v">Reges_II 18:35</td><td class="t"><span title="1" class="m">מִ֚י</span> <span title="1" class="m">בְּ</span><span title="1" class="m">כָל</span>־<span title="1" class="m">אֱלֹהֵ֣י</span> <span title="1" class="m">הָֽ</span><span title="1" class="m">אֲרָצֹ֔ות</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">הִצִּ֥ילוּ</span> <span title="2" class="d">אֶת</span>־<span title="2" class="d">אַרְצָ֖ם</span> <span title="2" class="d">מִ</span><span title="2" class="d">יָּדִ֑י</span> </td></tr>
-<tr class="t"><td class="v">36</td><td class="v">Reges_II 19:27</td><td class="t">וְשִׁבְתְּךָ֛ וְצֵאתְךָ֥ וּבֹאֲךָ֖ יָדָ֑עְתִּי <span title="5" class="m">וְ</span><span title="6" class="d">אֵ֖ת</span> <span title="6" class="d">הִֽתְרַגֶּזְךָ֥</span> <span title="6" class="d">אֵלָֽי</span>׃
-</td></tr>
-<tr class="t"><td class="v">37</td><td class="v">Jesaia 37:28</td><td class="t">וְשִׁבְתְּךָ֛ וְצֵאתְךָ֥ וּבֹואֲךָ֖ יָדָ֑עְתִּי <span title="5" class="m">וְ</span><span title="6" class="d">אֵ֖ת</span> <span title="6" class="d">הִֽתְרַגֶּזְךָ֥</span> <span title="6" class="d">אֵלָֽי</span>׃
-</td></tr>
-<tr class="t"><td class="v">38</td><td class="v">Jesaia 46:9 - Jesaia 46:10</td><td class="t">כִּ֣י אָנֹכִ֥י אֵל֙ מַגִּ֤יד מֵֽרֵאשִׁית֙ אַחֲרִ֔ית <span title="3" class="m">וּ</span><span title="3" class="m">מִ</span><span title="3" class="m">קֶּ֖דֶם</span> <span title="4" class="d">אֲשֶׁ֣ר</span> <span title="4" class="d">לֹא</span>־<span title="4" class="d">נַעֲשׂ֑וּ</span> אֹמֵר֙ קֹרֵ֤א מִמִּזְרָח֙ עַ֔יִט מֵאֶ֥רֶץ מֶרְחָ֖ק אִ֣ישׁ ֯עצתו </td></tr>
-<tr class="t"><td class="v">39</td><td class="v">Jesaia 52:6</td><td class="t">לָכֵ֛ן יֵדַ֥ע עַמִּ֖י שְׁמִ֑י <span title="2" class="m">לָכֵן֙</span> <span title="2" class="m">בַּ</span><span title="2" class="m"></span><span title="2" class="m">יֹּ֣ום</span> <span title="2" class="m">הַ</span><span title="2" class="m">ה֔וּא</span> <span title="3" class="d">כִּֽי</span>־<span title="3" class="d">אֲנִי</span>־<span title="3" class="d">ה֥וּא</span> הַֽמְדַבֵּ֖ר </td></tr>
-<tr class="t"><td class="v">40</td><td class="v">Jeremia 43:11</td><td class="t">וְהִכָּ֖ה אֶת־אֶ֣רֶץ מִצְרָ֑יִם <span title="2" class="d">אֲשֶׁ֧ר</span> <span title="2" class="d">לַ</span><span title="2" class="d"></span><span title="2" class="d">מָּ֣וֶת</span> <span title="3" class="m">לַ</span><span title="3" class="m"></span><span title="3" class="m">מָּ֗וֶת</span> וַאֲשֶׁ֤ר לַשְּׁבִי֙ לַשֶּׁ֔בִי וַאֲשֶׁ֥ר לַחֶ֖רֶב לֶחָֽרֶב׃
-</td></tr>
-<tr class="t"><td class="v">41</td><td class="v">Jeremia 43:11</td><td class="t">וְהִכָּ֖ה אֶת־אֶ֣רֶץ מִצְרָ֑יִם אֲשֶׁ֧ר לַמָּ֣וֶת לַמָּ֗וֶת <span title="4" class="m">וַ</span><span title="5" class="d">אֲשֶׁ֤ר</span> <span title="5" class="d">לַ</span><span title="5" class="d"></span><span title="5" class="d">שְּׁבִי֙</span> <span title="4" class="m">לַ</span><span title="4" class="m"></span><span title="4" class="m">שֶּׁ֔בִי</span> וַאֲשֶׁ֥ר לַחֶ֖רֶב לֶחָֽרֶב׃
-</td></tr>
-<tr class="t"><td class="v">42</td><td class="v">Jeremia 43:11</td><td class="t">וְהִכָּ֖ה אֶת־אֶ֣רֶץ מִצְרָ֑יִם אֲשֶׁ֧ר לַמָּ֣וֶת לַמָּ֗וֶת וַאֲשֶׁ֤ר לַשְּׁבִי֙ לַשֶּׁ֔בִי <span title="6" class="m">וַ</span><span title="7" class="d">אֲשֶׁ֥ר</span> <span title="7" class="d">לַ</span><span title="7" class="d"></span><span title="7" class="d">חֶ֖רֶב</span> <span title="6" class="m">לֶ</span><span title="6" class="m"></span><span title="6" class="m">חָֽרֶב</span>׃
-</td></tr>
-<tr class="t"><td class="v">43</td><td class="v">Hosea 4:14</td><td class="t">לֹֽא־אֶפְקֹ֨וד עַל־בְּנֹותֵיכֶ֜ם כִּ֣י תִזְנֶ֗ינָה <span title="3" class="m">וְ</span><span title="3" class="m">עַל</span>־<span title="3" class="m">כַּלֹּֽותֵיכֶם֙</span> <span title="4" class="d">כִּ֣י</span> <span title="4" class="d">תְנָאַ֔פְנָה</span> </td></tr>
-<tr class="t"><td class="v">44</td><td class="v">Hosea 9:14</td><td class="t"><span title="1" class="m">יְהוָ֖ה</span> <span title="2" class="d">מַה</span>־<span title="2" class="d">תִּתֵּ֑ן</span> </td></tr>
-<tr class="t"><td class="v">45</td><td class="v">Obadia 1:19 - Obadia 1:20</td><td class="t">וְיָרְשׁוּ֙ אֶת־שְׂדֵ֣ה אֶפְרַ֔יִם וְאֵ֖ת שְׂדֵ֣ה שֹׁמְרֹ֑ון וּבִנְיָמִ֖ן אֶת־הַגִּלְעָֽד׃
-<span title="3" class="m">וְ</span><span title="3" class="m">גָלֻ֣ת</span> <span title="3" class="m">הַֽ</span><span title="3" class="m">חֵל</span>־<span title="3" class="m">הַ֠</span><span title="3" class="m">זֶּה</span> <span title="3" class="m">לִ</span><span title="3" class="m">בְנֵ֨י</span> <span title="3" class="m">יִשְׂרָאֵ֤ל</span> <span title="4" class="d">אֲשֶֽׁר</span>־<span title="4" class="d">כְּנַעֲנִים֙</span> <span title="3" class="m">עַד</span>־<span title="3" class="m">צָ֣רְפַ֔ת</span> </td></tr>
-<tr class="t"><td class="v">46</td><td class="v">Micha 4:6</td><td class="t">בַּיֹּ֨ום הַה֜וּא אֹֽסְפָה֙ הַצֹּ֣לֵעָ֔ה וְהַנִּדָּחָ֖ה אֲקַבֵּ֑צָה <span title="3" class="m">וַ</span><span title="4" class="d">אֲשֶׁ֖ר</span> <span title="4" class="d">הֲרֵעֹֽתִי</span>׃
-</td></tr>
-<tr class="t"><td class="v">47</td><td class="v">Psalmi 103:14</td><td class="t">כִּי־ה֖וּא יָדַ֣ע יִצְרֵ֑נוּ <span title="2" class="m">זָ֝כ֗וּר</span> <span title="3" class="d">כִּי</span>־<span title="3" class="d">עָפָ֥ר</span> <span title="3" class="d">אֲנָֽחְנוּ</span>׃
-</td></tr>
-<tr class="t"><td class="v">48</td><td class="v">Iob 24:19</td><td class="t">צִיָּ֤ה גַם־חֹ֗ם יִגְזְל֥וּ מֵֽימֵי־שֶׁ֗לֶג <span title="2" class="m">שְׁאֹ֣ול</span> <span title="3" class="d">חָטָֽאוּ</span>׃
-</td></tr>
-<tr class="t"><td class="v">49</td><td class="v">Ecclesiastes 4:3</td><td class="t"><span title="1" class="m">וְ</span><span title="1" class="m">טֹוב֙</span> <span title="1" class="m">מִ</span><span title="1" class="m">שְּׁנֵיהֶ֔ם</span> <span title="2" class="d">אֵ֥ת</span> <span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">עֲדֶ֖ן</span> <span title="2" class="d">לֹ֣א</span> <span title="2" class="d">הָיָ֑ה</span> אֲשֶׁ֤ר לֹֽא־רָאָה֙ אֶת־הַמַּעֲשֶׂ֣ה הָרָ֔ע אֲשֶׁ֥ר נַעֲשָׂ֖ה תַּ֥חַת הַשָּֽׁמֶשׁ׃
-</td></tr>
-<tr class="t"><td class="v">50</td><td class="v">Esther 2:15</td><td class="t">וּבְהַגִּ֣יעַ תֹּר־אֶסְתֵּ֣ר בַּת־אֲבִיחַ֣יִל דֹּ֣ד מָרְדֳּכַ֡י אֲשֶׁר֩ לָקַֽח־לֹ֨ו לְבַ֜ת לָבֹ֣וא אֶל־הַמֶּ֗לֶךְ לֹ֤א בִקְשָׁה֙ דָּבָ֔ר <span title="5" class="m">כִּ֠י</span> <span title="5" class="m">אִ֣ם</span> <span title="6" class="d">אֶת</span>־<span title="6" class="d">אֲשֶׁ֥ר</span> <span title="6" class="d">יֹאמַ֛ר</span> <span title="6" class="d">הֵגַ֥י</span> <span title="6" class="d">סְרִיס</span>־<span title="6" class="d">הַ</span><span title="6" class="d">מֶּ֖לֶךְ</span> <span title="6" class="d">שֹׁמֵ֣ר</span> <span title="6" class="d">הַ</span><span title="6" class="d">נָּשִׁ֑ים</span> </td></tr>
-<tr class="t"><td class="v">51</td><td class="v">Chronica_I 6:52 - Chronica_I 6:62</td><td class="t">וַיִּתְּנ֨וּ לָהֶ֜ם אֶת־עָרֵ֧י הַמִּקְלָ֛ט אֶת־שְׁכֶ֥ם וְאֶת־מִגְרָשֶׁ֖יהָ בְּהַ֣ר אֶפְרָ֑יִם וְאֶת־גֶּ֖זֶר וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶֽת־יָקְמְעָם֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־בֵּ֥ית חֹורֹ֖ון וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־אַיָּלֹון֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־גַּת־רִמֹּ֖ון וְאֶת־מִגְרָשֶֽׁיהָ׃ פ 
-וּמִֽמַּחֲצִית֙ מַטֵּ֣ה מְנַשֶּׁ֔ה אֶת־עָנֵר֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־בִּלְעָ֖ם וְאֶת־מִגְרָשֶׁ֑יהָ לְמִשְׁפַּ֥חַת לִבְנֵי־קְהָ֖ת הַנֹּותָרִֽים׃ פ 
-לִבְנֵי֮ גֵּרְשֹׁום֒ מִמִּשְׁפַּ֗חַת חֲצִי֙ מַטֵּ֣ה מְנַשֶּׁ֔ה אֶת־גֹּולָ֥ן בַּבָּשָׁ֖ן וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־עַשְׁתָּרֹ֖ות וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-וּמִמַּטֵּ֣ה יִשָׂשכָ֔ר אֶת־קֶ֖דֶשׁ וְאֶת־מִגְרָשֶׁ֑יהָ אֶת־דָּבְרַ֖ת וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־רָאמֹות֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־עָנֵ֖ם וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-וּמִמַּטֵּ֣ה אָשֵׁ֔ר אֶת־מָשָׁ֖ל וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־עַבְדֹּ֖ון וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־חוּקֹק֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־רְחֹ֖ב וְאֶת־מִגְרָשֶֽׁיהָ׃
-וּמִמַּטֵּ֣ה נַפְתָּלִ֗י אֶת־קֶ֤דֶשׁ בַּגָּלִיל֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־חַמֹּ֖ון וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־קִרְיָתַ֖יִם וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-<span title="12" class="m">לִ</span><span title="12" class="m">בְנֵ֣י</span> <span title="12" class="m">מְרָרִי֮</span> <span title="13" class="d">הַ</span><span title="13" class="d">נֹּותָרִים֒</span> <span title="13" class="d">מִ</span><span title="13" class="d">מַּטֵּ֣ה</span> <span title="13" class="d">זְבוּלֻ֔ן</span> <span title="12" class="m">אֶת</span>־<span title="12" class="m">רִמֹּונֹ֖ו</span> <span title="12" class="m">וְ</span><span title="12" class="m">אֶת</span>־<span title="12" class="m">מִגְרָשֶׁ֑יהָ</span> <span title="12" class="m">אֶת</span>־<span title="12" class="m">תָּבֹ֖ור</span> <span title="12" class="m">וְ</span><span title="12" class="m">אֶת</span>־<span title="12" class="m">מִגְרָשֶֽׁיהָ</span>׃
-וּמֵעֵ֜בֶר לְיַרְדֵּ֣ן יְרֵחֹו֮ לְמִזְרַ֣ח הַיַּרְדֵּן֒ מִמַּטֵּ֣ה רְאוּבֵ֔ן אֶת־בֶּ֥צֶר בַּמִּדְבָּ֖ר וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶת־יַ֖הְצָה וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־קְדֵמֹות֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־מֵיפַ֖עַת וְאֶת־מִגְרָשֶֽׁיהָ׃
-וּמִ֨מַּטֵּה־גָ֔ד אֶת־רָאמֹ֥ות בַּגִּלְעָ֖ד וְאֶת־מִגְרָשֶׁ֑יהָ וְאֶֽת־מַחֲנַ֖יִם וְאֶת־מִגְרָשֶֽׁיהָ׃
-וְאֶת־חֶשְׁבֹּון֙ וְאֶת־מִגְרָשֶׁ֔יהָ וְאֶת־יַעְזֵ֖יר וְאֶת־מִגְרָשֶֽׁיהָ׃ ס 
-</td></tr>
-<tr class="t"><td class="v">52</td><td class="v">Chronica_II 18:13</td><td class="t"><span title="1" class="m">כִּ֛י</span> <span title="2" class="d">אֶת</span>־<span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">יֹאמַ֥ר</span> <span title="2" class="d">אֱלֹהַ֖י</span> אֹתֹ֥ו אֲדַבֵּֽר׃
+<tr class="t"><td class="v">26</td><td class="v">Chronica_II 18:13</td><td class="t"><span title="1" class="m">כִּ֛י</span> <span title="2" class="d">אֶת</span>־<span title="2" class="d">אֲשֶׁר</span>־<span title="2" class="d">יֹאמַ֥ר</span> <span title="2" class="d">אֱלֹהַ֖י</span> אֹתֹ֥ו אֲדַבֵּֽר׃
 </td></tr>
 
 </table>
@@ -462,7 +388,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
@@ -476,14 +402,14 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;verblessmothers&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
     <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
 <span class="s">        otype oid </span>
-<span class="s">        sp typ rela</span>
+<span class="s">        sp typ rela kind</span>
 <span class="s">        g_word_utf8 trailer_utf8</span>
 <span class="s">        book chapter verse number</span>
 <span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;&#39;</span>
@@ -507,12 +433,77 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  4.48s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/verblessmothers/__log__verblessmothers.txt
     14s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-11T17-05-28
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-11T17-05-28
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-16T11-06-51
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-16T11-06-51
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Check-on-clause-kind">Check on clause kind<a class="anchor-link" href="#Check-on-clause-kind">&#182;</a></h1><p>We are going to use the
+<a href="https://shebanq.ancient-data.org/shebanq/static/docs/featuredoc/features/comments/kind.html">kind</a> 
+feature on clauses, which is related to the
+<a href="https://shebanq.ancient-data.org/shebanq/static/docs/featuredoc/features/comments/typ.html">typ</a>
+feature.
+We perform a routine check to see whether the indicated relation ship between <code>kind</code> values and <code>typ</code> values 
+holds for all clauses.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Checking&quot;</span><span class="p">)</span>
+<span class="n">kinds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;VC&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;InfA&#39;</span><span class="p">,</span><span class="s">&#39;InfC&#39;</span><span class="p">,</span><span class="s">&#39;Ptcp&#39;</span><span class="p">,</span><span class="s">&#39;Way0&#39;</span><span class="p">,</span><span class="s">&#39;WayX&#39;</span><span class="p">,</span><span class="s">&#39;WIm0&#39;</span><span class="p">,</span><span class="s">&#39;WImX&#39;</span><span class="p">,</span><span class="s">&#39;WQt0&#39;</span><span class="p">,</span><span class="s">&#39;WQtX&#39;</span><span class="p">,</span><span class="s">&#39;WxI0&#39;</span><span class="p">,</span>
+        <span class="s">&#39;WXIm&#39;</span><span class="p">,</span><span class="s">&#39;WxIX&#39;</span><span class="p">,</span><span class="s">&#39;WxQ0&#39;</span><span class="p">,</span><span class="s">&#39;WXQt&#39;</span><span class="p">,</span><span class="s">&#39;WxQX&#39;</span><span class="p">,</span><span class="s">&#39;WxY0&#39;</span><span class="p">,</span><span class="s">&#39;WXYq&#39;</span><span class="p">,</span><span class="s">&#39;WxYX&#39;</span><span class="p">,</span><span class="s">&#39;WYq0&#39;</span><span class="p">,</span><span class="s">&#39;WYqX&#39;</span><span class="p">,</span>
+        <span class="s">&#39;xIm0&#39;</span><span class="p">,</span><span class="s">&#39;XImp&#39;</span><span class="p">,</span><span class="s">&#39;xImX&#39;</span><span class="p">,</span><span class="s">&#39;xQt0&#39;</span><span class="p">,</span><span class="s">&#39;XQtl&#39;</span><span class="p">,</span><span class="s">&#39;xQtX&#39;</span><span class="p">,</span><span class="s">&#39;xYq0&#39;</span><span class="p">,</span><span class="s">&#39;XYqt&#39;</span><span class="p">,</span><span class="s">&#39;xYqX&#39;</span><span class="p">,</span><span class="s">&#39;ZIm0&#39;</span><span class="p">,</span>
+        <span class="s">&#39;ZImX&#39;</span><span class="p">,</span><span class="s">&#39;ZQt0&#39;</span><span class="p">,</span><span class="s">&#39;ZQtX&#39;</span><span class="p">,</span><span class="s">&#39;ZYq0&#39;</span><span class="p">,</span><span class="s">&#39;ZYqX&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&#39;NC&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;AjCl&#39;</span><span class="p">,</span><span class="s">&#39;NmCl&#39;</span><span class="p">},</span>
+    <span class="s">&#39;WP&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;CPen&#39;</span><span class="p">,</span><span class="s">&#39;Ellp&#39;</span><span class="p">,</span><span class="s">&#39;MSyn&#39;</span><span class="p">,</span><span class="s">&#39;Reop&#39;</span><span class="p">,</span><span class="s">&#39;Voct&#39;</span><span class="p">,</span><span class="s">&#39;XPos&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">errors</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">):</span>
+    <span class="n">typ</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">typ</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kinds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="nb">set</span><span class="p">()):</span>
+        <span class="n">errors</span><span class="p">[(</span><span class="n">kind</span><span class="p">,</span> <span class="n">typ</span><span class="p">)]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        
+<span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+    <span class="n">msg</span><span class="p">(</span><span class="s">&quot;There were errors&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">msg</span><span class="p">(</span><span class="s">&quot;All typ values have been correctly assigned to kind values&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre> 1h 00m 59s Checking
+ 1h 01m 00s All typ values have been correctly assigned to kind values
 </pre>
 </div>
 </div>
@@ -532,7 +523,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">mothers_objc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">())</span>
@@ -553,8 +544,8 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  2.66s Looking for mothers ...
-  3.85s Done
+<pre> 1h 09m 17s Looking for mothers ...
+ 1h 09m 19s Done
 </pre>
 </div>
 </div>
@@ -568,20 +559,30 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Gathering-verbless-mothers-of-object-clauses">Gathering verbless mothers of object clauses<a class="anchor-link" href="#Gathering-verbless-mothers-of-object-clauses">&#182;</a></h1>
+<h1 id="Gathering-verbless-mothers-of-object-clauses">Gathering verbless mothers of object clauses<a class="anchor-link" href="#Gathering-verbless-mothers-of-object-clauses">&#182;</a></h1><p>The first idea is that when a clause does not have a verb, it cannot have a subordinate object clause.
+However, there are cases of verbless clauses that can (correctly) have object clauses, such as
+clauses where the verb is missing because of ellipsis. There are a few other possible causes as well.</p>
+<p>The relevant criterium turns out to be: the clause
+<a href="https://shebanq.ancient-data.org/shebanq/static/docs/featuredoc/features/comments/kind.html">kind</a>
+feature is <code>NC</code>.</p>
+<p>So, we look at <em>nominal</em> mothers rather than <em>verbless</em> mother.
+Note that there are nominal mothers that are not verbless.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">no_mothers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="n">verbless_mothers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">nominal_mothers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="n">multiple_sentence</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">is_verbless</span><span class="p">(</span><span class="n">c</span><span class="p">):</span> <span class="k">return</span> <span class="s">&#39;verb&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="n">F</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)}</span>
+<span class="k">def</span> <span class="nf">is_nominal</span><span class="p">(</span><span class="n">c</span><span class="p">):</span> <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;NC&#39;</span>
 
 <span class="n">msg</span><span class="p">(</span><span class="s">&#39;Looking for verbless mothers ...&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">cd</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">):</span>
@@ -591,14 +592,31 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
         <span class="k">continue</span>
     <span class="k">for</span> <span class="n">cm</span> <span class="ow">in</span> <span class="n">mothers_objc</span><span class="p">[</span><span class="n">cd</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">is_verbless</span><span class="p">(</span><span class="n">cm</span><span class="p">):</span> <span class="n">verbless_mothers</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span> <span class="ow">in</span> <span class="n">verbless_mothers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_nominal</span><span class="p">(</span><span class="n">cm</span><span class="p">):</span> <span class="n">nominal_mothers</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span> <span class="ow">in</span> <span class="n">verbless_mothers</span> <span class="o">|</span> <span class="n">nominal_mothers</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span> <span class="o">!=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">,</span> <span class="n">cm</span><span class="p">):</span>
         <span class="n">multiple_sentence</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;{} {}; {} {} of which {} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;{} {}; {} {}; {} {}; of which {} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">no_mothers</span><span class="p">),</span> <span class="s">&#39;objc-clauses without mother&#39;</span><span class="p">,</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">verbless_mothers</span><span class="p">),</span> <span class="s">&#39;objc-clauses with verbless mother&#39;</span><span class="p">,</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">nominal_mothers</span><span class="p">),</span> <span class="s">&#39;objc-clauses with nominal mother&#39;</span><span class="p">,</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">multiple_sentence</span><span class="p">),</span> <span class="s">&#39;in a different sentence&#39;</span><span class="p">,</span>
 <span class="p">))</span>
+<span class="k">if</span> <span class="n">nominal_mothers</span> <span class="o">&lt;=</span> <span class="n">verbless_mothers</span><span class="p">:</span>
+    <span class="n">msg</span><span class="p">(</span><span class="s">&#39;All nominal mothers are also verbless&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">nom_with_verb</span> <span class="o">=</span> <span class="n">nominal_mothers</span> <span class="o">-</span> <span class="n">verbless_mothers</span>
+    <span class="n">msg</span><span class="p">(</span><span class="s">&#39;Some nominal mothers are not verbless: {}x&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nom_with_verb</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span> <span class="ow">in</span> <span class="n">nom_with_verb</span><span class="p">:</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span>
+        <span class="n">fw</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">passage</span> <span class="o">=</span> <span class="s">&#39;{} {}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;book&#39;</span><span class="p">,</span> <span class="n">fw</span><span class="p">)),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;chapter&#39;</span><span class="p">,</span> <span class="n">fw</span><span class="p">)),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">verse</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">fw</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{} {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">passage</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -611,8 +629,17 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  6.44s Looking for verbless mothers ...
-  7.55s 0 objc-clauses without mother; 52 objc-clauses with verbless mother of which 0 in a different sentence
+<pre> 1h 28m 36s Looking for verbless mothers ...
+ 1h 28m 37s 0 objc-clauses without mother; 52 objc-clauses with verbless mother; 26 objc-clauses with nominal mother; of which 0 in a different sentence
+ 1h 28m 37s Some nominal mothers are not verbless: 1x
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Genesis 33:13 אֲדֹנִ֤י יֹדֵ֨עַ֙ 
+
 </pre>
 </div>
 </div>
@@ -632,7 +659,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
@@ -645,7 +672,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">css</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -762,14 +789,14 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="c">#h.append(head)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">legend</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_head</span><span class="p">)</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">verbless_mothers</span><span class="p">)):</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">nominal_mothers</span><span class="p">)):</span>
     <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">print_cm</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_tail</span><span class="p">)</span>
 <span class="c">#h.append(tail)</span>
@@ -793,7 +820,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">Q</span> <span class="o">=</span> <span class="n">MQL</span><span class="p">(</span><span class="n">API</span><span class="p">)</span>
@@ -806,18 +833,15 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">mother_obj_query1</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="s">select all objects where</span>
 <span class="s">[sentence </span>
-<span class="s"> [clause as clause_mother focus</span>
-<span class="s">    notexists [word sp = verb]</span>
-<span class="s"> ]</span>
+<span class="s"> [clause as clause_mother focus kind = NC]</span>
 <span class="s"> ..</span>
-<span class="s"> [clause focus mother = clause_mother.self and rela = Objc</span>
-<span class="s"> ]</span>
+<span class="s"> [clause focus mother = clause_mother.self and rela = Objc]</span>
 <span class="s">]</span>
 <span class="s">&#39;&#39;&#39;</span>
 <span class="n">mother_obj_query2</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -826,10 +850,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <span class="s"> [clause as clause_daughter focus rela = Objc</span>
 <span class="s"> ]</span>
 <span class="s"> ..</span>
-<span class="s"> [clause focus</span>
-<span class="s">    self = clause_daughter.mother</span>
-<span class="s">    notexists [word sp = verb]</span>
-<span class="s"> ]</span>
+<span class="s"> [clause focus self = clause_daughter.mother and kind = NC]</span>
 <span class="s">]</span>
 <span class="s">&#39;&#39;&#39;</span>
 </pre></div>
@@ -850,7 +871,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">sheaf1</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">mql</span><span class="p">(</span><span class="n">mother_obj_query1</span><span class="p">)</span>
@@ -873,13 +894,13 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">verbless_mothers_q</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-<span class="k">for</span> <span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="p">((</span><span class="n">cm</span><span class="p">,),</span> <span class="p">(</span><span class="n">cd</span><span class="p">,))),)</span> <span class="ow">in</span> <span class="n">sheaf1</span><span class="o">.</span><span class="n">results</span><span class="p">():</span> <span class="n">verbless_mothers_q</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
-<span class="k">for</span> <span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="p">((</span><span class="n">cd</span><span class="p">,),</span> <span class="p">(</span><span class="n">cm</span><span class="p">,))),)</span> <span class="ow">in</span> <span class="n">sheaf2</span><span class="o">.</span><span class="n">results</span><span class="p">():</span> <span class="n">verbless_mothers_q</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;{} results&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">verbless_mothers_q</span><span class="p">)))</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">nominal_mothers_q</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="k">for</span> <span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="p">((</span><span class="n">cm</span><span class="p">,),</span> <span class="p">(</span><span class="n">cd</span><span class="p">,))),)</span> <span class="ow">in</span> <span class="n">sheaf1</span><span class="o">.</span><span class="n">results</span><span class="p">():</span> <span class="n">nominal_mothers_q</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
+<span class="k">for</span> <span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="p">((</span><span class="n">cd</span><span class="p">,),</span> <span class="p">(</span><span class="n">cm</span><span class="p">,))),)</span> <span class="ow">in</span> <span class="n">sheaf2</span><span class="o">.</span><span class="n">results</span><span class="p">():</span> <span class="n">nominal_mothers_q</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;{} results&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nominal_mothers_q</span><span class="p">)))</span>
 </pre></div>
 
 </div>
@@ -892,7 +913,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    31s 47 results
+<pre> 1h 33m 37s 25 results
 </pre>
 </div>
 </div>
@@ -912,15 +933,15 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
 <span class="s">Results by the MQL query that are not delivered by the walk: {}</span>
 <span class="s">Results by the walk that are not delivered by the MQL query: {}</span>
 <span class="s">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">verbless_mothers_q</span> <span class="o">-</span> <span class="n">verbless_mothers</span><span class="p">),</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">verbless_mothers</span> <span class="o">-</span> <span class="n">verbless_mothers_q</span><span class="p">),</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">nominal_mothers_q</span> <span class="o">-</span> <span class="n">nominal_mothers</span><span class="p">),</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">nominal_mothers</span> <span class="o">-</span> <span class="n">nominal_mothers_q</span><span class="p">),</span>
 <span class="p">))</span>
 </pre></div>
 
@@ -936,7 +957,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 Results by the MQL query that are not delivered by the walk: 0
-Results by the walk that are not delivered by the MQL query: 5
+Results by the walk that are not delivered by the MQL query: 1
 
 </pre>
 </div>
@@ -957,7 +978,7 @@ Results by the walk that are not delivered by the MQL query: 5
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">css</span><span class="p">)</span>
@@ -971,7 +992,7 @@ Results by the walk that are not delivered by the MQL query: 5
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[30]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -1032,7 +1053,7 @@ tr.t {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1040,12 +1061,12 @@ tr.t {
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">legend</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;&#39;&lt;h1&gt;In MQL query but not in Walk&lt;/h1&gt;&#39;&#39;&#39;</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_head</span><span class="p">)</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">verbless_mothers_q</span> <span class="o">-</span> <span class="n">verbless_mothers</span><span class="p">)):</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">nominal_mothers_q</span> <span class="o">-</span> <span class="n">nominal_mothers</span><span class="p">)):</span>
     <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">print_cm</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_tail</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;&#39;&lt;h1&gt;In Walk but not in MQL query&lt;/h1&gt;&#39;&#39;&#39;</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_head</span><span class="p">)</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">verbless_mothers</span> <span class="o">-</span> <span class="n">verbless_mothers_q</span><span class="p">)):</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">nominal_mothers</span> <span class="o">-</span> <span class="n">nominal_mothers_q</span><span class="p">)):</span>
     <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">print_cm</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">))</span>
 <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_tail</span><span class="p">)</span>
 <span class="c">#h.append(tail)</span>
@@ -1069,7 +1090,7 @@ tr.t {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">sfields</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -1091,38 +1112,63 @@ tr.t {
     <span class="n">nf</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s">&#39;verbless_mothers.csv&#39;</span><span class="p">)</span>
     <span class="n">nf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sfields</span><span class="p">)))</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">verbless_mothers</span><span class="p">):</span>
+        <span class="n">is_nom</span> <span class="o">=</span> <span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span> <span class="ow">in</span> <span class="n">nominal_mothers</span>
         <span class="n">casd</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span>
         <span class="n">casm</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span>
         <span class="n">cald</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">casd</span><span class="p">)</span>
         <span class="n">calm</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">casm</span><span class="p">)</span>
         <span class="n">cad</span> <span class="o">=</span> <span class="n">casd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">cam</span> <span class="o">=</span> <span class="n">casm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
         <span class="n">cnd</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">cad</span><span class="p">)</span>
         <span class="n">cnm</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">stat</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">cad</span><span class="p">,</span> <span class="n">cnd</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">,</span>
-             <span class="sd">&#39;&#39;&#39;{} an object clause to a verbless mother clause. Possibly a coding error. [query](shebanq:?id=981&amp;page=1&amp;version=4b&amp;mr=r&amp;qw=q&amp;tp=txt_p&amp;tr=hb)&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="s">&#39;This is&#39;</span> <span class="k">if</span> <span class="n">cald</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;This and {} more line{} form&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cald</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;&#39;</span> <span class="k">if</span> <span class="n">cald</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">)),</span>
-            <span class="p">(</span><span class="n">cam</span><span class="p">,</span> <span class="n">cnm</span><span class="p">,</span> <span class="s">&#39;?&#39;</span><span class="p">,</span>
-             <span class="sd">&#39;&#39;&#39;{} the verbless mother of an object clause. [query](shebanq:?id=981&amp;page=1&amp;version=4b&amp;mr=r&amp;qw=q&amp;tp=txt_p&amp;tr=hb)&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="s">&#39;This is&#39;</span> <span class="k">if</span> <span class="n">calm</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;This and {} more line{} form&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">calm</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;&#39;</span> <span class="k">if</span> <span class="n">calm</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">)),</span>
-        <span class="p">):</span>
-            <span class="p">(</span><span class="n">bk</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">vs</span><span class="p">)</span> <span class="o">=</span> <span class="n">getverse</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span>
-            <span class="n">nf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sfields_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">version</span><span class="p">,</span>
-                <span class="n">bk</span><span class="p">,</span>
-                <span class="n">ch</span><span class="p">,</span>
-                <span class="n">vs</span><span class="p">,</span>
-                <span class="n">cn</span><span class="p">,</span>
-                <span class="s">&#39;T&#39;</span><span class="p">,</span>
-                <span class="s">&#39;&#39;</span><span class="p">,</span>
-                <span class="n">stat</span><span class="p">,</span>
-                <span class="s">&#39;verbless_mother&#39;</span><span class="p">,</span>
-                <span class="n">txt</span><span class="p">,</span>
-            <span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_nom</span><span class="p">:</span> <span class="c"># in case of a nominal mother there is probably a coding error</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">stat</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">cad</span><span class="p">,</span> <span class="n">cnd</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">,</span>
+                 <span class="sd">&#39;&#39;&#39;{} an object clause to a verbless mother clause. Possibly a coding error. [query](shebanq:?id=981&amp;page=1&amp;version=4b&amp;mr=r&amp;qw=q&amp;tp=txt_p&amp;tr=hb)&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s">&#39;This is&#39;</span> <span class="k">if</span> <span class="n">cald</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;This and {} more line{} form&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cald</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;&#39;</span> <span class="k">if</span> <span class="n">cald</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+                <span class="p">)),</span>
+                <span class="p">(</span><span class="n">cam</span><span class="p">,</span> <span class="n">cnm</span><span class="p">,</span> <span class="s">&#39;?&#39;</span><span class="p">,</span>
+                 <span class="sd">&#39;&#39;&#39;{} the verbless mother of an object clause. [query](shebanq:?id=981&amp;page=1&amp;version=4b&amp;mr=r&amp;qw=q&amp;tp=txt_p&amp;tr=hb)&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s">&#39;This is&#39;</span> <span class="k">if</span> <span class="n">calm</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;This and {} more line{} form&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">calm</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;&#39;</span> <span class="k">if</span> <span class="n">calm</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+                <span class="p">)),</span>
+            <span class="p">):</span>
+                <span class="p">(</span><span class="n">bk</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">vs</span><span class="p">)</span> <span class="o">=</span> <span class="n">getverse</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span>
+                <span class="n">nf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sfields_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">version</span><span class="p">,</span>
+                    <span class="n">bk</span><span class="p">,</span>
+                    <span class="n">ch</span><span class="p">,</span>
+                    <span class="n">vs</span><span class="p">,</span>
+                    <span class="n">cn</span><span class="p">,</span>
+                    <span class="s">&#39;T&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">stat</span><span class="p">,</span>
+                    <span class="s">&#39;verbless_mother&#39;</span><span class="p">,</span>
+                    <span class="n">txt</span><span class="p">,</span>
+                <span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c"># in case of a non-nominal mother this is not an indication that the coding is wrong</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">stat</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">cad</span><span class="p">,</span> <span class="n">cnd</span><span class="p">,</span> <span class="s">&#39;+&#39;</span><span class="p">,</span>
+                 <span class="sd">&#39;&#39;&#39;{} an object clause to a verbless but non-nominal mother clause.&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s">&#39;This is&#39;</span> <span class="k">if</span> <span class="n">cald</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;This and {} more line{} form&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cald</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;&#39;</span> <span class="k">if</span> <span class="n">cald</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+                <span class="p">)),</span>
+                <span class="p">(</span><span class="n">cam</span><span class="p">,</span> <span class="n">cnm</span><span class="p">,</span> <span class="s">&#39;+&#39;</span><span class="p">,</span>
+                 <span class="sd">&#39;&#39;&#39;{} the verbless but non-nominal mother of an object clause.&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s">&#39;This is&#39;</span> <span class="k">if</span> <span class="n">calm</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;This and {} more line{} form&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">calm</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;&#39;</span> <span class="k">if</span> <span class="n">calm</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+                <span class="p">)),</span>
+            <span class="p">):</span>
+                <span class="p">(</span><span class="n">bk</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">vs</span><span class="p">)</span> <span class="o">=</span> <span class="n">getverse</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span>
+                <span class="n">nf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sfields_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">version</span><span class="p">,</span>
+                    <span class="n">bk</span><span class="p">,</span>
+                    <span class="n">ch</span><span class="p">,</span>
+                    <span class="n">vs</span><span class="p">,</span>
+                    <span class="n">cn</span><span class="p">,</span>
+                    <span class="s">&#39;T&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">stat</span><span class="p">,</span>
+                    <span class="s">&#39;verbless_mother&#39;</span><span class="p">,</span>
+                    <span class="n">txt</span><span class="p">,</span>
+                <span class="p">))</span>
     <span class="n">nf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="n">generate_notes</span><span class="p">()</span>

@@ -169,8 +169,8 @@ Clause(-atom) features
 
 ================================  ===========================  ===================================
 :doc:`typ <typ>`                  clause type                  ``AjCl`` ``WayX`` ``WXQt`` ``ZImX``
+:doc:`kind <kind>`                rough clause type            ``VC`` ``NC`` ``WP``
 :doc:`rela <rela>`                clause constituent relation  ``Adju`` ``Attr`` ``Coor``
-:doc:`clause_kind <clause_kind>`  ??
 :doc:`domain <domain>`            text type ??                 ``Q`` ``N`` ``D``
 :doc:`txt <txt>`                  text type                    ``NQ`` ``NQQ`` ``QNQQ`` ``NQND``
 :doc:`code <code>`                clause atom relation         ``200`` ``477`` ``999``

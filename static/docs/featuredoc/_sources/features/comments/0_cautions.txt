@@ -14,6 +14,7 @@ Contents:
     function
     is_root
     ketiv
+    kind
     ls
     mother_object_type
     otype

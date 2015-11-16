@@ -38,6 +38,7 @@ Contents:
     half_verse <half_verse>
     is_root <is_root>
     ketiv <ketiv>
+    kind <kind>
     label <label>
     language <language>
     lex <lex>

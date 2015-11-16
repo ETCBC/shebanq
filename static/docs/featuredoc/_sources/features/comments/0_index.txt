@@ -26,6 +26,7 @@ Contents:
     g_lex_utf8
     g_lex
     ketiv
+    kind
     ls
     maxmonad
     minmonad
