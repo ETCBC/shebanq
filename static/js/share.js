@@ -109,8 +109,8 @@ jQuery(function(){
     $('#xc_pv').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_pv')) })
 	st.click(function(e){e.preventDefault();
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
-        var shebanq_url_rawc
         var shebanq_url_note
+        var shebanq_url_rawc
         var shebanq_url_note_pref = 'shebanq:'
         var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()
         var shebanq_url_side_vars = '&wget='+wb.vs.get('w')+'&qget='+wb.vs.get('q')+'&nget='+wb.vs.get('n')
@@ -131,6 +131,7 @@ jQuery(function(){
         }
         else if (wb.mr == 'r') {
             shebanq_url_note = shebanq_url_note_pref+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
+            shebanq_url_rawc = page_view_url+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
             var vr = wb.version
             var iinfo = wb.sidebars.sidebar['r'+wb.qw].content.info
             if (wb.qw == 'q') {
