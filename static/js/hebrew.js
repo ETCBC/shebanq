@@ -1899,7 +1899,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
 
         var thistitle
         if (this.mr == 'm') {
-            thistitle = '['+wb.vs.version()+'] '+wb.vs.book()+' '+wb.vs.chapter()
+            thistitle = '['+wb.vs.version()+'] '+wb.vs.book()+' '+wb.vs.chapter()+':'+wb.vs.verse()
         }
         else {
             thistitle = $('#itemtag').val()
