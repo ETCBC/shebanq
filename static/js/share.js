@@ -41,25 +41,26 @@ jQuery(function(){
     <table align="center">\
         <tr>\
             <td class="clip_qx clr">\
-                <a lnk="" href="#" id="clip_qx_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_qx_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_qx_md" title="link to query version (markdown)" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_qx_ht" title="link to query version (html)" class="ctrl fa fa-external-link fa-lg fa-fw"></a>\
             </td>\
             <td class="clip_q clr">\
-                <a lnk="" href="#" id="clip_q_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_q_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_q_md" title="link to query (markdown)" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_q_ht" title="link to query (html)" class="ctrl fa fa-external-link fa-lg fa-fw"></a>\
             </td>\
             <td class="clip_w clr">\
-                <a lnk="" href="#" id="clip_w_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_w_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_w_md" title="link to word (markdown)" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_w_ht" title="link to word (html)" class="ctrl fa fa-external-link fa-lg fa-fw"></a>\
             </td>\
             <td class="clip_n clr">\
-                <a lnk="" href="#" id="clip_n_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_n_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_n_md" title="link to note set (markdown)" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_n_ht" title="link to note set (html)" class="ctrl fa fa-external-link fa-lg fa-fw"></a>\
             </td>\
             <td class="clip_pv clr">\
-                <a lnk="" href="#" id="clip_pv_md" title="markdown link" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_pv_ht" title="html link" class="ctrl fa fa-link fa-lg fa-fw"></a>\
-                <a lnk="" href="#" id="clip_pv_nl" title="note link" class="ctrl fa fa-bookmark fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_md" title="link to page content and appearance (markdown)" class="ctrl fa fa-level-down fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_ht" title="link to page content and appearance (html)" class="ctrl fa fa-external-link-square fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_htc" title="link to page content (html)" class="ctrl fa fa-external-link fa-lg fa-fw"></a>\
+                <a lnk="" href="#" id="clip_pv_nl" title="internal link to page content" class="ctrl fa fa-bookmark fa-lg fa-fw"></a>\
                 <a lnk="" href="#" id="clip_pv_cn" title="copy page content" class="ctrl fa fa-file-text-o fa-lg fa-fw"></a>\
             </td>\
         </tr>\
@@ -75,7 +76,7 @@ jQuery(function(){
             <td class="clip_q"><span id="xc_q" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_q" class="detail">share link to query page</span></td>\
             <td class="clip_w"><span id="xc_w" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_w" class="detail">cite word with its occs on <i>this</i> data version</span></td>\
             <td class="clip_n"><span id="xc_n" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_n" class="detail">cite note set with its members</span></td>\
-            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with view settings, or as internal note link,\
+            <td class="clip_pv"><span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span><span id="x_pv" class="detail">share link to this page with or without view settings, or as internal note link,\
                 or copy page contents to paste in mail, Evernote, etc.</span></td>\
         </tr>\
     </table>\
@@ -91,7 +92,7 @@ jQuery(function(){
     jQuery('#socialdrawer td,#socialdrawer th').css({'width': '120px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
     jQuery('#socialdrawer .detail').hide()
 	// hover
-    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_nl').click(function(e) {e.preventDefault();
+    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_htc,#clip_pv_nl').click(function(e) {e.preventDefault();
         window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
     })
     $('#clip_pv_cn').click(function(e) {e.preventDefault();
@@ -108,6 +109,7 @@ jQuery(function(){
     $('#xc_pv').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_pv')) })
 	st.click(function(e){e.preventDefault();
         var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
+        var shebanq_url_rawc
         var shebanq_url_note
         var shebanq_url_note_pref = 'shebanq:'
         var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()
@@ -120,7 +122,8 @@ jQuery(function(){
         $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
         if (wb.mr == 'm') {
             pvtitle = title
-            shebanq_url_note = shebanq_url_note_pref+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+shebanq_url_show_vars+shebanq_url_side_vars
+            shebanq_url_note = shebanq_url_note_pref+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+'&verse='+wb.vs.verse()+shebanq_url_show_vars+shebanq_url_side_vars
+            shebanq_url_rawc = page_view_url+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+'&verse='+wb.vs.verse()+shebanq_url_show_vars+shebanq_url_side_vars
             $('.clip_qx').hide()
             $('.clip_q').hide()
             $('.clip_w').hide()
@@ -197,6 +200,7 @@ jQuery(function(){
         }
         $('#clip_pv_md').attr('lnk', '['+pvtitle+']('+shebanq_url_raw+')')
         $('#clip_pv_ht').attr('lnk', shebanq_url_raw)
+        $('#clip_pv_htc').attr('lnk', shebanq_url_rawc)
         $('#clip_pv_nl').attr('lnk', shebanq_url_note)
         $('#clip_pv_cn').attr('lnk', shebanq_url_raw)
         $('#clip_pv_cn').attr('tit', pvtitle)
