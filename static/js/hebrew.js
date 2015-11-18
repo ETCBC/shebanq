@@ -763,6 +763,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             })
             if (json.good) {
                 that.process(json.users, json.notes, json.nkey_index, json.changed, json.logged_in)
+                wb.material.goto_verse()
             }
         })
     }

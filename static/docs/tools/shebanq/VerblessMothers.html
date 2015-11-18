@@ -212,7 +212,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># discrepancies between the two methods</span>
@@ -227,7 +227,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[34]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -253,7 +253,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># all results</span>
@@ -268,7 +268,7 @@ The walk is much more robust, in that you can carefully collect the parts of the
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[38]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -388,7 +388,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
@@ -402,7 +402,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;verblessmothers&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -433,11 +433,12 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-    14s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  5.04s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/verblessmothers/__log__verblessmothers.txt
+    15s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-16T11-06-51
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-16T11-06-51
+  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-17T14-21-52
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX -- FOR TASK verblessmothers AT 2015-11-17T14-21-52
 </pre>
 </div>
 </div>
@@ -464,7 +465,7 @@ holds for all clauses.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Checking&quot;</span><span class="p">)</span>
@@ -502,8 +503,8 @@ holds for all clauses.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1h 00m 59s Checking
- 1h 01m 00s All typ values have been correctly assigned to kind values
+<pre>    15s Checking
+    16s All typ values have been correctly assigned to kind values
 </pre>
 </div>
 </div>
@@ -523,7 +524,7 @@ holds for all clauses.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">mothers_objc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">())</span>
@@ -544,8 +545,8 @@ holds for all clauses.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1h 09m 17s Looking for mothers ...
- 1h 09m 19s Done
+<pre> 1m 18s Looking for mothers ...
+ 1m 19s Done
 </pre>
 </div>
 </div>
@@ -573,7 +574,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">no_mothers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -629,9 +630,9 @@ Note that there are nominal mothers that are not verbless.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1h 28m 36s Looking for verbless mothers ...
- 1h 28m 37s 0 objc-clauses without mother; 52 objc-clauses with verbless mother; 26 objc-clauses with nominal mother; of which 0 in a different sentence
- 1h 28m 37s Some nominal mothers are not verbless: 1x
+<pre> 1m 48s Looking for verbless mothers ...
+ 1m 49s 0 objc-clauses without mother; 52 objc-clauses with verbless mother; 26 objc-clauses with nominal mother; of which 0 in a different sentence
+ 1m 49s Some nominal mothers are not verbless: 1x
 </pre>
 </div>
 </div>
@@ -659,7 +660,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
@@ -672,7 +673,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">css</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -789,7 +790,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
@@ -820,7 +821,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">Q</span> <span class="o">=</span> <span class="n">MQL</span><span class="p">(</span><span class="n">API</span><span class="p">)</span>
@@ -833,7 +834,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">mother_obj_query1</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -871,7 +872,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">sheaf1</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">mql</span><span class="p">(</span><span class="n">mother_obj_query1</span><span class="p">)</span>
@@ -894,7 +895,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">nominal_mothers_q</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -913,7 +914,7 @@ Note that there are nominal mothers that are not verbless.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1h 33m 37s 25 results
+<pre> 2m 31s 25 results
 </pre>
 </div>
 </div>
@@ -933,7 +934,7 @@ Note that there are nominal mothers that are not verbless.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
@@ -978,7 +979,7 @@ Results by the walk that are not delivered by the MQL query: 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">css</span><span class="p">)</span>
@@ -992,7 +993,7 @@ Results by the walk that are not delivered by the MQL query: 1
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[30]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[15]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -1053,7 +1054,7 @@ tr.t {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1090,7 +1091,7 @@ tr.t {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">sfields</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
