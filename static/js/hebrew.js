@@ -695,7 +695,7 @@ function Notes(newcontent) {
             this.cctrl.addClass('nt_loaded')
             for (var item in this.verselist) {
                 var notev = this.verselist[item]
-                notev.show_notes()
+                notev.show_notes(false)
                 this.logged_in = notev.logged_in
             }
             if (this.logged_in) {this.sav_controls.show()}
@@ -752,7 +752,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.edt_c = this.sav_controls.find('a[tp="e"]')
     this.rev_c = this.sav_controls.find('a[tp="r"]')
 
-    this.fetch = function() {
+    this.fetch = function(adjust_verse) {
         var senddata = {version: this.version, book: this.book, chapter:this.chapter, verse:this.verse, edit: this.edt}
         this.msgn.msg(['info', 'fetching notes ...'])
         $.post(cnotes_url, senddata, function(json) {
@@ -763,7 +763,12 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             })
             if (json.good) {
                 that.process(json.users, json.notes, json.nkey_index, json.changed, json.logged_in)
-                wb.material.goto_verse()
+                if (adjust_verse) {
+                    if (wb.mr == 'm') {
+                        wb.vs.mstatesv({verse: that.verse})
+                        wb.material.goto_verse()
+                    }
+                }
             }
         })
     }
@@ -1015,7 +1020,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     }
     this.edit = function() {
         this.edt = true
-        this.fetch()
+        this.fetch(true)
     }
     this.revert = function() {
         this.edt = false
@@ -1041,12 +1046,12 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.dest.find('tr.nt_cmt').hide()
         this.msgn.hide()
     }
-    this.show_notes = function() {
+    this.show_notes = function(adjust_verse) {
         this.show = true
         this.cctrl.addClass('nt_loaded')
         this.msgn.show()
         if (!this.loaded) {
-            this.fetch()
+            this.fetch(adjust_verse)
         }
         else {
             this.dest.find('tr.nt_cmt').show()
@@ -1061,6 +1066,10 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                     this.edt_c.show()
                 }
             }
+            if (wb.mr == 'm') {
+                wb.vs.mstatesv({verse: that.verse})
+                wb.material.goto_verse()
+            }
         }
     }
     this.clear_msg = function() {
@@ -1068,7 +1077,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     }
     this.cctrl.click(function(e) {e.preventDefault();
         that.is_dirty()
-        if (that.show) {that.hide_notes()} else {that.show_notes()}
+        if (that.show) {that.hide_notes()} else {that.show_notes(true)}
     })
     main_sav_controls.hide()
     this.sav_controls.hide()
