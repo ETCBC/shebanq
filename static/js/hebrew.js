@@ -1648,11 +1648,11 @@ function MSettings(content) {
 // HEBREW DATA (which fields to show if interlinear text is displayed)
 
 function HebrewSettings() {
-    for (var fld in wb.vs.hdata()) {
+    for (var fld in wb.vs.ddata()) {
         this[fld] = new HebrewSetting(fld)
     }
     this.apply = function() {
-        for (var fld in wb.vs.hdata()) {
+        for (var fld in wb.vs.ddata()) {
             this[fld].apply()
         }
     }
@@ -1670,12 +1670,12 @@ function HebrewSetting(fld) {
         that.applysetting()
     })
     this.apply = function() {
-        var val = wb.vs.hdata()[this.name]
+        var val = wb.vs.ddata()[this.name]
         $(this.hid).prop('checked', val == 'v')
         this.applysetting()
     }
     this.applysetting = function() {
-        if (wb.vs.hdata()[this.name] == 'v') {
+        if (wb.vs.ddata()[this.name] == 'v') {
             $('.'+this.name).each(function () {$(this).show()})
         }
         else {
@@ -2610,7 +2610,7 @@ function ViewState(init, pref) {
     this.cstatexx = function(qw) {this.resetsv('colormap', qw)}
 
     this.mstate =function() {return this.data['material']['']}
-    this.hdata =function() {return this.data['hebrewdata']['']}
+    this.ddata =function() {return this.data['hebrewdata']['']}
     this.mr = function() {return this.data['material']['']['mr']}
     this.qw = function() {return this.data['material']['']['qw']}
     this.tp = function() {return this.data['material']['']['tp']}
