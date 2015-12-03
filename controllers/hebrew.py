@@ -6,7 +6,7 @@ import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
 
-from render import Verses, Verse, Viewsettings, \
+from render import Verses, Verse, verse_simple, Viewsettings, \
                    legend, colorpicker, h_esc, get_request_val, get_fields, style, \
                    tp_labels, tab_views, tr_info, tr_labels, \
                    iid_encode, iid_decode, nt_statclass
@@ -334,6 +334,14 @@ def verse():
     ch = get_request_val('material', '', 'chapter')
     vs = get_request_val('material', '', 'verse')
     tr = get_request_val('material', '', 'tr')
+
+    if request.extension == 'json':
+        return from_cache(
+            'versej_{}_{}_{}_{}_'.format(vr, bk, ch, vs),
+            lambda: verse_simple(passage_dbs, vr, bk, ch, vs),
+            None,
+        )
+
     if vs == None:
         return dict(good=False, msgs=msgs)
     return from_cache(

@@ -704,6 +704,40 @@ def h_esc(material, fill=True):
         if material == '': material = '&nbsp;'
     return material
 
+def verse_simple(passage_dbs, vr, bk, ch, vs):
+    passage_db = passage_dbs[vr] if vr in passage_dbs else None
+    msgs = []
+    good = True
+    data = dict()
+    if passage_db == None:
+        msgs.append(('Error', 'No such version: {}'.format(vr)))
+        good = False
+    if good:
+        verse_info = passage_db.executesql(u'''
+select verse.id, verse.text from verse
+inner join chapter on verse.chapter_id=chapter.id
+inner join book on chapter.book_id=book.id
+where book.name = '{}' and chapter.chapter_num = {} and verse_num = {}
+;
+'''.format(bk, ch, vs))
+        if len(verse_info) == 0:
+            msgs.append((u'Error', 'No such verse: {} {}:{}'.format(bk, ch, vs)))
+            good = False
+        else:
+            data = verse_info[0]
+            vid = data[0]
+            word_info = passage_db.executesql(u'''
+select word.word_phono, word.word_phono_sep
+from word
+inner join word_verse on word_number = word_verse.anchor
+inner join verse on verse.id = word_verse.verse_id
+where verse.id = {}
+order by word_number
+;
+'''.format(vid))
+            data = dict(text=data[1], phonetic=u''.join(x[0]+x[1] for x in word_info))
+    return json.dumps(dict(good=good, msgs=msgs, data=data), ensure_ascii=False)
+
 class Verses():
     def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None, tr=None):
         if tr == None: tr = 'hb'

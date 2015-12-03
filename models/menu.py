@@ -74,6 +74,7 @@ response.menu = [
         (T('MQL quick reference guide (pdf)'), False, URL('static', 'docs/MQL-QuickRef.pdf'), []),
         (T('MQL Query Guide by Ulrik (pdf)'), False, URL('static', 'docs/MQL-Query-Guide.pdf'), []),
         (T('ETCBC4 transcription table (pdf)'), False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),
+        (T('REST API (for integrators)'), False, URL('default', 'restapi'), []),
     ]),
     (T('News'), False, URL('default', 'news'), []),
     (T('Sources'), False, URL('default', 'sources'), []),

@@ -31,6 +31,12 @@ def news():
     response.subtitle = T("Release notes of SHEBANQ")
     return dict()
 
+def restapi():
+    session.forget(response)
+    response.title = T("SHEBANQ - rest api")
+    response.subtitle = T("REST API (for integrators)")
+    return dict()
+
 def user():
     """
     exposes:

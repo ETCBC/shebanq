@@ -1,0 +1,3 @@
+{{
+    response.headers['Content-Type'] = 'text/json'
+}}{{=XML(data)}}

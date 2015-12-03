@@ -1363,3 +1363,11 @@ ol.ldec {
 ol.lalph {
     list-style-type: lower-alpha;
 }
+/* TEXTS */
+.apiverb {
+    color: #0000cc;
+    background-color: #ffff44;
+    font-size: large;
+    font-weight: bold;
+    font-family: Menlo, Courier New, Courier, monospace;
+}
