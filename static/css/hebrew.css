@@ -126,10 +126,15 @@ ol.text {
 }
 #qresults,#wresults {
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* MATERIAL */
 
+/* -webkit-overflow-scrolling: touch 
+   this is needed for good scrolling on ios devices. Without it, scrolling is either not smooth, or not possible at all on
+   mobile safari
+*/
 #material_txt_p,#material_txt_tb1,#material_txt_tb2,#material_txt_tb3,#queries,#notes,#opqforms,#opqctrl,#words,#letters {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
@@ -307,6 +312,7 @@ table.hlsettings {
 }
 #side_material_mq,#side_material_mw {
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 #bigger {
     background-color: #eef1ee;
@@ -432,7 +438,8 @@ textarea.mql {
     margin-left: 0em;
     height: 10em;
     width: 100%;
-    overflow-y: scroll;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 textarea.desc {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
@@ -441,7 +448,8 @@ textarea.desc {
     height: 10em;
     margin-left: 0em;
     width: 100%;
-    overflow-y: scroll;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 div.desc_dia {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
@@ -463,6 +471,7 @@ div.desc_dia {
     margin-left: 0em;
     height: 10em;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 div.descm {
     background-color: #fefbfe;
