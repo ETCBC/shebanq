@@ -132,6 +132,7 @@ ol.text {
 
 #material_txt_p,#material_txt_tb1,#material_txt_tb2,#material_txt_tb3,#queries,#notes,#opqforms,#opqctrl,#words,#letters {
     overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 #opqforms,#opqctrl {
     display: none;
