@@ -83,7 +83,7 @@ function Level() {
     var levels = {o: 1, p: 2, u: 3, q: 4}
     this.expand_all = function() {
         ftree.ftw.visit(function(n) {
-            n.setExpanded(true, {noAnimation: true, noEvents: true})
+            n.setExpanded(true, {noAnimation: true, noEvents: false})
         }, true)
     }
 
@@ -95,7 +95,7 @@ function Level() {
             var numlevel = levels[level]
             ftree.ftw.visit(function(n) {
                 var nlevel = n.getLevel()
-                n.setExpanded(nlevel <= numlevel , {noAnimation: true, noEvents: true})
+                n.setExpanded(nlevel <= numlevel , {noAnimation: true, noEvents: false})
             }, true)
         }
     }
