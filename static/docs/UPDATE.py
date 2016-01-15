@@ -60,6 +60,7 @@ refresh_paths = dict(
     html='''
 tools/parallel
 tools/phono
+tools/r
 tools/shebanq
 tools/trees
 tools/valence
