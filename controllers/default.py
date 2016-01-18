@@ -3,6 +3,7 @@
 
 from gluon.custom_import import track_changes; track_changes(True)
 import smtplib
+from email.mime.text import MIMEText
 
 EXPIRE = 3600*24*30
 
@@ -94,7 +95,7 @@ def data():
     return dict(form=crud())
 
 def m():
-    msg = 'aap'
+    msg = MIMEText('aap')
     me = 'dirk.roorda@dans.knaw.nl'
     you = 'dirk.roorda@icloud.com'
     msg['Subject'] = 'test'
