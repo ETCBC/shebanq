@@ -138,9 +138,10 @@ auth.define_tables(username=False, signature=False)
 
 ## configure email
 mail = auth.settings.mailer
-mail.settings.server = 'mailrelay.knaw.nl' #'logging' or 'smtp.gmail.com:587'
-mail.settings.sender = 'foo.bar@dans.knaw.nl'
+mail.settings.server = 'localhost' #'logging' or 'smtp.gmail.com:587'
+mail.settings.sender = 'dirk.roorda@dans.knaw.nl'
 mail.settings.login = None #'username:password'
+mail.settings.tls = None
 
 ## configure auth policy
 auth.settings.registration_requires_verification = False
