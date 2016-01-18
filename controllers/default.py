@@ -93,7 +93,6 @@ def data():
     """
     return dict(form=crud())
 
-@auth.requires_signature()
 def m():
     msg = 'aap'
     me = 'dirk.roorda@dans.knaw.nl'
