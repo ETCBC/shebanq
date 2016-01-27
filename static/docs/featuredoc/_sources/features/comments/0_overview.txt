@@ -69,6 +69,7 @@ Word features
 :ref:`-- lexical <lexical>`         lexical information about the word
 :ref:`-- morphology <morphology>`   morphology classes of the word occurrence
 :ref:`-- morphemes <morphemes>`     morphemes that are present in the word.
+:ref:`-- statistics <statistics>`   frequency counts and occurrence ranks
 =================================== ==============================================
 
 .. _orthography:
@@ -144,6 +145,18 @@ Morphemes
 ================ ==================== ==============================  ==================  =========================
 
 See :doc:`/features/comments/0_graphical` about the ``g_`` - and - ``utf8`` features.
+
+.. _statistics:
+
+Statistics
+----------
+
+==========================  ==============================
+:doc:`freq_lex <freq_lex>`  frequency of lexeme
+:doc:`freq_occ <freq_occ>`  frequency of word occurrence
+:doc:`rank_lex <rank_lex>`  rank of lexeme
+:doc:`rank_occ <rank_occ>`  rank of word occurrence
+==========================  ==============================
 
 .. _linguistic:
 

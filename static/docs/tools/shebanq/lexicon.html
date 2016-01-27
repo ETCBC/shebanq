@@ -191,6 +191,7 @@ div#notebook {
 <h1 id="The-ETCBC-lexicon-files">The ETCBC lexicon files<a class="anchor-link" href="#The-ETCBC-lexicon-files">&#182;</a></h1><p>We examine the ETCBC lexicon files, we check their internal consistency and their correspondence
 with the ETCBC4 database, 
 and finally we will add the lexicon as extra features to the ETCBC4 text database.</p>
+<p>We will compute a few additional features of a statistical nature and make them available as well.</p>
 <p>The lexical features of a lexeme are added to each word occurrence in the text that is associated with that lexeme.</p>
 <p>Of course, this is redundant, but for text processing it is convenient. 
 Alternatively, we could transform this data to
@@ -218,7 +219,7 @@ We want to put that data in LMF files, and put them to use in LAF-Fabric and SHE
 </ul>
 <p>In the sequel we will consistently and exclusively refer to these languages by their ISO 639-3 abbreviations.
 For the ETCBC4 database we use <code>hbo</code> and <code>arc</code> only.</p>
-<h1 id="Feature-explanation">Feature explanation<a class="anchor-link" href="#Feature-explanation">&#182;</a></h1><p>Here is a list of features encountered in the lexicon.
+<h1 id="Features-in-the-lexicon-data">Features in the lexicon data<a class="anchor-link" href="#Features-in-the-lexicon-data">&#182;</a></h1><p>Here is a list of features encountered in the lexicon.
 Some of them correspond to features encountered in the text.</p>
 <h2 id="entry">entry<a class="anchor-link" href="#entry">&#182;</a></h2><p>corresponds to the <code>lex</code> feature of word occurrences.</p>
 <h2 id="vocalized-lexeme">vocalized lexeme<a class="anchor-link" href="#vocalized-lexeme">&#182;</a></h2><p><code>vc</code>  looks like the <code>g_lex</code> feature of word occurrence, but they are not the same. The <code>vc</code> is an idealized (aka <em>paradigmatic</em>), pointed representation of the lexeme, which may or may not occur in the text. The <code>g_lex</code> is the realized lexeme in a concrete occurrence, of which it may be a part.</p>
@@ -242,7 +243,14 @@ It occurs on a small number of <code>pspr</code> s in the lexicon.</p>
 <h2 id="comment-or-corrections">comment or corrections<a class="anchor-link" href="#comment-or-corrections">&#182;</a></h2><p><code>co</code> does not correspond to any feature on word occurrences. Comments are used to express alternatives for the information entered. Comments are very rare in the lexicon.</p>
 <h2 id="kb">kb<a class="anchor-link" href="#kb">&#182;</a></h2><p><code>kb</code> unclear. In <em>arc</em> there is one occurrence containing a transliterated words, in <em>hbo</em> there are a few occurrences containing a different value for <code>sp</code>.</p>
 <h2 id="fc">fc<a class="anchor-link" href="#fc">&#182;</a></h2><p><code>fc</code> unclear.</p>
-<h1 id="Lexicon-data">Lexicon data<a class="anchor-link" href="#Lexicon-data">&#182;</a></h1><p>We add the lexicon data as extra features to the ETCBC4 database.</p>
+<h1 id="Computed-features">Computed features<a class="anchor-link" href="#Computed-features">&#182;</a></h1><p>We add several computed features: the frequency of lexemes and of words. We provide the frequencies as absolute number of occurrences, both of the associated lexeme of a word, and of the consonantal, unaccented word shape.
+We also give the corresponding <em>ranks</em>, where rank 0 means: occurs most, rank 1: occurs second most. In case of a tie we give equal ranks, but below a rank that is a tie will be a gap as big as there are items participating in the tie. It holds that an item has rank <em>n</em> if and only if there are exactly <em>n</em> items with a higher frequency.</p>
+<p><strong>NB</strong> We consider the lexemes and occurrences of both biblical languages, Hebrew and Aramaic, to be disjunct. So, even if a concrete word or lexeme occurs in both languages, we count them as distinct lexemes and word shapes.</p>
+<h2 id="freq_lex">freq_lex<a class="anchor-link" href="#freq_lex">&#182;</a></h2><p>The absolute number of times that this <em>lexeme</em> occurs in the Hebrew Bible</p>
+<h2 id="rank_lex">rank_lex<a class="anchor-link" href="#rank_lex">&#182;</a></h2><p>The frequency rank of this <em>lexeme</em> in the Hebrew Bible, i.e. the number of lexemes that are more frequent than this one.</p>
+<h2 id="freq_occ">freq_occ<a class="anchor-link" href="#freq_occ">&#182;</a></h2><p>Analogous to <code>freq_lex</code>, but now the <em>word occurrences</em> are counted, where the word is taken in its consonantal, unaccented shape.</p>
+<h2 id="rank_occ">rank_occ<a class="anchor-link" href="#rank_occ">&#182;</a></h2><p>Analogous to <code>rank_lex</code>, but, analogous to <code>rank_occ</code>, for word occurrences instead of lexems.</p>
+<h1 id="Adding-the-lexicon-data">Adding the lexicon data<a class="anchor-link" href="#Adding-the-lexicon-data">&#182;</a></h1><p>We add the lexicon data as extra features to the ETCBC4 database.</p>
 <p>For every word, we add <em>lexical</em> features, i.e. features that are obtained from looking up the word in the lexicon and then reading off extra attributes from the lexical entry.</p>
 <p>We add these features into the <code>etcbc4</code> annotation space, with label <code>lex</code>.
 These are the extra features:</p>
@@ -259,6 +267,10 @@ These are the extra features:</p>
 <li><strong>pos</strong> (= <code>sp</code>) the part of speech</li>
 <li><strong>nametype</strong> (= <code>sm</code>) the type of named entity</li>
 <li><strong>subpos</strong> (= <code>ls</code>) subtype of part of speech (aka <em>lexical set</em>)</li>
+<li><strong>rank_lex</strong></li>
+<li><strong>freq_lex</strong></li>
+<li><strong>rank_occ</strong></li>
+<li><strong>freq_occ</strong></li>
 </ul>
 
 </div>
@@ -288,7 +300,7 @@ These are the extra features:</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.5.4
+<pre>  0.00s This is LAF-Fabric 4.5.6
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
@@ -353,12 +365,12 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-  7.92s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4/lexicon/__log__lexicon.txt
+  8.66s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4/lexicon/__log__lexicon.txt
     18s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-  0.64s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK lexicon AT 2015-10-16T00-25-18
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK lexicon AT 2015-10-16T00-25-18
+  0.57s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK lexicon AT 2016-01-27T13-55-36
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK lexicon AT 2016-01-27T13-55-36
 </pre>
 </div>
 </div>
@@ -464,7 +476,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  2.99s Reading lexicon ...
+<pre>  2.51s Reading lexicon ...
 </pre>
 </div>
 </div>
@@ -478,7 +490,7 @@ Lexicon hbo: there were 0 errors</pre>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  3.15s Done
+<pre>  2.65s Done
 </pre>
 </div>
 </div>
@@ -552,8 +564,8 @@ Lexicon hbo has  8529 entries
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  5.58s Reading ETCBC database etcbc4 ...
-    12s Done
+<pre>  4.29s Reading ETCBC database etcbc4 ...
+    11s Done
 </pre>
 </div>
 </div>
@@ -592,7 +604,9 @@ Language hbo has  8518 lexemes in the etcbc4 text
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">arc_lex</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lex_entries</span><span class="p">[</span><span class="s">&#39;arc&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">mql_lan</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hbo</span><span class="o">=</span><span class="s">&#39;Hebrew&#39;</span><span class="p">,</span> <span class="n">arc</span><span class="o">=</span><span class="s">&#39;Aramaic&#39;</span><span class="p">)</span>
+
+<span class="n">arc_lex</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lex_entries</span><span class="p">[</span><span class="s">&#39;arc&#39;</span><span class="p">])</span>
 <span class="n">hbo_lex</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lex_entries</span><span class="p">[</span><span class="s">&#39;hbo&#39;</span><span class="p">])</span>
 
 <span class="n">arc_text</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lex_text</span><span class="p">[</span><span class="s">&#39;arc&#39;</span><span class="p">])</span>
@@ -696,7 +710,7 @@ hbo: lexemes in lexicon but not in text: 11x
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Usability-as-identifier">Usability as identifier<a class="anchor-link" href="#Usability-as-identifier">&#182;</a></h1><p>We examine how the <code>lex</code>feature can be transformed in an url friendly identifier.
-This is important, because theis feature has the potential of identifying lexemes across versions.</p>
+This is important, because this feature has the potential of identifying lexemes across versions.</p>
 <p>It turns out as follows:</p>
 <ul>
 <li>we need a length or at least 15</li>
@@ -877,7 +891,7 @@ hbo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;Detail feature values and occurrences&quot;</span><span class="p">)</span>
@@ -893,6 +907,231 @@ hbo
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Detail feature values and occurrences
+arc
+
+	gn
+
+		f
+			subs  :  43x
+			prde  :   2x
+			prps  :   2x
+			adjv  :   1x	
+		m
+			subs  : 171x
+			nmpr  :  29x
+			prps  :   6x
+			prde  :   2x
+			adjv  :   1x	
+	ls
+
+		card
+			subs  :  12x	
+		cjad
+			advb  :   1x	
+		focp
+			advb  :   1x
+			inrg  :   1x	
+		gntl
+			adjv  :  10x	
+		mult
+			subs  :   1x	
+		nmcp
+			subs  :   1x	
+		nmdi
+			subs  :   3x	
+		ordn
+			adjv  :   4x	
+		padv
+			subs  :   2x	
+		ppre
+			subs  :   9x	
+		quot
+			verb  :   2x	
+		vbcp
+			verb  :   1x	
+	nu
+
+		p
+			prps  :   6x
+			prde  :   5x	
+		s
+			prde  :   4x
+			prps  :   4x	
+	ps
+
+		1
+			prps  :   2x	
+		2
+			prps  :   2x	
+		3
+			prps  :   6x	
+	sm
+
+		gens
+			nmpr  :   1x	
+		mens
+			nmpr  :   1x	
+		pers
+			nmpr  :  29x	
+		ppde
+			prps  :   2x	
+		topo
+			nmpr  :   8x	
+	sp
+
+		adjv
+			adjv  :  51x	
+		advb
+			advb  :  19x	
+		conj
+			conj  :   3x	
+		inrg
+			inrg  :   1x	
+		intj
+			intj  :   4x	
+		nega
+			nega  :   2x	
+		nmpr
+			nmpr  :  39x	
+		prde
+			prde  :   9x	
+		prep
+			prep  :  10x	
+		prin
+			prin  :   2x	
+		prps
+			prps  :  10x	
+		subs
+			subs  : 370x	
+		verb
+			verb  : 187x	
+hbo
+
+	gn
+
+		f
+			subs  : 253x
+			nmpr  : 108x
+			prps  :   5x
+			prde  :   3x	
+		m
+			subs  : 1883x
+			nmpr  : 1531x
+			prps  :   5x
+			prde  :   1x	
+		m,f
+			nmpr  :   6x	
+	ls
+
+		afad
+			advb  :   1x	
+		card
+			subs  :  16x	
+		cjad
+			advb  :   2x	
+		focp
+			advb  :   4x
+			inrg  :   1x	
+		gntl
+			adjv  : 212x	
+		mult
+			subs  :   2x	
+		nmcp
+			subs  :   6x	
+		nmdi
+			subs  :   6x	
+		ordn
+			adjv  :  10x	
+		padv
+			subs  :  39x	
+		ppre
+			subs  :  21x	
+		quot
+			verb  :   2x	
+		vbcp
+			verb  :   1x	
+	nu
+
+		p
+			prps  :   8x
+			prde  :   2x	
+		s
+			prde  :   7x
+			prps  :   6x	
+	ps
+
+		1
+			prps  :   4x	
+		2
+			prps  :   5x	
+		3
+			prps  :   5x	
+	sm
+
+		gens
+			nmpr  :  52x	
+		gens,topo
+			nmpr  :   2x	
+		mens
+			nmpr  :   9x	
+		pers
+			nmpr  : 1641x	
+		pers,gens
+			nmpr  :  13x	
+		pers,gens,topo
+			nmpr  :  19x	
+		ppde
+			prps  :   5x	
+		topo
+			nmpr  : 840x	
+	sp
+
+		adjv
+			adjv  : 562x	
+		advb
+			advb  :  34x	
+		art
+			art   :   1x	
+		conj
+			conj  :  11x	
+		inrg
+			inrg  :  17x	
+		intj
+			intj  :  24x	
+		nega
+			nega  :   3x	
+		nmpr
+			nmpr  : 2582x	
+		prde
+			prde  :   9x	
+		prep
+			prep  :  15x	
+		prin
+			prin  :   3x	
+		prps
+			prps  :  14x	
+		subs
+			subs  : 3701x	
+		verb
+			verb  : 1552x	
+	st
+
+		a
+			nmpr  :  20x	
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -917,7 +1156,7 @@ The output file <em>inconsistent.csv</em> shows exactly what is going on.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">consistent_props</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;sp&#39;</span><span class="p">,</span> <span class="s">&#39;ls&#39;</span><span class="p">,</span> <span class="s">&#39;gn&#39;</span><span class="p">,</span> <span class="s">&#39;vc&#39;</span><span class="p">}</span>
@@ -999,7 +1238,7 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">do_value_compare</span><span class="p">:</span>
@@ -1020,21 +1259,21 @@ We adapt the lexical values to the textual ones. We do this only for features wh
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>st
-	in text and not in lex: 3: [&apos;NA&apos;, &apos;c&apos;, &apos;e&apos;]
-	in lex and not in text: 0: []
-nu
-	in text and not in lex: 5: [&apos;NA&apos;, &apos;du&apos;, &apos;pl&apos;, &apos;sg&apos;, &apos;unknown&apos;]
-	in lex and not in text: 2: [&apos;p&apos;, &apos;s&apos;]
-gn
+<pre>gn
 	in text and not in lex: 2: [&apos;NA&apos;, &apos;unknown&apos;]
 	in lex and not in text: 1: [&apos;m,f&apos;]
-ps
-	in text and not in lex: 5: [&apos;NA&apos;, &apos;p1&apos;, &apos;p2&apos;, &apos;p3&apos;, &apos;unknown&apos;]
-	in lex and not in text: 3: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;]
 sp
 	in text and not in lex: 0: []
 	in lex and not in text: 0: []
+st
+	in text and not in lex: 3: [&apos;NA&apos;, &apos;c&apos;, &apos;e&apos;]
+	in lex and not in text: 0: []
+ps
+	in text and not in lex: 5: [&apos;NA&apos;, &apos;p1&apos;, &apos;p2&apos;, &apos;p3&apos;, &apos;unknown&apos;]
+	in lex and not in text: 3: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;]
+nu
+	in text and not in lex: 5: [&apos;NA&apos;, &apos;du&apos;, &apos;pl&apos;, &apos;sg&apos;, &apos;unknown&apos;]
+	in lex and not in text: 2: [&apos;p&apos;, &apos;s&apos;]
 ls
 	in text and not in lex: 2: [&apos;none&apos;, &apos;ques&apos;]
 	in lex and not in text: 0: []
@@ -1064,7 +1303,7 @@ ls
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">strip_id</span><span class="p">(</span><span class="n">entryid</span><span class="p">):</span>
@@ -1072,7 +1311,6 @@ ls
 
 <span class="k">def</span> <span class="nf">to_heb</span><span class="p">(</span><span class="n">translit</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Transcription</span><span class="o">.</span><span class="n">to_hebrew</span><span class="p">(</span><span class="n">Transcription</span><span class="o">.</span><span class="n">suffix_and_finales</span><span class="p">(</span><span class="n">translit</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-
 
 <span class="n">lex</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">set</span><span class="p">())</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">):</span>
@@ -1103,6 +1341,205 @@ ls
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>There are 6457 lexemes, ignoring homonyms
 There is a 1-1 correspondence between lex/strip and lex_utf8
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Computing-the-statistical-features">Computing the statistical features<a class="anchor-link" href="#Computing-the-statistical-features">&#182;</a></h1><p>We are going to compute the features
+<code>freq_lex</code>, <code>rank_lex</code>, <code>freq_occ</code>, <code>rank_occ</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Computing statistics&#39;</span><span class="p">)</span>
+<span class="n">wstats</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;freqs&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;lex&#39;</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()),</span>
+        <span class="s">&#39;occ&#39;</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="s">&#39;ranks&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;lex&#39;</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{}),</span>
+        <span class="s">&#39;occ&#39;</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{}),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">langs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">):</span>
+    <span class="n">lan</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">occ</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">g_cons</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">lex</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;freqs&#39;</span><span class="p">][</span><span class="s">&#39;lex&#39;</span><span class="p">][</span><span class="n">lan</span><span class="p">][</span><span class="n">lex</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;freqs&#39;</span><span class="p">][</span><span class="s">&#39;occ&#39;</span><span class="p">][</span><span class="n">lan</span><span class="p">][</span><span class="n">occ</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">langs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">lan</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">lan</span> <span class="ow">in</span> <span class="n">langs</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">tp</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;occ&#39;</span><span class="p">]:</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">prev_n</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">amount</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">wstats</span><span class="p">[</span><span class="s">&#39;freqs&#39;</span><span class="p">][</span><span class="n">tp</span><span class="p">][</span><span class="n">lan</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">prev_n</span><span class="p">:</span>
+                <span class="n">amount</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rank</span> <span class="o">+=</span> <span class="n">amount</span>
+                <span class="n">amount</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">prev_n</span> <span class="o">=</span> <span class="n">n</span>
+            <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;ranks&#39;</span><span class="p">][</span><span class="n">tp</span><span class="p">][</span><span class="n">lan</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Done&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>    32s Computing statistics
+    35s Done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">pprint</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">tp</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;occ&#39;</span><span class="p">):</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;{} from {} to {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">{}</span><span class="se">\n</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)))</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;ranks&#39;</span><span class="p">][</span><span class="n">tp</span><span class="p">][</span><span class="s">&#39;Hebrew&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;freqs&#39;</span><span class="p">][</span><span class="n">tp</span><span class="p">][</span><span class="s">&#39;Hebrew&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">)[</span><span class="n">f</span><span class="p">:</span><span class="n">t</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;10} : {:&gt;5} {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1010</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>================
+lex from 0 to 10
+----------------
+
+W          : 50273     0
+H          : 30369     1
+L          : 20069     2
+B          : 15541     3
+&gt;T         : 11086     4
+MN         :  7561     5
+JHWH/      :  6828     6
+&lt;L         :  5765     7
+&gt;L         :  5517     8
+&gt;CR        :  5500     9
+================
+occ from 0 to 10
+----------------
+
+W          : 50239     0
+H          : 24648     1
+L          : 15641     2
+B          : 14193     3
+&gt;T         :  9743     4
+JHWH       :  6828     5
+           :  6486     6
+M          :  6235     7
+&gt;CR        :  5547     8
+KL         :  5196     9
+==================
+lex from 97 to 110
+------------------
+
+&lt;MD[       :   521    97
+XMC/       :   506    98
+QWL/       :   505    99
+TXT/       :   505    99
+NKH[       :   500   101
+PH/        :   498   102
+YWH[       :   494   103
+&gt;LP=/      :   492   104
+JLD[       :   492   104
+&lt;WD/       :   490   106
+CB&lt;/       :   490   106
+HJ&gt;        :   485   108
+YB&gt;/       :   485   108
+==================
+occ from 97 to 110
+------------------
+
+BW         :   370    97
+&lt;JNJ       :   364    98
+J&gt;MRW      :   364    98
+JB&gt;        :   364    98
+TXT        :   363   101
+CNJ        :   362   102
+&gt;NKJ       :   359   103
+&gt;TKM       :   354   104
+JY&gt;        :   352   105
+QDC        :   350   106
+&gt;LHJK      :   349   107
+&gt;HRN       :   347   108
+J&lt;QB       :   345   109
+=====================
+lex from 1000 to 1010
+---------------------
+
+STR/       :    35   986
+XRC/       :    35   986
+XZWN/      :    35   986
+YR&lt;T/      :    35   986
+&lt;BRH=/     :    34  1004
+&lt;BRJ/      :    34  1004
+&gt;RK[       :    34  1004
+&gt;TWN/      :    34  1004
+CM&lt;JH/     :    34  1004
+F&lt;RH/      :    34  1004
+=====================
+occ from 1000 to 1010
+---------------------
+
+XBL        :    40   978
+XKMJM      :    40   978
+XQ         :    40   978
+XTJ        :    40   978
+YWJTJ      :    40   978
+&lt;J         :    39  1005
+&lt;MLQ       :    39  1005
+&gt;F&gt;        :    39  1005
+&gt;WKL       :    39  1005
+&gt;XRJK      :    39  1005
 </pre>
 </div>
 </div>
@@ -1153,7 +1590,7 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">lex_fields</span> <span class="o">=</span> <span class="p">(</span>
@@ -1215,7 +1652,7 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_lex</span><span class="p">(</span><span class="n">dummy</span><span class="p">):</span>
@@ -1223,7 +1660,16 @@ The function is typically a transliteration, or a stripping action.</li>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">node_lex</span><span class="p">):</span>
         <span class="n">this_info</span> <span class="o">=</span> <span class="n">lex_index</span><span class="p">[</span><span class="n">node_lex</span><span class="p">[</span><span class="n">n</span><span class="p">]]</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n</span><span class="p">,)</span> <span class="o">+</span> <span class="n">this_info</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">lan</span><span class="p">,</span> <span class="n">lex</span><span class="p">)</span> <span class="o">=</span> <span class="n">node_lex</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">mql_lan</span><span class="p">[</span><span class="n">lan</span><span class="p">]</span>
+        <span class="n">occ</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">g_cons</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">computed_info</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;freqs&#39;</span><span class="p">][</span><span class="s">&#39;lex&#39;</span><span class="p">][</span><span class="n">lang</span><span class="p">][</span><span class="n">lex</span><span class="p">],</span>
+            <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;ranks&#39;</span><span class="p">][</span><span class="s">&#39;lex&#39;</span><span class="p">][</span><span class="n">lang</span><span class="p">][</span><span class="n">lex</span><span class="p">],</span>
+            <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;freqs&#39;</span><span class="p">][</span><span class="s">&#39;occ&#39;</span><span class="p">][</span><span class="n">lang</span><span class="p">][</span><span class="n">occ</span><span class="p">],</span>
+            <span class="n">wstats</span><span class="p">[</span><span class="s">&#39;ranks&#39;</span><span class="p">][</span><span class="s">&#39;occ&#39;</span><span class="p">][</span><span class="n">lang</span><span class="p">][</span><span class="n">occ</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n</span><span class="p">,)</span> <span class="o">+</span> <span class="n">this_info</span> <span class="o">+</span> <span class="n">computed_info</span><span class="p">)</span>
     <span class="n">msg</span><span class="p">(</span><span class="s">&#39;{} words&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">data</span>
 </pre></div>
@@ -1245,7 +1691,7 @@ The function is typically a transliteration, or a stripping action.</li>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_phono</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
@@ -1279,7 +1725,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Making mappings between verse labels in KQ and verse nodes in LAF&quot;</span><span class="p">)</span>
@@ -1300,8 +1746,8 @@ We have to map them to the corresponding verse nodes.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 17s Making mappings between verse labels in KQ and verse nodes in LAF
- 1m 18s 23213 verses
+<pre>    56s Making mappings between verse labels in KQ and verse nodes in LAF
+    57s 23213 verses
 </pre>
 </div>
 </div>
@@ -1321,7 +1767,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">get_kq</span><span class="p">(</span><span class="n">kq_file</span><span class="p">):</span>
@@ -1428,7 +1874,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">lex</span> <span class="o">=</span> <span class="n">ExtraData</span><span class="p">(</span><span class="n">API</span><span class="p">)</span>
@@ -1439,7 +1885,7 @@ We have to map them to the corresponding verse nodes.</p>
 <span class="n">msg</span><span class="p">(</span><span class="s">&quot;Writing annotation package ...&quot;</span><span class="p">)</span>
 <span class="n">lex</span><span class="o">.</span><span class="n">deliver_annots</span><span class="p">(</span>
     <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> 
-    <span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="s">&#39;Lexicon lookups, phonetic transcription, ketiv-qere&#39;</span><span class="p">,</span> <span class="s">&#39;date&#39;</span><span class="p">:</span> <span class="s">&#39;2015&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="s">&#39;Lexicon lookups, phonetic transcription, ketiv-qere, statistics&#39;</span><span class="p">,</span> <span class="s">&#39;date&#39;</span><span class="p">:</span> <span class="s">&#39;2015&#39;</span><span class="p">},</span>
     <span class="p">[</span>
         <span class="p">(</span><span class="n">ph_base</span><span class="p">,</span> <span class="s">&#39;ph&#39;</span><span class="p">,</span> <span class="n">get_phono</span><span class="p">,</span> <span class="p">(</span>
             <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;ph&#39;</span><span class="p">,</span> <span class="s">&#39;phono&#39;</span><span class="p">),</span>
@@ -1462,6 +1908,10 @@ We have to map them to the corresponding verse nodes.</p>
             <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;nametype&#39;</span><span class="p">),</span>
             <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;subpos&#39;</span><span class="p">),</span>
             <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;gloss&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;freq_lex&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;rank_lex&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;freq_occ&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;lex&#39;</span><span class="p">,</span> <span class="s">&#39;rank_occ&#39;</span><span class="p">),</span>
         <span class="p">)),</span>
     <span class="p">]</span>
 <span class="p">)</span>
@@ -1478,18 +1928,18 @@ We have to map them to the corresponding verse nodes.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 22s Writing annotation package ...
- 1m 22s Reading phonetic transcriptions
- 1m 23s 426555 words
- 1m 27s Reading Ketiv-Qere data
- 1m 27s Read 1892 ketiv-qere annotations
- 1m 27s Parsed 1892 ketiv-qere annotations
- 1m 27s All verses entries found in index
- 1m 27s All ketivs found in the text
- 1m 27s All ketivs found in the data
- 1m 27s Preparing lex data
- 1m 28s 426555 words
- 1m 43s Done
+<pre> 1m 04s Writing annotation package ...
+ 1m 04s Reading phonetic transcriptions
+ 1m 05s 426555 words
+ 1m 09s Reading Ketiv-Qere data
+ 1m 09s Read 1892 ketiv-qere annotations
+ 1m 09s Parsed 1892 ketiv-qere annotations
+ 1m 09s All verses entries found in index
+ 1m 09s All ketivs found in the text
+ 1m 09s All ketivs found in the data
+ 1m 09s Preparing lex data
+ 1m 11s 426555 words
+ 1m 31s Done
 </pre>
 </div>
 </div>
@@ -1509,7 +1959,7 @@ We have to map them to the corresponding verse nodes.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -1520,6 +1970,8 @@ We have to map them to the corresponding verse nodes.</p>
 <span class="s">        g_cons_utf8 g_word_utf8 g_word lex g_entry g_entry_heb nametype gloss</span>
 <span class="s">        phono phono_sep</span>
 <span class="s">        g_qere_utf8 qtrailer_utf8</span>
+<span class="s">        freq_lex freq_occ</span>
+<span class="s">        rank_lex rank_occ</span>
 <span class="s">    &#39;&#39;&#39;</span><span class="p">,</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    &#39;&#39;&#39;</span><span class="p">),</span>
@@ -1543,25 +1995,25 @@ We have to map them to the corresponding verse nodes.</p>
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
   0.00s BEGIN COMPILE a: lexicon
-  4.25s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-data/etcbc4/bin/A/lexicon/__log__compile__.txt
-  4.25s PARSING ANNOTATION FILES
-  4.27s INFO: parsing ph.xml
-    14s INFO: parsing kq.xml
-    14s INFO: parsing lex.xml
-    48s INFO: END PARSING
+  5.04s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-data/etcbc4/bin/A/lexicon/__log__compile__.txt
+  5.04s PARSING ANNOTATION FILES
+  5.05s INFO: parsing ph.xml
+    15s INFO: parsing kq.xml
+    15s INFO: parsing lex.xml
+ 1m 00s INFO: END PARSING
          0 good   regions  and     0 faulty ones
          0 linked nodes    and     0 unlinked ones
          0 good   edges    and     0 faulty ones
     855002 good   annots   and     0 faulty ones
-   5975554 good   features and     0 faulty ones
+   7681774 good   features and     0 faulty ones
     855002 distinct xml identifiers
 
-    48s MODELING RESULT FILES
-    48s INFO: CONNECTIVITY
-    48s WRITING RESULT FILES for a
-    54s END   COMPILE a: lexicon
-    54s INFO: USING DATA COMPILED AT: 2015-10-16T00-27-58
-    58s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2015-10-16T00-28-01
+ 1m 00s MODELING RESULT FILES
+ 1m 00s INFO: CONNECTIVITY
+ 1m 00s WRITING RESULT FILES for a
+ 1m 10s END   COMPILE a: lexicon
+ 1m 10s INFO: USING DATA COMPILED AT: 2016-01-27T13-58-21
+ 1m 14s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2016-01-27T13-58-26
 </pre>
 </div>
 </div>
@@ -1591,14 +2043,20 @@ The first field is the object id, the subsequent fields are the values of the co
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">pm</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s">&#39;word_data.mql&#39;</span><span class="p">)</span>
-<span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span>
-<span class="n">pm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;phono&#39;</span><span class="p">,</span> <span class="s">&#39;phono_sep&#39;</span><span class="p">,</span> <span class="s">&#39;g_qere_utf8&#39;</span><span class="p">,</span> <span class="s">&#39;qtrailer_utf8&#39;</span><span class="p">,</span> <span class="s">&#39;g_entry&#39;</span><span class="p">,</span> <span class="s">&#39;g_entry_heb&#39;</span><span class="p">,</span> <span class="s">&#39;gloss&#39;</span><span class="p">,</span> <span class="s">&#39;nametype&#39;</span><span class="p">,</span>
-<span class="p">))</span>
+<span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">    word </span>
+<span class="s">    phono phono_sep </span>
+<span class="s">    g_qere_utf8 qtrailer_utf8 </span>
+<span class="s">    g_entry g_entry_heb </span>
+<span class="s">    gloss nametype</span>
+<span class="s">    freq_lex:i freq_occ:i</span>
+<span class="s">    rank_lex:i rank_occ:i</span>
+<span class="s">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span>
 <span class="n">chunk</span> <span class="o">=</span> <span class="mi">50000</span>
 <span class="n">nw</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">iw</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1618,6 +2076,10 @@ The first field is the object id, the subsequent fields are the values of the co
         <span class="n">F</span><span class="o">.</span><span class="n">g_entry_heb</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
         <span class="n">F</span><span class="o">.</span><span class="n">gloss</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
         <span class="n">F</span><span class="o">.</span><span class="n">nametype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">freq_lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">freq_occ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">rank_lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">rank_occ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
     <span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&gt;5} words&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nw</span><span class="p">))</span>
 <span class="n">pm</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1652,7 +2114,7 @@ The first field is the object id, the subsequent fields are the values of the co
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">ntps</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
@@ -1663,28 +2125,6 @@ The first field is the object id, the subsequent fields are the values of the co
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>          : 390983x
-pers      : 21514x
-topo      :  6352x
-pers,gens,topo:  4477x
-ppde      :  2505x
-pers,gens :   345x
-gens      :   251x
-gens,topo :   108x
-mens      :    20x
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1710,36 +2150,37 @@ mens      :    20x
 <span class="n">cur_label</span> <span class="o">=</span> <span class="k">None</span>
 <span class="n">cur_words</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="p">(</span><span class="n">s_len</span><span class="p">,</span> <span class="n">sg</span><span class="p">,</span> <span class="n">se</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span>
+<span class="p">(</span><span class="n">s_len</span><span class="p">,</span> <span class="n">sg</span><span class="p">,</span> <span class="n">se</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">sf</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span>
         <span class="s">&#39;gloss = &#39;</span><span class="p">,</span> 
         <span class="s">&#39;lexeme= &#39;</span><span class="p">,</span>
         <span class="s">&#39;voclex= &#39;</span><span class="p">,</span>
         <span class="s">&#39;trans = &#39;</span><span class="p">,</span>
         <span class="s">&#39;hebrew= &#39;</span><span class="p">,</span>
         <span class="s">&#39;phono = &#39;</span><span class="p">,</span>
+        <span class="s">&#39;freq  = &#39;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">LL</span> <span class="o">=</span> <span class="mi">120</span>
 
 <span class="k">def</span> <span class="nf">set_verse</span><span class="p">():</span>
-    <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="k">True</span><span class="p">,</span> <span class="n">s_len</span><span class="p">,</span> <span class="n">sg</span><span class="p">,</span> <span class="n">se</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">cf</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="k">True</span><span class="p">,</span> <span class="n">s_len</span><span class="p">,</span> <span class="n">sg</span><span class="p">,</span> <span class="n">se</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">sf</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_line</span><span class="p">():</span>
-        <span class="k">nonlocal</span> <span class="n">first</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">cp</span>
+        <span class="k">nonlocal</span> <span class="n">first</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">cf</span>
         <span class="k">if</span> <span class="n">cur_len</span> <span class="o">!=</span> <span class="n">s_len</span><span class="p">:</span>
             <span class="n">trans_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="s">&#39;=&#39;</span> <span class="k">if</span> <span class="n">first</span> <span class="k">else</span> <span class="s">&#39;-&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">cur_len</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cg</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">cf</span><span class="p">):</span>
                 <span class="n">trans_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
-        <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="k">False</span><span class="p">,</span> <span class="n">s_len</span><span class="p">,</span> <span class="n">sg</span><span class="p">,</span> <span class="n">se</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">cur_len</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">cf</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="k">False</span><span class="p">,</span> <span class="n">s_len</span><span class="p">,</span> <span class="n">sg</span><span class="p">,</span> <span class="n">se</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">sf</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cur_words</span><span class="p">:</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">g_qere_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">q</span> <span class="o">!=</span> <span class="k">None</span><span class="p">:</span>
             <span class="n">h</span> <span class="o">=</span> <span class="s">&#39;*{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">gloss</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">g_entry</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">phono</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-        <span class="p">(</span><span class="n">lg</span><span class="p">,</span> <span class="n">le</span><span class="p">,</span> <span class="n">lv</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">lh</span><span class="p">,</span> <span class="n">lp</span><span class="p">)</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
-        <span class="n">lb</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="n">lg</span><span class="p">,</span> <span class="n">le</span><span class="p">,</span> <span class="n">lv</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">lh</span><span class="p">,</span> <span class="n">lp</span><span class="p">))</span>
+        <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">gloss</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">g_entry</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">phono</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">freq_lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="p">(</span><span class="n">lg</span><span class="p">,</span> <span class="n">le</span><span class="p">,</span> <span class="n">lv</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">lh</span><span class="p">,</span> <span class="n">lp</span><span class="p">,</span> <span class="n">lf</span><span class="p">)</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+        <span class="n">lb</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="n">lg</span><span class="p">,</span> <span class="n">le</span><span class="p">,</span> <span class="n">lv</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">lh</span><span class="p">,</span> <span class="n">lp</span><span class="p">,</span> <span class="n">lf</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">cur_len</span> <span class="o">+</span> <span class="n">lb</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">LL</span><span class="p">:</span> <span class="n">set_line</span><span class="p">()</span>
         <span class="n">cur_len</span> <span class="o">+=</span> <span class="n">lb</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">fmtstr</span> <span class="o">=</span> <span class="s">&#39;{{:&lt;{}}}|&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
@@ -1750,6 +2191,7 @@ mens      :    20x
         <span class="n">cw</span> <span class="o">+=</span> <span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
         <span class="n">ch</span> <span class="o">+=</span> <span class="n">rfmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
         <span class="n">cp</span> <span class="o">+=</span> <span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">cf</span> <span class="o">+=</span> <span class="n">rfmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="n">cur_len</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">set_line</span><span class="p">()</span>
     <span class="n">cur_words</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>

@@ -35,7 +35,7 @@
 # 
 # See the MySQL create statements below.
 
-# In[3]:
+# In[1]:
 
 import sys
 import collections
@@ -47,13 +47,13 @@ from etcbc.preprocess import prepare
 fabric = LafFabric()
 
 
-# In[4]:
+# In[2]:
 
 source = 'etcbc'
-if 'version' not in locals(): version = '4b'
+if 'version' not in locals(): version = '4'
 
 
-# In[9]:
+# In[3]:
 
 API = fabric.load(source+version, 'lexicon', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
@@ -70,6 +70,8 @@ API = fabric.load(source+version, 'lexicon', 'shebanq', {
         function typ rela txt det
         code tab
         number
+        freq_lex freq_occ
+        rank_lex rank_occ
     ''',''),
     'prepare': prepare,
 }, verbose='NORMAL')
@@ -221,7 +223,7 @@ exec(fabric.localnames.format(var='fabric'))
 # It is the value of ``g_word_utf8`` precisely when a qere is present, 
 # otherwise it is empty.
 
-# In[10]:
+# In[4]:
 
 qeres = {}
 masora = '֯'
@@ -235,7 +237,7 @@ msg('Found {} qeres'.format(len(qeres)))
 # 
 # We make a list of paragraph numbers of clause_atoms. It will be used by the *para* function.
 
-# In[11]:
+# In[6]:
 
 paras = {}
 msg('Building para index')
@@ -251,11 +253,12 @@ for line in inf:
         continue
     (oid, par) = line.rstrip('\n').split('\t')
     paras[ca_index[oid]] = par
+msg('Found para information for {} clause_atoms'.format(len(paras)))
 
 
 # ## Field types
 
-# In[18]:
+# In[14]:
 
 def strip_id(entryid):
     return entryid.rstrip('/[=')
@@ -337,6 +340,10 @@ word_fields = (
     (df(F.uvf.v), 'uvf', 'word', 'varchar', 8, '', False),
     (df(F.vbe.v), 'vbe', 'word', 'varchar', 8, '', False),
     (df(F.vbs.v), 'vbs', 'word', 'varchar', 8, '', False),
+    (F.freq_lex.v, 'freq_lex', 'word', 'int', 4, '', False),
+    (F.freq_occ.v, 'freq_occ', 'word', 'int', 4, '', False),
+    (F.rank_lex.v, 'rank_lex', 'word', 'int', 4, '', False),
+    (F.rank_occ.v, 'rank_occ', 'word', 'int', 4, '', False),
     (None, 'border', 'subphrase', 'varchar', 16, '', False),
     ('id', 'number', 'subphrase', 'varchar', 32, '', False),
     (df(F.rela.v), 'rela', 'subphrase', 'varchar', 8, '', True),
@@ -369,7 +376,7 @@ first_only = dict(('{}_{}'.format(f[2], f[1]), f[6]) for f in word_fields)
 # We have to make sure that the values fit within the declared sizes of these fields.
 # The code measures the maximum lengths of these fields, and it turns out that the text is maximally 434 chars and the xml 2186 chars.
 
-# In[13]:
+# In[15]:
 
 field_limits = {
     'book': {
@@ -471,7 +478,7 @@ print(text_create_sql)
 
 # # Lexicon file reading
 
-# In[14]:
+# In[16]:
 
 langs = {'hbo', 'arc'}
 lex_base = dict((lan, '{}/{}/{}.{}{}'.format(API['data_dir'], 'lexicon', lan, source, version)) for lan in langs)
@@ -545,7 +552,7 @@ for lan in sorted(lex_entries):
 # 
 # We also generate a file that can act as the basis of an extra annotation file with lexical information.
 
-# In[15]:
+# In[17]:
 
 msg("Fill the tables ... ")
 cur_id = {
@@ -721,7 +728,7 @@ else:
     print('All lexemes have been found in the lexicon')
 
 
-# In[16]:
+# In[18]:
 
 print('\n'.join(tables['lexicon'][0:10]))
 print('\n'.join(tables['clause_atom'][0:10]))
@@ -736,7 +743,7 @@ print('\n'.join(tables['clause_atom'][0:10]))
 # 
 # Conversely, we also construct an index from verses to nodes: given a verse, we make a list of all nodes belonging to that verse, in the canonical order.
 
-# In[17]:
+# In[19]:
 
 target_types = {
     'sentence', 'sentence_atom', 
@@ -786,7 +793,7 @@ def get_objects(vn):
 
 # # Fill the word info table with data
 
-# In[13]:
+# In[20]:
 
 msg("Generating word info data ...")
 wordf = outfile('word_data.tsv')
@@ -927,7 +934,7 @@ plainf.close()
 msg("Done")
 
 
-# In[22]:
+# In[21]:
 
 # check whether the field sizes are not exceeded
 
@@ -946,7 +953,7 @@ for f in word_fields:
 
 # # SQL generation
 
-# In[23]:
+# In[22]:
 
 limit_row = 2000
 

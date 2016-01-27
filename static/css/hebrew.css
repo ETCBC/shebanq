@@ -991,7 +991,7 @@ td.gl, td.l_gl {
     border-left: 1pt solid #aaaaaa;
     border-right: 1pt solid #aaaaaa;
 }
-td.wd1, td.wd2, td.wd3, td.l_wd1, td.l_wd2, td.l_wd3 {
+td.wd1, td.wd2, td.wd3, td.wd4, td.l_wd1, td.l_wd2, td.l_wd3, td.l_wd4 {
     text-align: right;
     direction: ltr;
     height: 12pt;
@@ -1154,6 +1154,19 @@ span.wd3_nme, span.wd3_prs, span.wd3_uvf, span.l_wd3_nme, span.l_wd3_prs, span.l
 }
 span.wd3_pfm, span.wd3_vbe, span.wd3_vbs, span.l_wd3_pfm, span.l_wd3_vbe, span.l_wd3_vbs  {
     color: #0044aa;
+}
+span.wd4_statfl, span.wd4_statrl, span.wd4_statfo, span.wd4_statro, span.l_wd4_statfl, span.l_wd4_statrl, span.l_wd4_statfo, span.l_wd4_statro {
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-weight: bold;
+}
+span.wd4_statfl, span.wd4_statrl, span.l_wd4_statfl, span.l_wd4_statrl {
+    font-style: italic;
+}
+span.wd4_statfl, span.wd4_statfo, span.l_wd4_statfl, span.l_wd4_statfo {
+    color: #5500dd;
+}
+span.wd4_statrl, span.wd4_statro, span.l_wd4_statrl, span.l_wd4_statro {
+    color: #dd0055;
 }
 span.wd2_stem, span.l_wd2_stem {
     font-weight: bold;

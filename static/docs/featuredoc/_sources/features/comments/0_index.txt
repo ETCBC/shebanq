@@ -15,6 +15,8 @@ Contents:
     dist
     dist_unit
     domain
+    freq_lex
+    freq_occ
     gn
     half_verse
     trailer_utf8
@@ -51,6 +53,8 @@ Contents:
     prs
     g_prs_utf8
     g_prs
+    rank_lex
+    rank_occ
     rela
     vbs
     g_vbs_utf8

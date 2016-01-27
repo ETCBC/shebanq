@@ -91,6 +91,7 @@ field_names = dict(
         word_nmtp word_subpos word_pos word_pdp word_lang word_number
         word_gender word_gnumber word_person word_state word_tense word_stem
         word_nme word_pfm word_prs word_uvf word_vbe word_vbs
+        word_freq_lex word_rank_lex word_freq_occ word_rank_occ
         subphrase_border subphrase_number subphrase_rela
         phrase_border phrase_number phrase_atom_number phrase_rela phrase_atom_rela phrase_function phrase_typ phrase_det
         clause_border clause_number clause_atom_number clause_atom_code clause_atom_tab clause_atom_pargr clause_rela clause_typ clause_txt
@@ -172,6 +173,7 @@ hebrewdata_lines_spec = '''
     wd1:wd1_nmtp=word_nmtp=nametype,wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
     wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
+    wd4:wd4_statfl=word_freq_lex=freq-lex,wd4_statrl=word_rank_lex=rank-lex,wd4_statfo=word_freq_occ=freq-occ,wd4_statro=word_rank_occ=rank-occ
     sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
     ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_rela=phrase_rela=rela,ph_arela=phrase_atom_rela=rela_a,ph_an=phrase_atom_number=phrase_a#,ph_n=phrase_number=phrase#
     cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_par=clause_atom_pargr=par,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
@@ -202,6 +204,7 @@ specs = dict(
         wd1 wd1_nmtp wd1_subpos wd1_pos wd1_pdp wd1_lang wd1_n
         wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
         wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
+        wd4 wd4_statfl wd4_statrl wd4_statfo wd4_statro
         sp sp_rela sp_n
         ph ph_det ph_fun ph_typ ph_rela ph_arela ph_an ph_n
         cl cl_txt cl_typ cl_rela cl_tab cl_par cl_code cl_an cl_n
@@ -216,6 +219,7 @@ specs = dict(
         bool bool bool bool bool bool
         bool bool bool bool bool bool bool
         bool bool bool bool bool bool bool
+        bool bool bool bool bool
         bool bool bool
         bool bool bool bool bool bool bool bool
         bool bool bool bool bool bool bool bool bool
@@ -230,6 +234,7 @@ specs = dict(
         v x v x x x
         v v v v v v v
         x x x v x v x
+        v v v x x
         v v v
         v v v x x v v v
         v v v v v v v v v
@@ -361,6 +366,20 @@ legend_tpl = '''
         </td>
     </tr>
 
+    <tr class="il l_wd4">
+        <td class="c l_wd4"><input type="checkbox" id="wd4" name="wd4"/></td>
+        <td class="il l_wd4">
+            <input type="checkbox" id="wd4_statfl" name="wd4_statfl"/>
+                <a target="_blank" href="{base_doc}/freq_lex.html"><span class="il l_wd4_statfl">freq(lex)</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd4_statrl" name="wd4_statrl"/>
+                <a target="_blank" href="{base_doc}/rank_lex.html"><span class="il l_wd4_statrl">rank(lex)</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd4_statfo" name="wd4_statfo"/>
+                <a target="_blank" href="{base_doc}/freq_occ.html"><span class="il l_wd4_statfo">freq(occ)</span></a>&nbsp;&nbsp;
+            <input type="checkbox" id="wd4_statro" name="wd4_statro"/>
+                <a target="_blank" href="{base_doc}/rank_occ.html"><span class="il l_wd4_statro">rank(occ)</span></a>&nbsp;&nbsp;
+        </td>
+    </tr>
+
     <tr class="il l_sp">
         <td class="c l_sp"><input type="checkbox" id="sp" name="sp"/></td>
         <td class="il l_sp">
@@ -452,6 +471,9 @@ text_tpl = u'''<table class="il c">
     </tr>
     <tr class="il wd3">
         <td class="il wd3"><span class="il wd3_nme">{word_nme}</span>&nbsp;<span class="il wd3_pfm">{word_pfm}</span>&nbsp;<span class="il wd3_prs">{word_prs}</span>&nbsp;<span class="il wd3_uvf">{word_uvf}</span>&nbsp;<span class="il wd3_vbe">{word_vbe}</span>&nbsp;<span class="il wd3_vbs">{word_vbs}</span></td>
+    </tr>
+    <tr class="il wd4">
+        <td class="il wd4"><span class="il wd4_statfl">{word_freq_lex}</span>&nbsp;<span class="il wd4_statrl">{word_rank_lex}</span>&nbsp;<span class="il wd4_statfo">{word_freq_occ}</span>&nbsp;<span class="il wd4_statro">{word_rank_occ}</span></td>
     </tr>
     <tr class="il sp">
         <td class="il sp {subphrase_border}"><span class="il sp_rela">{subphrase_rela}</span>&nbsp;<span class="n sp_n">{subphrase_number}</span></td>

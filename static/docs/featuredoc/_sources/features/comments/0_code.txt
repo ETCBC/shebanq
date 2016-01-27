@@ -15,6 +15,8 @@ Contents:
     dist_unit <dist_unit>
     domain <domain>
     function <function>
+    freq_lex <freq_lex>
+    freq_occ <freq_occ>
     g_cons <g_cons>
     g_cons_utf8 <g_cons_utf8>
     g_lex <g_lex>
@@ -62,6 +64,8 @@ Contents:
     prs <prs>
     ps <ps>
     qtrailer_utf8 <qtrailer_utf8>
+    rank_lex <rank_lex>
+    rank_occ <rank_occ>
     rela <rela>
     sp <sp>
     st <st>

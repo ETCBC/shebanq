@@ -222,7 +222,7 @@ That is a handy example of how to convert a notebook to an executable python pro
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">sys</span>
@@ -245,7 +245,7 @@ That is a handy example of how to convert a notebook to an executable python pro
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.5.4
+<pre>  0.00s This is LAF-Fabric 4.5.6
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
@@ -259,11 +259,11 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
-<span class="k">if</span> <span class="s">&#39;version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
+<span class="k">if</span> <span class="s">&#39;version&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4&#39;</span>
 </pre></div>
 
 </div>
@@ -273,7 +273,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;shebanq&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -291,6 +291,8 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <span class="s">        function typ rela txt det</span>
 <span class="s">        code tab</span>
 <span class="s">        number</span>
+<span class="s">        freq_lex freq_occ</span>
+<span class="s">        rank_lex rank_occ</span>
 <span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
     <span class="s">&#39;prepare&#39;</span><span class="p">:</span> <span class="n">prepare</span><span class="p">,</span>
 <span class="p">},</span> <span class="n">verbose</span><span class="o">=</span><span class="s">&#39;NORMAL&#39;</span><span class="p">)</span>
@@ -308,14 +310,149 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
-    12s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  0.00s DETAIL: COMPILING m: UP TO DATE
+  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
+  0.00s DETAIL: COMPILING a: UP TO DATE
+  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T10-46-58
+  0.01s DETAIL: load main: G.node_anchor_min
+  0.12s DETAIL: load main: G.node_anchor_max
+  0.22s DETAIL: load main: G.node_sort
+  0.32s DETAIL: load main: G.node_sort_inv
+  0.76s DETAIL: load main: G.edges_from
+  0.88s DETAIL: load main: G.edges_to
+  1.00s DETAIL: load main: F.etcbc4_db_maxmonad [node] 
+  1.75s DETAIL: load main: F.etcbc4_db_minmonad [node] 
+  2.51s DETAIL: load main: F.etcbc4_db_monads [node] 
+  3.50s DETAIL: load main: F.etcbc4_db_oid [node] 
+  4.26s DETAIL: load main: F.etcbc4_db_otype [node] 
+  4.96s DETAIL: load main: F.etcbc4_ft_code [node] 
+  5.01s DETAIL: load main: F.etcbc4_ft_det [node] 
+  5.24s DETAIL: load main: F.etcbc4_ft_function [node] 
+  5.36s DETAIL: load main: F.etcbc4_ft_g_cons [node] 
+  5.56s DETAIL: load main: F.etcbc4_ft_g_cons_utf8 [node] 
+  5.84s DETAIL: load main: F.etcbc4_ft_g_lex [node] 
+  6.07s DETAIL: load main: F.etcbc4_ft_g_word [node] 
+  6.33s DETAIL: load main: F.etcbc4_ft_g_word_utf8 [node] 
+  6.65s DETAIL: load main: F.etcbc4_ft_gn [node] 
+  6.81s DETAIL: load main: F.etcbc4_ft_language [node] 
+  7.02s DETAIL: load main: F.etcbc4_ft_lex [node] 
+  7.22s DETAIL: load main: F.etcbc4_ft_lex_utf8 [node] 
+  7.48s DETAIL: load main: F.etcbc4_ft_ls [node] 
+  7.69s DETAIL: load main: F.etcbc4_ft_nme [node] 
+  7.86s DETAIL: load main: F.etcbc4_ft_nu [node] 
+  8.05s DETAIL: load main: F.etcbc4_ft_number [node] 
+  8.54s DETAIL: load main: F.etcbc4_ft_pdp [node] 
+  8.75s DETAIL: load main: F.etcbc4_ft_pfm [node] 
+  8.94s DETAIL: load main: F.etcbc4_ft_prs [node] 
+  9.14s DETAIL: load main: F.etcbc4_ft_ps [node] 
+  9.33s DETAIL: load main: F.etcbc4_ft_rela [node] 
+  9.66s DETAIL: load main: F.etcbc4_ft_sp [node] 
+  9.87s DETAIL: load main: F.etcbc4_ft_st [node] 
+    10s DETAIL: load main: F.etcbc4_ft_tab [node] 
+    10s DETAIL: load main: F.etcbc4_ft_trailer_utf8 [node] 
+    10s DETAIL: load main: F.etcbc4_ft_txt [node] 
+    10s DETAIL: load main: F.etcbc4_ft_typ [node] 
+    11s DETAIL: load main: F.etcbc4_ft_uvf [node] 
+    11s DETAIL: load main: F.etcbc4_ft_vbe [node] 
+    11s DETAIL: load main: F.etcbc4_ft_vbs [node] 
+    11s DETAIL: load main: F.etcbc4_ft_vs [node] 
+    11s DETAIL: load main: F.etcbc4_ft_vt [node] 
+    12s DETAIL: load main: F.etcbc4_kq_g_qere_utf8 [node] 
+    12s DETAIL: load main: F.etcbc4_kq_qtrailer_utf8 [node] 
+    12s DETAIL: load main: F.etcbc4_lex_freq_lex [node] 
+    12s DETAIL: load main: F.etcbc4_lex_freq_occ [node] 
+    12s DETAIL: load main: F.etcbc4_lex_g_entry [node] 
+    12s DETAIL: load main: F.etcbc4_lex_g_entry_heb [node] 
+    12s DETAIL: load main: F.etcbc4_lex_gloss [node] 
+    12s DETAIL: load main: F.etcbc4_lex_nametype [node] 
+    12s DETAIL: load main: F.etcbc4_lex_rank_lex [node] 
+    12s DETAIL: load main: F.etcbc4_lex_rank_occ [node] 
+    12s DETAIL: load main: F.etcbc4_ph_phono [node] 
+    12s DETAIL: load main: F.etcbc4_ph_phono_sep [node] 
+    12s DETAIL: load main: F.etcbc4_sft_book [node] 
+    12s DETAIL: load main: F.etcbc4_sft_chapter [node] 
+    12s DETAIL: load main: F.etcbc4_sft_verse [node] 
+    12s DETAIL: load annox: F.etcbc4_db_maxmonad [node] 
+    12s DETAIL: load annox: F.etcbc4_db_minmonad [node] 
+    12s DETAIL: load annox: F.etcbc4_db_monads [node] 
+    12s DETAIL: load annox: F.etcbc4_db_oid [node] 
+    12s DETAIL: load annox: F.etcbc4_db_otype [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_code [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_det [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_function [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_g_cons [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_g_cons_utf8 [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_g_lex [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_g_word [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_g_word_utf8 [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_gn [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_language [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_lex [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_lex_utf8 [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_ls [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_nme [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_nu [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_number [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_pdp [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_pfm [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_prs [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_ps [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_rela [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_sp [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_st [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_tab [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_trailer_utf8 [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_txt [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_typ [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_uvf [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_vbe [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_vbs [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_vs [node] 
+    12s DETAIL: load annox: F.etcbc4_ft_vt [node] 
+    12s DETAIL: load annox: F.etcbc4_kq_g_qere_utf8 [node] 
+    12s DETAIL: load annox: F.etcbc4_kq_qtrailer_utf8 [node] 
+    12s DETAIL: load annox: F.etcbc4_lex_freq_lex [node] 
+    12s DETAIL: load annox: F.etcbc4_lex_freq_occ [node] 
+    12s DETAIL: load annox: F.etcbc4_lex_g_entry [node] 
+    12s DETAIL: load annox: F.etcbc4_lex_g_entry_heb [node] 
+    13s DETAIL: load annox: F.etcbc4_lex_gloss [node] 
+    13s DETAIL: load annox: F.etcbc4_lex_nametype [node] 
+    13s DETAIL: load annox: F.etcbc4_lex_rank_lex [node] 
+    14s DETAIL: load annox: F.etcbc4_lex_rank_occ [node] 
+    14s DETAIL: load annox: F.etcbc4_ph_phono [node] 
+    14s DETAIL: load annox: F.etcbc4_ph_phono_sep [node] 
+    14s DETAIL: load annox: F.etcbc4_sft_book [node] 
+    14s DETAIL: load annox: F.etcbc4_sft_chapter [node] 
+    14s DETAIL: load annox: F.etcbc4_sft_verse [node] 
+    14s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4/shebanq/__log__shebanq.txt
+    14s DETAIL: prep prep: G.node_sort
+    14s DETAIL: prep prep: G.node_sort_inv
+    15s DETAIL: prep prep: L.node_up
+    19s DETAIL: prep prep: L.node_down
+    26s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-06-29T05-30-49
-  0.00s INFO: USING DATA COMPILED AT: 2015-10-14T12-36-08
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-16T00-12-16
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK shebanq AT 2015-10-16T00-12-16
+  0.00s DETAIL: COMPILING m: UP TO DATE
+  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
+  0.00s DETAIL: COMPILING a: UP TO DATE
+  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T10-46-58
+  0.01s DETAIL: keep main: G.node_anchor_min
+  0.01s DETAIL: keep main: G.node_anchor_max
+  0.01s DETAIL: keep main: G.node_sort
+  0.01s DETAIL: keep main: G.node_sort_inv
+  0.01s DETAIL: keep main: G.edges_from
+  0.01s DETAIL: keep main: G.edges_to
+  0.01s DETAIL: keep main: F.etcbc4_db_otype [node] 
+  0.01s DETAIL: keep main: F.etcbc4_ft_number [node] 
+  0.01s DETAIL: keep main: F.etcbc4_sft_book [node] 
+  0.01s DETAIL: keep main: F.etcbc4_sft_chapter [node] 
+  0.01s DETAIL: keep main: F.etcbc4_sft_verse [node] 
+  0.02s DETAIL: keep annox: F.etcbc4_db_otype [node] 
+  0.02s DETAIL: keep annox: F.etcbc4_ft_number [node] 
+  0.02s DETAIL: keep annox: F.etcbc4_sft_book [node] 
+  0.02s DETAIL: keep annox: F.etcbc4_sft_chapter [node] 
+  0.02s DETAIL: keep annox: F.etcbc4_sft_verse [node] 
+  0.03s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2016-01-27T11-24-31
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK shebanq AT 2016-01-27T11-24-31
 </pre>
 </div>
 </div>
@@ -466,7 +603,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">qeres</span> <span class="o">=</span> <span class="p">{}</span>
@@ -487,8 +624,8 @@ otherwise it is empty.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  9.34s Building qere index
-  9.35s Found 1892 qeres
+<pre>    13s Building qere index
+    13s Found 1892 qeres
 </pre>
 </div>
 </div>
@@ -509,7 +646,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">paras</span> <span class="o">=</span> <span class="p">{}</span>
@@ -526,6 +663,7 @@ otherwise it is empty.</p>
         <span class="k">continue</span>
     <span class="p">(</span><span class="n">oid</span><span class="p">,</span> <span class="n">par</span><span class="p">)</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
     <span class="n">paras</span><span class="p">[</span><span class="n">ca_index</span><span class="p">[</span><span class="n">oid</span><span class="p">]]</span> <span class="o">=</span> <span class="n">par</span>
+<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Found para information for {} clause_atoms&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paras</span><span class="p">)))</span>
 </pre></div>
 
 </div>
@@ -538,7 +676,8 @@ otherwise it is empty.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    12s Building para index
+<pre> 1m 59s Building para index
+ 2m 00s Found para information for 90144 clause_atoms
 </pre>
 </div>
 </div>
@@ -558,7 +697,7 @@ otherwise it is empty.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">strip_id</span><span class="p">(</span><span class="n">entryid</span><span class="p">):</span>
@@ -641,6 +780,10 @@ otherwise it is empty.</p>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">uvf</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;uvf&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">vbe</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;vbe&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">vbs</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;vbs&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">freq_lex</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;freq_lex&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">freq_occ</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;freq_occ&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rank_lex</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;rank_lex&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rank_occ</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="s">&#39;rank_occ&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="k">None</span><span class="p">,</span> <span class="s">&#39;border&#39;</span><span class="p">,</span> <span class="s">&#39;subphrase&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;number&#39;</span><span class="p">,</span> <span class="s">&#39;subphrase&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">),</span>
     <span class="p">(</span><span class="n">df</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">),</span> <span class="s">&#39;rela&#39;</span><span class="p">,</span> <span class="s">&#39;subphrase&#39;</span><span class="p">,</span> <span class="s">&#39;varchar&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="k">True</span><span class="p">),</span>
@@ -687,7 +830,7 @@ The code measures the maximum lengths of these fields, and it turns out that the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">field_limits</span> <span class="o">=</span> <span class="p">{</span>
@@ -799,11 +942,11 @@ The code measures the maximum lengths of these fields, and it turns out that the
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-drop database if exists shebanq_passage4b;
+drop database if exists shebanq_passage4;
 
-create database shebanq_passage4b character set utf8;
+create database shebanq_passage4 character set utf8;
 
-use shebanq_passage4b;
+use shebanq_passage4;
 
 create table book(
     id      int(4) primary key,
@@ -861,7 +1004,7 @@ create table word(
     word_pos varchar(8), 
     word_pdp varchar(8), 
     word_subpos varchar(8), 
-    word_nmtp varchar(8), 
+    word_nmtp varchar(32), 
     word_tense varchar(8), 
     word_stem varchar(8), 
     word_gender varchar(8), 
@@ -874,6 +1017,10 @@ create table word(
     word_uvf varchar(8), 
     word_vbe varchar(8), 
     word_vbs varchar(8), 
+    word_freq_lex int(4), 
+    word_freq_occ int(4), 
+    word_rank_lex int(4), 
+    word_rank_occ int(4), 
     subphrase_border varchar(16), 
     subphrase_number varchar(32), 
     subphrase_rela varchar(8), 
@@ -944,7 +1091,7 @@ create table word_verse(
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">langs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;hbo&#39;</span><span class="p">,</span> <span class="s">&#39;arc&#39;</span><span class="p">}</span>
@@ -1020,22 +1167,15 @@ create table word_verse(
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>Lexicon arc: there were 0 errors
-feature without value for lexical entry MCXH==/ in line 4779: 
+Lexicon hbo: there were 0 errors
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Lexicon arc has   708 entries
-Lexicon hbo has  8518 entries
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>Lexicon hbo: there was 1 error
+<pre>Lexicon arc has   707 entries
+Lexicon hbo has  8529 entries
 </pre>
 </div>
 </div>
@@ -1068,7 +1208,7 @@ Lexicon hbo has  8518 entries
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Fill the tables ... &quot;</span><span class="p">)</span>
@@ -1255,8 +1395,8 @@ Lexicon hbo has  8518 entries
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    39s Fill the tables ... 
-    45s Done
+<pre>15m 42s Fill the tables ... 
+15m 49s Done
 </pre>
 </div>
 </div>
@@ -1269,17 +1409,17 @@ OK    lexicon        entry          : max size =      14 of    32
 OK    lexicon        entry_heb      : max size =      14 of    32
 OK    lexicon        entryid        : max size =      15 of    32
 OK    lexicon        entryid_heb    : max size =      15 of    32
-OK    lexicon        g_entry        : max size =      24 of    32
-OK    lexicon        g_entry_heb    : max size =      23 of    32
-OK    lexicon        gloss          : max size =      27 of    32
+OK    lexicon        g_entry        : max size =      32 of    32
+OK    lexicon        g_entry_heb    : max size =      31 of    32
+OK    lexicon        gloss          : max size =      26 of    32
 OK    lexicon        id             : max size =      16 of    32
 OK    lexicon        lan            : max size =       3 of     4
 OK    lexicon        nametype       : max size =      14 of    16
 OK    lexicon        pos            : max size =       4 of     8
-OK    lexicon        root           : max size =      11 of    32
+OK    lexicon        root           : max size =       4 of    32
 OK    lexicon        subpos         : max size =       4 of     8
 OK    verse          text           : max size =     434 of  1024
-OK    verse          xml            : max size =    2858 of  4096
+OK    verse          xml            : max size =    2860 of  4096
 All lexemes have been found in the lexicon
 </pre>
 </div>
@@ -1291,7 +1431,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="s">&#39;lexicon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]))</span>
@@ -1350,7 +1490,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">target_types</span> <span class="o">=</span> <span class="p">{</span>
@@ -1415,7 +1555,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Generating word info data ...&quot;</span><span class="p">)</span>
@@ -1567,47 +1707,47 @@ All lexemes have been found in the lexicon
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>11m 46s Generating word info data ...
-11m 46s 	Genesis
-11m 56s 	Exodus
-12m 04s 	Leviticus
-12m 10s 	Numeri
-12m 18s 	Deuteronomium
-12m 25s 	Josua
-12m 29s 	Judices
-12m 34s 	Samuel_I
-12m 41s 	Samuel_II
-12m 46s 	Reges_I
-12m 53s 	Reges_II
-12m 58s 	Jesaia
-13m 06s 	Jeremia
-13m 16s 	Ezechiel
-13m 25s 	Hosea
-13m 26s 	Joel
-13m 27s 	Amos
-13m 28s 	Obadia
-13m 28s 	Jona
-13m 28s 	Micha
-13m 29s 	Nahum
-13m 29s 	Habakuk
-13m 29s 	Zephania
-13m 30s 	Haggai
-13m 30s 	Sacharia
-13m 31s 	Maleachi
-13m 32s 	Psalmi
-13m 41s 	Iob
-13m 45s 	Proverbia
-13m 48s 	Ruth
-13m 49s 	Canticum
-13m 50s 	Ecclesiastes
-13m 51s 	Threni
-13m 52s 	Esther
-13m 53s 	Daniel
-13m 56s 	Esra
-13m 58s 	Nehemia
-14m 00s 	Chronica_I
-14m 05s 	Chronica_II
-14m 12s Done
+<pre>15m 58s Generating word info data ...
+15m 58s 	Genesis
+16m 10s 	Exodus
+16m 19s 	Leviticus
+16m 25s 	Numeri
+16m 34s 	Deuteronomium
+16m 41s 	Josua
+16m 47s 	Judices
+16m 54s 	Samuel_I
+17m 01s 	Samuel_II
+17m 08s 	Reges_I
+17m 15s 	Reges_II
+17m 22s 	Jesaia
+17m 31s 	Jeremia
+17m 43s 	Ezechiel
+17m 54s 	Hosea
+17m 55s 	Joel
+17m 56s 	Amos
+17m 57s 	Obadia
+17m 57s 	Jona
+17m 58s 	Micha
+17m 58s 	Nahum
+17m 59s 	Habakuk
+17m 59s 	Zephania
+17m 59s 	Haggai
+18m 00s 	Sacharia
+18m 01s 	Maleachi
+18m 02s 	Psalmi
+18m 13s 	Iob
+18m 17s 	Proverbia
+18m 22s 	Ruth
+18m 23s 	Canticum
+18m 24s 	Ecclesiastes
+18m 25s 	Threni
+18m 26s 	Esther
+18m 28s 	Daniel
+18m 31s 	Esra
+18m 33s 	Nehemia
+18m 36s 	Chronica_I
+18m 42s 	Chronica_II
+18m 50s Done
 </pre>
 </div>
 </div>
@@ -1618,7 +1758,7 @@ All lexemes have been found in the lexicon
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># check whether the field sizes are not exceeded</span>
@@ -1648,18 +1788,19 @@ All lexemes have been found in the lexicon
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>OK    word           word_heb            : max size =      27 of    32
 OK    word           word_ktv            : max size =      16 of    32
-OK    word           word_vlex           : max size =      23 of    32
+OK    word           word_vlex           : max size =      31 of    32
 OK    word           word_clex           : max size =      15 of    32
 OK    word           word_tran           : max size =      30 of    32
 OK    word           word_phono          : max size =      23 of    32
 OK    word           word_phono_sep      : max size =       2 of     8
 OK    word           word_lex            : max size =      15 of    32
 OK    word           word_glex           : max size =      24 of    32
-OK    word           word_gloss          : max size =      27 of    32
+OK    word           word_gloss          : max size =      25 of    32
 OK    word           word_lang           : max size =       3 of     8
 OK    word           word_pos            : max size =       4 of     8
 OK    word           word_pdp            : max size =       4 of     8
 OK    word           word_subpos         : max size =       4 of     8
+OK    word           word_nmtp           : max size =      14 of    32
 OK    word           word_tense          : max size =       4 of     8
 OK    word           word_stem           : max size =       4 of     8
 OK    word           word_gender         : max size =       7 of     8
@@ -1707,7 +1848,7 @@ OK    word           sentence_border     : max size =       5 of     8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">limit_row</span> <span class="o">=</span> <span class="mi">2000</span>
@@ -1754,15 +1895,15 @@ OK    word           sentence_border     : max size =       5 of     8
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>29m 33s Generating SQL ...
-29m 33s 	table book
-29m 33s 	table chapter
-29m 33s 	table verse
-29m 34s 	table clause_atom
-29m 34s 	table lexicon
-29m 34s 	table word
-29m 35s 	table word_verse
-29m 35s Done
+<pre>19m 10s Generating SQL ...
+19m 10s 	table book
+19m 10s 	table chapter
+19m 10s 	table verse
+19m 10s 	table clause_atom
+19m 10s 	table lexicon
+19m 10s 	table word
+19m 11s 	table word_verse
+19m 12s Done
 </pre>
 </div>
 </div>

@@ -13,6 +13,8 @@
 # with the ETCBC4 database, 
 # and finally we will add the lexicon as extra features to the ETCBC4 text database.
 # 
+# We will compute a few additional features of a statistical nature and make them available as well.
+# 
 # The lexical features of a lexeme are added to each word occurrence in the text that is associated with that lexeme.
 # 
 # Of course, this is redundant, but for text processing it is convenient. 
@@ -47,7 +49,7 @@
 # In the sequel we will consistently and exclusively refer to these languages by their ISO 639-3 abbreviations.
 # For the ETCBC4 database we use ``hbo`` and ``arc`` only.
 # 
-# # Feature explanation
+# # Features in the lexicon data
 # 
 # Here is a list of features encountered in the lexicon.
 # Some of them correspond to features encountered in the text.
@@ -99,7 +101,26 @@
 # ## fc
 # ``fc`` unclear.
 # 
-# # Lexicon data
+# # Computed features
+# 
+# We add several computed features: the frequency of lexemes and of words. We provide the frequencies as absolute number of occurrences, both of the associated lexeme of a word, and of the consonantal, unaccented word shape.
+# We also give the corresponding *ranks*, where rank 0 means: occurs most, rank 1: occurs second most. In case of a tie we give equal ranks, but below a rank that is a tie will be a gap as big as there are items participating in the tie. It holds that an item has rank *n* if and only if there are exactly *n* items with a higher frequency.
+# 
+# **NB** We consider the lexemes and occurrences of both biblical languages, Hebrew and Aramaic, to be disjunct. So, even if a concrete word or lexeme occurs in both languages, we count them as distinct lexemes and word shapes.
+# 
+# ## freq_lex
+# The absolute number of times that this *lexeme* occurs in the Hebrew Bible
+# 
+# ## rank_lex
+# The frequency rank of this *lexeme* in the Hebrew Bible, i.e. the number of lexemes that are more frequent than this one.
+# 
+# ## freq_occ
+# Analogous to ``freq_lex``, but now the *word occurrences* are counted, where the word is taken in its consonantal, unaccented shape.
+# 
+# ## rank_occ
+# Analogous to ``rank_lex``, but, analogous to ``rank_occ``, for word occurrences instead of lexems.
+# 
+# # Adding the lexicon data
 # 
 # We add the lexicon data as extra features to the ETCBC4 database.
 # 
@@ -120,6 +141,10 @@
 # * **pos** (= ``sp``) the part of speech
 # * **nametype** (= ``sm``) the type of named entity
 # * **subpos** (= ``ls``) subtype of part of speech (aka *lexical set*)
+# * **rank_lex**
+# * **freq_lex**
+# * **rank_occ**
+# * **freq_occ**
 
 # In[1]:
 
@@ -285,6 +310,8 @@ for lan in sorted(lex_text):
 
 # In[6]:
 
+mql_lan = dict(hbo='Hebrew', arc='Aramaic')
+
 arc_lex = set(lex_entries['arc'])
 hbo_lex = set(lex_entries['hbo'])
 
@@ -331,7 +358,7 @@ for (myset, mymsg) in (
 # # Usability as identifier
 # 
 # We examine how the ``lex``feature can be transformed in an url friendly identifier.
-# This is important, because theis feature has the potential of identifying lexemes across versions.
+# This is important, because this feature has the potential of identifying lexemes across versions.
 # 
 # It turns out as follows:
 # 
@@ -403,7 +430,7 @@ for lan in sorted(feature_count):
     print("{}\n{}\t".format(lan, feature_spec))
 
 
-# In[ ]:
+# In[10]:
 
 print("Detail feature values and occurrences")
 for lan in sorted(inspect_prop):
@@ -433,7 +460,7 @@ for lan in sorted(inspect_prop):
 # the textual feature **g_lex** (aka *graphical lexeme*).
 # The output file *inconsistent.csv* shows exactly what is going on.
 
-# In[10]:
+# In[11]:
 
 consistent_props = {'sp', 'ls', 'gn', 'vc'}
 variable_gender = {'verb', 'adjv'}
@@ -474,7 +501,7 @@ for lan in sorted(text_langs):
 # If not, we will apply a value transformation that harmonizes the values in lexical entries with those in textual features.
 # We adapt the lexical values to the textual ones. We do this only for features whose value domains are enumerations.
 
-# In[11]:
+# In[12]:
 
 for p in do_value_compare:
     print(p)
@@ -495,14 +522,13 @@ for p in do_value_compare:
 # 
 # As a preliminary check, we check whether there is a 1-1 correspondence between the ``lex`` and ``lex_utf8`` features.
 
-# In[12]:
+# In[13]:
 
 def strip_id(entryid):
     return entryid.rstrip('/[=')
 
 def to_heb(translit):
     return Transcription.to_hebrew(Transcription.suffix_and_finales(translit)[0])
-
 
 lex = collections.defaultdict(lambda: set())
 for n in F.otype.s('word'):
@@ -519,6 +545,65 @@ else:
     print('There are a {} lex/strip values with multiple lex_utf8 values'.format(len(disc)))
     for lx in disc:
         print('{} has {}'.format(lx, lex[lx]))
+
+
+# # Computing the statistical features
+# 
+# We are going to compute the features
+# ``freq_lex``, ``rank_lex``, ``freq_occ``, ``rank_occ``.
+
+# In[14]:
+
+msg('Computing statistics')
+wstats = {
+    'freqs': {
+        'lex': collections.defaultdict(lambda: collections.Counter()),
+        'occ': collections.defaultdict(lambda: collections.Counter()),
+    },
+    'ranks': {
+        'lex': collections.defaultdict(lambda: {}),
+        'occ': collections.defaultdict(lambda: {}),
+    },
+}
+langs = set()
+
+for w in F.otype.s('word'):
+    lan = F.language.v(w)
+    occ = F.g_cons.v(w)
+    lex = F.lex.v(w)
+    wstats['freqs']['lex'][lan][lex] += 1
+    wstats['freqs']['occ'][lan][occ] += 1
+    langs.add(lan)
+for lan in langs:
+    for tp in ['lex', 'occ']:
+        rank = -1
+        prev_n = -1
+        amount = 1
+        for (x, n) in sorted(wstats['freqs'][tp][lan].items(), key=lambda y: (-y[1], y[0])):
+            if n == prev_n:
+                amount += 1
+            else:
+                rank += amount
+                amount = 1
+            prev_n = n
+            wstats['ranks'][tp][lan][x] = rank
+msg('Done')
+
+
+# In[15]:
+
+def pprint(f, t):
+    for tp in ('lex', 'occ'):
+        title = '{} from {} to {}'.format(tp, f, t)
+        print('{}\n{}\n{}\n'.format('='*len(title), title, '-'*len(title)))
+        items = [(x, n, wstats['ranks'][tp]['Hebrew'][x]) for (x,n) in sorted(
+            wstats['freqs'][tp]['Hebrew'].items(), key=lambda y: (-y[1], y[0]),
+        )[f:t]]
+        for i in items: print('{:<10} : {:>5} {:>5}'.format(*i))
+
+pprint(0, 10)
+pprint(97, 110)
+pprint(1000, 1010)
 
 
 # # Composing a lexical data file
@@ -553,7 +638,7 @@ else:
 # ## name
 # The name of the field in the to be constructed annotation file.
 
-# In[14]:
+# In[16]:
 
 lex_fields = (
     (None, 'id', 'id', None),
@@ -600,14 +685,23 @@ for lan in sorted(lex_entries):
 
 # ## Deliver lexical data
 
-# In[15]:
+# In[17]:
 
 def get_lex(dummy):
     msg('Preparing lex data')
     data = []
     for n in sorted(node_lex):
         this_info = lex_index[node_lex[n]]
-        data.append((n,) + this_info)
+        (lan, lex) = node_lex[n]
+        lang = mql_lan[lan]
+        occ = F.g_cons.v(n)
+        computed_info = (
+            wstats['freqs']['lex'][lang][lex],
+            wstats['ranks']['lex'][lang][lex],
+            wstats['freqs']['occ'][lang][occ],
+            wstats['ranks']['occ'][lang][occ],
+        )
+        data.append((n,) + this_info + computed_info)
     msg('{} words'.format(len(data)))
     return data
 
@@ -616,7 +710,7 @@ def get_lex(dummy):
 # 
 # We load the output of the phono notebook, which has provided for each word node a phonetc transcription.
 
-# In[16]:
+# In[18]:
 
 def get_phono(file_name):
     msg('Reading phonetic transcriptions')
@@ -638,7 +732,7 @@ def get_phono(file_name):
 # De ketiv qere files use a particular form of verse labels.
 # We have to map them to the corresponding verse nodes.
 
-# In[17]:
+# In[19]:
 
 msg("Making mappings between verse labels in KQ and verse nodes in LAF")
 vlab2vnode = {}
@@ -650,7 +744,7 @@ msg("{} verses".format(len(vlab2vnode)))
 
 # ## Method to read kq data
 
-# In[18]:
+# In[20]:
 
 def get_kq(kq_file):
     msg("Reading Ketiv-Qere data")
@@ -742,7 +836,7 @@ def get_kq(kq_file):
 
 # # Compose the annotation package
 
-# In[19]:
+# In[21]:
 
 lex = ExtraData(API)
 
@@ -752,7 +846,7 @@ kq_base = '{}/{}.{}{}'.format('kq', 'kq', source, version)
 msg("Writing annotation package ...")
 lex.deliver_annots(
     'lexicon', 
-    {'title': 'Lexicon lookups, phonetic transcription, ketiv-qere', 'date': '2015'},
+    {'title': 'Lexicon lookups, phonetic transcription, ketiv-qere, statistics', 'date': '2015'},
     [
         (ph_base, 'ph', get_phono, (
             ('etcbc4', 'ph', 'phono'),
@@ -775,6 +869,10 @@ lex.deliver_annots(
             ('etcbc4', 'lex', 'nametype'),
             ('etcbc4', 'lex', 'subpos'),
             ('etcbc4', 'lex', 'gloss'),
+            ('etcbc4', 'lex', 'freq_lex'),
+            ('etcbc4', 'lex', 'rank_lex'),
+            ('etcbc4', 'lex', 'freq_occ'),
+            ('etcbc4', 'lex', 'rank_occ'),
         )),
     ]
 )
@@ -783,7 +881,7 @@ msg("Done")
 
 # ## Checking: loading the new features
 
-# In[20]:
+# In[22]:
 
 API=fabric.load(source+version, 'lexicon', 'shebanq', {
     "xmlids": {"node": False, "edge": False},
@@ -793,6 +891,8 @@ API=fabric.load(source+version, 'lexicon', 'shebanq', {
         g_cons_utf8 g_word_utf8 g_word lex g_entry g_entry_heb nametype gloss
         phono phono_sep
         g_qere_utf8 qtrailer_utf8
+        freq_lex freq_occ
+        rank_lex rank_occ
     ''',
     '''
     '''),
@@ -817,13 +917,19 @@ exec(fabric.localnames.format(var='fabric'))
 # followed by lines with the same number of fields.
 # The first field is the object id, the subsequent fields are the values of the corresponding features for that object.
 
-# In[21]:
+# In[23]:
 
 pm = outfile('word_data.mql')
-template = ('{}\t' * 8)+'{}\n'
-pm.write(template.format(
-    'word', 'phono', 'phono_sep', 'g_qere_utf8', 'qtrailer_utf8', 'g_entry', 'g_entry_heb', 'gloss', 'nametype',
-))
+template = ('{}\t' * 12)+'{}\n'
+pm.write(template.format(*('''
+    word 
+    phono phono_sep 
+    g_qere_utf8 qtrailer_utf8 
+    g_entry g_entry_heb 
+    gloss nametype
+    freq_lex:i freq_occ:i
+    rank_lex:i rank_occ:i
+'''.strip().split())))
 chunk = 50000
 nw = 0
 iw = 0
@@ -843,12 +949,16 @@ for w in F.otype.s('word'):
         F.g_entry_heb.v(w),
         F.gloss.v(w),
         F.nametype.v(w),
+        F.freq_lex.v(w),
+        F.freq_occ.v(w),
+        F.rank_lex.v(w),
+        F.rank_occ.v(w),
     ))
 print('{:>5} words'.format(nw))
 pm.close()
 
 
-# In[22]:
+# In[ ]:
 
 ntps = collections.Counter()
 for w in F.otype.s('word'):
@@ -868,36 +978,37 @@ trans_file = outfile(trans_fname)
 cur_label = None
 cur_words = []
 
-(s_len, sg, se, sv, sw, sh, sp) = (8,
+(s_len, sg, se, sv, sw, sh, sp, sf) = (8,
         'gloss = ', 
         'lexeme= ',
         'voclex= ',
         'trans = ',
         'hebrew= ',
         'phono = ',
+        'freq  = ',
 )
 
 LL = 120
 
 def set_verse():
-    (first, cur_len, cg, ce, cv, cw, ch, cp) = (True, s_len, sg, se, sv, sw, sh, sp)
+    (first, cur_len, cg, ce, cv, cw, ch, cp, cf) = (True, s_len, sg, se, sv, sw, sh, sp, sf)
 
     def set_line():
-        nonlocal first, cur_len, cur_len, cg, ce, cv, cw, ch, cp
+        nonlocal first, cur_len, cur_len, cg, ce, cv, cw, ch, cp, cf
         if cur_len != s_len:
             trans_file.write('{}\n'.format(('=' if first else '-') * cur_len))
-            for l in (ch, cp, cw, cv, ce, cg):
+            for l in (ch, cp, cw, cv, ce, cg, cf):
                 trans_file.write('{}\n'.format(l))
-        (first, cur_len, cg, ce, cv, cw, ch, cp) = (False, s_len, sg, se, sv, sw, sh, sp)
+        (first, cur_len, cg, ce, cv, cw, ch, cp, cf) = (False, s_len, sg, se, sv, sw, sh, sp, sf)
 
     for n in cur_words:
         h = F.g_word_utf8.v(n)
         q = F.g_qere_utf8.v(n)
         if q != None:
             h = '*{}'.format(q)
-        (g, e, v, w, p) = (F.gloss.v(n), F.lex.v(n), F.g_entry.v(n), F.g_word.v(n), F.phono.v(n))
-        (lg, le, lv, lw, lh, lp) = tuple(len(x) for x in (g, e, v, w, h, p))
-        lb = max((lg, le, lv, lw, lh, lp))
+        (g, e, v, w, p, f) = (F.gloss.v(n), F.lex.v(n), F.g_entry.v(n), F.g_word.v(n), F.phono.v(n), F.freq_lex.v(n))
+        (lg, le, lv, lw, lh, lp, lf) = tuple(len(x) for x in (g, e, v, w, h, p, f))
+        lb = max((lg, le, lv, lw, lh, lp, lf))
         if cur_len + lb + 1 > LL: set_line()
         cur_len += lb + 1
         fmtstr = '{{:<{}}}|'.format(lb)
@@ -908,6 +1019,7 @@ def set_verse():
         cw += fmtstr.format(w)
         ch += rfmtstr.format(h)
         cp += fmtstr.format(p)
+        cf += rfmtstr.format(f)
         cur_len += 1
     set_line()
     cur_words.clear()

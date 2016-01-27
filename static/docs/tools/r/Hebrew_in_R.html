@@ -202,7 +202,7 @@ The nodes are exported as rows, they correspond to the objects.
 The edges corresponding to the etcbc features <em>mother</em>, <em>functional_parent</em>, <em>distributional_parent</em> are
 exported as columns. For each row, such a column indicates the target of a corresponding outgoing edge.
 In the ETCBC data objects have at most one outgoing edge for each type of edge. The target is identified by its object identifier, which is in the <code>oid</code> column.</p>
-<p>Extra data such as lexicon, phonetic transcription, and ketiv-qere is also included.</p>
+<p>Extra data such as lexicon (including frequency and rank features), phonetic transcription, and ketiv-qere is also included.</p>
 
 </div>
 </div>
@@ -222,7 +222,7 @@ in the
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">collections</span>
@@ -258,7 +258,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;etcbc4b&#39;</span><span class="p">,</span> <span class="s">&#39;para&#39;</span><span class="p">,</span> <span class="s">&#39;hinr&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -283,8 +283,8 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2015-11-03T06-42-18
-  1.10s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/hinr/__log__hinr.txt
-  1.10s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-15T16-12-38
+  1.02s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/hinr/__log__hinr.txt
+  1.03s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-27T16-15-41
 </pre>
 </div>
 </div>
@@ -302,7 +302,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">p_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;px&#39;</span><span class="p">]</span>
@@ -318,7 +318,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -333,7 +333,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load_again</span><span class="p">({</span>
@@ -357,7 +357,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2015-11-03T06-42-18
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-15T16-13-51
+  0.17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-27T16-16-02
 </pre>
 </div>
 </div>
@@ -368,7 +368,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Collecting R data for paragraphs&quot;</span><span class="p">)</span>
@@ -397,22 +397,22 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    25s Collecting R data for paragraphs
-    26s  100000 nodes read
-    26s  200000 nodes read
-    27s  300000 nodes read
-    27s  400000 nodes read
-    27s  500000 nodes read
-    28s  600000 nodes read
-    28s  700000 nodes read
-    28s  800000 nodes read
-    29s  900000 nodes read
-    29s 1000000 nodes read
-    29s 1100000 nodes read
-    30s 1200000 nodes read
-    30s 1300000 nodes read
-    30s 1400000 nodes read
-    31s 1436858 nodes read and done
+<pre>  4.43s Collecting R data for paragraphs
+  4.82s  100000 nodes read
+  5.14s  200000 nodes read
+  5.45s  300000 nodes read
+  5.77s  400000 nodes read
+  6.07s  500000 nodes read
+  6.37s  600000 nodes read
+  6.71s  700000 nodes read
+  7.00s  800000 nodes read
+  7.30s  900000 nodes read
+  7.61s 1000000 nodes read
+  7.93s 1100000 nodes read
+  8.23s 1200000 nodes read
+  8.54s 1300000 nodes read
+  8.90s 1400000 nodes read
+  9.02s 1436858 nodes read and done
 </pre>
 </div>
 </div>
@@ -423,7 +423,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;etcbc4b&#39;</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;hinr&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -449,15 +449,15 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s INFO: USING DATA COMPILED AT: 2015-11-03T06-44-21
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-15T16-14-32
+  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T10-54-21
+  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-27T16-16-14
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[(&apos;etcbc4&apos;, [&apos;db.maxmonad&apos;, &apos;db.minmonad&apos;, &apos;db.monads&apos;, &apos;db.oid&apos;, &apos;db.otype&apos;, &apos;ft.code&apos;, &apos;ft.det&apos;, &apos;ft.dist&apos;, &apos;ft.dist_unit&apos;, &apos;ft.domain&apos;, &apos;ft.function&apos;, &apos;ft.g_cons&apos;, &apos;ft.g_cons_utf8&apos;, &apos;ft.g_lex&apos;, &apos;ft.g_lex_utf8&apos;, &apos;ft.g_nme&apos;, &apos;ft.g_nme_utf8&apos;, &apos;ft.g_pfm&apos;, &apos;ft.g_pfm_utf8&apos;, &apos;ft.g_prs&apos;, &apos;ft.g_prs_utf8&apos;, &apos;ft.g_uvf&apos;, &apos;ft.g_uvf_utf8&apos;, &apos;ft.g_vbe&apos;, &apos;ft.g_vbe_utf8&apos;, &apos;ft.g_vbs&apos;, &apos;ft.g_vbs_utf8&apos;, &apos;ft.g_word&apos;, &apos;ft.g_word_utf8&apos;, &apos;ft.gn&apos;, &apos;ft.is_root&apos;, &apos;ft.kind&apos;, &apos;ft.language&apos;, &apos;ft.lex&apos;, &apos;ft.lex_utf8&apos;, &apos;ft.ls&apos;, &apos;ft.mother_object_type&apos;, &apos;ft.nme&apos;, &apos;ft.nu&apos;, &apos;ft.number&apos;, &apos;ft.pdp&apos;, &apos;ft.pfm&apos;, &apos;ft.prs&apos;, &apos;ft.ps&apos;, &apos;ft.rela&apos;, &apos;ft.sp&apos;, &apos;ft.st&apos;, &apos;ft.tab&apos;, &apos;ft.trailer_utf8&apos;, &apos;ft.txt&apos;, &apos;ft.typ&apos;, &apos;ft.uvf&apos;, &apos;ft.vbe&apos;, &apos;ft.vbs&apos;, &apos;ft.vs&apos;, &apos;ft.vt&apos;, &apos;kq.g_qere_utf8&apos;, &apos;kq.qtrailer_utf8&apos;, &apos;lex.entry&apos;, &apos;lex.entry_heb&apos;, &apos;lex.entryid&apos;, &apos;lex.g_entry&apos;, &apos;lex.g_entry_heb&apos;, &apos;lex.gloss&apos;, &apos;lex.id&apos;, &apos;lex.lan&apos;, &apos;lex.nametype&apos;, &apos;lex.pos&apos;, &apos;lex.root&apos;, &apos;lex.subpos&apos;, &apos;ph.phono&apos;, &apos;ph.phono_sep&apos;, &apos;sft.book&apos;, &apos;sft.chapter&apos;, &apos;sft.label&apos;, &apos;sft.verse&apos;])]
+<pre>[(&apos;etcbc4&apos;, [&apos;db.maxmonad&apos;, &apos;db.minmonad&apos;, &apos;db.monads&apos;, &apos;db.oid&apos;, &apos;db.otype&apos;, &apos;ft.code&apos;, &apos;ft.det&apos;, &apos;ft.dist&apos;, &apos;ft.dist_unit&apos;, &apos;ft.domain&apos;, &apos;ft.function&apos;, &apos;ft.g_cons&apos;, &apos;ft.g_cons_utf8&apos;, &apos;ft.g_lex&apos;, &apos;ft.g_lex_utf8&apos;, &apos;ft.g_nme&apos;, &apos;ft.g_nme_utf8&apos;, &apos;ft.g_pfm&apos;, &apos;ft.g_pfm_utf8&apos;, &apos;ft.g_prs&apos;, &apos;ft.g_prs_utf8&apos;, &apos;ft.g_uvf&apos;, &apos;ft.g_uvf_utf8&apos;, &apos;ft.g_vbe&apos;, &apos;ft.g_vbe_utf8&apos;, &apos;ft.g_vbs&apos;, &apos;ft.g_vbs_utf8&apos;, &apos;ft.g_word&apos;, &apos;ft.g_word_utf8&apos;, &apos;ft.gn&apos;, &apos;ft.is_root&apos;, &apos;ft.kind&apos;, &apos;ft.language&apos;, &apos;ft.lex&apos;, &apos;ft.lex_utf8&apos;, &apos;ft.ls&apos;, &apos;ft.mother_object_type&apos;, &apos;ft.nme&apos;, &apos;ft.nu&apos;, &apos;ft.number&apos;, &apos;ft.pdp&apos;, &apos;ft.pfm&apos;, &apos;ft.prs&apos;, &apos;ft.ps&apos;, &apos;ft.rela&apos;, &apos;ft.sp&apos;, &apos;ft.st&apos;, &apos;ft.tab&apos;, &apos;ft.trailer_utf8&apos;, &apos;ft.txt&apos;, &apos;ft.typ&apos;, &apos;ft.uvf&apos;, &apos;ft.vbe&apos;, &apos;ft.vbs&apos;, &apos;ft.vs&apos;, &apos;ft.vt&apos;, &apos;kq.g_qere_utf8&apos;, &apos;kq.qtrailer_utf8&apos;, &apos;lex.entry&apos;, &apos;lex.entry_heb&apos;, &apos;lex.entryid&apos;, &apos;lex.freq_lex&apos;, &apos;lex.freq_occ&apos;, &apos;lex.g_entry&apos;, &apos;lex.g_entry_heb&apos;, &apos;lex.gloss&apos;, &apos;lex.id&apos;, &apos;lex.lan&apos;, &apos;lex.nametype&apos;, &apos;lex.pos&apos;, &apos;lex.rank_lex&apos;, &apos;lex.rank_occ&apos;, &apos;lex.root&apos;, &apos;lex.subpos&apos;, &apos;ph.phono&apos;, &apos;ph.phono_sep&apos;, &apos;sft.book&apos;, &apos;sft.chapter&apos;, &apos;sft.label&apos;, &apos;sft.verse&apos;])]
 [(&apos;etcbc4&apos;, [&apos;ft.distributional_parent&apos;, &apos;ft.functional_parent&apos;, &apos;ft.mother&apos;]), (&apos;laf&apos;, [(&apos;&apos;, &apos;x&apos;), (&apos;&apos;, &apos;y&apos;)])]
 </pre>
 </div>

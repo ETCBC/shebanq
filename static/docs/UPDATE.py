@@ -15,7 +15,14 @@ fabric = LafFabric()
 versions = {'4', '4b'}
 #versions = {'4', '4b', '4s'}
 commands = {'code', 'data', 'docs', 'all', 'none'}
-flags = {'m': 'string', 'versions': 'string', 'net': 'bool', 'netonly': 'bool', 'sql': 'bool', 'sqlonly': 'bool', 'force': 'bool', 'clean': 'bool', 'dry': 'bool'}
+flags = {
+    'm': 'string',
+    'versions': 'string',
+    'net': 'bool', 'netonly': 'bool',
+    'sql': 'bool', 'sqlonly': 'bool',
+    'mql': 'bool', 'mqlonly': 'bool',
+    'force': 'bool', 'clean': 'bool',
+    'dry': 'bool'}
 
 # USAGE
 #
@@ -47,6 +54,10 @@ flags = {'m': 'string', 'versions': 'string', 'net': 'bool', 'netonly': 'bool', 
 # sql=False|True : if False, skip mysql import steps
 #
 # sqlonly=False | True : if False, do only sql operations
+#
+# mql=False|True : if False, skip mql import steps
+#
+# mqlonly=False | True : if False, do only mql operations
 #
 # force=False|True : if False, do all actions, even if checks say that results are already up to date
 #
@@ -87,7 +98,7 @@ featuredoc_dst = 'featuredoc'
 
 server_user = 'dirkr'
 servers = [
-#    'shebanq.ancient-data.org',
+    'shebanq-bet.ancient-data.org',
     'clarin11.dans.knaw.nl',
 ]
 server_path = '/home/dirkr/shebanq-install'
@@ -225,7 +236,7 @@ def mql_transform(mql_src, mql_dst, source, v, extra_data_paths, dry=False):
     msg('{}{} + {} ==> {}'.format('DRY: 'if dry else '', mql_src_file, extra_data_files, mql_dst_file), withtime=False, newline=True)
     if dry: return 0
 
-    extra_spec = collections.defaultdict(lambda: set())
+    extra_spec = collections.defaultdict(lambda: {})
     extra_data = collections.defaultdict(lambda: {})
     # first read the extra feature data
     # the first line specifies the object type and the feature names
@@ -244,8 +255,15 @@ def mql_transform(mql_src, mql_dst, source, v, extra_data_paths, dry=False):
             nl += 1
             fields = line.rstrip('\n').split('\t')
             if first:
-                extra_spec[fields[0]] |= set(fields[1:])
-                this_extra_fields = fields[1:]
+                otype = fields[0]
+                this_extra_fields_raw = fields[1:]
+                for (i, f) in enumerate(this_extra_fields_raw):
+                    spec = f.split(':', 1)
+                    tp = 'integer' if len(spec) == 2 and spec[1] == 'i' else 'string'
+                    extra_spec[otype][spec[0]] = tp
+                    this_extra_fields.append(spec[0])
+                #extra_spec[fields[0]] |= set(fields[1:])
+                #this_extra_fields = fields[1:]
                 msg('\t object type: {}; features: {}\n'.format(fields[0], ','.join(fields[1:])))
                 first = False
             else:
@@ -253,7 +271,9 @@ def mql_transform(mql_src, mql_dst, source, v, extra_data_paths, dry=False):
                     errors['incorrect number of fields'].append(nl)
                     continue
                 for (i, f) in enumerate(this_extra_fields):
-                    extra_data[fields[0]][f] = fields[i+1].replace('\\n', '\n')
+                    val = fields[i+1].replace('\\n', '\n')
+                    if extra_spec[otype][f] != 'integer': val = '"'+val+'"'
+                    extra_data[fields[0]][f] = val
         df.close()
         for e in sorted(errors):
             le = len(errors[e])
@@ -297,7 +317,10 @@ def mql_transform(mql_src, mql_dst, source, v, extra_data_paths, dry=False):
                 status = 0
         elif status == 2:
             if line.startswith(']'):
-                for ft in sorted(extra_spec[found_otype]): outf.write('  {} : string DEFAULT "";\n'.format(ft))
+                for ft in sorted(extra_spec[found_otype]):
+                    tp = extra_spec[found_otype][ft]
+                    df = '0' if tp == 'integer' else '""'
+                    outf.write('  {} : {} DEFAULT {};\n'.format(ft, tp, df))
                 status = 0
             outf.write(line)
         elif status == 3:                                           # status 3 and 4 for lines specifying object feature data
@@ -306,7 +329,7 @@ def mql_transform(mql_src, mql_dst, source, v, extra_data_paths, dry=False):
                 status = 4
         elif status == 4:
             if line.startswith(']'):
-                for (ft, val) in sorted(extra_data[found_oid].items()): outf.write('{}:="{}";\n'.format(ft, val))
+                for (ft, val) in sorted(extra_data[found_oid].items()): outf.write('{}:={};\n'.format(ft, val))
                 status = 3
             outf.write(line)
     inf.close()
@@ -338,13 +361,13 @@ def make_snapshots(fmt, force=False, dry=False):
     msg('{:>3} notebooks found; {:>3} already up-to-date; {:>3} converted, {:>3} errors'.format(total, total-count-error, count, error))
     return error == 0
 
-def data_task(v, name, base, outpath, extra, force=False, dry=False, extra_inpath=None, net=False, netonly=False, sql=False, sqlonly=False):
+def data_task(v, name, base, outpath, extra, force=False, dry=False, extra_inpath=None, net=False, netonly=False, sql=False, sqlonly=False, mql=False, mqlonly=False):
     msg('{:<3}: begin {} ...'.format(v, name.upper()))
     os.chdir(orig_dir)
     os.chdir(base)
     inpath = '{}.py'.format(name)
     good = True
-    if not netonly and not sqlonly:
+    if not netonly and not sqlonly and not mqlonly:
         if not must_update(inpath, outpath, force=force) \
             and (extra_inpath == None or
                 not must_update(extra_inpath, outpath, force=force) \
@@ -370,7 +393,7 @@ def get_data_dir(source, version):
     API = fabric.load('{}{}'.format(source, version), '--', 'xxx', {"features": ('','')}, verbose='SILENT')
     return (API['data_dir'], API['my_file']('')[0:-5])
 
-def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=False, force=False, clean=False, m='fixes', dry=False):
+def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=False, mql=False, mqlonly=False, force=False, clean=False, m='fixes', dry=False):
     global orig_dir
     reset_time()
     orig_dir = os.getcwd()
@@ -381,9 +404,9 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
         if {'docs', 'all'} & cmds:
             good = False
             for x in [1]:
-                if not sqlonly: 
+                if not sqlonly and not mqlonly: 
                     if not featuredoc(net=net, netonly=netonly, clean=clean, dry=dry): continue
-                if not netonly and not sqlonly: 
+                if not netonly and not sqlonly and not mqlonly: 
                     if not make_snapshots('html', force=force, dry=dry): continue
                 good = True
             if not good: continue
@@ -393,7 +416,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
         if {'data', 'all'} & cmds:
             good = False
             for x in [1]:
-                if not netonly and not sqlonly:
+                if not netonly and not sqlonly and not mqlonly:
                     if not make_snapshots('python', force=force, dry=dry): continue
                 good = True
             if not good: continue
@@ -416,11 +439,11 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                     os.chdir(output_dir)
                     this_good = False
                     for x in [1]:
-                        if sql and not netonly:
+                        if sql and not netonly and not mqlonly:
                             msg('START importing into MYSQL: {}'.format(passage_sql))
                             if not do_cmd('mysql -u root < {}'.format(passage_sql), dry=dry): continue 
                             msg('DONE importing into MYSQL: {}'.format(passage_sql))
-                        if net and not sqlonly:
+                        if net and not sqlonly and not mqlonly:
                             if must_update(passage_sql, passage_sql_compressed, force=force):
                                 if not do_cmd('gzip -f -k {}'.format(passage_sql), dry=dry): continue
                             for server in servers:
@@ -456,7 +479,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             new_mql = True
 
                         emdros_db = 'shebanq_{}{}'.format(source, v)
-                        if sql and not netonly:
+                        if mql and not netonly and not sqlonly:
                             if new_mql or not has_db(emdros_db):
                                 msg('DROPPING old {} database'.format(emdros_db))
                                 if not do_cmd("mysql -u root -e 'drop database if exists {};'".format(emdros_db), dry=dry): continue 
@@ -466,13 +489,14 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                             else:
                                 msg('No need to do a new import of {}'.format(emdros_db))
 
-                        if must_update(mql_extra_dst, mql_extra_dst_compressed, force=force):
-                            if not do_cmd('bzip2 -f -k {}'.format(mql_extra_dst), dry=dry): continue
+                        if mql and not netonly and not sqlonly:
+                            if must_update(mql_extra_dst, mql_extra_dst_compressed, force=force):
+                                if not do_cmd('bzip2 -f -k {}'.format(mql_extra_dst), dry=dry): continue
 
-                        if must_update(mql_extra_dst_compressed, mql_extra_src_compressed, force=force):
-                            if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
+                            if must_update(mql_extra_dst_compressed, mql_extra_src_compressed, force=force):
+                                if not do_cmd('cp {} {}'.format(mql_extra_dst_compressed, mql_extra_src_compressed), dry=dry): continue
 
-                        if net and not sqlonly:
+                        if net and not sqlonly and not mqlonly:
                             for server in servers:
                                 cmd = 'scp -r {} {}@{}:{}'.format(mql_extra_src_compressed, server_user, server, server_path)
                                 if new_mql:
@@ -491,14 +515,14 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                         'phono', 'tools/phono', phono_output,
                         None,
                         force=force, dry=dry,
-                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
+                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly, mql=mql, mqlonly=mqlonly,
                     ): continue
                     if not data_task(
                         v,
                         'para_from_px', 'tools/shebanq', para_output,
                         None,
                         force=force, dry=dry,
-                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
+                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly, mql=mql, mqlonly=mqlonly,
                     ): continue
                     if not data_task(
                         v,
@@ -506,7 +530,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                         None,
                         force=force, dry=dry,
                         extra_inpath=phono_output,
-                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
+                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly, mql=mql, mqlonly=mqlonly,
                     ): continue
                     if not data_task(
                         v,
@@ -514,9 +538,10 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
                         to_db,
                         force=force, dry=dry,
                         extra_inpath=lexicon_output,
-                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly,
+                        net=net, netonly=netonly, sql=sql, sqlonly=sqlonly, mql=mql, mqlonly=mqlonly,
                     ): continue
-                    if not patch_mql(): continue
+                    if mql and not netonly and not sqlonly:
+                        if not patch_mql(): continue
                     good = True
 
         if not good: continue
@@ -525,7 +550,7 @@ def do_all(cmds, versions=set(), net=False, netonly=False, sql=False, sqlonly=Fa
         if {'code', 'all'} & cmds: 
             good = False
             for x in [1]:
-                if not sqlonly: 
+                if not sqlonly and not mqlonly: 
                     if not shebanq(m, net=net, netonly=netonly, dry=dry): continue
                 good = True
         if not good: continue
@@ -601,8 +626,13 @@ def check_args():
     if not a_sql and a_sqlonly:
         print('Inconsistent use of flags sql={} and sqlonly={}'.format(a_sql, a_sqlonly))
         good = False
-    if a_sqlonly and a_netonly:
-        print('Inconsistent use of flags netonly={} and sqlonly={}'.format(a_netonly, a_sqlonly))
+    a_mql = a_flags.get('mql', False)
+    a_mqlonly = a_flags.get('mqlonly', False)
+    if not a_mql and a_mqlonly:
+        print('Inconsistent use of flags mql={} and mqlonly={}'.format(a_mql, a_mqlonly))
+        good = False
+    if a_sqlonly and a_netonly or a_sqlonly and a_mqlonly or a_netonly and a_mql_only:
+        print('Inconsistent use of flags netonly={} and sqlonly={} and mqlonly={}'.format(a_netonly, a_sqlonly, a_mqlonly))
         good = False
     return (good, a_commands, a_flags)
 
