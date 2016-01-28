@@ -174,48 +174,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="http://laf-fabric.readthedocs.org/en/latest/" target="_blank"><img align="left" src="images/laf-fabric-xsmall.png"/></a>
-<a href="http://www.godgeleerdheid.vu.nl/etcbc" target="_blank"><img align="left" src="images/VU-ETCBC-xsmall.png"/></a>
-<a href="http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71" target="_blank"><img align="left"src="images/etcbc4easy-small.png"/></a>
-<a href="http://tla.mpi.nl" target="_blank"><img align="right" src="images/TLA-xsmall.png"/></a>
-<a href="http://www.dans.knaw.nl" target="_blank"><img align="right"src="images/DANS-xsmall.png"/></a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="ETCBC-in-R">ETCBC in R<a class="anchor-link" href="#ETCBC-in-R">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This notebook exports the ETCBC database to an R data frame.
-The nodes are exported as rows, they correspond to the objects.
-The edges corresponding to the etcbc features <em>mother</em>, <em>functional_parent</em>, <em>distributional_parent</em> are
-exported as columns. For each row, such a column indicates the target of a corresponding outgoing edge.
-In the ETCBC data objects have at most one outgoing edge for each type of edge. The target is identified by its object identifier, which is in the <code>oid</code> column.</p>
-<p>Extra data such as lexicon (including frequency and rank features), phonetic transcription, and ketiv-qere is also included.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The result is the file 
-<code>etcbc4b.rds</code>
-in the 
-<a href="https://github.com/ETCBC/laf-fabric-data">laf-fabric-data github repository</a>.</p>
+<p>This notebook contains the R instructions to load the big ETCBC4b export and save it in the much more compact .rds format.</p>
 
 </div>
 </div>
@@ -225,417 +184,7 @@ in the
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">collections</span>
-
-
-<span class="kn">from</span> <span class="nn">laf.fabric</span> <span class="k">import</span> <span class="n">LafFabric</span>
-<span class="kn">import</span> <span class="nn">etcbc</span>
-
-<span class="n">fabric</span> <span class="o">=</span> <span class="n">LafFabric</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.5.7
-API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
-Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;etcbc4b&#39;</span><span class="p">,</span> <span class="s">&#39;para&#39;</span><span class="p">,</span> <span class="s">&#39;hinr&#39;</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
-    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
-<span class="s">&#39;&#39;&#39;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">),</span>
-    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
-<span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T18-59-08
-  1.15s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/hinr/__log__hinr.txt
-  1.15s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-28T06-40-56
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[(&apos;etcbc4&apos;, [&apos;db.maxmonad&apos;, &apos;db.minmonad&apos;, &apos;db.monads&apos;, &apos;db.oid&apos;, &apos;db.otype&apos;, &apos;ft.code&apos;, &apos;ft.det&apos;, &apos;ft.dist&apos;, &apos;ft.dist_unit&apos;, &apos;ft.domain&apos;, &apos;ft.function&apos;, &apos;ft.g_cons&apos;, &apos;ft.g_cons_utf8&apos;, &apos;ft.g_lex&apos;, &apos;ft.g_lex_utf8&apos;, &apos;ft.g_nme&apos;, &apos;ft.g_nme_utf8&apos;, &apos;ft.g_pfm&apos;, &apos;ft.g_pfm_utf8&apos;, &apos;ft.g_prs&apos;, &apos;ft.g_prs_utf8&apos;, &apos;ft.g_uvf&apos;, &apos;ft.g_uvf_utf8&apos;, &apos;ft.g_vbe&apos;, &apos;ft.g_vbe_utf8&apos;, &apos;ft.g_vbs&apos;, &apos;ft.g_vbs_utf8&apos;, &apos;ft.g_word&apos;, &apos;ft.g_word_utf8&apos;, &apos;ft.gn&apos;, &apos;ft.is_root&apos;, &apos;ft.kind&apos;, &apos;ft.language&apos;, &apos;ft.lex&apos;, &apos;ft.lex_utf8&apos;, &apos;ft.ls&apos;, &apos;ft.mother_object_type&apos;, &apos;ft.nme&apos;, &apos;ft.nu&apos;, &apos;ft.number&apos;, &apos;ft.pdp&apos;, &apos;ft.pfm&apos;, &apos;ft.prs&apos;, &apos;ft.ps&apos;, &apos;ft.rela&apos;, &apos;ft.sp&apos;, &apos;ft.st&apos;, &apos;ft.tab&apos;, &apos;ft.trailer_utf8&apos;, &apos;ft.txt&apos;, &apos;ft.typ&apos;, &apos;ft.uvf&apos;, &apos;ft.vbe&apos;, &apos;ft.vbs&apos;, &apos;ft.vs&apos;, &apos;ft.vt&apos;, &apos;px.instruction&apos;, &apos;px.number_in_ch&apos;, &apos;px.pargr&apos;, &apos;sft.book&apos;, &apos;sft.chapter&apos;, &apos;sft.label&apos;, &apos;sft.verse&apos;])]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">p_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;px&#39;</span><span class="p">]</span>
-<span class="n">p_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_features</span><span class="p">)</span>
-<span class="n">p_feature_str</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&apos;instruction number_in_ch pargr&apos;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load_again</span><span class="p">({</span>
-    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
-    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">p_feature_str</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">),</span>
-    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
-<span class="p">})</span>
-<span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="o">.</span><span class="n">localnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T18-59-08
-  0.21s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-28T06-42-11
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Collecting R data for paragraphs&quot;</span><span class="p">)</span>
-<span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">100000</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">p_data</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">():</span>
-    <span class="n">p_values</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">p_data</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p_features</span><span class="p">)</span>
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">chunk_size</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&gt;7} nodes read&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&gt;7} nodes read and done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  5.02s Collecting R data for paragraphs
-  5.46s  100000 nodes read
-  5.81s  200000 nodes read
-  6.18s  300000 nodes read
-  6.53s  400000 nodes read
-  6.86s  500000 nodes read
-  7.20s  600000 nodes read
-  7.56s  700000 nodes read
-  7.90s  800000 nodes read
-  8.23s  900000 nodes read
-  8.54s 1000000 nodes read
-  8.88s 1100000 nodes read
-  9.21s 1200000 nodes read
-  9.86s 1300000 nodes read
-    10s 1400000 nodes read
-    10s 1436858 nodes read and done
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;etcbc4b&#39;</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;hinr&#39;</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
-    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
-<span class="s">&#39;&#39;&#39;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">),</span>
-    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
-<span class="p">})</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">API</span><span class="p">[</span><span class="s">&#39;FE_all&#39;</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T19-01-17
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-28T06-42-26
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[(&apos;etcbc4&apos;, [&apos;db.maxmonad&apos;, &apos;db.minmonad&apos;, &apos;db.monads&apos;, &apos;db.oid&apos;, &apos;db.otype&apos;, &apos;ft.code&apos;, &apos;ft.det&apos;, &apos;ft.dist&apos;, &apos;ft.dist_unit&apos;, &apos;ft.domain&apos;, &apos;ft.function&apos;, &apos;ft.g_cons&apos;, &apos;ft.g_cons_utf8&apos;, &apos;ft.g_lex&apos;, &apos;ft.g_lex_utf8&apos;, &apos;ft.g_nme&apos;, &apos;ft.g_nme_utf8&apos;, &apos;ft.g_pfm&apos;, &apos;ft.g_pfm_utf8&apos;, &apos;ft.g_prs&apos;, &apos;ft.g_prs_utf8&apos;, &apos;ft.g_uvf&apos;, &apos;ft.g_uvf_utf8&apos;, &apos;ft.g_vbe&apos;, &apos;ft.g_vbe_utf8&apos;, &apos;ft.g_vbs&apos;, &apos;ft.g_vbs_utf8&apos;, &apos;ft.g_word&apos;, &apos;ft.g_word_utf8&apos;, &apos;ft.gn&apos;, &apos;ft.is_root&apos;, &apos;ft.kind&apos;, &apos;ft.language&apos;, &apos;ft.lex&apos;, &apos;ft.lex_utf8&apos;, &apos;ft.ls&apos;, &apos;ft.mother_object_type&apos;, &apos;ft.nme&apos;, &apos;ft.nu&apos;, &apos;ft.number&apos;, &apos;ft.pdp&apos;, &apos;ft.pfm&apos;, &apos;ft.prs&apos;, &apos;ft.ps&apos;, &apos;ft.rela&apos;, &apos;ft.sp&apos;, &apos;ft.st&apos;, &apos;ft.tab&apos;, &apos;ft.trailer_utf8&apos;, &apos;ft.txt&apos;, &apos;ft.typ&apos;, &apos;ft.uvf&apos;, &apos;ft.vbe&apos;, &apos;ft.vbs&apos;, &apos;ft.vs&apos;, &apos;ft.vt&apos;, &apos;kq.g_qere_utf8&apos;, &apos;kq.qtrailer_utf8&apos;, &apos;lex.entry&apos;, &apos;lex.entry_heb&apos;, &apos;lex.entryid&apos;, &apos;lex.freq_lex&apos;, &apos;lex.freq_occ&apos;, &apos;lex.g_entry&apos;, &apos;lex.g_entry_heb&apos;, &apos;lex.gloss&apos;, &apos;lex.id&apos;, &apos;lex.lan&apos;, &apos;lex.nametype&apos;, &apos;lex.pos&apos;, &apos;lex.rank_lex&apos;, &apos;lex.rank_occ&apos;, &apos;lex.root&apos;, &apos;lex.subpos&apos;, &apos;ph.phono&apos;, &apos;ph.phono_sep&apos;, &apos;sft.book&apos;, &apos;sft.chapter&apos;, &apos;sft.label&apos;, &apos;sft.verse&apos;])]
-[(&apos;etcbc4&apos;, [&apos;ft.distributional_parent&apos;, &apos;ft.functional_parent&apos;, &apos;ft.mother&apos;]), (&apos;laf&apos;, [(&apos;&apos;, &apos;x&apos;), (&apos;&apos;, &apos;y&apos;)])]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">all_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">all_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_features</span><span class="p">)</span>
-<span class="n">alle_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;FE_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">alle_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alle_features</span><span class="p">)</span>
-<span class="n">alle_feature_str</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&apos;distributional_parent functional_parent mother&apos;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load_again</span><span class="p">({</span>
-    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
-    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">all_feature_str</span><span class="p">,</span><span class="n">alle_feature_str</span><span class="p">),</span>
-    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
-<span class="p">})</span>
-<span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="o">.</span><span class="n">localnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s INFO: USING DATA COMPILED AT: 2016-01-27T19-01-17
-    25s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-28T06-43-08
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Writing R data&quot;</span><span class="p">)</span>
-<span class="n">hr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">use_features</span> <span class="o">=</span> <span class="n">all_features</span>
-<span class="n">usee_features</span> <span class="o">=</span> <span class="n">alle_features</span>
-<span class="c"># use_features = [&#39;oid&#39;] + all_features[60:77]</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">use_features</span><span class="p">),</span>
-    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_features</span><span class="p">),</span>
-    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">usee_features</span><span class="p">),</span>
-<span class="p">))</span>
-<span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">100000</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">():</span>
-    <span class="n">all_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">use_features</span><span class="p">]</span>
-    <span class="n">p_values</span> <span class="o">=</span> <span class="n">p_data</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-    <span class="n">alle_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">oid</span><span class="o">.</span><span class="n">v</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">usee_features</span><span class="p">]</span>
-    <span class="n">hr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">all_values</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">alle_values</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-    <span class="p">))</span>
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">chunk_size</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&gt;7} nodes written&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&gt;7} nodes written and done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  4.98s Writing R data
-    14s  100000 nodes written
-    25s  200000 nodes written
-    34s  300000 nodes written
-    43s  400000 nodes written
-    52s  500000 nodes written
- 1m 02s  600000 nodes written
- 1m 11s  700000 nodes written
- 1m 23s  800000 nodes written
- 1m 35s  900000 nodes written
- 1m 45s 1000000 nodes written
- 1m 55s 1100000 nodes written
- 2m 06s 1200000 nodes written
- 2m 18s 1300000 nodes written
- 2m 33s 1400000 nodes written
- 2m 37s 1436858 nodes written and done
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The R export is ready now, but it is a bit large.
-We can get a much leaner file by using R to load this file and save it in .rds format.</p>
-<p>If your installation is not such that you can run R in a notebook based on a python kernel (as I am experiencing right now due to problems with the python module <code>rpy2</code>), switch to the Hebrew_In_RR notebook in this same directory to 
-carry out the R cells.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now read the data in R and save it in compact .rds format.</p>
-<p>Note that we have to ignore quotes and comment signs!</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R
-etcbc <span class="o">=</span> read.table<span class="p">(</span>
+<div class=" highlight hl-r"><pre>etcbc <span class="o">=</span> read.table<span class="p">(</span>
     <span class="s">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.txt&#39;</span><span class="p">,</span> 
     sep<span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> 
     header<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> 
@@ -654,11 +203,16 @@ etcbc <span class="o">=</span> read.table<span class="p">(</span>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>ERROR: Cell magic &#96;%%R&#96; not found.
-</pre>
+<div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<ol class=list-inline>
+	<li>1436858</li>
+	<li>86</li>
+</ol>
+
 </div>
+
 </div>
 
 </div>
@@ -667,11 +221,10 @@ etcbc <span class="o">=</span> read.table<span class="p">(</span>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R
-<span class="kp">saveRDS</span><span class="p">(</span>
+<div class=" highlight hl-r"><pre><span class="kp">saveRDS</span><span class="p">(</span>
     object<span class="o">=</span>etcbc<span class="p">,</span> 
     file<span class="o">=</span><span class="s">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.rds&#39;</span>
 <span class="p">)</span>
@@ -684,50 +237,10 @@ etcbc <span class="o">=</span> read.table<span class="p">(</span>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">!</span>ls -lh /Users/dirk/SURFdrive/laf-fabric-data/r
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>total 645384
--rw-r--r--  1 dirk  staff    50M Jan 28 09:39 etcbc4b.rds
--rw-r--r--  1 dirk  staff   265M Jan 28 07:45 etcbc4b.txt
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now check how fast this loads. (Half the time)</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R
-etcbc <span class="o">=</span> <span class="kp">readRDS</span><span class="p">(</span>
+<div class=" highlight hl-r"><pre>etcbc <span class="o">=</span> <span class="kp">readRDS</span><span class="p">(</span>
     file<span class="o">=</span><span class="s">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.rds&#39;</span>
 <span class="p">)</span>
 <span class="kp">dim</span><span class="p">(</span>etcbc<span class="p">)</span>
@@ -741,39 +254,18 @@ etcbc <span class="o">=</span> <span class="kp">readRDS</span><span class="p">(<
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
 
+<div class="output_html rendered_html output_subarea output_execute_result">
+<ol class=list-inline>
+	<li>1436858</li>
+	<li>86</li>
+</ol>
 
-<div class="output_text output_subarea ">
-<pre>[1] 1436858      82
-</pre>
-</div>
-
-</div>
-
-</div>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Copy it to the github directory</p>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">!</span>cp <span class="s1">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.rds&#39;</span> <span class="s1">&#39;/Users/dirk/SURFdrive/current/demos/github/laf-fabric-data/etcbc4b.rds&#39;</span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
@@ -783,7 +275,7 @@ etcbc <span class="o">=</span> <span class="kp">readRDS</span><span class="p">(<
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre> 
+<div class=" highlight hl-r"><pre>
 </pre></div>
 
 </div>

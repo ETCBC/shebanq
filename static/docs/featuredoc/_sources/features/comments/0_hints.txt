@@ -23,7 +23,7 @@ Here are some features that are not in the core data of the ETCBC.
 :doc:`g_qere_utf8 <g_qere_utf8>`   `Ketiv - Qere <https://shebanq.ancient-data.org/hebrew/query?id=972>`_                                        Dirk Roorda
 :doc:`gloss <gloss>`               `Gloss (missing) <https://shebanq.ancient-data.org/hebrew/query?id=975>`_                                     Dirk Roorda
 :doc:`nametype <nametype>`         `Named entities (places) <https://shebanq.ancient-data.org/hebrew/query?id=971>`_                             Dirk Roorda
-:doc:`freq_lex <freq_lex>`         `Frequencies (lexemes) <https://shebanq.ancient-data.org/hebrew/query?id=10000>`_  (to be created)            Oliver Glanz
+:doc:`freq_lex <freq_lex>`         `Simple clauses <https://shebanq.ancient-data.org/hebrew/query?id=1106>`_                                     Oliver Glanz
 =================================  ===========================================================================================================   =================
 
 
