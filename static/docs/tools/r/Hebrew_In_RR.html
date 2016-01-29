@@ -174,15 +174,34 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Import-ETCBC-data-into-R">Import ETCBC data into R<a class="anchor-link" href="#Import-ETCBC-data-into-R">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This notebook contains the R instructions to load the big ETCBC4b export and save it in the much more compact .rds format.</p>
 <p>Note that we have to ignore quotes and comment signs!</p>
 
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First we load the big text file with all information. This will take 3 minutes or so.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>etcbc <span class="o">=</span> read.table<span class="p">(</span>
@@ -204,12 +223,12 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[38]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <ol class=list-inline>
 	<li>1436858</li>
-	<li>86</li>
+	<li>95</li>
 </ol>
 
 </div>
@@ -220,9 +239,19 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we save it into compact rds format.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span class="kp">saveRDS</span><span class="p">(</span>
@@ -236,9 +265,19 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We load the data again, now from the compact representation. Much quicker. Still 40 seconds.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>etcbc <span class="o">=</span> <span class="kp">readRDS</span><span class="p">(</span>
@@ -255,12 +294,12 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <ol class=list-inline>
 	<li>1436858</li>
-	<li>86</li>
+	<li>95</li>
 </ol>
 
 </div>
@@ -273,10 +312,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span class="kp">head</span><span class="p">(</span>etcbcl<span class="p">,</span> n<span class="o">=</span><span class="m">30</span><span class="p">)</span>
+<div class=" highlight hl-r"><pre><span class="kp">head</span><span class="p">(</span>etcbc<span class="p">,</span> n<span class="o">=</span><span class="m">30</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -287,42 +326,42 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[41]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <table>
-<thead><tr><th></th><th scope=col>oid</th><th scope=col>otype</th><th scope=col>subphrase</th><th scope=col>phrase_atom</th><th scope=col>phrase</th><th scope=col>clause_atom</th><th scope=col>clause</th><th scope=col>sentence_atom</th><th scope=col>sentence</th><th scope=col>half_verse</th><th scope=col>verse</th><th scope=col>chapter</th><th scope=col>book</th></tr></thead>
+<thead><tr><th></th><th scope=col>oid</th><th scope=col>otype</th><th scope=col>in.subphrase</th><th scope=col>in.phrase_atom</th><th scope=col>in.phrase</th><th scope=col>in.clause_atom</th><th scope=col>in.clause</th><th scope=col>in.sentence_atom</th><th scope=col>in.sentence</th><th scope=col>in.half_verse</th><th scope=col>in.verse</th><th scope=col>in.chapter</th><th scope=col>in.book</th><th scope=col>distributional_parent</th><th scope=col>functional_parent</th><th scope=col>mother</th><th scope=col>X</th><th scope=col>book</th><th scope=col>chapter</th><th scope=col>code</th><th scope=col>det</th><th scope=col>dist</th><th scope=col>dist_unit</th><th scope=col>domain</th><th scope=col>entry</th><th scope=col>entry_heb</th><th scope=col>entryid</th><th scope=col>freq_lex</th><th scope=col>freq_occ</th><th scope=col>function.</th><th scope=col>g_cons</th><th scope=col>g_cons_utf8</th><th scope=col>g_entry</th><th scope=col>g_entry_heb</th><th scope=col>g_lex</th><th scope=col>g_lex_utf8</th><th scope=col>g_nme</th><th scope=col>g_nme_utf8</th><th scope=col>g_pfm</th><th scope=col>g_pfm_utf8</th><th scope=col>g_prs</th><th scope=col>g_prs_utf8</th><th scope=col>g_qere_utf8</th><th scope=col>g_uvf</th><th scope=col>g_uvf_utf8</th><th scope=col>g_vbe</th><th scope=col>g_vbe_utf8</th><th scope=col>g_vbs</th><th scope=col>g_vbs_utf8</th><th scope=col>g_word</th><th scope=col>g_word_utf8</th><th scope=col>gloss</th><th scope=col>gn</th><th scope=col>id</th><th scope=col>is_root</th><th scope=col>kind</th><th scope=col>label</th><th scope=col>lan</th><th scope=col>language</th><th scope=col>lex</th><th scope=col>lex_utf8</th><th scope=col>ls</th><th scope=col>maxmonad</th><th scope=col>minmonad</th><th scope=col>monads</th><th scope=col>mother_object_type</th><th scope=col>nametype</th><th scope=col>nme</th><th scope=col>nu</th><th scope=col>number</th><th scope=col>pdp</th><th scope=col>pfm</th><th scope=col>phono</th><th scope=col>phono_sep</th><th scope=col>pos</th><th scope=col>prs</th><th scope=col>ps</th><th scope=col>qtrailer_utf8</th><th scope=col>rank_lex</th><th scope=col>rank_occ</th><th scope=col>rela</th><th scope=col>root</th><th scope=col>sp</th><th scope=col>st</th><th scope=col>subpos</th><th scope=col>tab</th><th scope=col>trailer_utf8</th><th scope=col>txt</th><th scope=col>typ</th><th scope=col>uvf</th><th scope=col>vbe</th><th scope=col>vbs</th><th scope=col>verse</th><th scope=col>vs</th><th scope=col>vt</th></tr></thead>
 <tbody>
-	<tr><th scope=row>1</th><td>1</td><td>book</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
-	<tr><th scope=row>2</th><td>2</td><td>chapter</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1367497</td></tr>
-	<tr><th scope=row>3</th><td>3</td><td>verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>4</th><td>11</td><td>sentence</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>5</th><td>10</td><td>sentence_atom</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1125793</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>6</th><td>9</td><td>clause</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1189379</td><td>1125793</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>7</th><td>8</td><td>clause_atom</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>426568</td><td>1189379</td><td>1125793</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>8</th><td>4</td><td>half_verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>9</th><td>7</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>10</th><td>6</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605133</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>11</th><td>5</td><td>word</td><td>NA</td><td>858294</td><td>605133</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>12</th><td>12</td><td>word</td><td>NA</td><td>858294</td><td>605133</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>13</th><td>15</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>14</th><td>14</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605134</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>15</th><td>13</td><td>word</td><td>NA</td><td>858295</td><td>605134</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>16</th><td>18</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>17</th><td>17</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605135</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>18</th><td>16</td><td>word</td><td>NA</td><td>858296</td><td>605135</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>19</th><td>19</td><td>half_verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>20</th><td>22</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>21</th><td>21</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>22</th><td>25</td><td>subphrase</td><td>NA</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>23</th><td>20</td><td>word</td><td>1253733</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>24</th><td>23</td><td>word</td><td>1253733</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>25</th><td>24</td><td>word</td><td>1253733</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>26</th><td>26</td><td>word</td><td>NA</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>27</th><td>30</td><td>subphrase</td><td>NA</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>28</th><td>27</td><td>word</td><td>1253734</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>29</th><td>28</td><td>word</td><td>1253734</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
-	<tr><th scope=row>30</th><td>29</td><td>word</td><td>1253734</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>1</th><td>1</td><td>book</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>Genesis</td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>28758</td><td>1</td><td>1-28758</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>2</th><td>2</td><td>chapter</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>Genesis</td><td>1</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>673</td><td>1</td><td>1-673</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>3</th><td>3</td><td>verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>2</td><td>1</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>Genesis</td><td>1</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td> GEN 01,01</td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>1</td><td>1-11</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td></tr>
+	<tr><th scope=row>4</th><td>11</td><td>sentence</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>1</td><td>1-11</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>5</th><td>10</td><td>sentence_atom</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>11</td><td>NA</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>11</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>1</td><td>1-11</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>6</th><td>9</td><td>clause</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>10</td><td>11</td><td>NA</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>11</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>0</td><td>clause_atoms</td><td>?</td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td>VC</td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>1</td><td>1-11</td><td>clause</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td>?</td><td>xQtX</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>7</th><td>8</td><td>clause_atom</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>9</td><td>10</td><td>11</td><td>NA</td><td>3</td><td>2</td><td>1</td><td>10</td><td>9</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>0</td><td></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>true</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>1</td><td>1-11</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>0</td><td></td><td></td><td>xQtX</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>8</th><td>4</td><td>half_verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>A</td><td></td><td></td><td></td><td></td><td></td><td>4</td><td>1</td><td>1-4</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>9</th><td>7</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>9</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>und</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>Time</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>1</td><td>1-2</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>PP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>10</th><td>6</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>8</td><td>7</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>und</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>1</td><td>1-2</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>PP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>11</th><td>5</td><td>word</td><td>NA</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>6</td><td>7</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>B</td><td>ב</td><td>B</td><td>15542</td><td>14194</td><td></td><td>B</td><td>ב</td><td>B.:</td><td> בְּ</td><td>B.:-</td><td> בְּ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>B.:-</td><td> בְּ</td><td>in</td><td>NA</td><td>2194</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>B</td><td>ב</td><td>none</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td>n/a</td><td>NA</td><td>1</td><td>prep</td><td>n/a</td><td>bᵊ</td><td></td><td>prep</td><td>absent</td><td>NA</td><td></td><td>3</td><td>3</td><td></td><td></td><td>prep</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>12</th><td>12</td><td>word</td><td>NA</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>6</td><td>7</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>R>CJT</td><td>ראשׁית</td><td>R>CJT/</td><td>51</td><td>45</td><td></td><td>R>CJT</td><td>ראשׁית</td><td>R;>CIJT</td><td>רֵאשִׁית</td><td>R;>CIJT</td><td>רֵאשִׁית</td><td>/</td><td>/</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>R;>CI73JT</td><td>רֵאשִׁ֖ית</td><td>beginning</td><td>f</td><td>7206</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>R>CJT/</td><td>ראשׁית/</td><td>none</td><td>2</td><td>2</td><td>2</td><td></td><td></td><td></td><td>sg</td><td>2</td><td>subs</td><td>n/a</td><td>rēšˌîṯ</td><td> </td><td>subs</td><td>absent</td><td>NA</td><td></td><td>707</td><td>868</td><td></td><td>R>C</td><td>subs</td><td>a</td><td></td><td>NA</td><td> </td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>13</th><td>15</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>9</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>NA</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>Pred</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td>3</td><td>3</td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>VP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>14</th><td>14</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>15</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>8</td><td>15</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>NA</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td>3</td><td>3</td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>VP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>15</th><td>13</td><td>word</td><td>NA</td><td>14</td><td>15</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>14</td><td>15</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>BR></td><td>ברא</td><td>BR>[</td><td>48</td><td>15</td><td></td><td>BR></td><td>ברא</td><td>B.@R@></td><td>בָּרָא</td><td>B.@R@></td><td>בָּרָא</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>[</td><td>[</td><td></td><td></td><td>B.@R@74></td><td> בָּרָ֣א</td><td>create</td><td>m</td><td>2481</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>BR>[</td><td>ברא[</td><td>none</td><td>3</td><td>3</td><td>3</td><td></td><td></td><td>absent</td><td>sg</td><td>3</td><td>verb</td><td>absent</td><td>bārˈā</td><td> </td><td>verb</td><td>absent</td><td>p3</td><td></td><td>746</td><td>2341</td><td></td><td></td><td>verb</td><td>NA</td><td></td><td>NA</td><td> </td><td></td><td></td><td>absent</td><td></td><td>absent</td><td>NA</td><td>qal</td><td>perf</td></tr>
+	<tr><th scope=row>16</th><td>18</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>9</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>und</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>Subj</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td><td>4</td><td>4</td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>NP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>17</th><td>17</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>18</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>8</td><td>18</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>und</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td><td>4</td><td>4</td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>NP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>18</th><td>16</td><td>word</td><td>NA</td><td>17</td><td>18</td><td>8</td><td>9</td><td>10</td><td>11</td><td>4</td><td>3</td><td>2</td><td>1</td><td>17</td><td>18</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>>LHJM</td><td>אלהים</td><td>>LHJM/</td><td>2601</td><td>1177</td><td></td><td>>LHJM</td><td>אלהים</td><td>>:ELOHIJM</td><td>אֱלֹהִים</td><td>>:ELOH</td><td>אֱלֹה</td><td>/IJM</td><td>/ִימ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>>:ELOHI92JM</td><td>אֱלֹהִ֑ים</td><td>god(s)</td><td>m</td><td>1687</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>>LHJM/</td><td>אלהים/</td><td>none</td><td>4</td><td>4</td><td>4</td><td></td><td></td><td>JM</td><td>pl</td><td>4</td><td>subs</td><td>n/a</td><td>ʔᵉlōhˈîm</td><td> </td><td>subs</td><td>absent</td><td>NA</td><td></td><td>18</td><td>31</td><td></td><td></td><td>subs</td><td>a</td><td></td><td>NA</td><td> </td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>19</th><td>19</td><td>half_verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>B</td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>5</td><td>5-11</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>20</th><td>22</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>9</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>det</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>Objc</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>5</td><td>5-11</td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>PP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>21</th><td>21</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>8</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td>det</td><td>0</td><td>clause_atoms</td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>5</td><td>5-11</td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td>PP</td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>22</th><td>25</td><td>subphrase</td><td>NA</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>7</td><td>5</td><td>5-7</td><td>NA</td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>23</th><td>20</td><td>word</td><td>25</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>>T</td><td>את</td><td>>T</td><td>11016</td><td>9743</td><td></td><td>>T</td><td>את</td><td>>;T</td><td>אֵת</td><td>>;T</td><td>אֵת</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>>;71T</td><td>אֵ֥ת</td><td><object marker></td><td>NA</td><td>2007</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>>T</td><td>את</td><td>none</td><td>5</td><td>5</td><td>5</td><td></td><td></td><td>n/a</td><td>NA</td><td>5</td><td>prep</td><td>n/a</td><td>ʔˌēṯ</td><td> </td><td>prep</td><td>absent</td><td>NA</td><td></td><td>4</td><td>4</td><td></td><td></td><td>prep</td><td>NA</td><td></td><td>NA</td><td> </td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>24</th><td>23</td><td>word</td><td>25</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>H</td><td>ה</td><td>H</td><td>30380</td><td>24659</td><td></td><td>H</td><td>ה</td><td>HA</td><td>הַ</td><td>HA-</td><td>הַ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>HA-</td><td>הַ</td><td>the</td><td>NA</td><td>3930</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>H</td><td>ה</td><td>none</td><td>6</td><td>6</td><td>6</td><td></td><td></td><td>n/a</td><td>NA</td><td>6</td><td>art</td><td>n/a</td><td>ha</td><td></td><td>art</td><td>n/a</td><td>NA</td><td></td><td>1</td><td>1</td><td></td><td></td><td>art</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>25</th><td>24</td><td>word</td><td>25</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>CMJM</td><td>שׁמים</td><td>CMJM/</td><td>421</td><td>395</td><td></td><td>CMJM</td><td>שׁמים</td><td>C@MAJIM</td><td>שָׁמַיִם</td><td>C.@MAJ</td><td>שָּׁמַי</td><td>/IM</td><td>/ִמ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>C.@MA73JIM</td><td> שָּׁמַ֖יִם</td><td>heavens</td><td>m</td><td>2949</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>CMJM/</td><td>שׁמים/</td><td>none</td><td>7</td><td>7</td><td>7</td><td></td><td></td><td>JM</td><td>pl</td><td>7</td><td>subs</td><td>n/a</td><td>ššāmˌayim</td><td> </td><td>subs</td><td>absent</td><td>NA</td><td></td><td>122</td><td>85</td><td></td><td>CMH</td><td>subs</td><td>a</td><td></td><td>NA</td><td> </td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>26</th><td>26</td><td>word</td><td>NA</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>W</td><td>ו</td><td>W</td><td>50273</td><td>50239</td><td></td><td>W</td><td>ו</td><td>W:</td><td>וְ</td><td>W:-</td><td>וְ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>W:-</td><td>וְ</td><td>and</td><td>NA</td><td>8130</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>W</td><td>ו</td><td>none</td><td>8</td><td>8</td><td>8</td><td></td><td></td><td>n/a</td><td>NA</td><td>8</td><td>conj</td><td>n/a</td><td>wᵊ</td><td></td><td>conj</td><td>n/a</td><td>NA</td><td></td><td>0</td><td>0</td><td></td><td></td><td>conj</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>27</th><td>30</td><td>subphrase</td><td>NA</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>NA</td><td>NA</td><td>25</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>9</td><td>9-11</td><td>subphrase</td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td>NA</td><td>par</td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>NA</td><td></td><td></td></tr>
+	<tr><th scope=row>28</th><td>27</td><td>word</td><td>30</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>>T</td><td>את</td><td>>T</td><td>11016</td><td>9743</td><td></td><td>>T</td><td>את</td><td>>;T</td><td>אֵת</td><td>>;T</td><td>אֵת</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>>;71T</td><td>אֵ֥ת</td><td><object marker></td><td>NA</td><td>2007</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>>T</td><td>את</td><td>none</td><td>9</td><td>9</td><td>9</td><td></td><td></td><td>n/a</td><td>NA</td><td>9</td><td>prep</td><td>n/a</td><td>ʔˌēṯ</td><td> </td><td>prep</td><td>absent</td><td>NA</td><td></td><td>4</td><td>4</td><td></td><td></td><td>prep</td><td>NA</td><td></td><td>NA</td><td> </td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>29</th><td>28</td><td>word</td><td>30</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>H</td><td>ה</td><td>H</td><td>30380</td><td>24659</td><td></td><td>H</td><td>ה</td><td>HA</td><td>הַ</td><td>H@-</td><td>הָ</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>H@-</td><td>הָ</td><td>the</td><td>NA</td><td>3930</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>H</td><td>ה</td><td>none</td><td>10</td><td>10</td><td>10</td><td></td><td></td><td>n/a</td><td>NA</td><td>10</td><td>art</td><td>n/a</td><td>hā</td><td></td><td>art</td><td>n/a</td><td>NA</td><td></td><td>1</td><td>1</td><td></td><td></td><td>art</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>30</th><td>29</td><td>word</td><td>30</td><td>21</td><td>22</td><td>8</td><td>9</td><td>10</td><td>11</td><td>19</td><td>3</td><td>2</td><td>1</td><td>21</td><td>22</td><td>NA</td><td>NA</td><td></td><td>NA</td><td>NA</td><td></td><td>NA</td><td></td><td></td><td>>RY</td><td>ארץ</td><td>>RY/</td><td>2504</td><td>2157</td><td></td><td>>RY</td><td>ארץ</td><td>>EREY</td><td>אֶרֶץ</td><td>>@REY</td><td>אָרֶץ</td><td>/</td><td>/</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>>@75REY00</td><td>אָֽרֶץ</td><td>earth</td><td>unknown</td><td>1979</td><td></td><td></td><td></td><td>hbo</td><td>Hebrew</td><td>>RY/</td><td>ארץ/</td><td>none</td><td>11</td><td>11</td><td>11</td><td></td><td></td><td></td><td>sg</td><td>11</td><td>subs</td><td>n/a</td><td>ʔˈāreṣ</td><td> .</td><td>subs</td><td>absent</td><td>NA</td><td></td><td>22</td><td>19</td><td></td><td></td><td>subs</td><td>a</td><td></td><td>NA</td><td>׃</td><td></td><td></td><td>absent</td><td>n/a</td><td>n/a</td><td>NA</td><td>NA</td><td>NA</td></tr>
 </tbody>
 </table>
 
@@ -346,13 +385,42 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre>word_ids <span class="o">=</span> etcbc_l<span class="o">$</span>oid<span class="p">[</span>etcbc_l<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span> <span class="o">&amp;</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>etcbc_l<span class="o">$</span>verse<span class="p">)</span> <span class="o">&amp;</span> etcbc_l<span class="o">$</span>verse<span class="o">==</span><span class="m">1413645</span><span class="p">]</span>
+<div class=" highlight hl-r"><pre>word_ids <span class="o">=</span> etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>in.verse<span class="o">==</span><span class="m">3</span><span class="p">]</span>
+word_ids
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[43]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<ol class=list-inline>
+	<li>5</li>
+	<li>12</li>
+	<li>13</li>
+	<li>16</li>
+	<li>20</li>
+	<li>23</li>
+	<li>24</li>
+	<li>26</li>
+	<li>27</li>
+	<li>28</li>
+	<li>29</li>
+</ol>
+
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -369,11 +437,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre>verse1 <span class="o">=</span> <span class="kp">which</span><span class="p">(</span>etcbc<span class="o">$</span>oid <span class="o">%in%</span> word_ids<span class="p">)</span>
-<span class="kp">paste</span><span class="p">(</span>etcbc<span class="o">$</span>g_word_utf8<span class="p">[</span>verse1<span class="p">],</span> etcbc<span class="o">$</span>trailer_utf8<span class="p">[</span>verse1<span class="p">],</span> collapse<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+<div class=" highlight hl-r"><pre>words <span class="o">=</span> <span class="kp">which</span><span class="p">(</span>etcbc<span class="o">$</span>oid <span class="o">%in%</span> word_ids<span class="p">)</span>
+<span class="kp">paste</span><span class="p">(</span>etcbc<span class="o">$</span>g_word_utf8<span class="p">[</span>words<span class="p">],</span> etcbc<span class="o">$</span>trailer_utf8<span class="p">[</span>words<span class="p">],</span> collapse<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -384,7 +452,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[25]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[44]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 'בְּ רֵאשִׁ֖ית  בָּרָ֣א  אֱלֹהִ֑ים  אֵ֥ת  הַ שָּׁמַ֖יִם  וְ אֵ֥ת  הָ אָֽרֶץ ׃'
@@ -408,11 +476,15 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre>book_id <span class="o">=</span> etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype <span class="o">==</span> <span class="s">&#39;book&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>book <span class="o">==</span> <span class="s">&#39;Psalmi&#39;</span><span class="p">]</span>
-book_id
+<div class=" highlight hl-r"><pre>verse_id <span class="o">=</span> etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype <span class="o">==</span> <span class="s">&#39;verse&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>book <span class="o">==</span> <span class="s">&#39;Psalmi&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>chapter <span class="o">==</span> <span class="m">131</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>verse <span class="o">==</span> <span class="m">2</span><span class="p">]</span>
+verse_id
+word_ids <span class="o">=</span> etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>in.verse <span class="o">==</span> verse_id<span class="p">]</span>
+word_ids
+words <span class="o">=</span> <span class="kp">which</span><span class="p">(</span>etcbc<span class="o">$</span>oid <span class="o">%in%</span> word_ids<span class="p">)</span>
+<span class="kp">paste</span><span class="p">(</span>etcbc<span class="o">$</span>g_word_utf8<span class="p">[</span>words<span class="p">],</span> etcbc<span class="o">$</span>trailer_utf8<span class="p">[</span>words<span class="p">],</span> collapse<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -423,10 +495,140 @@ book_id
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[45]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-1034304
+1123436
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[45]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<ol class=list-inline>
+	<li>1123438</li>
+	<li>1123445</li>
+	<li>1123448</li>
+	<li>1123451</li>
+	<li>1123456</li>
+	<li>1123459</li>
+	<li>1123463</li>
+	<li>1123466</li>
+	<li>1123467</li>
+	<li>1123469</li>
+	<li>1123471</li>
+	<li>1123476</li>
+	<li>1123477</li>
+	<li>1123478</li>
+	<li>1123480</li>
+</ol>
+
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[45]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+'אִם ־לֹ֤א  שִׁוִּ֨יתִי  ׀ וְ דֹומַ֗מְתִּי  נַ֫פְשִׁ֥י  כְּ֭ גָמֻל  עֲלֵ֣י  אִמֹּ֑ו  כַּ  גָּמֻ֖ל  עָלַ֣י  נַפְשִֽׁי ׃'
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let us organize this in two functions: one that returns the verse object given a passage, and one that prints the texts of the words in a given object.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>object2text <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>oid<span class="p">)</span> <span class="p">{</span>
+    otype <span class="o">=</span> etcbc<span class="o">$</span>otype<span class="p">[</span>etcbc<span class="o">$</span>oid <span class="o">==</span> oid<span class="p">]</span>
+    word_ids <span class="o">=</span> <span class="kp">eval</span><span class="p">(</span><span class="kp">parse</span><span class="p">(</span>text<span class="o">=</span><span class="kp">paste</span><span class="p">(</span><span class="s">&quot;etcbc$oid[etcbc$otype==&#39;word&#39; &amp; etcbc$in.&quot;</span><span class="p">,</span> otype<span class="p">,</span> <span class="s">&#39;==oid]&#39;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)))</span>
+    words <span class="o">=</span> <span class="kp">which</span><span class="p">(</span>etcbc<span class="o">$</span>oid <span class="o">%in%</span> word_ids<span class="p">)</span>
+    <span class="kp">paste</span><span class="p">(</span>etcbc<span class="o">$</span>g_word_utf8<span class="p">[</span>words<span class="p">],</span> etcbc<span class="o">$</span>trailer_utf8<span class="p">[</span>words<span class="p">],</span> collapse<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+verse2object <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>book<span class="p">,</span> chapter<span class="p">,</span> verse<span class="p">)</span> <span class="p">{</span>
+    <span class="kr">return</span><span class="p">(</span>etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype <span class="o">==</span> <span class="s">&#39;verse&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>book <span class="o">==</span> book <span class="o">&amp;</span> etcbc<span class="o">$</span>chapter <span class="o">==</span> chapter <span class="o">&amp;</span> etcbc<span class="o">$</span>verse <span class="o">==</span> verse<span class="p">])</span>
+<span class="p">}</span>
+verse2text <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>book<span class="p">,</span> chapter<span class="p">,</span> verse<span class="p">)</span> <span class="p">{</span>
+    <span class="kr">return</span><span class="p">(</span>object2text<span class="p">(</span>verse2object<span class="p">(</span>book<span class="p">,</span> chapter<span class="p">,</span> verse<span class="p">)))</span>
+<span class="p">}</span>
+chapter2object <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>book<span class="p">,</span> chapter<span class="p">)</span> <span class="p">{</span>
+    <span class="kr">return</span><span class="p">(</span>etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype <span class="o">==</span> <span class="s">&#39;chapter&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>book <span class="o">==</span> book <span class="o">&amp;</span> etcbc<span class="o">$</span>chapter <span class="o">==</span> chapter<span class="p">])</span>
+<span class="p">}</span>
+chapter2text <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>book<span class="p">,</span> chapter<span class="p">)</span> <span class="p">{</span>
+    <span class="kr">return</span><span class="p">(</span>object2text<span class="p">(</span>chapter2object<span class="p">(</span>book<span class="p">,</span> chapter<span class="p">)))</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>verse2text<span class="p">(</span><span class="s">&#39;Psalmi&#39;</span><span class="p">,</span> <span class="m">131</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[19]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+'אִם ־לֹ֤א  שִׁוִּ֨יתִי  ׀ וְ דֹומַ֗מְתִּי  נַ֫פְשִׁ֥י  כְּ֭ גָמֻל  עֲלֵ֣י  אִמֹּ֑ו  כַּ  גָּמֻ֖ל  עָלַ֣י  נַפְשִֽׁי ׃'
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>chapter2text<span class="p">(</span><span class="s">&#39;Psalmi&#39;</span><span class="p">,</span> <span class="m">131</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[20]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+'שִׁ֥יר  הַֽ מַּֽעֲלֹ֗ות  לְ דָ֫וִ֥ד  יְהוָ֤ה  ׀ לֹא ־גָבַ֣הּ  לִ֭בִּי  וְ לֹא ־רָמ֣וּ  עֵינַ֑י  וְ לֹֽא ־הִלַּ֓כְתִּי  ׀ בִּ גְדֹלֹ֖ות  וּ בְ נִפְלָאֹ֣ות  מִמֶּֽנִּי ׃אִם ־לֹ֤א  שִׁוִּ֨יתִי  ׀ וְ דֹומַ֗מְתִּי  נַ֫פְשִׁ֥י  כְּ֭ גָמֻל  עֲלֵ֣י  אִמֹּ֑ו  כַּ  גָּמֻ֖ל  עָלַ֣י  נַפְשִֽׁי ׃יַחֵ֣ל  יִ֝שְׂרָאֵל  אֶל ־יְהוָ֑ה  מֵֽ֝ עַתָּ֗ה  וְ עַד ־עֹולָֽם ׃'
 </div>
 
 </div>
@@ -440,7 +642,7 @@ book_id
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre>psalms <span class="o">=</span> etcbc_l<span class="o">$</span>oid<span class="p">[]</span>
+<div class=" highlight hl-r"><pre>
 </pre></div>
 
 </div>

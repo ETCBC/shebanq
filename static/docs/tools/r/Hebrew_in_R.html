@@ -293,8 +293,8 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2016-01-27T18-59-08
-  1.21s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/hinr/__log__hinr.txt
-  1.21s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-29T13-56-11
+  1.17s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/hinr/__log__hinr.txt
+  1.17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-29T14-43-54
 </pre>
 </div>
 </div>
@@ -312,10 +312,10 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">p_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;px&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">p_features</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;px&#39;</span><span class="p">})</span>
 <span class="n">p_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_features</span><span class="p">)</span>
 <span class="n">p_feature_str</span>
 </pre></div>
@@ -328,11 +328,11 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&apos;instruction number_in_ch pargr&apos;</pre>
+<pre>&apos;&apos;</pre>
 </div>
 
 </div>
@@ -367,7 +367,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2016-01-27T18-59-08
-  0.21s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-29T13-56-17
+  0.19s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX para FOR TASK hinr AT 2016-01-29T14-44-08
 </pre>
 </div>
 </div>
@@ -378,7 +378,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Collecting R data for paragraphs&quot;</span><span class="p">)</span>
@@ -407,22 +407,22 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  2.07s Collecting R data for paragraphs
-  2.54s  100000 nodes read
-  2.92s  200000 nodes read
-  3.29s  300000 nodes read
-  3.67s  400000 nodes read
-  4.02s  500000 nodes read
-  4.39s  600000 nodes read
-  4.80s  700000 nodes read
-  5.11s  800000 nodes read
-  5.44s  900000 nodes read
-  5.77s 1000000 nodes read
-  6.12s 1100000 nodes read
-  6.46s 1200000 nodes read
-  6.79s 1300000 nodes read
-  7.18s 1400000 nodes read
-  7.31s 1436858 nodes read and done
+<pre> 4m 12s Collecting R data for paragraphs
+ 4m 13s  100000 nodes read
+ 4m 13s  200000 nodes read
+ 4m 13s  300000 nodes read
+ 4m 13s  400000 nodes read
+ 4m 13s  500000 nodes read
+ 4m 13s  600000 nodes read
+ 4m 14s  700000 nodes read
+ 4m 14s  800000 nodes read
+ 4m 14s  900000 nodes read
+ 4m 14s 1000000 nodes read
+ 4m 14s 1100000 nodes read
+ 4m 14s 1200000 nodes read
+ 4m 14s 1300000 nodes read
+ 4m 14s 1400000 nodes read
+ 4m 14s 1436858 nodes read and done
 </pre>
 </div>
 </div>
@@ -460,7 +460,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2016-01-27T19-01-17
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-29T13-56-26
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-29T14-44-18
 </pre>
 </div>
 </div>
@@ -479,14 +479,15 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">all_features</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]}</span>
-<span class="n">all_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">all_features</span> <span class="o">-</span> <span class="p">{</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;otype&#39;</span><span class="p">}))</span>
-<span class="n">alle_features</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;FE_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]}</span>
-<span class="n">alle_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">alle_features</span><span class="p">))</span>
-<span class="n">alle_feature_str</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">all_features</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;F_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]})</span>
+<span class="n">all_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_features</span><span class="p">)</span>
+<span class="n">alle_features</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">API</span><span class="p">[</span><span class="s">&#39;FE_all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]})</span>
+<span class="n">alle_feature_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alle_features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_feature_str</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">alle_feature_str</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -497,11 +498,40 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>book chapter code det dist dist_unit domain entry entry_heb entryid freq_lex freq_occ function g_cons g_cons_utf8 g_entry g_entry_heb g_lex g_lex_utf8 g_nme g_nme_utf8 g_pfm g_pfm_utf8 g_prs g_prs_utf8 g_qere_utf8 g_uvf g_uvf_utf8 g_vbe g_vbe_utf8 g_vbs g_vbs_utf8 g_word g_word_utf8 gloss gn id is_root kind label lan language lex lex_utf8 ls maxmonad minmonad monads mother_object_type nametype nme nu number oid otype pdp pfm phono phono_sep pos prs ps qtrailer_utf8 rank_lex rank_occ rela root sp st subpos tab trailer_utf8 txt typ uvf vbe vbs verse vs vt
+distributional_parent functional_parent mother
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">x</span> <span class="o">=</span> <span class="s">&#39;in.book&#39;</span>
+<span class="n">x</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[19]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&apos;distributional_parent functional_parent mother&apos;</pre>
+<pre>&apos;book&apos;</pre>
 </div>
 
 </div>
@@ -537,12 +567,12 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2016-01-27T19-01-17
-    35s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+    34s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
   0.00s LOADING API with EXTRAs: please wait ... 
   0.00s INFO: USING DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s INFO: USING DATA COMPILED AT: 2016-01-27T19-01-17
-  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-29T13-57-04
-  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-29T13-57-04
+  0.01s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-29T14-45-41
+  0.00s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK hinr AT 2016-01-29T14-45-41
 </pre>
 </div>
 </div>
@@ -553,38 +583,43 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Writing R feature data&quot;</span><span class="p">)</span>
 <span class="n">hr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
 
+<span class="n">i_features</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;otype&#39;</span><span class="p">]</span>
 <span class="n">l_features</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="s">    subphrase phrase_atom phrase clause_atom clause sentence_atom sentence</span>
 <span class="s">    half_verse verse chapter book</span>
 <span class="s">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-<span class="n">use_features</span> <span class="o">=</span> <span class="n">all_features</span>
-<span class="n">usee_features</span> <span class="o">=</span> <span class="n">alle_features</span>
+<span class="n">li_features</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;in.&#39;</span><span class="o">+</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l_features</span><span class="p">]</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">use_features</span><span class="p">),</span>
+<span class="n">allr_features</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_features</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">i_features</span><span class="p">))</span>
+
+<span class="n">hr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i_features</span><span class="p">),</span>
+    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">li_features</span><span class="p">),</span>
+    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alle_features</span><span class="p">),</span>
     <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p_features</span><span class="p">),</span>
-    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">usee_features</span><span class="p">),</span>
-    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l_features</span><span class="p">),</span>
+    <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">allr_features</span><span class="p">),</span>
 <span class="p">))</span>
 <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">100000</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">():</span>
-    <span class="n">all_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">use_features</span><span class="p">]</span>
+    <span class="n">i_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">i_features</span><span class="p">]</span>
+    <span class="n">l_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">oid</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l_features</span><span class="p">]</span>
+    <span class="n">alle_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">oid</span><span class="o">.</span><span class="n">v</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">alle_features</span><span class="p">]</span>
     <span class="n">p_values</span> <span class="o">=</span> <span class="n">p_data</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-    <span class="n">alle_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">oid</span><span class="o">.</span><span class="n">v</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">usee_features</span><span class="p">]</span>
-    <span class="n">l_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l_features</span><span class="p">]</span>
-    <span class="n">hr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">all_values</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">alle_values</span><span class="p">)),</span>
+    <span class="n">allr_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">allr_features</span><span class="p">]</span>
+    <span class="n">hr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\t</span><span class="s">{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">i_values</span><span class="p">)),</span>
         <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l_values</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">alle_values</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">allr_values</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
     <span class="p">))</span>
     <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -605,22 +640,22 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  2.85s Writing R feature data
-    13s  100000 nodes written
-    25s  200000 nodes written
-    36s  300000 nodes written
-    48s  400000 nodes written
-    58s  500000 nodes written
- 1m 09s  600000 nodes written
- 1m 19s  700000 nodes written
- 1m 30s  800000 nodes written
- 1m 40s  900000 nodes written
- 1m 51s 1000000 nodes written
- 2m 02s 1100000 nodes written
- 2m 14s 1200000 nodes written
- 2m 26s 1300000 nodes written
- 2m 36s 1400000 nodes written
- 2m 41s 1436858 nodes written and done
+<pre>56m 43s Writing R feature data
+56m 54s  100000 nodes written
+57m 06s  200000 nodes written
+57m 18s  300000 nodes written
+57m 29s  400000 nodes written
+57m 42s  500000 nodes written
+57m 53s  600000 nodes written
+58m 06s  700000 nodes written
+58m 19s  800000 nodes written
+58m 30s  900000 nodes written
+58m 42s 1000000 nodes written
+58m 53s 1100000 nodes written
+59m 05s 1200000 nodes written
+59m 16s 1300000 nodes written
+59m 27s 1400000 nodes written
+59m 31s 1436858 nodes written and done
 </pre>
 </div>
 </div>
@@ -631,7 +666,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="o">!</span>ls -lh /Users/dirk/SURFdrive/laf-fabric-data/r
@@ -647,11 +682,9 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>total 887488
--rw-r--r--  1 dirk  staff    49M Jan 29 11:00 etcbc4b.rds
--rw-r--r--  1 dirk  staff   265M Jan 29 14:59 etcbc4b.txt
--rw-r--r--  1 dirk  staff   7.0M Jan 29 13:59 etcbc4b_L.rds
--rw-r--r--  1 dirk  staff   113M Jan 29 13:58 etcbc4b_L.txt
+<pre>total 816080
+-rw-r--r--  1 dirk  staff    52M Jan 29 16:48 etcbc4b.rds
+-rw-r--r--  1 dirk  staff   347M Jan 29 16:45 etcbc4b.txt
 </pre>
 </div>
 </div>
@@ -685,7 +718,7 @@ carry out the R cells.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="o">!</span>cp <span class="s1">&#39;/Users/dirk/SURFdrive/laf-fabric-data/r/etcbc4b.rds&#39;</span> <span class="s1">&#39;/Users/dirk/SURFdrive/current/demos/github/laf-fabric-data/&#39;</span>
