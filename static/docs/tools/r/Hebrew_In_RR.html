@@ -175,6 +175,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This notebook contains the R instructions to load the big ETCBC4b export and save it in the much more compact .rds format.</p>
+<p>Note that we have to ignore quotes and comment signs!</p>
 
 </div>
 </div>
@@ -237,7 +238,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>etcbc <span class="o">=</span> <span class="kp">readRDS</span><span class="p">(</span>
@@ -254,7 +255,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <ol class=list-inline>
@@ -272,10 +273,174 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span class="kp">head</span><span class="p">(</span>etcbcl<span class="p">,</span> n<span class="o">=</span><span class="m">30</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table>
+<thead><tr><th></th><th scope=col>oid</th><th scope=col>otype</th><th scope=col>subphrase</th><th scope=col>phrase_atom</th><th scope=col>phrase</th><th scope=col>clause_atom</th><th scope=col>clause</th><th scope=col>sentence_atom</th><th scope=col>sentence</th><th scope=col>half_verse</th><th scope=col>verse</th><th scope=col>chapter</th><th scope=col>book</th></tr></thead>
+<tbody>
+	<tr><th scope=row>1</th><td>1</td><td>book</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>2</th><td>2</td><td>chapter</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1367497</td></tr>
+	<tr><th scope=row>3</th><td>3</td><td>verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>4</th><td>11</td><td>sentence</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>5</th><td>10</td><td>sentence_atom</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1125793</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>6</th><td>9</td><td>clause</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1189379</td><td>1125793</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>7</th><td>8</td><td>clause_atom</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>426568</td><td>1189379</td><td>1125793</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>8</th><td>4</td><td>half_verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>9</th><td>7</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>10</th><td>6</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605133</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>11</th><td>5</td><td>word</td><td>NA</td><td>858294</td><td>605133</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>12</th><td>12</td><td>word</td><td>NA</td><td>858294</td><td>605133</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>13</th><td>15</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>14</th><td>14</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605134</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>15</th><td>13</td><td>word</td><td>NA</td><td>858295</td><td>605134</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>16</th><td>18</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>17</th><td>17</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605135</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>18</th><td>16</td><td>word</td><td>NA</td><td>858296</td><td>605135</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368465</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>19</th><td>19</td><td>half_verse</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>20</th><td>22</td><td>phrase</td><td>NA</td><td>NA</td><td>NA</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>21</th><td>21</td><td>phrase_atom</td><td>NA</td><td>NA</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>22</th><td>25</td><td>subphrase</td><td>NA</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>23</th><td>20</td><td>word</td><td>1253733</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>24</th><td>23</td><td>word</td><td>1253733</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>25</th><td>24</td><td>word</td><td>1253733</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>26</th><td>26</td><td>word</td><td>NA</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>27</th><td>30</td><td>subphrase</td><td>NA</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>28</th><td>27</td><td>word</td><td>1253734</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>29</th><td>28</td><td>word</td><td>1253734</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+	<tr><th scope=row>30</th><td>29</td><td>word</td><td>1253734</td><td>858297</td><td>605136</td><td>514579</td><td>426568</td><td>1189379</td><td>1125793</td><td>1368466</td><td>1413645</td><td>1367536</td><td>1367497</td></tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us get the words from the first verse:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>word_ids <span class="o">=</span> etcbc_l<span class="o">$</span>oid<span class="p">[</span>etcbc_l<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span> <span class="o">&amp;</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>etcbc_l<span class="o">$</span>verse<span class="p">)</span> <span class="o">&amp;</span> etcbc_l<span class="o">$</span>verse<span class="o">==</span><span class="m">1413645</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now the <em>text</em> of the first verse.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>verse1 <span class="o">=</span> <span class="kp">which</span><span class="p">(</span>etcbc<span class="o">$</span>oid <span class="o">%in%</span> word_ids<span class="p">)</span>
+<span class="kp">paste</span><span class="p">(</span>etcbc<span class="o">$</span>g_word_utf8<span class="p">[</span>verse1<span class="p">],</span> etcbc<span class="o">$</span>trailer_utf8<span class="p">[</span>verse1<span class="p">],</span> collapse<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[25]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+'בְּ רֵאשִׁ֖ית  בָּרָ֣א  אֱלֹהִ֑ים  אֵ֥ת  הַ שָּׁמַ֖יִם  וְ אֵ֥ת  הָ אָֽרֶץ ׃'
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us get the words of an arbitrary passage, say Psalmi 131:2</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>book_id <span class="o">=</span> etcbc<span class="o">$</span>oid<span class="p">[</span>etcbc<span class="o">$</span>otype <span class="o">==</span> <span class="s">&#39;book&#39;</span> <span class="o">&amp;</span> etcbc<span class="o">$</span>book <span class="o">==</span> <span class="s">&#39;Psalmi&#39;</span><span class="p">]</span>
+book_id
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+1034304
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre>
+<div class=" highlight hl-r"><pre>psalms <span class="o">=</span> etcbc_l<span class="o">$</span>oid<span class="p">[]</span>
 </pre></div>
 
 </div>

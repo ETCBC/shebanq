@@ -289,15 +289,37 @@ See also :doc:`/texts/mother`.
 ``999`` Direct speech
 ^^^^^^^^^^^^^^^^^^^^^
 The clause atom in question starts a direct speech section.
-This relation is present regardless of whether the mother clause introduces the direct speech.
+
+A section of direct speech is usually introduced by a clause atom
+with a verbum dicendi. In this case, the direct speech section
+depends on the introductory clause atom in terms of clause atom
+relations. The daughter clause atom (the main clause atom of the
+direct speech section) carries the :doc:`instruction <instruction>`
+'q' and has a
+relation 999 with its mother, the introductory clause atom.
+
+But there are other cases, in which the the direct speech section
+is not introduced at all (Jes 14:16) or in which it is declared by
+an embedded clause atom (Mal 3:17). In such cases, the main clause
+atom of the direct speech section still carries the :doc:`instruction <instruction>`
+'q', but no longer has a relation 999 with its mother. If there is
+a declarative clause atom, it will have a relation 999 with _its_
+mother, which is not necessarily the main clause atom of the direct
+speech section, as an example like Mal 3:17 shows.
+
+In all cases, the :doc:`instruction <instruction>` 'q' means the start of a clause atom
+hierarchy of direct speech. In view of the above, however, we can
+no longer maintain a direct coupling between 'q' and relation 999.
+We propose to extend the interpretation of relation 999 as follows.
+The meaning of relation 999 is that of a declaration of direct
+speech. Either before the facts, if the daughter starts the direct
+speech, or after the facts, if the daughter has the verbum dicendi.
+In case of the latter, the daughter carries the :doc:`instruction <instruction>` '#' for
+a new embedded paragraph, but pops the Q from the Text Type.
 See also :doc:`/texts/mother`.
 
 .. caution::
     Is the "daughter" clause the object in question?
-
-    The clause
-    "This relation is present regardless of whether the mother clause introduces the direct speech"
-    is probably no longer correct.
 
     What if a direct speech clause also fits the pattern of one of the other cases?
 

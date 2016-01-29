@@ -190,6 +190,7 @@ Clause(-atom) features
 :doc:`is_root <is_root>`          ??
 :doc:`tab <tab>`                  hierarchical tabulation      ``0`` ``3`` ``10`` ``29``
 :doc:`pargr <pargr>`              paragraph number             ``1`` ``1.2`` ``2.3.4``
+:doc:`instruction <instruction>`  instruction                  ``.q`` ``.d`` ``..`` ``ve``
 ================================  ===========================  ===================================
 
 .. _phrase:

@@ -1,0 +1,15 @@
+Instruction ``instruction``
+---------------------------------------------------
+The so called instruction of a clause atom.
+
+This feature is present on objects of type *clause_atom*.
+
+The value is something like ``.q``, ``..``, ``.d``, ``ve``.
+
+This feature has been added to the database in a later stage, but you can use it in SHEBANQ queries.
+
+.. caution::
+    I prefer a more informative definition.
+
+    Explain why is this a useful feature? Examples needed.
+

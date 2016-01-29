@@ -12,6 +12,7 @@ Contents:
     domain
     txt
     function
+    instruction
     is_root
     ketiv
     kind

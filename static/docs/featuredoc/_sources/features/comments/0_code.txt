@@ -38,6 +38,7 @@ Contents:
     g_word_utf8 <g_word_utf8>
     gn <gn>
     half_verse <half_verse>
+    instruction
     is_root <is_root>
     ketiv <ketiv>
     kind <kind>

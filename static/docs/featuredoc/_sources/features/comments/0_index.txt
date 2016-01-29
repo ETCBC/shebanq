@@ -21,6 +21,7 @@ Contents:
     half_verse
     trailer_utf8
     qtrailer_utf8
+    instruction
     is_root
     language
     lex_utf8
