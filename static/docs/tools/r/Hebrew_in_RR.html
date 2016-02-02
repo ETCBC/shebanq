@@ -766,6 +766,115 @@ chapter2text <span class="o">=</span> <span class="kr">function</span><span clas
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Bigrams">Bigrams<a class="anchor-link" href="#Bigrams">&#182;</a></h1><p>We make a column of verse-bound bigrams of lexemes. The two lexemes are separated by an underscore <code>_</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>vs_next <span class="o">=</span> etcbc<span class="o">$</span>in.verse<span class="p">[</span>etcbc<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span><span class="p">][</span><span class="m">-1</span><span class="p">]</span>
+vs_prev <span class="o">=</span> etcbc<span class="o">$</span>in.verse<span class="p">[</span>etcbc<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span><span class="p">][</span><span class="o">-</span><span class="kp">length</span><span class="p">(</span>etcbc<span class="p">)]</span>
+
+lex <span class="o">=</span> etcbc<span class="o">$</span>g_lex_utf8<span class="p">[</span>etcbc<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span><span class="p">]</span>
+lex_next <span class="o">=</span> etcbc<span class="o">$</span>g_lex_utf8<span class="p">[</span>etcbc<span class="o">$</span>otype<span class="o">==</span><span class="s">&#39;word&#39;</span><span class="p">][</span><span class="m">-1</span><span class="p">]</span>
+last_in_vs <span class="o">=</span> vs_prev <span class="o">!=</span> vs_next
+
+lex_next<span class="p">[</span>last_in_vs<span class="p">]</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+bigram <span class="o">=</span> <span class="kp">paste</span><span class="p">(</span>
+    lex<span class="p">,</span>
+    lex_next<span class="p">,</span>
+    sep<span class="o">=</span><span class="s">&#39;_&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span class="kp">head</span><span class="p">(</span>bigram<span class="p">,</span> n<span class="o">=</span><span class="m">30</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[55]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<ol class=list-inline>
+	<li>'בְּ_רֵאשִׁית'</li>
+	<li>'רֵאשִׁית_בָּרָא'</li>
+	<li>'בָּרָא_אֱלֹה'</li>
+	<li>'אֱלֹה_אֵת'</li>
+	<li>'אֵת_הַ'</li>
+	<li>'הַ_שָּׁמַי'</li>
+	<li>'שָּׁמַי_וְ'</li>
+	<li>'וְ_אֵת'</li>
+	<li>'אֵת_הָ'</li>
+	<li>'הָ_אָרֶץ'</li>
+	<li>'אָרֶץ_'</li>
+	<li>'וְ_הָ'</li>
+	<li>'הָ_אָרֶץ'</li>
+	<li>'אָרֶץ_הָי'</li>
+	<li>'הָי_תֹהוּ'</li>
+	<li>'תֹהוּ_וָ'</li>
+	<li>'וָ_בֹהוּ'</li>
+	<li>'בֹהוּ_וְ'</li>
+	<li>'וְ_חֹשֶׁךְ'</li>
+	<li>'חֹשֶׁךְ_עַל'</li>
+	<li>'עַל_פְּן'</li>
+	<li>'פְּן_תְהֹום'</li>
+	<li>'תְהֹום_וְ'</li>
+	<li>'וְ_רוּחַ'</li>
+	<li>'רוּחַ_אֱלֹה'</li>
+	<li>'אֱלֹה_רַחֶף'</li>
+	<li>'רַחֶף_עַל'</li>
+	<li>'עַל_פְּן'</li>
+	<li>'פְּן_הַ'</li>
+	<li>'הַ_מָּי'</li>
+</ol>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
     </div>
   </div>
 </body>

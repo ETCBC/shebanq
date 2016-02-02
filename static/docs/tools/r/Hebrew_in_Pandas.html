@@ -195,7 +195,7 @@ For comparison, the same information extraction has been done in
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">collections</span>
@@ -432,7 +432,7 @@ This data has been saved at the github repo
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">Msg</span><span class="p">(</span><span class="s">&#39;loading compressed&#39;</span><span class="p">)</span>
@@ -451,7 +451,7 @@ This data has been saved at the github repo
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s loading compressed
-    10s Done. Size=136501510
+  9.90s Done. Size=136501510
 </pre>
 </div>
 </div>
@@ -1710,6 +1710,144 @@ First a list of the book names.</p>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Bigrams">Bigrams<a class="anchor-link" href="#Bigrams">&#182;</a></h1><p>We make a column of verse-bound bigrams of lexemes. The two lexemes are separated by an underscore <code>_</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is the R code.
+I have difficulties in using Pandas, because I get an error like this all the time:</p>
+<p><code>ValueError: buffer source array is read-only</code></p>
+<p>even when I apply recipes from the <a href="http://pandas.pydata.org/pandas-docs/stable/cookbook.html">Pandas cookbook</a></p>
+
+</div>
+</div>
+</div>vs_next = etcbc$in.verse[etcbc$otype=='word'][-1]
+vs_prev = etcbc$in.verse[etcbc$otype=='word'][-length(etcbc)]
+
+lex = etcbc$lex[etcbc$otype=='word']
+lex_next = etcbc$lex[etcbc$otype=='word'][-1]
+last_in_vs = vs_prev != vs_next
+
+lex_next[last_in_vs] = ''
+
+bigram = paste(
+    lex,
+    lex_next,
+    sep='_'
+)
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">vs_next</span> <span class="o">=</span> <span class="n">etcbc</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="s">&#39;in.verse&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansired">---------------------------------------------------------------------------</span>
+<span class="ansired">ValueError</span>                                Traceback (most recent call last)
+<span class="ansigreen">&lt;ipython-input-13-c2f6c7119a43&gt;</span> in <span class="ansicyan">&lt;module&gt;</span><span class="ansiblue">()</span>
+<span class="ansigreen">----&gt; 1</span><span class="ansired"> </span>vs_next <span class="ansiblue">=</span> etcbc<span class="ansiblue">.</span>groupby<span class="ansiblue">(</span>level<span class="ansiblue">=</span><span class="ansicyan">0</span><span class="ansiblue">)</span><span class="ansiblue">[</span><span class="ansiblue">&apos;in.verse&apos;</span><span class="ansiblue">]</span><span class="ansiblue">.</span>shift<span class="ansiblue">(</span><span class="ansicyan">1</span><span class="ansiblue">)</span><span class="ansiblue"></span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/groupby.py</span> in <span class="ansicyan">shift</span><span class="ansiblue">(self, periods, freq, axis)</span>
+<span class="ansigreen">   1052</span>             <span class="ansigreen">return</span> self<span class="ansiblue">.</span>apply<span class="ansiblue">(</span><span class="ansigreen">lambda</span> x<span class="ansiblue">:</span> x<span class="ansiblue">.</span>shift<span class="ansiblue">(</span>periods<span class="ansiblue">,</span> freq<span class="ansiblue">,</span> axis<span class="ansiblue">)</span><span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">   1053</span> <span class="ansiblue"></span>
+<span class="ansigreen">-&gt; 1054</span><span class="ansired">         </span>labels<span class="ansiblue">,</span> _<span class="ansiblue">,</span>  ngroups <span class="ansiblue">=</span> self<span class="ansiblue">.</span>grouper<span class="ansiblue">.</span>group_info<span class="ansiblue"></span>
+<span class="ansigreen">   1055</span>         <span class="ansired"># filled in by Cython</span><span class="ansiblue"></span><span class="ansiblue"></span>
+<span class="ansigreen">   1056</span>         indexer <span class="ansiblue">=</span> np<span class="ansiblue">.</span>zeros_like<span class="ansiblue">(</span>labels<span class="ansiblue">)</span><span class="ansiblue"></span>
+
+<span class="ansigreen">pandas/src/properties.pyx</span> in <span class="ansicyan">pandas.lib.cache_readonly.__get__ (pandas/lib.c:44341)</span><span class="ansiblue">()</span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/groupby.py</span> in <span class="ansicyan">group_info</span><span class="ansiblue">(self)</span>
+<span class="ansigreen">   1473</span>     <span class="ansiblue">@</span>cache_readonly<span class="ansiblue"></span>
+<span class="ansigreen">   1474</span>     <span class="ansigreen">def</span> group_info<span class="ansiblue">(</span>self<span class="ansiblue">)</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">-&gt; 1475</span><span class="ansired">         </span>comp_ids<span class="ansiblue">,</span> obs_group_ids <span class="ansiblue">=</span> self<span class="ansiblue">.</span>_get_compressed_labels<span class="ansiblue">(</span><span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">   1476</span> <span class="ansiblue"></span>
+<span class="ansigreen">   1477</span>         ngroups <span class="ansiblue">=</span> len<span class="ansiblue">(</span>obs_group_ids<span class="ansiblue">)</span><span class="ansiblue"></span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/groupby.py</span> in <span class="ansicyan">_get_compressed_labels</span><span class="ansiblue">(self)</span>
+<span class="ansigreen">   1481</span> <span class="ansiblue"></span>
+<span class="ansigreen">   1482</span>     <span class="ansigreen">def</span> _get_compressed_labels<span class="ansiblue">(</span>self<span class="ansiblue">)</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">-&gt; 1483</span><span class="ansired">         </span>all_labels <span class="ansiblue">=</span> <span class="ansiblue">[</span>ping<span class="ansiblue">.</span>labels <span class="ansigreen">for</span> ping <span class="ansigreen">in</span> self<span class="ansiblue">.</span>groupings<span class="ansiblue">]</span><span class="ansiblue"></span>
+<span class="ansigreen">   1484</span>         <span class="ansigreen">if</span> len<span class="ansiblue">(</span>all_labels<span class="ansiblue">)</span> <span class="ansiblue">&gt;</span> <span class="ansicyan">1</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">   1485</span>             group_index = get_group_index(all_labels, self.shape,
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/groupby.py</span> in <span class="ansicyan">&lt;listcomp&gt;</span><span class="ansiblue">(.0)</span>
+<span class="ansigreen">   1481</span> <span class="ansiblue"></span>
+<span class="ansigreen">   1482</span>     <span class="ansigreen">def</span> _get_compressed_labels<span class="ansiblue">(</span>self<span class="ansiblue">)</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">-&gt; 1483</span><span class="ansired">         </span>all_labels <span class="ansiblue">=</span> <span class="ansiblue">[</span>ping<span class="ansiblue">.</span>labels <span class="ansigreen">for</span> ping <span class="ansigreen">in</span> self<span class="ansiblue">.</span>groupings<span class="ansiblue">]</span><span class="ansiblue"></span>
+<span class="ansigreen">   1484</span>         <span class="ansigreen">if</span> len<span class="ansiblue">(</span>all_labels<span class="ansiblue">)</span> <span class="ansiblue">&gt;</span> <span class="ansicyan">1</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">   1485</span>             group_index = get_group_index(all_labels, self.shape,
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/groupby.py</span> in <span class="ansicyan">labels</span><span class="ansiblue">(self)</span>
+<span class="ansigreen">   2135</span>     <span class="ansigreen">def</span> labels<span class="ansiblue">(</span>self<span class="ansiblue">)</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">   2136</span>         <span class="ansigreen">if</span> self<span class="ansiblue">.</span>_labels <span class="ansigreen">is</span> <span class="ansigreen">None</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">-&gt; 2137</span><span class="ansired">             </span>self<span class="ansiblue">.</span>_make_labels<span class="ansiblue">(</span><span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">   2138</span>         <span class="ansigreen">return</span> self<span class="ansiblue">.</span>_labels<span class="ansiblue"></span>
+<span class="ansigreen">   2139</span> <span class="ansiblue"></span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/groupby.py</span> in <span class="ansicyan">_make_labels</span><span class="ansiblue">(self)</span>
+<span class="ansigreen">   2146</span>     <span class="ansigreen">def</span> _make_labels<span class="ansiblue">(</span>self<span class="ansiblue">)</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">   2147</span>         <span class="ansigreen">if</span> self<span class="ansiblue">.</span>_labels <span class="ansigreen">is</span> <span class="ansigreen">None</span> <span class="ansigreen">or</span> self<span class="ansiblue">.</span>_group_index <span class="ansigreen">is</span> <span class="ansigreen">None</span><span class="ansiblue">:</span><span class="ansiblue"></span>
+<span class="ansigreen">-&gt; 2148</span><span class="ansired">             </span>labels<span class="ansiblue">,</span> uniques <span class="ansiblue">=</span> algos<span class="ansiblue">.</span>factorize<span class="ansiblue">(</span>self<span class="ansiblue">.</span>grouper<span class="ansiblue">,</span> sort<span class="ansiblue">=</span>self<span class="ansiblue">.</span>sort<span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">   2149</span>             uniques <span class="ansiblue">=</span> Index<span class="ansiblue">(</span>uniques<span class="ansiblue">,</span> name<span class="ansiblue">=</span>self<span class="ansiblue">.</span>name<span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">   2150</span>             self<span class="ansiblue">.</span>_labels <span class="ansiblue">=</span> labels<span class="ansiblue"></span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/core/algorithms.py</span> in <span class="ansicyan">factorize</span><span class="ansiblue">(values, sort, order, na_sentinel, size_hint)</span>
+<span class="ansigreen">    188</span>     table <span class="ansiblue">=</span> hash_klass<span class="ansiblue">(</span>size_hint <span class="ansigreen">or</span> len<span class="ansiblue">(</span>vals<span class="ansiblue">)</span><span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">    189</span>     uniques <span class="ansiblue">=</span> vec_klass<span class="ansiblue">(</span><span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">--&gt; 190</span><span class="ansired">     </span>labels <span class="ansiblue">=</span> table<span class="ansiblue">.</span>get_labels<span class="ansiblue">(</span>vals<span class="ansiblue">,</span> uniques<span class="ansiblue">,</span> <span class="ansicyan">0</span><span class="ansiblue">,</span> na_sentinel<span class="ansiblue">)</span><span class="ansiblue"></span>
+<span class="ansigreen">    191</span> <span class="ansiblue"></span>
+<span class="ansigreen">    192</span>     labels <span class="ansiblue">=</span> com<span class="ansiblue">.</span>_ensure_platform_int<span class="ansiblue">(</span>labels<span class="ansiblue">)</span><span class="ansiblue"></span>
+
+<span class="ansigreen">pandas/hashtable.pyx</span> in <span class="ansicyan">pandas.hashtable.Int64HashTable.get_labels (pandas/hashtable.c:7871)</span><span class="ansiblue">()</span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/hashtable.cpython-35m-darwin.so</span> in <span class="ansicyan">View.MemoryView.memoryview_cwrapper (pandas/hashtable.c:29636)</span><span class="ansiblue">()</span>
+
+<span class="ansigreen">/Users/dirk/anaconda/lib/python3.5/site-packages/pandas/hashtable.cpython-35m-darwin.so</span> in <span class="ansicyan">View.MemoryView.memoryview.__cinit__ (pandas/hashtable.c:26005)</span><span class="ansiblue">()</span>
+
+<span class="ansired">ValueError</span>: buffer source array is read-only</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre> 
+</pre></div>
+
+</div>
 </div>
 </div>
 
