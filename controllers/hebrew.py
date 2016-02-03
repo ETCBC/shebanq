@@ -2158,8 +2158,8 @@ where query.id = {}
         execute = not is_published and request.vars.execute
         xgood = True
         if execute == 'true':
-            (xgood, nresults, xmonads, this_msgs, eversion) = mql(vr, newmql) 
-            if xgood:
+            (xgood, limit_exceeded, nresults, xmonads, this_msgs, eversion) = mql(vr, newmql) 
+            if xgood and not limit_exceeded:
                 store_monad_sets(vr, qid, xmonads)
                 fldx['executed_on'] = request.now
                 fldx['eversion'] = eversion
