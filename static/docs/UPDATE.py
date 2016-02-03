@@ -83,7 +83,6 @@ tools/phono/phono.ipynb
 tools/shebanq/para_from_px.ipynb
 tools/shebanq/lexicon.ipynb
 tools/shebanq/laf2shebanq.ipynb
-tools/shebanq/mql.ipynb
 ''',
 )
 

@@ -189,13 +189,15 @@ div#notebook {
 <p>These Python bindings need Python2.</p>
 <p>In order to have a Python2 kernel in Jupyter under an Anaconda installation that is based on Python3, I had to perform the following sequence:</p>
 
-</div>
-</div>
-</div>conda create -n py27 python=2.7
+<pre><code>conda create -n py27 python=2.7
 source activate py27
 conda install notebook ipykernel
 sudo ipython kernel install
-source deactivate
+source deactivate</code></pre>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -204,7 +206,9 @@ source deactivate
 <h1 id="Problem-queries">Problem queries<a class="anchor-link" href="#Problem-queries">&#182;</a></h1><p>MQL queries may easily deliver billions of results. 
 Usually, it is not the intention of the user to get that many results.
 Most of the time, it is caused by limited experience with the MQL language.</p>
-<p>Here is an example query:</p>
+<p>Here is an example query (see also 
+<a href="https://shebanq.ancient-data.org/hebrew/query?version=4b&id=1119">this query on SHEBANQ</a>
+):</p>
 
 <pre><code>select all objects where
     [word focus lex = 'R&gt;CJT/']
@@ -432,7 +436,7 @@ If that is true, it is better to be able to notify the user and not to waste val
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">sheaf_results_f</span><span class="p">(</span><span class="n">sheaf</span><span class="p">):</span>
-    <span class="n">sh_iter</span> <span class="o">=</span> <span class="n">sheaf</span><span class="o">.</span><span class="n">iterator</span><span class="p">()</span>
+    <span class="n">sh_iter</span> <span class="o">=</span> <span class="n">sheaf</span><span class="o">.</span><span class="n">const_iterator</span><span class="p">()</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">sh_iter</span><span class="o">.</span><span class="n">hasNext</span><span class="p">():</span>
         <span class="n">straw</span> <span class="o">=</span> <span class="n">sh_iter</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
@@ -525,7 +529,9 @@ If that is true, it is better to be able to notify the user and not to waste val
     <span class="n">good</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">executeString</span><span class="p">(</span><span class="n">sanitize</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">msgs</span><span class="p">)</span> <span class="p">,</span> <span class="n">compiler_result</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">sheaf</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">getSheaf</span><span class="p">()</span> <span class="k">if</span> <span class="n">good</span> <span class="ow">and</span> <span class="n">env</span><span class="o">.</span><span class="n">isSheaf</span> <span class="k">else</span> <span class="bp">None</span>
     <span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&lt;10}: fetching done{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;C++&#39;</span><span class="p">,</span> <span class="s">&#39; NO SHEAF!&#39;</span> <span class="k">if</span> <span class="n">sheaf</span> <span class="o">==</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">sheaf</span>
+    <span class="c"># we only need the sheaf, but if we do not return the env, it will be garbage collected</span>
+    <span class="c"># and then we get a segmentation fault</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sheaf</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_ms</span><span class="p">(</span><span class="n">sheaf</span><span class="p">):</span>                
     <span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&lt;10}: making monadsets&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Python&#39;</span><span class="p">))</span>
@@ -535,6 +541,7 @@ If that is true, it is better to be able to notify the user and not to waste val
 
 <span class="k">def</span> <span class="nf">get_n</span><span class="p">(</span><span class="n">sheaf</span><span class="p">):</span>
     <span class="n">msg</span><span class="p">(</span><span class="s">&#39;{:&lt;10}: computing number of results&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;SWIG&#39;</span><span class="p">))</span>
+    <span class="n">limit_exceeded</span> <span class="o">=</span> <span class="bp">False</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">sheaf_results</span><span class="p">(</span><span class="n">sheaf</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">LimitError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -560,7 +567,7 @@ If that is true, it is better to be able to notify the user and not to waste val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">data_version</span> <span class="o">=</span> <span class="s">&#39;4&#39;</span>
@@ -570,7 +577,7 @@ If that is true, it is better to be able to notify the user and not to waste val
     <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
         <span class="n">Msg</span><span class="p">(</span><span class="s">&#39;QUERY {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">))</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">queries</span><span class="p">[</span><span class="n">q</span><span class="p">]</span>
-        <span class="n">sheaf</span> <span class="o">=</span> <span class="n">get_sheaf</span><span class="p">(</span><span class="n">data_version</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sheaf</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_sheaf</span><span class="p">(</span><span class="n">data_version</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sheaf</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span> <span class="k">continue</span>
         <span class="n">ms</span> <span class="o">=</span> <span class="n">get_ms</span><span class="p">(</span><span class="n">sheaf</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">lm</span> <span class="ow">in</span> <span class="n">limits</span><span class="p">:</span>
@@ -607,8 +614,135 @@ If that is true, it is better to be able to notify the user and not to waste val
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s QUERY r10
   0.01s C++       : fetching the sheaf
-  4.72s C++       : fetching done
-  5.42s Python    : making monadsets
+  4.16s C++       : fetching done
+  4.17s Python    : making monadsets
+  4.28s Python    : returning 11 monadsets
+  0.00s LIMIT 100000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  1.12s SWIG      : 100000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  1.11s SWIG      : 100000 resultsexceeded)
+  0.00s LIMIT 500000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  5.85s SWIG      : 500000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  4.73s SWIG      : 500000 resultsexceeded)
+  0.00s LIMIT 1000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+    11s SWIG      : 942880 results)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  9.33s SWIG      : 942880 results)
+  0.00s LIMIT 1000000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+    11s SWIG      : 942880 results)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  9.86s SWIG      : 942880 results)
+  0.00s QUERY r20
+  0.00s C++       : fetching the sheaf
+  9.12s C++       : fetching done
+  9.68s Python    : making monadsets
+  9.82s Python    : returning 11 monadsets
+  0.00s LIMIT 100000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  1.19s SWIG      : 100000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  0.98s SWIG      : 100000 resultsexceeded)
+  0.00s LIMIT 500000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  6.13s SWIG      : 500000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  4.98s SWIG      : 500000 resultsexceeded)
+  0.00s LIMIT 1000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+    11s SWIG      : 942880 results)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  9.01s SWIG      : 942880 results)
+  0.00s LIMIT 1000000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+    11s SWIG      : 942880 results)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  9.05s SWIG      : 942880 results)
+  0.00s QUERY r25
+  0.00s C++       : fetching the sheaf
+ 2m 39s C++       : fetching done
+ 2m 40s Python    : making monadsets
+ 3m 01s Python    : returning 21 monadsets
+  0.00s LIMIT 100000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  1.34s SWIG      : 100000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  1.35s SWIG      : 100000 resultsexceeded)
+  0.00s LIMIT 500000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  6.02s SWIG      : 500000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  4.99s SWIG      : 500000 resultsexceeded)
+  0.00s LIMIT 1000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+    12s SWIG      : 1000000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  9.42s SWIG      : 1000000 resultsexceeded)
+  0.00s LIMIT 1000000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+12m 45s SWIG      : 63247779 results)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+10m 40s SWIG      : 63247779 results)
+  0.00s QUERY all
+  0.00s C++       : fetching the sheaf
+ 5m 41s C++       : fetching done
+ 7m 06s Python    : making monadsets
+ 8m 44s Python    : returning 47 monadsets
+  0.00s LIMIT 100000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  1.67s SWIG      : 100000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  1.13s SWIG      : 100000 resultsexceeded)
+  0.00s LIMIT 500000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+  7.68s SWIG      : 500000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+  5.38s SWIG      : 500000 resultsexceeded)
+  0.00s LIMIT 1000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+    14s SWIG      : 1000000 resultsexceeded)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
+    11s SWIG      : 1000000 resultsexceeded)
+  0.00s LIMIT 1000000000
+  0.00s IDIOM Gen
+  0.00s SWIG      : computing number of results
+28m 04s SWIG      : 131181928 results)
+  0.00s IDIOM For
+  0.00s SWIG      : computing number of results
 </pre>
 </div>
 </div>
