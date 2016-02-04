@@ -48,7 +48,7 @@ response.title = request.function.replace('_', ' ').capitalize()
 response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html
-response.meta.author = 'Dirk Roorda <dirk.roorda@dans.knaw.nl>'
+response.meta.author = 'SHEBANQ <shebanq@ancient-data.org>'
 response.meta.description = 'Search engine for biblical Hebrew based on ETCBC database (formerly known as WIVU)'
 response.meta.keywords = 'Hebrew, Text Database, Bible, Query, Annotation'
 response.meta.generator = 'ETCBC4 Data'

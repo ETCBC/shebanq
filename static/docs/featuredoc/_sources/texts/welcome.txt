@@ -45,3 +45,6 @@ Dirk Roorda                           |DANS|
    :width: 200px
    :align: top
 
+Contact
+=======
+`shebanq@ancient-data.org <mailto:shebanq@ancient-data.org>`_

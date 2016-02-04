@@ -35,6 +35,9 @@ DANS
 * Henk van den Berg
 * Heleen van de Schraaf
     
+Contact
+=======
+[shebanq@ancient-data.org](mailto:shebanq@ancient-data.org)
 
 2014-2015: Continued development of SHEBANQ made possible by the ETCBC and [The Language Archive](http://tla.mpi.nl)
 
