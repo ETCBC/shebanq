@@ -41,7 +41,7 @@ on_local = False
 on_prod = False
 on_devel = False
 if served_on == None: on_system = True
-elif: served_on.endswith('local'): on_local = True
+elif served_on.endswith('local'): on_local = True
 elif served_on == 'shebanq.ancient-data.org': on_prod = True
 else: on_devel = True
 
