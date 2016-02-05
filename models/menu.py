@@ -36,10 +36,12 @@ response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
 
 
 served_on = request.env.SERVER_NAME
+on_system = False
 on_local = False
 on_prod = False
 on_devel = False
-if served_on.endswith('local'): on_local = True
+if served_on == None: on_system = True
+elif: served_on.endswith('local'): on_local = True
 elif served_on == 'shebanq.ancient-data.org': on_prod = True
 else: on_devel = True
 
