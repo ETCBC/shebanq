@@ -719,7 +719,7 @@ def h_esc(material, fill=True):
         u'&', u'&amp;').replace(
         u'<', u'&lt;').replace(
         u'>', u'&gt;').replace(
-        u'"', u'&quot').replace(
+        u'"', u'&quot;').replace(
         u"'", u'&apos;').replace(
         u'\\n', u'\n')
     if fill:
