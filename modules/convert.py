@@ -9,8 +9,6 @@ data_outfile = 'results.txt'
 data_inpath = '{}/{}'.format(data_dir, data_infile)
 data_outpath = '{}/{}'.format(data_dir, data_outfile)
 
-#
-
 class Timestamp(object):
     def __init__(self, log_file=None, verbose=None):
         self.timestamp = time.time()
