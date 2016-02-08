@@ -45,14 +45,18 @@ fi
 cd $SH_ADIR/shebanq
 git pull origin master
 cd $SH_ADIR/web2py
+python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
-#python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
+python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
+cd applications/admin
+python -m compileall models modules
 cd $SH_ADIR/shebanq
 if [ $ON_LWEB ]; then
     cp -R /usr/local/lib/python2.7/dist-packages/guppy modules
     chown -R www-data:www-data /home/www-data/web2py
     chown -R www-data:www-data /home/www-data/shebanq
 fi
+python -m compileall models modules
 sleep 1
 
 cd $SH_ADIR/shebanq

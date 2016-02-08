@@ -864,7 +864,6 @@ def sideq():
     if iid == 0 or not authorized:
         msgs.append(('error', msg))
         return dict(
-            h_esc=h_esc,
             writable=False,
             iidrep = iidrep,
             vr = vr,
@@ -876,7 +875,6 @@ def sideq():
     q_record = get_query_info(auth.user != None, iid, vr, msgs, with_ids=True, single_version=False, po=True)
     if q_record == None:
         return dict(
-            h_esc=h_esc,
             writable=True,
             iidrep = iidrep,
             vr = vr,
@@ -889,7 +887,6 @@ def sideq():
     (authorized, msg) = query_auth_write(iid=iid)
 
     return dict(
-        h_esc=h_esc,
         writable=authorized,
         iidrep = iidrep,
         vr = vr,

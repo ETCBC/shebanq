@@ -181,16 +181,3 @@ use_janrain(auth, filename='private/janrain.key')
 auth.messages.logged_in = None
 auth.messages.logged_out = None
 
-def h_esc(material, fill=True):
-    material = material.replace(
-        u'&', u'&amp;').replace(
-        u'<', u'&lt;').replace(
-        u'>', u'&gt;').replace(
-        u'"', u'&quot').replace(
-        u"'", u'&apos;').replace(
-        u'\\n', u'\n')
-    if fill:
-        if material == '': material = '&nbsp;'
-    return material
-
-
