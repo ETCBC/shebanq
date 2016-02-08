@@ -27,6 +27,7 @@ if 0:
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
+#
 
 response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
                   _class="brand",
