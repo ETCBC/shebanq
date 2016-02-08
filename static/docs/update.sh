@@ -51,12 +51,16 @@ python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
 cd applications/admin
 python -m compileall models modules
 cd $SH_ADIR/shebanq
+python -m compileall models modules
 if [ $ON_LWEB ]; then
     cp -R /usr/local/lib/python2.7/dist-packages/guppy modules
-    chown -R www-data:www-data /home/www-data/web2py
-    chown -R www-data:www-data /home/www-data/shebanq
+    chown -R www-data:www-data $SH_ADIR/web2py
+    chown -R www-data:www-data $SH_ADIR/shebanq
 fi
-python -m compileall models modules
+if [ $ON_CLARIN ]; then
+    chown dirkr:shebanq $SH_ADIR/web2py/web2py.log
+    chown dirkr:shebanq $SH_ADIR/web2py/welcome.w2p
+fi
 sleep 1
 
 cd $SH_ADIR/shebanq
