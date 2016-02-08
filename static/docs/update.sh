@@ -94,6 +94,12 @@ if [ "$1" == "-d" -o "$1" == "-de" ]; then
     echo "loading passage database for version 4b"
     mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_passage4b.sql
 fi
+
+cd $SH_ADIR/web2py
+if [ -e logging.conf ]; then
+    rm logging.conf
+fi
+
 sleep 2
 
 if [ $ON_CLARIN ]; then
