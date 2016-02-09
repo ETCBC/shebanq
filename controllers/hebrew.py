@@ -1309,7 +1309,10 @@ limit {};
 
     pqueryx = db.executesql(pqueryx_sql)
     pqueries = []
+    seenq = set()
     for (qid, ufname, ulname, qname, executed_on) in pqueryx:
+        if qid in seenq: continue
+        seenq.add(qid)
         text = h_esc(u'{} {}: {}'.format(ufname[0], ulname[0:9], qname[0:20]))
         title = h_esc(u'{} {}: {}'.format(ufname, ulname, qname))
         pqueries.append(dict(id=qid, text=text, title=title))
