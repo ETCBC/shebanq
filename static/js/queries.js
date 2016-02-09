@@ -1,4 +1,4 @@
-var pq_url, q_url, record_url
+var pq_url, q_url, record_url, queriesr_url
 var ns = $.initNamespaceStorage('muting_q')
 var vs = $.initNamespaceStorage('qsview')
 var muting = ns.localStorage
@@ -40,6 +40,60 @@ var Request = {
         }
         return result;
     }
+}
+
+function Recent() {
+    var that = this
+    this.loaded = false
+    this.queries = []
+    this.msgqr = new Msg('msg_qr')
+    this.refreshctl = $('#reload_recentq')
+    var target = $('#recentqi')
+
+    this.fetch = function() {
+        this.msgqr.msg(['info', 'fetching recent queries ...'])
+        $.post(queriesr_url, {}, function(json) {
+            that.loaded = true
+            that.msgqr.clear()
+            json.msgs.forEach(function(m) {
+                that.msgqr.msg(m)
+            })
+            if (json.good) {
+                that.queries = json.queries
+                that.process()
+            }
+        })
+    }
+    this.process = function() {
+        this.gen_html()
+        this.dress_queriesr()
+    }
+    this.gen_html = function() {
+        var queries = this.queries
+        var html = ''
+        for (var n = 0; n < queries.length; n++) {
+            var query = queries[n]
+            var qid = query['id']
+            var qtxt = query['text']
+            var qtit = query['title']
+            html += '<a class="q" qid="'+qid+'" href="#" title="'+qtit+'">'+qtxt+'</a><br/>\n'
+        }
+        target.html(html)
+    }
+    this.dress_queriesr = function() {
+        $('#recentqi a[qid]').each(function() {
+            $(this).click(function(e) {e.preventDefault();
+                ftree.filter.clear()
+                ftree.gotoquery($(this).attr('qid'))
+            })
+        })
+    }
+    this.msgqr.clear()
+    this.refreshctl.click(function(e) {e.preventDefault();that.fetch()})
+    this.apply = function() {
+        this.fetch()
+    }
+    this.apply()
 }
 
 function View() {
@@ -809,7 +863,10 @@ function Tree() {
                 qnode.makeVisible({noAnimation: true})
                 $('.treehl').removeClass('treehl')
                 $('a[qid='+qid+']').closest('span').addClass('treehl')
-                $(qnode.li)[0].scrollIntoView()
+                $(qnode.li)[0].scrollIntoView({
+                    behavior: "smooth",
+                })
+                $('#queries').scrollTop -= 20
                 /*
                 var editable = $(qnode.li).has('.r_q').length > 0
                 if (editable) {
@@ -906,5 +963,6 @@ function Tree() {
 }
 
 $(function(){
+    recent = new Recent()
     ftree = new Tree()
 })

@@ -1286,6 +1286,36 @@ def pagelist(page, pages, spread):
         factor *= spread
     return sorted(i for i in filtered_pages if i > 0 and i <= pages) 
 
+RECENT_LIMIT = 50
+
+def queriesr():
+    session.forget(response)
+
+    pqueryx_sql = u'''
+select distinct
+    query.id as qid,
+    auth_user.first_name as ufname,
+    auth_user.last_name as ulname,
+    query.name as qname,
+    query_exe.executed_on as qexe
+from query_exe
+inner join query on query.id = query_exe.query_id
+inner join auth_user on query.created_by = auth_user.id
+where (query.is_shared = 'T')
+and (query_exe.executed_on is not null and query_exe.executed_on > query_exe.modified_on)
+order by query_exe.executed_on desc, auth_user.last_name
+limit {};
+'''.format(RECENT_LIMIT)
+
+    pqueryx = db.executesql(pqueryx_sql)
+    pqueries = []
+    for (qid, ufname, ulname, qname, executed_on) in pqueryx:
+        text = h_esc(u'{} {}: {}'.format(ufname[0], ulname[0:9], qname[0:20]))
+        title = h_esc(u'{} {}: {}'.format(ufname, ulname, qname))
+        pqueries.append(dict(id=qid, text=text, title=title))
+
+    return dict(data=json.dumps(dict(queries=pqueries, msgs=[], good=True)))
+
 def query_tree():
     session.forget(response)
     myid = None
