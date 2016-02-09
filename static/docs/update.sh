@@ -47,7 +47,13 @@ git pull origin master
 cd $SH_ADIR/web2py
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
+
+# the following script creates a logging.conf in the web2py directory.
+# This file must be removed before the webserver starts up, otherwise httpd wants to write web2py.log, which is generally not allowed
+# and especially not under linux.
+# Failing to remove this file will result in an Internal Server Error by SHEBANQ!
 python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
+
 cd applications/admin
 python -m compileall models modules
 cd $SH_ADIR/shebanq
@@ -95,6 +101,7 @@ if [ "$1" == "-d" -o "$1" == "-de" ]; then
     mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt < $UNPACK/shebanq_passage4b.sql
 fi
 
+# Here we clean the logging.conf script as promised above.
 cd $SH_ADIR/web2py
 if [ -e logging.conf ]; then
     rm logging.conf

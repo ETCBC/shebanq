@@ -1,0 +1,29 @@
+User-agent: googlebot
+User-agent: google
+User-agent: bing
+User-agent: Baiduspider 
+User-agent: baiduspider 
+User-agent: Baiduspider+ 
+Disallow: /shebanq/hebrew/verse
+Disallow: /hebrew/verse
+Disallow: /shebanq/hebrew/word
+Disallow: /hebrew/word
+Disallow: /shebanq/hebrew/chart
+Disallow: /hebrew/chart
+Disallow: /shebanq/user
+Disallow: /user
+Disallow: /shebanq/static/images
+Disallow: /static/images
+Disallow: /shebanq/static/css
+Disallow: /static/css
+Disallow: /shebanq/static/js
+Disallow: /static/js
+Disallow: /shebanq/static/fonts
+Disallow: /static/fonts
+Disallow: /shebanq/appadmin
+Disallow: /appadmin
+Disallow: /admin
+
+
+User-agent: *
+Disallow: /
