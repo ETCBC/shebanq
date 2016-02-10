@@ -52,7 +52,7 @@ from query_exe
 inner join query on query.id = query_exe.query_id
 inner join auth_user on query.created_by = auth_user.id
 where (query.is_shared = 'T')
-and (query_exe.executed_on is not null and query_exe.executed_on > query_exe.modified_on)
+and (query_exe.executed_on is not null and query_exe.executed_on >= query_exe.modified_on)
 group by query.id
 order by query_exe.executed_on desc, auth_user.last_name
 '''
