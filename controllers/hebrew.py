@@ -1288,19 +1288,16 @@ def pagelist(page, pages, spread):
 
 RECENT_LIMIT = 50
 
-from codecs import encode
-
 def queriesr():
     session.forget(response)
 
-    if request.extension == 'json':
-        pqueryx_sql = u'''
+    pqueryx_sql = u'''
 select
-    query.id as qid,
-    auth_user.first_name as ufname,
-    auth_user.last_name as ulname,
-    query.name as qname,
-    max(query_exe.executed_on) as qexe
+query.id as qid,
+auth_user.first_name as ufname,
+auth_user.last_name as ulname,
+query.name as qname,
+max(query_exe.executed_on) as qexe
 from query_exe
 inner join query on query.id = query_exe.query_id
 inner join auth_user on query.created_by = auth_user.id
@@ -1311,48 +1308,14 @@ order by query_exe.executed_on desc, auth_user.last_name
 limit {};
 '''.format(RECENT_LIMIT)
 
-        pqueryx = db.executesql(pqueryx_sql)
-        pqueries = []
-        for (qid, ufname, ulname, qname, qexe) in pqueryx:
-            text = h_esc(u'{} {}: {}'.format(ufname[0], ulname[0:9], qname[0:20]))
-            title = h_esc(u'{} {}: {}'.format(ufname, ulname, qname))
-            pqueries.append(dict(id=qid, text=text, title=title))
+    pqueryx = db.executesql(pqueryx_sql)
+    pqueries = []
+    for (qid, ufname, ulname, qname, qexe) in pqueryx:
+        text = h_esc(u'{} {}: {}'.format(ufname[0], ulname[0:9], qname[0:20]))
+        title = h_esc(u'{} {}: {}'.format(ufname, ulname, qname))
+        pqueries.append(dict(id=qid, text=text, title=title))
 
-        return dict(data=json.dumps(dict(queries=pqueries, msgs=[], good=True)))
-
-    if request.extension == 'rss':
-        pqueryx_sql = u'''
-select
-    query.id as qid,
-    auth_user.first_name as ufname,
-    auth_user.last_name as ulname,
-    query.name as qname,
-    query.description as qdesc,
-    max(query_exe.executed_on) as qexe
-from query_exe
-inner join query on query.id = query_exe.query_id
-inner join auth_user on query.created_by = auth_user.id
-where (query.is_shared = 'T')
-and (query_exe.executed_on is not null and query_exe.executed_on > query_exe.modified_on)
-group by query.id
-order by query_exe.executed_on desc, auth_user.last_name
-'''
-
-        pqueryx = db.executesql(pqueryx_sql)
-        pqueries = []
-        for (qid, ufname, ulname, qname, qdesc, qexe) in pqueryx:
-            title = encode(u'{} {}: {}'.format(ufname, ulname, qname), 'utf-8')
-            description = encode(qdesc, 'utf-8')
-            link = URL('hebrew', 'query', vars=dict(id=qid), host=True, extension='')
-            pqueries.append(dict(title=title, link=link, description=description, created_on=qexe))
-
-        return dict(
-            title="SHEBANQ queries",
-            link=URL('hebrew', 'queriesr.rss', host=True),
-            description="The shared queries in SHEBANQ",
-            created_on=request.now,
-            entries=pqueries,
-        )
+    return dict(data=json.dumps(dict(queries=pqueries, msgs=[], good=True)))
 
 def query_tree():
     session.forget(response)
