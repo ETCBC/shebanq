@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from markdown import markdown
 import gluon.contrib.rss2 as rss2
 
 # here is a bit that replaces the same functions in gluon/serializers.py
@@ -58,7 +59,7 @@ order by query_exe.executed_on desc, auth_user.last_name
     pqueries = []
     for (qid, ufname, ulname, qname, qdesc, qexe) in pqueryx:
         title = u'{} {}: {}'.format(ufname, ulname, qname)
-        description = qdesc
+        description = markdown(qdesc)
         link = URL('hebrew', 'query', vars=dict(id=qid), host=True, extension='')
         pqueries.append(dict(title=title, link=link, description=description, created_on=qexe))
 
