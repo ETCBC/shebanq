@@ -107,7 +107,7 @@ order by query_exe.executed_on desc, auth_user.last_name
 
     return dict(
         title="SHEBANQ queries",
-        link=URL('rss', host=True),
+        link=URL('call', 'rss', host=True),
         description="The shared queries in SHEBANQ",
         created_on=request.now,
         entries=pqueries,
