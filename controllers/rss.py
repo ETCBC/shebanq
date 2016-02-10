@@ -20,21 +20,20 @@ def rss(feed):
         return safe_encode(obj.get(key,''))
 
     now = datetime.datetime.now()
-    rss = rss2.RSS2(title=safestr(feed,'title'),
-                    link=safestr(feed,'link'),
-                    description=safestr(feed,'description'),
-                    lastBuildDate=feed.get('created_on', now),
-                    image=rss2.Image(
-                        url=URL('static', 'images/shebanq_logo.png', host=True),
-                        title='SHEBANQ',
-                        link=URL('', '', host=True, extension=''),
-                    ),
-                    items=[rss2.RSSItem(
-                           title=safestr(entry,'title','(notitle)'),
-                           link=safestr(entry,'link'),
-                           description=safestr(entry,'description'),
-                           pubDate=entry.get('created_on', now)
-                           ) for entry in feed.get('entries', [])])
+    rss = rss2.RSS2(
+        title=safestr(feed,'title'),
+            image=rss2.Image(*feed.get('image', None)),
+            link=safestr(feed,'link'),
+            description=safestr(feed,'description'),
+            lastBuildDate=feed.get('created_on', now),
+            items=[
+                rss2.RSSItem(
+                    title=safestr(entry,'title','(notitle)'),
+                    link=safestr(entry,'link'),
+                    description=safestr(entry,'description'),
+                    pubDate=entry.get('created_on', now)
+                ) for entry in feed.get('entries', [])
+            ])
     return rss.to_xml(encoding='utf8')
 
 
@@ -68,7 +67,12 @@ order by query_exe.executed_on desc, auth_user.last_name
 
     return dict(
         title="SHEBANQ queries",
-        link=URL('call', 'rss', host=True),
+        link=URL('rss', 'feed', host=True, extension='rss'),
+        image=(
+            URL('static', 'images/shebanq_logo.png', host=True),
+            'SHEBANQ',
+            URL('', '', host=True, extension=''),
+        ),
         description="The shared queries in SHEBANQ",
         created_on=request.now,
         entries=pqueries,
