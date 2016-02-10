@@ -76,6 +76,7 @@ def call():
 
 from codecs import encode
 
+@service.rss
 def rss():
     session.forget(response)
 
