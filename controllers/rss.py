@@ -34,7 +34,7 @@ def rss(feed):
                     pubDate=entry.get('created_on', now)
                 ) for entry in feed.get('entries', [])
             ])
-    return rss.to_xml(encoding='utf8')
+    return rss.to_xml(encoding='utf-8')
 
 
 def feed():
@@ -70,8 +70,8 @@ order by query_exe.executed_on desc, auth_user.last_name
         link=URL('rss', 'feed', host=True, extension='rss'),
         image=(
             URL('static', 'images/shebanq_logo.png', host=True),
-            'SHEBANQ',
-            URL('', '', host=True, extension=''),
+            'SHEBANQ queries',
+            URL('rss', 'feed', host=True, extension='rss'),
         ),
         description="The shared queries in SHEBANQ",
         created_on=request.now,
