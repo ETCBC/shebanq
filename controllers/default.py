@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from gluon.custom_import import track_changes; track_changes(True)
+#from gluon.custom_import import track_changes; track_changes(True)
 
 EXPIRE = 3600*24*30
 
@@ -73,45 +73,6 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
-
-from codecs import encode
-
-@service.rss
-def rss():
-    session.forget(response)
-
-    pqueryx_sql = u'''
-select
-query.id as qid,
-auth_user.first_name as ufname,
-auth_user.last_name as ulname,
-query.name as qname,
-query.description as qdesc,
-max(query_exe.executed_on) as qexe
-from query_exe
-inner join query on query.id = query_exe.query_id
-inner join auth_user on query.created_by = auth_user.id
-where (query.is_shared = 'T')
-and (query_exe.executed_on is not null and query_exe.executed_on > query_exe.modified_on)
-group by query.id
-order by query_exe.executed_on desc, auth_user.last_name
-'''
-
-    pqueryx = db.executesql(pqueryx_sql)
-    pqueries = []
-    for (qid, ufname, ulname, qname, qdesc, qexe) in pqueryx:
-        title = encode(u'{} {}: {}'.format(ufname, ulname, qname), 'utf-8')
-        description = encode(qdesc, 'utf-8')
-        link = URL('hebrew', 'query', vars=dict(id=qid), host=True, extension='')
-        pqueries.append(dict(title=title, link=link, description=description, created_on=qexe))
-
-    return dict(
-        title="SHEBANQ queries",
-        link=URL('call', 'rss', host=True),
-        description="The shared queries in SHEBANQ",
-        created_on=request.now,
-        entries=pqueries,
-    )
 
 
 @auth.requires_signature()

@@ -7,4 +7,4 @@
 #
 # items is a list of dictionaries each with title, link, description, pub_date.
 ###
-from gluon.serializers import rss}}{{=XML(rss(response._vars))}}
+}}{{=XML(rss(response._vars))}}
