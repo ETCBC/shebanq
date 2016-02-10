@@ -19,7 +19,7 @@ def rss(feed):
     def safestr(obj, key, default=''):
         return safe_encode(obj.get(key,''))
 
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     rss = rss2.RSS2(
         title=safestr(feed,'title'),
             image=rss2.Image(*feed.get('image', None)),
@@ -74,7 +74,7 @@ order by query_exe.executed_on desc, auth_user.last_name
             URL('rss', 'feed', host=True, extension='rss'),
         ),
         description="The shared queries in SHEBANQ",
-        created_on=request.now,
+        created_on=request.utcnow,
         entries=pqueries,
         rss=rss,
     )

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#from gluon.custom_import import track_changes; track_changes(True)
+from gluon.custom_import import track_changes; track_changes(True)
 import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
@@ -446,7 +446,7 @@ order by
             if uid not in ca_users[ca]: ca_users[ca][uid] = None
             pub = pub == 'T'
             shared = pub or shared == 'T'
-            ro = myid == None or uid != myid or not edit or (pub and (pub_on <= request.now - PUBLISH_FREEZE))
+            ro = myid == None or uid != myid or not edit or (pub and (pub_on <= request.utcnow - PUBLISH_FREEZE))
             kws = keywords.strip().split()
             for k in kws:
                 nkey_index[u'{} {}'.format(uid, k)] = iid_encode('n', uid, kw=k)
@@ -480,11 +480,11 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
         (o_shared, o_pub, o_stat, o_kw, o_ntxt) = old_notes[nid]
         extrafields = []
         if shared and not o_shared:
-            extrafields.append(u",\n\tshared_on = '{}'".format(request.now)) 
+            extrafields.append(u",\n\tshared_on = '{}'".format(request.utcnow)) 
         if not shared and o_shared:
             extrafields.append(u',\n\tshared_on = null') 
         if pub and not o_pub:
-            extrafields.append(u",\n\tpublished_on = '{}'".format(request.now)) 
+            extrafields.append(u",\n\tpublished_on = '{}'".format(request.utcnow)) 
         if not pub and o_pub:
             extrafields.append(u',\n\tpublished_on = null') 
         shared = "'T'" if shared else 'null'
@@ -494,7 +494,7 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
 update note set modified_on = '{}', is_shared = {}, is_published = {}, status = '{}', keywords = '{}', ntext = '{}'{}
 where id = {}
 ; 
-'''.format(request.now, shared, pub, stat, kw.replace(u"'",u"''"), ntxt.replace(u"'",u"''"), u''.join(extrafields), nid)
+'''.format(request.utcnow, shared, pub, stat, kw.replace(u"'",u"''"), ntxt.replace(u"'",u"''"), u''.join(extrafields), nid)
         note_db.executesql(update_sql)
         updated += 1
     if len(del_notes) > 0:
@@ -512,11 +512,11 @@ values
 ('{}', '{}', {}, {}, {}, {}, '{}', '{}', {}, {}, {}, {}, '{}', '{}', '{}')
 ;
 '''.format(
-    vr, bk, ch, vs, canr, myid, request.now, request.now,
+    vr, bk, ch, vs, canr, myid, request.utcnow, request.utcnow,
     "'T'" if shared else 'null',
-    u"'{}'".format(request.now) if shared else 'null',
+    u"'{}'".format(request.utcnow) if shared else 'null',
     "'T'" if pub else 'null',
-    u"'{}'".format(request.now) if pub else 'null',
+    u"'{}'".format(request.utcnow) if pub else 'null',
     'o' if stat not in {'o', '*', '+', '?', '-', '!'} else stat,
     kw.replace(u"'",u"''"),
     ntxt.replace(u"'",u"''"),
@@ -1007,7 +1007,7 @@ def load_notes(uid, filetext, msgs):
     fieldnames = normative_fields.split('\t')
     nfields = len(fieldnames)
     errors = {}
-    now = request.now
+    now = request.utcnow
     created_on = now
     modified_on = now
 
@@ -1395,7 +1395,7 @@ order by organization.name, project.name, auth_user.last_name, auth_user.first_n
         qinfo = pqueries[qid]
         qexestatus = None
         if qexe: qexestatus = qexe >= qmod
-        qpubstatus = False if qispub != 'T' else None if qpub > request.now - PUBLISH_FREEZE else True
+        qpubstatus = False if qispub != 'T' else None if qpub > request.utcnow - PUBLISH_FREEZE else True
         qstatus = 1 if qpubstatus else 2 if qpubstatus == None else 3 if qexestatus else 4 if qexestatus == None else 5
         qinfo['v'][rversion_index[vr]] = qstatus
         if qpubstatus or qpubstatus == None: qinfo['publ'] = True
@@ -1934,11 +1934,11 @@ def upd_record(tp, lid, myid, fields, msgs, fvalues=None):
             if valsql == None: break
             updrecord['project'] = valsql
             fld = 'modified_on' 
-            updrecord[fld] = request.now
+            updrecord[fld] = request.utcnow
             fields.append(fld)
             if lid == 0:
                 fld = 'created_on' 
-                updrecord[fld] = request.now
+                updrecord[fld] = request.utcnow
                 fields.append(fld)
                 fld = 'created_by' 
                 updrecord[fld] = myid
@@ -2004,7 +2004,7 @@ def upd_shared(myid, qid, valsql, msgs):
     fname = 'is_shared'
     clear_cache(r'^items_q_')
     fieldval = u" {} = '{}'".format(fname, valsql)
-    mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
+    mod_date = request.utcnow.replace(microsecond=0) if valsql == 'T' else None
     mod_date_sql = 'null' if mod_date == None else u"'{}'".format(mod_date)
     fieldval += u', {} = {} '.format(mod_date_fld, mod_date_sql) 
     sql = u'''
@@ -2026,7 +2026,7 @@ def upd_published(myid, vr, qid, valsql, msgs):
     clear_cache(r'^items_q_{}_'.format(vr))
     verify_version(qid, vr)
     fieldval = u" {} = '{}'".format(fname, valsql)
-    mod_date = request.now.replace(microsecond=0) if valsql == 'T' else None
+    mod_date = request.utcnow.replace(microsecond=0) if valsql == 'T' else None
     mod_date_sql = 'null' if mod_date == None else u"'{}'".format(mod_date)
     fieldval += u', {} = {} '.format(mod_date_fld, mod_date_sql) 
     sql = u'''
@@ -2094,7 +2094,7 @@ select published_on from query_exe where query_id = {} and version = '{}'
 ;
 '''.format(qid, vr)
                 pv = db.executesql(sql)
-                pdate_ok = pv == None or len(pv) != 1 or pv[0][0] == None or pv[0][0] > request.now - PUBLISH_FREEZE
+                pdate_ok = pv == None or len(pv) != 1 or pv[0][0] == None or pv[0][0] > request.utcnow - PUBLISH_FREEZE
                 if not pdate_ok:
                     msgs.append(('error', u'You cannot UNpublish this query because it has been published more than {} ago'.format(PUBLISH_FREEZE_MSG)))
                     break
@@ -2163,7 +2163,7 @@ where query.id = {}
                 if valsql == None:
                     break
                 flds['name'] = valsql
-                flds['modified_on'] = request.now
+                flds['modified_on'] = request.utcnow
             newmql = request.vars.mql
             newmql_u = unicode(newmql, encoding='utf-8')
             if oldvals['mql'] != newmql_u:
@@ -2172,7 +2172,7 @@ where query.id = {}
                 if valsql == None:
                     break
                 fldx['mql'] = valsql
-                fldx['modified_on'] = request.now
+                fldx['modified_on'] = request.utcnow
             else:
                 msgs.append(('good', u'same query body'))
         else:
@@ -2183,7 +2183,7 @@ where query.id = {}
             if valsql == None:
                 break
             flds['description'] = valsql
-            flds['modified_on'] = request.now
+            flds['modified_on'] = request.utcnow
         good = True
     if good:
         execute = not is_published and request.vars.execute
@@ -2192,7 +2192,7 @@ where query.id = {}
             (xgood, limit_exceeded, nresults, xmonads, this_msgs, eversion) = mql(vr, newmql) 
             if xgood and not limit_exceeded:
                 store_monad_sets(vr, qid, xmonads)
-                fldx['executed_on'] = request.now
+                fldx['executed_on'] = request.utcnow
                 fldx['eversion'] = eversion
                 nresultmonads = count_monads(xmonads)
                 fldx['results'] = nresults
