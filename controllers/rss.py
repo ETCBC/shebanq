@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from markdown import markdown
 import gluon.contrib.rss2 as rss2
 
 # here is a bit that replaces the same functions in gluon/serializers.py
@@ -11,7 +10,6 @@ import gluon.contrib.rss2 as rss2
 def safe_encode(text):
     if not isinstance(text, (str, unicode)):
         text = str(text)
-
     return text
 
 def rss(feed):
@@ -26,6 +24,11 @@ def rss(feed):
                     link=safestr(feed,'link'),
                     description=safestr(feed,'description'),
                     lastBuildDate=feed.get('created_on', now),
+                    image=rss2.Image(
+                        url=URL('static', 'images/shebanq_logo.png', host=True),
+                        title='SHEBANQ',
+                        link=URL('', '', host=True, extension=''),
+                    ),
                     items=[rss2.RSSItem(
                            title=safestr(entry,'title','(notitle)'),
                            link=safestr(entry,'link'),
@@ -59,7 +62,7 @@ order by query_exe.executed_on desc, auth_user.last_name
     pqueries = []
     for (qid, ufname, ulname, qname, qdesc, qexe) in pqueryx:
         title = u'{} {}: {}'.format(ufname, ulname, qname)
-        description = markdown(qdesc)
+        description = qdesc
         link = URL('hebrew', 'query', vars=dict(id=qid), host=True, extension='')
         pqueries.append(dict(title=title, link=link, description=description, created_on=qexe))
 
