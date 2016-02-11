@@ -76,7 +76,8 @@ function Recent() {
             var qid = query['id']
             var qtxt = query['text']
             var qtit = query['title']
-            html += '<a class="q" qid="'+qid+'" href="#" title="'+qtit+'">'+qtxt+'</a><br/>\n'
+            var qver = query['version']
+            html += '<a class="q" qid="'+qid+'" v="'+qver+'" href="#" title="'+qtit+'">'+qtxt+'</a><br/>\n'
         }
         target.html(html)
     }

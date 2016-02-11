@@ -40,29 +40,43 @@ def rss(feed):
 def feed():
     session.forget(response)
 
+# see controller hebrew.py for more info about the next query. Look for pqueryx_sql
+
     pqueryx_sql = u'''
 select
-query.id as qid,
-auth_user.first_name as ufname,
-auth_user.last_name as ulname,
-query.name as qname,
-query.description as qdesc,
-max(query_exe.executed_on) as qexe
-from query_exe
-inner join query on query.id = query_exe.query_id
+    query.id as qid,
+    auth_user.first_name as ufname,
+    auth_user.last_name as ulname,
+    query.name as qname,
+    query.description as qdesc,
+    qe.executed_on as qexe,
+    qe.version as qver
+from query inner join
+    (
+        select t1.query_id, t1.executed_on, t1.version
+        from query_exe t1
+          left outer join query_exe t2
+            on (
+                t1.query_id = t2.query_id and 
+                t1.executed_on < t2.executed_on and
+                t2.executed_on >= t2.modified_on
+            )
+        where
+            (t1.executed_on is not null and t1.executed_on >= t1.modified_on) and
+            t2.query_id is null
+    ) as qe
+on qe.query_id = query.id
 inner join auth_user on query.created_by = auth_user.id
-where (query.is_shared = 'T')
-and (query_exe.executed_on is not null and query_exe.executed_on >= query_exe.modified_on)
-group by query.id
-order by query_exe.executed_on desc, auth_user.last_name
+where query.is_shared = 'T'
+order by qe.executed_on desc, auth_user.last_name
 '''
 
     pqueryx = db.executesql(pqueryx_sql)
     pqueries = []
-    for (qid, ufname, ulname, qname, qdesc, qexe) in pqueryx:
+    for (qid, ufname, ulname, qname, qdesc, qexe, qver) in pqueryx:
         title = u'{} {}: {}'.format(ufname, ulname, qname)
         description = qdesc
-        link = URL('hebrew', 'query', vars=dict(id=qid), host=True, extension='')
+        link = URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')
         pqueries.append(dict(title=title, link=link, description=description, created_on=qexe))
 
     return dict(

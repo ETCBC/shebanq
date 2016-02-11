@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from gluon.custom_import import track_changes; track_changes(True)
+#from gluon.custom_import import track_changes; track_changes(True)
 import collections, json, datetime
 from urlparse import urlparse, urlunparse
 from markdown import markdown
@@ -1291,29 +1291,56 @@ RECENT_LIMIT = 50
 def queriesr():
     session.forget(response)
 
+# The next query contains a clever idea from
+# http://stackoverflow.com/a/5657514 (http://stackoverflow.com/questions/5657446/mysql-query-max-group-by)
+# We want to find the most recent mql queries.
+# Queries may have multiple executions.
+# We want to have the queries with the most recent executions.
+# From such queries, we only want to have that one most recent executions.
+# This idea can be obtained by left outer joining the query_exe table with it self (qe1 with qe2)
+# on the condition that the rows are combined where qe1 and qe2 belong to the same query, and qe2 is more recent.
+# Rows in the combined table where qe2 is null, are such that qe1 is most recent.
+# This is the basic idea.
+# We then have to refine it: we only want shared queries. That is an easy where condition on the final result.
+# We only want to have up-to-date queries.
+# So the join condition is not that qe2 is more recent, but that qe2 is up-to-date and more recent.
+# And we need to add a where to express that qe1 is up to date.
+
     pqueryx_sql = u'''
 select
-query.id as qid,
-auth_user.first_name as ufname,
-auth_user.last_name as ulname,
-query.name as qname,
-max(query_exe.executed_on) as qexe
-from query_exe
-inner join query on query.id = query_exe.query_id
+    query.id as qid,
+    auth_user.first_name as ufname,
+    auth_user.last_name as ulname,
+    query.name as qname,
+    qe.executed_on as qexe,
+    qe.version as qver
+from query inner join
+    (
+        select qe1.query_id, qe1.executed_on, qe1.version
+        from query_exe qe1
+          left outer join query_exe qe2
+            on (
+                qe1.query_id = qe2.query_id and 
+                qe1.executed_on < qe2.executed_on and
+                qe2.executed_on >= qe2.modified_on
+            )
+        where
+            (qe1.executed_on is not null and qe1.executed_on >= qe1.modified_on) and
+            qe2.query_id is null
+    ) as qe
+on qe.query_id = query.id
 inner join auth_user on query.created_by = auth_user.id
-where (query.is_shared = 'T')
-and (query_exe.executed_on is not null and query_exe.executed_on > query_exe.modified_on)
-group by query.id
-order by query_exe.executed_on desc, auth_user.last_name
+where query.is_shared = 'T'
+order by qe.executed_on desc, auth_user.last_name
 limit {};
 '''.format(RECENT_LIMIT)
 
     pqueryx = db.executesql(pqueryx_sql)
     pqueries = []
-    for (qid, ufname, ulname, qname, qexe) in pqueryx:
+    for (qid, ufname, ulname, qname, qexe, qver) in pqueryx:
         text = h_esc(u'{} {}: {}'.format(ufname[0], ulname[0:9], qname[0:20]))
         title = h_esc(u'{} {}: {}'.format(ufname, ulname, qname))
-        pqueries.append(dict(id=qid, text=text, title=title))
+        pqueries.append(dict(id=qid, text=text, title=title, version=qver))
 
     return dict(data=json.dumps(dict(queries=pqueries, msgs=[], good=True)))
 
