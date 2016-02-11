@@ -85,11 +85,11 @@ order by qe.executed_on desc, auth_user.last_name
         title="SHEBANQ queries",
         link=URL('rss', 'feed', host=True, extension='rss'),
         image=(
-            URL('static', 'images/shebanq_logo_small.png', host=True),
+            URL('static', 'images/shebanq_logo.svg', host=True),
             'SHEBANQ queries',
             URL('rss', 'feed', host=True, extension='rss'),
         ),
-        cover_image= URL('static', 'images/shebanq_logo.png', host=True),
+        cover_image= URL('static', 'images/shebanq_cover.png', host=True),
         description="The shared queries in SHEBANQ",
         created_on=request.utcnow,
         entries=pqueries,
