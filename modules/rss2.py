@@ -465,6 +465,7 @@ class RSS2(WriteXmlMixin):
             _element(handler, 'webfeeds:icon', '', dict(
                 image=self.image.url,
             ))
+        _element(handler, 'webfeeds:accentColor', 'DDBB00', {})
 
 
 class RSSItem(WriteXmlMixin):
