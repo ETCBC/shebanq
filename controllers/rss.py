@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from gluon.custom_import import track_changes; track_changes(True)
 import datetime
-import gluon.contrib.rss2 as rss2
+import rss2
 
 # here is a bit that replaces the same functions in gluon/serializers.py
 # The gluon version eventually leads to UNICODE errors
@@ -23,6 +24,7 @@ def rss(feed):
     rss = rss2.RSS2(
         title=safestr(feed,'title'),
             image=rss2.Image(*feed.get('image', None)),
+            cover_image=feed.get('cover_image', None),
             link=safestr(feed,'link'),
             description=safestr(feed,'description'),
             lastBuildDate=feed.get('created_on', now),
@@ -83,10 +85,11 @@ order by qe.executed_on desc, auth_user.last_name
         title="SHEBANQ queries",
         link=URL('rss', 'feed', host=True, extension='rss'),
         image=(
-            URL('static', 'images/shebanq_logo.png', host=True),
+            URL('static', 'images/shebanq_logo_small.png', host=True),
             'SHEBANQ queries',
             URL('rss', 'feed', host=True, extension='rss'),
         ),
+        cover_image= URL('static', 'images/shebanq_logo.png', host=True),
         description="The shared queries in SHEBANQ",
         created_on=request.utcnow,
         entries=pqueries,
