@@ -2,45 +2,57 @@
 # -*- coding: utf-8 -*-
 
 #from gluon.custom_import import track_changes; track_changes(True)
-import datetime
-import rss2
+from datetime import datetime
+from markdown import markdown
+
+def isodt(dt=None): return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ") if dt==None else dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # here is a bit that replaces the same functions in gluon/serializers.py
 # The gluon version eventually leads to UNICODE errors
 
-def safe_encode(text):
-    if not isinstance(text, (str, unicode)):
-        text = str(text)
-    return text
+def atom(queries):
+    icon_image = URL('static', 'images/shebanq_logo_small.png', host=True),
+    logo_image = URL('static', 'images/shebanq_logo_.png', host=True),
+    cover_image = URL('static', 'images/shebanq_cover.png', host=True),
+    now = datetime.utcnow()
+    xml = []
+    xml.append(u'''<?xml version="1.0" encoding="utf-8"?>
+''')
+    xml.append(u'''
+<feed xmlns="http://www.w3.org/2005/Atom">
+        version='1.0',
+        xmlns:atom='http://www.w3.org/2005/Atom',
+        xmlns:webfeeds='http://webfeeds.org/rss/1.0',
+>''')
+    xml.append(u'''
+    <title>SHEBANQ</title>
+    <subtitle>Shared queries, recently executed</subtitle>
+    <link href="{}" rel="self"/>
+    <link href="{}"/>
+    <updated>{}</updated>
+'''.format(
+    URL('rss', 'feed', host=True, extension='rss'),
+    URL('', '', host=True, extension=''),
+    isodt(),
+))
 
-def rss(feed):
-    if not 'entries' in feed and 'items' in feed:
-        feed['entries'] = feed['items']
-
-    def safestr(obj, key, default=''):
-        return safe_encode(obj.get(key,''))
-
-    now = datetime.datetime.utcnow()
-    logo_image = feed.get('logo_image', None)
-    icon = u'<img src="{}"/>'.format(logo_image) if logo_image else ''
-    rss = rss2.RSS2(
-        title=safestr(feed,'title'),
-            image=rss2.Image(*feed.get('image', None)),
-            cover_image=feed.get('cover_image', None),
-            logo_image=logo_image,
-            link=safestr(feed,'link'),
-            site_link=safestr(feed,'site_link'),
-            description=safestr(feed,'description'),
-            lastBuildDate=feed.get('created_on', now),
-            items=[
-                rss2.RSSItem(
-                    title=safestr(entry,'title','(notitle)'),
-                    link=safestr(entry,'link'),
-                    description=icon+safestr(entry,'description'),
-                    pubDate=entry.get('created_on', now)
-                ) for entry in feed.get('entries', [])
-            ])
-    return rss.to_xml(encoding='utf-8')
+    for (author, title, description, updated, source) in queries:
+        xml.append(u'''
+    <entry>
+        <title>{}</title>
+        <link href="{}"/>
+        <updated>{}</updated>
+        <content type="html">{}</content>
+        <author><name>{}</name></author>
+    </entry>
+'''.format(
+    title,
+    source,
+    updated,
+    markdown(description),
+    author,
+))
+    return u''.join(xml)
 
 
 def feed():
@@ -80,26 +92,16 @@ order by qe.executed_on desc, auth_user.last_name
     pqueryx = db.executesql(pqueryx_sql)
     pqueries = []
     for (qid, ufname, ulname, qname, qdesc, qexe, qver) in pqueryx:
-        title = u'{} {}: {}'.format(ufname, ulname, qname)
+        author = u'{} {}'.format(ufname, ulname)
+        title = qname
         description = qdesc
-        link = URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')
-        pqueries.append(dict(title=title, link=link, description=description, created_on=qexe))
+        source = URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')
+        pqueries.append((
+            author,
+            title,
+            description,
+            isodt(dt=qexe),
+            source,
+        ))
 
-    return dict(
-        title="SHEBANQ queries",
-        link=URL('rss', 'feed', host=True, extension='rss'),
-        site_link=URL('', '', host=True),
-        image=(
-            URL('static', 'images/shebanq_logo.png', host=True),
-            'SHEBANQ queries',
-            URL('rss', 'feed', host=True, extension='rss'),
-        ),
-        logo_image= URL('static', 'images/shebanq_logo_small.png', host=True),
-        cover_image= URL('static', 'images/shebanq_cover.png', host=True),
-        description="The shared queries in SHEBANQ",
-        created_on=request.utcnow,
-        entries=pqueries,
-        rss=rss,
-    )
-
-
+    return dict(xml=atom(pqueries))
