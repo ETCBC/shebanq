@@ -451,21 +451,19 @@ class RSS2(WriteXmlMixin):
     def publish_extensions(self, handler):
         # Derived classes can hook into this to insert
         # output after the three required fields.
-        _element(handler, "atom:link", '', dict(
-            href=self.link,
+        _element(handler, "atom:link", self.link, dict(
             rel='self',
             type='application/rss+xml',
             title='SHEBANQ Shared Queries Executed',
         ))
-        _element(handler, "link", '', dict(
-            href=self.link,
+        _element(handler, "link", self.link, dict(
             rel='alternate',
             type='text/html',
         ))
         if self.cover_image is not None:
             _element(handler, 'webfeeds:cover', self.cover_image, {})
         if self.logo_image is not None:
-            _element(handler, 'icon', '', dict(
+            _element(handler, 'webfeeds:icon', '', dict(
                 image=self.logo_image,
             ))
         _element(handler, 'webfeeds:accentColor', 'DDBB00', {})
@@ -510,7 +508,7 @@ class RSSItem(WriteXmlMixin):
         _opt_element(handler, "title", self.title)
         _opt_element(handler, "link", self.link)
         self.publish_extensions(handler)
-        _opt_element_md(handler, "<content:encoded>",
+        _opt_element_md(handler, "content:encoded",
             u'<![CDATA[{}]]>'.format(markdown(self.description)),
         )
         _opt_element(handler, "author", self.author)
