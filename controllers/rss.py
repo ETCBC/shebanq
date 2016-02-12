@@ -21,11 +21,13 @@ def rss(feed):
         return safe_encode(obj.get(key,''))
 
     now = datetime.datetime.utcnow()
+    logo_image = feed.get('logo_image', None)
+    icon = u'<img src="{}"/>'.format(logo_image) if logo_image else ''
     rss = rss2.RSS2(
         title=safestr(feed,'title'),
             image=rss2.Image(*feed.get('image', None)),
             cover_image=feed.get('cover_image', None),
-            logo_image=feed.get('logo_image', None),
+            logo_image=logo_image,
             link=safestr(feed,'link'),
             site_link=safestr(feed,'site_link'),
             description=safestr(feed,'description'),
@@ -34,7 +36,7 @@ def rss(feed):
                 rss2.RSSItem(
                     title=safestr(entry,'title','(notitle)'),
                     link=safestr(entry,'link'),
-                    description=safestr(entry,'description'),
+                    description=icon+safestr(entry,'description'),
                     pubDate=entry.get('created_on', now)
                 ) for entry in feed.get('entries', [])
             ])

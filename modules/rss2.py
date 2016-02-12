@@ -510,8 +510,8 @@ class RSSItem(WriteXmlMixin):
         _opt_element(handler, "title", self.title)
         _opt_element(handler, "link", self.link)
         self.publish_extensions(handler)
-        _opt_element_md(handler, "description",
-            u'<content:encoded><![CDATA[{}]]></content:encoded>'.format(markdown(self.description)),
+        _opt_element_md(handler, "<content:encoded>",
+            u'<![CDATA[{}]]>'.format(markdown(self.description)),
         )
         _opt_element(handler, "author", self.author)
 
