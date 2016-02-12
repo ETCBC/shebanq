@@ -111,7 +111,6 @@ def atom(queries):
     xml.append(u'''
 <feed
         xmlns="http://www.w3.org/2005/Atom"
-        xmlns:atom="http://www.w3.org/2005/Atom"
         xmlns:webfeeds="http://webfeeds.org/rss/1.0"
 >''')
     xml.append(u'''
