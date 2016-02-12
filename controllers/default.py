@@ -112,7 +112,6 @@ def atom(queries):
     xml.append(u'''
 <feed
         xmlns="http://www.w3.org/2005/Atom"
-        version="1.0"
         xmlns:atom="http://www.w3.org/2005/Atom"
         xmlns:webfeeds="http://webfeeds.org/rss/1.0"
 >''')
@@ -196,7 +195,7 @@ order by qe.executed_on desc, auth_user.last_name
         description = qdesc
         source = URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')
         pqueries.append((
-            '{}-{}-{}'.format('shebanq', qid, qvid),
+            'tag:{}:{}:{}'.format('shebanq.ancient-data.org', qid, qvid),
             author,
             title,
             description,
