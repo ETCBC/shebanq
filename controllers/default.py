@@ -98,14 +98,13 @@ def data():
 
 def isodt(dt=None): return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ") if dt==None else dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-# here is a bit that replaces the same functions in gluon/serializers.py
-# The gluon version eventually leads to UNICODE errors
-
 def atom(queries):
-    icon_image = URL('static', 'images/shebanq_logo_small.png', host=True),
-    logo_image = URL('static', 'images/shebanq_logo_.png', host=True),
-    cover_image = URL('static', 'images/shebanq_cover.png', host=True),
+    icon_image = URL('static', 'images/shebanq_logo_small.png', host=True)
+    logo_image = URL('static', 'images/shebanq_logo_.png', host=True)
+    cover_image = URL('static', 'images/shebanq_cover.png', host=True)
     now = datetime.utcnow()
+    self_base = URL('xxx', 'yyy', host=True, extension='')[0:-8]
+    #print 'base={}'.format(self_base)
     xml = []
     xml.append(u'''<?xml version="1.0" encoding="utf-8"?>
 ''')
@@ -118,15 +117,22 @@ def atom(queries):
     xml.append(u'''
     <title>SHEBANQ</title>
     <subtitle>Shared queries, recently executed</subtitle>
-    <link href="{}" rel="self"/>
-    <link href="{}"/>
+    <link href="{}" rel="self" title="SHEBANQ - Shared Queries" type="application/atom+xml"/>
+    <link href="{}" rel="alternate"/>
     <id>{}</id>
     <updated>{}</updated>
+    <webfeeds:cover image="{}"/>
+    <webfeeds:icon>{}</webfeeds:icon>
+    <webfeeds:logo>{}</webfeeds:logo>
+    <webfeeds:accentColor>DDBB00</webfeeds:accentColor>
 '''.format(
-    h_esc(URL('rss', 'feed', host=True, extension='rss')),
-    h_esc(URL('', '', host=True, extension='')),
-    h_esc(URL('hebrew', 'queries', host=True, extension='')), 
+    h_esc(self_base+'/feed'),
+    h_esc(self_base),
+    h_esc(self_base+'/hebrew/queries'),
     isodt(),
+    h_esc(cover_image),
+    h_esc(icon_image),
+    h_esc(logo_image),
 ))
 
     for (eid, author, title, description, updated, source) in queries:
@@ -136,7 +142,11 @@ def atom(queries):
         <link href="{}"/>
         <id>{}</id>
         <updated>{}</updated>
-        <content type="html">{}</content>
+        <content type="xhtml">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                {}
+            </div>
+        </content>
         <author><name>{}</name></author>
     </entry>
 '''.format(
@@ -144,7 +154,7 @@ def atom(queries):
     h_esc(source),
     eid,
     updated,
-    markdown(description),
+    markdown(h_esc(description or 'No description given')),
     h_esc(author),
 ))
     xml.append(u'''
