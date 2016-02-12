@@ -101,13 +101,13 @@ def isodt(dt=None): return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ") if d
 verse_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
 def verse_repl(match): return u'''{}{}{}'''.format(
         match.group(1),
-        URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse=match.group(4))),
+        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse=match.group(4)))),
         match.group(5),
     )
 chapter_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
 def chapter_repl(match): return u'''{}{}{}'''.format(
         match.group(1),
-        URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse='1')),
+        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse='1'))),
         match.group(4),
     )
 shebanq_pat = re.compile(u'''(href=['"])shebanq:([^)\n\t '"]+['"])''')
@@ -135,7 +135,7 @@ def toole_repl(match): return u'''{}{}?goto={}{} {}'''.format(
 toolc_pat = re.compile(u'''(href=['"])tool:([^)\n\t '"]+)(['"])''')
 def toolc_repl(match): return u'''{}{}/tools/{}{} {}'''.format(
         match.group(1),
-        URL('static', 'docs', host=True),
+        h_esc(URL('static', 'docs', host=True)),
         match.group(2),
         match.group(3),
         u''' target="_blank" ''',
@@ -176,6 +176,7 @@ def atom(queries):
     <subtitle>Shared queries, recently executed</subtitle>
     <link href="{}" rel="self" title="SHEBANQ - Shared Queries" type="application/atom+xml"/>
     <link href="{}" rel="alternate"/>
+    <link title="Hebrew Bible" rel="alternate"/>
     <id>{}</id>
     <updated>{}</updated>
     <webfeeds:cover image="{}"/>
