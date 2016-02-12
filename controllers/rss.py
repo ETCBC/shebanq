@@ -20,27 +20,30 @@ def atom(queries):
 ''')
     xml.append(u'''
 <feed xmlns="http://www.w3.org/2005/Atom">
-        version='1.0',
-        xmlns:atom='http://www.w3.org/2005/Atom',
-        xmlns:webfeeds='http://webfeeds.org/rss/1.0',
+        version="1.0"
+        xmlns:atom="http://www.w3.org/2005/Atom"
+        xmlns:webfeeds="http://webfeeds.org/rss/1.0"
 >''')
     xml.append(u'''
     <title>SHEBANQ</title>
     <subtitle>Shared queries, recently executed</subtitle>
     <link href="{}" rel="self"/>
     <link href="{}"/>
+    <id>{}</id>
     <updated>{}</updated>
 '''.format(
     URL('rss', 'feed', host=True, extension='rss'),
     URL('', '', host=True, extension=''),
+    URL('hebrew', 'queries', host=True, extension=''), 
     isodt(),
 ))
 
-    for (author, title, description, updated, source) in queries:
+    for (eid, author, title, description, updated, source) in queries:
         xml.append(u'''
     <entry>
         <title>{}</title>
         <link href="{}"/>
+        <id>{}</id>
         <updated>{}</updated>
         <content type="html">{}</content>
         <author><name>{}</name></author>
@@ -48,6 +51,7 @@ def atom(queries):
 '''.format(
     title,
     source,
+    eid,
     updated,
     markdown(description),
     author,
@@ -70,11 +74,12 @@ select
     auth_user.last_name as ulname,
     query.name as qname,
     query.description as qdesc,
+    qe.id as qvid,
     qe.executed_on as qexe,
     qe.version as qver
 from query inner join
     (
-        select t1.query_id, t1.executed_on, t1.version
+        select t1.id, t1.query_id, t1.executed_on, t1.version
         from query_exe t1
           left outer join query_exe t2
             on (
@@ -94,12 +99,13 @@ order by qe.executed_on desc, auth_user.last_name
 
     pqueryx = db.executesql(pqueryx_sql)
     pqueries = []
-    for (qid, ufname, ulname, qname, qdesc, qexe, qver) in pqueryx:
+    for (qid, ufname, ulname, qname, qdesc, qvid, qexe, qver) in pqueryx:
         author = u'{} {}'.format(ufname, ulname)
         title = qname
         description = qdesc
         source = URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')
         pqueries.append((
+            '{}-{}-{}'.format('shebanq', qid, qvid),
             author,
             title,
             description,
