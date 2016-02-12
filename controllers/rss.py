@@ -52,6 +52,9 @@ def atom(queries):
     markdown(description),
     author,
 ))
+    xml.append(u'''
+</feed>
+''')
     return u''.join(xml)
 
 
