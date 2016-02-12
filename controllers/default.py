@@ -5,7 +5,7 @@
 from datetime import datetime
 from markdown import markdown
 from render import h_esc
-
+import re
 
 EXPIRE = 3600*24*30
 
@@ -98,7 +98,63 @@ def data():
 
 def isodt(dt=None): return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ") if dt==None else dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-# to be done: replace the pseudo url in the descriptions by real urls
+verse_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
+def verse_repl(match): return u'''{}{}{}'''.format(
+        match.group(1),
+        URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse=match.group(4))),
+        match.group(5),
+    )
+chapter_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
+def chapter_repl(match): return u'''{}{}{}'''.format(
+        match.group(1),
+        URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse='1')),
+        match.group(4),
+    )
+shebanq_pat = re.compile(u'''(href=['"])shebanq:([^)\n\t '"]+['"])''')
+def shebanq_repl(match): return u'''{}{}{}'''.format(
+        match.group(1),
+        URL('hebrew', 'text', host=True),
+        match.group(2),
+    )
+feature_pat = re.compile(u'''(href=['"])feature:([^)\n\t '"]+)(['"])''')
+def feature_repl(match): return u'''{}{}/{}.html{} {}'''.format(
+        match.group(1),
+        URL('static', 'docs/featuredoc/features/comments', host=True),
+        match.group(2),
+        match.group(3),
+        u''' target="_blank" ''',
+    )
+toole_pat = re.compile(u'''(href=['"])tool=([^)\n\t '"]+)(['"])''')
+def toole_repl(match): return u'''{}{}?goto={}{} {}'''.format(
+        match.group(1),
+        URL('tools', 'index', host=True),
+        match.group(2),
+        match.group(3),
+        u''' target="_blank" ''',
+    )
+toolc_pat = re.compile(u'''(href=['"])tool:([^)\n\t '"]+)(['"])''')
+def toolc_repl(match): return u'''{}{}/tools/{}{} {}'''.format(
+        match.group(1),
+        URL('static', 'docs', host=True),
+        match.group(2),
+        match.group(3),
+        u''' target="_blank" ''',
+    )
+
+def special_links(d_md):
+    d_md = verse_pat.sub(verse_repl, d_md)
+    d_md = chapter_pat.sub(chapter_repl, d_md)
+    d_md = shebanq_pat.sub(shebanq_repl, d_md)
+    d_md = feature_pat.sub(feature_repl, d_md)
+    d_md = toole_pat.sub(toole_repl, d_md)
+    d_md = toolc_pat.sub(toolc_repl, d_md)
+    return d_md
+
+# we need to h_esc the markdown text
+# but markdown does an extra layer of escaping & inside href attributes.
+# we have to unescape doubly escaped &
+
+def sanitize(text): return text.replace('&amp;amp;', '&amp;')
 
 def atom(queries):
     icon_image = URL('static', 'images/shebanq_logo_small.png', host=True)
@@ -155,7 +211,7 @@ def atom(queries):
     h_esc(source),
     eid,
     updated,
-    markdown(h_esc(description or 'No description given')),
+    special_links(sanitize(markdown(h_esc(description or 'No description given')))),
     h_esc(author),
 ))
     xml.append(u'''
