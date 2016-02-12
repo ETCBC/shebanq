@@ -35,6 +35,19 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
+<h2>2016-02-12</h2>
+<dl>
+<dt>RSS Feed</dt>
+<dd><p>All shared queries are available through an
+{{=A("RSS feed (in fact Atom)", _href=URL('', '', 'feed', host=True, extension=''))}}.
+It works with Feedly.
+There are still some rough edges.
+</p>
+</dd>
+</dl>
+</div>
+
+<div>
 <h2>2016-02-09</h2>
 <dl>
 <dt>Latest queries</dt>

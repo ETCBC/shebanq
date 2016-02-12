@@ -98,6 +98,8 @@ def data():
 
 def isodt(dt=None): return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ") if dt==None else dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
+# to be done: replace the pseudo url in the descriptions by real urls
+
 def atom(queries):
     icon_image = URL('static', 'images/shebanq_logo_small.png', host=True)
     logo_image = URL('static', 'images/shebanq_logo_.png', host=True)
