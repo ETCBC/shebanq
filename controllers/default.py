@@ -195,7 +195,7 @@ order by qe.executed_on desc, auth_user.last_name
         description = qdesc
         source = URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')
         pqueries.append((
-            'tag:{}:{}:{}'.format('shebanq.ancient-data.org', qid, qvid),
+            'tag:{},{}:{}/{}'.format('shebanq.ancient-data.org', '2016-01-01', qid, qvid),
             author,
             title,
             description,
