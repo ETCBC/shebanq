@@ -176,7 +176,6 @@ def atom(queries):
     <subtitle>Shared queries, recently executed</subtitle>
     <link href="{}" rel="self" title="SHEBANQ - Shared Queries" type="application/atom+xml"/>
     <link href="{}" rel="alternate"/>
-    <link title="Hebrew Bible" rel="alternate"/>
     <id>{}</id>
     <updated>{}</updated>
     <webfeeds:cover image="{}"/>
