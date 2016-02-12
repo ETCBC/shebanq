@@ -25,7 +25,9 @@ def rss(feed):
         title=safestr(feed,'title'),
             image=rss2.Image(*feed.get('image', None)),
             cover_image=feed.get('cover_image', None),
+            logo_image=feed.get('logo_image', None),
             link=safestr(feed,'link'),
+            site_link=safestr(feed,'site_link'),
             description=safestr(feed,'description'),
             lastBuildDate=feed.get('created_on', now),
             items=[
@@ -84,11 +86,13 @@ order by qe.executed_on desc, auth_user.last_name
     return dict(
         title="SHEBANQ queries",
         link=URL('rss', 'feed', host=True, extension='rss'),
+        site_link=URL('', '', host=True),
         image=(
-            URL('static', 'images/shebanq_logo.svg', host=True),
+            URL('static', 'images/shebanq_logo.png', host=True),
             'SHEBANQ queries',
             URL('rss', 'feed', host=True, extension='rss'),
         ),
+        logo_image= URL('static', 'images/shebanq_logo_small.png', host=True),
         cover_image= URL('static', 'images/shebanq_cover.png', host=True),
         description="The shared queries in SHEBANQ",
         created_on=request.utcnow,

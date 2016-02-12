@@ -78,15 +78,15 @@ def _element_md(handler, name, obj, d={}):
         handler.endElement(name)
 
 
-def _opt_element(handler, name, obj):
+def _opt_element(handler, name, obj, d={}):
     if obj is None:
         return
-    _element(handler, name, obj)
+    _element(handler, name, obj, d=d)
 
-def _opt_element_md(handler, name, obj):
+def _opt_element_md(handler, name, obj, d={}):
     if obj is None:
         return
-    _element_md(handler, name, obj)
+    _element_md(handler, name, obj, d=d)
 
 
 def _format_date(dt):
@@ -335,6 +335,7 @@ class RSS2(WriteXmlMixin):
     def __init__(self,
                  title,
                  link,
+                 site_link,
                  description,
 
                  language=None,
@@ -352,6 +353,7 @@ class RSS2(WriteXmlMixin):
 
                  image=None,     # an Image
                  cover_image=None,  # an Image (feedly cover image)
+                 logo_image=None,  # an Image (feedly cover image)
                  rating=None,    # a string; I don't know how it's used
                  textInput=None,  # a TextInput
                  skipHours=None,  # a SkipHours with a list of integers
@@ -378,6 +380,7 @@ class RSS2(WriteXmlMixin):
         self.cloud = cloud
         self.ttl = ttl
         self.image = image
+        self.logo_image = logo_image
         self.cover_image = cover_image
         self.rating = rating
         self.textInput = textInput
@@ -450,20 +453,20 @@ class RSS2(WriteXmlMixin):
         # output after the three required fields.
         _element(handler, "atom:link", '', dict(
             href=self.link,
-            rel='alternate',
+            rel='self',
             type='application/rss+xml',
             title='SHEBANQ Shared Queries Executed',
         ))
         _element(handler, "link", '', dict(
             href=self.link,
-            rel='self',
-            type='application/rss+xml',
+            rel='alternate',
+            type='text/html',
         ))
         if self.cover_image is not None:
             _element(handler, 'webfeeds:cover', self.cover_image, {})
-        if self.image is not None:
-            _element(handler, 'webfeeds:icon', '', dict(
-                image=self.image.url,
+        if self.logo_image is not None:
+            _element(handler, 'icon', '', dict(
+                image=self.logo_image,
             ))
         _element(handler, 'webfeeds:accentColor', 'DDBB00', {})
 
@@ -507,7 +510,9 @@ class RSSItem(WriteXmlMixin):
         _opt_element(handler, "title", self.title)
         _opt_element(handler, "link", self.link)
         self.publish_extensions(handler)
-        _opt_element_md(handler, "description", markdown(self.description))
+        _opt_element_md(handler, "description",
+            u'<content:encoded><![CDATA[{}]]></content:encoded>'.format(markdown(self.description)),
+        )
         _opt_element(handler, "author", self.author)
 
         for category in self.categories:
