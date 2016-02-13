@@ -72,7 +72,7 @@ def atom():
 '''.format(
     h_esc(qname),
     h_esc(URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')),
-    'tag:{},{}:{}/{}'.format('shebanq.ancient-data.org', '2016-01-01', qid, qvid),
+    'tag:{},{}:{}/{}/{}'.format('shebanq.ancient-data.org', '2016-01-01', qid, qvid, qver),
     isodt(qexe),
     cover_image,
     special_links(sanitize(markdown(h_esc(qdesc or 'No description given')))),
