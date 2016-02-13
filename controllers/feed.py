@@ -63,6 +63,7 @@ def atom():
         <category term="query"/>
         <content type="xhtml">
             <div xmlns="http://www.w3.org/1999/xhtml">
+                <p><img src="{}"/></p>
                 {}
             </div>
         </content>
@@ -73,6 +74,7 @@ def atom():
     h_esc(URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')),
     'tag:{},{}:{}/{}'.format('shebanq.ancient-data.org', '2016-01-01', qid, qvid),
     isodt(qexe),
+    logo_image,
     special_links(sanitize(markdown(h_esc(qdesc or 'No description given')))),
     h_esc(u'{} {}'.format(ufname, ulname)),
 ))
