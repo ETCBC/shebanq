@@ -13,6 +13,7 @@ def atom():
     queries = feed(db)
     set_URL(URL) # take care that in the module render.py the name URL is known
     icon_image = URL('static', 'images/shebanq_logo_small.png', host=True)
+    icon_image_svg = URL('static', 'images/shebanq_logo.svg', host=True)
     logo_image = URL('static', 'images/shebanq_logo_medium.png', host=True)
     cover_image = URL('static', 'images/shebanq_cover.png', host=True)
     now = datetime.utcnow()
@@ -37,7 +38,9 @@ def atom():
     <category term="bible"/>
     <category term="database"/>
     <icon>{}</icon>
+    <webfeeds:icon>{}</webfeeds:icon>
     <logo>{}</logo>
+    <webfeeds:cover image="{}"/>
     <webfeeds:accentColor>DDBB00</webfeeds:accentColor>
 '''.format(
     h_esc(self_feed),
@@ -45,6 +48,8 @@ def atom():
     h_esc(self_base+'/hebrew/queries'),
     isodt(),
     h_esc(icon_image),
+    h_esc(icon_image_svg),
+    h_esc(cover_image),
     h_esc(cover_image),
 ))
 
