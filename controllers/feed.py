@@ -31,7 +31,7 @@ def atom():
     <title>SHEBANQ</title>
     <subtitle>Shared queries, recently executed</subtitle>
     <link href="{}" rel="self" title="SHEBANQ - Shared Queries" type="application/atom+xml"/>
-    <link href="{}" rel="alternate"/>
+    <link href="{}" rel="alternate" type="text/html"/>
     <id>{}</id>
     <updated>{}</updated>
     <category term="hebrew"/>
@@ -57,7 +57,7 @@ def atom():
         xml.append(u'''
     <entry>
         <title>{}</title>
-        <link href="{}" rel="alternate"/>
+        <link href="{}" rel="alternate" type="text/html"/>
         <id>{}</id>
         <updated>{}</updated>
         <category term="query"/>
