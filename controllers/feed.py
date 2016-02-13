@@ -57,7 +57,7 @@ def atom():
         xml.append(u'''
     <entry>
         <title>{}</title>
-        <link href="{}" rel="via"/>
+        <link href="{}" rel="alternate"/>
         <id>{}</id>
         <updated>{}</updated>
         <category term="query"/>
