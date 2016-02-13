@@ -3,6 +3,7 @@
 
 import collections
 import json,urllib
+import re
 import xml.etree.ElementTree as ET
 
 from gluon import current
@@ -1053,4 +1054,97 @@ order by word_number
         result.append(u'</dd>')
         return u''.join(result)
 
+def set_URL(URLfunction):
+    global URL
+    URL = URLfunction
 
+verse_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
+def verse_repl(match): return u'''{}{}{}'''.format(
+        match.group(1),
+        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse=match.group(4)))),
+        match.group(5),
+    )
+chapter_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
+def chapter_repl(match): return u'''{}{}{}'''.format(
+        match.group(1),
+        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse='1'))),
+        match.group(4),
+    )
+shebanq_pat = re.compile(u'''(href=['"])shebanq:([^)\n\t '"]+['"])''')
+def shebanq_repl(match): return u'''{}{}{}'''.format(
+        match.group(1),
+        URL('hebrew', 'text', host=True),
+        match.group(2),
+    )
+feature_pat = re.compile(u'''(href=['"])feature:([^)\n\t '"]+)(['"])''')
+def feature_repl(match): return u'''{}{}/{}.html{} {}'''.format(
+        match.group(1),
+        URL('static', 'docs/featuredoc/features/comments', host=True),
+        match.group(2),
+        match.group(3),
+        u''' target="_blank" ''',
+    )
+toole_pat = re.compile(u'''(href=['"])tool=([^)\n\t '"]+)(['"])''')
+def toole_repl(match): return u'''{}{}?goto={}{} {}'''.format(
+        match.group(1),
+        URL('tools', 'index', host=True),
+        match.group(2),
+        match.group(3),
+        u''' target="_blank" ''',
+    )
+toolc_pat = re.compile(u'''(href=['"])tool:([^)\n\t '"]+)(['"])''')
+def toolc_repl(match): return u'''{}{}/tools/{}{} {}'''.format(
+        match.group(1),
+        h_esc(URL('static', 'docs', host=True)),
+        match.group(2),
+        match.group(3),
+        u''' target="_blank" ''',
+    )
+
+def special_links(d_md):
+    d_md = verse_pat.sub(verse_repl, d_md)
+    d_md = chapter_pat.sub(chapter_repl, d_md)
+    d_md = shebanq_pat.sub(shebanq_repl, d_md)
+    d_md = feature_pat.sub(feature_repl, d_md)
+    d_md = toole_pat.sub(toole_repl, d_md)
+    d_md = toolc_pat.sub(toolc_repl, d_md)
+    return d_md
+
+# we need to h_esc the markdown text
+# but markdown does an extra layer of escaping & inside href attributes.
+# we have to unescape doubly escaped &
+
+def sanitize(text): return text.replace('&amp;amp;', '&amp;')
+
+def feed(db):
+    pqueryx_sql = u'''
+select
+    query.id as qid,
+    auth_user.first_name as ufname,
+    auth_user.last_name as ulname,
+    query.name as qname,
+    query.description as qdesc,
+    qe.id as qvid,
+    qe.executed_on as qexe,
+    qe.version as qver
+from query inner join
+    (
+        select t1.id, t1.query_id, t1.executed_on, t1.version
+        from query_exe t1
+          left outer join query_exe t2
+            on (
+                t1.query_id = t2.query_id and 
+                t1.executed_on < t2.executed_on and
+                t2.executed_on >= t2.modified_on
+            )
+        where
+            (t1.executed_on is not null and t1.executed_on >= t1.modified_on) and
+            t2.query_id is null
+    ) as qe
+on qe.query_id = query.id
+inner join auth_user on query.created_by = auth_user.id
+where query.is_shared = 'T'
+order by qe.executed_on desc, auth_user.last_name
+'''
+
+    return db.executesql(pqueryx_sql)
