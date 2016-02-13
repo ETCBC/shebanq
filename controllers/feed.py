@@ -47,7 +47,7 @@ def atom():
     h_esc(self_base),
     h_esc(self_base+'/hebrew/queries'),
     isodt(),
-    h_esc(icon_image),
+    h_esc(cover_image),
     h_esc(icon_image_svg),
     h_esc(cover_image),
     h_esc(cover_image),
