@@ -47,7 +47,7 @@ def atom():
     h_esc(self_base),
     h_esc(self_base+'/hebrew/queries'),
     isodt(),
-    h_esc(cover_image),
+    h_esc(icon_image),
     h_esc(icon_image_svg),
     h_esc(cover_image),
     h_esc(cover_image),
@@ -74,7 +74,7 @@ def atom():
     h_esc(URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')),
     'tag:{},{}:{}/{}'.format('shebanq.ancient-data.org', '2016-01-01', qid, qvid),
     isodt(qexe),
-    logo_image,
+    cover_image,
     special_links(sanitize(markdown(h_esc(qdesc or 'No description given')))),
     h_esc(u'{} {}'.format(ufname, ulname)),
 ))
