@@ -35,14 +35,35 @@ But what if they have been published? Currently you can unpublish queries, but w
 <h1>{{=T('News')}}</h1>
 
 <div>
-<h2>2016-02-12</h2>
+<h2>2016-02-14</h2>
 <dl>
 <dt>RSS Feed</dt>
-<dd><p>All shared queries are available through an
-{{=A("RSS feed (in fact Atom)", _href=URL('', '', 'feed', host=True, extension=''))}}.
-It works with Feedly.
-There are still some rough edges.
+<dd><p>All shared queries are available through an <i>RSS Atom</i> feed.
+The buttons to subscribe to this feed are on the <a href="{{=URL('hebrew', 'queries')}}">queries page</a>, or you can subscribe directly from the buttons here:
+{{feedurl = URL('feed', 'atom', host=True, extension='')}}
+<a href="{{=feedurl}}" target="_blank" class="ctrl fa fa-rss" title="rss-atom feed for shared queries">plain subscription</a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2F{{=feedurl.replace('/', '%2F').replace(':', '%3A')}}"
+   title="follow queries in feedly"
+   target="blank"><img id="feedlyFollow" src="{{=URL('static', 'images/feedly-follow-logo-green_2x.png')}}" alt="follow queries in feedly" width="28" height="28">subscription through feedly</a>.
 </p>
+</dd>
+<dt>Images</dt>
+<dd><p>You can include images in your query descriptions and in your note texts.</p>
+<p>This is a great opportunity to add visual material to your work. 
+Especially now that your shared queries go into news feeds, you can enhance the communication of your results with well chosen images.
+Think of charts or graphs that illustrate the research you are doing, or pieces of facsimiles of relevant passages, or even photos of Hebrew texts on synagogues.</p>
+<p><b>Here is how you include images in your texts:</b></p>
+<p><pre>[caption](image http://url_of_image.org)</pre></p>
+<p>and then the image pointed to will be shown in your description or in your note.<p>
+<p>Remember that you can use the markdown language to make your texts prettier. In general, you add links by</p>
+<p><pre>[link text](http://link.address.org)</pre></p>
+<p>Based on this syntax, SHEBANQ offers
+you some extensions to easily refer to other things on shebanq, such as images, chapters, verses, queries, words, features and tools.</p>
+<p>See the
+<a href="{{=URL('default', 'help')}}#editing_notes_advanced">manual page on editing notes</a>
+for all types of links that you can use. These all work both in notes and query descriptions.</p>
+<p><b>N.B. links tend to break!</b> Take care to choose reliable, persistent links for your images. Even so, do not count on them to be always available.</p>
+<p><b>Hint: Use Github to store images.</b> You can make a github repository yourself, or you can participate in an ETCBC github repo.</p>
 </dd>
 </dl>
 </div>

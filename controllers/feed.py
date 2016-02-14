@@ -54,6 +54,9 @@ def atom():
 ))
 
     for (qid, ufname, ulname, qname, qdesc, qvid, qexe, qver) in queries:
+        desc_html = special_links(sanitize(markdown(h_esc(qdesc or 'No description given'), output_format='xhtml5')))
+# we add a standard cover image if the description does not contain any image
+        standard_image = u'''<p><img src="{}"/></p>'''.format(cover_image) if u'''<img ''' not in desc_html else u''
         xml.append(u'''
     <entry>
         <title>{}</title>
@@ -63,7 +66,7 @@ def atom():
         <category term="query"/>
         <content type="xhtml">
             <div xmlns="http://www.w3.org/1999/xhtml">
-                <p><img src="{}"/></p>
+                {}
                 {}
             </div>
         </content>
@@ -74,8 +77,8 @@ def atom():
     h_esc(URL('hebrew', 'query', vars=dict(id=qid, version=qver), host=True, extension='')),
     'tag:{},{}:{}/{}/{}'.format('shebanq.ancient-data.org', '2016-01-01', qid, qvid, qver),
     isodt(qexe),
-    cover_image,
-    special_links(sanitize(markdown(h_esc(qdesc or 'No description given')))),
+    standard_image,
+    desc_html,
     h_esc(u'{} {}'.format(ufname, ulname)),
 ))
     xml.append(u'''

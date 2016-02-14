@@ -1256,7 +1256,7 @@ select{} from query inner join auth_user on query.created_by = auth_user.id {}{}
             msgs.append(('error', u'No query with id {}'.format(iid)))
             return None
         q_record = records[0]
-        q_record['description_md'] = markdown(q_record['description'] or u'')
+        q_record['description_md'] = markdown(q_record['description'] or u'', output_format='xhtml5')
         sql = u'''
 select
     id as xid,

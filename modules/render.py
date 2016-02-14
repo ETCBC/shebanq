@@ -1058,6 +1058,11 @@ def set_URL(URLfunction):
     global URL
     URL = URLfunction
 
+image_pat = re.compile(u'''<a [^>]*href=['"]image[\n\t ]+([^)\n\t '"]+)['"][^>]*>(.*?)</a>''')
+def image_repl(match): return u'''<br/><img src="{}"/><br/>{}<br/>'''.format(
+        match.group(1),
+        match.group(2),
+    )
 verse_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
 def verse_repl(match): return u'''{}{}{}'''.format(
         match.group(1),
@@ -1102,6 +1107,7 @@ def toolc_repl(match): return u'''{}{}/tools/{}{} {}'''.format(
     )
 
 def special_links(d_md):
+    d_md = image_pat.sub(image_repl, d_md)
     d_md = verse_pat.sub(verse_repl, d_md)
     d_md = chapter_pat.sub(chapter_repl, d_md)
     d_md = shebanq_pat.sub(shebanq_repl, d_md)
