@@ -2696,9 +2696,7 @@ function decorate_crossrefs(dest) {
 }
 
 function special_links(d_md) {
-    console.log('before image repl: '+ d_md)
     d_md = d_md.replace(/<a [^>]*href=['"]image[\n\t ]+([^)\n\t '"]+)['"][^>]*>(.*?)(<\/a>)/g, '<br/><img src="$1"/><br/>$2<br/>')
-    console.log('after image repl: '+ d_md)
     d_md = d_md.replace(/(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g, '$1b="$2" c="$3" v="$4" href="#" class="fa fw" $5>&#xf100;$6&#xf101;$7')
     d_md = d_md.replace(/(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g, '$1b="$2" c="$3" v="1" href="#" class="fa fw" $4>&#xf100;$5&#xf101;$6')
     d_md = d_md.replace(/(href=['"])shebanq:([^)\n\t '"]+)(['"])/g, '$1'+host+'$2$3 class="fa fw fa-bookmark" ')

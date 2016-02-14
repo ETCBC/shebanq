@@ -1066,13 +1066,13 @@ def image_repl(match): return u'''<br/><img src="{}"/><br/>{}<br/>'''.format(
 verse_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
 def verse_repl(match): return u'''{}{}{}'''.format(
         match.group(1),
-        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse=match.group(4)))),
+        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse=match.group(4), mr='m'))),
         match.group(5),
     )
 chapter_pat = re.compile(u'''(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^)\n\t '"]+)(['"][^>]*>.*?</a>)''')
 def chapter_repl(match): return u'''{}{}{}'''.format(
         match.group(1),
-        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse='1'))),
+        h_esc(URL('hebrew', 'text', host=True, vars=dict(book=match.group(2), chapter=match.group(3), verse='1', mr='m'))),
         match.group(4),
     )
 shebanq_pat = re.compile(u'''(href=['"])shebanq:([^)\n\t '"]+['"])''')
