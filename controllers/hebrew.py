@@ -856,6 +856,7 @@ def sidenm():
 
 def sideq():
     session.forget(response)
+    if not request.ajax: redirect(URL('hebrew', 'query', extension='', vars=request.vars))
     msgs = []
     iidrep = get_request_val('material', '', 'iid')
     vr = get_request_val('material', '', 'version')
@@ -898,6 +899,7 @@ def sideq():
 
 def sidew():
     session.forget(response)
+    if not request.ajax: redirect(URL('hebrew', 'word', extension='', vars=request.vars))
     msgs = []
     vr = get_request_val('material', '', 'version')
     iidrep = get_request_val('material', '', 'iid')
@@ -920,6 +922,7 @@ def sidew():
 
 def siden():
     session.forget(response)
+    if not request.ajax: redirect(URL('hebrew', 'note', extension='', vars=request.vars))
     msgs = []
     vr = get_request_val('material', '', 'version')
     iidrep = get_request_val('material', '', 'iid')
