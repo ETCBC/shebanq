@@ -33,9 +33,21 @@ def atom():
     <link href="{}" rel="alternate" type="text/html"/>
     <id>{}</id>
     <updated>{}</updated>
+    <category term="bible study"/>
+    <category term="biblical studies"/>
+    <category term="text"/>
+    <category term="linguistic"/>
     <category term="hebrew"/>
     <category term="bible"/>
+    <category term="query"/>
     <category term="database"/>
+    <category term="research"/>
+    <category term="scholar"/>
+    <category term="annotation"/>
+    <category term="digital bible"/>
+    <category term="digital"/>
+    <category term="religion"/>
+    <category term="theology"/>
     <icon>{}</icon>
     <webfeeds:icon>{}</webfeeds:icon>
     <logo>{}</logo>
