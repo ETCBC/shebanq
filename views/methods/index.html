@@ -1,0 +1,151 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = False }}
+{{ ('message' in globals()) }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<p style="background-color: #ff99aa; font-weight: bold;">The section on methods has only draft status</p>
+
+<div class="method" id="methods">
+<h4>Methods</h4>
+<p>This is a collection of methods used in constructing the ETCBC database.
+Each method is a notebook that tackles a specific encoding or modeling problem.
+It contains the results of applying the method, and provides a way to reproduce them.
+Notebooks contain code and documentation; any data they refer to,
+is available by following recipes on this website.</p>
+</div>
+
+<div class="method" id="overview">
+<h4>Overview</h4>
+<p>The basis of the ETCBC method of encoding is the distinction between distributional concepts and functional concepts
+and how they hang together.
+<a href='#'>read more ...</a></p>
+<p>The assignment of values to features of the data is done through a sytem of signals.
+Multiple signals suggest certain values, and if they are in disagreement, a weighted vote is performed to reach a conclusion.
+<a href='#'>read more ...</a></p>
+<p>The ETCBC encoding is the result of many iterations of algorithmic work and evaluations by humans.
+<a href='#'>read more ...</a></p>
+</div>
+
+<div class="method" id="references">
+<h4>References</h4>
+<p>Here is a collection of diverse literature about the ETCBC encoding.
+It ranges from references to historical articles with a varying degree of availability,
+to more recent Open Access white papers describing the current situation.
+<a href='#'>read more ...</a></p>
+</div>
+
+<div class="method" id="morphemes">
+<h4>Dividing morphemes</h4>
+<p>Division of words into morphemes is described in the following notebook.
+You can use the code in the notebook to carry out your own analysis.</p>
+<p style="background-color: #ff99aa; font-weight: bold;"><i>the following links are intentionally broken</i></p>
+<p><a target="_blank" href="{{=URL('static', 'docs/methods/parallel/parallels.html')}}">View notebook</a></p>
+<p><a target="_blank" href="{{=URL('static', 'docs/methods/parallel/parallels.ipynb')}}" download="parallels.ipynb">Download notebook</a></p>
+</div>
+
+</div>
+
+{{block left_sidebar}}
+<div id="method_list">
+<p>&nbsp;</p>
+<dl>
+<dt class="exp"><a href="#" class="methodc" mid="methods">Methods</a></dt>
+<dd class="exp">Overview</dd>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="methodc" mid="overview">Overview</a></dt>
+<dd class="exp"><p>Overview of methods.</p></dd>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="methodc" mid="references">References</a></dt>
+<dd class="exp"><p>References and documents.</p></dd>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="methodc" mid="morphemes">Morphemes</a></dt>
+<dd class="exp"><p>Morpheme division.</p></dd>
+<hr/>
+
+</dl>
+</div>
+
+{{end}}
+<script type="text/javascript">
+var Request = {
+    parameter: function(name) {
+        return this.parameters()[name]
+    },
+    parameters: function(uri) {
+        var i, parameter, params, query, result;
+        result = {};
+        if (!uri) {
+            uri = window.location.search;
+        }
+        if (uri.indexOf("?") === -1) {
+            return {};
+        }
+        query = uri.slice(1);
+        params = query.split("&");
+        i = 0;
+        while (i < params.length) {
+            parameter = params[i].split("=");
+            result[parameter[0]] = parameter[1];
+            i++;
+        }
+        return result;
+    }
+}
+
+function methods_init() {
+    var gotomethod = Request.parameter('goto');
+    $('a[mid="methods"]').click()
+    $('a[mid="'+gotomethod+'"]').click()
+}
+
+var detailcontrols = '<a class="showc fa fa-chevron-right" href="#" title="Show details"></a><a class="hidec fa fa-chevron-down" href="#" title="Hide details"></a>'
+$('dt.exp').each(function() {
+    var orig = $(this).html()
+    $(this).html(detailcontrols+'&nbsp;'+orig)
+})
+$('dd.exp').hide()
+$('.hidec').hide()
+$('.showc').show()
+$('.hidec').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.hide()
+    dt.find('.hidec').hide()
+    dt.find('.showc').show()
+})
+$('.showc').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.show()
+    dt.find('.hidec').show()
+    dt.find('.showc').hide()
+})
+$('div.method').hide()
+$('.methodc').click(function(e) {e.preventDefault();
+    $('dt.exp').removeClass('mhl')
+    $(this).closest('dt').addClass('mhl')
+    $('div.method').hide()
+    $('#'+$(this).attr('mid')).show()
+})
+$(function () {
+    var subtract = 80
+    standard_height = window.innerHeight - subtract
+    var canvas_middle = $('.span9')
+    var canvas_left = $('#method_list')
+    canvas_middle.css('overflow', 'auto')
+    canvas_middle.css('height', standard_height+'px')
+    canvas_left.css('overflow', 'auto')
+    canvas_left.css('height', standard_height+'px')
+    methods_init()
+})
+</script>
