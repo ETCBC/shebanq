@@ -7,7 +7,7 @@
 <h3>{{=message}}</h3>
 {{pass}}
 
-<p style="background-color: #ff99aa; font-weight: bold;">The section on methods has only draft status</p>
+<p style="background-color: #ffaa22; font-weight: bold;">The section on methods is work in progress</p>
 
 <div class="method" id="methods">
 <h4>Methods</h4>
@@ -21,13 +21,10 @@ is available by following recipes on this website.</p>
 <div class="method" id="overview">
 <h4>Overview</h4>
 <p>The basis of the ETCBC method of encoding is the distinction between distributional concepts and functional concepts
-and how they hang together.
-<a href='#'>read more ...</a></p>
+and how they hang together.</p>
 <p>The assignment of values to features of the data is done through a sytem of signals.
-Multiple signals suggest certain values, and if they are in disagreement, a weighted vote is performed to reach a conclusion.
-<a href='#'>read more ...</a></p>
-<p>The ETCBC encoding is the result of many iterations of algorithmic work and evaluations by humans.
-<a href='#'>read more ...</a></p>
+Multiple signals suggest certain values, and if they are in disagreement, a weighted vote is performed to reach a conclusion.</p>
+<p>The ETCBC encoding is the result of many iterations of algorithmic work and evaluations by humans.</p>
 </div>
 
 <div class="method" id="references">
@@ -35,7 +32,13 @@ Multiple signals suggest certain values, and if they are in disagreement, a weig
 <p>Here is a collection of diverse literature about the ETCBC encoding.
 It ranges from references to historical articles with a varying degree of availability,
 to more recent Open Access white papers describing the current situation.
-<a href='#'>read more ...</a></p>
+We present the references in a time line view.</p>
+<dl>
+<dt>2003</dt>
+<dd><p>2003-10 <b>Eep Talstra</b>: <i>Text segmentation and linguistic levels - Preparing data for SESB</i>.
+<a href="{{=URL('methods', 'timeline', vars=dict(goto='Talstra_2003'))}}">read / download ...</a></p>
+</dd>
+</dl>
 </div>
 
 <div class="method" id="morphemes">
@@ -45,8 +48,6 @@ You can use the code in the notebook to carry out your own analysis.</p>
 <p style="background-color: #ff99aa; font-weight: bold;"><i>the following links are intentionally broken</i></p>
 <p><a target="_blank" href="{{=URL('static', 'docs/methods/parallel/parallels.html')}}">View notebook</a></p>
 <p><a target="_blank" href="{{=URL('static', 'docs/methods/parallel/parallels.ipynb')}}" download="parallels.ipynb">Download notebook</a></p>
-</div>
-
 </div>
 
 {{block left_sidebar}}
@@ -64,7 +65,7 @@ You can use the code in the notebook to carry out your own analysis.</p>
 
 <dt class="exp">
 <a href="#" class="methodc" mid="references">References</a></dt>
-<dd class="exp"><p>References and documents.</p></dd>
+<dd class="exp"><p>Time line of articles describing the methods of encoding practiced at the ETCBC and its forerunner, the WIVU.</p></dd>
 <hr/>
 
 <dt class="exp">
@@ -105,6 +106,7 @@ var Request = {
 function methods_init() {
     var gotomethod = Request.parameter('goto');
     $('a[mid="methods"]').click()
+    $('a[mid="references"]').click()
     $('a[mid="'+gotomethod+'"]').click()
 }
 
@@ -113,9 +115,9 @@ $('dt.exp').each(function() {
     var orig = $(this).html()
     $(this).html(detailcontrols+'&nbsp;'+orig)
 })
-$('dd.exp').hide()
-$('.hidec').hide()
-$('.showc').show()
+$('dd.exp').show()
+$('.hidec').show()
+$('.showc').hide()
 $('.hidec').click(function(e) {e.preventDefault();
     var dt = $(this).closest('dt')
     var dd = dt.next()

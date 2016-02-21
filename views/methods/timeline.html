@@ -1,0 +1,127 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = False }}
+{{ ('message' in globals()) }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<p style="background-color: #ffaa22; font-weight: bold;">The time line of papers is work in progress</p>
+
+<div class="method" id="timeline">
+<h4>Timeline</h4>
+<p>Here are papers that describe the developing encoding practice of the ETCBC (formerly WIVU) in their efforts to
+provide extensive and exhaustive linguistic annotations to the Hebrew Bible.
+</div>
+
+<div class="method" id="Talstra_2003">
+<h4>2003-10 Eep Talstra: Text segmentation and linguistic levels - Preparing data for SESB</h4>
+<p><i>Linguistic data beyond word level?</i></p>
+<p>One question for many years already has been dominant in the research of the ’Werkgroep Informatica in its preparation of
+linguistically analysed text data for projects such as the Stuttgart Electronic Study Bible (SESB).
+It is the question how to get beyond word-level in the linguistic analysis of Hebrew and Aramaic texts of the Bible.
+It may sound as an relatively easy task: once you have made a database of the Bible with an analysis of all its Hebrew and Aramaic words,
+simply proceed by analysing phrases, subjects, predications, sentences, etc. However, in trying to do so, one rapidly finds out two things.
+</p>
+<p><a target="_blank" href="{{=URL('static', 'docs/methods/2003_Talstra_Handbook.pdf')}}">full article (pdf)</a></p>
+<div class="refs">
+<p>In: <b>C.Hardmeier, E. Talstra, B. Salzmann</b>:
+<i>Handbuch/Instruction manual SESB (Stuttgart Elektronic Study Bible)</i>, pp. 23-32.</p>
+<p>2004, Stuttgart: Deutsche Bibelgesellschaft; Haarlem: Nederlands Bijbelgenootschap.</p>
+</div>
+<p>See also: W. Th. van Peursen and J.W. Dyk (eds.): Tradition and Innovation in Biblical Interpretation - Studies presented to Professor
+Eep Talstra on the Occasion of his Sixty-Fifth Birthday. Studia Semitica Neerlandica, Brill, 2011.
+<a target="_blank" href="https://books.google.nl/books?id=A5Bcm8wqwKEC">read in Google Books</a>.</p>
+</div>
+
+{{block left_sidebar}}
+<div id="method_list">
+<p>&nbsp;</p>
+<dl>
+<dt class="exp"><a href="#" class="methodc" mid="timeline">Time line</a></dt>
+<dd class="exp">Historical Overview of ETCBC/WIVU papers</dd>
+<hr/>
+
+<dt class="exp">
+<a href="#" class="methodc" mid="Talstra_2003">2003 Talstra</a></dt>
+<dd class="exp"><p></p></dd>
+<hr/>
+
+</dl>
+</div>
+
+{{end}}
+<script type="text/javascript">
+var Request = {
+    parameter: function(name) {
+        return this.parameters()[name]
+    },
+    parameters: function(uri) {
+        var i, parameter, params, query, result;
+        result = {};
+        if (!uri) {
+            uri = window.location.search;
+        }
+        if (uri.indexOf("?") === -1) {
+            return {};
+        }
+        query = uri.slice(1);
+        params = query.split("&");
+        i = 0;
+        while (i < params.length) {
+            parameter = params[i].split("=");
+            result[parameter[0]] = parameter[1];
+            i++;
+        }
+        return result;
+    }
+}
+
+function methods_init() {
+    var gotomethod = Request.parameter('goto');
+    $('a[mid="timeline"]').click()
+    $('a[mid="'+gotomethod+'"]').click()
+}
+
+var detailcontrols = '<a class="showc fa fa-chevron-right" href="#" title="Show details"></a><a class="hidec fa fa-chevron-down" href="#" title="Hide details"></a>'
+$('dt.exp').each(function() {
+    var orig = $(this).html()
+    $(this).html(detailcontrols+'&nbsp;'+orig)
+})
+$('dd.exp').hide()
+$('.hidec').hide()
+$('.showc').show()
+$('.hidec').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.hide()
+    dt.find('.hidec').hide()
+    dt.find('.showc').show()
+})
+$('.showc').click(function(e) {e.preventDefault();
+    var dt = $(this).closest('dt')
+    var dd = dt.next()
+    dd.show()
+    dt.find('.hidec').show()
+    dt.find('.showc').hide()
+})
+$('div.method').hide()
+$('.methodc').click(function(e) {e.preventDefault();
+    $('dt.exp').removeClass('mhl')
+    $(this).closest('dt').addClass('mhl')
+    $('div.method').hide()
+    $('#'+$(this).attr('mid')).show()
+})
+$(function () {
+    var subtract = 80
+    standard_height = window.innerHeight - subtract
+    var canvas_middle = $('.span9')
+    var canvas_left = $('#method_list')
+    canvas_middle.css('overflow', 'auto')
+    canvas_middle.css('height', standard_height+'px')
+    canvas_left.css('overflow', 'auto')
+    canvas_left.css('height', standard_height+'px')
+    methods_init()
+})
+</script>

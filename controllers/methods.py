@@ -9,7 +9,13 @@ EXPIRE = 3600*24*30
 
 def index():
     session.forget(response)
-    response.title = T("Tools")
+    response.title = T("Methods")
     response.subtitle = T("ETCBC methods")
+    return dict()
+
+def timeline():
+    session.forget(response)
+    response.title = T("Methods time line")
+    response.subtitle = T("overview of papers on the ETCBC encoding methods")
     return dict()
 
