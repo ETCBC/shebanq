@@ -19,3 +19,9 @@ def timeline():
     response.subtitle = T("overview of papers on the ETCBC encoding methods")
     return dict()
 
+def references():
+    session.forget(response)
+    response.title = T("References")
+    response.subtitle = T("Extensive list of ETCBC related papers")
+    return dict()
+

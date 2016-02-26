@@ -73,6 +73,7 @@ response.menu = [
     (T('Tools'), False, URL('tools', 'index'), []),
     (T('Help'), False, None, [
         (T('SHEBANQ user manual'), False, URL('default', 'help'), []),
+        (T('SHEBANQ tutorial by Oliver'), False, URL('static', 'docs/Glanz_shebanq_tut.pdf'), []),
         (T('ETCBC feature doc'), False, URL('static', 'docs/featuredoc/features/comments/0_overview.html'), []),
         (T('ETCBC methods'), False, URL('methods', 'index'), []),
         (T('MQL quick reference guide (pdf)'), False, URL('static', 'docs/MQL-QuickRef.pdf'), []),

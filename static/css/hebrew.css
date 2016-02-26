@@ -1507,7 +1507,94 @@ ol.lalph {
     font-weight: bold;
     font-family: Menlo, Courier New, Courier, monospace;
 }
-.refs {
+
+div.ref_download {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+.ref_download h2.ref_head {
+    font-weight: bold;
+    font-size: medium;
+    line-height: 1.0;
+}
+.ref_download .ref_title {
+    font-style: italic;
+    font-weight: normal;
+    font-size: medium;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+.ref_download dl.ref {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0em;
+}
+.ref_download .ref_summary {
+    font-weight: normal;
     font-size: small;
-    background-color: #dddddd;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+.ref_download .ref_links {
+    font-weight: normal;
+    font-size: medium;
+    background-color: #eeeeff;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+.ref_download .ref_meta {
+    font-size: small;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+
+div.ref_nodownload {
+    margin-top: 0;
+    margin-bottom: 0.2em;
+}
+.ref_nodownload h2.ref_head {
+    font-size: small;
+    color: #aaaaaa;
+    line-height: 1.0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.ref_nodownload .ref_title {
+    font-size: small;
+    font-weight: normal;
+    font-style: italic;
+    color: #aaaaaa;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+.ref_nodownload dl.ref {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0em;
+}
+.ref_nodownload .ref_summary {
+    font-size: x-small;
+    color: #aaaaaa;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+.ref_nodownload .ref_links {
+    font-size: x-small;
+    color: #aaaaaa;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+.ref_nodownload .ref_meta {
+    font-size: x-small;
+    color: #aaaaaa;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
 }
