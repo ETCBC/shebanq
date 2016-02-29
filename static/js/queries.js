@@ -733,9 +733,9 @@ function Tree() {
         var canvas_left = $('.left-sidebar')
         var canvas_middle = $('.span6')
         var canvas_right = $('.right-sidebar')
-        canvas_left.css('width', '15%')
-        canvas_middle.css('width','35%')
-        canvas_right.css('width', '40%')
+        canvas_left.css('width', '23%')
+        canvas_middle.css('width','40%')
+        canvas_right.css('width', '30%')
         var view = $('.v_o, .v_p, .v_q') 
         view.addClass('fa fa-info')
         this.viewtp = function(tp) {
