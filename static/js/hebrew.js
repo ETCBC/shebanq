@@ -1179,7 +1179,9 @@ function LSelect() { // language selection
         this.lastitem = nitems
         var ht = ''
         ht += '<div class="pagination"><ul>'
-        for (var item in booklangs) {
+        var langs = Object.keys(booklangs).sort()
+        for (var i in langs) {
+            var item = langs[i]
             var langinfo = booklangs[item]
             var name_en = langinfo[0]
             var name_own = langinfo[1] 

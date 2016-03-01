@@ -12,6 +12,8 @@ booklangs = dict(
     ru=(u'russian', u'Русский'),
     es=(u'spanish', u'Español'),
     ko=(u'korean', u'한국어'),
+    sw=(u'swahili', u'Kiswahili'),
+    tr=(u'turkish', u'Türkçe'),
 )
 booknames = dict(
     la=tuple(u'''
@@ -423,5 +425,87 @@ booknames = dict(
             느헤미야
             역대기_첫째
             역대기_둘째
+    '''.strip().split()),
+    sw=tuple(u'''
+            Mwanzo
+            Kutoka
+            Mambo_ya_Walawi
+            Hesabu
+            Kumbukumbu_la_Torati
+            Yoshua
+            Waamuzi
+            1_Samweli
+            2_Samweli
+            1_Wafalme
+            2_Wafalme
+            Isaya
+            Yeremia
+            Ezekieli
+            Hosea
+            Yoeli
+            Amosi
+            Obadia
+            Yona
+            Mika
+            Nahumu
+            Habakuki
+            Sefania
+            Hagai
+            Zekaria
+            Malaki
+            Zaburi
+            Ayubu
+            Mithali
+            Ruthi
+            Wimbo_Ulio_Bora
+            Mhubiri
+            Maombolezo
+            Esta
+            Danieli
+            Ezra
+            Nehemia
+            1_Mambo_ya_Nyakati
+            2_Mambo_ya_Nyakati
+    '''.strip().split()),
+    tr=tuple(u'''
+            Yaratılış
+            Mısır'dan_Çıkış
+            Levililer
+            Çölde_Sayım
+            Yasa'nın_Tekrar
+            Yeşu
+            Hakimler
+            1_Samuel
+            2_Samuel
+            1_Krallar
+            2_Krallar
+            Yeşaya
+            Yeremya
+            Hezekiel
+            Hoşea
+            Yoel
+            Amos
+            Ovadya
+            Yunus
+            Mika
+            Nahum
+            Habakkuk
+            Sefanya
+            Hagay
+            Zekeriya
+            Malaki
+            Mezmurlar
+            Eyüp
+            Süleyman'ın_Özdeyişleri
+            Rut
+            Ezgiler_Ezgisi
+            Vaiz
+            Ağıtlar
+            Ester
+            Daniel
+            Ezra
+            Nehemya
+            1_Tarihler
+            2_Tarihler
     '''.strip().split()),
 )
