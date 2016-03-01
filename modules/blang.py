@@ -9,6 +9,9 @@ booklangs = dict(
     nl=(u'dutch', u'Nederlands'),
     el=(u'greek', u'Ελληνικά'),
     he=(u'hebrew', u'עברית'),
+    ru=(u'russian', u'Русский'),
+    es=(u'spanish', u'Español'),
+    ko=(u'korean', u'한국어'),
 )
 booknames = dict(
     la=tuple(u'''
@@ -91,7 +94,7 @@ booknames = dict(
             Ezra
             Nehemiah
             1_Chronicles
-        2_Chronicles
+            2_Chronicles
     '''.strip().split()),
     nl=tuple(u'''
             Genesis
@@ -298,4 +301,127 @@ booknames = dict(
             דברי_הימים_א
             דברי_הימים_ב
         '''.strip().split()),
+    ru=tuple(u'''
+            Бытия
+            Исход
+            Левит
+            Числа
+            Второзаконие
+            ИисусНавин
+            КнигаСудей
+            1-я_Царств
+            2-я_Царств
+            3-я_Царств
+            4-я_Царств
+            Исаия
+            Иеремия
+            Иезекииль
+            Осия
+            Иоиль
+            Амос
+            Авдия
+            Иона
+            Михей
+            Наум
+            Аввакум
+            Софония
+            Аггей
+            Захария
+            Малахия
+            Псалтирь
+            Иов
+            Притчи
+            Руфь
+            ПесниПесней
+            Екклесиаст
+            ПлачИеремии
+            Есфирь
+            Даниил
+            Ездра
+            Неемия
+            1-я_Паралипоменон
+            2-я_Паралипоменон
+    '''.strip().split()),
+    es=tuple(u'''
+            Génesis
+            Éxodo
+            Levítico
+            Números
+            Deuteronomio
+            Josué
+            Jueces
+            1_Samuel
+            2_Samuel
+            1_Reyes
+            2_Reyes
+            Isaías
+            Jeremías
+            Ezequiel
+            Oseas
+            Joel
+            Amós
+            Abdías
+            Jonás
+            Miqueas
+            Nahúm
+            Habacuc
+            Sofonías
+            Hageo
+            Zacarías
+            Malaquías
+            Salmos
+            Job
+            Proverbios
+            Rut
+            Cantares
+            Eclesiastés
+            Lamentaciones
+            Ester
+            Daniel
+            Esdras
+            Nehemías
+            1_Crónicas
+            2_Crónicas
+    '''.strip().split()),
+    ko=tuple(u'''
+            창세기
+            탈출기
+            레위기
+            민수기
+            신명기
+            여호수아
+            재판관기
+            사무엘_첫째
+            사무엘_둘째
+             열왕기_첫째
+            열왕기_둘째
+            이사야
+            예레미야
+            에스겔
+            호세아
+            요엘
+            아모스
+            오바댜
+            요나
+            미가
+            나훔
+            하박국
+            스바냐
+            학개
+            스가랴
+            말라기
+            시편
+            욥
+            잠언
+            룻
+            솔로몬의_노래
+            전도서
+            애가
+            에스더
+            다니엘
+            에스라
+            느헤미야
+            역대기_첫째
+            역대기_둘째
+    '''.strip().split()),
 )
