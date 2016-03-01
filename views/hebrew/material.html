@@ -70,7 +70,7 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
             {{else:
                 vclass = 'vref' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
             }}
-                <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" verse="{{=v}}" class="cref">{{=pb}} {{=c}}:</a> {{=XML(verse_control)}}
+                <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" verse="{{=v}}" class="cref"><span book="{{=b}}">{{=pb}}</span> {{=c}}:</a> {{=XML(verse_control)}}
             {{pass}}{{
             if tp == 'txt_tb1':
                     }}<span class="nt_ctrl">

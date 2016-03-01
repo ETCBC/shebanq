@@ -250,6 +250,7 @@ def material():
     ch = get_request_val('material', '', 'chapter')
     tp = get_request_val('material', '', 'tp')
     tr = get_request_val('material', '', 'tr')
+    lang = get_request_val('material', '', 'lang')
     iidrep = get_request_val('material', '', 'iid')
     (authorized, msg) = item_access_read(iidrep=iidrep)
     if not authorized:
@@ -269,15 +270,15 @@ def material():
     page = get_request_val('material', '', 'page')
     mrrep = 'm' if mr == 'm' else qw
     return from_cache(
-        'verses_{}_{}_{}_{}_{}_{}_'.format(vr, mrrep, bk if mr=='m' else iidrep, ch if mr=='m' else page, tp, tr),
-        lambda: material_c(vr, mr, qw, bk, iidrep, ch, page, tp, tr),
+        'verses_{}_{}_{}_{}_{}_{}_{}_'.format(vr, mrrep, bk if mr=='m' else iidrep, ch if mr=='m' else page, tp, tr, lang),
+        lambda: material_c(vr, mr, qw, bk, iidrep, ch, page, tp, tr, lang),
         None,
     )
 
-def material_c(vr, mr, qw, bk, iidrep, ch, page, tp, tr):
+def material_c(vr, mr, qw, bk, iidrep, ch, page, tp, tr, lang):
     if mr == 'm':
         (book, chapter) = getpassage()
-        material = Verses(passage_dbs, vr, mr, chapter=chapter['id'], tp=tp, tr=tr) if chapter else None
+        material = Verses(passage_dbs, vr, mr, chapter=chapter['id'], tp=tp, tr=tr, lang=lang) if chapter else None
         result = dict(
             mr=mr,
             qw=qw,
@@ -308,7 +309,7 @@ def material_c(vr, mr, qw, bk, iidrep, ch, page, tp, tr):
         else:
             (nmonads, monad_sets) = load_q_hits(vr, iid) if qw == 'q' else load_w_occs(vr, iid) if qw == 'w' else load_n_notes(vr, iid, kw)
             (nresults, npages, verses, monads) = get_pagination(vr, page, monad_sets)
-            material = Verses(passage_dbs, vr, mr, verses, tp=tp, tr=tr)
+            material = Verses(passage_dbs, vr, mr, verses, tp=tp, tr=tr, lang=lang)
             result = dict(
                 mr=mr,
                 qw=qw,

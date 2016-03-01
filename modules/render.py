@@ -7,6 +7,7 @@ import re
 import xml.etree.ElementTree as ET
 
 from gluon import current
+from blang import booklangs, booknames
 
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
 
@@ -186,14 +187,21 @@ for item in hebrewdata_lines_spec:
     fields = [x.split('=') for x in fieldspec.split(',')]
     hebrewdata_lines.append((line, tuple(fields)))
 
+# make a translation table from latin book names (the ETCBC ones) to the specific languages
+booktrans = {}
+for lng in booknames:
+    for (i, book) in enumerate(booknames[lng]):
+        booktrans.setdefault(lng, {})[booknames['la'][i]] = book
+
 specs = dict(
     material=(
-        '''version book chapter verse iid page mr qw tp tr''',
-        '''alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il enum:{}'''.format(
+        '''version book chapter verse iid page mr qw tp tr lang''',
+        '''alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il enum:{} enum:{}'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1)),
             ','.join(tr_labels),
+            ','.join(sorted(booknames)),
         ),
-        {'': '''4 Genesis 1 1 None 1 x m txt_p hb'''},
+        {'': '''4 Genesis 1 1 None 1 x m txt_p hb en'''},
     ),
     hebrewdata=('''
         ht ht_ht ht_hk
@@ -690,6 +698,8 @@ var next_tr = {next_tr}
 var nt_statclass = {nt_statclass}
 var nt_statsym = {nt_statsym}
 var nt_statnext = {nt_statnext}
+var booktrans = {booktrans}
+var booklangs = {booklangs}
 dynamics()
 '''.format(
     vdefaultcolors=json.dumps(vdefaultcolors),
@@ -711,6 +721,8 @@ dynamics()
     nt_statclass = json.dumps(nt_statclass),
     nt_statsym = json.dumps(nt_statsym),
     nt_statnext = json.dumps(nt_statnext),
+    booktrans = json.dumps(booktrans),
+    booklangs = json.dumps(booklangs),
 )
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
@@ -762,7 +774,7 @@ order by word_number
     return json.dumps(dict(good=good, msgs=msgs, data=data), ensure_ascii=False)
 
 class Verses():
-    def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None, tr=None):
+    def __init__(self, passage_dbs, vr, mr, verse_ids=None, chapter=None, tp=None, tr=None, lang='en'):
         if tr == None: tr = 'hb'
         self.version = vr
         passage_db = passage_dbs[vr] if vr in passage_dbs else None
@@ -810,15 +822,16 @@ order by word_number
         for v in verse_info:
             v_id = int(v[0])
             xml = v[4] if tp == 'txt_p' else ''
-            self.verses.append(Verse(passage_dbs, vr, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, tr=tr, mr=mr)) 
+            self.verses.append(Verse(passage_dbs, vr, v[1], v[2], v[3], xml=xml, word_data=word_data[v_id], tp=tp, tr=tr, mr=mr, lang=lang)) 
 
 class Verse():
-    def __init__(self, passage_dbs, vr, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, tr=None, mr=None):
+    def __init__(self, passage_dbs, vr, book_name, chapter_num, verse_num, xml=None, word_data=None, tp=None, tr=None, mr=None, lang='en'):
         self.version = vr
         passage_db = passage_dbs[vr] if vr in passage_dbs else None
         self.tp = tp
         self.tr = tr
         self.mr = mr
+        self.lang = lang
         self.book_name = book_name
         self.chapter_num = chapter_num
         self.verse_num = verse_num
@@ -845,11 +858,10 @@ order by word_number
         self.word_data = word_data
         self.words = []
 
-    def chapter_link(self): return (self.book_name, self.chapter_num)
-    def verse_link(self): return (self.book_name, self.chapter_num, self.verse_num)
+    #def chapter_link(self): return (self.book_name, self.chapter_num)
+    #def verse_link(self): return (self.book_name, self.chapter_num, self.verse_num)
 
-    def label(self):
-        return (self.book_name.replace(u'_', u' '), self.book_name, self.chapter_num, self.verse_num)
+    def label(self): return (booktrans[self.lang][self.book_name].replace(u'_', u' '), self.book_name, self.chapter_num, self.verse_num)
 
     def get_words(self):
         if (len(self.words) == 0):

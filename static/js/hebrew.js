@@ -69,6 +69,7 @@ material
        plain text (txt_p) or as tabbed text in several versions (txt_tb1, txt_tb2, etc.)
        there is also txt_il for interlinear data, but that is on demand per verse
     tr (script or phonetic setting: whether the hebrew text is rendered in hebrew script or phonetically)
+    lang (language choice for the book names)
 
 hebrewdata
     a list of switches controlling which fields are shown in the interlinear data view
@@ -173,6 +174,7 @@ var chart_cols = 30 // number of chapters in a row in a chart
 var tp_labels, tab_info, tab_views, next_tp; // number of tab views and dictionary to go cyclically from a text view to the next
 var tr_labels, tr_info, next_tr; // number of tab views and dictionary to go cyclically from a text view to the next
 var nt_statclass, nt_statsym, nt_statnext; // characteristics for tabbed views with notes
+var booktrans; // translation tables for book names
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
@@ -432,6 +434,7 @@ function Material() { // Object corresponding to everything that controls the ma
     var that = this
     this.name = 'material'
     this.hid = '#'+this.name
+    this.lselect = new LSelect()
     this.mselect = new MSelect()
     this.pselect = new PSelect()
     this.message = new MMessage()
@@ -462,13 +465,15 @@ function Material() { // Object corresponding to everything that controls the ma
                 }
             }
         }
+        this.lselect.apply()
         this.mselect.apply()
         this.pselect.apply()
         this.msettings.apply()
         var book = wb.vs.book()
         var chapter = wb.vs.chapter()
         var page = wb.vs.page()
-        $('#thebook').html((book != 'x')?book:'book')
+        $('#thelang').html(booklangs[wb.vs.lang()][1])
+        $('#thebook').html((book != 'x')?booktrans[wb.vs.lang()][book]:'book')
         $('#thechapter').html((chapter > 0)?chapter:'chapter')
         $('#thepage').html((page > 0)?''+page:'')
         for (var x in wb.vs.mstate()) {
@@ -476,7 +481,7 @@ function Material() { // Object corresponding to everything that controls the ma
         }
     }
     this.fetch = function() { // get the material by AJAX if needed, and process the material afterward
-        var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()+'&qw='+wb.qw
+        var vars = '?version='+wb.version+'&mr='+wb.mr+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()+'&qw='+wb.qw+'&lang='+wb.vs.lang()
         var do_fetch = false
         if (wb.mr == 'm') {
             vars += '&book='+wb.vs.book()
@@ -1153,6 +1158,78 @@ function PSelect() { // for result page selection
     }
 }
 
+function LSelect() { // language selection
+    var that = this
+    this.name = 'select_contents_lang'
+    this.hid = '#'+this.name
+    this.control = '#select_control_lang'
+    this.present = function() {
+        $(this.hid).dialog({
+            autoOpen: false,
+            dialogClass: 'items',
+            closeOnEscape: true,
+            modal: false,
+            title: 'choose language',
+            width: '150px',
+        })
+    }
+    this.gen_html = function() { // generate a new lang selector
+        var thelang = wb.vs.lang()
+        var nitems = booklangs.length
+        this.lastitem = nitems
+        var ht = ''
+        ht += '<div class="pagination"><ul>'
+        for (var item in booklangs) {
+            var langinfo = booklangs[item]
+            var name_en = langinfo[0]
+            var name_own = langinfo[1] 
+            var itemrep = name_own+' ('+name_en+')'
+            if (thebook == item) {
+                ht += '<li class="active"><a class="itemnav" href="#" item="'+acro+'">'+itemrep+'</a></li>'
+            }
+            else {
+                ht += '<li><a class="itemnav" href="#" item="'+item+'">'+itemrep+'</a></li>'
+            }
+        }
+        ht += '</ul></div>'
+        $(this.hid).html(ht)
+        return nitems
+    }
+    this.add_item = function(item) {
+        item.click(function(e) {e.preventDefault();
+            var newobj = $(this).closest('li')
+            var isloaded = newobj.hasClass('active')
+            if (!isloaded) {
+                var vals = {}
+                vals['lang'] = $(this).attr('item')
+                wb.vs.mstatesv(vals)
+                that.update_vlabels()
+                wb.vs.addHist()
+                wb.go()
+            }
+        })
+    }
+    this.update_vlabels = function() {
+        $('span[book]').each(function() {
+            $(this).html(booktrans[wb.vs.lang()][$(this).attr('book')])
+        })
+    }
+    
+    this.apply = function() {
+        var showit = false
+        this.gen_html()
+        $('#select_contents_lang .itemnav').each(function() {
+            that.add_item($(this))
+        })
+        $(this.control).show()
+        this.present()
+    }
+    $(this.control).click(function(e) {e.preventDefault();
+        console.log('here')
+        $(that.hid).dialog('open')
+    })
+}
+
 function SelectBook() { // book selection
     var that = this
     this.name = 'select_contents_book'
@@ -1170,6 +1247,7 @@ function SelectBook() { // book selection
     }
     this.gen_html = function() { // generate a new book selector
         var thebook = wb.vs.book()
+        var lang = wb.vs.lang()
         var thisbooksorder = thebooksorder[wb.version]
         var nitems = thisbooksorder.length
         this.lastitem = nitems
@@ -1177,11 +1255,12 @@ function SelectBook() { // book selection
         ht += '<div class="pagination"><ul>'
         for (var i in thisbooksorder) {
             var item = thisbooksorder[i]
+            var itemrep = booktrans[lang][item]
             if (thebook == item) {
-                ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+                ht += '<li class="active"><a class="itemnav" href="#" item="'+item+'">'+itemrep+'</a></li>'
             }
             else {
-                ht += '<li><a class="itemnav" href="#" item="'+item+'">'+item+'</a></li>'
+                ht += '<li><a class="itemnav" href="#" item="'+item+'">'+itemrep+'</a></li>'
             }
         }
         ht += '</ul></div>'
@@ -2615,6 +2694,7 @@ function ViewState(init, pref) {
     this.qw = function() {return this.data['material']['']['qw']}
     this.tp = function() {return this.data['material']['']['tp']}
     this.tr = function() {return this.data['material']['']['tr']}
+    this.lang = function() {return this.data['material']['']['lang']}
     this.iid = function() {return this.data['material']['']['iid']}
     this.version = function() {return this.data['material']['']['version']}
     this.book = function() {return this.data['material']['']['book']}

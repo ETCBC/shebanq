@@ -148,6 +148,9 @@ ol.text {
 
 /* MATERIAL TITLE */
 
+#material_heading {
+    direction: ltr;
+}
 #theitem,#theitemc {
     font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
     font-weight: bold;
@@ -193,18 +196,32 @@ ol.text {
     display: inline;
     vertical-align: text-bottom;
 }
-#select_version,#select_passage,#select_pages,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
+#select_version,#select_lang,#select_passage,#select_pages,#select_contents_lang,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
     display: inline;
     vertical-align: text-bottom;
+    unicode-bidi: embed;
+    direction: ltr;
 }
 .vhl {
     background-color: #ffffe0;
 }
+#select_control_lang {
+    background-color: #ffffee;
+}
 
+#thelang {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: small;
+    display: inline;
+    vertical-align: text-bottom;
+    color: #448844;
+}
 /* MATERIAL VIEW */
 
 #viewlink,#page_title,#material_settings,#material_select {
     display: inline;
+    vertical-align: text-bottom;
 }
 
 /* MATERIAL PAGINATION */
@@ -259,6 +276,7 @@ span.vref, span.vrefi {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     text-align: right;
+    direction: ltr;
 }
 span.vref {
     display: block;
