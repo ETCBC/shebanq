@@ -1170,7 +1170,7 @@ function LSelect() { // language selection
             closeOnEscape: true,
             modal: false,
             title: 'choose language',
-            width: '150px',
+            width: '200px',
         })
     }
     this.gen_html = function() { // generate a new lang selector
