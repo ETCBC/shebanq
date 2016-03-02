@@ -254,7 +254,8 @@ Only the format <code>hp</code> is based on ketivs, all other formats are based 
 <li><code>hv</code> with vowels but not accents
 (the points on the s(h)in all still there)</li>
 <li><code>hc</code> consonantal
-(no pointed s(h)ins anymore, and no special forms for final consonants)</li>
+(no pointed s(h)ins anymore, and no special forms for final consonants, no setumah, petuhah and nun hafukha and the
+end of verses)</li>
 </ul>
 <h2 id="ETCBC-transliterated-output">ETCBC transliterated output<a class="anchor-link" href="#ETCBC-transliterated-output">&#182;</a></h2><p>Consult the <a href="https://shebanq.ancient-data.org/static/docs/ETCBC4-transcription.pdf">ETCBC transliteration table</a>
 for details. The same subtleties apply as for the Hebrew case.</p>
@@ -286,7 +287,7 @@ with verse labels:</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">examples</span><span class="p">)</span>
@@ -300,7 +301,7 @@ with verse labels:</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <table class="t"><tr><td class="vl">Esther 3:4</td><td class="h">וַיְהִ֗י ֯ב֯אמרם אֵלָיו֙ יֹ֣ום וָיֹ֔ום וְלֹ֥א שָׁמַ֖ע אֲלֵיהֶ֑ם וַיַּגִּ֣ידוּ לְהָמָ֗ן לִרְאֹות֙ הֲיַֽעַמְדוּ֙ דִּבְרֵ֣י מָרְדֳּכַ֔י כִּֽי־הִגִּ֥יד לָהֶ֖ם אֲשֶׁר־ה֥וּא יְהוּדִֽי׃
@@ -368,7 +369,7 @@ with verse labels:</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.5.14
+<pre>  0.00s This is LAF-Fabric 4.5.16
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
@@ -412,17 +413,17 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s USING main  DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s USING annox DATA COMPILED AT: 2016-01-27T19-01-17
-  2.46s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/plain/__log__plain.txt
-  2.46s INFO: LOADING PREPARED data: please wait ... 
-  2.46s prep prep: G.node_sort
-  2.59s prep prep: G.node_sort_inv
-  3.13s prep prep: L.node_up
-  7.05s prep prep: L.node_down
+  2.56s LOGFILE=/Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/plain/__log__plain.txt
+  2.56s INFO: LOADING PREPARED data: please wait ... 
+  2.56s prep prep: G.node_sort
+  2.69s prep prep: G.node_sort_inv
+  3.26s prep prep: L.node_up
+  7.29s prep prep: L.node_down
     13s prep prep: V.verses
     13s prep prep: V.books_la
     13s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    15s INFO: LOADED PREPARED data
-    15s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-02-29T15-51-45
+    16s INFO: LOADED PREPARED data
+    16s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-03-02T10-01-23
 </pre>
 </div>
 </div>
@@ -468,15 +469,15 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  3.22s Format hp = hebrew primary
-  3.22s Format ha = hebrew accent
-  3.23s Format hv = hebrew vowel
-  3.23s Format hc = hebrew cons
-  3.23s Format ea = trans accent
-  3.23s Format ev = trans vowel
-  3.23s Format ec = trans cons
-  3.23s Format pf = phono full
-  3.23s Format ps = phono simple
+<pre>  0.01s Format hp = hebrew primary
+  0.01s Format ha = hebrew accent
+  0.01s Format hv = hebrew vowel
+  0.01s Format hc = hebrew cons
+  0.02s Format ea = trans accent
+  0.02s Format ev = trans vowel
+  0.02s Format ec = trans cons
+  0.02s Format pf = phono full
+  0.02s Format ps = phono simple
 </pre>
 </div>
 </div>
@@ -517,21 +518,21 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    25s etcbc_color = aa0066
-    25s etcbc_line_height = 1.5
-    25s etcbc_size = small
-    25s fmt_color = ccbb00
-    25s fmt_size = small
-    25s fmt_width = 5em
-    25s hebrew_color = 660000
-    25s hebrew_line_height = 2.0
-    25s hebrew_size = xx-large
-    25s phono_color = 00b040
-    25s phono_line_height = 1.5
-    25s phono_size = medium
-    25s verse_color = 0000ff
-    25s verse_size = small
-    25s verse_width = 5em
+<pre>  0.03s etcbc_color = aa0066
+  0.03s etcbc_line_height = 1.5
+  0.03s etcbc_size = small
+  0.03s fmt_color = ccbb00
+  0.03s fmt_size = small
+  0.03s fmt_width = 5em
+  0.03s hebrew_color = 660000
+  0.03s hebrew_line_height = 2.0
+  0.03s hebrew_size = xx-large
+  0.04s phono_color = 00b040
+  0.04s phono_line_height = 1.5
+  0.04s phono_size = medium
+  0.04s verse_color = 0000ff
+  0.04s verse_size = small
+  0.04s verse_width = 5em
 </pre>
 </div>
 </div>
@@ -619,7 +620,7 @@ td.fl {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Writing the complete text in several representations&#39;</span><span class="p">)</span>
@@ -645,26 +646,26 @@ td.fl {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    53s Writing the complete text in several representations
-    53s Producing whole text of etcbc4b in format hp with verse labels
-    55s Producing whole text of etcbc4b in format hp
-    57s Producing whole text of etcbc4b in format ha with verse labels
- 1m 05s Producing whole text of etcbc4b in format ha
- 1m 14s Producing whole text of etcbc4b in format hv with verse labels
- 1m 22s Producing whole text of etcbc4b in format hv
- 1m 31s Producing whole text of etcbc4b in format hc with verse labels
- 1m 41s Producing whole text of etcbc4b in format hc
- 1m 48s Producing whole text of etcbc4b in format ea with verse labels
- 1m 54s Producing whole text of etcbc4b in format ea
- 1m 58s Producing whole text of etcbc4b in format ev with verse labels
- 2m 04s Producing whole text of etcbc4b in format ev
- 2m 10s Producing whole text of etcbc4b in format ec with verse labels
- 2m 22s Producing whole text of etcbc4b in format ec
- 2m 30s Producing whole text of etcbc4b in format pf with verse labels
- 2m 32s Producing whole text of etcbc4b in format pf
- 2m 35s Producing whole text of etcbc4b in format ps with verse labels
- 2m 39s Producing whole text of etcbc4b in format ps
- 2m 42s Done
+<pre>  0.09s Writing the complete text in several representations
+  0.09s Producing whole text of etcbc4b in format hp with verse labels
+  4.30s Producing whole text of etcbc4b in format hp
+  6.30s Producing whole text of etcbc4b in format ha with verse labels
+    14s Producing whole text of etcbc4b in format ha
+    22s Producing whole text of etcbc4b in format hv with verse labels
+    30s Producing whole text of etcbc4b in format hv
+    37s Producing whole text of etcbc4b in format hc with verse labels
+    46s Producing whole text of etcbc4b in format hc
+    54s Producing whole text of etcbc4b in format ea with verse labels
+    58s Producing whole text of etcbc4b in format ea
+ 1m 02s Producing whole text of etcbc4b in format ev with verse labels
+ 1m 07s Producing whole text of etcbc4b in format ev
+ 1m 12s Producing whole text of etcbc4b in format ec with verse labels
+ 1m 19s Producing whole text of etcbc4b in format ec
+ 1m 25s Producing whole text of etcbc4b in format pf with verse labels
+ 1m 27s Producing whole text of etcbc4b in format pf
+ 1m 29s Producing whole text of etcbc4b in format ps with verse labels
+ 1m 32s Producing whole text of etcbc4b in format ps
+ 1m 35s Done
 </pre>
 </div>
 </div>
@@ -675,7 +676,7 @@ td.fl {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">show_limit</span> <span class="o">=</span> <span class="mi">2</span>
@@ -720,7 +721,7 @@ Genesis 1:2  והארצ היתה תהו ובהו וחשכ על־פני תהומ 
 
 etcbc4b_ea_v.txt
 Genesis 1:1  B.:R;&gt;CI73JT B.@R@74&gt; &gt;:ELOHI92Jm &gt;;71T HAC.@MA73JIm W:&gt;;71T H@&gt;@95REy00
-Genesis 1:2  W:H@&gt;@81REy H@J:T@71H TO63HW.03 W@BO80HW. W:XO73CEk: &lt;AL&amp;P.:N;74J T:HO92Wm W:R74W.XA &gt;:ELOHI80Jm M:RAXE73PET &lt;AL&amp;P.:N;71J HAM.@95JIm00
+Genesis 1:2  W:H@&gt;@81REy H@J:T@71H TO33HW.03 W@BO80HW. W:XO73CEk: &lt;AL&amp;P.:N;74J T:HO92Wm W:R74W.XA &gt;:ELOHI80Jm M:RAXE73PET &lt;AL&amp;P.:N;71J HAM.@95JIm00
 
 etcbc4b_ev_v.txt
 Genesis 1:1  B.:R;&gt;CIJT B.@R@&gt; &gt;:ELOHIJm &gt;;T HAC.@MAJIm W:&gt;;T H@&gt;@REy00
@@ -757,7 +758,7 @@ Genesis 1:2  whåʔåreṣ håyṯå ṯōhû wåvōhû wḥōšeḵ ʕal-pnê �
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Exploring trailers&#39;</span><span class="p">)</span>
@@ -806,8 +807,8 @@ Genesis 1:2  whåʔåreṣ håyṯå ṯōhû wåvōhû wḥōšeḵ ʕal-pnê �
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 4m 29s Exploring trailers
- 4m 31s Done. Found 12 trailers in Hebrew text and 3 trailers in phonemic text
+<pre> 1m 35s Exploring trailers
+ 1m 37s Done. Found 12 trailers in Hebrew text and 3 trailers in phonemic text
 </pre>
 </div>
 </div>
@@ -875,7 +876,7 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Looking for empty words&#39;</span><span class="p">)</span>
@@ -913,8 +914,8 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 4m 35s Looking for empty words
- 4m 36s Done
+<pre> 1m 37s Looking for empty words
+ 1m 38s Done
 </pre>
 </div>
 </div>
@@ -932,7 +933,7 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">close</span><span class="p">()</span>
@@ -948,29 +949,32 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 4m 39s Results directory:
+<pre> 1m 38s Results directory:
 /Users/dirk/SURFdrive/laf-fabric-output/etcbc4b/plain
 
 .DS_Store                              6148 Wed Feb 17 18:23:33 2016
-__log__plain.txt                       2652 Mon Feb 29 16:56:25 2016
-etcbc4b_ea.txt                      3119751 Mon Feb 29 16:53:44 2016
-etcbc4b_ea_v.txt                    3461598 Mon Feb 29 16:53:39 2016
-etcbc4b_ec.txt                      1560727 Mon Feb 29 16:54:15 2016
-etcbc4b_ec_v.txt                    1902574 Mon Feb 29 16:54:08 2016
-etcbc4b_ev.txt                      2534187 Mon Feb 29 16:53:55 2016
-etcbc4b_ev_v.txt                    2876034 Mon Feb 29 16:53:50 2016
-etcbc4b_ha.txt                      5332789 Mon Feb 29 16:52:59 2016
-etcbc4b_ha_v.txt                    5674636 Mon Feb 29 16:52:50 2016
-etcbc4b_hc.txt                      2803552 Mon Feb 29 16:53:34 2016
-etcbc4b_hc_v.txt                    3145399 Mon Feb 29 16:53:26 2016
-etcbc4b_hp.txt                      5323553 Mon Feb 29 16:52:42 2016
-etcbc4b_hp_v.txt                    5665400 Mon Feb 29 16:52:40 2016
-etcbc4b_hv.txt                      4747213 Mon Feb 29 16:53:16 2016
-etcbc4b_hv_v.txt                    5089060 Mon Feb 29 16:53:08 2016
-etcbc4b_pf.txt                      3893905 Mon Feb 29 16:54:20 2016
-etcbc4b_pf_v.txt                    4235752 Mon Feb 29 16:54:18 2016
-etcbc4b_ps.txt                      2956172 Mon Feb 29 16:54:27 2016
-etcbc4b_ps_v.txt                    3298019 Mon Feb 29 16:54:24 2016
+.etcbc4b_ea_v.txt.swp                 49152 Wed Mar  2 10:40:24 2016
+.etcbc4b_ec_v.txt.swp                 32768 Wed Mar  2 10:40:54 2016
+.etcbc4b_hc_v.txt.swp                 45056 Wed Mar  2 10:45:24 2016
+__log__plain.txt                       2652 Wed Mar  2 11:03:01 2016
+etcbc4b_ea.txt                      3119733 Wed Mar  2 11:02:25 2016
+etcbc4b_ea_v.txt                    3461581 Wed Mar  2 11:02:21 2016
+etcbc4b_ec.txt                      1549211 Wed Mar  2 11:02:48 2016
+etcbc4b_ec_v.txt                    1891059 Wed Mar  2 11:02:42 2016
+etcbc4b_ev.txt                      2538741 Wed Mar  2 11:02:35 2016
+etcbc4b_ev_v.txt                    2880589 Wed Mar  2 11:02:30 2016
+etcbc4b_ha.txt                      5332789 Wed Mar  2 11:01:45 2016
+etcbc4b_ha_v.txt                    5674637 Wed Mar  2 11:01:37 2016
+etcbc4b_hc.txt                      2788977 Wed Mar  2 11:02:16 2016
+etcbc4b_hc_v.txt                    3130825 Wed Mar  2 11:02:08 2016
+etcbc4b_hp.txt                      5323553 Wed Mar  2 11:01:29 2016
+etcbc4b_hp_v.txt                    5665510 Wed Mar  2 11:01:27 2016
+etcbc4b_hv.txt                      4751785 Wed Mar  2 11:02:00 2016
+etcbc4b_hv_v.txt                    5093633 Wed Mar  2 11:01:53 2016
+etcbc4b_pf.txt                      3893905 Wed Mar  2 11:02:52 2016
+etcbc4b_pf_v.txt                    4235753 Wed Mar  2 11:02:50 2016
+etcbc4b_ps.txt                      2956172 Wed Mar  2 11:02:58 2016
+etcbc4b_ps_v.txt                    3298020 Wed Mar  2 11:02:55 2016
 </pre>
 </div>
 </div>
