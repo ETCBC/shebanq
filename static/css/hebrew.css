@@ -196,11 +196,42 @@ ol.text {
     display: inline;
     vertical-align: text-bottom;
 }
-#select_version,#select_lang,#select_passage,#select_pages,#select_contents_lang,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
+#select_version,#select_passage,#select_pages,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
     display: inline;
     vertical-align: text-bottom;
     unicode-bidi: embed;
     direction: ltr;
+}
+#select_lang {
+    display: inline;
+    vertical-align: text-bottom;
+    unicode-bidi: embed;
+    direction: ltr;
+}
+#select_contents_lang {
+    display: block;
+    vertical-align: text-bottom;
+    unicode-bidi: embed;
+    direction: ltr;
+    text-align: left;
+}
+#select_contents_lang table tr td {
+    background-color: #ffffee;
+}
+#select_contents_lang table tr td a.itemnav {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: small;
+    color: #448844;
+    background-color: #ffffee;
+}
+#select_contents_lang table tr td.active {
+    font-weight: bold;
+    color: #229922;
+    background-color: #ffffaa;
+}
+#select_contents_lang table tr td.active a.itemnav {
+    font-weight: bold;
 }
 .vhl {
     background-color: #ffffe0;

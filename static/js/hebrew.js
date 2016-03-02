@@ -1170,7 +1170,7 @@ function LSelect() { // language selection
             closeOnEscape: true,
             modal: false,
             title: 'choose language',
-            width: '200px',
+            width: '250px',
         })
     }
     this.gen_html = function() { // generate a new lang selector
@@ -1178,22 +1178,18 @@ function LSelect() { // language selection
         var nitems = booklangs.length
         this.lastitem = nitems
         var ht = ''
-        ht += '<div class="pagination"><ul>'
+        ht += '<table class="pagination">'
         var langs = Object.keys(booklangs).sort()
         for (var i in langs) {
             var item = langs[i]
             var langinfo = booklangs[item]
             var name_en = langinfo[0]
             var name_own = langinfo[1] 
-            var itemrep = name_own+' ('+name_en+')'
-            if (thebook == item) {
-                ht += '<li class="active"><a class="itemnav" href="#" item="'+acro+'">'+itemrep+'</a></li>'
-            }
-            else {
-                ht += '<li><a class="itemnav" href="#" item="'+item+'">'+itemrep+'</a></li>'
-            }
+            var clactive = (thelang == item)?' class="active"':''
+            ht += '<tr><td'+clactive+'><a class="itemnav" href="#" item="'+item+'">'+name_own+'</td>'
+            ht += '<td'+clactive+'><a class="itemnav" href="#" item="'+item+'">'+name_en+'</td></tr>'
         }
-        ht += '</ul></div>'
+        ht += '</table>'
         $(this.hid).html(ht)
         return nitems
     }
@@ -1227,7 +1223,6 @@ function LSelect() { // language selection
         this.present()
     }
     $(this.control).click(function(e) {e.preventDefault();
-        console.log('here')
         $(that.hid).dialog('open')
     })
 }
