@@ -15,6 +15,7 @@ booklangs = dict(
     sw=(u'swahili', u'Kiswahili'),
     tr=(u'turkish', u'Türkçe'),
     id=(u'indonesian', u'Bahasa Indonesia'),
+    ar=(u'arabic', u'العَرَبِية'),
 )
 booknames = dict(
     la=tuple(u'''
@@ -549,5 +550,46 @@ booknames = dict(
             Nehemia
             1_Tawarikh
             2_Tawarikh
+    '''.strip().split()),
+    ar=tuple(u'''
+            تكوين
+            خروج
+            لاويين
+            عدد
+            تثنية
+            يشوع
+            قضاة
+            1_صموئيل
+            2_صموئيل
+            1_ملوك
+            2_ملوك
+            اشعياء
+            ارميا
+            حزقيال
+            هوشع
+            يوئيل
+            عاموس
+            عوبديا
+            يونان
+            ميخا
+            ناحوم
+            حبقوق
+            صفنيا
+            حجى
+            زكريا
+            ملاخي
+            مزامير
+            ايوب
+            امثال
+            راعوث
+            نشيد_الانشاد
+            جامعة
+            مراثي
+            استير
+            دانيال
+            عزرا
+            نحميا
+            1_اخبار
+            2_اخبار
     '''.strip().split()),
 )
