@@ -14,6 +14,7 @@ booklangs = dict(
     ko=(u'korean', u'한국어'),
     sw=(u'swahili', u'Kiswahili'),
     tr=(u'turkish', u'Türkçe'),
+    id=(u'indonesian', u'Bahasa Indonesia'),
 )
 booknames = dict(
     la=tuple(u'''
@@ -507,5 +508,46 @@ booknames = dict(
             Nehemya
             1_Tarihler
             2_Tarihler
+    '''.strip().split()),
+    id=tuple(u'''
+            Kejadian
+            Keluaran
+            Imamat
+            Bilangan
+            Ulangan
+            Yosua
+            Hakim-hakim
+            1_Samuel
+            2_Samuel
+            1_Raja-raja
+            2_Raja-raja
+            Yesaya
+            Yeremia
+            Yehezkiel
+            Hosea
+            Yoel
+            Amos
+            Obaja
+            Yunus
+            Mikha
+            Nahum
+            Habakuk
+            Zefanya
+            Hagai
+            Zakharia
+            Maleakhi
+            Mazmur
+            Ayub
+            Amsal
+            Rut
+            Kidung_Agung
+            Pengkhutbah
+            Ratapan
+            Ester
+            Daniel
+            Ezra
+            Nehemia
+            1_Tawarikh
+            2_Tawarikh
     '''.strip().split()),
 )
