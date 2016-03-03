@@ -1203,7 +1203,8 @@ function LSelect() { // language selection
                 wb.vs.mstatesv(vals)
                 that.update_vlabels()
                 wb.vs.addHist()
-                wb.go()
+                wb.material.apply()
+                //wb.go()
             }
         })
     }

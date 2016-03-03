@@ -543,8 +543,6 @@ for lan in sorted(lex_entries):
 
 
 # ## Lexicon result
-# The result is also stored in a tab separated file, which can be downloaded from my
-# [SURFdrive](https://surfdrive.surf.nl/files/public.php?service=files&t=f910f1e088d1dfc9fc526e408ab07c45).
 
 # # Table filling
 # 
