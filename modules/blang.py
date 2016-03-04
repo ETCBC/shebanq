@@ -17,6 +17,9 @@ booklangs = dict(
     id=(u'indonesian', u'Bahasa Indonesia'),
     ar=(u'arabic', u'العَرَبِية'),
     zh=(u'chinese', u'中文'),
+    hi=(u'hindi', u'हिन्दी'),
+    fa=(u'farsi', u'فارسی'),
+    pt=(u'portuguese', u'Português'),
 )
 booknames = dict(
     la=tuple(u'''
@@ -633,5 +636,128 @@ booknames = dict(
             尼希米记
             历代志上
             历代志下
+    '''.strip().split()),
+    hi=tuple(u'''
+            उत्पाति
+            निर्गमन
+            लैव्यव्यवस्थ
+            गिनती
+            व्यवस्थाविवरण
+            यहोशू
+            न्यायियों
+            1_शमूएल
+            2_शमूएल
+            1_राजाओं
+            2_राजाओं
+            यशायाह
+            यिर्मयाह
+            यहेजकेल
+            होशे
+            योएल
+            आमोस
+            ओबधाह
+            योना
+            मीका
+            नहूम
+            हबक्कूक
+            सपन्याह
+            हाग्गै
+            जकर्याह
+            मलाकी
+            भजन_संहिता
+            अय्यूब
+            नीतिबचन
+            रुत
+            श्रेष्ठगीत
+            सभोपदेशक
+            विलापगेत
+            एस्तेर
+            दानिय्यल
+            एज्रा
+            नहेम्याह
+            1_इतिहास
+            2_इतिहास
+    '''.strip().split()),
+    fa=tuple(u'''
+            پيدايش
+            خروج
+            لاويان
+            اعداد
+            تثنيه
+            يوشع
+            داوران
+            اول_سموئيل
+            دوم_سموئيل
+            اول_پادشاهان
+            دوم_پادشاهان
+            اشعیا
+            اِرميا
+            حزقیال
+            هوشع
+            يوئيل
+            عاموس
+            عوبديا
+            يونس
+            ميكاه
+            ناحوم
+            حبقوق
+            صفنيا
+            حجی
+            زآريا
+            ملاآی
+            مزامير
+            ايوب
+            امثال
+            روت
+            غزل_غزلهای_سليمان
+            جامعه
+            مراثی_ارميا
+            استر
+            دانيال
+            عزرا
+            نحميا
+            اول_تواريخ_ايام
+            دوم_تواريخ
+    '''.strip().split()),
+    pt=tuple(u'''
+            Gênesis
+            Êxodo
+            Levítico
+            Numbers
+            Deuteronomy
+            Joshua
+            Judges
+            1_Samuel
+            2_Samuel
+            1_Kings
+            2_Kings
+            Isaiah
+            Jeremiah
+            Ezekiel
+            Hosea
+            Joel
+            Amos
+            Obadiah
+            Jonah
+            Micah
+            Nahum
+            Habakkuk
+            Zephaniah
+            Haggai
+            Zechariah
+            Malachi
+            Psalms
+            Job
+            Proverbs
+            Ruth
+            Song_of_songs
+            Ecclesiastes
+            Lamentations
+            Esther
+            Daniel
+            Ezra
+            Nehemiah
+            1_Chronicles
+            2_Chronicles
     '''.strip().split()),
 )

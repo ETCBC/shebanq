@@ -17,17 +17,16 @@ jQuery(function(){
         var name_en = langinfo[0]
         var name_own = langinfo[1] 
         html += '<th class="booklang" title="'+lang+'='+name_en+'">'+name_own.replace(/ /g, '<br/>')+'</th>\n'
-    }
-    html += '</tr>\n'
-    for (var b in bookla) {
-        var book = bookla[b]
-        html += '<tr class="books">\n'
-        for (var i in langs) {
-            var lang = langs[i]
+        for (var b in bookla) {
+            var book = bookla[b]
             html += '<td class="book">'+booktrans[lang][book].replace(/_/g, ' ')+'</td>\n'
+            if (book == 'Reges_II' || book == 'Maleachi') {
+                html += '<th class="booklang" title="'+lang+'='+name_en+'">'+name_own.replace(/ /g, '<br/>')+'</th>\n'
+            }
         }
+        html += '<th class="booklang" title="'+lang+'='+name_en+'">'+name_own.replace(/ /g, '<br/>')+'</th>\n'
+        html += '</tr>\n' 
     }
-    html += '</tr>\n' 
     $('#books').html(html)
 })
 </script>
