@@ -502,6 +502,8 @@ We translate them to conventional English names.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="1.-Parallels-within-the-Masoretic-Text">1. Parallels within the Masoretic Text<a class="anchor-link" href="#1.-Parallels-within-the-Masoretic-Text">&#182;</a></h1><h2 id="1.1-Grep-all-parallel-verses">1.1 Grep all parallel verses<a class="anchor-link" href="#1.1-Grep-all-parallel-verses">&#182;</a></h2><p>We find the verses that are similar to any verse in 2 Kings 19-25.</p>
 <p>Our method is to use one of the similarity matrices that has been computed by the parallels notebook.
+To be precise, we took the matrix computed for the SET method applied to verses. We then extract the similarities higher than 60. These specifications are stored in the variables <code>CHUNK_GREP</code>, <code>MATRIX_GREP</code> and 
+<code>SIM_THRESHOLD_GREP</code>.
 Every similarity we find is a pair of verse references, at least one of which is in 2 Kings 19-25.
 That reference we render as being in the book <code>2_Kingsr</code> because in a later visualization we
 want to have our focus chapters in a separate colummn.</p>
@@ -514,8 +516,8 @@ want to have our focus chapters in a separate colummn.</p>
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">MATRIX_GREP</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="n">grep_dist</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CHUNK_GREP</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="n">chunks</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CHUNK_GREP</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="n">chunks</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">MATRIX_GREP</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="n">grep_dist</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_verse_ref</span><span class="p">(</span><span class="n">chunk</span><span class="p">):</span>
     <span class="n">vn</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="p">[</span><span class="n">chunk</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>

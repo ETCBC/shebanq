@@ -2162,12 +2162,14 @@ This may lead to growing very large cliques if <code>SIMILARITY_THRESHOLD</code>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">origc</span><span class="p">:</span>            
                 <span class="n">d</span> <span class="o">=</span> <span class="n">chunk_dist</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="k">else</span> <span class="n">chunk_dist</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="k">else</span> <span class="mi">0</span>
                 <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="n">SIMILARITY_THRESHOLD</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">added</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">added</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>    <span class="c"># the passage has not been added to any clique yet</span>
                         <span class="n">c</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                        <span class="n">added</span> <span class="o">=</span> <span class="n">k</span>
-                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">added</span> <span class="o">=</span> <span class="n">k</span>        <span class="c"># remember that we added the passage to this clique</span>
+                    <span class="k">else</span><span class="p">:</span>                <span class="c"># the passage has alreay been added to another clique:</span>
+                                         <span class="c"># we merge this clique with that one</span>
                         <span class="n">cliques_unsorted</span><span class="p">[</span><span class="n">added</span><span class="p">]</span> <span class="o">|=</span> <span class="n">c</span>
-                        <span class="n">removable</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                        <span class="n">removable</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="c"># we remember that we have merged this clicque into another one,</span>
+                                         <span class="c"># so we can throw away this clicque later </span>
                     <span class="k">break</span>
         <span class="k">if</span> <span class="n">added</span> <span class="o">==</span> <span class="k">None</span><span class="p">:</span>
             <span class="n">cliques_unsorted</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">i</span><span class="p">})</span>
@@ -3220,7 +3222,7 @@ every such clique, we produce a diff-view of its members.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="7.-Main">7. Main<a class="anchor-link" href="#7.-Main">&#182;</a></h1><p>In the cell below you can select the experiments you want to carry out.</p>
-<p>Cells before contained just definitions and parameters.
+<p>The previous cells contain just definitions and parameters.
 The next cell will do work.</p>
 <p>If none of the matrices and cliques have been computed before on the system where this runs, doing all experiments might take multiple hours (4-8).</p>
 
