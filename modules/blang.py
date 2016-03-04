@@ -20,6 +20,7 @@ booklangs = dict(
     hi=(u'hindi', u'हिन्दी'),
     fa=(u'farsi', u'فارسی'),
     pt=(u'portuguese', u'Português'),
+    syc=(u'syriac', u'ܠܫܢܐ ܣܘܪܝܝܐ'),
 )
 booknames = dict(
     la=tuple(u'''
@@ -723,41 +724,82 @@ booknames = dict(
             Gênesis
             Êxodo
             Levítico
-            Numbers
-            Deuteronomy
-            Joshua
-            Judges
+            Números
+            Deuteronômio
+            Josué
+            Juízes
             1_Samuel
             2_Samuel
-            1_Kings
-            2_Kings
-            Isaiah
-            Jeremiah
-            Ezekiel
-            Hosea
+            1_Reis
+            2_Reis
+            Isaías
+            Jeremias
+            Ezequiel
+            Oséias
             Joel
-            Amos
-            Obadiah
-            Jonah
-            Micah
-            Nahum
-            Habakkuk
-            Zephaniah
-            Haggai
-            Zechariah
-            Malachi
-            Psalms
-            Job
-            Proverbs
-            Ruth
-            Song_of_songs
-            Ecclesiastes
-            Lamentations
-            Esther
+            Amós
+            Obadias
+            Jonas
+            Miquéias
+            Naum
+            Habacuque
+            Sofonias
+            Ageu
+            Zacarias
+            Malaquis
+            Salmos
+            Jó
+            Provérbios
+            Rute
+            Cantares_de_Salomâo
+            Eclesiastes
+            Lamentações
+            Ester
             Daniel
-            Ezra
-            Nehemiah
-            1_Chronicles
-            2_Chronicles
+            Esdras
+            Neemias
+            1_Crônicas
+            2_Crônicas
+    '''.strip().split()),
+    syc=tuple(u'''
+            ܒܪܝܬܐ
+            ܡܦܩܢܐ
+            ܟܗܢ̈ܐ
+            ܡܢܝܢܐ
+            ܬܢܝܢ_ܢܡܘܣܐ
+            ܝܫܘܥ_ܒܪܢܘܢ
+            ܕܝܢ̈ܐ
+            ܐ_ܫܡܘܐܝܠ
+            ܒ_ܫܡܘܐܝܠ
+            ܐ_ܡܠܟ̈ܐ
+            ܒ_ܡܠܟ̈ܐ
+            ܐܫܥܝܐ
+            ܐܪܡܝܐ
+            ܚܙܩܝܐܝܠ
+            ܗܘܫܥ
+            ܝܘܐܝܠ
+            ܥܡܘܣ
+            ܥܘܒܕܝܐ
+            ܝܘܢܢ
+            ܡܝܟ݂ܐ
+            ܢܚܘܡ
+            ܚܒ݂ܩܘܩ
+            ܨܦܢܝܐ
+            ܚܓܝ
+            ܙܟ݂ܪܝܐ
+            ܡܠܐܟ݂ܝ
+            ܡܙܡܘܪ̈ܐ
+            ܐܝܘܒ݂
+            ܡܬܠ̈ܐ
+            ܪܥܘܬ݂
+            ܬܫܒܚܬ_ܬܫܒܚ̈ܬ݂ܐ
+            ܩܘܗܠܬ
+            ܐܘܠܝ̈ܬ݂ܐ
+            ܐܣܬܝܪ
+            ܕܢܝܐܝܠ
+            ܥܙܪܐ
+            ܢܚܡܝܐ
+            ܐ_ܒܪܝܡܝܢ
+            ܒ_ܒܪܝܡܝܢ
     '''.strip().split()),
 )
