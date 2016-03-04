@@ -233,6 +233,25 @@ ol.text {
 #select_contents_lang table tr td.active a.itemnav {
     font-weight: bold;
 }
+table.books {
+    width: 100%;
+}
+td.book {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: small;
+    color: #448844;
+    background-color: #ffffee;
+    border: 1px solid #448844;
+}
+th.booklang {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: bold;
+    font-size: small;
+    color: #448844;
+    background-color: #ffffee;
+    border: 1px solid #448844;
+}
 .vhl {
     background-color: #ffffe0;
 }

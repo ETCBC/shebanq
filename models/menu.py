@@ -76,6 +76,7 @@ response.menu = [
         (T('SHEBANQ tutorial by Oliver'), False, URL('static', 'docs/Glanz_shebanq_tut.pdf'), []),
         (T('ETCBC feature doc'), False, URL('static', 'docs/featuredoc/features/comments/0_overview.html'), []),
         (T('ETCBC methods'), False, URL('methods', 'index'), []),
+        (T('Bible book names'), False, URL('hebrew', 'books'), []),
         (T('MQL quick reference guide (pdf)'), False, URL('static', 'docs/MQL-QuickRef.pdf'), []),
         (T('MQL Query Guide by Ulrik (pdf)'), False, URL('static', 'docs/MQL-Query-Guide.pdf'), []),
         (T('ETCBC4 transcription table (pdf)'), False, URL('static', 'docs/ETCBC4-transcription.pdf'), []),

@@ -698,6 +698,7 @@ var next_tr = {next_tr}
 var nt_statclass = {nt_statclass}
 var nt_statsym = {nt_statsym}
 var nt_statnext = {nt_statnext}
+var bookla = {bookla}
 var booktrans = {booktrans}
 var booklangs = {booklangs}
 dynamics()
@@ -721,6 +722,7 @@ dynamics()
     nt_statclass = json.dumps(nt_statclass),
     nt_statsym = json.dumps(nt_statsym),
     nt_statnext = json.dumps(nt_statnext),
+    bookla = json.dumps(booknames['la']),
     booktrans = json.dumps(booktrans),
     booklangs = json.dumps(booklangs),
 )

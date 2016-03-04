@@ -9,7 +9,8 @@ from markdown import markdown
 from render import Verses, Verse, verse_simple, Viewsettings, \
                    legend, colorpicker, h_esc, get_request_val, get_fields, style, \
                    tp_labels, tab_views, tr_info, tr_labels, \
-                   iid_encode, iid_decode, nt_statclass
+                   iid_encode, iid_decode, nt_statclass, \
+                   booklangs, booknames, booktrans
 from mql import mql
 from get_db_config import emdros_versions
 
@@ -88,6 +89,19 @@ def clear_cache(ckeys):
     cache.ram.clear(regex=ckeys)
     if not CACHING_RAM_ONLY:
         cache.disk.clear(regex=ckeys)
+
+def books():
+    session.forget(response)
+    jsinit = '''
+var bookla = {bookla};
+var booktrans = {booktrans};
+var booklangs = {booklangs};
+'''.format(
+        bookla=json.dumps(booknames['la']),
+        booktrans=json.dumps(booktrans),
+        booklangs=json.dumps(booklangs),
+    )
+    return dict(jsinit=jsinit)
 
 def text():
     session.forget(response)
