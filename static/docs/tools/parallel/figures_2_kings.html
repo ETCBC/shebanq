@@ -193,7 +193,7 @@ On Mac OS X it is necessary to install such a compiler first. In this notebook, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>REPO <span class="o">=</span> <span class="s">&#39;http://cran.xl-mirror.nl/&#39;</span>
@@ -210,18 +210,9 @@ On Mac OS X it is necessary to install such a compiler first. In this notebook, 
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-The downloaded source packages are in
-	‘/private/var/folders/mr/v68m5kjn375c46fmlw70r4wh0000gn/T/RtmpTSwJ1J/downloaded_packages’
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>Updating HTML index of packages in &apos;.Library&apos;
-Making &apos;packages.html&apos; ... done
+<pre>Loading required package: sm
+Package &apos;sm&apos;, version 2.2-5.4: type help(sm) for summary information
 </pre>
 </div>
 </div>
@@ -242,14 +233,14 @@ Making &apos;packages.html&apos; ... done
 There are no similarities with sentences in 2 Kings outside the chapters 19-25.</p>
 <p>So all similarities with verses in 2 Kings 19-25 occur in rows that have as book of the first sentence: <code>2_Kings</code>.</p>
 <p>We store these rows in <code>dat2</code>.</p>
-<p>We are not interested in similarities inside 2 Kings 19-25. These are exactly the rows where the book of the second sentence is <code>2_Kings</code>. We store the interesting rows in <code>dat3</code>. These include similarities between Isaiah, Jeremiah, 2 Chronicles, without involving 2 Kings 19-25.</p>
+<p>We are not interested in similarities inside 2 Kings 19-25. These are exactly the rows where the book of the second sentence is <code>2_Kings</code>. We store the remaining interesting rows in <code>dat3</code>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>dat <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&quot;kings_similarities.tsv&quot;</span><span class="p">,</span> sep <span class="o">=</span> <span class="s">&#39;\t&#39;</span> <span class="p">,</span>header <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
@@ -274,7 +265,7 @@ dat3 <span class="o">&lt;-</span> dat2<span class="p">[</span>dat2<span class="o
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>boxplot<span class="p">(</span>dat3<span class="o">$</span>sim<span class="p">,</span> ylab <span class="o">=</span> <span class="s">&#39;Similarity&#39;</span><span class="p">)</span>
@@ -289,7 +280,7 @@ dat3 <span class="o">&lt;-</span> dat2<span class="p">[</span>dat2<span class="o
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -326,7 +317,7 @@ A more sophisticated overview of the interesting similarities.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>vioplot<span class="p">(</span>dat3<span class="o">$</span>sim<span class="p">,</span> names <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span> col <span class="o">=</span> <span class="s">&#39;white&#39;</span><span class="p">)</span>
@@ -366,12 +357,12 @@ A more sophisticated overview of the interesting similarities.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre>jer <span class="o">&lt;-</span> dat2<span class="p">[</span>dat2<span class="o">$</span>book_2 <span class="o">==</span><span class="s">&#39;Jeremiah&#39;</span><span class="p">,]</span>
-jes <span class="o">&lt;-</span> dat2<span class="p">[</span>dat2<span class="o">$</span>book_2 <span class="o">==</span><span class="s">&#39;Isaiah&#39;</span><span class="p">,]</span>
-chr <span class="o">&lt;-</span> dat2<span class="p">[</span>dat2<span class="o">$</span>book_2 <span class="o">==</span><span class="s">&#39;2_Chronicles&#39;</span><span class="p">,]</span>
+<div class=" highlight hl-r"><pre>jer <span class="o">&lt;-</span> dat3<span class="p">[</span>dat3<span class="o">$</span>book_2 <span class="o">==</span><span class="s">&#39;Jeremiah&#39;</span><span class="p">,]</span>
+jes <span class="o">&lt;-</span> dat3<span class="p">[</span>dat3<span class="o">$</span>book_2 <span class="o">==</span><span class="s">&#39;Isaiah&#39;</span><span class="p">,]</span>
+chr <span class="o">&lt;-</span> dat3<span class="p">[</span>dat3<span class="o">$</span>book_2 <span class="o">==</span><span class="s">&#39;2_Chronicles&#39;</span><span class="p">,]</span>
 boxplot<span class="p">(</span>jes<span class="o">$</span>sim<span class="p">,</span> jer<span class="o">$</span>sim<span class="p">,</span> chr<span class="o">$</span>sim<span class="p">,</span> names <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Isaiah&#39;</span><span class="p">,</span> <span class="s">&#39;Jeremiah&#39;</span><span class="p">,</span> <span class="s">&#39;2 Chronicles&#39;</span><span class="p">),</span>  ylab <span class="o">=</span> <span class="s">&#39;Similarity&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -409,7 +400,7 @@ boxplot<span class="p">(</span>jes<span class="o">$</span>sim<span class="p">,</
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>jer60 <span class="o">&lt;-</span> jer<span class="p">[</span>jer<span class="o">$</span>sim <span class="o">&gt;</span> <span class="m">59</span><span class="p">,]</span>
@@ -453,7 +444,7 @@ We also give the results of the t-test.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre>jer80 <span class="o">&lt;-</span> jer<span class="p">[</span>jer<span class="o">$</span>sim <span class="o">&gt;</span> <span class="m">79</span><span class="p">,]</span>
@@ -474,7 +465,7 @@ t.test<span class="p">(</span>jer80<span class="o">$</span>sim<span class="p">,<
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -494,7 +485,7 @@ mean of x mean of y
 
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -514,7 +505,7 @@ mean of x mean of y
 
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
