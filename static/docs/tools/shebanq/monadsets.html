@@ -238,8 +238,10 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.4.2
-http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
+<pre>  0.00s This is LAF-Fabric 4.5.21
+API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
+Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
+
 </pre>
 </div>
 </div>
@@ -250,7 +252,7 @@ http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;etcbc4&#39;</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">,</span> <span class="s">&#39;clausecomplements&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -277,8 +279,57 @@ http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.00s INFO: USING DATA COMPILED AT: 2014-07-23T09-31-37
-  1.54s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK clausecomplements AT 2014-09-23T07-05-28
+  0.00s USING main  DATA COMPILED AT: 2014-07-23T09-31-37
+  4.20s LOGFILE=/Users/dirk/laf-fabric-output/etcbc4/clausecomplements/__log__clausecomplements.txt
+  4.20s INFO: LOADING PREPARED data: please wait ... 
+  4.20s prep prep: G.node_sort
+  4.20s PREPARING prep: G.node_sort
+  4.20s LOADING API with EXTRAs: please wait ... 
+  4.20s USING main  DATA COMPILED AT: 2014-07-23T09-31-37
+  5.89s NORMAL: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK clausecomplements AT 2016-03-05T08-51-56
+  5.89s SORTING nodes ...
+    51s WRITING prep: G.node_sort
+    51s prep prep: G.node_sort_inv
+    51s PREPARING prep: G.node_sort_inv
+    51s SORTING nodes (inv) ...
+    52s WRITING prep: G.node_sort_inv
+    53s prep prep: L.node_up
+    53s PREPARING prep: L.node_up
+    53s LOADING API with EXTRAs: please wait ... 
+    53s USING main  DATA COMPILED AT: 2014-07-23T09-31-37
+    53s NORMAL: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK clausecomplements AT 2016-03-05T08-52-43
+    53s Objects contained in books
+ 1m 02s Objects contained in chapters
+ 1m 10s Objects contained in verses
+ 1m 20s Objects contained in half_verses
+ 1m 29s Objects contained in sentences
+ 1m 37s Objects contained in sentence_atoms
+ 1m 48s Objects contained in clauses
+ 1m 56s Objects contained in clause_atoms
+ 2m 03s Objects contained in phrases
+ 2m 11s Objects contained in phrase_atoms
+ 2m 18s Objects contained in subphrases
+ 2m 20s Objects contained in words
+ 2m 23s WRITING prep: L.node_up
+ 2m 29s prep prep: L.node_down
+ 2m 29s PREPARING prep: L.node_down
+ 2m 29s WRITING prep: L.node_down
+ 2m 37s prep prep: V.verses
+ 2m 37s PREPARING prep: V.verses
+ 2m 37s LOADING API with EXTRAs: please wait ... 
+ 2m 37s USING main  DATA COMPILED AT: 2014-07-23T09-31-37
+ 2m 37s NORMAL: DATA LOADED FROM SOURCE etcbc4 AND ANNOX -- FOR TASK clausecomplements AT 2016-03-05T08-54-27
+ 2m 37s Making verse index
+ 2m 38s Done. 23213 verses
+ 2m 38s WRITING prep: V.verses
+ 2m 38s prep prep: V.books_la
+ 2m 38s PREPARING prep: V.books_la
+ 2m 38s Listing books
+ 2m 40s Done. 39 books
+ 2m 40s WRITING prep: V.books_la
+ 2m 40s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+ 2m 42s INFO: LOADED PREPARED data
+ 2m 42s INFO: DATA LOADED FROM SOURCE etcbc4 AND ANNOX lexicon FOR TASK clausecomplements AT 2016-03-05T08-54-32
 </pre>
 </div>
 </div>
@@ -308,7 +359,7 @@ http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&quot;Making passage index ...&quot;</span><span class="p">)</span>
@@ -337,8 +388,8 @@ http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  3.55s Making passage index ...
-  5.72s Passage index created for 1416963 nodes
+<pre>  5.42s Making passage index ...
+  6.89s Passage index created for 1416963 nodes
 </pre>
 </div>
 </div>
@@ -368,7 +419,7 @@ http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">lookup</span> <span class="o">=</span> <span class="s">&#39;121842-121846&#39;</span>
@@ -401,7 +452,7 @@ http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">mon</span><span class="p">]</span> <span class="k">for</span> <span class="n">mon</span> <span class="ow">in</span> <span class="n">monad_list</span><span class="p">))</span>
@@ -443,6 +494,19 @@ phrase_atom     in Josua 15:24      (node 932213)
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre> 
+</pre></div>
+
+</div>
 </div>
 </div>
 
