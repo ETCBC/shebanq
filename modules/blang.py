@@ -4,7 +4,7 @@
 booklangs = dict(
     la=(u'latin', u'Latina'),
     en=(u'english', u'English'),
-    fr=(u'french', u'François'),
+    fr=(u'french', u'Français'),
     de=(u'german', u'Deutsch'),
     nl=(u'dutch', u'Nederlands'),
     el=(u'greek', u'Ελληνικά'),

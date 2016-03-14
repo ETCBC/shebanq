@@ -1,40 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright 2013 DANS-KNAW
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# #######################################################################
-# Fake imports and web2py variables. See also: __init__.py
-# This code only serves to satisfy the editor. It is never executed.
-if 0:
-    from . import *
-# End of fake imports to satisfy the editor.
-# #######################################################################
-
-#########################################################################
-## Customize your APP title, subtitle and menus here
-#########################################################################
-
-
 response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
                   _class="brand",
                   _href="http://arxiv.org/abs/1501.01866",
                   _target="_blank",
                   _style="margin-bottom: -2em;",
                   )
-
 
 served_on = request.env.SERVER_NAME
 on_system = False
