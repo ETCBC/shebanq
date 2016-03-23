@@ -367,7 +367,7 @@ td#theqid {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.vradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
@@ -375,7 +375,7 @@ td#theqid {
  {
     color: #000000;
 }
-.qhradio,.whradio,.mhradio,.mtradio,.qvradio,.nvradio,.qfradio,.nfradio,.qlradio,.nlradio,.vradio,.qpradio,.npradio,.pradio {
+.qhradio,.whradio,.mhradio,.mtradio,.qvradio,.nvradio,.qfradio,.nfradio,.qlradio,.nlradio,.qpradio,.npradio,.pradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;
@@ -408,12 +408,12 @@ td#theqid {
 .sversion.other {
     color: #0000ff;
 }
-.vradio {
+a.vradio {
     font-weight: normal;
     background-color: #eeeeff;
     color: #0000cc;
 }
-.vradio.ison {
+a.vradio.ison {
     font-weight: bold;
     background-color: #eeffee;
     color: #00cc00;
