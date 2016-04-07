@@ -106,7 +106,7 @@ server_path = '/home/dirkr/shebanq-install'
 #===== Other settings ========================================
 
 home_dir = os.path.expanduser('~')
-temp_dir = '{}/laf-fabric-tmp'.format(home_dir)
+temp_dir = '{}/laf/laf-fabric-tmp'.format(home_dir)
 
 #===== End Config ============================================
 

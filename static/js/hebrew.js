@@ -118,14 +118,14 @@ Then the hebrew.js and the queries.js can be integrated, redundant code can be e
 
 II. replace all usage of cookies by local storage.
 
-The queries page already does not use cookies but local storage. 
+The queries page already does not use cookies but local storage.
 Now the parsing of the request.vars occurs server side in Python, maybe it is better to defer all checks to the browser.
 The browser can then keep all view settings to its own, without any need to communicate view settings with the server.
 
 III. send all data from server to browser in JSON form.
 
 The browser generates HTML out of the JSON.
-I am not sure whether this is worth it. 
+I am not sure whether this is worth it.
 On the one hand it means smaller data transfers (but they are already fast enough), on the other hand, template code in python is
 much more manageable than in Javascript.
 
@@ -295,7 +295,7 @@ the origin must be an object which has a member indicating the type of origin an
 
         /* computing the paint instructions */
 
-        if (code == '1a') { /* highlights on an r-page (with a single query or word), coming from the associated ColorPicker1             
+        if (code == '1a') { /* highlights on an r-page (with a single query or word), coming from the associated ColorPicker1
                 This is simple coloring, using a single color.
             */
             var iid = origin.iid
@@ -322,7 +322,7 @@ the origin must be an object which has a member indicating the type of origin an
 
         if (qw == 'q') { /* Queries: highlight customised items with priority over uncustomised items
                 If a word belongs to several query results, the last-applied coloring determines the color that the user sees.
-                We want to promote the customised colors over the non-customized ones, so we compute customized coloring after 
+                We want to promote the customised colors over the non-customized ones, so we compute customized coloring after
                 uncustomized coloring.
                 Skip the muted queries
             */
@@ -407,7 +407,7 @@ the origin must be an object which has a member indicating the type of origin an
         var monads = $('#material span[m]')
         var stl = style[qw]['prop']
         var clr_off = style[qw]['off']
-        monads.css(stl, clr_off) 
+        monads.css(stl, clr_off)
 
         /* finally, the computed colors are applied */
         this.paint(qw, paintings)
@@ -424,7 +424,7 @@ the origin must be an object which has a member indicating the type of origin an
     }
 
     this.picker2 = {}
-    this.picker1 = {q: {}, w: {}}               // will collect the two Colorpicker1 objects, indexed as q w 
+    this.picker1 = {q: {}, w: {}}               // will collect the two Colorpicker1 objects, indexed as q w
     this.picker1list = {q: {}, w: {}}           // will collect the two lists of Colorpicker1 objects, index as q w and then by iid
 }
 
@@ -660,7 +660,7 @@ function Material() { // Object corresponding to everything that controls the ma
         if (mf > 1) {
 /* Initially, material gets highlighted once the sidebars have been loaded.
 But when we load a different representation of material (data, tab), the sidebars are still there,
-and after loading the material, highlighs have to be applied. 
+and after loading the material, highlighs have to be applied.
 */
             wb.highlight2({code: '5', qw: 'q'})
             wb.highlight2({code: '5', qw: 'w'})
@@ -673,7 +673,7 @@ and after loading the material, highlighs have to be applied.
 
 function Notes(newcontent) {
     var that = this
-    this.show =  
+    this.show = false
     this.verselist = {}
     this.version = wb.version
     this.sav_controls =  $('span.nt_main_sav')
@@ -838,7 +838,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
             var nline = notes[n]
             var kwtrim = $.trim(nline.kw)
             var kws = kwtrim.split(/\s+/)
-            var uid = nline.uid 
+            var uid = nline.uid
             var mute = false
             for (var k in kws) {
                 var nkid = nkey_index[uid+' '+kws[k]]
@@ -852,7 +852,7 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 continue
             }
             var user = this.orig_users[uid]
-            var nid = nline.nid 
+            var nid = nline.nid
             var pubc = nline.pub?'ison':''
             var sharedc = nline.shared?'ison':''
             var statc = nt_statclass[nline.stat]
@@ -1184,7 +1184,7 @@ function LSelect() { // language selection
             var item = langs[i]
             var langinfo = booklangs[item]
             var name_en = langinfo[0]
-            var name_own = langinfo[1] 
+            var name_own = langinfo[1]
             var clactive = (thelang == item)?' class="active"':''
             ht += '<tr><td'+clactive+'><a class="itemnav" href="#" item="'+item+'">'+name_own+'</td>'
             ht += '<td'+clactive+'><a class="itemnav" href="#" item="'+item+'">'+name_en+'</td></tr>'
@@ -1213,7 +1213,7 @@ function LSelect() { // language selection
             $(this).html(booktrans[wb.vs.lang()][$(this).attr('book')])
         })
     }
-    
+
     this.apply = function() {
         var showit = false
         this.gen_html()
@@ -1393,7 +1393,7 @@ function SelectItems(key) { // both for chapters and for result pages
     }
     this.apply = function() {
         var showit = false
-        showit = this.gen_html() > 0 
+        showit = this.gen_html() > 0
         if (!showit) {
             $(this.control).hide()
         }
@@ -1540,7 +1540,7 @@ function CSelect(vr, qw) { // for chart selection
                     sc = 's5'
                 }
                 if (blsize < 100) {
-                    sz = ' ('+blsize+'%)' 
+                    sz = ' ('+blsize+'%)'
                 }
                 ht += '<td class="'+z+'"><a title="'+ch_range+sz+': '+blres+'" class="cnav '+sc+'" href="#" b='+book+' ch="'+chnum+'">'+s+'</a></td>'
                 l++
@@ -1780,14 +1780,14 @@ rw = display of word record, the main material are the word results
 The list sidebars (m) have a color picker for selecting a uniform highlight color,
 plus controls for deciding whether no, uniform, custom, or many colors will be used.
 
-The record-side bars (r) only have a single color picker, for 
+The record-side bars (r) only have a single color picker, for
 choosing the color associated with the item (a query or a word).
 
 When items are displayed in the list sidebars, they each have a color picker that
 is identical to the one used for that item in the record sidebar.
 
 The colorpickers for choosing an associated item color, consist of a checkbox and a proper colorpicker.
-The checkbox indicates whether the color is customized. 
+The checkbox indicates whether the color is customized.
 A color gets customized when the user selects an other color than the default one, or by checking the box.
 
 When the user has chosen custom colors, all highlights will be done with the uniform color, except
@@ -2200,15 +2200,15 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 var val = instr[1]
                 if (prop == 'check') {
                     var dest = $('#'+fld+'_c')
-                    dest.prop('checked', val) 
+                    dest.prop('checked', val)
                 }
                 else if (prop == 'show') {
                     var dest = $('#'+fld)
                     if (val) {
-                        dest.show() 
+                        dest.show()
                     }
                     else {
-                        dest.hide() 
+                        dest.hide()
                     }
                 }
             }
@@ -2319,7 +2319,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             }
             var qwlist = $('#side_list_'+this.qw+' li')
             qwlist.each(function() {
-                var iid = $(this).attr('iid') 
+                var iid = $(this).attr('iid')
                 that.sidelistitem(iid)
                 if (that.qw != 'n') {
                     wb.picker1list[that.qw][iid] = new Colorpicker1(that.qw, iid, false, false)
@@ -2328,10 +2328,10 @@ function SContent(mr, qw) { // the contents of an individual sidebar
         }
     }
     this.sidelistitem = function(iid) { // individual item in an m-sidebar
-        var itop = $('#'+this.qw+iid) 
-        var more = $('#m_'+this.qw+iid) 
-        var desc = $('#d_'+this.qw+iid) 
-        var item = $('#item_'+this.qw+iid) 
+        var itop = $('#'+this.qw+iid)
+        var more = $('#m_'+this.qw+iid)
+        var desc = $('#d_'+this.qw+iid)
+        var item = $('#item_'+this.qw+iid)
         var all = $('#'+this.qw+iid)
         desc.hide()
         more.click(function(e) {e.preventDefault();
@@ -2461,7 +2461,7 @@ function Colorpicker1(qw, iid, is_item, do_highlight) { // the colorpicker assoc
     var selw = $('#sel_'+this.qw+pointer+'>a')
     var selc = $('#selc_'+this.qw+pointer)
     var picker = $('#picker_'+this.qw+pointer)
-   
+
     this.adapt = function(iid, do_highlight) {
         this.iid = iid
         this.apply(do_highlight)
@@ -2542,7 +2542,7 @@ function Colorpicker2(qw, do_highlight) { // the colorpicker associated with the
     var sel = $('#sel_'+this.qw+'one')
     var selw = $('#sel_'+this.qw+'one>a')
     var picker = $('#picker_'+this.qw+'one')
-    
+
     this.apply = function(do_highlight) {
         var color = wb.vs.sel_one(this.qw) || defcolor(this.qw, null)
         var target = (this.qw == 'q')?sel:selw
@@ -2622,7 +2622,7 @@ function ViewState(init, pref) {
             var extra = (group == 'colormap')?'c_':''
             for (var qw in this.data[group]) {
                 for (var name in this.data[group][qw]) {
-                    vars += sep+extra+qw+name+'='+this.data[group][qw][name] 
+                    vars += sep+extra+qw+name+'='+this.data[group][qw][name]
                     sep = '&'
                 }
             }
@@ -2633,7 +2633,7 @@ function ViewState(init, pref) {
         var vars = '?version='+vr+'&mr='+mr+'&qw='+qw+'&iid='+iid+'&tp='+tp+'&extra='+extra
         var data = this.data['hebrewdata']['']
         for (var name in data) {
-            vars += '&'+name+'='+data[name] 
+            vars += '&'+name+'='+data[name]
         }
         return item_url+vars
     }
@@ -2705,7 +2705,7 @@ function ViewState(init, pref) {
     this.pub = function(qw) {return this.data['highlights'][qw]['pub']}
     this.colormap = function(qw) {return this.data['colormap'][qw]}
     this.color = function(qw, id) {return this.data['colormap'][qw][id]}
-    this.iscolor = function(qw, cl) {return cl in this.data['colormap'][qw]} 
+    this.iscolor = function(qw, cl) {return cl in this.data['colormap'][qw]}
 
     this.addHist()
 }

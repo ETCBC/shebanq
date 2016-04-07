@@ -17,6 +17,7 @@ The pronominal suffix attaches to verbs as a verb-complement.
 
 .. note::
     The value ``absent`` indicates absence (there is no empty value).
+    The value ``n/a`` indicates: *non-applicable*.
 
 .. hint::
     On SHEBANQ is a query to find 2nd person pronominal suffixes in the function of Complement:
