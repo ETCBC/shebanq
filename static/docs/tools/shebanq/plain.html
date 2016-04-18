@@ -481,17 +481,17 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s USING main  DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s USING annox DATA COMPILED AT: 2016-01-27T19-01-17
-  2.39s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
-  2.39s INFO: LOADING PREPARED data: please wait ... 
-  2.39s prep prep: G.node_sort
-  2.50s prep prep: G.node_sort_inv
-  3.05s prep prep: L.node_up
-  6.43s prep prep: L.node_down
+  2.31s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
+  2.31s INFO: LOADING PREPARED data: please wait ... 
+  2.31s prep prep: G.node_sort
+  2.42s prep prep: G.node_sort_inv
+  2.95s prep prep: L.node_up
+  7.18s prep prep: L.node_down
     13s prep prep: V.verses
     13s prep prep: V.books_la
     13s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    15s INFO: LOADED PREPARED data
-    15s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-04-07T16-08-35
+    14s INFO: LOADED PREPARED data
+    14s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-04-18T08-12-48
 </pre>
 </div>
 </div>
@@ -537,15 +537,15 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    56s Format hp = hebrew primary
-    56s Format ha = hebrew accent
-    56s Format hv = hebrew vowel
-    56s Format hc = hebrew cons
-    56s Format ea = trans accent
-    56s Format ev = trans vowel
-    56s Format ec = trans cons
-    56s Format pf = phono full
-    56s Format ps = phono simple
+<pre>  4.18s Format hp = hebrew primary
+  4.18s Format ha = hebrew accent
+  4.19s Format hv = hebrew vowel
+  4.19s Format hc = hebrew cons
+  4.19s Format ea = trans accent
+  4.19s Format ev = trans vowel
+  4.20s Format ec = trans cons
+  4.20s Format pf = phono full
+  4.20s Format ps = phono simple
 </pre>
 </div>
 </div>
@@ -586,18 +586,18 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 1m 04s etcbc_color = aa0066
- 1m 04s etcbc_line_height = 1.5
- 1m 04s etcbc_size = small
- 1m 04s hebrew_color = 660000
- 1m 04s hebrew_line_height = 2.0
- 1m 04s hebrew_size = xx-large
- 1m 04s phono_color = 00b040
- 1m 04s phono_line_height = 1.5
- 1m 04s phono_size = medium
- 1m 04s verse_color = 0000ff
- 1m 04s verse_size = small
- 1m 04s verse_width = 5em
+<pre>  9.21s etcbc_color = aa0066
+  9.21s etcbc_line_height = 1.5
+  9.21s etcbc_size = small
+  9.21s hebrew_color = 660000
+  9.21s hebrew_line_height = 2.0
+  9.21s hebrew_size = xx-large
+  9.21s phono_color = 00b040
+  9.21s phono_line_height = 1.5
+  9.21s phono_size = medium
+  9.22s verse_color = 0000ff
+  9.22s verse_size = small
+  9.22s verse_width = 5em
 </pre>
 </div>
 </div>
@@ -964,6 +964,110 @@ Genesis 1:2	wᵊhāʔˈāreṣ hāyᵊṯˌā ṯˈōhû wāvˈōhû wᵊḥˌō
 etcbc4b_ps_v.txt
 Genesis 1:1	brēšîṯ bårå ʔlōhîm ʔēṯ haššåmayim wʔēṯ håʔåreṣ .
 Genesis 1:2	whåʔåreṣ håyṯå ṯōhû wåvōhû wḥōšeḵ ʕal-pnê ṯhôm wrûₐḥ ʔlōhîm mraḥefeṯ ʕal-pnê hammåyim .
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Count-the-number-of-characters-in-the-plain-text">Count the number of characters in the plain text<a class="anchor-link" href="#Count-the-number-of-characters-in-the-plain-text">&#182;</a></h1><p>We want to know how many characters the Hebrew Bible has.
+We will measure it in the number of unicode characters.
+We want to count every s(h)in as one graphemes, so we have to make sure that we compose those unicode characters.
+Note that unicode composition does not compose other points and accents with consonants to single letters.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">unicodedata</span> <span class="k">import</span> <span class="n">normalize</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">example</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s">&#39;Genesis&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">example</span><span class="p">:</span>
+    <span class="n">ex_c</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s">&#39;NFKC&#39;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+    <span class="n">ex_d</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s">&#39;NFKD&#39;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&gt;3}; c={:&gt;3}; d={:&gt;3}; {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ex</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex_c</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex_d</span><span class="p">),</span> <span class="n">ex</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre> 11; c= 12; d= 12; בְּרֵאשִׁ֖ית
+  7; c=  7; d=  7; בָּרָ֣א
+  9; c=  9; d=  9; אֱלֹהִ֑ים
+  4; c=  4; d=  4; אֵ֥ת
+ 11; c= 12; d= 12; הַשָּׁמַ֖יִם
+  6; c=  6; d=  6; וְאֵ֥ת
+ 10; c= 10; d= 10; הָאָֽרֶץ׃
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">full_text</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="s">&#39;NFKC&#39;</span><span class="p">,</span> <span class="n">full_text</span><span class="p">)))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2831192
 </pre>
 </div>
 </div>
