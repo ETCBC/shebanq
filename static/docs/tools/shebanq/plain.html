@@ -231,8 +231,9 @@ features <code>g_word_utf8</code> and <code>trailer_utf8</code>.</p>
 </li>
 </ul>
 </li>
-<li>You can switch to vocalized qeres instead of ketivs (except for the lexeme based formats)</li>
-<li>You can render the text in HTML and control the formatting, or get the plain text.</li>
+<li>You can switch to vocalized qeres instead of ketivs (except for the lexeme based formats);</li>
+<li>You can render the text in HTML and control the formatting, or get the plain text;</li>
+<li>You can lookup the passage label of any given node and represent it in a given language.</li>
 </ul>
 <p>These functions make it easy to produces texts that can be pasted into word processors.</p>
 <p>By the way, if you generate <em>verse labels</em>, you can choose the language of the book names.
@@ -321,7 +322,7 @@ many more examples.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">examples</span><span class="p">)</span>
@@ -335,7 +336,7 @@ many more examples.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <p>hp = hebrew primary</p>
@@ -398,7 +399,7 @@ many more examples.</p>
 
 <p>ea = trans accent</p>
 <table class="t">
-<tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HI81J K.:>@M:R@70m >;L@JW03 JO74Wm W@JO80Wm W:LO71> C@MA73&lt; >:AL;JHE92m WAJ.AG.I74JDW. L:H@M@81n LIR:>OWT03 H:AJA45&lt;AM:DW.03 D.IB:R;74J M@R:D.:@KA80J K.I45J&amp;HIG.I71JD L@HE73m >:ACER&amp;H71W.> J:HW.DI45J00
+<tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HI81J K.:>@M:R@70m >;L@JW03 JO74Wm W@JO80Wm W:LO71> C@MA73&lt; >:AL;JHE92m WAJ.AG.I74JDW. L:H@M@81n LIR:>OWT03 H:AJA35&lt;AM:DW.03 D.IB:R;74J M@R:D.:@KA80J K.I35J&amp;HIG.I71JD L@HE73m >:ACER&amp;H71W.> J:HW.DI35J00
 </td></tr>
 </table>
 
@@ -478,7 +479,7 @@ many more examples.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.6.0
+<pre>  0.00s This is LAF-Fabric 4.6.1
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
@@ -502,6 +503,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <span class="s">        lex_utf8</span>
 <span class="s">        sp</span>
 <span class="s">        label</span>
+<span class="s">        monads</span>
 <span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
     <span class="s">&quot;prepare&quot;</span><span class="p">:</span> <span class="n">prepare</span><span class="p">,</span>
     <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
@@ -522,17 +524,17 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s USING main  DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s USING annox DATA COMPILED AT: 2016-01-27T19-01-17
-  2.42s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
-  2.42s INFO: LOADING PREPARED data: please wait ... 
-  2.42s prep prep: G.node_sort
-  2.53s prep prep: G.node_sort_inv
-  3.08s prep prep: L.node_up
-  7.44s prep prep: L.node_down
-    13s prep prep: V.verses
-    13s prep prep: V.books_la
-    13s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  3.75s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
+  3.75s INFO: LOADING PREPARED data: please wait ... 
+  3.75s prep prep: G.node_sort
+  3.87s prep prep: G.node_sort_inv
+  4.43s prep prep: L.node_up
+  7.83s prep prep: L.node_down
+    14s prep prep: V.verses
+    14s prep prep: V.books_la
+    14s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
     17s INFO: LOADED PREPARED data
-    17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-05-26T07-20-57
+    17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-05-26T11-53-40
 </pre>
 </div>
 </div>
@@ -580,20 +582,20 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    12s Format hp = hebrew primary
-    12s Format hpl = hebrew primary (lexeme)
-    12s Format hcl = hebrew cons (lexeme)
-    12s Format ha = hebrew accent
-    12s Format hv = hebrew vowel
-    12s Format hc = hebrew cons
-    12s Format ep = trans primary
-    12s Format epl = trans primary (lexeme)
-    12s Format ecl = hebrew cons (lexeme)
-    12s Format ea = trans accent
-    12s Format ev = trans vowel
-    12s Format ec = trans cons
-    12s Format pf = phono full
-    12s Format ps = phono simple
+<pre>  3.82s Format hp = hebrew primary
+  3.83s Format hpl = hebrew primary (lexeme)
+  3.83s Format hcl = hebrew cons (lexeme)
+  3.83s Format ha = hebrew accent
+  3.83s Format hv = hebrew vowel
+  3.83s Format hc = hebrew cons
+  3.83s Format ep = trans primary
+  3.83s Format epl = trans primary (lexeme)
+  3.83s Format ecl = hebrew cons (lexeme)
+  3.83s Format ea = trans accent
+  3.83s Format ev = trans vowel
+  3.84s Format ec = trans cons
+  3.84s Format pf = phono full
+  3.84s Format ps = phono simple
 </pre>
 </div>
 </div>
@@ -706,6 +708,113 @@ td.vl {
 
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Passage-look-up">Passage look up<a class="anchor-link" href="#Passage-look-up">&#182;</a></h1><p>Here we show how to look up the passage of any given node.
+There is some subtlety involved, because nodes may represent a whole book, chapter or verse, and some sentences span multiple verses. Have a good look at the examples.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">inf</span><span class="p">(</span><span class="s">&#39;gathering example nodes&#39;</span><span class="p">)</span>
+<span class="n">example_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;book&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;chapter&#39;</span><span class="p">))[</span><span class="mi">100</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">))[</span><span class="mi">1000</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">))[</span><span class="mi">10000</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">))[</span><span class="mi">20000</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;phrase&#39;</span><span class="p">))[</span><span class="mi">30000</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">))[</span><span class="mi">100000</span><span class="p">],</span>
+<span class="p">}</span> <span class="o">|</span> <span class="nb">set</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="k">None</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">example_nodes</span><span class="p">):</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s">&#39;{:&gt;7} {:&lt;15} occurs in {:&lt;30} and its first word in {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#39;en&#39;</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#39;en&#39;</span><span class="p">,</span> <span class="n">first_word</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>  9.47s gathering example nodes
+    18s  100000 word            occurs in Deuteronomy 11:19              and its first word in Deuteronomy 11:19
+    18s  446568 clause          occurs in Deuteronomy 25:9               and its first word in Deuteronomy 25:9
+    18s  635133 phrase          occurs in Exodus 36:29                   and its first word in Exodus 36:29
+    18s 1125838 sentence        occurs in Genesis 1:17-18                and its first word in Genesis 1:17
+    18s 1125875 sentence        occurs in Genesis 1:29-30                and its first word in Genesis 1:29
+    18s 1125890 sentence        occurs in Genesis 2:4-7                  and its first word in Genesis 2:4
+    18s 1126231 sentence        occurs in Genesis 7:2-3                  and its first word in Genesis 7:2
+    18s 1126238 sentence        occurs in Genesis 7:8-9                  and its first word in Genesis 7:8
+    18s 1126244 sentence        occurs in Genesis 7:13-14                and its first word in Genesis 7:13
+    18s 1126337 sentence        occurs in Genesis 9:9-10                 and its first word in Genesis 9:9
+    18s 1126400 sentence        occurs in Genesis 10:11-12               and its first word in Genesis 10:11
+    18s 1126402 sentence        occurs in Genesis 10:13-14               and its first word in Genesis 10:13
+    18s 1126403 sentence        occurs in Genesis 10:15-18               and its first word in Genesis 10:15
+    18s 1135793 sentence        occurs in Numbers 1:30                   and its first word in Numbers 1:30
+    18s 1367498 book            occurs in Exodus                         and its first word in Exodus
+    18s 1367636 chapter         occurs in Leviticus 11                   and its first word in Leviticus 11
+    18s 1414645 verse           occurs in Genesis 34:20                  and its first word in Genesis 34:20
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">446568</span>
+<span class="n">inf</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">monads</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="n">inf</span><span class="p">(</span><span class="s">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
+<span class="n">inf</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="n">inf</span><span class="p">(</span><span class="s">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
+<span class="n">inf</span><span class="p">(</span><span class="s">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">inf</span><span class="p">(</span><span class="s">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre> 4m 57s 106976-106980
+ 4m 57s 1419202
+ 4m 57s Deuteronomy 25:9-9
+ 4m 57s [106975, 106976, 106977, 106978, 106979]
+ 4m 57s 106975
+ 4m 57s 106979
+</pre>
+</div>
 </div>
 
 </div>
