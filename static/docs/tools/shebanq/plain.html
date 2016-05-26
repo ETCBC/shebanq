@@ -218,6 +218,8 @@ features <code>g_word_utf8</code> and <code>trailer_utf8</code>.</p>
 <li>consonantal</li>
 <li>with vowels</li>
 <li>with vowels and accents</li>
+<li>lexeme (consonantal)</li>
+<li>lexeme (vocalized)</li>
 </ul>
 </li>
 <li>and, for <em>phonemic</em>:<ul>
@@ -229,7 +231,7 @@ features <code>g_word_utf8</code> and <code>trailer_utf8</code>.</p>
 </li>
 </ul>
 </li>
-<li>You can switch to vocalized qeres instead of ketivs</li>
+<li>You can switch to vocalized qeres instead of ketivs (except for the lexeme based formats)</li>
 <li>You can render the text in HTML and control the formatting, or get the plain text.</li>
 </ul>
 <p>These functions make it easy to produces texts that can be pasted into word processors.</p>
@@ -242,7 +244,7 @@ Currently we have Latin (the ETCBC choice), English (the default), and quite a f
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># run later</span>
@@ -319,7 +321,7 @@ many more examples.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">examples</span><span class="p">)</span>
@@ -333,57 +335,96 @@ many more examples.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
+<p>hp = hebrew primary</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="h">וַיְהִ֗י ֯ב֯אמרם אֵלָיו֙ יֹ֣ום וָיֹ֔ום וְלֹ֥א שָׁמַ֖ע אֲלֵיהֶ֑ם וַיַּגִּ֣ידוּ לְהָמָ֗ן לִרְאֹות֙ הֲיַֽעַמְדוּ֙ דִּבְרֵ֣י מָרְדֳּכַ֔י כִּֽי־הִגִּ֥יד לָהֶ֖ם אֲשֶׁר־ה֥וּא יְהוּדִֽי׃
 </td></tr>
 </table>
 
 
+<p>hpl = hebrew primary (lexeme)</p>
+<table class="t">
+<tr><td class="vl">Esther 3:4</td><td class="h">וַ הִי ב אמר אֵלָי יֹום וָ יֹום וְ לֹא שָׁמַע אֲלֵי וַ גִּיד לְ הָמָן לִ רְא הֲ עַמְד דִּבְר מָרְדֳּכַי כִּי גִּיד ל אֲשֶׁר הוּא יְהוּדִי </td></tr>
+</table>
+
+
+<p>hcl = hebrew cons (lexeme)</p>
+<table class="t">
+<tr><td class="vl">Esther 3:4</td><td class="h">ו היה כ אמר אל יום ו יום ו לא שׁמע אל ו נגד ל המן ל ראה ה עמד דבר מרדכי כי נגד ל אשׁר הוא יהודי </td></tr>
+</table>
+
+
+<p>ha = hebrew accent</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="h">וַיְהִ֗י כְּאָמְרָ֤ם אֵלָיו֙ יֹ֣ום וָיֹ֔ום וְלֹ֥א שָׁמַ֖ע אֲלֵיהֶ֑ם וַיַּגִּ֣ידוּ לְהָמָ֗ן לִרְאֹות֙ הֲיַֽעַמְדוּ֙ דִּבְרֵ֣י מָרְדֳּכַ֔י כִּֽי־הִגִּ֥יד לָהֶ֖ם אֲשֶׁר־ה֥וּא יְהוּדִֽי׃
 </td></tr>
 </table>
 
 
+<p>hv = hebrew vowel</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="h">וַיְהִי כְּאָמְרָם אֵלָיו יֹום וָיֹום וְלֹא שָׁמַע אֲלֵיהֶם וַיַּגִּידוּ לְהָמָן לִרְאֹות הֲיַעַמְדוּ דִּבְרֵי מָרְדֳּכַי כִּי־הִגִּיד לָהֶם אֲשֶׁר־הוּא יְהוּדִי׃
 </td></tr>
 </table>
 
 
+<p>hc = hebrew cons</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="h">ויהי כאמרמ אליו יומ ויומ ולא שמע אליהמ ויגידו להמנ לראות היעמדו דברי מרדכי כי־הגיד להמ אשר־הוא יהודי׃
 </td></tr>
 </table>
 
 
+<p>ep = trans primary</p>
 <table class="t">
-<tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HI81J K.:>@M:R@70m >;L@JW03 JO74Wm W@JO80Wm W:LO71> C@MA73&lt; >:AL;JHE92m WAJ.AG.I74JDW. L:H@M@81n LIR:>OWT03 H:AJA95&lt;AM:DW.03 D.IB:R;74J M@R:D.:@KA80J K.I95J&amp;HIG.I71JD L@HE73m >:ACER&amp;H71W.> J:HW.DI95J00
+<tr><td class="vl">Esther 3:4</td><td class="e">WA-J:HI81J*B-*>MRM>;L@JW03JO74WMW@-JO80WMW:-LO71>C@MA73&lt;>:AL;JHE92MWA-J.AG.I74JDW.L:-H@M@81NLI-R:>OWT03H:A-JA75&lt;AM:DW.03D.IB:R;74JM@R:D.:@KA80JK.I75J&amp;HIG.I71JDL@HE73M>:ACER&amp;H71W.>J:HW.DI75J00</td></tr>
+</table>
+
+
+<p>epl = trans primary (lexeme)</p>
+<table class="t">
+<tr><td class="vl">Esther 3:4</td><td class="e">WA- HIJ B- >MR >;L@J JOWM W@- JOWM W:- LO> C@MA&lt; >:AL;J WA- G.IJD L:- H@M@N LI- R:> H:A- &lt;AM:D D.IB:R M@R:D.:@KAJ K.IJ G.IJD L >:ACER HW.> J:HW.DIJ </td></tr>
+</table>
+
+
+<p>ecl = hebrew cons (lexeme)</p>
+<table class="t">
+<tr><td class="vl">Esther 3:4</td><td class="e">W HJH[ K >MR[ >L JWM/ W JWM/ W L> CM&lt;[ >L W NGD[ L HMN=/ L R>H[ H= &lt;MD[ DBR/ MRDKJ/ KJ NGD[ L >CR HW> JHWDJ/ </td></tr>
+</table>
+
+
+<p>ea = trans accent</p>
+<table class="t">
+<tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HI81J K.:>@M:R@70m >;L@JW03 JO74Wm W@JO80Wm W:LO71> C@MA73&lt; >:AL;JHE92m WAJ.AG.I74JDW. L:H@M@81n LIR:>OWT03 H:AJA45&lt;AM:DW.03 D.IB:R;74J M@R:D.:@KA80J K.I45J&amp;HIG.I71JD L@HE73m >:ACER&amp;H71W.> J:HW.DI45J00
 </td></tr>
 </table>
 
 
+<p>ev = trans vowel</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HIJ K.:>@M:R@m >;L@JW JOWm W@JOWm W:LO> C@MA&lt; >:AL;JHEm WAJ.AG.IJDW. L:H@M@n LIR:>OWT H:AJA&lt;AM:DW. D.IB:R;J M@R:D.:@KAJ K.IJ&amp;HIG.IJD L@HEm >:ACER&amp;HW.> J:HW.DIJ00
 </td></tr>
 </table>
 
 
+<p>ec = trans cons</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="e">WJHJ K>MRM >LJW JWM WJWM WL> #M&lt; >LJHM WJGJDW LHMN LR>WT HJ&lt;MDW DBRJ MRDKJ KJ&amp;HGJD LHM >#R&amp;HW> JHWDJ00
 </td></tr>
 </table>
 
 
+<p>pf = phono full</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="p">wayᵊhˈî kᵊʔomrˈām ʔēlāʸw yˈôm wāyˈôm wᵊlˌō šāmˌaʕ ʔᵃlêhˈem wayyaggˈîḏû lᵊhāmˈān lirᵊʔôṯ hᵃyˈaʕamᵊḏû divrˈê mordᵒḵˈay kˈî-higgˌîḏ lāhˌem ʔᵃšer-hˌû yᵊhûḏˈî .
 </td></tr>
 </table>
 
 
+<p>ps = phono simple</p>
 <table class="t">
 <tr><td class="vl">Esther 3:4</td><td class="p">wayhî kʔåmråm ʔēlåʸw yôm wåyôm wlō šåmaʕ ʔlêhem wayyaggîḏû lhåmån lirʔôṯ hyaʕamḏû divrê mårdḵay kî-higgîḏ låhem ʔšer-hû yhûḏî .
 </td></tr>
@@ -481,17 +522,17 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <pre>  0.00s LOADING API: please wait ... 
   0.00s USING main  DATA COMPILED AT: 2015-11-02T15-08-56
   0.00s USING annox DATA COMPILED AT: 2016-01-27T19-01-17
-  2.31s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
-  2.31s INFO: LOADING PREPARED data: please wait ... 
-  2.31s prep prep: G.node_sort
-  2.42s prep prep: G.node_sort_inv
-  2.95s prep prep: L.node_up
-  7.18s prep prep: L.node_down
+  2.42s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
+  2.42s INFO: LOADING PREPARED data: please wait ... 
+  2.42s prep prep: G.node_sort
+  2.53s prep prep: G.node_sort_inv
+  3.08s prep prep: L.node_up
+  7.44s prep prep: L.node_down
     13s prep prep: V.verses
     13s prep prep: V.books_la
     13s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    14s INFO: LOADED PREPARED data
-    14s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-04-18T08-12-48
+    17s INFO: LOADED PREPARED data
+    17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-05-26T07-20-57
 </pre>
 </div>
 </div>
@@ -516,7 +557,9 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">html</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
-    <span class="n">msg</span><span class="p">(</span><span class="s">&#39;Format {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">()[</span><span class="n">fmt</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">fmtx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">()[</span><span class="n">fmt</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">msg</span><span class="p">(</span><span class="s">&#39;Format {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fmtx</span><span class="p">))</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;p&gt;{} = {}&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fmtx</span><span class="p">))</span>
     <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
         <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
             <span class="s">&#39;Esther&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>
@@ -537,117 +580,22 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  4.18s Format hp = hebrew primary
-  4.18s Format ha = hebrew accent
-  4.19s Format hv = hebrew vowel
-  4.19s Format hc = hebrew cons
-  4.19s Format ea = trans accent
-  4.19s Format ev = trans vowel
-  4.20s Format ec = trans cons
-  4.20s Format pf = phono full
-  4.20s Format ps = phono simple
+<pre>    12s Format hp = hebrew primary
+    12s Format hpl = hebrew primary (lexeme)
+    12s Format hcl = hebrew cons (lexeme)
+    12s Format ha = hebrew accent
+    12s Format hv = hebrew vowel
+    12s Format hc = hebrew cons
+    12s Format ep = trans primary
+    12s Format epl = trans primary (lexeme)
+    12s Format ecl = hebrew cons (lexeme)
+    12s Format ea = trans accent
+    12s Format ev = trans vowel
+    12s Format ec = trans cons
+    12s Format pf = phono full
+    12s Format ps = phono simple
 </pre>
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="HTML-formatting">HTML formatting<a class="anchor-link" href="#HTML-formatting">&#182;</a></h2><p>You can tweak the HTML styles easily.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-    <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;660000&#39;</span><span class="p">,</span>
-    <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;xx-large&#39;</span><span class="p">,</span>
-    <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span>
-<span class="p">),</span> <span class="n">show_params</span><span class="o">=</span><span class="k">True</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  9.21s etcbc_color = aa0066
-  9.21s etcbc_line_height = 1.5
-  9.21s etcbc_size = small
-  9.21s hebrew_color = 660000
-  9.21s hebrew_line_height = 2.0
-  9.21s hebrew_size = xx-large
-  9.21s phono_color = 00b040
-  9.21s phono_line_height = 1.5
-  9.21s phono_size = medium
-  9.22s verse_color = 0000ff
-  9.22s verse_size = small
-  9.22s verse_width = 5em
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-
-<style type="text/css">
-table.t {
-    width: 100%;
-}
-td.h {
-    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
-    font-size: xx-large;
-    line-height: 2.0;
-    color: #660000;
-    text-align: right;
-    direction: rtl;
-}
-td.e {
-    font-family: Menlo, Courier New, Courier, monospace;
-    font-size: small;
-    line-height: 1.5;
-    color: #aa0066;
-    text-align: left;
-    direction: ltr;
-}
-td.p {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: medium;
-    line-height: 1.5;
-    color: #00b040;
-    text-align: left;
-    direction: ltr;
-}
-
-td.vl {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: small;
-    text-align: right;
-    vertical-align: top;
-    color: #0000ff;
-    width: 5em;
-    direction: ltr;
-}
-</style>
-
-</div>
-
 </div>
 
 </div>
@@ -665,94 +613,43 @@ After that you can tweak the styles further:</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-    <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;0000aa&#39;</span><span class="p">,</span>
-    <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;x-large&#39;</span><span class="p">,</span>
-    <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span>
-<span class="p">)))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-
-<style type="text/css">
-table.t {
-    width: 100%;
-}
-td.h {
-    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
-    font-size: x-large;
-    line-height: 2.0;
-    color: #0000aa;
-    text-align: right;
-    direction: rtl;
-}
-td.e {
-    font-family: Menlo, Courier New, Courier, monospace;
-    font-size: small;
-    line-height: 1.5;
-    color: #aa0066;
-    text-align: left;
-    direction: ltr;
-}
-td.p {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: medium;
-    line-height: 1.5;
-    color: #00b040;
-    text-align: left;
-    direction: ltr;
-}
-
-td.vl {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: small;
-    text-align: right;
-    vertical-align: top;
-    color: #0000ff;
-    width: 5em;
-    direction: ltr;
-}
-</style>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Or, back to default:</p>
+<h2 id="HTML-formatting">HTML formatting<a class="anchor-link" href="#HTML-formatting">&#182;</a></h2><p>You can tweak the HTML styles easily.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">set_style</span><span class="p">(</span><span class="n">kind</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;big&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;660000&#39;</span><span class="p">,</span>
+            <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;xx-large&#39;</span><span class="p">,</span>
+            <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span><span class="p">,</span>
+            <span class="n">phono_color</span><span class="o">=</span><span class="s">&#39;ff0000&#39;</span><span class="p">,</span>
+        <span class="p">),</span> <span class="n">show_params</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;reduced&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;0000aa&#39;</span><span class="p">,</span>
+            <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;x-large&#39;</span><span class="p">,</span>
+            <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span>
+        <span class="p">))</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;default&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+<span class="c">#HTML(set_style(&#39;big&#39;))</span>
+<span class="c">#HTML(set_style(&#39;reduced&#39;))</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">set_style</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">))</span>
+<span class="c">#HTML(set_style(&#39;&#39;))</span>
 </pre></div>
 
 </div>
@@ -763,7 +660,7 @@ td.vl {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -827,7 +724,7 @@ td.vl {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Writing the complete text in several representations&#39;</span><span class="p">)</span>
@@ -838,7 +735,7 @@ td.vl {
             <span class="n">fmt</span><span class="p">,</span> <span class="s">&#39;_v&#39;</span> <span class="k">if</span> <span class="n">vl</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
         <span class="p">)</span>
         <span class="n">fl</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="n">inf</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
         <span class="n">fl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="n">vl</span><span class="p">))</span>
         <span class="n">fl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="n">msg</span><span class="p">(</span><span class="s">&#39;Done&#39;</span><span class="p">)</span>
@@ -854,44 +751,48 @@ td.vl {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 4m 27s Writing the complete text in several representations
+<pre>12m 23s Writing the complete text in several representations
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>etcbc4b_hp_v.txt
-etcbc4b_hp.txt
-etcbc4b_ha_v.txt
-etcbc4b_ha.txt
-etcbc4b_hv_v.txt
-etcbc4b_hv.txt
-etcbc4b_hc_v.txt
-etcbc4b_hc.txt
-etcbc4b_ea_v.txt
-etcbc4b_ea.txt
-etcbc4b_ev_v.txt
-etcbc4b_ev.txt
-etcbc4b_ec_v.txt
-etcbc4b_ec.txt
-etcbc4b_pf_v.txt
-etcbc4b_pf.txt
-etcbc4b_ps_v.txt
-etcbc4b_ps.txt</pre>
+<pre>12m 23s etcbc4b_hp_v.txt
+12m 23s etcbc4b_hp.txt
+12m 24s etcbc4b_hpl_v.txt
+12m 25s etcbc4b_hpl.txt
+12m 26s etcbc4b_hcl_v.txt
+12m 26s etcbc4b_hcl.txt
+12m 27s etcbc4b_ha_v.txt
+12m 33s etcbc4b_ha.txt
+12m 40s etcbc4b_hv_v.txt
+12m 46s etcbc4b_hv.txt
+12m 53s etcbc4b_hc_v.txt
+13m 00s etcbc4b_hc.txt
+13m 08s etcbc4b_ep_v.txt
+13m 08s etcbc4b_ep.txt
+13m 08s etcbc4b_epl_v.txt
+13m 09s etcbc4b_epl.txt
+13m 09s etcbc4b_ecl_v.txt
+13m 10s etcbc4b_ecl.txt
+13m 10s etcbc4b_ea_v.txt
+13m 14s etcbc4b_ea.txt
+13m 17s etcbc4b_ev_v.txt
+13m 21s etcbc4b_ev.txt
+13m 25s etcbc4b_ec_v.txt
+13m 31s etcbc4b_ec.txt
+13m 37s etcbc4b_pf_v.txt
+13m 38s etcbc4b_pf.txt
+13m 39s etcbc4b_ps_v.txt
+13m 40s etcbc4b_ps.txt
+</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 5m 41s Done
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
+<pre>13m 42s Done
 </pre>
 </div>
 </div>
@@ -902,7 +803,7 @@ etcbc4b_ps.txt</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">show_limit</span> <span class="o">=</span> <span class="mi">2</span>
@@ -933,6 +834,14 @@ etcbc4b_hp_v.txt
 Genesis 1:1	בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃
 Genesis 1:2	וְהָאָ֗רֶץ הָיְתָ֥ה תֹ֨הוּ֙ וָבֹ֔הוּ וְחֹ֖שֶׁךְ עַל־פְּנֵ֣י תְהֹ֑ום וְר֣וּחַ אֱלֹהִ֔ים מְרַחֶ֖פֶת עַל־פְּנֵ֥י הַמָּֽיִם׃
 
+etcbc4b_hpl_v.txt
+Genesis 1:1	בְּ רֵאשִׁית בָּרָא אֱלֹה אֵת הַ שָּׁמַי וְ אֵת הָ אָרֶץ 
+Genesis 1:2	וְ הָ אָרֶץ הָי תֹהוּ וָ בֹהוּ וְ חֹשֶׁךְ עַל פְּן תְהֹום וְ רוּחַ אֱלֹה רַחֶף עַל פְּן הַ מָּי 
+
+etcbc4b_hcl_v.txt
+Genesis 1:1	ב ראשׁית ברא אלהים את ה שׁמים ו את ה ארץ 
+Genesis 1:2	ו ה ארץ היה תהו ו בהו ו חשׁך על פנה תהום ו רוח אלהים רחף על פנה ה מים 
+
 etcbc4b_ha_v.txt
 Genesis 1:1	בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃
 Genesis 1:2	וְהָאָ֗רֶץ הָיְתָ֥ה תֹ֨הוּ֙ וָבֹ֔הוּ וְחֹ֖שֶׁךְ עַל־פְּנֵ֣י תְהֹ֑ום וְר֣וּחַ אֱלֹהִ֔ים מְרַחֶ֖פֶת עַל־פְּנֵ֥י הַמָּֽיִם׃
@@ -945,9 +854,21 @@ etcbc4b_hc_v.txt
 Genesis 1:1	בראשית ברא אלהימ את השמימ ואת הארצ׃
 Genesis 1:2	והארצ היתה תהו ובהו וחשכ על־פני תהומ ורוח אלהימ מרחפת על־פני המימ׃
 
+etcbc4b_ep_v.txt
+Genesis 1:1	B.:-R;&gt;CI73JTB.@R@74&gt;&gt;:ELOHI92JM&gt;;71THA-C.@MA73JIMW:-&gt;;71TH@-&gt;@75REY00
+Genesis 1:2	W:-H@-&gt;@81REYH@J:T@71HTO33HW.03W@-BO80HW.W:-XO73CEK:&lt;AL&amp;P.:N;74JT:HO92WMW:-R74W.XA&gt;:ELOHI80JMM:RAXE73PET&lt;AL&amp;P.:N;71JHA-M.@75JIM00
+
+etcbc4b_epl_v.txt
+Genesis 1:1	B.:- R;&gt;CIJT B.@R@&gt; &gt;:ELOH &gt;;T HA- C.@MAJ W:- &gt;;T H@- &gt;@REY 
+Genesis 1:2	W:- H@- &gt;@REY H@J TOHW. W@- BOHW. W:- XOCEK: &lt;AL P.:N T:HOWM W:- RW.XA &gt;:ELOH RAXEP &lt;AL P.:N HA- M.@J 
+
+etcbc4b_ecl_v.txt
+Genesis 1:1	B R&gt;CJT/ BR&gt;[ &gt;LHJM/ &gt;T H CMJM/ W &gt;T H &gt;RY/ 
+Genesis 1:2	W H &gt;RY/ HJH[ THW/ W BHW/ W XCK/ &lt;L PNH/ THWM/ W RWX/ &gt;LHJM/ RXP[ &lt;L PNH/ H MJM/ 
+
 etcbc4b_ea_v.txt
-Genesis 1:1	B.:R;&gt;CI73JT B.@R@74&gt; &gt;:ELOHI92Jm &gt;;71T HAC.@MA73JIm W:&gt;;71T H@&gt;@35REy00
-Genesis 1:2	W:H@&gt;@81REy H@J:T@71H TO63HW.03 W@BO80HW. W:XO73CEk: &lt;AL&amp;P.:N;74J T:HO92Wm W:R74W.XA &gt;:ELOHI80Jm M:RAXE73PET &lt;AL&amp;P.:N;71J HAM.@35JIm00
+Genesis 1:1	B.:R;&gt;CI73JT B.@R@74&gt; &gt;:ELOHI92Jm &gt;;71T HAC.@MA73JIm W:&gt;;71T H@&gt;@45REy00
+Genesis 1:2	W:H@&gt;@81REy H@J:T@71H TO33HW.03 W@BO80HW. W:XO73CEk: &lt;AL&amp;P.:N;74J T:HO92Wm W:R74W.XA &gt;:ELOHI80Jm M:RAXE73PET &lt;AL&amp;P.:N;71J HAM.@45JIm00
 
 etcbc4b_ev_v.txt
 Genesis 1:1	B.:R;&gt;CIJT B.@R@&gt; &gt;:ELOHIJm &gt;;T HAC.@MAJIm W:&gt;;T H@&gt;@REy00
@@ -987,7 +908,7 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">unicodedata</span> <span class="k">import</span> <span class="n">normalize</span>
@@ -1000,7 +921,7 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">example</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s">&#39;Genesis&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
@@ -1013,7 +934,7 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">example</span><span class="p">:</span>
@@ -1050,7 +971,7 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">full_text</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
@@ -1088,7 +1009,7 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Exploring trailers&#39;</span><span class="p">)</span>
@@ -1137,8 +1058,8 @@ Note that unicode composition does not compose other points and accents with con
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 5m 51s Exploring trailers
- 5m 53s Done. Found 12 trailers in Hebrew text and 3 trailers in phonemic text
+<pre>20m 36s Exploring trailers
+20m 39s Done. Found 12 trailers in Hebrew text and 3 trailers in phonemic text
 </pre>
 </div>
 </div>
@@ -1206,7 +1127,7 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Looking for empty words&#39;</span><span class="p">)</span>
@@ -1244,8 +1165,8 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 5m 58s Looking for empty words
- 5m 59s Done
+<pre>20m 43s Looking for empty words
+20m 44s Done
 </pre>
 </div>
 </div>
@@ -1263,7 +1184,7 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">close</span><span class="p">()</span>
@@ -1279,29 +1200,39 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre> 6m 05s Results directory:
+<pre>20m 48s Results directory:
 /Users/dirk/laf/laf-fabric-output/etcbc4b/plain
 
 .DS_Store                              6148 Wed Mar  2 20:05:55 2016
-__log__plain.txt                       1589 Thu Apr  7 18:03:43 2016
-etcbc4b_ea.txt                      3119734 Thu Apr  7 18:02:54 2016
-etcbc4b_ea_v.txt                    3438368 Thu Apr  7 18:02:51 2016
-etcbc4b_ec.txt                      1549212 Thu Apr  7 18:03:14 2016
-etcbc4b_ec_v.txt                    1867846 Thu Apr  7 18:03:08 2016
-etcbc4b_ev.txt                      2538742 Thu Apr  7 18:03:02 2016
-etcbc4b_ev_v.txt                    2857376 Thu Apr  7 18:02:58 2016
-etcbc4b_ha.txt                      5332790 Thu Apr  7 18:02:20 2016
-etcbc4b_ha_v.txt                    5651424 Thu Apr  7 18:02:14 2016
-etcbc4b_hc.txt                      2788978 Thu Apr  7 18:02:48 2016
-etcbc4b_hc_v.txt                    3107612 Thu Apr  7 18:02:41 2016
-etcbc4b_hp.txt                      5323663 Thu Apr  7 18:02:07 2016
-etcbc4b_hp_v.txt                    5642297 Thu Apr  7 18:02:07 2016
-etcbc4b_hv.txt                      4751786 Thu Apr  7 18:02:33 2016
-etcbc4b_hv_v.txt                    5070420 Thu Apr  7 18:02:27 2016
-etcbc4b_pf.txt                      3893906 Thu Apr  7 18:03:15 2016
-etcbc4b_pf_v.txt                    4212540 Thu Apr  7 18:03:15 2016
-etcbc4b_ps.txt                      2956173 Thu Apr  7 18:03:19 2016
-etcbc4b_ps_v.txt                    3274807 Thu Apr  7 18:03:17 2016
+__log__plain.txt                       3400 Thu May 26 09:41:45 2016
+etcbc4b_ea.txt                      3119734 Thu May 26 09:34:14 2016
+etcbc4b_ea_v.txt                    3438368 Thu May 26 09:34:10 2016
+etcbc4b_ec.txt                      1549212 Thu May 26 09:34:33 2016
+etcbc4b_ec_v.txt                    1867846 Thu May 26 09:34:28 2016
+etcbc4b_ecl.txt                     1760600 Thu May 26 09:34:07 2016
+etcbc4b_ecl_v.txt                   2079234 Thu May 26 09:34:06 2016
+etcbc4b_ep.txt                      2990524 Thu May 26 09:34:05 2016
+etcbc4b_ep_v.txt                    3309158 Thu May 26 09:34:05 2016
+etcbc4b_epl.txt                     2327644 Thu May 26 09:34:06 2016
+etcbc4b_epl_v.txt                   2646278 Thu May 26 09:34:06 2016
+etcbc4b_ev.txt                      2538742 Thu May 26 09:34:22 2016
+etcbc4b_ev_v.txt                    2857376 Thu May 26 09:34:18 2016
+etcbc4b_ha.txt                      5332790 Thu May 26 09:33:36 2016
+etcbc4b_ha_v.txt                    5651424 Thu May 26 09:33:30 2016
+etcbc4b_hc.txt                      2788978 Thu May 26 09:34:04 2016
+etcbc4b_hc_v.txt                    3107612 Thu May 26 09:33:57 2016
+etcbc4b_hcl.txt                     2609679 Thu May 26 09:33:23 2016
+etcbc4b_hcl_v.txt                   2928313 Thu May 26 09:33:23 2016
+etcbc4b_hp.txt                      5323663 Thu May 26 09:33:21 2016
+etcbc4b_hp_v.txt                    5642297 Thu May 26 09:33:20 2016
+etcbc4b_hpl.txt                     3960158 Thu May 26 09:33:22 2016
+etcbc4b_hpl_v.txt                   4278792 Thu May 26 09:33:22 2016
+etcbc4b_hv.txt                      4751786 Thu May 26 09:33:49 2016
+etcbc4b_hv_v.txt                    5070420 Thu May 26 09:33:43 2016
+etcbc4b_pf.txt                      3893906 Thu May 26 09:34:35 2016
+etcbc4b_pf_v.txt                    4212540 Thu May 26 09:34:34 2016
+etcbc4b_ps.txt                      2956173 Thu May 26 09:34:39 2016
+etcbc4b_ps_v.txt                    3274807 Thu May 26 09:34:37 2016
 </pre>
 </div>
 </div>
