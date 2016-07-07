@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMD xmlns="http://www.clarin.eu/cmd/"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     CMDVersion="1.1"
+     xsi:schemaLocation="http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1342181139640/xsd ">
+   <Header>
+      <MdCreator>Dirk Roorda</MdCreator>
+      <MdCreationDate>2016-06-28</MdCreationDate>
+      <MdProfile>clarin.eu:cr1:p_1342181139640</MdProfile>
+   </Header>
+   <Resources>
+      <ResourceProxyList/>
+      <JournalFileProxyList/>
+      <ResourceRelationList/>
+   </Resources>
+   <Components>
+      <ClarinSoftwareDescription>
+         <GeneralInfo>
+            <name xml:lang="eng">SHEBANQ</name>
+            <title xml:lang="eng">SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</title>
+            <publicationYear>2014-2016</publicationYear>
+            <url>https://shebanq.ancient-data.org/</url>
+            <ReleaseStatus>
+               <LifeCycleStatus>published</LifeCycleStatus>
+               <lastUpdate>2016-05-26</lastUpdate>
+            </ReleaseStatus>
+            <Description>
+                <Description>The ETCBC (Eep Talstra Centre for Bible and Computer, VU Amsterdam) database of the Hebrew Bible (formerly known as WIVU database) contains the Biblia Hebraica Stuttgartensia (BHS) version of the text of the Hebrew Bible. Portions of the text are in another Semitic language: Aramaic. All these texts have been enriched with features that primarily result from linguistic analysis. The database can be queried by means of a language that is optimized to deal with data that is modeled as objects + features. SHEBANQ builds a bridge between the linguistically annotated Hebrew Text corpus and biblical scholars by (1) making this text, including its annotations, available to scholars; (2) demonstrating how queries can function to address research questions; the query saver and the metadata added to them will be a growing repository of valuable best practices of what queries are used in addressing research questions and how they contribute to answering these questions; (3) giving textual scholarship a more empirical basis, by creating the opportunity that claims made in scholarly articles (e.g.: “this syntactic pattern is not attested elsewhere in the Hebrew Bible”) can be accompanied by the unique identifiers that refer to the saved queries that have led to the claim. The ETCBC database is a resource under long-term development. New features are being added, new corrections are being made over time. An account of the data sources that SHEBANQ uses and the software it employs can be found on the sources page of the SHEBANQ website.
+                </Description>
+            </Description>
+         </GeneralInfo>
+         <SoftwareFunction>
+            <toolCategory>annotation tool</toolCategory>
+            <toolCategory>mono-lingual tool</toolCategory>
+            <toolCategory>text corpus</toolCategory>
+            <toolCategory>written language tool</toolCategory>
+            <toolTask>analysis</toolTask>
+            <toolTask>corpus browsing</toolTask>
+            <toolTask>corpus searching</toolTask>
+            <toolTask>visualisation</toolTask>
+            <toolTask>corpus processing</toolTask>
+			<LinguisticsSubject>
+               <linguisticsSubject>computational linguistics</linguisticsSubject>
+				<Description>
+					<Description></Description>
+				</Description>
+            </LinguisticsSubject>
+			<LinguisticsSubject>
+               <linguisticsSubject>general linguistics</linguisticsSubject>
+				<Description>
+					<Description></Description>
+				</Description>
+            </LinguisticsSubject>
+            <LinguisticsSubject>
+               <linguisticsSubject>historical linguistics</linguisticsSubject>
+				<Description>
+					<Description></Description>
+				</Description>
+            </LinguisticsSubject>
+            <LinguisticsSubject>
+               <linguisticsSubject>religion studies</linguisticsSubject>
+				<Description>
+					<Description></Description>
+				</Description>
+            </LinguisticsSubject>
+            <LinguisticsSubject>
+               <linguisticsSubject>syntax</linguisticsSubject>
+				<Description>
+					<Description></Description>
+				</Description>
+            </LinguisticsSubject>
+            <LanguageVariety>
+               <century>10</century>
+               <languageDependent>yes</languageDependent>
+               <Description>
+                   <Description xml:lang="eng">Ancient Hebrew and Official Aramaic/Imperial Aramaic</Description>
+               </Description>
+            </LanguageVariety>
+         </SoftwareFunction>
+         <SoftwareImplementation>
+            <distributionMedium>Online available</distributionMedium>
+            <UserInterface>
+               <interfaceType>graphical user interface</interfaceType>
+               <applicationType>web application</applicationType>
+            </UserInterface>
+            <Input>
+               <inputType>written text</inputType>
+            </Input>
+            <Output>
+               <outputType>plain text</outputType>
+            </Output>
+         </SoftwareImplementation>
+         <Access>
+            <ResourceLicense>
+               <license>Creative Commons (non-commercial)</license>
+               <!-- license>Creative Commons (non-commercial)</license-->
+               <distributionType>public</distributionType>
+               <url>https://shebanq.ancient-data.org/sources</url>
+               <Price>
+                  <amount>0</amount>
+                  <ISO4217>
+                     <iso-4217-currency>EUR</iso-4217-currency>
+                  </ISO4217>
+               </Price>
+            </ResourceLicense>
+            <Contact>
+               <person>Dirk Roorda</person>
+               <email>dirk.roorda@dans.knaw.nl</email>
+               <organisation xml:lang="eng">Data Archiving and Networked Services (DANS)</organisation>
+            </Contact>
+         </Access>
+         <ResourceDocumentation>
+            <Documentation>
+               <title>SHEBANQ - help</title>
+               <documentationTarget>user</documentationTarget>
+               <url>https://shebanq.ancient-data.org/help</url>
+               <ISO639>
+                  <iso-639-3-code>eng</iso-639-3-code>
+               </ISO639>
+            </Documentation>
+         </ResourceDocumentation>
+         <SoftwareDevelopment>
+            <Project>
+               <name>SHEBANQ</name>
+               <title>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</title>
+               <funder>CLARIN-NL</funder>
+               <url>http://portal.clarin.nl/node/4180</url>
+               <Contact>
+                  <email>dirk.roorda@dans.knaw.nl</email>
+               </Contact>
+               <Duration/>
+            </Project>
+            <Creator>
+               <Contact>
+				  <person>Prof. Dr. W.T. (Wido) van Peursen</person>
+                  <email>w.t.van.peursen@vu.nl</email>
+               </Contact>
+            </Creator>
+         </SoftwareDevelopment>
+         <TechnicalInfo>
+            <ImplementationLanguage>
+               <implementationLanguage>Python</implementationLanguage>
+               <version>2.7.5</version>
+            </ImplementationLanguage>
+            <ImplementationLanguage>
+               <implementationLanguage>EcmaScript</implementationLanguage>
+               <version>5 (2012)</version>
+            </ImplementationLanguage>
+         </TechnicalInfo>
+      </ClarinSoftwareDescription>
+   </Components>
+</CMD>

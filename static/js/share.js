@@ -28,7 +28,6 @@ jQuery(function(){
 	var path = params('static','social');
 	var url = encodeURIComponent(window.location.href);
 	var host =  window.location.hostname;
-	var title = escape(jQuery('title').text());
     var qmsg = {
         good: 'The results of this query have been obtained after the query body has been last modified',
         warning: 'This query has never been executed in SHEBANQ',
@@ -115,13 +114,15 @@ jQuery(function(){
         var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()
         var shebanq_url_side_vars = '&wget='+wb.vs.get('w')+'&qget='+wb.vs.get('q')+'&nget='+wb.vs.get('n')
         var shebanq_url = encodeURIComponent(shebanq_url_raw)
+        var vr = wb.version
         var pvtitle
         $('#citeh').hide()
         $('#cdiagpub').html('')
         $('#cdiagsts').html('')
         $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
         if (wb.mr == 'm') {
-            pvtitle = title
+	        //pvtitle = escape($('title').text());
+            pvtitle = 'etcbc'+vr+' '+$('#thebook').html()+' '+$('#thechapter').html()+':'+wb.vs.verse();
             shebanq_url_note = shebanq_url_note_pref+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+'&verse='+wb.vs.verse()+shebanq_url_show_vars+shebanq_url_side_vars
             shebanq_url_rawc = page_view_url+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+'&verse='+wb.vs.verse()+shebanq_url_show_vars+shebanq_url_side_vars
             $('.clip_qx').hide()
@@ -132,7 +133,6 @@ jQuery(function(){
         else if (wb.mr == 'r') {
             shebanq_url_note = shebanq_url_note_pref+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
             shebanq_url_rawc = page_view_url+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
-            var vr = wb.version
             var iinfo = wb.sidebars.sidebar['r'+wb.qw].content.info
             if (wb.qw == 'q') {
                 pvtitle = iinfo.ufname+' '+iinfo.ulname+': '+iinfo.name
