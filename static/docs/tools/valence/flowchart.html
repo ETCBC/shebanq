@@ -215,7 +215,7 @@ And there are many cases where the database encodes a phrase as a complement, wh
 We have to</p>
 <ul>
 <li>identify direct objects;</li>
-<li>divide them into primary and secundary ones;</li>
+<li>divide them into principal and secundary ones;</li>
 <li>identify complements;</li>
 <li>divide them into locatives, indirect objects, and other complements;</li>
 <li>detect relativa and offer them as potential direct objects;</li>
@@ -248,7 +248,7 @@ The meaning consists of 2 or 3 pieces of information.</p>
 <p>The important part is the second one, the <em>sense template</em>, which consist of a gloss augmented with placeholders for the direct objecs and complements.</p>
 <ul>
 <li><strong>{verb}</strong> the verb occurrence in question</li>
-<li><strong>{pdo}</strong> primary direct object</li>
+<li><strong>{pdo}</strong> principal direct object</li>
 <li><strong>{sdos}</strong> secundary direct objects</li>
 <li><strong>{inds}</strong> indirect objects</li>
 <li><strong>{locs}</strong> locatives</li>
@@ -508,7 +508,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <span class="sd">        mother</span>
 <span class="sd">    &#39;&#39;&#39;</span><span class="p">),</span>
     <span class="s">&quot;prepare&quot;</span><span class="p">:</span> <span class="n">prepare</span><span class="p">,</span>
-    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
+    <span class="s">&quot;principal&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
 <span class="p">},</span> <span class="n">verbose</span><span class="o">=</span><span class="s">&#39;NORMAL&#39;</span><span class="p">)</span>
 <span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="o">.</span><span class="n">localnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric&#39;</span><span class="p">))</span>
 </pre></div>
@@ -820,11 +820,11 @@ Chronica_II 15:5#14_1 JY&gt;[ BW&gt;[
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Finding-the-direct-objects">Finding the direct objects<a class="anchor-link" href="#Finding-the-direct-objects">&#182;</a></h1><p>In the target clauses we will find the direct object(s).
-If there is more than one, we will compute which is the primary one.
+If there is more than one, we will compute which is the principal one.
 The others are secundary ones.
-If there is only one direct object, it may or may not be the primary direct object.</p>
+If there is only one direct object, it may or may not be the principal direct object.</p>
 <p>An object can be a phrase or a clause. 
-A clause object is never a primary direct object.</p>
+A clause object is never a principal direct object.</p>
 <h2 id="Implied-objects">Implied objects<a class="anchor-link" href="#Implied-objects">&#182;</a></h2><p>There are many cases where there is a direct object without it being marked as such in the data.
 Those are cases where there are no objective, unambiguous signals for a direct object.
 We call them <em>implied objects</em>. Examples:</p>
@@ -833,7 +833,7 @@ We call them <em>implied objects</em>. Examples:</p>
 <li>complements starting with MN (from) or L (to)</li>
 </ul>
 <p>In the case of implied objects we have to guess.
-We compute the set of direct objects (and the primary direct object) in two ways:</p>
+We compute the set of direct objects (and the principal direct object) in two ways:</p>
 <ul>
 <li>assuming that there is no implied object</li>
 <li>assuming that we have an implied object</li>
@@ -850,14 +850,14 @@ If we end up with multiple possibilities, we generate a highlight.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Finding-the-primary-direct-object">Finding the primary direct object<a class="anchor-link" href="#Finding-the-primary-direct-object">&#182;</a></h2><p>When there are multiple direct objects, we use the rules formulated by (Janet Dyk, Reinoud Oosting and Oliver Glanz, 2014) to determine which one is the primary one. The rules are summarized in the diagram above. Here we make some remarks as how we apply them to our data.</p>
-<h3 id="Interpretation">Interpretation<a class="anchor-link" href="#Interpretation">&#182;</a></h3><p>Clauses that function as direct object are never the primary direct object. So we restrict to direct objects at the phrase level, either being complete phrases, or pronominal suffixes within phrases. The following rules express a preference for the primary direct object. In a given context, we select the direct object that is preferred by applying those rules as the primary direct object. We only apply these rules if there are at least two objects.
-If there is only one object, it is chosen as primary object if and only if it is not a clause.</p>
+<h2 id="Finding-the-principal-direct-object">Finding the principal direct object<a class="anchor-link" href="#Finding-the-principal-direct-object">&#182;</a></h2><p>When there are multiple direct objects, we use the rules formulated by (Janet Dyk, Reinoud Oosting and Oliver Glanz, 2014) to determine which one is the principal one. The rules are summarized in the diagram above. Here we make some remarks as how we apply them to our data.</p>
+<h3 id="Interpretation">Interpretation<a class="anchor-link" href="#Interpretation">&#182;</a></h3><p>Clauses that function as direct object are never the principal direct object. So we restrict to direct objects at the phrase level, either being complete phrases, or pronominal suffixes within phrases. The following rules express a preference for the principal direct object. In a given context, we select the direct object that is preferred by applying those rules as the principal direct object. We only apply these rules if there are at least two objects.
+If there is only one object, it is chosen as principal object if and only if it is not a clause.</p>
 <h4 id="Rule-1:-pronominal-suffixes-&gt;-preferred-above-marked-objects-&gt;-unmarked-objects">Rule 1: pronominal suffixes &gt; preferred above marked objects &gt; unmarked objects<a class="anchor-link" href="#Rule-1:-pronominal-suffixes-&gt;-preferred-above-marked-objects-&gt;-unmarked-objects">&#182;</a></h4><p>In a given clause, we collect all phrases with function <code>PreO</code> or <code>PtcO</code>. 
 If this collection is non-empty, we pick the one that is textually first (by rule 3 below) and stop applying rules.
 Otherwise, we proceed as follows.</p>
 <p>We collect all the phrases with function <code>Objc</code>.
-If this collection is empty, there will not be a primary object.
+If this collection is empty, there will not be a principal object.
 Otherwise, we split it up in marked and unmarked object phrases.</p>
 <p>An object phrase is <em>marked</em> if and only if it contains, somewhere, the object marker <code>&gt;T</code>.
 If there are marked object phrases, we pick the one that is textually first (by rule 3 below) and stop applying rules.
@@ -865,10 +865,10 @@ Otherwise we proceed with the next rule.</p>
 <h4 id="Rule-2:-determined-phrases-&gt;-undetermined-phrases">Rule 2: determined phrases &gt; undetermined phrases<a class="anchor-link" href="#Rule-2:-determined-phrases-&gt;-undetermined-phrases">&#182;</a></h4><p>We only arrive here if there are multiple <code>Objc</code> phrases, neither of which is marked.
 In this case, we take the textually first one (by rule 3) which has the value <code>det</code> for its feature <code>det</code>, if there is one, and stop applying rules.
 Otherwise we proceed with the next rule.</p>
-<h4 id="Rule-3:-earlier-phrases-&gt;-later-phrases-(by-textual-order)">Rule 3: earlier phrases &gt; later phrases (by textual order)<a class="anchor-link" href="#Rule-3:-earlier-phrases-&gt;-later-phrases-(by-textual-order)">&#182;</a></h4><p>This rule is implicitly applied if one of the rules before yielded more than one candidate for the primary object. Furthermore, we arrive here if the previous rules have not selected any primary direct object, while we do have more than one <code>Objc</code> phrase.</p>
+<h4 id="Rule-3:-earlier-phrases-&gt;-later-phrases-(by-textual-order)">Rule 3: earlier phrases &gt; later phrases (by textual order)<a class="anchor-link" href="#Rule-3:-earlier-phrases-&gt;-later-phrases-(by-textual-order)">&#182;</a></h4><p>This rule is implicitly applied if one of the rules before yielded more than one candidate for the principal object. Furthermore, we arrive here if the previous rules have not selected any principal direct object, while we do have more than one <code>Objc</code> phrase.</p>
 <p>In this case, we pick the textually first <code>Objc</code> phrase.</p>
-<h4 id="NB:-Implied-object">NB: Implied object<a class="anchor-link" href="#NB:-Implied-object">&#182;</a></h4><p>In case we reckon with an implied objects, the primary one is the implied object that comes textually first. 
-All other ones are secudary ones.</p>
+<h4 id="NB:-Implied-object">NB: Implied object<a class="anchor-link" href="#NB:-Implied-object">&#182;</a></h4><p>In case we reckon with an implied objects, the principal one is the implied object that comes textually first. 
+All other ones are secundary ones.</p>
 <h1 id="Complements-as-Objects">Complements as Objects<a class="anchor-link" href="#Complements-as-Objects">&#182;</a></h1><p>In some cases, a complement functions as objects, such as in <a href="https://shebanq.ancient-data.org/hebrew/text?nget=v&chapter=21&book=Genesis&qw=n&tp=txt_tb1&version=4b&mr=m">Genesis 21:13</a> <em>I make him (into) a people</em>.</p>
 <p>Candidates are those complements that:</p>
 <ul>
@@ -893,7 +893,7 @@ So we do not build this in into the flowchart rules, but we do generate annotati
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Finding direct objects and determining the primary one&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Finding direct objects and determining the principal one&#39;</span><span class="p">)</span>
 <span class="n">directobjects</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">primdirectobjects</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">directobjects_c</span> <span class="o">=</span> <span class="p">{}</span>
@@ -962,40 +962,40 @@ So we do not build this in into the flowchart rules, but we do generate annotati
     <span class="c"># order the objects in the natural ordering</span>
     <span class="n">dobjects_order</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dobjects_set</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)</span>
 
-    <span class="c"># compute the primary object</span>
-    <span class="n">primary_object</span> <span class="o">=</span> <span class="k">None</span>
+    <span class="c"># compute the principal object</span>
+    <span class="n">principal_object</span> <span class="o">=</span> <span class="k">None</span>
 
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
         <span class="c"># just one object </span>
         <span class="k">if</span> <span class="n">nobjects</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">theobject</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dobjects_set</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">theobject</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;phrase&#39;</span><span class="p">:</span> <span class="n">primary_object</span> <span class="o">=</span> <span class="n">theobject</span>
+            <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">theobject</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;phrase&#39;</span><span class="p">:</span> <span class="n">principal_object</span> <span class="o">=</span> <span class="n">theobject</span>
             <span class="k">break</span>
         <span class="c"># rule 1: suffixes</span>
-        <span class="n">primary_candidates</span> <span class="o">=</span> <span class="n">dobjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;p_PreO&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span> <span class="o">|</span> <span class="n">dobjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;p_PtcO&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">primary_candidates</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">primary_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">primary_candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">principal_candidates</span> <span class="o">=</span> <span class="n">dobjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;p_PreO&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span> <span class="o">|</span> <span class="n">dobjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;p_PtcO&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">principal_candidates</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">principal_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">principal_candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">break</span>
-        <span class="n">primary_candidates</span> <span class="o">=</span> <span class="n">dobjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;p_Objc&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">primary_candidates</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">primary_candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">primary_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">primary_candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">principal_candidates</span> <span class="o">=</span> <span class="n">dobjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;p_Objc&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">principal_candidates</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">principal_candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">principal_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">principal_candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">break</span>
             <span class="n">objects_marked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="n">objects_unmarked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">primary_candidates</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">principal_candidates</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">is_marked</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
                     <span class="n">objects_marked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">objects_unmarked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects_marked</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">primary_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">objects_marked</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">principal_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">objects_marked</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">break</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects_unmarked</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">primary_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">objects_unmarked</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">principal_object</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">objects_unmarked</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">break</span>            
-    <span class="k">if</span> <span class="n">primary_object</span> <span class="o">!=</span> <span class="k">None</span><span class="p">:</span>
-        <span class="n">primdirectobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">primary_object</span>
+    <span class="k">if</span> <span class="n">principal_object</span> <span class="o">!=</span> <span class="k">None</span><span class="p">:</span>
+        <span class="n">primdirectobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">principal_object</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dobjects_set</span><span class="p">):</span> <span class="n">directobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">dobjects_set</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dobjects_set_c</span><span class="p">):</span> <span class="n">directobjects_c</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">dobjects_set_c</span>
@@ -1009,7 +1009,7 @@ So we do not build this in into the flowchart rules, but we do generate annotati
 <span class="k">for</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cmobjects</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;40}: {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Clauses with {:&gt;2} complements as objects&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">n</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;40}: {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Clauses with a primary object&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">primdirectobjects</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;40}: {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Clauses with a principal object&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">primdirectobjects</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;40}: {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Clauses with a direct object&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">directobjects</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;40}: {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Clauses with an implied object&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">directobjects_c</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;40}: {:&gt;5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;Clauses with a complement as object&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cmobjects</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>

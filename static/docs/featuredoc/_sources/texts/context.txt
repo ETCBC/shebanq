@@ -26,7 +26,7 @@ and the data is downloadable from `DANS <http://www.persistent-identifier.nl/?id
 It can be installed on Mac OSX, Windows and Linux.
 However, the installation process is significantly smoother on a UNIX like system (OSX, Linux) than on a Windows system. 
 
-Once installed, there experience is largely the same across platforms.
+Once installed, the experience is largely the same across platforms.
 The recommended mode of working with the data is: programming in Python within the IPython Notebook.
 
 Tutorial
