@@ -33,8 +33,12 @@ Tutorial
 ========
 
 LAF-Fabric is ideal if you interested in a certain phenomenon and you want to gather data about that phenomenon.
-Take for example the `attributives notebook <http://nbviewer.jupyter.org/github/etcbc/laf-fabric-nbs/blob/master/tutorial/attributives.ipynb>`_.
-It illustrates an explorative way of researching nouns modified by attributive (sub)phrases, without knowing in advance how exactly
+Take for example the following notebooks:
+
+* `attributives <http://nbviewer.jupyter.org/github/etcbc/laf-fabric-nbs/blob/master/tutorial/attributives.ipynb>`_
+* `occurrences <http://nbviewer.jupyter.org/github/etcbc/laf-fabric-nbs/blob/master/tutorial/occurrences.ipynb>`_
+
+They illustrate an explorative way of researching syntactical patterns, without knowing in advance how exactly
 the data is organized.
 
 A more involved example, with MQL queries inside a LAF-Fabric notebook, follows below.
