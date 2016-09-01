@@ -31,6 +31,18 @@ The recommended mode of working with the data is: programming in Python within t
 
 Tutorial
 ========
+
+LAF-Fabric is ideal if you interested in a certain phenomenon and you want to gather data about that phenomenon.
+Take for example the `attributives notebook <http://nbviewer.jupyter.org/github/etcbc/laf-fabric-nbs/blob/master/tutorial/attributives.ipynb>`_.
+It illustrates an explorative way of researching nouns modified by attributive (sub)phrases, without knowing in advance how exactly
+the data is organized.
+
+A more involved example, with MQL queries inside a LAF-Fabric notebook, follows below.
+In order to work with it, you must have
+`Emdros <http://emdros.org>`_
+installed on your computer in such a way that the command ``mql`` is recognized on the command line.
+See `LAF-Fabric, getting started <http://laf-fabric.readthedocs.io/en/latest/texts/getting-started.html>`_.
+
 As a concrete example going from SHEBANQ to LAF-Fabric
 we take the task to provide a csv file with the occurrences of two Hebrew words for *there is* and *there is no(t)*.
 
