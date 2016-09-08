@@ -11,6 +11,8 @@ from blang import booklangs, booknames
 
 replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
 
+biblang = 'Hebrew'
+
 nrows = 4
 ncols = 4
 dnrows = 3
@@ -189,9 +191,9 @@ for item in hebrewdata_lines_spec:
 
 # make a translation table from latin book names (the ETCBC ones) to the specific languages
 booktrans = {}
-for lng in booknames:
-    for (i, book) in enumerate(booknames[lng]):
-        booktrans.setdefault(lng, {})[booknames['la'][i]] = book
+for lng in booknames[biblang]:
+    for (i, book) in enumerate(booknames[biblang][lng]):
+        booktrans.setdefault(lng, {})[booknames[biblang]['la'][i]] = book
 
 specs = dict(
     material=(
@@ -199,7 +201,7 @@ specs = dict(
         '''alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{},txt_il enum:{} enum:{}'''.format(
             ','.join('txt_tb{}'.format(t) for t in range(1, tab_views+1)),
             ','.join(tr_labels),
-            ','.join(sorted(booknames)),
+            ','.join(sorted(booknames[biblang])),
         ),
         {'': '''4 Genesis 1 1 None 1 x m txt_p hb en'''},
     ),
@@ -722,9 +724,9 @@ dynamics()
     nt_statclass = json.dumps(nt_statclass),
     nt_statsym = json.dumps(nt_statsym),
     nt_statnext = json.dumps(nt_statnext),
-    bookla = json.dumps(booknames['la']),
+    bookla = json.dumps(booknames[biblang]['la']),
     booktrans = json.dumps(booktrans),
-    booklangs = json.dumps(booklangs),
+    booklangs = json.dumps(booklangs[biblang]),
 )
 
 def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text

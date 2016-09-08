@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-booklangs = dict(
+booklangs = {
+'Hebrew': dict(
     la=(u'latin', u'Latina'),
     en=(u'english', u'English'),
     fr=(u'french', u'Français'),
@@ -28,8 +29,14 @@ booklangs = dict(
     pa=(u'punjabi', u'ਪੰਜਾਬੀ'),
     ur=(u'urdu', u'اُردُو'),
     yo=(u'yoruba', u'èdè Yorùbá'),
-)
-booknames = dict(
+),
+'Greek': dict(
+    la=(u'latin', u'Latina'),
+    en=(u'english', u'English'),
+),
+}
+booknames = {
+'Hebrew': dict(
     la=tuple(u'''
             Genesis
             Exodus
@@ -1096,4 +1103,65 @@ booknames = dict(
             Kronika_Kinni
             Kronika_Keji
         '''.strip().split()),
-)
+),
+'Greek': dict(
+    la=tuple(u'''
+            secundum_Matthæum
+            secundum_Marcum
+            secundum_Lucam
+            secundum_Ioannem
+            Actus
+            ad_Romanos
+            1_ad_Corinthios
+            2_ad_Corinthios
+            ad_Galatas
+            ad_Ephesios
+            ad_Philippenses
+            ad_Colossenses
+            1_ad_Thessalonicenses
+            2_ad_Thessalonicenses
+            1_ad_Timotheum
+            2_ad_Timotheum
+            ad_Titum
+            ad_Philemonem
+            ad_Hebræos
+            Iacobi
+            1_Petri
+            2_Petri
+            1_Ioannis
+            2_Ioannis
+            3_Ioannis
+            Iudæ
+            Apocalypsis
+        '''.strip().split()),
+    en=tuple(u'''
+            Matthew
+            Mark
+            Luke
+            John
+            Acts
+            Romans
+            1_Corinthians
+            2_Corinthians
+            Galatians
+            Ephesians
+            Philippians
+            Colossians
+            1_Thessalonians
+            2_Thessalonians
+            1_Timothy
+            2_Timothy
+            Titus
+            Philemon
+            Hebrews
+            James
+            1_Peter
+            2_Peter
+            1_John
+            2_John
+            3_John
+            Jude
+            Revelation
+        '''.strip().split()),
+),
+}
