@@ -175,10 +175,10 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="http://laf-fabric.readthedocs.org/en/latest/" target="_blank"><img align="left" src="images/laf-fabric-xsmall.png"/></a>
-<a href="http://www.godgeleerdheid.vu.nl/etcbc" target="_blank"><img align="left" src="images/VU-ETCBC-xsmall.png"/></a>
-<a href="http://www.persistent-identifier.nl/?identifier=urn%3Anbn%3Anl%3Aui%3A13-048i-71" target="_blank"><img align="left"src="images/etcbc4easy-small.png"/></a>
+<a href="http://www.dans.knaw.nl" target="_blank"><img align="left"src="images/DANS-xsmall.png"/></a>
 <a href="http://tla.mpi.nl" target="_blank"><img align="right" src="images/TLA-xsmall.png"/></a>
-<a href="http://www.dans.knaw.nl" target="_blank"><img align="right"src="images/DANS-xsmall.png"/></a></p>
+<a href="http://www.godgeleerdheid.vu.nl/etcbc" target="_blank"><img align="right" src="images/VU-ETCBC-xsmall.png"/></a>
+<a href="http://sblgnt.com/" target="_blank"><img align="right"src="images/sblgnt.jpg" width="50"/></a></p>
 
 </div>
 </div>
@@ -255,6 +255,34 @@ Currently we have Latin (the ETCBC choice), English (the default), and quite a f
 <p><strong> Note </strong></p>
 <p>This notebook loads two sources: the Hebrew Bible and the Greek New Testament.
 We need to APIs in the same notebook. This notebook shows you how to do that.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Greek-New-Testament">Greek New Testament<a class="anchor-link" href="#Greek-New-Testament">&#182;</a></h1><p>2016-09-09. This is the story of how we got a Greek New Testament data source into Emdros and LAF.</p>
+<ol>
+<li>We use the Greek New Testament as encoded by the Society for Biblical Literature. It can be obtained from the GitHub repo <a href="https://github.com/biblicalhumanities/greek-new-testament">biblical humanities: Greek New Testament</a> which provided several text representations, of which we have chosen the <a href="https://github.com/biblicalhumanities/greek-new-testament/tree/master/syntax-trees/sblgnt">sblgnt</a> one.</li>
+<li>Cody Kingham (now master student at the ETCBC) has converted that source into an MQL data file, which can be imported in an Emdros database</li>
+<li>Dirk Roorda has used the ETCBC LAF-Fabric suite to convert from Emdros to LAF and then to compile the LAF for efficient processing</li>
+</ol>
+<h2 id="Licence">Licence<a class="anchor-link" href="#Licence">&#182;</a></h2><p>We (and you) are allowed to process this data for non-commercial purposes.</p>
+<p>The licence for the Hebrew data is CC-BY-NC, stated on the
+<a href="https://shebanq.ancient-data.org/sources">SHEBANQ site</a>.</p>
+<p>The licence for the Greek data is CC-SA-NC, plus extra restrictions, stated on the
+<a href="http://sblgnt.com/license/">SBL-GNT site</a>.</p>
+<p>We draw your attention explicitly to this condition:</p>
+<blockquote><p>You must always attribute quotations from the SBLGNT. If you quote fewer than 100 verses of the SBLGNT in a single print or electronic work, you can attribute it by simply adding "SBLGNT" after the quotation. Use of 100 or more verses in a single work must be accompanied by the following statement:</p>
+<p>Scripture quotations marked <a href="http://sblgnt.com">SBLGNT</a> are from the <a href="http://sblgnt.com">SBL Greek New Testament</a>. Copyright © 2010 <a href="http://www.sbl-site.org">Society of Biblical Literature</a> and <a href="http://www.logos.com">Logos Bible Software</a>.</p>
+</blockquote>
+<p>If you copy this text including the hyperlinks, and past it somewhere in your application, you are set.</p>
+<p>We acknowledge, with gratitude, the work that has gone in preparing these sources.
+A lot of that work stems from voluntary efforts! Thumbs up for Jonathan Robie and 
+the <a href="http://biblicalhumanities.org/about/">Biblical Humanities gang</a>.</p>
 
 </div>
 </div>
