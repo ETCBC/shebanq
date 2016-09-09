@@ -208,7 +208,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We present the API functions <code>T</code> for generating the plain text of the Hebrew Bible.</p>
 <p>You can already retrieve a text that is identical to the primary data of the LAF resource using the
-features <code>g_word_utf8</code> and <code>trailer_utf8</code>.</p>
+features <code>g_word_utf8</code> and <code>trailer_utf8</code> for Hebrew and <code>unicode</code> and <code>unicodetrailer</code> for Greek.</p>
 <p>But the <code>T</code> functions make it easier.</p>
 <ul>
 <li>You can generate texts for words and verses, individually and collectively</li>
@@ -235,10 +235,26 @@ features <code>g_word_utf8</code> and <code>trailer_utf8</code>.</p>
 <li>You can render the text in HTML and control the formatting, or get the plain text;</li>
 <li>You can lookup the passage label of any given node and represent it in a given language.</li>
 </ul>
+<p>And there is a format for <em>Greek</em>:</p>
+<ul>
+<li>greek unicode;</li>
+</ul>
 <p>These functions make it easy to produces texts that can be pasted into word processors.</p>
 <p>By the way, if you generate <em>verse labels</em>, you can choose the language of the book names.
 Currently we have Latin (the ETCBC choice), English (the default), and quite a few others.</p>
 <p>See the <a href="http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html#texts">ETCBC API documentation</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong> Note </strong></p>
+<p>This notebook loads two sources: the Hebrew Bible and the Greek New Testament.
+We need to APIs in the same notebook. This notebook shows you how to do that.</p>
 
 </div>
 </div>
@@ -249,8 +265,9 @@ Currently we have Latin (the ETCBC choice), English (the default), and quite a f
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># run later</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="p">(</span><span class="n">lange</span><span class="p">,</span> <span class="n">lango</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">langs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;3} = {:&lt;20} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">lange</span><span class="p">,</span> <span class="n">lango</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">biblang</span> <span class="ow">in</span> <span class="n">biblangs</span><span class="p">:</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="p">(</span><span class="n">lange</span><span class="p">,</span> <span class="n">lango</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">langs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&lt;3} = {:&lt;20} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">lange</span><span class="p">,</span> <span class="n">lango</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -302,7 +319,7 @@ zh  = chinese              = 中文
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Examples">Examples<a class="anchor-link" href="#Examples">&#182;</a></h1><p>This is the code to produce the Hebrew accents representation (<code>ha</code>) of a single verse:</p>
+<h1 id="Examples">Examples<a class="anchor-link" href="#Examples">&#182;</a></h1><h2 id="Hebrew">Hebrew<a class="anchor-link" href="#Hebrew">&#182;</a></h2><p>This is the code to produce the Hebrew accents representation (<code>ha</code>) of a single verse:</p>
 
 <pre><code>T.text('Esther', 3, 4, fmt='ha', verse_label=True, html=True)
 
@@ -313,19 +330,30 @@ with verse labels:</p>
 <pre><code>T.text(fmt='ha', verse_labels=True)
 
 </code></pre>
-<p>See the <a href="http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html#texts">ETCBC API documentation</a> for
+<h2 id="Greek">Greek<a class="anchor-link" href="#Greek">&#182;</a></h2><p>This is the code to produce the Greek primary representation (<code>gp</code>) of a single verse:</p>
+
+<pre><code>T.text('John', 3, 16, fmt='gp', verse_label=True, html=True)
+
+</code></pre>
+<p>This is the code to produce the plain text of the whole New Testament in Greek unicode
+with verse labels:</p>
+
+<pre><code>T.text(fmt='gp', verse_labels=True)
+
+</code></pre>
+<h2 id="More-info">More info<a class="anchor-link" href="#More-info">&#182;</a></h2><p>See the <a href="http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html#texts">ETCBC API documentation</a> for
 many more examples.</p>
-<p><strong>Run the next cell later.</strong></p>
+<p><strong>Run the next cells later.</strong></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">examples</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s">&#39;Hebrew&#39;</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -336,7 +364,7 @@ many more examples.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[20]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <p>hp = hebrew primary</p>
@@ -399,7 +427,7 @@ many more examples.</p>
 
 <p>ea = trans accent</p>
 <table class="t">
-<tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HI81J K.:>@M:R@70m >;L@JW03 JO74Wm W@JO80Wm W:LO71> C@MA73&lt; >:AL;JHE92m WAJ.AG.I74JDW. L:H@M@81n LIR:>OWT03 H:AJA35&lt;AM:DW.03 D.IB:R;74J M@R:D.:@KA80J K.I35J&amp;HIG.I71JD L@HE73m >:ACER&amp;H71W.> J:HW.DI35J00
+<tr><td class="vl">Esther 3:4</td><td class="e">WAJ:HI81J K.:>@M:R@70m >;L@JW03 JO74Wm W@JO80Wm W:LO71> C@MA73&lt; >:AL;JHE92m WAJ.AG.I74JDW. L:H@M@81n LIR:>OWT03 H:AJA45&lt;AM:DW.03 D.IB:R;74J M@R:D.:@KA80J K.I45J&amp;HIG.I71JD L@HE73m >:ACER&amp;H71W.> J:HW.DI45J00
 </td></tr>
 </table>
 
@@ -440,6 +468,40 @@ many more examples.</p>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s">&#39;Greek&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[21]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<p>gp = greek primary</p>
+<table class="t">
+<tr><td class="vl">John 3:16</td><td class="g">γὰρ Οὕτως ἠγάπησεν ὁ θεὸς τὸν κόσμον ὥστε τὸν υἱὸν τὸν μονογενῆ ἔδωκεν,ἵνα πᾶς ὁ πιστεύων εἰς αὐτὸν μὴ ἀπόληται ἀλλὰ ἔχῃ ζωὴν αἰώνιον.
+</td></tr>
+</table>
+
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -460,13 +522,23 @@ many more examples.</p>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display_pretty</span><span class="p">,</span> <span class="n">display_html</span>
 
 <span class="kn">from</span> <span class="nn">laf.fabric</span> <span class="k">import</span> <span class="n">LafFabric</span>
-<span class="kn">from</span> <span class="nn">etcbc.preprocess</span> <span class="k">import</span> <span class="n">prepare</span>
+<span class="kn">from</span> <span class="nn">etcbc.preprocess</span> <span class="k">import</span> <span class="n">prep</span>
 <span class="kn">from</span> <span class="nn">etcbc.lib</span> <span class="k">import</span> <span class="n">Transcription</span>
 
-<span class="n">fabric</span> <span class="o">=</span> <span class="n">LafFabric</span><span class="p">()</span>
+<span class="n">biblangs</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Hebrew&#39;</span><span class="p">,</span> <span class="s">&#39;Greek&#39;</span><span class="p">)</span>
 
-<span class="n">source</span> <span class="o">=</span> <span class="s">&#39;etcbc&#39;</span>
-<span class="n">version</span> <span class="o">=</span> <span class="s">&#39;4b&#39;</span>
+<span class="c"># We initialize two fabrics and put them in a dict, keyed with biblang</span>
+
+<span class="n">fabric</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">biblang</span><span class="p">,</span> <span class="n">LafFabric</span><span class="p">())</span> <span class="k">for</span> <span class="n">biblang</span> <span class="ow">in</span> <span class="n">biblangs</span><span class="p">)</span>
+<span class="n">API</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># We have two source+version combinations, one for each biblang</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(((</span><span class="n">biblangs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;etcbc&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">biblangs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;sblgnt&#39;</span><span class="p">)))</span>
+<span class="n">version</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(((</span><span class="n">biblangs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;4b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">biblangs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;&#39;</span><span class="p">)))</span>
+
+<span class="c"># this will hold the examples that we produce, keyed by biblang</span>
+<span class="n">examples</span> <span class="o">=</span> <span class="p">{}</span>
 </pre></div>
 
 </div>
@@ -479,62 +551,14 @@ many more examples.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s This is LAF-Fabric 4.6.1
+<pre>  0.00s This is LAF-Fabric 4.7.2
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
-</pre>
-</div>
-</div>
+  0.00s This is LAF-Fabric 4.7.2
+API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
+Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;plain&#39;</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
-    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
-<span class="s">        otype</span>
-<span class="s">        lex_utf8</span>
-<span class="s">        sp</span>
-<span class="s">        label</span>
-<span class="s">        monads</span>
-<span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
-    <span class="s">&quot;prepare&quot;</span><span class="p">:</span> <span class="n">prepare</span><span class="p">,</span>
-    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
-<span class="p">})</span>
-<span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="o">.</span><span class="n">localnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>  0.00s LOADING API: please wait ... 
-  0.00s USING main  DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s USING annox DATA COMPILED AT: 2016-01-27T19-01-17
-  3.75s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
-  3.75s INFO: LOADING PREPARED data: please wait ... 
-  3.75s prep prep: G.node_sort
-  3.87s prep prep: G.node_sort_inv
-  4.43s prep prep: L.node_up
-  7.83s prep prep: L.node_down
-    14s prep prep: V.verses
-    14s prep prep: V.books_la
-    14s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    17s INFO: LOADED PREPARED data
-    17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-05-26T11-53-40
 </pre>
 </div>
 </div>
@@ -548,28 +572,39 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Run-the-examples">Run the examples<a class="anchor-link" href="#Run-the-examples">&#182;</a></h2>
+<p>We are going to load the APIs for Hebrew and Greek separately, and store them in the dict <code>API</code>, keyed by <em>biblang</em>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Load-the-Hebrew-API">Load the Hebrew API<a class="anchor-link" href="#Load-the-Hebrew-API">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">html</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
-    <span class="n">fmtx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">()[</span><span class="n">fmt</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">msg</span><span class="p">(</span><span class="s">&#39;Format {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fmtx</span><span class="p">))</span>
-    <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;p&gt;{} = {}&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fmtx</span><span class="p">))</span>
-    <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-            <span class="s">&#39;Esther&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
-            <span class="n">verse_label</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
-            <span class="n">html</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
-        <span class="p">))</span>
-<span class="n">examples</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">biblang</span> <span class="o">=</span> <span class="s">&#39;Hebrew&#39;</span>
+<span class="n">fabric</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">+</span><span class="n">version</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span> <span class="s">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s">&#39;plain&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
+    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">        otype</span>
+<span class="s">        lex_utf8</span>
+<span class="s">        sp</span>
+<span class="s">        label</span>
+<span class="s">        monads</span>
+<span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
+    <span class="s">&quot;prepare&quot;</span><span class="p">:</span> <span class="n">prep</span><span class="p">(</span><span class="s">&#39;Hebrew&#39;</span><span class="p">),</span>
+    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">llocalnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric[biblang]&#39;</span><span class="p">,</span> <span class="n">biblang</span><span class="o">=</span><span class="n">biblang</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -582,20 +617,173 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  3.82s Format hp = hebrew primary
-  3.83s Format hpl = hebrew primary (lexeme)
-  3.83s Format hcl = hebrew cons (lexeme)
-  3.83s Format ha = hebrew accent
-  3.83s Format hv = hebrew vowel
-  3.83s Format hc = hebrew cons
-  3.83s Format ep = trans primary
-  3.83s Format epl = trans primary (lexeme)
-  3.83s Format ecl = hebrew cons (lexeme)
-  3.83s Format ea = trans accent
-  3.83s Format ev = trans vowel
-  3.84s Format ec = trans cons
-  3.84s Format pf = phono full
-  3.84s Format ps = phono simple
+<pre>  0.00s LOADING API: please wait ... 
+  0.00s USING main: etcbc4b DATA COMPILED AT: 2015-11-02T15-08-56
+  0.00s USING annox: lexicon DATA COMPILED AT: 2016-07-08T14-32-54
+  3.20s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/plain/__log__plain.txt
+  3.20s INFO: LOADING PREPARED data: please wait ... 
+  3.20s prep prep: G.node_sort
+  3.30s prep prep: G.node_sort_inv
+  3.83s prep prep: L.node_up
+  7.06s prep prep: L.node_down
+    13s prep prep: V.verses
+    13s prep prep: V.books_la
+    13s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+    15s INFO: LOADED PREPARED data
+    15s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK plain AT 2016-09-09T09-47-07
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Load-the-Greek-API">Load the Greek API<a class="anchor-link" href="#Load-the-Greek-API">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">biblang</span> <span class="o">=</span> <span class="s">&#39;Greek&#39;</span>
+<span class="n">API</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span> <span class="o">=</span> <span class="n">fabric</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">+</span><span class="n">version</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;plain&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;node&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span> <span class="s">&quot;edge&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">},</span>
+    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">        otype</span>
+<span class="s">        unicode</span>
+<span class="s">        unicodetrailer</span>
+<span class="s">        book chapter verse</span>
+<span class="s">    &#39;&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span>
+    <span class="s">&quot;prepare&quot;</span><span class="p">:</span> <span class="n">prep</span><span class="p">(</span><span class="s">&#39;Greek&#39;</span><span class="p">),</span>
+    <span class="s">&quot;primary&quot;</span><span class="p">:</span> <span class="k">False</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="n">exec</span><span class="p">(</span><span class="n">fabric</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">llocalnames</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&#39;fabric[biblang]&#39;</span><span class="p">,</span> <span class="n">biblang</span><span class="o">=</span><span class="n">biblang</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>  0.00s LOADING API: please wait ... 
+  0.00s USING main: sblgnt DATA COMPILED AT: 2016-09-09T06-57-44
+  0.52s LOGFILE=/Users/dirk/laf/laf-fabric-output/sblgnt/plain/__log__plain.txt
+  0.52s INFO: LOADING PREPARED data: please wait ... 
+  0.52s prep prep: G.node_sort
+  0.55s prep prep: G.node_sort_inv
+  0.69s prep prep: L.node_up
+  1.16s prep prep: L.node_down
+  2.29s prep prep: V.verses
+  2.29s prep prep: V.books_la
+  2.30s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  2.55s INFO: LOADED PREPARED data
+  2.55s INFO: DATA LOADED FROM SOURCE sblgnt AND ANNOX  FOR TASK plain AT 2016-09-09T09-47-10
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Normally, we used API elements like <code>F</code> and <code>T</code> just by their short names, because we inject them into the local name space after loading the API by this statement:</p>
+
+<pre><code>exec(fabric.localnames.format(var='fabric'))
+
+</code></pre>
+<p>But now we have two <code>T</code>s and two <code>F</code>s, one for each API. Instead we use the following statements:</p>
+
+<pre><code>exec(fabric[biblang].llocalnames.format(var='fabric[biblang]', biblang=biblang))
+
+</code></pre>
+<p>for <code>biblang</code> having the values <code>'Hebrew'</code> and <code>'Greek'</code>.</p>
+<p>They also inject <code>T</code> and <code>F</code> into the local name space, but now they are dicts, keyed
+by whatever you pass to biblang.</p>
+<p>So instead of using <code>T</code>, we find the T API in <code>T['Hebrew']</code> and <code>T['Greek']</code>.</p>
+<p>We define dicts named <code>T</code> and <code>F</code> keyed by <em>biblang</em> and containing the API elements <code>T</code> and <code>F</code> for the respective APIs. Likewise for the other API elements we need.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Run-the-examples">Run the examples<a class="anchor-link" href="#Run-the-examples">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">demopassage</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;Hebrew&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;Esther&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s">&#39;Greek&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="n">biblang</span> <span class="ow">in</span> <span class="n">biblangs</span><span class="p">:</span>
+    <span class="n">TT</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">Msg</span> <span class="o">=</span> <span class="n">msg</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">TT</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
+        <span class="n">fmtx</span> <span class="o">=</span> <span class="n">TT</span><span class="o">.</span><span class="n">formats</span><span class="p">()[</span><span class="n">fmt</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Msg</span><span class="p">(</span><span class="s">&#39;{:&lt;6}: Format {:&lt;3} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">biblang</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">fmtx</span><span class="p">))</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;p&gt;{} = {}&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fmtx</span><span class="p">))</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">TT</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">demopassage</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+                <span class="n">verse_label</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+                <span class="n">html</span><span class="o">=</span><span class="k">True</span><span class="p">,</span>
+            <span class="p">))</span>
+    <span class="n">examples</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>  2.57s Hebrew: Format hp  = hebrew primary
+  2.57s Hebrew: Format hpl = hebrew primary (lexeme)
+  2.57s Hebrew: Format hcl = hebrew cons (lexeme)
+  2.58s Hebrew: Format ha  = hebrew accent
+  2.58s Hebrew: Format hv  = hebrew vowel
+  2.58s Hebrew: Format hc  = hebrew cons
+  2.58s Hebrew: Format ep  = trans primary
+  2.58s Hebrew: Format epl = trans primary (lexeme)
+  2.58s Hebrew: Format ecl = hebrew cons (lexeme)
+  2.58s Hebrew: Format ea  = trans accent
+  2.59s Hebrew: Format ev  = trans vowel
+  2.59s Hebrew: Format ec  = trans cons
+  2.59s Hebrew: Format pf  = phono full
+  2.59s Hebrew: Format ps  = phono simple
+  0.03s Greek : Format gp  = greek primary
 </pre>
 </div>
 </div>
@@ -627,31 +815,58 @@ After that you can tweak the styles further:</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">set_style</span><span class="p">(</span><span class="n">kind</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;big&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;660000&#39;</span><span class="p">,</span>
-            <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;xx-large&#39;</span><span class="p">,</span>
-            <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span><span class="p">,</span>
-            <span class="n">phono_color</span><span class="o">=</span><span class="s">&#39;ff0000&#39;</span><span class="p">,</span>
-        <span class="p">),</span> <span class="n">show_params</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;reduced&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;0000aa&#39;</span><span class="p">,</span>
-            <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;x-large&#39;</span><span class="p">,</span>
-            <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span>
-        <span class="p">))</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;default&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s">&#39;&#39;</span>
-<span class="c">#HTML(set_style(&#39;big&#39;))</span>
-<span class="c">#HTML(set_style(&#39;reduced&#39;))</span>
-<span class="n">HTML</span><span class="p">(</span><span class="n">set_style</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">))</span>
-<span class="c">#HTML(set_style(&#39;&#39;))</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">set_style</span><span class="p">(</span><span class="n">biblang</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">biblang</span> <span class="o">==</span> <span class="s">&#39;Hebrew&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;big&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;660000&#39;</span><span class="p">,</span>
+                <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;xx-large&#39;</span><span class="p">,</span>
+                <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span><span class="p">,</span>
+                <span class="n">phono_color</span><span class="o">=</span><span class="s">&#39;ff0000&#39;</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">show_params</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;reduced&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">hebrew_color</span><span class="o">=</span><span class="s">&#39;0000aa&#39;</span><span class="p">,</span>
+                <span class="n">hebrew_size</span><span class="o">=</span><span class="s">&#39;x-large&#39;</span><span class="p">,</span>
+                <span class="n">hebrew_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span>
+            <span class="p">))</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;default&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;&#39;</span>
+    <span class="k">elif</span> <span class="n">biblang</span> <span class="o">==</span> <span class="s">&#39;Greek&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;big&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">greek_color</span><span class="o">=</span><span class="s">&#39;660000&#39;</span><span class="p">,</span>
+                <span class="n">greek_size</span><span class="o">=</span><span class="s">&#39;xx-large&#39;</span><span class="p">,</span>
+                <span class="n">greek_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">show_params</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;reduced&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">greek_color</span><span class="o">=</span><span class="s">&#39;0000aa&#39;</span><span class="p">,</span>
+                <span class="n">greek_size</span><span class="o">=</span><span class="s">&#39;x-large&#39;</span><span class="p">,</span>
+                <span class="n">greek_line_height</span><span class="o">=</span><span class="s">&#39;2.0&#39;</span>
+            <span class="p">))</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s">&#39;default&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">set_style</span><span class="p">(</span><span class="s">&#39;Hebrew&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -662,7 +877,7 @@ After that you can tweak the styles further:</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -714,6 +929,70 @@ td.vl {
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">HTML</span><span class="p">(</span><span class="n">set_style</span><span class="p">(</span><span class="s">&#39;Greek&#39;</span><span class="p">,</span> <span class="s">&#39;big&#39;</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>  0.09s greek_color = 660000
+  0.09s greek_line_height = 2.0
+  0.09s greek_size = xx-large
+  0.09s verse_color = 0000ff
+  0.09s verse_size = small
+  0.10s verse_width = 5em
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+<style type="text/css">
+table.t {
+    width: 100%;
+}
+td.g {
+    font-family: Galatia SIL, SBL Greek, Verdana, sans-serif;
+    font-size: xx-large;
+    line-height: 2.0;
+    color: #660000;
+    text-align: left;
+    direction: ltr;
+}
+
+td.vl {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    text-align: right;
+    vertical-align: top;
+    color: #0000ff;
+    width: 5em;
+    direction: ltr;
+}
+</style>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -727,24 +1006,40 @@ There is some subtlety involved, because nodes may represent a whole book, chapt
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">inf</span><span class="p">(</span><span class="s">&#39;gathering example nodes&#39;</span><span class="p">)</span>
-<span class="n">example_nodes</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;book&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">],</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;chapter&#39;</span><span class="p">))[</span><span class="mi">100</span><span class="p">],</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">))[</span><span class="mi">1000</span><span class="p">],</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">))[</span><span class="mi">10000</span><span class="p">],</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">))[</span><span class="mi">20000</span><span class="p">],</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;phrase&#39;</span><span class="p">))[</span><span class="mi">30000</span><span class="p">],</span>
-    <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">))[</span><span class="mi">100000</span><span class="p">],</span>
-<span class="p">}</span> <span class="o">|</span> <span class="nb">set</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="k">None</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
-
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">example_nodes</span><span class="p">):</span>
-    <span class="n">inf</span><span class="p">(</span><span class="s">&#39;{:&gt;7} {:&lt;15} occurs in {:&lt;30} and its first word in {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#39;en&#39;</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#39;en&#39;</span><span class="p">,</span> <span class="n">first_word</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
-    <span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">biblang</span> <span class="ow">in</span> <span class="n">biblangs</span><span class="p">:</span>
+    <span class="n">Inf</span> <span class="o">=</span> <span class="n">inf</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">FF</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">TT</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">LL</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">Inf</span><span class="p">(</span><span class="s">&#39;{}: Gathering example nodes&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">biblang</span><span class="p">))</span>
+    <span class="n">example_nodes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;book&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;chapter&#39;</span><span class="p">))[</span><span class="mi">100</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">))[</span><span class="mi">1000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">))[</span><span class="mi">10000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">))[</span><span class="mi">20000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;phrase&#39;</span><span class="p">))[</span><span class="mi">30000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">))[</span><span class="mi">100000</span><span class="p">],</span>
+        <span class="p">}</span> <span class="o">|</span> <span class="nb">set</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">LL</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="k">None</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span> \
+        <span class="k">if</span> <span class="n">biblang</span> <span class="o">==</span> <span class="s">&#39;Hebrew&#39;</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;book&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;chapter&#39;</span><span class="p">))[</span><span class="mi">100</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">))[</span><span class="mi">1000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">))[</span><span class="mi">2000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">))[</span><span class="mi">20000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;phrase&#39;</span><span class="p">))[</span><span class="mi">30000</span><span class="p">],</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">))[</span><span class="mi">100000</span><span class="p">],</span>
+        <span class="p">}</span> <span class="o">|</span> <span class="nb">set</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">FF</span><span class="o">.</span><span class="n">db_otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;sentence&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">LL</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="k">None</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+    <span class="n">Inf</span><span class="p">(</span><span class="s">&#39;{}: Found {} example nodes&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">biblang</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_nodes</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">example_nodes</span><span class="p">):</span>
+        <span class="n">Inf</span><span class="p">(</span><span class="s">&#39;{:&gt;7} {:&lt;15} occurs in {:&lt;25} first word {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">n</span><span class="p">,</span> <span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+            <span class="n">TT</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#39;en&#39;</span><span class="p">),</span> 
+            <span class="n">TT</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#39;en&#39;</span><span class="p">,</span> <span class="n">first_word</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+        <span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -757,24 +1052,44 @@ There is some subtlety involved, because nodes may represent a whole book, chapt
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>  9.47s gathering example nodes
-    18s  100000 word            occurs in Deuteronomy 11:19              and its first word in Deuteronomy 11:19
-    18s  446568 clause          occurs in Deuteronomy 25:9               and its first word in Deuteronomy 25:9
-    18s  635133 phrase          occurs in Exodus 36:29                   and its first word in Exodus 36:29
-    18s 1125838 sentence        occurs in Genesis 1:17-18                and its first word in Genesis 1:17
-    18s 1125875 sentence        occurs in Genesis 1:29-30                and its first word in Genesis 1:29
-    18s 1125890 sentence        occurs in Genesis 2:4-7                  and its first word in Genesis 2:4
-    18s 1126231 sentence        occurs in Genesis 7:2-3                  and its first word in Genesis 7:2
-    18s 1126238 sentence        occurs in Genesis 7:8-9                  and its first word in Genesis 7:8
-    18s 1126244 sentence        occurs in Genesis 7:13-14                and its first word in Genesis 7:13
-    18s 1126337 sentence        occurs in Genesis 9:9-10                 and its first word in Genesis 9:9
-    18s 1126400 sentence        occurs in Genesis 10:11-12               and its first word in Genesis 10:11
-    18s 1126402 sentence        occurs in Genesis 10:13-14               and its first word in Genesis 10:13
-    18s 1126403 sentence        occurs in Genesis 10:15-18               and its first word in Genesis 10:15
-    18s 1135793 sentence        occurs in Numbers 1:30                   and its first word in Numbers 1:30
-    18s 1367498 book            occurs in Exodus                         and its first word in Exodus
-    18s 1367636 chapter         occurs in Leviticus 11                   and its first word in Leviticus 11
-    18s 1414645 verse           occurs in Genesis 34:20                  and its first word in Genesis 34:20
+<pre>  2.69s Hebrew: Gathering example nodes
+    11s Hebrew: Found 17 example nodes
+ 100000 word            occurs in Deuteronomy 11:19         first word Deuteronomy 11:19
+ 446568 clause          occurs in Deuteronomy 25:9          first word Deuteronomy 25:9
+ 635133 phrase          occurs in Exodus 36:29              first word Exodus 36:29
+1125838 sentence        occurs in Genesis 1:17-18           first word Genesis 1:17
+1125875 sentence        occurs in Genesis 1:29-30           first word Genesis 1:29
+1125890 sentence        occurs in Genesis 2:4-7             first word Genesis 2:4
+1126231 sentence        occurs in Genesis 7:2-3             first word Genesis 7:2
+1126238 sentence        occurs in Genesis 7:8-9             first word Genesis 7:8
+1126244 sentence        occurs in Genesis 7:13-14           first word Genesis 7:13
+1126337 sentence        occurs in Genesis 9:9-10            first word Genesis 9:9
+1126400 sentence        occurs in Genesis 10:11-12          first word Genesis 10:11
+1126402 sentence        occurs in Genesis 10:13-14          first word Genesis 10:13
+1126403 sentence        occurs in Genesis 10:15-18          first word Genesis 10:15
+1135793 sentence        occurs in Numbers 1:30              first word Numbers 1:30
+1367498 book            occurs in Exodus                    first word Exodus
+1367636 chapter         occurs in Leviticus 11              first word Leviticus 11
+1414645 verse           occurs in Genesis 34:20             first word Genesis 34:20
+  8.45s Greek: Gathering example nodes
+    10s Greek: Found 17 example nodes
+ 100000 word            occurs in 2_Corinthians 8:13        first word 2_Corinthians 8:13
+ 158493 clause          occurs in Luke 20:25                first word Luke 20:25
+ 223582 phrase          occurs in Luke 1:20                 first word Luke 1:20
+ 336105 sentence        occurs in Matthew 1:2-6             first word Matthew 1:2
+ 336106 sentence        occurs in Matthew 1:6-11            first word Matthew 1:6
+ 336107 sentence        occurs in Matthew 1:12-16           first word Matthew 1:12
+ 336112 sentence        occurs in Matthew 1:20-21           first word Matthew 1:20
+ 336113 sentence        occurs in Matthew 1:22-23           first word Matthew 1:22
+ 336114 sentence        occurs in Matthew 1:24-25           first word Matthew 1:24
+ 336115 sentence        occurs in Matthew 2:1-2             first word Matthew 2:1
+ 336116 sentence        occurs in Matthew 2:3-4             first word Matthew 2:3
+ 336117 sentence        occurs in Matthew 2:5-6             first word Matthew 2:5
+ 336118 sentence        occurs in Matthew 2:7-8             first word Matthew 2:7
+ 338104 sentence        occurs in Luke 4:23                 first word Luke 4:23
+ 344113 book            occurs in Mark                      first word Mark
+ 344239 chapter         occurs in Acts 12                   first word Acts 12
+ 345399 verse           occurs in Matthew 27:19             first word Matthew 27:19
 </pre>
 </div>
 </div>
@@ -795,21 +1110,26 @@ There is some subtlety involved, because nodes may represent a whole book, chapt
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Writing the complete text in several representations&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">vl</span> <span class="ow">in</span> <span class="p">(</span><span class="k">True</span><span class="p">,</span> <span class="k">False</span><span class="p">):</span>
-        <span class="n">file_name</span> <span class="o">=</span> <span class="s">&#39;{}{}_{}{}.txt&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">source</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span>
-            <span class="n">fmt</span><span class="p">,</span> <span class="s">&#39;_v&#39;</span> <span class="k">if</span> <span class="n">vl</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
-        <span class="p">)</span>
-        <span class="n">fl</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-        <span class="n">inf</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-        <span class="n">fl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="n">vl</span><span class="p">))</span>
-        <span class="n">fl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Done&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">biblang</span> <span class="ow">in</span> <span class="n">biblangs</span><span class="p">:</span>
+    <span class="n">Inf</span> <span class="o">=</span> <span class="n">inf</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">TT</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">Outfile</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    
+    <span class="n">Inf</span><span class="p">(</span><span class="s">&#39;{}: Writing the complete text in several representations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">biblang</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">TT</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">vl</span> <span class="ow">in</span> <span class="p">(</span><span class="k">True</span><span class="p">,</span> <span class="k">False</span><span class="p">):</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s">&#39;{}{}_{}{}.txt&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span> <span class="n">version</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span>
+                <span class="n">fmt</span><span class="p">,</span> <span class="s">&#39;_v&#39;</span> <span class="k">if</span> <span class="n">vl</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
+            <span class="p">)</span>
+            <span class="n">fl</span> <span class="o">=</span> <span class="n">Outfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+            <span class="n">Inf</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+            <span class="n">fl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">TT</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="n">vl</span><span class="p">))</span>
+            <span class="n">fl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">Inf</span><span class="p">(</span><span class="s">&#39;Done&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -821,49 +1141,41 @@ There is some subtlety involved, because nodes may represent a whole book, chapt
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>12m 23s Writing the complete text in several representations
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>12m 23s etcbc4b_hp_v.txt
-12m 23s etcbc4b_hp.txt
-12m 24s etcbc4b_hpl_v.txt
-12m 25s etcbc4b_hpl.txt
-12m 26s etcbc4b_hcl_v.txt
-12m 26s etcbc4b_hcl.txt
-12m 27s etcbc4b_ha_v.txt
-12m 33s etcbc4b_ha.txt
-12m 40s etcbc4b_hv_v.txt
-12m 46s etcbc4b_hv.txt
-12m 53s etcbc4b_hc_v.txt
-13m 00s etcbc4b_hc.txt
-13m 08s etcbc4b_ep_v.txt
-13m 08s etcbc4b_ep.txt
-13m 08s etcbc4b_epl_v.txt
-13m 09s etcbc4b_epl.txt
-13m 09s etcbc4b_ecl_v.txt
-13m 10s etcbc4b_ecl.txt
-13m 10s etcbc4b_ea_v.txt
-13m 14s etcbc4b_ea.txt
-13m 17s etcbc4b_ev_v.txt
-13m 21s etcbc4b_ev.txt
-13m 25s etcbc4b_ec_v.txt
-13m 31s etcbc4b_ec.txt
-13m 37s etcbc4b_pf_v.txt
-13m 38s etcbc4b_pf.txt
-13m 39s etcbc4b_ps_v.txt
-13m 40s etcbc4b_ps.txt
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>13m 42s Done
+<pre>    13s Hebrew: Writing the complete text in several representations
+    13s etcbc4b_hp_v.txt
+    14s etcbc4b_hp.txt
+    15s etcbc4b_hpl_v.txt
+    15s etcbc4b_hpl.txt
+    15s etcbc4b_hcl_v.txt
+    16s etcbc4b_hcl.txt
+    17s etcbc4b_ha_v.txt
+    23s etcbc4b_ha.txt
+    29s etcbc4b_hv_v.txt
+    36s etcbc4b_hv.txt
+    42s etcbc4b_hc_v.txt
+    50s etcbc4b_hc.txt
+    58s etcbc4b_ep_v.txt
+    59s etcbc4b_ep.txt
+    59s etcbc4b_epl_v.txt
+ 1m 00s etcbc4b_epl.txt
+ 1m 00s etcbc4b_ecl_v.txt
+ 1m 01s etcbc4b_ecl.txt
+ 1m 01s etcbc4b_ea_v.txt
+ 1m 04s etcbc4b_ea.txt
+ 1m 07s etcbc4b_ev_v.txt
+ 1m 11s etcbc4b_ev.txt
+ 1m 14s etcbc4b_ec_v.txt
+ 1m 20s etcbc4b_ec.txt
+ 1m 26s etcbc4b_pf_v.txt
+ 1m 27s etcbc4b_pf.txt
+ 1m 28s etcbc4b_ps_v.txt
+ 1m 30s etcbc4b_ps.txt
+ 1m 32s Done
+ 1m 29s Greek: Writing the complete text in several representations
+ 1m 29s sblgnt_gp_v.txt
+ 1m 30s sblgnt_gp.txt
+ 1m 30s Done
 </pre>
 </div>
 </div>
@@ -874,20 +1186,24 @@ There is some subtlety involved, because nodes may represent a whole book, chapt
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="n">show_limit</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">T</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
-    <span class="n">file_name</span> <span class="o">=</span> <span class="s">&#39;{}{}_{}_v.txt&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">fl</span> <span class="o">=</span> <span class="n">infile</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fl</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">show_limit</span><span class="p">:</span> <span class="k">break</span>
-        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-    <span class="n">fl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">biblang</span> <span class="ow">in</span> <span class="n">biblangs</span><span class="p">:</span>
+    <span class="n">TT</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+    <span class="n">Infile</span> <span class="o">=</span> <span class="n">infile</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">TT</span><span class="o">.</span><span class="n">formats</span><span class="p">():</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s">&#39;{}{}_{}_v.txt&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span> <span class="n">version</span><span class="p">[</span><span class="n">biblang</span><span class="p">],</span> <span class="n">fmt</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fl</span> <span class="o">=</span> <span class="n">Infile</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fl</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">show_limit</span><span class="p">:</span> <span class="k">break</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">fl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -939,7 +1255,7 @@ Genesis 1:2	W H &gt;RY/ HJH[ THW/ W BHW/ W XCK/ &lt;L PNH/ THWM/ W RWX/ &gt;LHJM
 
 etcbc4b_ea_v.txt
 Genesis 1:1	B.:R;&gt;CI73JT B.@R@74&gt; &gt;:ELOHI92Jm &gt;;71T HAC.@MA73JIm W:&gt;;71T H@&gt;@45REy00
-Genesis 1:2	W:H@&gt;@81REy H@J:T@71H TO33HW.03 W@BO80HW. W:XO73CEk: &lt;AL&amp;P.:N;74J T:HO92Wm W:R74W.XA &gt;:ELOHI80Jm M:RAXE73PET &lt;AL&amp;P.:N;71J HAM.@45JIm00
+Genesis 1:2	W:H@&gt;@81REy H@J:T@71H TO63HW.03 W@BO80HW. W:XO73CEk: &lt;AL&amp;P.:N;74J T:HO92Wm W:R74W.XA &gt;:ELOHI80Jm M:RAXE73PET &lt;AL&amp;P.:N;71J HAM.@45JIm00
 
 etcbc4b_ev_v.txt
 Genesis 1:1	B.:R;&gt;CIJT B.@R@&gt; &gt;:ELOHIJm &gt;;T HAC.@MAJIm W:&gt;;T H@&gt;@REy00
@@ -956,6 +1272,10 @@ Genesis 1:2	wᵊhāʔˈāreṣ hāyᵊṯˌā ṯˈōhû wāvˈōhû wᵊḥˌō
 etcbc4b_ps_v.txt
 Genesis 1:1	brēšîṯ bårå ʔlōhîm ʔēṯ haššåmayim wʔēṯ håʔåreṣ .
 Genesis 1:2	whåʔåreṣ håyṯå ṯōhû wåvōhû wḥōšeḵ ʕal-pnê ṯhôm wrûₐḥ ʔlōhîm mraḥefeṯ ʕal-pnê hammåyim .
+
+sblgnt_gp_v.txt
+Matthew 1:1	Βίβλος γενέσεως Ἰησοῦ χριστοῦ υἱοῦ Δαυὶδ υἱοῦ Ἀβραάμ.
+Matthew 1:2	Ἀβραὰμ ἐγέννησεν τὸν Ἰσαάκ,δὲ Ἰσαὰκ ἐγέννησεν τὸν Ἰακώβ,δὲ Ἰακὼβ ἐγέννησεν τὸν Ἰούδαν καὶ τοὺς ἀδελφοὺς αὐτοῦ,
 </pre>
 </div>
 </div>
@@ -979,7 +1299,7 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">unicodedata</span> <span class="k">import</span> <span class="n">normalize</span>
@@ -992,10 +1312,14 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">example</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s">&#39;Genesis&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">biblang</span> <span class="o">=</span> <span class="s">&#39;Hebrew&#39;</span>
+<span class="n">TT</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+<span class="n">NNn</span> <span class="o">=</span> <span class="n">NN</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+<span class="n">FF</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
+<span class="n">Inf</span> <span class="o">=</span> <span class="n">inf</span><span class="p">[</span><span class="n">biblang</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -1005,10 +1329,11 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">example</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">example</span> <span class="o">=</span> <span class="n">TT</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s">&#39;Genesis&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">example</span><span class="p">:</span>
     <span class="n">ex_c</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s">&#39;NFKC&#39;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
     <span class="n">ex_d</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s">&#39;NFKD&#39;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&gt;3}; c={:&gt;3}; d={:&gt;3}; {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ex</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex_c</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex_d</span><span class="p">),</span> <span class="n">ex</span><span class="p">))</span>
@@ -1042,10 +1367,10 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">full_text</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">full_text</span> <span class="o">=</span> <span class="n">TT</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s">&#39;ha&#39;</span><span class="p">,</span> <span class="n">verse_label</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="s">&#39;NFKC&#39;</span><span class="p">,</span> <span class="n">full_text</span><span class="p">)))</span>
 </pre></div>
 
@@ -1080,25 +1405,38 @@ Note that unicode composition does not compose other points and accents with con
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Exploring trailers&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">biblang</span> <span class="o">=</span> <span class="s">&#39;Hebrew&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">Inf</span><span class="p">(</span><span class="s">&#39;Exploring trailers&#39;</span><span class="p">)</span>
 <span class="n">trailer</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
 <span class="n">trailer_ph</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
 <span class="n">trailer_map</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;word&#39;</span><span class="p">):</span>
-    <span class="n">trl</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-    <span class="n">trl_ph</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">phono_sep</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">NNn</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;word&#39;</span><span class="p">):</span>
+    <span class="n">trl</span> <span class="o">=</span> <span class="n">FF</span><span class="o">.</span><span class="n">trailer_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">trl_ph</span> <span class="o">=</span> <span class="n">FF</span><span class="o">.</span><span class="n">phono_sep</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
     <span class="n">trailer</span><span class="p">[</span><span class="n">trl</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">trailer_ph</span><span class="p">[</span><span class="n">trl_ph</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">trailer_map</span><span class="p">[</span><span class="n">trl</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">trl_ph</span><span class="p">)</span>
 
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Done. Found {} trailers in Hebrew text and {} trailers in phonemic text&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="n">Inf</span><span class="p">(</span><span class="s">&#39;Done. Found {} trailers in Hebrew text and {} trailers in phonemic text&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">trailer</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">trailer_ph</span><span class="p">),</span>
 <span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&#39;Trailers in Hebrew text:&#39;</span><span class="p">)</span>
+<span class="n">Inf</span><span class="p">(</span><span class="s">&#39;Trailers in Hebrew text:&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">trl</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">trailer</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
     <span class="n">trl</span> <span class="o">=</span> <span class="s">&#39;ø&#39;</span> <span class="k">if</span> <span class="n">trl</span> <span class="o">==</span> <span class="s">&#39;&#39;</span> <span class="k">else</span> <span class="n">trl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">n&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span><span class="s">&#39;_&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s">&#39;{:&gt;7} x [{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">trl</span><span class="p">))</span>
@@ -1128,16 +1466,10 @@ Note that unicode composition does not compose other points and accents with con
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>20m 36s Exploring trailers
-20m 39s Done. Found 12 trailers in Hebrew text and 3 trailers in phonemic text
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Trailers in Hebrew text:
+<pre> 1m 40s Exploring trailers
+ 1m 42s Done. Found 12 trailers in Hebrew text and 3 trailers in phonemic text
+ 1m 42s Trailers in Hebrew text:
  237039 x [_]
  121796 x [ø]
   42275 x [־]
@@ -1198,30 +1530,30 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">msg</span><span class="p">(</span><span class="s">&#39;Looking for empty words&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">Inf</span><span class="p">(</span><span class="s">&#39;Looking for empty words&#39;</span><span class="p">)</span>
 <span class="n">ewords</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
 <span class="n">verse</span> <span class="o">=</span> <span class="k">None</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">NN</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">]):</span>
-    <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;verse&#39;</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">NNn</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="s">&#39;word&#39;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">FF</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;verse&#39;</span><span class="p">:</span>
         <span class="n">verse</span> <span class="o">=</span> <span class="n">i</span>
         <span class="k">continue</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">FF</span><span class="o">.</span><span class="n">g_word_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
-        <span class="n">lex</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">lex_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">lex</span> <span class="o">=</span> <span class="n">FF</span><span class="o">.</span><span class="n">lex_utf8</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">FF</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">ewords</span><span class="p">[(</span><span class="n">lex</span><span class="p">,</span> <span class="n">pos</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">verse</span><span class="p">)</span>
 
-<span class="n">msg</span><span class="p">(</span><span class="s">&#39;Done&#39;</span><span class="p">)</span>
+<span class="n">Inf</span><span class="p">(</span><span class="s">&#39;Done&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">occs</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ewords</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s">&quot;{:&gt;6} x {:&lt;15} = {:&gt;10} in {}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="nb">len</span><span class="p">(</span><span class="n">occs</span><span class="p">),</span> 
         <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
         <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
-        <span class="s">&quot;; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">F</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">occs</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]),</span>
+        <span class="s">&quot;; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">FF</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">occs</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]),</span>
         <span class="s">&#39; ...&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">occs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
     <span class="p">))</span>
 </pre></div>
@@ -1235,16 +1567,10 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>20m 43s Looking for empty words
-20m 44s Done
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>  6423 x art             =          ה in  GEN 01,05;  GEN 01,05;  GEN 01,07;  GEN 01,07;  GEN 01,08 ...
+<pre> 1m 42s Looking for empty words
+ 1m 44s Done
+  6423 x art             =          ה in  GEN 01,05;  GEN 01,05;  GEN 01,07;  GEN 01,07;  GEN 01,08 ...
 </pre>
 </div>
 </div>
@@ -1255,10 +1581,10 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">close</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">close</span><span class="p">[</span><span class="s">&#39;Hebrew&#39;</span><span class="p">]()</span>
 </pre></div>
 
 </div>
@@ -1271,39 +1597,72 @@ How frequent are they and to what lexemes do they correspond, and what is their 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>20m 48s Results directory:
+<pre> 1m 44s Results directory:
 /Users/dirk/laf/laf-fabric-output/etcbc4b/plain
 
-.DS_Store                              6148 Wed Mar  2 20:05:55 2016
-__log__plain.txt                       3400 Thu May 26 09:41:45 2016
-etcbc4b_ea.txt                      3119734 Thu May 26 09:34:14 2016
-etcbc4b_ea_v.txt                    3438368 Thu May 26 09:34:10 2016
-etcbc4b_ec.txt                      1549212 Thu May 26 09:34:33 2016
-etcbc4b_ec_v.txt                    1867846 Thu May 26 09:34:28 2016
-etcbc4b_ecl.txt                     1760600 Thu May 26 09:34:07 2016
-etcbc4b_ecl_v.txt                   2079234 Thu May 26 09:34:06 2016
-etcbc4b_ep.txt                      2990524 Thu May 26 09:34:05 2016
-etcbc4b_ep_v.txt                    3309158 Thu May 26 09:34:05 2016
-etcbc4b_epl.txt                     2327644 Thu May 26 09:34:06 2016
-etcbc4b_epl_v.txt                   2646278 Thu May 26 09:34:06 2016
-etcbc4b_ev.txt                      2538742 Thu May 26 09:34:22 2016
-etcbc4b_ev_v.txt                    2857376 Thu May 26 09:34:18 2016
-etcbc4b_ha.txt                      5332790 Thu May 26 09:33:36 2016
-etcbc4b_ha_v.txt                    5651424 Thu May 26 09:33:30 2016
-etcbc4b_hc.txt                      2788978 Thu May 26 09:34:04 2016
-etcbc4b_hc_v.txt                    3107612 Thu May 26 09:33:57 2016
-etcbc4b_hcl.txt                     2609679 Thu May 26 09:33:23 2016
-etcbc4b_hcl_v.txt                   2928313 Thu May 26 09:33:23 2016
-etcbc4b_hp.txt                      5323663 Thu May 26 09:33:21 2016
-etcbc4b_hp_v.txt                    5642297 Thu May 26 09:33:20 2016
-etcbc4b_hpl.txt                     3960158 Thu May 26 09:33:22 2016
-etcbc4b_hpl_v.txt                   4278792 Thu May 26 09:33:22 2016
-etcbc4b_hv.txt                      4751786 Thu May 26 09:33:49 2016
-etcbc4b_hv_v.txt                    5070420 Thu May 26 09:33:43 2016
-etcbc4b_pf.txt                      3893906 Thu May 26 09:34:35 2016
-etcbc4b_pf_v.txt                    4212540 Thu May 26 09:34:34 2016
-etcbc4b_ps.txt                      2956173 Thu May 26 09:34:39 2016
-etcbc4b_ps_v.txt                    3274807 Thu May 26 09:34:37 2016
+.DS_Store                              6148 Fri Sep  9 10:08:21 2016
+__log__plain.txt                       3661 Fri Sep  9 11:48:51 2016
+etcbc4b_ea.txt                      3119734 Fri Sep  9 11:48:14 2016
+etcbc4b_ea_v.txt                    3438368 Fri Sep  9 11:48:11 2016
+etcbc4b_ec.txt                      1549212 Fri Sep  9 11:48:33 2016
+etcbc4b_ec_v.txt                    1867846 Fri Sep  9 11:48:27 2016
+etcbc4b_ecl.txt                     1760600 Fri Sep  9 11:48:08 2016
+etcbc4b_ecl_v.txt                   2079234 Fri Sep  9 11:48:08 2016
+etcbc4b_ep.txt                      2990524 Fri Sep  9 11:48:06 2016
+etcbc4b_ep_v.txt                    3309158 Fri Sep  9 11:48:06 2016
+etcbc4b_epl.txt                     2327644 Fri Sep  9 11:48:07 2016
+etcbc4b_epl_v.txt                   2646278 Fri Sep  9 11:48:07 2016
+etcbc4b_ev.txt                      2538742 Fri Sep  9 11:48:21 2016
+etcbc4b_ev_v.txt                    2857376 Fri Sep  9 11:48:18 2016
+etcbc4b_ha.txt                      5332790 Fri Sep  9 11:47:37 2016
+etcbc4b_ha_v.txt                    5651424 Fri Sep  9 11:47:30 2016
+etcbc4b_hc.txt                      2788978 Fri Sep  9 11:48:05 2016
+etcbc4b_hc_v.txt                    3107612 Fri Sep  9 11:47:57 2016
+etcbc4b_hcl.txt                     2609679 Fri Sep  9 11:47:24 2016
+etcbc4b_hcl_v.txt                   2928313 Fri Sep  9 11:47:23 2016
+etcbc4b_hp.txt                      5323663 Fri Sep  9 11:47:22 2016
+etcbc4b_hp_v.txt                    5642297 Fri Sep  9 11:47:21 2016
+etcbc4b_hpl.txt                     3960158 Fri Sep  9 11:47:23 2016
+etcbc4b_hpl_v.txt                   4278792 Fri Sep  9 11:47:22 2016
+etcbc4b_hv.txt                      4751786 Fri Sep  9 11:47:50 2016
+etcbc4b_hv_v.txt                    5070420 Fri Sep  9 11:47:43 2016
+etcbc4b_pf.txt                      3893906 Fri Sep  9 11:48:35 2016
+etcbc4b_pf_v.txt                    4212540 Fri Sep  9 11:48:34 2016
+etcbc4b_ps.txt                      2956173 Fri Sep  9 11:48:39 2016
+etcbc4b_ps_v.txt                    3274807 Fri Sep  9 11:48:37 2016
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">close</span><span class="p">[</span><span class="s">&#39;Greek&#39;</span><span class="p">]()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre> 1m 41s Results directory:
+/Users/dirk/laf/laf-fabric-output/sblgnt/plain
+
+.DS_Store                              6148 Fri Sep  9 11:42:30 2016
+__log__plain.txt                       2401 Fri Sep  9 11:48:51 2016
+sblgnt_gp.txt                       1646554 Fri Sep  9 11:48:40 2016
+sblgnt_gp_v.txt                     1747309 Fri Sep  9 11:48:39 2016
 </pre>
 </div>
 </div>
