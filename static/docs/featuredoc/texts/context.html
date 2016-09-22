@@ -85,7 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mother.html">Mother</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wordgrammar.html">Word grammar</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Context</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Context</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#laf-fabric-versus-shebanq">LAF-Fabric versus SHEBANQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tutorial">Tutorial</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#approach-1">Approach 1</a></li>
@@ -125,7 +125,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -204,53 +204,53 @@ you can download this notebook and see it in real action on your own computer.</
 <p>There are pitfalls in approach 1.
 If you have a query that pinpoints the textual phenomenon that you are after, and then wrap context objects around it,
 there might be unexpected misses. For example, if you look for:</p>
-<div class="highlight-python"><div class="highlight"><pre>[phrase function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">phrase</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <p>and you want to collect the passage information as well, you want to say this:</p>
-<div class="highlight-python"><div class="highlight"><pre>[book [chapter [verse [sentence
-  [phrase function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-]]]]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">book</span> <span class="p">[</span><span class="n">chapter</span> <span class="p">[</span><span class="n">verse</span> <span class="p">[</span><span class="n">sentence</span>
+  <span class="p">[</span><span class="n">phrase</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+<span class="p">]]]]</span>
 </pre></div>
 </div>
 <p>then you miss the cases where a sentence spans more than one verse!</p>
 <p>And if you want the other words or phrases in the same clause as the target phrase, you want something like:</p>
-<div class="highlight-python"><div class="highlight"><pre>[book [chapter [verse [sentence
-  [clause
-    [phrase first]
-    [phrase function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-    [phrase]*
-    [phrase last]
-   ]
-]]]]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">book</span> <span class="p">[</span><span class="n">chapter</span> <span class="p">[</span><span class="n">verse</span> <span class="p">[</span><span class="n">sentence</span>
+  <span class="p">[</span><span class="n">clause</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">first</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">phrase</span><span class="p">]</span><span class="o">*</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">last</span><span class="p">]</span>
+   <span class="p">]</span>
+<span class="p">]]]]</span>
 </pre></div>
 </div>
 <p>But what if the target phrase is itself the first one, or the last one, or both?
 We need to distinguish cases:</p>
-<div class="highlight-python"><div class="highlight"><pre>[book [chapter [verse [sentence
-  [clause
-    [phrase first and last function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-    or
-    [phrase first function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-    [phrase]*
-    [phrase last]
-    or
-    [phrase first]
-    [phrase]*
-    [phrase last function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-    or
-    [phrase first]
-    [phrase]*
-    [phrase function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-    [phrase]*
-    [phrase last]
-   ]
-]]]]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">book</span> <span class="p">[</span><span class="n">chapter</span> <span class="p">[</span><span class="n">verse</span> <span class="p">[</span><span class="n">sentence</span>
+  <span class="p">[</span><span class="n">clause</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">first</span> <span class="ow">and</span> <span class="n">last</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+    <span class="ow">or</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">first</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">phrase</span><span class="p">]</span><span class="o">*</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">last</span><span class="p">]</span>
+    <span class="ow">or</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">first</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">phrase</span><span class="p">]</span><span class="o">*</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">last</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+    <span class="ow">or</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">first</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">phrase</span><span class="p">]</span><span class="o">*</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">phrase</span><span class="p">]</span><span class="o">*</span>
+    <span class="p">[</span><span class="n">phrase</span> <span class="n">last</span><span class="p">]</span>
+   <span class="p">]</span>
+<span class="p">]]]]</span>
 </pre></div>
 </div>
 <p>This is not pleasant and it is still wrong, because if the clause has gaps, and those gaps occur between phrases, than
 any such clause will not be found by this query. We have to say this instead:</p>
-<div class="highlight-python"><div class="highlight"><pre>[book [chapter [verse [sentence
+<div class="highlight-default"><div class="highlight"><pre><span></span>[book [chapter [verse [sentence
   [clause
     [phrase first and last function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
     or
@@ -275,13 +275,13 @@ any such clause will not be found by this query. We have to say this instead:</p
 These thing are not academic, they occur in the ETCBC data! In order to get them the size of this query will explode,
 completely obscuring the intention of it.</p>
 <p>A possible remedy is to simplify and just ask for:</p>
-<div class="highlight-python"><div class="highlight"><pre>[clause
-  [phrase function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
-]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">clause</span>
+  <span class="p">[</span><span class="n">phrase</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <p>and then use another simple query to get the remaining material:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">book</span> <span class="p">[</span><span class="n">chapter</span> <span class="p">[</span><span class="n">verse</span> <span class="p">[</span><span class="n">sentence</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">book</span> <span class="p">[</span><span class="n">chapter</span> <span class="p">[</span><span class="n">verse</span> <span class="p">[</span><span class="n">sentence</span>
     <span class="p">[</span><span class="n">clause</span> <span class="p">[</span><span class="n">phrase</span><span class="p">]]</span>
 <span class="p">]]]]</span>
 </pre></div>
@@ -297,39 +297,39 @@ accessible through the API functions <code class="docutils literal"><span class=
 <p><code class="docutils literal"><span class="pre">L.u</span></code> gives the otype container of a node, e.g. <code class="docutils literal"><span class="pre">L.u('chapter',</span> <span class="pre">w)</span></code> gives the chapter to which word node <code class="docutils literal"><span class="pre">w</span></code> belongs.</p>
 <p><code class="docutils literal"><span class="pre">L.d</span></code> gives the list of contained nodes of a certain type, e.g. <code class="docutils literal"><span class="pre">L.u('subphrase',</span> <span class="pre">v)</span></code> gives the list of subphrases contained in verse node <code class="docutils literal"><span class="pre">v</span></code>.</p>
 <p>So if you go back to the first query:</p>
-<div class="highlight-python"><div class="highlight"><pre>[phrase function = &#39;Pred&#39; [word first lex = &#39;NTN[&#39;]]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">phrase</span> <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span> <span class="p">[</span><span class="n">word</span> <span class="n">first</span> <span class="n">lex</span> <span class="o">=</span> <span class="s1">&#39;NTN[&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <p>then you could process the result as follows (suppose you want to make a csv file of every result with passage info, verb info,
 and a string of _ separated functions of all phrases in the clause).</p>
 <p>Write the query down:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ntn_sim_query</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
-<span class="s">    select all objects where</span>
-<span class="s">    [phrase function = Pred</span>
-<span class="s">      [word focus first (language = Hebrew and (lex = &#39;NTN[&#39; or lex = &#39;FJM[&#39;)) ]</span>
-<span class="s">    ]</span>
-<span class="s">&#39;&#39;&#39;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ntn_sim_query</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    select all objects where</span>
+<span class="s1">    [phrase function = Pred</span>
+<span class="s1">      [word focus first (language = Hebrew and (lex = &#39;NTN[&#39; or lex = &#39;FJM[&#39;)) ]</span>
+<span class="s1">    ]</span>
+<span class="s1">&#39;&#39;&#39;</span>
 </pre></div>
 </div>
 <p>Execute it and gather the results in a sheaf:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">sheaf_ntn_sim</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">mql</span><span class="p">(</span><span class="n">ntn_sim_query</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sheaf_ntn_sim</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">mql</span><span class="p">(</span><span class="n">ntn_sim_query</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Process the results:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">outf</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s">&#39;test.csv&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">outf</span> <span class="o">=</span> <span class="n">outfile</span><span class="p">(</span><span class="s1">&#39;test.csv&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="p">((</span><span class="n">phrase</span><span class="p">,</span> <span class="p">((</span><span class="n">word</span><span class="p">,),)),)</span> <span class="ow">in</span> <span class="n">sheaf_ntn_sim</span><span class="o">.</span><span class="n">results</span><span class="p">():</span>
     <span class="n">info</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">verb_info</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-    <span class="n">clause</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;clause&#39;</span><span class="p">,</span> <span class="n">phrase</span><span class="p">)</span>
-    <span class="n">book</span> <span class="o">=</span>  <span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;book&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">))</span>
-    <span class="n">chapter</span> <span class="o">=</span>  <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;chapter&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">))</span>
-    <span class="n">verse</span> <span class="o">=</span>  <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s">&#39;verse&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">phr</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">):</span>
+    <span class="n">clause</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">phrase</span><span class="p">)</span>
+    <span class="n">book</span> <span class="o">=</span>  <span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">))</span>
+    <span class="n">chapter</span> <span class="o">=</span>  <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;chapter&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">))</span>
+    <span class="n">verse</span> <span class="o">=</span>  <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">phr</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">clause</span><span class="p">):</span>
         <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">phr</span><span class="p">))</span>
-    <span class="n">outf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{} {}:{},{},{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">outf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">book</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">verse</span><span class="p">,</span>
         <span class="n">verb_info</span><span class="p">,</span>
-        <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info</span><span class="p">),</span>
+        <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info</span><span class="p">),</span>
     <span class="p">))</span>
 <span class="n">outf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>

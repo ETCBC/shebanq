@@ -31,9 +31,9 @@
 
   
     <link rel="top" title="SHEBANQ doc 1.1.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Features (by name)" href="0_index.html"/>
-        <link rel="next" title="Preformative -consonantal-transliterated pfm" href="pfm.html"/>
-        <link rel="prev" title="Phrase function function" href="function.html"/> 
+        <link rel="up" title="Features with hints" href="0_hints.html"/>
+        <link rel="next" title="Interword material -pointed-Hebrew trailer_utf8" href="trailer_utf8.html"/>
+        <link rel="prev" title="Frequency-occurrence freq_occ" href="freq_occ.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -105,6 +105,7 @@
 <li class="toctree-l2"><a class="reference internal" href="half_verse.html">Half-verse key <code class="docutils literal"><span class="pre">half_verse</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="trailer_utf8.html">Interword material -pointed-Hebrew <code class="docutils literal"><span class="pre">trailer_utf8</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="qtrailer_utf8.html">Interword material -pointed-Hebrew (qere) <code class="docutils literal"><span class="pre">qtrailer_utf8</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instruction.html">Instruction <code class="docutils literal"><span class="pre">instruction</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="is_root.html">Is root <code class="docutils literal"><span class="pre">is_root</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="language.html">Language <code class="docutils literal"><span class="pre">language</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="lex_utf8.html">Lexeme -consonantal-Hebrew <code class="docutils literal"><span class="pre">lex_utf8</span></code></a></li>
@@ -130,7 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pargr.html">Paragraph <code class="docutils literal"><span class="pre">pargr</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdp.html">Phrase dependent part-of-speech <code class="docutils literal"><span class="pre">pdp</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="function.html">Phrase function <code class="docutils literal"><span class="pre">function</span></code></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Gloss <code class="docutils literal"><span class="pre">gloss</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gloss <code class="docutils literal"><span class="pre">gloss</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfm.html">Preformative -consonantal-transliterated <code class="docutils literal"><span class="pre">pfm</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="g_pfm_utf8.html">Preformative -pointed-Hebrew <code class="docutils literal"><span class="pre">g_pfm_utf8</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="g_pfm.html">Preformative -pointed-transliterated <code class="docutils literal"><span class="pre">g_pfm</span></code></a></li>
@@ -192,7 +193,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -200,7 +201,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="0_index.html">Features (by name)</a> &raquo;</li>
+          <li><a href="0_hints.html">Features with <em>hints</em></a> &raquo;</li>
       
     <li>Gloss <code class="docutils literal"><span class="pre">gloss</span></code></li>
       <li class="wy-breadcrumbs-aside">
@@ -226,18 +227,19 @@ The glosses are not guaranteed to mention all possible meanings, and they
 do not contain heuristics which meanings should be selected in which contexts.</p>
 <p>The <em>gloss</em> is useful for users with limited knowledge of Hebrew to get an impression
 of what the text they are reading is about.</p>
+<p>This feature has been added to the database in a later stage as package called <code class="docutils literal"><span class="pre">lexicon</span></code>.</p>
+<p>You can use it in SHEBANQ queries.</p>
+<p>If you want to use it in LAF-Fabric, you have to load <code class="docutils literal"><span class="pre">lexicon</span></code> as <em>annox</em>.
+Consult the <a class="reference external" href="http://laf-fabric.readthedocs.io/en/latest/texts/API-reference.html#extra-annotation-packages">LAF-Fabric API reference on annoxes</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is not a feature of the ETCBC4 Hebrew Text Database.
-Every word occurrence in the database is linked to a lexicon entry.
-The values of <em>gloss</em> are given in the lexicon only.</p>
+Every word occurrence in the database is linked to a lexicon entry.</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
 <p class="last">In LAF-Fabric, the lexicon material is added, rather uneconomically, as extra features
-of the word occurrences.
-You can load these features by invoking the extra annotation package <em>lexicon</em>, and after
-that the gloss can be used under the name <code class="docutils literal"><span class="pre">gloss</span></code>.</p>
+of the word occurrences.</p>
 </div>
 </div>
 
@@ -248,10 +250,10 @@ that the gloss can be used under the name <code class="docutils literal"><span c
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pfm.html" class="btn btn-neutral float-right" title="Preformative -consonantal-transliterated pfm" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="trailer_utf8.html" class="btn btn-neutral float-right" title="Interword material -pointed-Hebrew trailer_utf8" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="function.html" class="btn btn-neutral" title="Phrase function function" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="freq_occ.html" class="btn btn-neutral" title="Frequency-occurrence freq_occ" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

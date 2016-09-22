@@ -14,6 +14,13 @@ See for an example `Genesis 12:8 <https://shebanq.ancient-data.org/hebrew/text?b
     In cases where the ketiv is different from the qere, the qere has been added to the ETCBC database in a later stage.
     Nevertheless, you can use this feature in queries in SHEBANQ.
 
+This feature has been added to the database in a later stage as package called ``lexicon``.
+
+You can use it in SHEBANQ queries.
+
+If you want to use it in LAF-Fabric, you have to load ``lexicon`` as *annox*.
+Consult the `LAF-Fabric API reference on annoxes <http://laf-fabric.readthedocs.io/en/latest/texts/API-reference.html#extra-annotation-packages>`_.
+
 See also:
 
 * :doc:`ketiv <ketiv>`. 
