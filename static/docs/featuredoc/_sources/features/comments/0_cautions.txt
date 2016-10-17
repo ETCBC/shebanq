@@ -20,7 +20,6 @@ Contents:
     mother_object_type
     otype
     pargr
-    pdp
     rela
     st
     tab
