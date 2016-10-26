@@ -11833,7 +11833,7 @@ This module can turn data with anchors into additional LAF annotations to the bi
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span> <span class="nn">collections</span>
@@ -11861,7 +11861,6 @@ This module can turn data with anchors into additional LAF annotations to the bi
 API reference: http://laf-fabric.readthedocs.org/en/latest/texts/API-reference.html
 Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welcome.html
 
-20m 42s END
 </pre>
 </div>
 </div>
@@ -11872,7 +11871,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;etcbc&#39;</span>
@@ -11897,7 +11896,7 @@ Note that we ask for the XML identifiers, because <code>ExtraData</code> needs t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">API</span> <span class="o">=</span> <span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s1">&#39;lexicon&#39;</span><span class="p">,</span> <span class="s1">&#39;flow_corr&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -11927,45 +11926,45 @@ Note that we ask for the XML identifiers, because <code>ExtraData</code> needs t
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
   0.00s DETAIL: COMPILING m: etcbc4b: UP TO DATE
-  0.01s USING main: etcbc4b DATA COMPILED AT: 2015-11-02T15-08-56
-  0.01s DETAIL: COMPILING a: lexicon: UP TO DATE
+  0.00s USING main: etcbc4b DATA COMPILED AT: 2015-11-02T15-08-56
+  0.00s DETAIL: COMPILING a: lexicon: UP TO DATE
   0.01s USING annox: lexicon DATA COMPILED AT: 2016-07-08T14-32-54
-  0.02s DETAIL: load main: G.node_anchor_min
-  0.10s DETAIL: load main: G.node_anchor_max
-  0.18s DETAIL: load main: G.node_sort
-  0.23s DETAIL: load main: G.node_sort_inv
-  0.63s DETAIL: load main: G.edges_from
-  0.69s DETAIL: load main: G.edges_to
-  0.75s DETAIL: load main: X. [node]  -&gt; 
-  1.91s DETAIL: load main: X. [node]  &lt;- 
-  2.74s DETAIL: load main: F.etcbc4_db_oid [node] 
-  3.51s DETAIL: load main: F.etcbc4_db_otype [node] 
-  4.18s DETAIL: load main: F.etcbc4_ft_function [node] 
-  4.29s DETAIL: load main: F.etcbc4_ft_lex [node] 
-  4.47s DETAIL: load main: F.etcbc4_ft_ls [node] 
-  4.66s DETAIL: load main: F.etcbc4_ft_prs [node] 
-  4.85s DETAIL: load main: F.etcbc4_ft_rela [node] 
-  5.20s DETAIL: load main: F.etcbc4_ft_sp [node] 
-  5.39s DETAIL: load main: F.etcbc4_ft_typ [node] 
-  5.72s DETAIL: load main: F.etcbc4_ft_uvf [node] 
-  5.91s DETAIL: load main: F.etcbc4_ft_vs [node] 
-  6.10s DETAIL: load main: F.etcbc4_sft_chapter [node] 
-  6.11s DETAIL: load main: F.etcbc4_sft_verse [node] 
-  6.12s DETAIL: load main: F.etcbc4_ft_mother [e] 
-  6.19s DETAIL: load main: C.etcbc4_ft_mother -&gt; 
-  6.37s DETAIL: load main: C.etcbc4_ft_mother &lt;- 
-  6.51s DETAIL: load annox lexicon: F.etcbc4_lex_nametype [node] 
-  6.64s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/flow_corr/__log__flow_corr.txt
-  6.66s INFO: LOADING PREPARED data: please wait ... 
-  6.67s prep prep: G.node_sort
-  6.72s prep prep: G.node_sort_inv
-  7.29s prep prep: L.node_up
-    10s prep prep: L.node_down
-    16s prep prep: V.verses
-    16s prep prep: V.books_la
-    16s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    18s INFO: LOADED PREPARED data
-    18s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK flow_corr AT 2016-10-26T14-05-39
+  0.01s DETAIL: load main: G.node_anchor_min
+  0.05s DETAIL: load main: G.node_anchor_max
+  0.12s DETAIL: load main: G.node_sort
+  0.16s DETAIL: load main: G.node_sort_inv
+  0.62s DETAIL: load main: G.edges_from
+  0.67s DETAIL: load main: G.edges_to
+  0.73s DETAIL: load main: X. [node]  -&gt; 
+  1.79s DETAIL: load main: X. [node]  &lt;- 
+  2.43s DETAIL: load main: F.etcbc4_db_oid [node] 
+  3.06s DETAIL: load main: F.etcbc4_db_otype [node] 
+  3.73s DETAIL: load main: F.etcbc4_ft_function [node] 
+  3.83s DETAIL: load main: F.etcbc4_ft_lex [node] 
+  3.99s DETAIL: load main: F.etcbc4_ft_ls [node] 
+  4.16s DETAIL: load main: F.etcbc4_ft_prs [node] 
+  4.32s DETAIL: load main: F.etcbc4_ft_rela [node] 
+  4.61s DETAIL: load main: F.etcbc4_ft_sp [node] 
+  4.78s DETAIL: load main: F.etcbc4_ft_typ [node] 
+  5.07s DETAIL: load main: F.etcbc4_ft_uvf [node] 
+  5.24s DETAIL: load main: F.etcbc4_ft_vs [node] 
+  5.41s DETAIL: load main: F.etcbc4_sft_chapter [node] 
+  5.42s DETAIL: load main: F.etcbc4_sft_verse [node] 
+  5.44s DETAIL: load main: F.etcbc4_ft_mother [e] 
+  5.50s DETAIL: load main: C.etcbc4_ft_mother -&gt; 
+  5.63s DETAIL: load main: C.etcbc4_ft_mother &lt;- 
+  5.75s DETAIL: load annox lexicon: F.etcbc4_lex_nametype [node] 
+  5.85s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/flow_corr/__log__flow_corr.txt
+  5.87s INFO: LOADING PREPARED data: please wait ... 
+  5.87s prep prep: G.node_sort
+  5.92s prep prep: G.node_sort_inv
+  6.35s prep prep: L.node_up
+  8.90s prep prep: L.node_down
+    14s prep prep: V.verses
+    14s prep prep: V.books_la
+    14s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+    17s INFO: LOADED PREPARED data
+    17s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon FOR TASK flow_corr AT 2016-10-26T17-49-52
 </pre>
 </div>
 </div>
@@ -11985,7 +11984,7 @@ Note that we ask for the XML identifiers, because <code>ExtraData</code> needs t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ln_base</span> <span class="o">=</span> <span class="s1">&#39;https://shebanq.ancient-data.org/hebrew/text&#39;</span>
@@ -12031,7 +12030,7 @@ Note that we ask for the XML identifiers, because <code>ExtraData</code> needs t
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">verbs_initial</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
@@ -12086,7 +12085,7 @@ Here we look up the possible values.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">predicate_functions</span> <span class="o">=</span> <span class="p">{</span>
@@ -12101,7 +12100,7 @@ Here we look up the possible values.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">legal_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -12127,7 +12126,7 @@ We need some extra values, to indicate other coding errors.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">error_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -12154,7 +12153,7 @@ We need some extra values, to indicate other coding errors.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">legal_values</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">error_values</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -12175,7 +12174,7 @@ We need some extra values, to indicate other coding errors.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 12s {&#39;function&#39;: {&#39;EPPr&#39;, &#39;PreC&#39;, &#39;NCoS&#39;, &#39;Rela&#39;, &#39;Modi&#39;, &#39;ModS&#39;, &#39;Intj&#39;, &#39;Pred&#39;, &#39;IntS&#39;, &#39;Frnt&#39;, &#39;PreO&#39;, &#39;Nega&#39;, &#39;Ques&#39;, &#39;Adju&#39;, &#39;ExsS&#39;, &#39;Cmpl&#39;, &#39;Supp&#39;, &#39;NCop&#39;, &#39;Subj&#39;, &#39;PrcS&#39;, &#39;Loca&#39;, &#39;Time&#39;, &#39;Voct&#39;, &#39;Conj&#39;, &#39;BoundErr&#39;, &#39;PtcO&#39;, &#39;Objc&#39;, &#39;PreS&#39;, &#39;Exst&#39;, &#39;PrAd&#39;}}
+<pre>  1.55s {&#39;function&#39;: {&#39;NCoS&#39;, &#39;ModS&#39;, &#39;Subj&#39;, &#39;NCop&#39;, &#39;Rela&#39;, &#39;Adju&#39;, &#39;Nega&#39;, &#39;Ques&#39;, &#39;ExsS&#39;, &#39;Pred&#39;, &#39;EPPr&#39;, &#39;PreO&#39;, &#39;PreS&#39;, &#39;PrcS&#39;, &#39;Time&#39;, &#39;Frnt&#39;, &#39;Conj&#39;, &#39;PtcO&#39;, &#39;Modi&#39;, &#39;Intj&#39;, &#39;Voct&#39;, &#39;Exst&#39;, &#39;Cmpl&#39;, &#39;Loca&#39;, &#39;IntS&#39;, &#39;PrAd&#39;, &#39;PreC&#39;, &#39;BoundErr&#39;, &#39;Supp&#39;, &#39;Objc&#39;}}
 </pre>
 </div>
 </div>
@@ -12186,13 +12185,15 @@ We need some extra values, to indicate other coding errors.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Finding occurrences ...&#39;</span><span class="p">)</span>
 <span class="n">occs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>   <span class="c1"># dictionary of all verb occurrence nodes per verb lexeme</span>
 <span class="n">npoccs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># same, but those not occurring in a &quot;predicate&quot;</span>
 <span class="n">clause_verb</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>    <span class="c1"># dictionary of all verb occurrence nodes per clause node</span>
+<span class="n">clause_verb_index</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span> <span class="c1"># mapping from clauses to its main verb(s)</span>
+<span class="n">verb_clause_index</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># mapping from verbs to the clauses of which it is main verb</span>
 <span class="n">clause_verb_selected</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># idem but for the occurrences of selected verbs</span>
 
 <span class="n">nw</span> <span class="o">=</span> <span class="mi">0</span>
@@ -12207,6 +12208,9 @@ We need some extra values, to indicate other coding errors.</p>
     <span class="n">occs</span><span class="p">[</span><span class="n">lex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
     <span class="n">cn</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
     <span class="n">clause_verb</span><span class="p">[</span><span class="n">cn</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">clause_verb_index</span><span class="p">[</span><span class="n">cn</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">lex</span><span class="p">)</span>
+    <span class="n">verb_clause_index</span><span class="p">[</span><span class="n">lex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cn</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">lex</span> <span class="ow">in</span> <span class="n">verbs</span><span class="p">:</span>
         <span class="n">nws</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">clause_verb_selected</span><span class="p">[</span><span class="n">cn</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -12234,28 +12238,28 @@ We need some extra values, to indicate other coding errors.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 14s Finding occurrences ...
-36m 16s Done
+<pre>  1.59s Finding occurrences ...
+  3.50s Done
 Total:     73679 verb occurrences in 70131 clauses
 Selected:  16209 verb occurrences in 16053 clauses
-36m 16s &lt;BR   556 occurrences of which   33 outside a predicate phrase
-36m 16s &lt;FH  2629 occurrences of which   59 outside a predicate phrase
-36m 16s &lt;LH   890 occurrences of which   10 outside a predicate phrase
-36m 16s BR&gt;    54 occurrences of which    3 outside a predicate phrase
-36m 16s BW&gt;  2570 occurrences of which   27 outside a predicate phrase
-36m 16s CJT    85 occurrences of which    1 outside a predicate phrase
-36m 16s CWB  1056 occurrences of which   22 outside a predicate phrase
-36m 16s FJM   609 occurrences of which    3 outside a predicate phrase
-36m 16s HLK  1554 occurrences of which   30 outside a predicate phrase
-36m 16s JRD   377 occurrences of which   16 outside a predicate phrase
-36m 16s JY&gt;  1069 occurrences of which   32 outside a predicate phrase
-36m 16s NF&gt;   656 occurrences of which   52 outside a predicate phrase
-36m 16s NPL   445 occurrences of which   11 outside a predicate phrase
-36m 16s NTN  2017 occurrences of which   10 outside a predicate phrase
-36m 16s NWS   159 occurrences of which    4 outside a predicate phrase
-36m 16s PQD   303 occurrences of which   72 outside a predicate phrase
-36m 16s QR&gt;   883 occurrences of which   12 outside a predicate phrase
-36m 16s SWR   297 occurrences of which    1 outside a predicate phrase
+  3.50s &lt;BR   556 occurrences of which   33 outside a predicate phrase
+  3.50s &lt;FH  2629 occurrences of which   59 outside a predicate phrase
+  3.50s &lt;LH   890 occurrences of which   10 outside a predicate phrase
+  3.50s BR&gt;    54 occurrences of which    3 outside a predicate phrase
+  3.50s BW&gt;  2570 occurrences of which   27 outside a predicate phrase
+  3.50s CJT    85 occurrences of which    1 outside a predicate phrase
+  3.51s CWB  1056 occurrences of which   22 outside a predicate phrase
+  3.51s FJM   609 occurrences of which    3 outside a predicate phrase
+  3.51s HLK  1554 occurrences of which   30 outside a predicate phrase
+  3.51s JRD   377 occurrences of which   16 outside a predicate phrase
+  3.51s JY&gt;  1069 occurrences of which   32 outside a predicate phrase
+  3.51s NF&gt;   656 occurrences of which   52 outside a predicate phrase
+  3.51s NPL   445 occurrences of which   11 outside a predicate phrase
+  3.51s NTN  2017 occurrences of which   10 outside a predicate phrase
+  3.51s NWS   159 occurrences of which    4 outside a predicate phrase
+  3.51s PQD   303 occurrences of which   72 outside a predicate phrase
+  3.51s QR&gt;   883 occurrences of which   12 outside a predicate phrase
+  3.51s SWR   297 occurrences of which    1 outside a predicate phrase
 </pre>
 </div>
 </div>
@@ -12284,7 +12288,7 @@ The fields per row are the node numbers of the clause in which the verb occurs, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">phrases_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
@@ -12361,28 +12365,28 @@ The fields per row are the node numbers of the clause in which the verb occurs, 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 22s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NFa_etcbc4b.csv
-36m 22s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/FJM_etcbc4b.csv
-36m 22s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/QRa_etcbc4b.csv
-36m 22s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/BRa_etcbc4b.csv
-36m 22s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/JRD_etcbc4b.csv
-36m 23s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/BWa_etcbc4b.csv
-36m 23s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NTN_etcbc4b.csv
-36m 23s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/JYa_etcbc4b.csv
-36m 23s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NPL_etcbc4b.csv
-36m 23s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/CWB_etcbc4b.csv
-36m 24s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/oFH_etcbc4b.csv
-36m 24s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/HLK_etcbc4b.csv
-36m 24s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/PQD_etcbc4b.csv
-36m 24s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/oBR_etcbc4b.csv
-36m 24s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NWS_etcbc4b.csv
-36m 24s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/CJT_etcbc4b.csv
-36m 25s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/oLH_etcbc4b.csv
-36m 25s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/SWR_etcbc4b.csv
-36m 25s 52110  phrases seen 1  time(s)
-36m 25s 181    phrases seen 2  time(s)
-36m 25s 9      phrases seen 3  time(s)
-36m 25s Total phrases seen: 52300
+<pre>  4.05s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/JYa_etcbc4b.csv
+  4.07s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/BRa_etcbc4b.csv
+  4.19s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/FJM_etcbc4b.csv
+  4.35s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/CWB_etcbc4b.csv
+  4.73s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/oFH_etcbc4b.csv
+  5.12s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/BWa_etcbc4b.csv
+  5.22s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/oBR_etcbc4b.csv
+  5.23s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/CJT_etcbc4b.csv
+  5.26s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NWS_etcbc4b.csv
+  5.35s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NPL_etcbc4b.csv
+  5.40s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/SWR_etcbc4b.csv
+  5.47s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/PQD_etcbc4b.csv
+  5.61s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/oLH_etcbc4b.csv
+  5.81s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/HLK_etcbc4b.csv
+  5.95s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/QRa_etcbc4b.csv
+  6.07s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NFa_etcbc4b.csv
+  6.42s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/NTN_etcbc4b.csv
+  6.51s Generated correction sheet for verb /Users/dirk/Dropbox/SYNVAR/corr_blank/JRD_etcbc4b.csv
+  6.56s 52110  phrases seen 1  time(s)
+  6.56s 181    phrases seen 2  time(s)
+  6.56s 9      phrases seen 3  time(s)
+  6.56s Total phrases seen: 52300
 </pre>
 </div>
 </div>
@@ -12405,7 +12409,7 @@ We check whether we get multiple corrections for the same phrase.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">phrases_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
@@ -12489,123 +12493,123 @@ We check whether we get multiple corrections for the same phrase.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>36m 27s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/oBR_etcbc4b.csv
+<pre>  6.68s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/oBR_etcbc4b.csv
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/oFH_etcbc4b.csv
-36m 27s &lt;FH: Found   735 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/oFH_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
+<pre>  6.68s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/oFH_etcbc4b.csv
+  6.72s &lt;FH: Found   735 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/oFH_etcbc4b.csv
+  6.72s OK: Corrected phrases did not receive multiple corrections
+  6.72s OK: all corrected nodes where phrase nodes
+  6.72s OK: all corrected values are legal
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>36m 27s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/oLH_etcbc4b.csv
+<pre>  6.72s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/oLH_etcbc4b.csv
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/BRa_etcbc4b.csv
-36m 27s BR&gt;: Found   739 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/BRa_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/BWa_etcbc4b.csv
-36m 27s BW&gt;: Found   794 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/BWa_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/CJT_etcbc4b.csv
-36m 27s CJT: Found   797 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/CJT_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/CWB_etcbc4b.csv
-36m 27s CWB: Found   842 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/CWB_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/FJM_etcbc4b.csv
-36m 27s FJM: Found   962 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/FJM_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/HLK_etcbc4b.csv
-36m 27s HLK: Found  1121 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/HLK_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
+<pre>  6.72s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/BRa_etcbc4b.csv
+  6.73s BR&gt;: Found   739 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/BRa_etcbc4b.csv
+  6.73s OK: Corrected phrases did not receive multiple corrections
+  6.73s OK: all corrected nodes where phrase nodes
+  6.73s OK: all corrected values are legal
+  6.73s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/BWa_etcbc4b.csv
+  6.76s BW&gt;: Found   794 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/BWa_etcbc4b.csv
+  6.76s OK: Corrected phrases did not receive multiple corrections
+  6.77s OK: all corrected nodes where phrase nodes
+  6.77s OK: all corrected values are legal
+  6.77s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/CJT_etcbc4b.csv
+  6.77s CJT: Found   797 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/CJT_etcbc4b.csv
+  6.77s OK: Corrected phrases did not receive multiple corrections
+  6.77s OK: all corrected nodes where phrase nodes
+  6.77s OK: all corrected values are legal
+  6.77s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/CWB_etcbc4b.csv
+  6.79s CWB: Found   842 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/CWB_etcbc4b.csv
+  6.79s OK: Corrected phrases did not receive multiple corrections
+  6.79s OK: all corrected nodes where phrase nodes
+  6.80s OK: all corrected values are legal
+  6.80s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/FJM_etcbc4b.csv
+  6.81s FJM: Found   962 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/FJM_etcbc4b.csv
+  6.81s OK: Corrected phrases did not receive multiple corrections
+  6.81s OK: all corrected nodes where phrase nodes
+  6.81s OK: all corrected values are legal
+  6.81s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/HLK_etcbc4b.csv
+  6.84s HLK: Found  1121 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/HLK_etcbc4b.csv
+  6.84s OK: Corrected phrases did not receive multiple corrections
+  6.84s OK: all corrected nodes where phrase nodes
+  6.84s OK: all corrected values are legal
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>36m 27s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/JRD_etcbc4b.csv
-36m 27s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/JYa_etcbc4b.csv
+<pre>  6.84s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/JRD_etcbc4b.csv
+  6.84s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/JYa_etcbc4b.csv
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/NFa_etcbc4b.csv
-36m 27s NF&gt;: Found  1225 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/NFa_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
+<pre>  6.84s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/NFa_etcbc4b.csv
+  6.85s NF&gt;: Found  1225 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/NFa_etcbc4b.csv
+  6.86s OK: Corrected phrases did not receive multiple corrections
+  6.86s OK: all corrected nodes where phrase nodes
+  6.86s OK: all corrected values are legal
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>36m 27s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/NPL_etcbc4b.csv
+<pre>  6.86s NO file /Users/dirk/Dropbox/SYNVAR/corr_filled/NPL_etcbc4b.csv
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/NTN_etcbc4b.csv
-36m 27s NTN: Found  1369 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/NTN_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/NWS_etcbc4b.csv
-36m 27s NWS: Found  1380 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/NWS_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/PQD_etcbc4b.csv
-36m 27s PQD: Found  1406 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/PQD_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/QRa_etcbc4b.csv
-36m 27s QR&gt;: Found  1409 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/QRa_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/SWR_etcbc4b.csv
-36m 27s SWR: Found  1434 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/SWR_etcbc4b.csv
-36m 27s OK: Corrected phrases did not receive multiple corrections
-36m 27s OK: all corrected nodes where phrase nodes
-36m 27s OK: all corrected values are legal
-36m 27s Found 1434 corrections in the phrase function
-36m 27s 41205  phrases seen 1  time(s)
-36m 27s 94     phrases seen 2  time(s)
-36m 27s 3      phrases seen 3  time(s)
-36m 27s Total phrases seen: 41302
+<pre>  6.86s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/NTN_etcbc4b.csv
+  6.89s NTN: Found  1369 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/NTN_etcbc4b.csv
+  6.89s OK: Corrected phrases did not receive multiple corrections
+  6.89s OK: all corrected nodes where phrase nodes
+  6.89s OK: all corrected values are legal
+  6.89s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/NWS_etcbc4b.csv
+  6.90s NWS: Found  1380 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/NWS_etcbc4b.csv
+  6.90s OK: Corrected phrases did not receive multiple corrections
+  6.90s OK: all corrected nodes where phrase nodes
+  6.90s OK: all corrected values are legal
+  6.90s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/PQD_etcbc4b.csv
+  6.91s PQD: Found  1406 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/PQD_etcbc4b.csv
+  6.91s OK: Corrected phrases did not receive multiple corrections
+  6.91s OK: all corrected nodes where phrase nodes
+  6.91s OK: all corrected values are legal
+  6.91s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/QRa_etcbc4b.csv
+  6.92s QR&gt;: Found  1409 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/QRa_etcbc4b.csv
+  6.92s OK: Corrected phrases did not receive multiple corrections
+  6.93s OK: all corrected nodes where phrase nodes
+  6.93s OK: all corrected values are legal
+  6.93s Processing /Users/dirk/Dropbox/SYNVAR/corr_filled/SWR_etcbc4b.csv
+  6.93s SWR: Found  1434 corrections in /Users/dirk/Dropbox/SYNVAR/corr_filled/SWR_etcbc4b.csv
+  6.93s OK: Corrected phrases did not receive multiple corrections
+  6.93s OK: all corrected nodes where phrase nodes
+  6.93s OK: all corrected values are legal
+  6.94s Found 1434 corrections in the phrase function
+  6.97s 41205  phrases seen 1  time(s)
+  6.97s 94     phrases seen 2  time(s)
+  6.97s 3      phrases seen 3  time(s)
+  6.97s Total phrases seen: 41302
 </pre>
 </div>
 </div>
@@ -12626,7 +12630,7 @@ We check whether we get multiple corrections for the same phrase.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">enrich_field_spec</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
@@ -12693,7 +12697,7 @@ We check whether we get multiple corrections for the same phrase.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 49s 6 Enrich field specifications OK
+<pre>  6.99s 6 Enrich field specifications OK
 valence = {adjunct, complement, core}
 predication = {NA, copula, regular}
 grammatical = {*, NA, direct_object, indirect_object, principal_direct_object, subject}
@@ -12710,7 +12714,7 @@ semantic = {benefactive, instrument, location, manner, time}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">enrich_baseline_rules</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -12756,7 +12760,7 @@ semantic = {benefactive, instrument, location, manner, time}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">transform</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(((</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="p">{}),</span> <span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="p">{})))</span>
@@ -12796,7 +12800,7 @@ semantic = {benefactive, instrument, location, manner, time}
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>36m 54s Enrich baseline rules are OK (204 good)
+<pre>  7.04s Enrich baseline rules are OK (204 good)
 </pre>
 </div>
 </div>
@@ -12817,7 +12821,7 @@ semantic = {benefactive, instrument, location, manner, time}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ltpl</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:&lt;8}</span><span class="s1">: &#39;</span><span class="o">+</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;15}</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="n">nef</span><span class="p">)</span>
@@ -12954,7 +12958,7 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">objectfuncs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
@@ -12977,7 +12981,7 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">body_parts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
@@ -13009,7 +13013,7 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Finding direct objects and determining the principal one&#39;</span><span class="p">)</span>
@@ -13017,6 +13021,7 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
 <span class="n">pdirectobjects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="n">clause_objects</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
 <span class="n">clause_objects_cnt</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+<span class="n">clause_objects_verb</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
 
 <span class="n">mobjects</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span> <span class="c1"># count how many clauses have m objects (for each m)</span>
 <span class="n">cmobjects</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span> <span class="c1"># count how many clauses have m cast objects (for each m)</span>
@@ -13057,16 +13062,19 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
     <span class="c1"># find clause objects</span>
     <span class="k">for</span> <span class="n">ac</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;sentence&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)):</span>
         <span class="n">mothers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">mother</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">mothers</span> <span class="ow">and</span> <span class="n">mothers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">:</span>
-            <span class="n">cr</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
-            <span class="n">ct</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">cr</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;Objc&#39;</span><span class="p">}:</span> <span class="n">label</span> <span class="o">=</span> <span class="n">cr</span>
-            <span class="k">elif</span> <span class="n">ct</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;InfC&#39;</span><span class="p">}:</span> <span class="n">label</span> <span class="o">=</span> <span class="n">ct</span>
-            <span class="k">else</span><span class="p">:</span> <span class="k">continue</span>
-            <span class="n">dobjects</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;c_&#39;</span><span class="o">+</span><span class="n">label</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
-            <span class="n">dobjects_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
-            <span class="n">clause_objects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
-            <span class="n">clause_objects_cnt</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">mothers</span> <span class="ow">and</span> <span class="n">mothers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">):</span> <span class="k">continue</span>
+        <span class="n">cr</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="n">ct</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cr</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;Objc&#39;</span><span class="p">}:</span> <span class="n">label</span> <span class="o">=</span> <span class="n">cr</span>
+        <span class="k">elif</span> <span class="n">ct</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;InfC&#39;</span><span class="p">}:</span> <span class="n">label</span> <span class="o">=</span> <span class="n">ct</span>
+        <span class="k">else</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="n">dobjects</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;c_&#39;</span><span class="o">+</span><span class="n">label</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="n">dobjects_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="n">clause_objects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="n">clause_objects_cnt</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;InfC&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">lex</span> <span class="ow">in</span> <span class="n">clause_verb_index</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
+                <span class="n">clause_objects_verb</span><span class="p">[</span><span class="n">lex</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
 
     <span class="c1"># order the objects in the natural ordering</span>
     <span class="n">dobjects_order</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dobjects_set</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">)</span>
@@ -13125,7 +13133,7 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
 <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;40}</span><span class="s1">: </span><span class="si">{:&gt;5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Clauses with a cast direct object&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cmobjects</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;40}</span><span class="s1">: </span><span class="si">{:&gt;5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Total number of clauses&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">clause_verb</span><span class="p">)),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">clause_objects_cnt</span><span class="p">:</span>
-    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;40}</span><span class="s1">: </span><span class="si">{:&gt;5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Total number of clauses&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">clause_verb</span><span class="p">)),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;40}</span><span class="s1">: </span><span class="si">{:&gt;5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Number of clauses as </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">clause_objects_cnt</span><span class="p">[</span><span class="n">label</span><span class="p">])),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13138,19 +13146,21 @@ So we generated the preliminary grammatical label <code>_promoted_direct_object<
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>38m 49s Finding direct objects and determining the principal one
-38m 50s Done
-38m 50s Clauses with  4 objects                 :     9
-38m 50s Clauses with  3 objects                 :   225
-38m 50s Clauses with  2 objects                 :  4117
-38m 50s Clauses with  1 objects                 : 28726
-38m 50s Clauses with  0 objects                 : 37054
-38m 50s Clauses with  2 complements as objects  :    30
-38m 50s Clauses with  1 complements as objects  :  3658
+<pre>  7.38s Finding direct objects and determining the principal one
+  9.11s Done
+Clauses with  4 objects                 :     9
+Clauses with  3 objects                 :   225
+Clauses with  2 objects                 :  4117
+Clauses with  1 objects                 : 28726
+Clauses with  0 objects                 : 37054
+Clauses with  2 complements as objects  :    30
+Clauses with  1 complements as objects  :  3658
 Clauses with a principal object         :  4236
 Clauses with a direct object            : 37671
 Clauses with a cast direct object       :  3688
 Total number of clauses                 : 70131
+Number of clauses as Objc               :  1393
+Number of clauses as InfC               :  5524
 </pre>
 </div>
 </div>
@@ -13199,7 +13209,7 @@ The outcome is $L$ (complement is <em>locative</em>) or $I$ (complement is <em>i
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">complfuncs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
@@ -13218,7 +13228,7 @@ The outcome is $L$ (complement is <em>locative</em>) or $I$ (complement is <em>i
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">locative_lexemes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
@@ -13281,7 +13291,7 @@ The outcome is $L$ (complement is <em>locative</em>) or $I$ (complement is <em>i
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Determinig kind of complements&#39;</span><span class="p">)</span>
@@ -13355,12 +13365,12 @@ The outcome is $L$ (complement is <em>locative</em>) or $I$ (complement is <em>i
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>21m 58s Determinig kind of complements
-21m 59s Done
-Phrases of kind C :  17188
-Phrases of kind L :  12081
-Phrases of kind I :   7812
-Total complements :  37081
+<pre>  9.26s Determinig kind of complements
+    11s Done
+Phrases of kind C :  16932
+Phrases of kind L :  11950
+Phrases of kind I :   7482
+Total complements :  36364
 Total phrases     : 214555
 </pre>
 </div>
@@ -13372,7 +13382,7 @@ Total phrases     : 214555
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">has_L</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">pn</span><span class="p">):</span>
@@ -13410,7 +13420,7 @@ It takes a phrase node and a set of new label values, and modifies those values.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">grule_as_str</span> <span class="o">=</span> <span class="p">{</span>
@@ -13487,7 +13497,7 @@ The rule itself is a list of items.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">enrich_logic</span> <span class="o">=</span> <span class="p">{</span>
@@ -13516,7 +13526,7 @@ The rule itself is a list of items.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rule_index</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
@@ -13584,17 +13594,17 @@ The rule itself is a list of items.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>22m 15s CJT-1 if function   = Adju     AND has_L           AND is_lex_personal
+<pre>    11s CJT-1 if function   = Adju     AND has_L           AND is_lex_personal
       semantic   =&gt; benefactive    
 
-22m 15s CJT-2 if function   = Cmpl     AND has_H_locale   
+    11s CJT-2 if function   = Cmpl     AND has_H_locale   
       lexical    =&gt; location       
 
-22m 15s CJT-3 if function   = Cmpl     AND is_lex_local   
+    11s CJT-3 if function   = Cmpl     AND is_lex_local   
       lexical    =&gt; location       
       semantic   =&gt; location       
 
-22m 15s All 3 rules OK
+    11s All 3 rules OK
 </pre>
 </div>
 </div>
@@ -13605,7 +13615,7 @@ The rule itself is a list of items.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">generic_cases</span> <span class="o">=</span> <span class="p">{}</span>
@@ -13646,13 +13656,13 @@ The rule itself is a list of items.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">COMMON_FIELDS</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    cnode#</span>
 <span class="s1">    vnode#</span>
-<span class="s1">    pnode#</span>
+<span class="s1">    onode#</span>
 <span class="s1">    book</span>
 <span class="s1">    chapter</span>
 <span class="s1">    verse</span>
@@ -13666,14 +13676,14 @@ The rule itself is a list of items.</p>
 <span class="n">PHRASE_FIELDS</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    type</span>
 <span class="s1">    function</span>
-<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">enrich_fields</span><span class="p">)</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
 <span class="n">CLAUSE_FIELDS</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    type</span>
 <span class="s1">    rela</span>
 <span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
-<span class="n">field_names</span> <span class="o">=</span> <span class="n">COMMON_FIELDS</span> <span class="o">+</span> <span class="n">PHRASE_FIELDS</span> <span class="o">+</span> <span class="n">CLAUSE_FIELDS</span>
+<span class="n">field_names</span> <span class="o">=</span> <span class="n">COMMON_FIELDS</span> <span class="o">+</span> <span class="n">PHRASE_FIELDS</span> <span class="o">+</span> <span class="n">CLAUSE_FIELDS</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">enrich_fields</span><span class="p">)</span> 
 <span class="n">pfillrows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CLAUSE_FIELDS</span><span class="p">)</span>
 <span class="n">cfillrows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">PHRASE_FIELDS</span><span class="p">)</span>
 <span class="n">fillrows</span> <span class="o">=</span>  <span class="n">pfillrows</span> <span class="o">+</span> <span class="n">cfillrows</span>
@@ -13689,28 +13699,29 @@ The rule itself is a list of items.</p>
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>ERROR:root:An unexpected error occurred while tokenizing input
-The following traceback may be corrupted or invalid
-The error message is: (&#39;EOF in multi-line string&#39;, (1, 0))
-
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>cnode#
+vnode#
+onode#
+book
+chapter
+verse
+verb_lexeme
+verb_stem
+verb_occurrence
+text
+constituent
+type
+function
+type
+rela
+valence
+predication
+grammatical
+original
+lexical
+semantic
 </pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-eb7d22a34d14&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">     23</span>     phrase_text
-<span class="ansi-green-intense-fg ansi-bold">     24</span>     function
-<span class="ansi-green-fg">---&gt; 25</span><span class="ansi-red-fg"> &#39;&#39;&#39;.strip().split() + list(enrich_fields)
-</span><span class="ansi-green-intense-fg ansi-bold">     26</span> 
-<span class="ansi-green-intense-fg ansi-bold">     27</span> field_names <span class="ansi-blue-fg">=</span> COMMON_FIELDS <span class="ansi-blue-fg">+</span> CLAUSE_FIELDS <span class="ansi-blue-fg">+</span> PHRASE_FIELDS
-
-<span class="ansi-red-fg">NameError</span>: name &#39;enrich_fields&#39; is not defined</pre>
 </div>
 </div>
 
@@ -13720,26 +13731,21 @@ The error message is: (&#39;EOF in multi-line string&#39;, (1, 0))
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">phrases_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">subclauses_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">subclauses_objc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">subclauses_infc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">subclauses_good_infc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-
-
+<span class="n">clause_objects_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
+<span class="n">clause_objects_infc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">gen_sheet_enrich</span><span class="p">(</span><span class="n">verb</span><span class="p">):</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">fieldsep</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span>
     <span class="n">clauses_seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">wn</span> <span class="ow">in</span> <span class="n">occs</span><span class="p">[</span><span class="n">verb</span><span class="p">]:</span>
-        <span class="n">cl</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">wn</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cl</span> <span class="ow">in</span> <span class="n">clauses_seen</span><span class="p">:</span> <span class="k">continue</span>
-        <span class="n">clauses_seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cl</span><span class="p">)</span>
         <span class="n">cn</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">wn</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">clauses_seen</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="n">clauses_seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cn</span><span class="p">)</span>
         <span class="n">vn</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="n">wn</span><span class="p">)</span>
         <span class="n">bn</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">wn</span><span class="p">)</span>
         <span class="n">book</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">book_name</span><span class="p">(</span><span class="n">bn</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">)</span>
@@ -13755,20 +13761,24 @@ The error message is: (&#39;EOF in multi-line string&#39;, (1, 0))
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">common_fields</span> <span class="o">+</span> <span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">fillrows</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">pn</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">cn</span><span class="p">):</span>
             <span class="n">phrases_seen</span><span class="p">[</span><span class="n">pn</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">common_fields</span> <span class="o">=</span> <span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">wn</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">book</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">verse</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vstem</span><span class="p">,</span> <span class="n">vt</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;phrase&#39;</span><span class="p">)</span>
             <span class="n">pt</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">pn</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">common_fields</span> <span class="o">=</span> <span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">wn</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">book</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">verse</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vstem</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="s1">&#39;phrase&#39;</span><span class="p">)</span>
             <span class="n">pty</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span>
             <span class="n">pf</span> <span class="o">=</span> <span class="n">pf_corr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pn</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">))</span>
-            <span class="n">phrase_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">pfillrows</span> <span class="o">+</span> <span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">pty</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span> <span class="o">+</span> <span class="n">apply_logic</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">transformp</span><span class="p">[</span><span class="n">pf</span><span class="p">])</span>            
-            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">common_fields</span> <span class="o">+</span> <span class="n">phrase_fields</span> <span class="o">+</span> <span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">pfillrows</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">scn</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">cn</span><span class="p">):</span>
-            <span class="n">subclauses_seen</span><span class="p">[</span><span class="n">scn</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">common_fields</span> <span class="o">=</span> <span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">wn</span><span class="p">,</span> <span class="n">scn</span><span class="p">,</span> <span class="n">book</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">verse</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vstem</span><span class="p">,</span> <span class="n">vt</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;clause&#39;</span><span class="p">)</span>
+            <span class="n">phrase_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">pfillrows</span> <span class="o">+</span> <span class="p">(</span><span class="n">pty</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span> <span class="o">+</span> <span class="n">apply_logic</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">transform</span><span class="p">[</span><span class="s1">&#39;phrase&#39;</span><span class="p">][</span><span class="n">pf</span><span class="p">])</span>            
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">common_fields</span> <span class="o">+</span> <span class="n">phrase_fields</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">scn</span> <span class="ow">in</span> <span class="n">clause_objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="nb">set</span><span class="p">()):</span>
+            <span class="n">clause_objects_seen</span><span class="p">[</span><span class="n">verb</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">sct</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">scn</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="n">scty</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">))</span>
-            <span class="n">scr</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">))</span>
-            <span class="n">clause_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">cfillrows</span> <span class="o">+</span> <span class="p">(</span><span class="n">sct</span><span class="p">,</span> <span class="n">scty</span><span class="p">,</span> <span class="n">scr</span><span class="p">)</span> <span class="o">+</span> <span class="n">apply_logic</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">scn</span><span class="p">,</span> <span class="n">transformc</span><span class="p">[</span><span class="n">scf</span><span class="p">])</span>            
-            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">common_fields</span> <span class="o">+</span> <span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">cfillrows</span><span class="p">)</span> <span class="o">+</span> <span class="n">clause_fields</span><span class="p">)</span>
+            <span class="n">common_fields</span> <span class="o">=</span> <span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">wn</span><span class="p">,</span> <span class="n">scn</span><span class="p">,</span> <span class="n">book</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">verse</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vstem</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sct</span><span class="p">,</span> <span class="s1">&#39;clause&#39;</span><span class="p">)</span>
+            <span class="n">scty</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">)</span>
+            <span class="n">scr</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">scr</span> <span class="o">!=</span> <span class="s1">&#39;Objc&#39;</span><span class="p">:</span>
+                <span class="n">clause_objects_infc</span><span class="p">[</span><span class="n">verb</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">enrich_value_dict</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="s1">&#39;clause&#39;</span><span class="p">][</span><span class="n">scr</span> <span class="k">if</span> <span class="n">scr</span> <span class="o">==</span> <span class="s1">&#39;Objc&#39;</span> <span class="k">else</span> <span class="n">scty</span><span class="p">]</span>
+            <span class="n">enrich_values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">enrich_value_dict</span><span class="p">[</span><span class="n">sf</span><span class="p">]</span> <span class="k">for</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">enrich_fields</span><span class="p">)</span>
+            <span class="n">clause_fields</span> <span class="o">=</span> <span class="p">(</span><span class="n">scty</span><span class="p">,</span> <span class="n">scr</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,)</span><span class="o">*</span><span class="n">cfillrows</span> <span class="o">+</span> <span class="n">enrich_values</span>       
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">common_fields</span> <span class="o">+</span> <span class="n">clause_fields</span><span class="p">)</span>
 
     <span class="n">filename</span> <span class="o">=</span> <span class="n">vfile</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="s1">&#39;enrich_blank&#39;</span><span class="p">)</span>
     <span class="n">row_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
@@ -13776,7 +13786,7 @@ The error message is: (&#39;EOF in multi-line string&#39;, (1, 0))
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
         <span class="n">row_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fieldsep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)))</span>
     <span class="n">row_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Generated enrichment sheet for verb </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1"> rows)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)))</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Generated enrichment sheet for verb </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1"> rows)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     
 <span class="k">for</span> <span class="n">verb</span> <span class="ow">in</span> <span class="n">verbs</span><span class="p">:</span> <span class="n">gen_sheet_enrich</span><span class="p">(</span><span class="n">verb</span><span class="p">)</span>
 
@@ -13804,8 +13814,14 @@ The error message is: (&#39;EOF in multi-line string&#39;, (1, 0))
 <span class="n">stats</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span> <span class="ow">in</span> <span class="n">phrases_seen</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">stats</span><span class="p">[</span><span class="n">times</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;6}</span><span class="s1"> phrases seen </span><span class="si">{:&lt;2}</span><span class="s1"> time(s)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">times</span><span class="p">))</span>
-<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Total phrases seen: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phrases_seen</span><span class="p">)))</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;6}</span><span class="s1"> phrases seen </span><span class="si">{:&lt;2}</span><span class="s1"> time(s)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">times</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Total phrases seen: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phrases_seen</span><span class="p">)),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Clause objects:&#39;</span><span class="p">,</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">verb</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">clause_objects_seen</span><span class="p">):</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;5}</span><span class="s1">: </span><span class="si">{:&gt;4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">clause_objects_seen</span><span class="p">[</span><span class="n">verb</span><span class="p">]),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Non Objc but InfC clause objects:&#39;</span><span class="p">,</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">verb</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">clause_objects_infc</span><span class="p">):</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;5}</span><span class="s1">: </span><span class="si">{:&gt;4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">clause_objects_infc</span><span class="p">[</span><span class="n">verb</span><span class="p">]),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13818,57 +13834,57 @@ The error message is: (&#39;EOF in multi-line string&#39;, (1, 0))
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>22m 20s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/FJM_etcbc4b.csv (2857 rows)
-22m 20s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/JRD_etcbc4b.csv (1553 rows)
-22m 21s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/oFH_etcbc4b.csv (11048 rows)
-22m 21s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/NPL_etcbc4b.csv (1915 rows)
-22m 21s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/CJT_etcbc4b.csv (375 rows)
-22m 21s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/oLH_etcbc4b.csv (3821 rows)
-22m 21s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/NWS_etcbc4b.csv (613 rows)
-22m 21s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/QRa_etcbc4b.csv (3662 rows)
-22m 22s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/PQD_etcbc4b.csv (1269 rows)
-22m 22s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/SWR_etcbc4b.csv (1259 rows)
-22m 22s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/BWa_etcbc4b.csv (10817 rows)
-22m 22s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/BRa_etcbc4b.csv (219 rows)
-22m 23s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/NFa_etcbc4b.csv (2826 rows)
-22m 23s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/HLK_etcbc4b.csv (5672 rows)
-22m 24s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/NTN_etcbc4b.csv (9659 rows)
-22m 24s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/oBR_etcbc4b.csv (2309 rows)
-22m 24s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/JYa_etcbc4b.csv (4495 rows)
-22m 25s Generated enrichment sheet for verb /Users/dirk/Dropbox/SYNVAR/enrich_blank/CWB_etcbc4b.csv (4238 rows)
-22m 25s Done
+<pre>Generated enrichment sheet for verb JY&gt; (4630 rows)
+Generated enrichment sheet for verb BR&gt; (221 rows)
+Generated enrichment sheet for verb FJM (2915 rows)
+Generated enrichment sheet for verb CWB (4325 rows)
+Generated enrichment sheet for verb &lt;FH (11323 rows)
+Generated enrichment sheet for verb BW&gt; (11102 rows)
+Generated enrichment sheet for verb &lt;BR (2350 rows)
+Generated enrichment sheet for verb CJT (381 rows)
+Generated enrichment sheet for verb NWS (617 rows)
+Generated enrichment sheet for verb NPL (1932 rows)
+Generated enrichment sheet for verb SWR (1281 rows)
+Generated enrichment sheet for verb PQD (1283 rows)
+Generated enrichment sheet for verb &lt;LH (3893 rows)
+Generated enrichment sheet for verb HLK (5819 rows)
+Generated enrichment sheet for verb QR&gt; (3726 rows)
+Generated enrichment sheet for verb NF&gt; (2875 rows)
+Generated enrichment sheet for verb NTN (9846 rows)
+Generated enrichment sheet for verb JRD (1593 rows)
+    36s Done
 3 rules applied
 direct_object =&gt; principal_direct_object
-	 527 phrases: 613738, 614118, 621196, 621210, 621811, 622447, 623511, 632122, 644198, 661557
+	 955 phrases: 608868, 628298, 629548, 632877, 633558, 643768, 644804, 645138, 645570, 650041
 
 non-object =&gt; principal_direct_object
-	 667 phrases: 608529, 610836, 610922, 616022, 621469, 622077, 627845, 636047, 636261, 668832
+	 579 phrases: 658726, 658783, 667412, 706018, 713798, 722194, 736762, 768095, 809014, 842560
 
 non-object =&gt; direct_object
-	 776 phrases: 621197, 621212, 622449, 623512, 661559, 697142, 711390, 722275, 723001, 730776
+	 582 phrases: 656025, 656032, 664231, 664644, 673739, 674062, 674663, 674753, 674782, 674824
 
 complement =&gt; indirect_object
-	1638 phrases: 695192, 703965, 703973, 706530, 763769, 768370, 772631, 813099, 617967, 620911
+	1376 phrases: 610000, 610006, 610030, 616564, 616788, 620477, 623471, 652445, 652473, 665675
 
 complement =&gt; location
-	4123 phrases: 605598, 606845, 611241, 611635, 611728, 612025, 615144, 615145, 615424, 615587
+	4046 phrases: 605620, 607681, 607700, 608087, 608150, 608836, 608869, 610008, 610103, 610126
 
 predicate complement =&gt; indirect_object
-	   4 phrases: 654844, 853847, 691074, 704297
+	   4 phrases: 704297, 853847, 654844, 691074
 
 predicate complement =&gt; location
-	  20 phrases: 792494, 792847, 804404, 804575, 847484, 773644, 800764, 816576, 646365, 654810
+	  20 phrases: 775557, 737240, 792494, 792847, 804404, 804575, 847484, 762650, 773835, 774139
 
-7755 generic applications in total
-CJT-1 if function   = Adju     AND has_L           AND is_lex_personal
-      semantic   =&gt; benefactive    
-
-	   5 phrases: 615130, 630648, 712015, 794512, 797440
-
+7562 generic applications in total
 CJT-2 if function   = Cmpl     AND has_H_locale   
       lexical    =&gt; location       
 
 	   1 phrases: 731940
+
+CJT-1 if function   = Adju     AND has_L           AND is_lex_personal
+      semantic   =&gt; benefactive    
+
+	   5 phrases: 615130, 630648, 712015, 794512, 797440
 
 CJT-3 if function   = Cmpl     AND is_lex_local   
       lexical    =&gt; location       
@@ -13877,10 +13893,48 @@ CJT-3 if function   = Cmpl     AND is_lex_local
 	   9 phrases: 606396, 619338, 630956, 654145, 731940, 776266, 789542, 794185, 797377
 
 15 specific applications in total
-22m 25s 52110  phrases seen 1  time(s)
-22m 25s 181    phrases seen 2  time(s)
-22m 25s 9      phrases seen 3  time(s)
-22m 25s Total phrases seen: 52300
+52110  phrases seen 1  time(s)
+181    phrases seen 2  time(s)
+9      phrases seen 3  time(s)
+Total phrases seen: 52300
+Clause objects:
+&lt;BR  :   41
+&lt;FH  :  275
+&lt;LH  :   72
+BR&gt;  :    2
+BW&gt;  :  285
+CJT  :    6
+CWB  :   87
+FJM  :   58
+HLK  :  147
+JRD  :   40
+JY&gt;  :  135
+NF&gt;  :   49
+NPL  :   17
+NTN  :  187
+NWS  :    4
+PQD  :   14
+QR&gt;  :   64
+SWR  :   22
+Non Objc but InfC clause objects:
+&lt;BR  :   39
+&lt;FH  :  155
+&lt;LH  :   70
+BR&gt;  :    2
+BW&gt;  :  280
+CJT  :    5
+CWB  :   82
+FJM  :   53
+HLK  :  145
+JRD  :   40
+JY&gt;  :  130
+NF&gt;  :   45
+NPL  :   17
+NTN  :  166
+NWS  :    4
+PQD  :   10
+QR&gt;  :   56
+SWR  :   22
 </pre>
 </div>
 </div>
@@ -13891,7 +13945,7 @@ CJT-3 if function   = Cmpl     AND is_lex_local
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">showcase</span><span class="p">(</span><span class="n">pn</span><span class="p">):</span>
@@ -13914,7 +13968,7 @@ CJT-3 if function   = Cmpl     AND is_lex_local
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">showcase</span><span class="p">(</span><span class="mi">654844</span><span class="p">)</span>
@@ -13943,7 +13997,7 @@ Numeri 26:57	W&gt;LH PQWDJ HLWJ LM#PXTM LGR#WN M#PXT HGR#NJ LQHT M#PXT HQHTJ LMR
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">check_h</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">show_results</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -13974,12 +14028,12 @@ Numeri 26:57	W&gt;LH PQWDJ HLWJ LM#PXTM LGR#WN M#PXT HGR#NJ LQHT M#PXT HQHTJ LMR
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Verb BW&gt;: 2570 occurrences. He locales in Cmpl phrases: 157
+<pre>Verb BW&gt;: 2570 occurrences. He locales in Adju phrases: 4
+	154354, 322818, 154964, 75702
+Verb BW&gt;: 2570 occurrences. He locales in Cmpl phrases: 157
 	26118, 26127, 146447, 187920, 197138, 272406, 95257, 184350, 398368, 289826, 201253, 24616, 78897, 401459, 100410, 32829, 100413, 198208, 5698, 200258, 100938, 24653, 141902, 112207, 186960, 24658, 196690, 28764, 34400, 298594, 248931, 132198, 162918, 12402, 5747, 146044, 396927, 153216, 134792, 151176, 188042, 97419, 426120, 257165, 136338, 21656, 162970, 200349, 214687, 24740, 257192, 158378, 100527, 25777, 160434, 214707, 4789, 4793, 272569, 139963, 90812, 249020, 38595, 113861, 138448, 8920, 282841, 19166, 20703, 26850, 43235, 145127, 8424, 8937, 170729, 397032, 254703, 154354, 200948, 426230, 176376, 79609, 165626, 206075, 208636, 27391, 269569, 106246, 157447, 26380, 149785, 170782, 211232, 126758, 26414, 27438, 246062, 109363, 172340, 249140, 398134, 64828, 26431, 16704, 4929, 168771, 154964, 132955, 393569, 47460, 157541, 47466, 100206, 37232, 269170, 23415, 410999, 23933, 24448, 78208, 133518, 25999, 191381, 12698, 19355, 24476, 170909, 18344, 157608, 267689, 244660, 256952, 8633, 63419, 167359, 175553, 138694, 110536, 175561, 108490, 111051, 143820, 37324, 192973, 264137, 5586, 99795, 11732, 170963, 20438, 218583, 269285, 25062, 110576, 26099, 184315, 256511
 Verb BW&gt;: 2570 occurrences. He locales in Loca phrases: 14
 	90243, 93571, 29637, 284965, 289859, 136745, 257293, 289871, 154354, 154964, 9525, 257016, 284989, 93598
-Verb BW&gt;: 2570 occurrences. He locales in Adju phrases: 4
-	154354, 322818, 154964, 75702
 </pre>
 </div>
 </div>
@@ -14012,13 +14066,13 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">phrases_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">objects_seen</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">read_enrich</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span> <span class="c1"># rootdir will not be used, data is computed from sheets</span>
-    <span class="n">pf_enriched</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">of_enriched</span> <span class="o">=</span> <span class="p">{</span>
         <span class="kc">False</span><span class="p">:</span> <span class="p">{},</span> <span class="c1"># for enrichments found in blank sheets</span>
         <span class="kc">True</span><span class="p">:</span> <span class="p">{},</span> <span class="c1"># for enrichments found in filled sheets</span>
     <span class="p">}</span>
@@ -14031,7 +14085,7 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
         <span class="kc">True</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">),</span>
     <span class="p">}</span>
 
-    <span class="n">non_phrase</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">non_match</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">wrong_node</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -14055,37 +14109,43 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
                 <span class="k">continue</span>
             <span class="c1">#inf(&#39;READING {} enrichments file {}&#39;.format(check[1], filename))</span>
 
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">header</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">:</span>
                     <span class="n">fields</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
-                    <span class="n">pn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-                    <span class="k">if</span> <span class="n">pn</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
-                    <span class="n">phrases_seen</span><span class="p">[</span><span class="n">pn</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">on</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">on</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+                    <span class="n">kind</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+                    <span class="n">objects_seen</span><span class="p">[</span><span class="n">kind</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">vvals</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="o">-</span><span class="n">nef</span><span class="p">:])</span>
                     <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">enrich_fields</span><span class="p">,</span> <span class="n">vvals</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="s1">&#39;NA&#39;</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enrich_fields</span><span class="p">[</span><span class="n">f</span><span class="p">]:</span>
-                            <span class="n">wrong_value</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">verb</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-                    <span class="n">vresults</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span> <span class="o">=</span> <span class="n">vvals</span>
-                    <span class="k">if</span> <span class="n">pn</span> <span class="ow">in</span> <span class="n">pf_enriched</span><span class="p">[</span><span class="n">is_filled</span><span class="p">]:</span>
-                        <span class="k">if</span> <span class="n">pn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">repeated</span><span class="p">[</span><span class="n">is_filled</span><span class="p">]:</span>
-                            <span class="n">repeated</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pf_enriched</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">pn</span><span class="p">]]</span>
-                        <span class="n">repeated</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">verb</span><span class="p">,</span> <span class="n">vvals</span><span class="p">))</span>
+                            <span class="n">wrong_value</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">on</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">verb</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                    <span class="n">vresults</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="o">=</span> <span class="n">vvals</span>
+                    <span class="k">if</span> <span class="n">on</span> <span class="ow">in</span> <span class="n">of_enriched</span><span class="p">[</span><span class="n">is_filled</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">on</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">repeated</span><span class="p">[</span><span class="n">is_filled</span><span class="p">]:</span>
+                            <span class="n">repeated</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">of_enriched</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">on</span><span class="p">]]</span>
+                        <span class="n">repeated</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">on</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">verb</span><span class="p">,</span> <span class="n">vvals</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">pf_enriched</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">vvals</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;phrase&#39;</span><span class="p">:</span> 
-                        <span class="n">non_phrase</span><span class="p">[</span><span class="n">pn</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">verb</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">pn</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">]):</span>          <span class="c1"># check whether the phrase ids are not mangled</span>
-                <span class="k">if</span> <span class="n">pn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">]:</span>
-                    <span class="n">wrong_node</span><span class="p">[</span><span class="n">pn</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">verb</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">pn</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">]):</span>      <span class="c1"># now collect all results, give precedence to filled values</span>
-                <span class="n">f_corr</span> <span class="o">=</span> <span class="n">pn</span> <span class="ow">in</span> <span class="n">pf_corr</span>                               <span class="c1"># manual correction in phrase function</span>
-                <span class="n">f_good</span> <span class="o">=</span> <span class="n">pf_corr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pn</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">))</span>
-                <span class="n">s_manual</span> <span class="o">=</span> <span class="n">pn</span> <span class="ow">in</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="ow">and</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span> <span class="o">!=</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span> <span class="c1"># real change</span>
-                <span class="n">these_results</span> <span class="o">=</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span> <span class="k">if</span> <span class="n">s_manual</span> <span class="k">else</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">][</span><span class="n">pn</span><span class="p">]</span>
+                        <span class="n">of_enriched</span><span class="p">[</span><span class="n">is_filled</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">vvals</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">on</span><span class="p">)</span> <span class="o">!=</span> <span class="n">kind</span><span class="p">:</span> 
+                        <span class="n">non_match</span><span class="p">[</span><span class="n">on</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">verb</span><span class="p">,</span> <span class="n">kind</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">on</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">]):</span>          <span class="c1"># check whether the phrase ids are not mangled</span>
+                <span class="k">if</span> <span class="n">on</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">]:</span>
+                    <span class="n">wrong_node</span><span class="p">[</span><span class="n">on</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">verb</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">on</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">]):</span>      <span class="c1"># now collect all results, give precedence to filled values</span>
+                <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">on</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;phrase&#39;</span><span class="p">:</span>
+                    <span class="n">f_corr</span> <span class="o">=</span> <span class="n">on</span> <span class="ow">in</span> <span class="n">pf_corr</span>  <span class="c1"># manual correction in phrase function</span>
+                    <span class="n">f_good</span> <span class="o">=</span> <span class="n">pf_corr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">on</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">on</span><span class="p">))</span> 
+                    <span class="n">s_manual</span> <span class="o">=</span> <span class="n">on</span> <span class="ow">in</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="ow">and</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="o">!=</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="c1"># real change</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">f_corr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">f_good</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="n">s_manual</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="n">these_results</span> <span class="o">=</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">True</span><span class="p">][</span><span class="n">on</span><span class="p">]</span> <span class="k">if</span> <span class="n">s_manual</span> <span class="k">else</span> <span class="n">vresults</span><span class="p">[</span><span class="kc">False</span><span class="p">][</span><span class="n">on</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">f_corr</span> <span class="ow">or</span> <span class="n">s_manual</span><span class="p">:</span>
-                    <span class="n">dev_results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pn</span><span class="p">,)</span><span class="o">+</span><span class="n">these_results</span><span class="o">+</span><span class="p">(</span><span class="n">f_good</span><span class="p">,</span> <span class="n">f_corr</span><span class="p">,</span> <span class="n">s_manual</span><span class="p">))</span>
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pn</span><span class="p">,)</span><span class="o">+</span><span class="n">these_results</span><span class="o">+</span><span class="p">(</span><span class="n">f_good</span><span class="p">,</span> <span class="n">f_corr</span><span class="p">,</span> <span class="n">s_manual</span><span class="p">))</span>
+                    <span class="n">dev_results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">on</span><span class="p">,)</span><span class="o">+</span><span class="n">these_results</span><span class="o">+</span><span class="p">(</span><span class="n">f_good</span><span class="p">,</span> <span class="n">f_corr</span><span class="p">,</span> <span class="n">s_manual</span><span class="p">))</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">on</span><span class="p">,)</span><span class="o">+</span><span class="n">these_results</span><span class="o">+</span><span class="p">(</span><span class="n">f_good</span><span class="p">,</span> <span class="n">f_corr</span><span class="p">,</span> <span class="n">s_manual</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">check</span> <span class="ow">in</span> <span class="p">(</span>
         <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;blank&#39;</span><span class="p">),</span> 
@@ -14095,7 +14155,8 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
             <span class="n">wrongs</span> <span class="o">=</span> <span class="n">wrong_value</span><span class="p">[</span><span class="n">check</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">wrongs</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">ERR_LIMIT</span><span class="p">]:</span>
                 <span class="n">px</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
-                <span class="n">cx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
+                <span class="n">ref_node</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;clause&#39;</span> <span class="k">else</span> <span class="n">x</span>
+                <span class="n">cx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">ref_node</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
                 <span class="n">passage</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
                 <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;ERROR: </span><span class="si">{}</span><span class="s1"> Illegal value(s) in </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> = </span><span class="si">{}</span><span class="s1"> in </span><span class="si">{}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">passage</span><span class="p">,</span> <span class="n">check</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">cx</span>
@@ -14116,7 +14177,8 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
                 <span class="n">overview</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">repeats</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span> <span class="n">overview</span><span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">px</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
-                <span class="n">cx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
+                <span class="n">ref_node</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;clause&#39;</span> <span class="k">else</span> <span class="n">x</span>
+                <span class="n">cx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">ref_node</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
                 <span class="n">passage</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">overview</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -14141,12 +14203,13 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
         <span class="k">if</span> <span class="n">nerrors</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;OK: The used </span><span class="si">{}</span><span class="s1"> enrichment sheets are consistent&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">check</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_phrase</span><span class="p">):</span>
-        <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;ERROR: Enrichments have been applied to non-phrase nodes:&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">non_phrase</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">ERR_LIMIT</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_match</span><span class="p">):</span>
+        <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;ERROR: Enrichments have been applied to nodes with non-matching types:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">non_match</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">ERR_LIMIT</span><span class="p">]:</span>
+            <span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">shouldbe</span><span class="p">)</span> <span class="o">=</span> <span class="n">non_match</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
             <span class="n">px</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
-            <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> Node </span><span class="si">{}</span><span class="s1"> is not a phrase but a </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">non_phrase</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> Node </span><span class="si">{}</span><span class="s1"> is not a </span><span class="si">{}</span><span class="s1"> but a </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">verb</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">shouldbe</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
             <span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">ne</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_phrase</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ne</span> <span class="o">&gt;</span> <span class="n">ERR_LIMIT</span><span class="p">:</span> <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;... AND </span><span class="si">{}</span><span class="s1"> CASES MORE&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ne</span> <span class="o">-</span> <span class="n">ERR_LIMIT</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -14158,7 +14221,7 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">wrong_node</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">ERR_LIMIT</span><span class="p">]:</span>
             <span class="n">px</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">)</span>
             <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">non_phrase</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span>
+                <span class="n">wrong_node</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span>
             <span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">ne</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrong_node</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ne</span> <span class="o">&gt;</span> <span class="n">ERR_LIMIT</span><span class="p">:</span> <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;... AND </span><span class="si">{}</span><span class="s1"> CASES MORE&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ne</span> <span class="o">-</span> <span class="n">ERR_LIMIT</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -14210,79 +14273,75 @@ If a phrase got conflicting features, because it occurs in sheets for multiple v
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/oBR_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/oFH_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/oLH_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/BRa_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/BWa_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/CJT_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/CWB_etcbc4b.csv
-22m 39s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/FJM_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/HLK_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/JRD_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/JYa_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NFa_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NPL_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NTN_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NWS_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/PQD_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/QRa_etcbc4b.csv
-22m 40s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/SWR_etcbc4b.csv
+<pre> 7m 01s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/oBR_etcbc4b.csv
+ 7m 01s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/oFH_etcbc4b.csv
+ 7m 01s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/oLH_etcbc4b.csv
+ 7m 01s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/BRa_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/BWa_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/CJT_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/CWB_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/FJM_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/HLK_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/JRD_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/JYa_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NFa_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NPL_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NTN_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/NWS_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/PQD_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/QRa_etcbc4b.csv
+ 7m 02s NO filled enrichments file /Users/dirk/Dropbox/SYNVAR/enrich_filled/SWR_etcbc4b.csv
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>22m 40s OK: The used blank enrichment sheets have legal values
-22m 40s OK: The used blank enrichment sheets are consistent
-22m 40s OK: The used filled enrichment sheets have legal values
-22m 40s OK: The used filled enrichment sheets are consistent
-22m 40s OK: all enriched nodes where phrase nodes
-22m 40s OK: all enriched nodes occurred in the blank sheet
-22m 40s OK: there are 678 manual correction/enrichment annotations
-COR                                    =&gt; 2_Kings 22:6 726393 ,,,,,
-	LEX@R@CIJm W:LAB.ONIJm W:LAG.OD:RIJm 
-		W:JIT.:NW. &gt;OTOW L:&lt;OF;J HAM.:L@&gt;K@H LEX@R@CIJm W:LAB.ONIJm W:LAG.OD:RIJm 
-COR                                    =&gt; Genesis 1:27 605442 complement,NA,direct_object,,,
-	Z@K@R W.N:Q;B@H 
-		Z@K@R W.N:Q;B@H B.@R@&gt; &gt;OT@m00
+<pre> 7m 02s OK: The used blank enrichment sheets have legal values
+ 7m 02s OK: The used blank enrichment sheets are consistent
+ 7m 02s OK: The used filled enrichment sheets have legal values
+ 7m 02s OK: The used filled enrichment sheets are consistent
+ 7m 02s OK: all enriched nodes where phrase nodes
+ 7m 02s OK: all enriched nodes occurred in the blank sheet
+ 7m 02s OK: there are 1438 manual correction/enrichment annotations
+COR                                    =&gt; Genesis 2:18 605699 adjunct,NA,NA,,,
+	L.OW 
+		&gt;E&lt;:EFEH.&amp;L.OW &lt;;ZER K.:NEG:D.OW00
 
-COR                                    =&gt; Genesis 5:2 606420 complement,NA,direct_object,,,
-	Z@K@R W.N:Q;B@H 
-		Z@K@R W.N:Q;B@H B.:R@&gt;@m 
-COR                                    =&gt; Isaiah 4:5 728419 adjunct,NA,NA,,location,location
-	&lt;AL K.@L&amp;M:KOWn HAR&amp;YIJ.OWn W:&lt;AL&amp;MIQ:R@&gt;EH@ 
-		W.B@R@&gt; J:HW@H &lt;AL K.@L&amp;M:KOWn HAR&amp;YIJ.OWn W:&lt;AL&amp;MIQ:R@&gt;EH@ &lt;@N@n 05 JOWM@m 
-COR                                    =&gt; Psalms 89:48 799849 complement,NA,principal_direct_object,,,
-	C.@W:&gt; 
-		&lt;AL&amp;MAH&amp;C.@W:&gt; B.@R@&gt;T@ K@L&amp;B.:N;J&amp;&gt;@D@m00
+COR                                    =&gt; Genesis 3:7 605887 adjunct,NA,NA,,,
+	L@HEm 
+		WAJ.A&lt;:AFW. L@HEm X:AGOROT00
 
-COR                                    =&gt; Genesis 45:25 621386 ,,,,,
-	&gt;EREy K.:NA&lt;An &gt;EL&amp;JA&lt;:AQOB &gt;:ABIJHEm00
+COR                                    =&gt; Genesis 3:21 606057 adjunct,NA,NA,,,
+	L:&gt;@D@m W.L:&gt;IC:T.OW 
+		WAJ.A&lt;AF J:HW@H &gt;:ELOHIJm L:&gt;@D@m W.L:&gt;IC:T.OW K.@T:NOWT &lt;OWR 
+COR                                    =&gt; Genesis 6:14 606814 adjunct,NA,NA,,,
+	L:k@ 
+		&lt;:AF;H L:k@ T.;BAT &lt;:AY;J&amp;GOPER 
+COR                                    =&gt; Genesis 6:16 606838 adjunct,NA,NA,,,
+	LAT.;B@H 
+		YOHAR 05 T.A&lt;:AFEH LAT.;B@H 
+COR                                    =&gt; Genesis 9:24 607585 adjunct,NA,NA,,,
+	LOW 
+		&gt;;T &gt;:ACER&amp;&lt;@F@H&amp;LOW B.:NOW HAQ.@V@n00
 
-		WAJ.@BO&gt;W. &gt;EREy K.:NA&lt;An &gt;EL&amp;JA&lt;:AQOB &gt;:ABIJHEm00
-
-COR                                    =&gt; Exodus 14:16 627778 adjunct,NA,*,,location,location
-	B.:TOWk: HAJ.@m 
-		W:J@BO&gt;W. B:N;J&amp;JIF:R@&gt;;L B.:TOWk: HAJ.@m B.AJ.AB.@C@H00
-
-COR                                    =&gt; Exodus 14:22 627852 adjunct,NA,*,,location,location
-	B.:TOWk: HAJ.@m 
-		WAJ.@BO&gt;W. B:N;J&amp;JIF:R@&gt;;L B.:TOWk: HAJ.@m B.AJ.AB.@C@H 
-COR                                    =&gt; Leviticus 4:23 637127 ,,,,,
-	F:&lt;IJR &lt;IZ.IJm Z@K@R T.@MIJm00
-
-		W:H;BIJ&gt; &gt;ET&amp;Q@R:B.@NOW F:&lt;IJR &lt;IZ.IJm Z@K@R T.@MIJm00
-
-COR                                    =&gt; Leviticus 4:28 637188 ,,,,,
-	F:&lt;IJRAT &lt;IZ.IJm T.:MIJM@H N:Q;B@H 
-		W:H;BIJ&gt; Q@R:B.@NOW F:&lt;IJRAT &lt;IZ.IJm T.:MIJM@H N:Q;B@H &lt;AL&amp;XAV.@&gt;TOW 
-... AND 668 ANNOTATIONS MORE
-22m 41s 52110  phrases seen 1  time(s)
-22m 41s 181    phrases seen 2  time(s)
-22m 41s 9      phrases seen 3  time(s)
-22m 41s Total phrases seen: 52300
+COR                                    =&gt; Genesis 11:4 607843 adjunct,NA,NA,,,
+	L.@NW. 
+		W:NA&lt;:AFEH&amp;L.@NW. C;m 
+COR                                    =&gt; Genesis 12:18 608323 adjunct,NA,NA,,,
+	L.IJ 
+		MAH&amp;Z.O&gt;T &lt;@FIJT@ L.IJ 
+COR                                    =&gt; Genesis 14:2 608565 adjunct,NA,NA,,,
+	&gt;ET&amp;B.ERA&lt; MELEk: S:DOm W:&gt;ET&amp;B.IR:CA&lt; MELEk: &lt;:AMOR@H CIN:&gt;@B 05 MELEk: &gt;AD:M@H W:CEM:&gt;;BER MELEk: Y:BOWJIm W.MELEk: B.ELA&lt; 
+		&lt;@FW. MIL:X@M@H &gt;ET&amp;B.ERA&lt; MELEk: S:DOm W:&gt;ET&amp;B.IR:CA&lt; MELEk: &lt;:AMOR@H CIN:&gt;@B 05 MELEk: &gt;AD:M@H W:CEM:&gt;;BER MELEk: Y:BOWJIm W.MELEk: B.ELA&lt; 
+COR                                    =&gt; Genesis 16:6 609084 adjunct,NA,NA,,,
+	L@H. 
+		&lt;:AFIJ&amp;L@H. 
+... AND 1428 ANNOTATIONS MORE
+ 7m 04s 52110  phrases seen 1  time(s)
+ 7m 04s 181    phrases seen 2  time(s)
+ 7m 04s 9      phrases seen 3  time(s)
+ 7m 04s Total phrases seen: 52300
 </pre>
 </div>
 </div>
@@ -14307,7 +14366,7 @@ with label <code>ft</code> and namespace <code>JanetDyk</code>.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">API</span><span class="o">=</span><span class="n">fabric</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="o">+</span><span class="n">version</span><span class="p">,</span> <span class="s1">&#39;complements&#39;</span><span class="p">,</span> <span class="s1">&#39;flow_corr&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -14315,6 +14374,7 @@ with label <code>ft</code> and namespace <code>JanetDyk</code>.</p>
     <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        oid otype</span>
 <span class="s1">        sp vs lex</span>
+<span class="s1">        function rela typ</span>
 <span class="s1">        chapter verse</span>
 <span class="s1">        function JanetDyk:ft.function</span>
 <span class="s1">        s_manual f_correction</span>
@@ -14339,90 +14399,61 @@ with label <code>ft</code> and namespace <code>JanetDyk</code>.</p>
 <pre>  0.00s LOADING API: please wait ... 
   0.00s DETAIL: COMPILING m: etcbc4b: UP TO DATE
   0.00s USING main: etcbc4b DATA COMPILED AT: 2015-11-02T15-08-56
-  0.00s BEGIN COMPILE a: complements
-  0.03s DETAIL: load main: X. [node]  -&gt; 
-  1.51s DETAIL: load main: X. [e]  -&gt; 
-  3.71s DETAIL: load main: G.node_anchor_min
-  3.81s DETAIL: load main: G.node_anchor_max
-  3.90s DETAIL: load main: G.node_sort
-  4.00s DETAIL: load main: G.node_sort_inv
-  4.73s DETAIL: load main: G.edges_from
-  4.85s DETAIL: load main: G.edges_to
-  4.99s LOGFILE=/Users/dirk/laf/laf-fabric-data/etcbc4b/bin/A/complements/__log__compile__.txt
-  4.99s PARSING ANNOTATION FILES
-  5.12s INFO: parsing complements.xml
-  8.49s INFO: END PARSING
-         0 good   regions  and     0 faulty ones
-         0 linked nodes    and     0 unlinked ones
-         0 good   edges    and     0 faulty ones
-     52300 good   annots   and     0 faulty ones
-    470700 good   features and     0 faulty ones
-     52300 distinct xml identifiers
-
-  8.49s MODELING RESULT FILES
-  8.50s INFO: CONNECTIVITY
-  8.64s WRITING RESULT FILES for a: complements
-  8.65s DETAIL: write annox complements: F.JanetDyk_ft_f_correction [node] 
-  8.71s DETAIL: write annox complements: F.JanetDyk_ft_function [node] 
-  8.79s DETAIL: write annox complements: F.JanetDyk_ft_grammatical [node] 
-  8.85s DETAIL: write annox complements: F.JanetDyk_ft_lexical [node] 
-  8.90s DETAIL: write annox complements: F.JanetDyk_ft_original [node] 
-  8.93s DETAIL: write annox complements: F.JanetDyk_ft_predication [node] 
-  9.00s DETAIL: write annox complements: F.JanetDyk_ft_s_manual [node] 
-  9.06s DETAIL: write annox complements: F.JanetDyk_ft_semantic [node] 
-  9.11s DETAIL: write annox complements: F.JanetDyk_ft_valence [node] 
-  9.18s END   COMPILE a: complements
-  9.18s USING annox: complements DATA COMPILED AT: 2016-08-25T12-59-29
-  9.19s INFO: Feature function may mean any of etcbc4:ft.function, JanetDyk:ft.function. Choosing JanetDyk:ft.function
-  9.19s DETAIL: keep main: G.node_anchor_min
-  9.19s DETAIL: keep main: G.node_anchor_max
-  9.19s DETAIL: keep main: G.node_sort
-  9.19s DETAIL: keep main: G.node_sort_inv
-  9.19s DETAIL: keep main: G.edges_from
-  9.19s DETAIL: keep main: G.edges_to
-  9.19s DETAIL: keep main: F.etcbc4_db_otype [node] 
-  9.19s DETAIL: keep main: F.etcbc4_ft_lex [node] 
-  9.19s DETAIL: keep main: F.etcbc4_sft_chapter [node] 
-  9.19s DETAIL: keep main: F.etcbc4_sft_verse [node] 
-  9.19s DETAIL: clear main: F.etcbc4_ft_g_lex [node] 
-  9.19s DETAIL: clear main: F.etcbc4_ft_g_lex_utf8 [node] 
-  9.19s DETAIL: clear main: F.etcbc4_ft_g_word [node] 
-  9.19s DETAIL: clear main: F.etcbc4_ft_g_word_utf8 [node] 
-  9.19s DETAIL: clear main: F.etcbc4_ft_lex_utf8 [node] 
-  9.19s DETAIL: clear main: F.etcbc4_ft_trailer_utf8 [node] 
-  9.19s DETAIL: clear main: F.etcbc4_sft_book [node] 
-  9.19s DETAIL: clear annox lexicon: F.etcbc4_kq_g_qere_utf8 [node] 
-  9.19s DETAIL: clear annox lexicon: F.etcbc4_kq_qtrailer_utf8 [node] 
-  9.19s DETAIL: clear annox lexicon: F.etcbc4_ph_phono [node] 
-  9.21s DETAIL: clear annox lexicon: F.etcbc4_ph_phono_sep [node] 
-  9.22s DETAIL: load main: F.etcbc4_db_oid [node] 
-    10s DETAIL: load main: F.etcbc4_ft_sp [node] 
-    10s DETAIL: load main: F.etcbc4_ft_vs [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_f_correction [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_function [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_grammatical [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_lexical [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_original [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_predication [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_s_manual [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_semantic [node] 
-    11s DETAIL: load annox complements: F.JanetDyk_ft_valence [node] 
-    11s INFO: Feature ft_function refers to etcbc4_ft_function, not to JanetDyk_ft_function
-    11s INFO: Feature function refers to etcbc4_ft_function, not to JanetDyk_ft_function
-    11s INFO: LOADING PREPARED data: please wait ... 
-    11s DETAIL: keep prep: G.node_sort
-    11s DETAIL: keep prep: G.node_sort_inv
-    11s DETAIL: keep prep: L.node_up
-    11s DETAIL: keep prep: L.node_down
-    11s DETAIL: keep prep: V.verses
-    11s DETAIL: keep prep: V.books_la
-    11s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    12s INFO: Feature ft_function refers to etcbc4_ft_function, not to JanetDyk_ft_function
-    12s INFO: Feature function refers to etcbc4_ft_function, not to JanetDyk_ft_function
-    16s INFO: Feature ft_function refers to etcbc4_ft_function, not to JanetDyk_ft_function
-    16s INFO: Feature function refers to etcbc4_ft_function, not to JanetDyk_ft_function
-    16s INFO: LOADED PREPARED data
-    16s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX complements, lexicon FOR TASK flow_corr AT 2016-08-25T12-59-35
+  0.00s DETAIL: COMPILING a: complements: UP TO DATE
+  0.01s USING annox: complements DATA COMPILED AT: 2016-10-26T17-57-50
+  0.01s INFO: Feature function may mean any of etcbc4:ft.function, JanetDyk:ft.function. Choosing JanetDyk:ft.function
+  0.01s INFO: Feature function may mean any of etcbc4:ft.function, JanetDyk:ft.function. Choosing JanetDyk:ft.function
+  0.01s DETAIL: keep main: G.node_anchor_min
+  0.01s DETAIL: keep main: G.node_anchor_max
+  0.01s DETAIL: keep main: G.node_sort
+  0.01s DETAIL: keep main: G.node_sort_inv
+  0.02s DETAIL: keep main: G.edges_from
+  0.02s DETAIL: keep main: G.edges_to
+  0.02s DETAIL: keep main: F.etcbc4_db_otype [node] 
+  0.02s DETAIL: keep main: F.etcbc4_ft_lex [node] 
+  0.02s DETAIL: keep main: F.etcbc4_sft_chapter [node] 
+  0.02s DETAIL: keep main: F.etcbc4_sft_verse [node] 
+  0.02s DETAIL: clear main: F.etcbc4_ft_g_lex [node] 
+  0.02s DETAIL: clear main: F.etcbc4_ft_g_lex_utf8 [node] 
+  0.02s DETAIL: clear main: F.etcbc4_ft_g_word [node] 
+  0.02s DETAIL: clear main: F.etcbc4_ft_g_word_utf8 [node] 
+  0.02s DETAIL: clear main: F.etcbc4_ft_lex_utf8 [node] 
+  0.02s DETAIL: clear main: F.etcbc4_ft_trailer_utf8 [node] 
+  0.02s DETAIL: clear main: F.etcbc4_sft_book [node] 
+  0.02s DETAIL: clear annox lexicon: F.etcbc4_kq_g_qere_utf8 [node] 
+  0.02s DETAIL: clear annox lexicon: F.etcbc4_kq_qtrailer_utf8 [node] 
+  0.02s DETAIL: clear annox lexicon: F.etcbc4_ph_phono [node] 
+  0.04s DETAIL: clear annox lexicon: F.etcbc4_ph_phono_sep [node] 
+  0.07s DETAIL: load main: F.etcbc4_db_oid [node] 
+  1.07s DETAIL: load main: F.etcbc4_ft_rela [node] 
+  1.38s DETAIL: load main: F.etcbc4_ft_sp [node] 
+  1.73s DETAIL: load main: F.etcbc4_ft_typ [node] 
+  2.24s DETAIL: load main: F.etcbc4_ft_vs [node] 
+  2.46s DETAIL: load annox complements: F.JanetDyk_ft_f_correction [node] 
+  2.53s DETAIL: load annox complements: F.JanetDyk_ft_function [node] 
+  2.61s DETAIL: load annox complements: F.JanetDyk_ft_grammatical [node] 
+  2.68s DETAIL: load annox complements: F.JanetDyk_ft_lexical [node] 
+  2.73s DETAIL: load annox complements: F.JanetDyk_ft_original [node] 
+  2.76s DETAIL: load annox complements: F.JanetDyk_ft_predication [node] 
+  2.83s DETAIL: load annox complements: F.JanetDyk_ft_s_manual [node] 
+  2.90s DETAIL: load annox complements: F.JanetDyk_ft_semantic [node] 
+  2.94s DETAIL: load annox complements: F.JanetDyk_ft_valence [node] 
+  3.02s INFO: Feature ft_function refers to etcbc4_ft_function, not to JanetDyk_ft_function
+  3.02s INFO: Feature function refers to etcbc4_ft_function, not to JanetDyk_ft_function
+  3.15s INFO: LOADING PREPARED data: please wait ... 
+  3.15s DETAIL: keep prep: G.node_sort
+  3.15s DETAIL: keep prep: G.node_sort_inv
+  3.15s DETAIL: keep prep: L.node_up
+  3.15s DETAIL: keep prep: L.node_down
+  3.15s DETAIL: keep prep: V.verses
+  3.15s DETAIL: keep prep: V.books_la
+  3.15s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+  3.97s INFO: Feature ft_function refers to etcbc4_ft_function, not to JanetDyk_ft_function
+  3.97s INFO: Feature function refers to etcbc4_ft_function, not to JanetDyk_ft_function
+  6.73s INFO: Feature ft_function refers to etcbc4_ft_function, not to JanetDyk_ft_function
+  6.73s INFO: Feature function refers to etcbc4_ft_function, not to JanetDyk_ft_function
+  6.88s INFO: LOADED PREPARED data
+  6.88s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX complements, lexicon FOR TASK flow_corr AT 2016-10-26T18-15-26
 </pre>
 </div>
 </div>
@@ -14444,7 +14475,7 @@ Note that the corrected function feature is only filled in, if it occurs in a cl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]:</span> 
@@ -14495,19 +14526,24 @@ Subj - None - False
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">all_results</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">NALLFIELDS</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">NALLFIELDS</span> <span class="o">=</span> <span class="mi">17</span>
 <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">;&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">NALLFIELDS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;collecting phrases ...&#39;</span><span class="p">)</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;collecting constituents ...&#39;</span><span class="p">)</span>
 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="s1">&#39;-&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-&#39;</span><span class="p">,</span>
     <span class="s1">&#39;passage&#39;</span><span class="p">,</span>
     <span class="s1">&#39;verb(s) text&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-&#39;</span><span class="p">,</span>
@@ -14522,14 +14558,19 @@ Subj - None - False
     <span class="s1">&#39;enriched&#39;</span><span class="p">,</span>
     <span class="s1">&#39;passage&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;object type&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;clause rela&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;clause type&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;phrase function&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;phrase type&#39;</span><span class="p">,</span>
     <span class="s1">&#39;valence&#39;</span><span class="p">,</span>
     <span class="s1">&#39;predication&#39;</span><span class="p">,</span>
     <span class="s1">&#39;grammatical&#39;</span><span class="p">,</span>
     <span class="s1">&#39;original&#39;</span><span class="p">,</span>
     <span class="s1">&#39;lexical&#39;</span><span class="p">,</span>
     <span class="s1">&#39;semantic&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;phrase text&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;phrase node&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;object text&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;object node&#39;</span><span class="p">,</span>
 <span class="p">))</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
@@ -14549,6 +14590,11 @@ Subj - None - False
         <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">cn</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span>
         <span class="n">cn</span><span class="p">,</span>
     <span class="p">))</span>
@@ -14557,12 +14603,17 @@ Subj - None - False
         <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">CHUNK_SIZE</span><span class="p">:</span>
             <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;6}</span><span class="s1"> phrases in </span><span class="si">{:&gt;5}</span><span class="s1"> clauses ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+            <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;6}</span><span class="s1"> constituents in </span><span class="si">{:&gt;5}</span><span class="s1"> clauses ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="s1">&#39;COR&#39;</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">f_correction</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="s1">&#39;MAN&#39;</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">s_manual</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
             <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;phrase&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
             <span class="n">F</span><span class="o">.</span><span class="n">valence</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
             <span class="n">F</span><span class="o">.</span><span class="n">predication</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
             <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
@@ -14572,8 +14623,34 @@ Subj - None - False
             <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">pn</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span>
             <span class="n">pn</span><span class="p">,</span>
         <span class="p">))</span>
+    <span class="k">for</span> <span class="n">scn</span> <span class="ow">in</span> <span class="n">clause_objects</span><span class="p">[</span><span class="n">cn</span><span class="p">]:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">CHUNK_SIZE</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;6}</span><span class="s1"> constituents in </span><span class="si">{:&gt;5}</span><span class="s1"> clauses ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;clause&#39;</span><span class="p">,</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">valence</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">predication</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">lexical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">semantic</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">scn</span><span class="p">),</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">scn</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span>
+            <span class="n">scn</span><span class="p">,</span>
+        <span class="p">))</span>
+
 <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;6}</span><span class="s1"> phrases in </span><span class="si">{:&gt;5}</span><span class="s1"> clauses done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;6}</span><span class="s1"> constituents in </span><span class="si">{:&gt;5}</span><span class="s1"> clauses done&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -14586,13 +14663,13 @@ Subj - None - False
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>    11s collecting phrases ...
-    12s  10000 phrases in  2910 clauses ...
-    12s  20000 phrases in  5916 clauses ...
-    13s  30000 phrases in  9055 clauses ...
-    14s  40000 phrases in 12168 clauses ...
-    15s  50000 phrases in 15374 clauses ...
-    15s  52300 phrases in 16053 clauses done
+<pre>    27s collecting constituents ...
+    28s  10000 constituents in  2832 clauses ...
+    29s  20000 constituents in  5737 clauses ...
+    30s  30000 constituents in  8767 clauses ...
+    31s  40000 constituents in 11814 clauses ...
+    31s  50000 constituents in 14989 clauses ...
+    32s  53802 constituents in 16053 clauses done
 </pre>
 </div>
 </div>
