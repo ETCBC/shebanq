@@ -86,7 +86,7 @@ Clause
 ``PrAd`` Predicative adjunct clause
 ``PreC`` Predicative complement clause
 ``ReVo`` Referral to the vocative
-``ReSu`` Resumptive clause
+``Resu`` Resumptive clause
 ``RgRc`` Regens/rectum connection
 ``Spec`` Specification clause
 ``Subj`` Subject clause
