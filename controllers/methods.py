@@ -13,12 +13,6 @@ def index():
     response.subtitle = T("ETCBC methods")
     return dict()
 
-def timeline():
-    session.forget(response)
-    response.title = T("Methods time line")
-    response.subtitle = T("overview of papers on the ETCBC encoding methods")
-    return dict()
-
 def references():
     session.forget(response)
     response.title = T("References")

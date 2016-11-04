@@ -13,7 +13,7 @@ fabric = LafFabric()
 #===== Commands      ========================================
 
 versions = {'4', '4b'}
-#versions = {'4', '4b', '4s'}
+#versions = {'4', '4b', '4c'}
 commands = {'code', 'data', 'docs', 'all', 'none'}
 flags = {
     'm': 'string',
