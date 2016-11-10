@@ -9,7 +9,7 @@ dc_u = config['shebanq_user']
 dc_p = config['shebanq_passwd']
 dc_h = config['shebanq_host']
 
-version_order = '''4 4b 4s'''.split()
+version_order = '''4 4b'''.split()
 
 versions = {
     '4': {
@@ -21,10 +21,10 @@ versions = {
     '4b': {
         'name': 'etcbc4b',
         'date': '2015-11-03',
-        'desc': 'Current version of the ETCBC4 database, somewhere between versions 4 and 4s',
-        'notes': 'The data for this version is a snapshot. The encoding has been finished, but some checks are still in progress. We needed a reasonable version because more projects are using this data, and some of them report at the SBL annual meeting in November 2015. The underlying data will be archived at DANS shortly.',
+        'desc': 'Current version of the ETCBC4 database',
+        'notes': 'The data for this version is a snapshot. The encoding has been finished, but some checks are still in progress. We needed a reasonable version because more projects are using this data, and some of them report at the SBL annual meeting in November 2015. The underlying data has been archived at DANS.',
     },
-    '4s': {
+    '4s': { # not used
         'name': 'etcbc4s',
         'date': '',
         'desc': 'Stable version of the ETCBC4 database',

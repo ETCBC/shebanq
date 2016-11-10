@@ -1,93 +1,93 @@
-  1 Deuteronomium 22:27 105840 subs sf,          HA75-N.A<:AR@H03       *hˈa*nnaʕᵃrˌā        ~ *hˈa*nnaʕᵃrā        
+  1 Deuteronomium 22:27 105846 subs sf,          HA45-N.A<:AR@H03       *hˈa*nnaʕᵃrˌā        ~ *hˈa*nnaʕᵃrā        
   2 Genesis 9:21          4419 subs sm,+h        >@H:@LO75W00           *ʔohᵒlˈô             ~ *ʔohᵒlˈôˈ           
-  3 Samuel_I 23:4       155387 nmpr sm,          JHW@80H_S              [yhwˈāh]             =                     
+  3 Samuel_I 23:4       155396 nmpr sm,          JHW@80H                [yhwˈāh]             =                     
   4 Genesis 3:1           1180 nmpr sm,subs pm,  J:HW@74H >:ELOHI92JM   [yᵊhwˈāh] ʔᵉlōhˈîm   =                     
   5 Genesis 1:22           429 subs pm,          B.A--J.AM.I80JM        bayyammˈîm           =                     
-  6 Samuel_I 1:11       141737 subs sm,          B.@-<:@NI74J           boʕᵒnˈî              =                     
+  6 Samuel_I 1:11       141746 subs sm,          B.@-<:@NI74J           boʕᵒnˈî              =                     
   7 Genesis 1:1              2 verb qal perf 3sm, B.@R@74>               bārˈā                =                     
-  8 Genesis 30:19        15896 subs sm,adjv sm,  B.;N&CIC.I73J          bēn-šiššˌî           ~ bēn-šiššˈî          
+  8 Genesis 30:19        15896 subs sm,adjv sm,  B.;N CIC.I73J          bˌēn šiššˌî          # bēn-šiššˈî          
   9 Genesis 1:1              1 subs sf,          B.:-R;>CI73JT          bᵊrēšˌîṯ             ~ bᵊrēšˈîṯ            
  10 Genesis 1:6             84 subs sm,          B.:-TO74WK:            bᵊṯˈôḵ               =                     
- 11 Genesis 31:32        16971 verb qal perf 3sf,+am G.:N@B@75TAM00         gᵊnāvˈāṯam           =                     
- 12 Sacharia 14:2       308929 subs pm,          HA-B.@74T.I80JM        habbˈāttˈîm          =                     
- 13 Samuel_II 11:1      165701 subs pm,          HA-M.AL:>,KI81JM       hammalḵˈîm           =                     
+ 11 Genesis 31:32        16971 verb qal perf 3sf,+am G.:N@B@75TAM           gᵊnāvˈāṯam           =                     
+ 12 Sacharia 14:2       308939 subs pm,          HA-B.@74T.I80JM        habbˈāttˈîm          =                     
+ 13 Samuel_II 11:1      165710 subs pm,          HA-M.AL:>,KI81JM       hammalḵˈîm           =                     
  14 Genesis 1:16           287 subs pm,          HA-M.:>ORO73T          hammᵊʔōrˌōṯ          ~ hammᵊʔōrˈōṯ         
  15 Genesis 1:1              6 subs pm,          HA-C.@MA73JIM          haššāmˌayim          ~ haššāmˈayim         
  16 Genesis 1:18           345 subs sm,          HA-XO92CEK:            haḥˈōšeḵ             =                     
  17 Genesis 49:2         27794 verb nif impv 2pm, HIQ.@B:Y71W.           hiqqāvᵊṣˌû           ~ hiqqāvᵊṣˈû          
- 18 Jeremia 6:8         237766 verb nif impv 2sf, HIW.@S:RIJ03           hiwwāsᵊrˌî           ~ hiwwāsᵊrî           
+ 18 Jeremia 6:8         237776 verb nif impv 2sf, HIW.@S:RIJ03           hiwwāsᵊrˌî           ~ hiwwāsᵊrî           
  19 Genesis 1:2             14 verb qal perf 3sf, H@J:T@71H              hāyᵊṯˌā              =                     
- 20 Josua 7:21          116627 subs sm,+ij       H@->@95H:@LI73J        hāʔˈohᵒlˌî           ~ hāʔˈohᵒlˈî          
- 21 Genesis 1:1             10 subs s-,          H@->@75REY00           hāʔˈāreṣ             =                     
+ 20 Josua 7:21          116633 subs sm,+ij       H@->@95H:@LI73J        hāʔˈohᵒlˌî           ~ hāʔˈohᵒlˈî          
+ 21 Genesis 1:1             10 subs s-,          H@->@75REY             hāʔˈāreṣ             =                     
  22 Genesis 1:27           538 subs sm,          H@95->@D@M03           hˈāʔāḏˌām            ~ hˈāʔāḏām            
- 23 Genesis 1:25           486 subs sf,          H@75->:AD@M@73H        hˈāʔᵃḏāmˌā           ~ hˈāʔᵃḏāmˈā          
+ 23 Genesis 1:25           486 subs sf,          H@45->:AD@M@73H        hˈāʔᵃḏāmˌā           ~ hˈāʔᵃḏāmˈā          
  24 Genesis 2:14           942 prps sm,          H71W.>                 hˌû                  =                     
- 25 Josua 7:14          116450 subs pm,          LA--B.@T.I80JM         labbāttˈîm           =                     
- 26 Genesis 30:19        15898 nmpr sm,          L.:-JA<:AQO75B00       llᵊyaʕᵃqˈōv          =                     
- 27 Jesaia 1:5          212133 subs sm,          L@-X:@LI80J            loḥᵒlˈî              =                     
- 28 Genesis 25:32        12932 inrg              L@M.@H&                lāmmā-               =                     
- 29 Deuteronomium 28:28 108632 subs sm,          L;B@75B00              lēvˈāv               =                     
- 30 Genesis 2:23          1137 verb pual perf 3sf,prde sf, LU75Q:@X@H&Z.O75>T00   lˈuqᵒḥā-zzˈōṯ        =                     
- 31 Psalmi 119:99       332064 prep              L,I75J00               lˈî                  =                     
- 32 Josua 7:10          116326 inrg              L@74M.@H               lˈāmmā               =                     
- 33 Exodus 12:39         35549 verb hit infc ---, L:-HIT:MAH:M;80H.A     lᵊhiṯmahmˈēₐh        =                     
- 34 Genesis 1:29           620 subs sf,          L:->@K:L@75H00         lᵊʔoḵlˈā             =                     
- 35 Genesis 2:19          1037 prin --,verb qal impf 3sm,prep MAH&J.IQ:R@>&LO92W     mah-yyiqrā-lˈô       =                     
- 36 Genesis 12:18         5822 prin --,prde sf,  MAH&Z.O73>T            mah-zzˌōṯ            ~ mah-zzˈōṯ           
+ 25 Josua 7:14          116456 subs pm,          LA--B.@T.I80JM         labbāttˈîm           =                     
+ 26 Genesis 30:19        15898 nmpr sm,          L.:-JA<:AQO75B         llᵊyaʕᵃqˈōv          =                     
+ 27 Jesaia 1:5          212143 subs sm,          L@-X:@LI80J            loḥᵒlˈî              =                     
+ 28 Genesis 25:32        12932 inrg              L@M.@H                 lāmmˌā               ~ lāmmā-              
+ 29 Deuteronomium 28:28 108638 subs sm,          L;B@75B                lēvˈāv               =                     
+ 30 Genesis 2:23          1137 verb pual perf 3sf,prde sf, LU45Q:@X@H Z.O75>T     lˈuqᵒḥā zzˈōṯ        # lˈuqᵒḥā-zzˈōṯ       
+ 31 Psalmi 119:99       332074 prep              L,I75J                 lˈî                  =                     
+ 32 Josua 7:10          116332 inrg              L@74M.@H               lˈāmmā               =                     
+ 33 Exodus 12:39         35553 verb hit infc ---, L:-HIT:MAH:M;80H.A     lᵊhiṯmahmˈēₐh        =                     
+ 34 Genesis 1:29           620 subs sf,          L:->@K:L@75H           lᵊʔoḵlˈā             =                     
+ 35 Genesis 2:19          1037 prin --,verb qal impf 3sm,prep MAH J.IQ:R@> LO92W     mˌah yyiqrˌā lˈô     # mah-yyiqrā-lˈô      
+ 36 Genesis 12:18         5822 prin --,prde sf,  MAH Z.O73>T            mˌah zzˌōṯ           # mah-zzˈōṯ           
  37 Genesis 12:11         5699 nmpr s-,          MIY:R@92J:M@H          miṣrˈāyᵊmā           =                     
  38 Genesis 2:21          1091 subs pf,+w        MI-Y.AL:<OT@80JW       miṣṣalʕōṯˈāʸw        =                     
  39 Genesis 35:18        19388 verb qal perf 3sf, M;80T@H                mˈēṯā                =                     
- 40 Jesaia 43:26        227308 verb nif impf 1p-, NIC.@P:V@73H           niššāfᵊṭˌā           ~ niššāfᵊṭˈā          
+ 40 Jesaia 43:26        227318 verb nif impf 1p-, NIC.@P:V@73H           niššāfᵊṭˌā           ~ niššāfᵊṭˈā          
  41 Genesis 4:6           1763 verb qal perf 3p-, N@P:L71W.              nāfᵊlˌû              ~ nāfᵊlˈû             
- 42 Psalmi 11:3         311997 verb qal perf 3sm, P.@<@75L00             pāʕˈāl               =                     
- 43 Habakuk 3:2         302800 subs sm,+:k@      P.@75<@L:K@03          pˈoʕolᵊḵā            =                     
- 44 Proverbia 22:21     352892 subs sm,          QO73C:V:               qˌōšṭ                =                     
+ 42 Psalmi 11:3         312007 verb qal perf 3sm, P.@<@75L               pāʕˈāl               =                     
+ 43 Habakuk 3:2         302810 subs sm,+:k@      P.@45<@L:K@03          pˈoʕolᵊḵā            =                     
+ 44 Proverbia 22:21     352902 subs sm,          QO73C:V:               qˌōšṭ                =                     
  45 Genesis 1:6             82 subs sm,          R@QI73J<A              rāqˌîₐʕ              ~ rāqˈîₐʕ             
- 46 Ezechiel 31:4       279820 verb piel perf 3sf,+hw. RO75M:M@92T:HW.        rˈōmᵊmˈāṯᵊhû         =                     
- 47 Jesaia 22:10        219111 verb qal wayq 2pm, WA-T.IT,:YW.03         wattiṯṣˌû            =                     
- 48 Samuel_II 4:4       162672 verb qal wayq 3sf, WA-T.@NO80S            wattānˈōs            =                     
+ 46 Ezechiel 31:4       279830 verb piel perf 3sf,+hw. RO45M:M@92T:HW.        rˈōmᵊmˈāṯᵊhû         =                     
+ 47 Jesaia 22:10        219121 verb qal wayq 2pm, WA-T.IT,:YW.03         wattiṯṣˌû            =                     
+ 48 Samuel_II 4:4       162681 verb qal wayq 3sf, WA-T.@NO80S            wattānˈōs            =                     
  49 Genesis 21:19         9970 verb hif wayq 3sf, WA-T.A73C:Q:           wattˌašq             =                     
  50 Genesis 11:3          4991 verb qal wayq 3pm, WA-J.O>M:R62W.         wayyōmᵊrˈû           =                     
  51 Genesis 1:7             95 verb qal wayq 3sm, WA-J.A74<AF            wayyˈaʕaś            =                     
  52 Genesis 4:8           1800 verb qal wayq 3sm, WA-J.@71Q@M            wayyˌāqom            =                     
  53 Genesis 11:2          4988 verb qal wayq 3pm, WA-J.;71C:BW.          wayyˌēšᵊvû           =                     
  54 Genesis 11:2          4982 verb qal wayq 3pm, WA95-J.IM:Y:>71W.      wˈayyimṣᵊʔˌû         =                     
- 55 Genesis 1:3             38 verb qal wayq 3sm,subs s-, WA75-J:HIJ&>O75WR00    wˈayᵊhî-ʔˈôr         =                     
+ 55 Genesis 1:3             38 verb qal wayq 3sm,subs s-, WA45-J:HIJ >O75WR      wˈayᵊhˌî ʔˈôr        # wˈayᵊhî-ʔˈôr        
  56 Genesis 11:3          4999 verb qal impf 1p-, W:-NIF:R:P@73H         wᵊniśrᵊfˌā           ~ wᵊniśrᵊfˈā          
- 57 Jeremia 20:17       244898 subs sm,+@h,      W:-RAX:M@73H,          wᵊraḥmˌā             =                     
+ 57 Jeremia 20:17       244908 subs sm,+@h,      W:-RAX:M@73H,          wᵊraḥmˌā             =                     
  58 Genesis 1:2             25 subs s-,subs pm,  W:-R74W.XA >:ELOHI80JM  wᵊrˈûₐḥ ʔᵉlōhˈîm     =                     
  59 Genesis 1:28           568 verb qal impv 2pm,+h@ W:-KIB:CU92H@          wᵊḵivšˈuhā           =                     
  60 Genesis 18:29         8331 verb nif impf 3pm, JIM.@Y:>71W.N          yimmāṣᵊʔˌûn          ~ yimmāṣᵊʔˈûn         
  61 Genesis 11:6          5081 verb qal impf 3pm, J@Z:M73W.              yāzᵊmˌû              ~ yāzᵊmˈû             
  62 Genesis 1:10           168 subs sm,          W.-L:-MIQ:W;71H        ûlᵊmiqwˌē            =                     
  63 Genesis 4:18          1978 nmpr sm,          W.-M:XIJ.J@>;81L       ûmᵊḥiyyyāʔˈēl        =                     
- 64 Samuel_II 15:10     169081 verb qal infc ---,+:akem C@M:<:AKEM03           šomʕᵃḵˌem            =                     
- 65 Genesis 1:22           426 prepsubs pm,      >ET&HA-M.A33JIM03      ʔeṯ-hammˈayim        ~ ʔeṯ-hammˌayim       
- 66 Genesis 1:7             99 prepsubs sm,      >ET&H@-R@QIJ<A01       ʔeṯ-hārāqîˌₐʕ        =                     
- 67 Jeremia 10:20       240215 subs sm,+ij       >@H:@LI80J             ʔohᵒlˈî              =                     
- 68 Iob 19:4            340646 advb              >@M:N@71M              ʔomnˌām              =                     
- 69 Deuteronomium 25:18 107107 subs pm,+k@       >A75XARE80JK@          ʔˈaḥarˈeʸḵā          =                     
- 70 Genesis 2:18          1007 verb qal impf 1s-,prep >E75<:EFEH.&L.O71W     ʔˈeʕᵉśeh-llˌô        =                     
+ 64 Samuel_II 15:10     169090 verb qal infc ---,+:akem C@M:<:AKEM03           šomʕᵃḵˌem            =                     
+ 65 Genesis 1:22           426 prepsubs pm,      >ET HA-M.A33JIM03      ʔˌeṯ hammˈayim       # ʔeṯ-hammˌayim       
+ 66 Genesis 1:7             99 prepsubs sm,      >ET H@-R@QIJ<A01       ʔˌeṯ hārāqîˌₐʕ       # ʔeṯ-hārāqîˌₐʕ       
+ 67 Jeremia 10:20       240225 subs sm,+ij       >@H:@LI80J             ʔohᵒlˈî              =                     
+ 68 Iob 19:4            340656 advb              >@M:N@71M              ʔomnˌām              =                     
+ 69 Deuteronomium 25:18 107113 subs pm,+k@       >A45XARE80JK@          ʔˈaḥarˈeʸḵā          =                     
+ 70 Genesis 2:18          1007 verb qal impf 1s-,prep >E45<:EFEH. L.O71W     ʔˈeʕᵉśeh llˌô        # ʔˈeʕᵉśeh-llˌô       
  71 Genesis 1:1              3 subs pm,          >:ELOHI92JM            ʔᵉlōhˈîm             =                     
- 72 Genesis 1:2             28 prepsubs pm,      <AL&P.:N;71J           ʕal-pᵊnˌê            =                     
- 73 Proverbia 10:10     349408 subs sf,          <AY.@92BET             ʕaṣṣˈāveṯ            =                     
- 74 Jesaia 1:1          212070 nmpr sm,          <UZ.IJ.@94HW.          ʕuzziyyˈāhû          =                     
- 75 Joel 1:17           294292 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
+ 72 Genesis 1:2             28 prepsubs pm,      <AL P.:N;71J           ʕˌal pᵊnˌê           # ʕal-pᵊnˌê           
+ 73 Proverbia 10:10     349418 subs sf,          <AY.@92BET             ʕaṣṣˈāveṯ            =                     
+ 74 Jesaia 1:1          212080 nmpr sm,          <UZ.IJ.@94HW.          ʕuzziyyˈāhû          =                     
+ 75 Joel 1:17           294302 verb qal perf 3p-, <@B:C74W.              ʕāvᵊšˈû              =                     
  76 Genesis 3:14          1433 verb qal perf 2sm,prde sf, <@FI74JT@ Z.O>T01      ʕāśˈîṯā zzōṯ         =                     
  77 Genesis 1:11           190 verb qal ptca -sm, <O70FEH                ʕˈōśeh               =                     
- 78 Numeri 8:22          75659 subs sf,+@m       <:ABO75D@T@M03         ʕᵃvˈōḏāṯām           =                     
- 79 Genesis 1:30           624 subs sm,subs sf,  W.95-L:-K@L&XAJ.A74T   ˈûlᵊḵol-ḥayyˈaṯ      =                     
- 80 Genesis 3:14          1454 subs pm,+k@       XAJ.E75JK@00           ḥayyˈeʸḵā            =                     
- 81 Exodus 28:3          43763 subs sf,          X@K:M@92H              ḥoḵmˈā               =                     
- 82 Genesis 18:15         8073 verb qal perf 2sf, Y@X@75Q:T.:00          ṣāḥˈāqt              =                     
- 83 Ezechiel 26:21      277806 verb nif impf 2sf, TIM.@Y:>I71J           ṯimmāṣᵊʔˌî           =                     
- 84 Exodus 20:13         39800 verb qal impf 2sm, T.,IR:Y@7375X00_S      ṯirṣˈāḥ              =                     
- 85 Leviticus 19:12      63975 verb nif impf 2pm, TIC.@B:<71W.           ṯiššāvᵊʕˌû           =                     
+ 78 Numeri 8:22          75663 subs sf,+@m       <:ABO45D@T@M03         ʕᵃvˈōḏāṯām           =                     
+ 79 Genesis 1:30           624 subs sm,subs sf,  W.95-L:-K@L XAJ.A74T   ˈûlᵊḵˌol ḥayyˈaṯ     # ˈûlᵊḵol-ḥayyˈaṯ     
+ 80 Genesis 3:14          1454 subs pm,+k@       XAJ.E75JK@             ḥayyˈeʸḵā            =                     
+ 81 Exodus 28:3          43767 subs sf,          X@K:M@92H              ḥoḵmˈā               =                     
+ 82 Genesis 18:15         8073 verb qal perf 2sf, Y@X@75Q:T.:            ṣāḥˈāqt              =                     
+ 83 Ezechiel 26:21      277816 verb nif impf 2sf, TIM.@Y:>I71J           ṯimmāṣᵊʔˌî           =                     
+ 84 Exodus 20:13         39804 verb qal impf 2sm, T.,IR:Y@7375X          ṯirṣˈāḥ              =                     
+ 85 Leviticus 19:12      63979 verb nif impf 2pm, TIC.@B:<71W.           ṯiššāvᵊʕˌû           =                     
  86 Genesis 1:2             22 subs sf,          T:HO92WM               ṯᵊhˈôm               =                     
 
-  1 Deuteronomium 22:27 105840 subs sf,          HA75-N.A<:AR@H03          => *hˈa*nnaʕᵃrˌā             < ~ *hˈa*nnaʕᵃrā              # qetiv/kere
-        orig                 HA75-N.A<:AR@H03
-        trim                 ha75-n.a<:ar@h03
+  1 Deuteronomium 22:27 105846 subs sf,          HA45-N.A<:AR@H03          => *hˈa*nnaʕᵃrˌā             < ~ *hˈa*nnaʕᵃrā              # qetiv/kere
+        orig                 HA45-N.A<:AR@H03
+        trim                 ha45-n.a<:ar@h03
         accents              h!a-n.a<:ar@h
         punctuation          h!a-n.a<:ar@h
         rafe                 h!a-n.a<:ar@h
@@ -161,39 +161,39 @@
         cleanup              *ʔohᵒlˈô
 
 
-  3 Samuel_I 23:4       155387 nmpr sm,          JHW@80H_S                 => [yhwˈāh]                  < =                           # tetragrammaton with _S
-        orig                 [ JHW@80H ] §
-        trim                 [ jhw@80h ] §
-        accents              [ jhw!@h ] §
-        punctuation          [ jhw!@h ] §
-        rafe                 [ jhw!@h ] §
-        furtive_patah        [ jhw!@h ] §
-        default accent       [ jhw!@h ] §
+  3 Samuel_I 23:4       155396 nmpr sm,          JHW@80H                   => [yhwˈāh]                  < =                           # tetragrammaton with _S
+        orig                 [ JHW@80H ]
+        trim                 [ jhw@80h ]
+        accents              [ jhw!@h ]
+        punctuation          [ jhw!@h ]
+        rafe                 [ jhw!@h ]
+        furtive_patah        [ jhw!@h ]
+        default accent       [ jhw!@h ]
         qamets qatan         no special verb form: nmpr sm
-        qamets_qatan1        [ jhw!@h ] §
-        qamets_qatan2        [ jhw!@h ] §
-        qamets_qatan3        [ jhw!@h ] §
-        qamets_qatan4a       [ jhw!@h ] §
-        qamets_qatan4b       [ jhw!@h ] §
+        qamets_qatan1        [ jhw!@h ]
+        qamets_qatan2        [ jhw!@h ]
+        qamets_qatan3        [ jhw!@h ]
+        qamets_qatan4a       [ jhw!@h ]
+        qamets_qatan4b       [ jhw!@h ]
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        [ jhw!@h ] §
-        qamets_qatan_corr    [ jhw!@h ] §
-        mobile_schwa1        [ jhw!@h ] §
-        mobile_schwa2        [ jhw!@h ] §
-        mobile_schwa3        [ jhw!@h ] §
-        mobile_schwa4        [ jhw!@h ] §
-        dagesh_forte_lene    [ jhw!@h ] §
-        dagesh_forte         [ jhw!@h ] §
-        dagesh_lene          [ jhw!@h ] §
-        silent_aleph         [ jhw!@h ] §
-        last_ml              [ jhw!@h ] §
-        mappiq_heh           [ jhw!@h ] §
-        symbols              [ yhwˈāh ] §
-        fixit_i              [ yhwˈāh ] §
-        fixit_w              [ yhwˈāh ] §
-        fixit                [ yhwˈāh ] §
-        punct                [ yhwˈāh ]  
-        cleanup              [yhwˈāh] 
+        qamets_qatan5        [ jhw!@h ]
+        qamets_qatan_corr    [ jhw!@h ]
+        mobile_schwa1        [ jhw!@h ]
+        mobile_schwa2        [ jhw!@h ]
+        mobile_schwa3        [ jhw!@h ]
+        mobile_schwa4        [ jhw!@h ]
+        dagesh_forte_lene    [ jhw!@h ]
+        dagesh_forte         [ jhw!@h ]
+        dagesh_lene          [ jhw!@h ]
+        silent_aleph         [ jhw!@h ]
+        last_ml              [ jhw!@h ]
+        mappiq_heh           [ jhw!@h ]
+        symbols              [ yhwˈāh ]
+        fixit_i              [ yhwˈāh ]
+        fixit_w              [ yhwˈāh ]
+        fixit                [ yhwˈāh ]
+        punct                [ yhwˈāh ]
+        cleanup              [yhwˈāh]
 
 
   4 Genesis 3:1           1180 nmpr sm,subs pm,  J:HW@74H >:ELOHI92JM      => [yᵊhwˈāh] ʔᵉlōhˈîm        < =                           # tetra grammaton betweem []
@@ -310,7 +310,7 @@
         cleanup              yyammˈîm
 
 
-  6 Samuel_I 1:11       141737 subs sm,          B.@-<:@NI74J              => boʕᵒnˈî                   < =                           # qamets qatan, assimilation in preposition
+  6 Samuel_I 1:11       141746 subs sm,          B.@-<:@NI74J              => boʕᵒnˈî                   < =                           # qamets qatan, assimilation in preposition
         orig                 B.@-<:@NI74J
         trim                 b.@-<:@ni74j
         accents              b.@-<:@n!ij
@@ -386,39 +386,39 @@
         cleanup              bārˈā
 
 
-  8 Genesis 30:19        15896 subs sm,adjv sm,  B.;N&CIC.I73J             => bēn-šiššˌî                < ~ bēn-šiššˈî                # dagesh lene
-        orig                 B.;N&
-        trim                 b.;n&
-        accents              b.;n&
-        punctuation          b.;n&
-        rafe                 b.;n&
-        furtive_patah        b.;n&
-        default accent       b.;n&
+  8 Genesis 30:19        15896 subs sm,adjv sm,  B.;N CIC.I73J             => bˌēn šiššˌî               < # bēn-šiššˈî                # dagesh lene
+        orig                 B.;N 
+        trim                 b.;n 
+        accents              b.;n 
+        punctuation          b.;n 
+        rafe                 b.;n 
+        furtive_patah        b.;n 
+        default accent       b./;n 
         qamets qatan         no special verb form: subs sm
-        qamets_qatan1        b.;n&
-        qamets_qatan2        b.;n&
-        qamets_qatan3        b.;n&
-        qamets_qatan4a       b.;n&
-        qamets_qatan4b       b.;n&
+        qamets_qatan1        b./;n 
+        qamets_qatan2        b./;n 
+        qamets_qatan3        b./;n 
+        qamets_qatan4a       b./;n 
+        qamets_qatan4b       b./;n 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        b.;n&
-        qamets_qatan_corr    b.;n&
-        mobile_schwa1        b.;n&
-        mobile_schwa2        b.;n&
-        mobile_schwa3        b.;n&
-        mobile_schwa4        b.;n&
-        dagesh_forte_lene    b.;n&
-        dagesh_forte         b.;n&
-        dagesh_lene          B;n&
-        silent_aleph         B;n&
-        last_ml              B;n&
-        mappiq_heh           B;n&
-        symbols              bēn-
-        fixit_i              bēn-
-        fixit_w              bēn-
-        fixit                bēn-
-        punct                bēn-
-        cleanup              bēn-
+        qamets_qatan5        b./;n 
+        qamets_qatan_corr    b./;n 
+        mobile_schwa1        b./;n 
+        mobile_schwa2        b./;n 
+        mobile_schwa3        b./;n 
+        mobile_schwa4        b./;n 
+        dagesh_forte_lene    b./;n 
+        dagesh_forte         b./;n 
+        dagesh_lene          B/;n 
+        silent_aleph         B/;n 
+        last_ml              B/;n 
+        mappiq_heh           B/;n 
+        symbols              bˌēn 
+        fixit_i              bˌēn 
+        fixit_w              bˌēn 
+        fixit                bˌēn 
+        punct                bˌēn 
+        cleanup              bˌēn 
         orig                 CIC.I73J
         trim                 cic.i73j
         accents              cic./ij
@@ -535,7 +535,7 @@
         cleanup              ṯˈôḵ
 
 
- 11 Genesis 31:32        16971 verb qal perf 3sf,+am G.:N@B@75TAM00            => gᵊnāvˈāṯam                < =                           # qamets in qal 3sf
+ 11 Genesis 31:32        16971 verb qal perf 3sf,+am G.:N@B@75TAM              => gᵊnāvˈāṯam                < =                           # qamets in qal 3sf
         orig                 G.:N@B@75TAM
         trim                 g.:n@b@75tam
         accents              g.:n@b!@tam
@@ -566,7 +566,7 @@
         cleanup              gᵊnāvˈāṯam
 
 
- 12 Sacharia 14:2       308929 subs pm,          HA-B.@74T.I80JM           => habbˈāttˈîm               < =                           # qamets gadol, dagesh forte
+ 12 Sacharia 14:2       308939 subs pm,          HA-B.@74T.I80JM           => habbˈāttˈîm               < =                           # qamets gadol, dagesh forte
         orig                 HA-B.@74T.I80JM
         trim                 ha-b.@74t.i80jm
         accents              ha-b.!@t.!ijm
@@ -607,7 +607,7 @@
         cleanup              bbˈāttˈîm
 
 
- 13 Samuel_II 11:1      165701 subs pm,          HA-M.AL:>,KI81JM          => hammalḵˈîm                < =                           # rafe just before the kaf without dagesh: can be ignored
+ 13 Samuel_II 11:1      165710 subs pm,          HA-M.AL:>,KI81JM          => hammalḵˈîm                < =                           # rafe just before the kaf without dagesh: can be ignored
         orig                 HA-M.AL:>,KI81JM
         trim                 ha-m.al:>,ki81jm
         accents              ha-m.al:>,k!ijm
@@ -801,7 +801,7 @@
         cleanup              hiqqāvᵊṣˌû
 
 
- 18 Jeremia 6:8         237766 verb nif impv 2sf, HIW.@S:RIJ03              => hiwwāsᵊrˌî                < ~ hiwwāsᵊrî                 # qamets is long a, no accent marking in verb, waw with dagesh is not long u here but double waw
+ 18 Jeremia 6:8         237776 verb nif impv 2sf, HIW.@S:RIJ03              => hiwwāsᵊrˌî                < ~ hiwwāsᵊrî                 # qamets is long a, no accent marking in verb, waw with dagesh is not long u here but double waw
         orig                 HIW.@S:RIJ03
         trim                 hiw.@s:rij03
         accents              hiw.@s:rij
@@ -861,7 +861,7 @@
         cleanup              hāyᵊṯˌā
 
 
- 20 Josua 7:21          116627 subs sm,+ij       H@->@95H:@LI73J           => hāʔˈohᵒlˌî                < ~ hāʔˈohᵒlˈî                # qamets gadol, no assimilation in article
+ 20 Josua 7:21          116633 subs sm,+ij       H@->@95H:@LI73J           => hāʔˈohᵒlˌî                < ~ hāʔˈohᵒlˈî                # qamets gadol, no assimilation in article
         orig                 H@->@95H:@LI73J
         trim                 h@->@95h:@li73j
         accents              h@->!@h:@l/ij
@@ -902,7 +902,7 @@
         cleanup              ʔˈohᵒlˌî
 
 
- 21 Genesis 1:1             10 subs s-,          H@->@75REY00              => hāʔˈāreṣ                  < =                           # qamets as long a
+ 21 Genesis 1:1             10 subs s-,          H@->@75REY                => hāʔˈāreṣ                  < =                           # qamets as long a
         orig                 H@->@75REY
         trim                 h@->@75rey
         accents              h@->!@rey
@@ -984,9 +984,9 @@
         cleanup              ʔāḏˌām
 
 
- 23 Genesis 1:25           486 subs sf,          H@75->:AD@M@73H           => hˈāʔᵃḏāmˌā                < ~ hˈāʔᵃḏāmˈā                # middle qamets is long a
-        orig                 H@75->:AD@M@73H
-        trim                 h@75->:ad@m@73h
+ 23 Genesis 1:25           486 subs sf,          H@45->:AD@M@73H           => hˈāʔᵃḏāmˌā                < ~ hˈāʔᵃḏāmˈā                # middle qamets is long a
+        orig                 H@45->:AD@M@73H
+        trim                 h@45->:ad@m@73h
         accents              h!@->:ad@m/@h
         punctuation          h!@->:ad@m/@h
         rafe                 h!@->:ad@m/@h
@@ -1060,7 +1060,7 @@
         cleanup              hˌû
 
 
- 25 Josua 7:14          116450 subs pm,          LA--B.@T.I80JM            => labbāttˈîm                < =                           # qamets gadol on the basis of other occurrences
+ 25 Josua 7:14          116456 subs pm,          LA--B.@T.I80JM            => labbāttˈîm                < =                           # qamets gadol on the basis of other occurrences
         orig                 LA--B.@T.I80JM
         trim                 la--b.@t.i80jm
         accents              la--b.@t.!ijm
@@ -1108,7 +1108,7 @@
         cleanup              bbāttˈîm
 
 
- 26 Genesis 30:19        15898 nmpr sm,          L.:-JA<:AQO75B00          => llᵊyaʕᵃqˈōv               < =                           # initial dagesh forte
+ 26 Genesis 30:19        15898 nmpr sm,          L.:-JA<:AQO75B            => llᵊyaʕᵃqˈōv               < =                           # initial dagesh forte
         orig                 L.:-JA<:AQO75B
         trim                 l.:-ja<:aqo75b
         accents              l.:-ja<:aq!ob
@@ -1149,7 +1149,7 @@
         cleanup              yaʕᵃqˈōv
 
 
- 27 Jesaia 1:5          212133 subs sm,          L@-X:@LI80J               => loḥᵒlˈî                   < =                           # qamets qatan, assimilation in preposition
+ 27 Jesaia 1:5          212143 subs sm,          L@-X:@LI80J               => loḥᵒlˈî                   < =                           # qamets qatan, assimilation in preposition
         orig                 L@-X:@LI80J
         trim                 l@-x:@li80j
         accents              l@-x:@l!ij
@@ -1190,43 +1190,43 @@
         cleanup              ḥᵒlˈî
 
 
- 28 Genesis 25:32        12932 inrg              L@M.@H&                   => lāmmā-                    < =                           # qamets gadol, but no accent
-        orig                 L@M.@H&
-        trim                 l@m.@h&
-        accents              l@m.@h&
-        punctuation          l@m.@h&
-        rafe                 l@m.@h&
-        furtive_patah        l@m.@h&
-        default accent       l@m.@h&
+ 28 Genesis 25:32        12932 inrg              L@M.@H                    => lāmmˌā                    < ~ lāmmā-                    # qamets gadol, but no accent
+        orig                 L@M.@H
+        trim                 l@m.@h
+        accents              l@m.@h
+        punctuation          l@m.@h
+        rafe                 l@m.@h
+        furtive_patah        l@m.@h
+        default accent       l@m./@h
         qamets qatan         no special verb form: inrg
-        qamets_qatan1        l@m.@h&
-        qamets_qatan2        l^m.@h&
-        qamets_qatan3        l^m.@h&
-        qamets_qatan4a       l^m.@h&
-        qamets_qatan4b       l^m.@h&
+        qamets_qatan1        l@m./@h
+        qamets_qatan2        l^m./@h
+        qamets_qatan3        l^m./@h
+        qamets_qatan4a       l^m./@h
+        qamets_qatan4b       l^m./@h
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        l^m.@h&
-        qamets qatan         correction: l^m.@h& => l@m.@h&
-        qamets_qatan_corr    l@m.@h&
-        mobile_schwa1        l@m.@h&
-        mobile_schwa2        l@m.@h&
-        mobile_schwa3        l@m.@h&
-        mobile_schwa4        l@m.@h&
-        dagesh_forte_lene    l@m.@h&
-        dagesh_forte         l@mm@h&
-        dagesh_lene          l@mm@h&
-        silent_aleph         l@mm@h&
-        last_ml              l@mm@&
-        mappiq_heh           l@mm@&
-        symbols              lāmmā-
-        fixit_i              lāmmā-
-        fixit_w              lāmmā-
-        fixit                lāmmā-
-        punct                lāmmā-
-        cleanup              lāmmā-
+        qamets_qatan5        l^m./@h
+        qamets qatan         correction: l^m./@h => l@m./@h
+        qamets_qatan_corr    l@m./@h
+        mobile_schwa1        l@m./@h
+        mobile_schwa2        l@m./@h
+        mobile_schwa3        l@m./@h
+        mobile_schwa4        l@m./@h
+        dagesh_forte_lene    l@m./@h
+        dagesh_forte         l@mm/@h
+        dagesh_lene          l@mm/@h
+        silent_aleph         l@mm/@h
+        last_ml              l@mm/@
+        mappiq_heh           l@mm/@
+        symbols              lāmmˌā
+        fixit_i              lāmmˌā
+        fixit_w              lāmmˌā
+        fixit                lāmmˌā
+        punct                lāmmˌā
+        cleanup              lāmmˌā
 
 
- 29 Deuteronomium 28:28 108632 subs sm,          L;B@75B00                 => lēvˈāv                    < =                           # qamets gadol
+ 29 Deuteronomium 28:28 108638 subs sm,          L;B@75B                   => lēvˈāv                    < =                           # qamets gadol
         orig                 L;B@75B
         trim                 l;b@75b
         accents              l;b!@b
@@ -1261,39 +1261,39 @@
         cleanup              lēvˈāv
 
 
- 30 Genesis 2:23          1137 verb pual perf 3sf,prde sf, LU75Q:@X@H&Z.O75>T00      => lˈuqᵒḥā-zzˈōṯ             < =                           # is second heh mater lectionis?
-        orig                 LU75Q:@X@H&
-        trim                 lu75q:@x@h&
-        accents              l!uq:@x@h&
-        punctuation          l!uq:@x@h&
-        rafe                 l!uq:@x@h&
-        furtive_patah        l!uq:@x@h&
-        default accent       l!uq:@x@h&
+ 30 Genesis 2:23          1137 verb pual perf 3sf,prde sf, LU45Q:@X@H Z.O75>T        => lˈuqᵒḥā zzˈōṯ             < # lˈuqᵒḥā-zzˈōṯ             # is second heh mater lectionis?
+        orig                 LU45Q:@X@H 
+        trim                 lu45q:@x@h 
+        accents              l!uq:@x@h 
+        punctuation          l!uq:@x@h 
+        rafe                 l!uq:@x@h 
+        furtive_patah        l!uq:@x@h 
+        default accent       l!uq:@x@h 
         qamets qatan         no special verb form: verb pual perf 3sf
-        qamets_qatan1        l!uq:@x@h&
-        qamets_qatan2        l!uq:@x@h&
-        qamets_qatan3        l!uq:@x@h&
-        qamets_qatan4a       l!uq:@x@h&
-        qamets_qatan4b       l!uq:@x@h&
+        qamets_qatan1        l!uq:@x@h 
+        qamets_qatan2        l!uq:@x@h 
+        qamets_qatan3        l!uq:@x@h 
+        qamets_qatan4a       l!uq:@x@h 
+        qamets_qatan4b       l!uq:@x@h 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        l!uq:@x@h&
-        qamets_qatan_corr    l!uq:@x@h&
-        mobile_schwa1        l!uq:@x@h&
-        mobile_schwa2        l!uq:@x@h&
-        mobile_schwa3        l!uq:@x@h&
-        mobile_schwa4        l!uq:@x@h&
-        dagesh_forte_lene    l!uq:@x@h&
-        dagesh_forte         l!uq:@x@h&
-        dagesh_lene          l!uq:@x@h&
-        silent_aleph         l!uq:@x@h&
-        last_ml              l!uq:@x@&
-        mappiq_heh           l!uq:@x@&
-        symbols              lˈuqᵒḥā-
-        fixit_i              lˈuqᵒḥā-
-        fixit_w              lˈuqᵒḥā-
-        fixit                lˈuqᵒḥā-
-        punct                lˈuqᵒḥā-
-        cleanup              lˈuqᵒḥā-
+        qamets_qatan5        l!uq:@x@h 
+        qamets_qatan_corr    l!uq:@x@h 
+        mobile_schwa1        l!uq:@x@h 
+        mobile_schwa2        l!uq:@x@h 
+        mobile_schwa3        l!uq:@x@h 
+        mobile_schwa4        l!uq:@x@h 
+        dagesh_forte_lene    l!uq:@x@h 
+        dagesh_forte         l!uq:@x@h 
+        dagesh_lene          l!uq:@x@h 
+        silent_aleph         l!uq:@x@h 
+        last_ml              l!uq:@x@ 
+        mappiq_heh           l!uq:@x@ 
+        symbols              lˈuqᵒḥā 
+        fixit_i              lˈuqᵒḥā 
+        fixit_w              lˈuqᵒḥā 
+        fixit                lˈuqᵒḥā 
+        punct                lˈuqᵒḥā 
+        cleanup              lˈuqᵒḥā 
         orig                 Z.O75>T
         trim                 z.o75>t
         accents              z.!o>t
@@ -1328,7 +1328,7 @@
         cleanup              zzˈōṯ
 
 
- 31 Psalmi 119:99       332064 prep              L,I75J00                  => lˈî                       < =                           # rafe just after the lamed: can be ignored
+ 31 Psalmi 119:99       332074 prep              L,I75J                    => lˈî                       < =                           # rafe just after the lamed: can be ignored
         orig                 L,I75J
         trim                 l,i75j
         accents              l,!ij
@@ -1363,7 +1363,7 @@
         cleanup              lˈî
 
 
- 32 Josua 7:10          116326 inrg              L@74M.@H                  => lˈāmmā                    < =                           # qamets gadol
+ 32 Josua 7:10          116332 inrg              L@74M.@H                  => lˈāmmā                    < =                           # qamets gadol
         orig                 L@74M.@H
         trim                 l@74m.@h
         accents              l!@m.@h
@@ -1398,7 +1398,7 @@
         cleanup              lˈāmmā
 
 
- 33 Exodus 12:39         35549 verb hit infc ---, L:-HIT:MAH:M;80H.A        => lᵊhiṯmahmˈēₐh             < =                           # furtive patah with heh mappiq
+ 33 Exodus 12:39         35553 verb hit infc ---, L:-HIT:MAH:M;80H.A        => lᵊhiṯmahmˈēₐh             < =                           # furtive patah with heh mappiq
         orig                 L:-HIT:MAH:M;80H.A
         trim                 l:-hit:mah:m;80h.a
         accents              l:-hit:mah:m!;h.a
@@ -1439,7 +1439,7 @@
         cleanup              hiṯmahmˈēₐh
 
 
- 34 Genesis 1:29           620 subs sf,          L:->@K:L@75H00            => lᵊʔoḵlˈā                  < =                           # qamets as long a and h as mater lectionis
+ 34 Genesis 1:29           620 subs sf,          L:->@K:L@75H              => lᵊʔoḵlˈā                  < =                           # qamets as long a and h as mater lectionis
         orig                 L:->@K:L@75H
         trim                 l:->@k:l@75h
         accents              l:->@k:l!@h
@@ -1480,71 +1480,71 @@
         cleanup              ʔoḵlˈā
 
 
- 35 Genesis 2:19          1037 prin --,verb qal impf 3sm,prep MAH&J.IQ:R@>&LO92W        => mah-yyiqrā-lˈô            < =                           # mah-yyiqroʔ-lˈô
-        orig                 MAH&
-        trim                 mah&
-        accents              mah&
-        punctuation          mah&
-        rafe                 mah&
-        furtive_patah        mah&
-        default accent       mah&
+ 35 Genesis 2:19          1037 prin --,verb qal impf 3sm,prep MAH J.IQ:R@> LO92W        => mˌah yyiqrˌā lˈô          < # mah-yyiqrā-lˈô            # mah-yyiqroʔ-lˈô
+        orig                 MAH 
+        trim                 mah 
+        accents              mah 
+        punctuation          mah 
+        rafe                 mah 
+        furtive_patah        mah 
+        default accent       m/ah 
         qamets qatan         no special verb form: prin --
-        qamets_qatan1        mah&
-        qamets_qatan2        mah&
-        qamets_qatan3        mah&
-        qamets_qatan4a       mah&
-        qamets_qatan4b       mah&
+        qamets_qatan1        m/ah 
+        qamets_qatan2        m/ah 
+        qamets_qatan3        m/ah 
+        qamets_qatan4a       m/ah 
+        qamets_qatan4b       m/ah 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        mah&
-        qamets_qatan_corr    mah&
-        mobile_schwa1        mah&
-        mobile_schwa2        mah&
-        mobile_schwa3        mah&
-        mobile_schwa4        mah&
-        dagesh_forte_lene    mah&
-        dagesh_forte         mah&
-        dagesh_lene          mah&
-        silent_aleph         mah&
-        last_ml              mah&
-        mappiq_heh           mah&
-        symbols              mah-
-        fixit_i              mah-
-        fixit_w              mah-
-        fixit                mah-
-        punct                mah-
-        cleanup              mah-
-        orig                 J.IQ:R@>&
-        trim                 j.iq:r@>&
-        accents              j.iq:r@>&
-        punctuation          j.iq:r@>&
-        rafe                 j.iq:r@>&
-        furtive_patah        j.iq:r@>&
-        default accent       j.iq:r@>&
+        qamets_qatan5        m/ah 
+        qamets_qatan_corr    m/ah 
+        mobile_schwa1        m/ah 
+        mobile_schwa2        m/ah 
+        mobile_schwa3        m/ah 
+        mobile_schwa4        m/ah 
+        dagesh_forte_lene    m/ah 
+        dagesh_forte         m/ah 
+        dagesh_lene          m/ah 
+        silent_aleph         m/ah 
+        last_ml              m/ah 
+        mappiq_heh           m/ah 
+        symbols              mˌah 
+        fixit_i              mˌah 
+        fixit_w              mˌah 
+        fixit                mˌah 
+        punct                mˌah 
+        cleanup              mˌah 
+        orig                 J.IQ:R@> 
+        trim                 j.iq:r@> 
+        accents              j.iq:r@> 
+        punctuation          j.iq:r@> 
+        rafe                 j.iq:r@> 
+        furtive_patah        j.iq:r@> 
+        default accent       j.iq:r/@> 
         qamets qatan         no special verb form: verb qal impf 3sm
-        qamets_qatan1        j.iq:r@>&
-        qamets_qatan2        j.iq:r@>&
-        qamets_qatan3        j.iq:r@>&
-        qamets_qatan4a       j.iq:r@>&
-        qamets_qatan4b       j.iq:r@>&
+        qamets_qatan1        j.iq:r/@> 
+        qamets_qatan2        j.iq:r/@> 
+        qamets_qatan3        j.iq:r/@> 
+        qamets_qatan4a       j.iq:r/@> 
+        qamets_qatan4b       j.iq:r/@> 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        j.iq:r@>&
-        qamets_qatan_corr    j.iq:r@>&
-        mobile_schwa1        j.iq:r@>&
-        mobile_schwa2        j.iq:r@>&
-        mobile_schwa3        j.iq:r@>&
-        mobile_schwa4        j.iq:r@>&
-        dagesh_forte_lene    j.iq:r@>&
-        dagesh_forte         j.iq:r@>&
-        dagesh_lene          j.iq:r@>&
-        silent_aleph         j.iq:r@&
-        last_ml              j.iq:r@&
-        mappiq_heh           j.iq:r@&
-        symbols              y.iqrā-
-        fixit_i              y.iqrā-
-        fixit_w              y.iqrā-
-        fixit                yyiqrā-
-        punct                yyiqrā-
-        cleanup              yyiqrā-
+        qamets_qatan5        j.iq:r/@> 
+        qamets_qatan_corr    j.iq:r/@> 
+        mobile_schwa1        j.iq:r/@> 
+        mobile_schwa2        j.iq:r/@> 
+        mobile_schwa3        j.iq:r/@> 
+        mobile_schwa4        j.iq:r/@> 
+        dagesh_forte_lene    j.iq:r/@> 
+        dagesh_forte         j.iq:r/@> 
+        dagesh_lene          j.iq:r/@> 
+        silent_aleph         j.iq:r/@ 
+        last_ml              j.iq:r/@ 
+        mappiq_heh           j.iq:r/@ 
+        symbols              y.iqrˌā 
+        fixit_i              y.iqrˌā 
+        fixit_w              y.iqrˌā 
+        fixit                yyiqrˌā 
+        punct                yyiqrˌā 
+        cleanup              yyiqrˌā 
         orig                 LO92W
         trim                 lo92w
         accents              l!ow
@@ -1579,39 +1579,39 @@
         cleanup              lˈô
 
 
- 36 Genesis 12:18         5822 prin --,prde sf,  MAH&Z.O73>T               => mah-zzˌōṯ                 < ~ mah-zzˈōṯ                 # heh is not mater lectionis
-        orig                 MAH&
-        trim                 mah&
-        accents              mah&
-        punctuation          mah&
-        rafe                 mah&
-        furtive_patah        mah&
-        default accent       mah&
+ 36 Genesis 12:18         5822 prin --,prde sf,  MAH Z.O73>T               => mˌah zzˌōṯ                < # mah-zzˈōṯ                 # heh is not mater lectionis
+        orig                 MAH 
+        trim                 mah 
+        accents              mah 
+        punctuation          mah 
+        rafe                 mah 
+        furtive_patah        mah 
+        default accent       m/ah 
         qamets qatan         no special verb form: prin --
-        qamets_qatan1        mah&
-        qamets_qatan2        mah&
-        qamets_qatan3        mah&
-        qamets_qatan4a       mah&
-        qamets_qatan4b       mah&
+        qamets_qatan1        m/ah 
+        qamets_qatan2        m/ah 
+        qamets_qatan3        m/ah 
+        qamets_qatan4a       m/ah 
+        qamets_qatan4b       m/ah 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        mah&
-        qamets_qatan_corr    mah&
-        mobile_schwa1        mah&
-        mobile_schwa2        mah&
-        mobile_schwa3        mah&
-        mobile_schwa4        mah&
-        dagesh_forte_lene    mah&
-        dagesh_forte         mah&
-        dagesh_lene          mah&
-        silent_aleph         mah&
-        last_ml              mah&
-        mappiq_heh           mah&
-        symbols              mah-
-        fixit_i              mah-
-        fixit_w              mah-
-        fixit                mah-
-        punct                mah-
-        cleanup              mah-
+        qamets_qatan5        m/ah 
+        qamets_qatan_corr    m/ah 
+        mobile_schwa1        m/ah 
+        mobile_schwa2        m/ah 
+        mobile_schwa3        m/ah 
+        mobile_schwa4        m/ah 
+        dagesh_forte_lene    m/ah 
+        dagesh_forte         m/ah 
+        dagesh_lene          m/ah 
+        silent_aleph         m/ah 
+        last_ml              m/ah 
+        mappiq_heh           m/ah 
+        symbols              mˌah 
+        fixit_i              mˌah 
+        fixit_w              mˌah 
+        fixit                mˌah 
+        punct                mˌah 
+        cleanup              mˌah 
         orig                 Z.O73>T
         trim                 z.o73>t
         accents              z./o>t
@@ -1753,7 +1753,7 @@
         cleanup              mˈēṯā
 
 
- 40 Jesaia 43:26        227308 verb nif impf 1p-, NIC.@P:V@73H              => niššāfᵊṭˌā                < ~ niššāfᵊṭˈā                # qamets is long a, no accent marking in verb except tipeha on last syllable
+ 40 Jesaia 43:26        227318 verb nif impf 1p-, NIC.@P:V@73H              => niššāfᵊṭˌā                < ~ niššāfᵊṭˈā                # qamets is long a, no accent marking in verb except tipeha on last syllable
         orig                 NIC.@P:V@73H
         trim                 nic.@p:v@73h
         accents              nic.@p:v/@h
@@ -1813,7 +1813,7 @@
         cleanup              nāfᵊlˌû
 
 
- 42 Psalmi 11:3         311997 verb qal perf 3sm, P.@<@75L00                => pāʕˈāl                    < =                           # qamets gadol in verb
+ 42 Psalmi 11:3         312007 verb qal perf 3sm, P.@<@75L                  => pāʕˈāl                    < =                           # qamets gadol in verb
         orig                 P.@<@75L
         trim                 p.@<@75l
         accents              p.@<!@l
@@ -1848,9 +1848,9 @@
         cleanup              pāʕˈāl
 
 
- 43 Habakuk 3:2         302800 subs sm,+:k@      P.@75<@L:K@03             => pˈoʕolᵊḵā                 < =                           # qamets qatan in front of other qamets qatan (Lettinga 12th)
-        orig                 P.@75<@L:K@03
-        trim                 p.@75<@l:k@03
+ 43 Habakuk 3:2         302810 subs sm,+:k@      P.@45<@L:K@03             => pˈoʕolᵊḵā                 < =                           # qamets qatan in front of other qamets qatan (Lettinga 12th)
+        orig                 P.@45<@L:K@03
+        trim                 p.@45<@l:k@03
         accents              p.!@<@l:k@
         punctuation          p.!@<@l:k@
         rafe                 p.!@<@l:k@
@@ -1884,7 +1884,7 @@
         cleanup              pˈoʕolᵊḵā
 
 
- 44 Proverbia 22:21     352892 subs sm,          QO73C:V:                  => qˌōšṭ                     < =                           # silent schwa on last consonant after preceding consonant with also schwa in a noun
+ 44 Proverbia 22:21     352902 subs sm,          QO73C:V:                  => qˌōšṭ                     < =                           # silent schwa on last consonant after preceding consonant with also schwa in a noun
         orig                 QO73C:V:
         trim                 qo73c:v:
         accents              q/oc:v:
@@ -1954,9 +1954,9 @@
         cleanup              rāqˌîₐʕ
 
 
- 46 Ezechiel 31:4       279820 verb piel perf 3sf,+hw. RO75M:M@92T:HW.           => rˈōmᵊmˈāṯᵊhû              < =                           # qamets is long a
-        orig                 RO75M:M@92T:HW.
-        trim                 ro75m:m@92t:hw.
+ 46 Ezechiel 31:4       279830 verb piel perf 3sf,+hw. RO45M:M@92T:HW.           => rˈōmᵊmˈāṯᵊhû              < =                           # qamets is long a
+        orig                 RO45M:M@92T:HW.
+        trim                 ro45m:m@92t:hw.
         accents              r!om:m!@t:hw.
         punctuation          r!om:m!@t:hw.
         rafe                 r!om:m!@t:hw.
@@ -1989,7 +1989,7 @@
         cleanup              rˈōmᵊmˈāṯᵊhû
 
 
- 47 Jesaia 22:10        219111 verb qal wayq 2pm, WA-T.IT,:YW.03            => wattiṯṣˌû                 < =                           # rafe just after the taf without dagesh: can be ignored
+ 47 Jesaia 22:10        219121 verb qal wayq 2pm, WA-T.IT,:YW.03            => wattiṯṣˌû                 < =                           # rafe just after the taf without dagesh: can be ignored
         orig                 WA-T.IT,:YW.03
         trim                 wa-t.it,:yw.03
         accents              wa-t.it,:yw.
@@ -2030,7 +2030,7 @@
         cleanup              ttiṯṣˌû
 
 
- 48 Samuel_II 4:4       162672 verb qal wayq 3sf, WA-T.@NO80S               => wattānˈōs                 < =                           # qamets gadol
+ 48 Samuel_II 4:4       162681 verb qal wayq 3sf, WA-T.@NO80S               => wattānˈōs                 < =                           # qamets gadol
         orig                 WA-T.@NO80S
         trim                 wa-t.@no80s
         accents              wa-t.@n!os
@@ -2317,45 +2317,45 @@
         cleanup              yyimṣᵊʔˌû
 
 
- 55 Genesis 1:3             38 verb qal wayq 3sm,subs s-, WA75-J:HIJ&>O75WR00       => wˈayᵊhî-ʔˈôr              < =                           # alef not as mater lectionis
-        orig                 WA75-J:HIJ&
-        trim                 wa75-j:hij&
-        accents              w!a-j:hij&
-        punctuation          w!a-j:hij&
-        rafe                 w!a-j:hij&
-        furtive_patah        w!a-j:hij&
-        default accent       w!a-j:hij&
+ 55 Genesis 1:3             38 verb qal wayq 3sm,subs s-, WA45-J:HIJ >O75WR         => wˈayᵊhˌî ʔˈôr             < # wˈayᵊhî-ʔˈôr              # alef not as mater lectionis
+        orig                 WA45-J:HIJ 
+        trim                 wa45-j:hij 
+        accents              w!a-j:hij 
+        punctuation          w!a-j:hij 
+        rafe                 w!a-j:hij 
+        furtive_patah        w!a-j:hij 
+        default accent       w!a-j:h/ij 
         qamets qatan         no special verb form: verb qal wayq 3sm
-        qamets_qatan1        w!a-j:hij&
-        qamets_qatan2        w!a-j:hij&
-        qamets_qatan3        w!a-j:hij&
-        qamets_qatan4a       w!a-j:hij&
-        qamets_qatan4b       w!a-j:hij&
+        qamets_qatan1        w!a-j:h/ij 
+        qamets_qatan2        w!a-j:h/ij 
+        qamets_qatan3        w!a-j:h/ij 
+        qamets_qatan4a       w!a-j:h/ij 
+        qamets_qatan4b       w!a-j:h/ij 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        w!a-j:hij&
-        qamets_qatan_corr    w!a-j:hij&
-        mobile_schwa1        w!a-j%hij&
-        mobile_schwa2        w!a-j%hij&
-        mobile_schwa3        w!a-j%hij&
-        mobile_schwa4        w!a-j%hij&
-        dagesh_forte_lene    w!a-j%hij&
-        dagesh_forte         w!a-j%hij&
-        dagesh_lene          w!a-j%hij&
-        silent_aleph         w!a-j%hij&
-        last_ml              w!a-j%hij&
-        mappiq_heh           w!a-j%hij&
+        qamets_qatan5        w!a-j:h/ij 
+        qamets_qatan_corr    w!a-j:h/ij 
+        mobile_schwa1        w!a-j%h/ij 
+        mobile_schwa2        w!a-j%h/ij 
+        mobile_schwa3        w!a-j%h/ij 
+        mobile_schwa4        w!a-j%h/ij 
+        dagesh_forte_lene    w!a-j%h/ij 
+        dagesh_forte         w!a-j%h/ij 
+        dagesh_lene          w!a-j%h/ij 
+        silent_aleph         w!a-j%h/ij 
+        last_ml              w!a-j%h/ij 
+        mappiq_heh           w!a-j%h/ij 
         symbols              wˈa
         fixit_i              wˈa
         fixit_w              wˈa
         fixit                wˈa
         punct                wˈa
         cleanup              wˈa
-        symbols              yᵊhî-
-        fixit_i              yᵊhî-
-        fixit_w              yᵊhî-
-        fixit                yᵊhî-
-        punct                yᵊhî-
-        cleanup              yᵊhî-
+        symbols              yᵊhˌî 
+        fixit_i              yᵊhˌî 
+        fixit_w              yᵊhˌî 
+        fixit                yᵊhˌî 
+        punct                yᵊhˌî 
+        cleanup              yᵊhˌî 
         orig                 >O75WR
         trim                 >o75wr
         accents              >!owr
@@ -2431,7 +2431,7 @@
         cleanup              niśrᵊfˌā
 
 
- 57 Jeremia 20:17       244898 subs sm,+@h,      W:-RAX:M@73H,             => wᵊraḥmˌā                  < =                           # rafe just after the he: he is mater lectionis
+ 57 Jeremia 20:17       244908 subs sm,+@h,      W:-RAX:M@73H,             => wᵊraḥmˌā                  < =                           # rafe just after the he: he is mater lectionis
         orig                 W:-RAX:M@73H,
         trim                 w:-rax:m@73h,
         accents              w:-rax:m/@h,
@@ -2734,7 +2734,7 @@
         cleanup              mᵊḥiyyyāʔˈēl
 
 
- 64 Samuel_II 15:10     169081 verb qal infc ---,+:akem C@M:<:AKEM03              => šomʕᵃḵˌem                 < =                           # qamets qatan
+ 64 Samuel_II 15:10     169090 verb qal infc ---,+:akem C@M:<:AKEM03              => šomʕᵃḵˌem                 < =                           # qamets qatan
         orig                 C@M:<:AKEM03
         trim                 c@m:<:akem03
         accents              c@m:<:akem
@@ -2769,39 +2769,39 @@
         cleanup              šomʕᵃḵˌem
 
 
- 65 Genesis 1:22           426 prepsubs pm,      >ET&HA-M.A33JIM03         => ʔeṯ-hammˈayim             < ~ ʔeṯ-hammˌayim             # ignore accent on final mem
-        orig                 >ET&
-        trim                 >et&
-        accents              >et&
-        punctuation          >et&
-        rafe                 >et&
-        furtive_patah        >et&
-        default accent       >et&
+ 65 Genesis 1:22           426 prepsubs pm,      >ET HA-M.A33JIM03         => ʔˌeṯ hammˈayim            < # ʔeṯ-hammˌayim             # ignore accent on final mem
+        orig                 >ET 
+        trim                 >et 
+        accents              >et 
+        punctuation          >et 
+        rafe                 >et 
+        furtive_patah        >et 
+        default accent       >/et 
         qamets qatan         no special verb form: prep
-        qamets_qatan1        >et&
-        qamets_qatan2        >et&
-        qamets_qatan3        >et&
-        qamets_qatan4a       >et&
-        qamets_qatan4b       >et&
+        qamets_qatan1        >/et 
+        qamets_qatan2        >/et 
+        qamets_qatan3        >/et 
+        qamets_qatan4a       >/et 
+        qamets_qatan4b       >/et 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        >et&
-        qamets_qatan_corr    >et&
-        mobile_schwa1        >et&
-        mobile_schwa2        >et&
-        mobile_schwa3        >et&
-        mobile_schwa4        >et&
-        dagesh_forte_lene    >et&
-        dagesh_forte         >et&
-        dagesh_lene          >et&
-        silent_aleph         >et&
-        last_ml              >et&
-        mappiq_heh           >et&
-        symbols              ʔeṯ-
-        fixit_i              ʔeṯ-
-        fixit_w              ʔeṯ-
-        fixit                ʔeṯ-
-        punct                ʔeṯ-
-        cleanup              ʔeṯ-
+        qamets_qatan5        >/et 
+        qamets_qatan_corr    >/et 
+        mobile_schwa1        >/et 
+        mobile_schwa2        >/et 
+        mobile_schwa3        >/et 
+        mobile_schwa4        >/et 
+        dagesh_forte_lene    >/et 
+        dagesh_forte         >/et 
+        dagesh_lene          >/et 
+        silent_aleph         >/et 
+        last_ml              >/et 
+        mappiq_heh           >/et 
+        symbols              ʔˌeṯ 
+        fixit_i              ʔˌeṯ 
+        fixit_w              ʔˌeṯ 
+        fixit                ʔˌeṯ 
+        punct                ʔˌeṯ 
+        cleanup              ʔˌeṯ 
         orig                 HA-M.A33JIM03
         trim                 ha-m.a33jim03
         accents              ha-m.!ajim
@@ -2842,39 +2842,39 @@
         cleanup              mmˈayim
 
 
- 66 Genesis 1:7             99 prepsubs sm,      >ET&H@-R@QIJ<A01          => ʔeṯ-hārāqîˌₐʕ             < =                           # furtive pata and default accent
-        orig                 >ET&
-        trim                 >et&
-        accents              >et&
-        punctuation          >et&
-        rafe                 >et&
-        furtive_patah        >et&
-        default accent       >et&
+ 66 Genesis 1:7             99 prepsubs sm,      >ET H@-R@QIJ<A01          => ʔˌeṯ hārāqîˌₐʕ            < # ʔeṯ-hārāqîˌₐʕ             # furtive pata and default accent
+        orig                 >ET 
+        trim                 >et 
+        accents              >et 
+        punctuation          >et 
+        rafe                 >et 
+        furtive_patah        >et 
+        default accent       >/et 
         qamets qatan         no special verb form: prep
-        qamets_qatan1        >et&
-        qamets_qatan2        >et&
-        qamets_qatan3        >et&
-        qamets_qatan4a       >et&
-        qamets_qatan4b       >et&
+        qamets_qatan1        >/et 
+        qamets_qatan2        >/et 
+        qamets_qatan3        >/et 
+        qamets_qatan4a       >/et 
+        qamets_qatan4b       >/et 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        >et&
-        qamets_qatan_corr    >et&
-        mobile_schwa1        >et&
-        mobile_schwa2        >et&
-        mobile_schwa3        >et&
-        mobile_schwa4        >et&
-        dagesh_forte_lene    >et&
-        dagesh_forte         >et&
-        dagesh_lene          >et&
-        silent_aleph         >et&
-        last_ml              >et&
-        mappiq_heh           >et&
-        symbols              ʔeṯ-
-        fixit_i              ʔeṯ-
-        fixit_w              ʔeṯ-
-        fixit                ʔeṯ-
-        punct                ʔeṯ-
-        cleanup              ʔeṯ-
+        qamets_qatan5        >/et 
+        qamets_qatan_corr    >/et 
+        mobile_schwa1        >/et 
+        mobile_schwa2        >/et 
+        mobile_schwa3        >/et 
+        mobile_schwa4        >/et 
+        dagesh_forte_lene    >/et 
+        dagesh_forte         >/et 
+        dagesh_lene          >/et 
+        silent_aleph         >/et 
+        last_ml              >/et 
+        mappiq_heh           >/et 
+        symbols              ʔˌeṯ 
+        fixit_i              ʔˌeṯ 
+        fixit_w              ʔˌeṯ 
+        fixit                ʔˌeṯ 
+        punct                ʔˌeṯ 
+        cleanup              ʔˌeṯ 
         orig                 H@-R@QIJ<A01
         trim                 h@-r@qij<a01
         accents              h@-r@qij<a
@@ -2915,7 +2915,7 @@
         cleanup              rāqîˌₐʕ
 
 
- 67 Jeremia 10:20       240215 subs sm,+ij       >@H:@LI80J                => ʔohᵒlˈî                   < =                           # qamets qatan, assimilation inside word
+ 67 Jeremia 10:20       240225 subs sm,+ij       >@H:@LI80J                => ʔohᵒlˈî                   < =                           # qamets qatan, assimilation inside word
         orig                 >@H:@LI80J
         trim                 >@h:@li80j
         accents              >@h:@l!ij
@@ -2950,7 +2950,7 @@
         cleanup              ʔohᵒlˈî
 
 
- 68 Iob 19:4            340646 advb              >@M:N@71M                 => ʔomnˌām                   < =                           # qamets qatan and then gadol
+ 68 Iob 19:4            340656 advb              >@M:N@71M                 => ʔomnˌām                   < =                           # qamets qatan and then gadol
         orig                 >@M:N@71M
         trim                 >@m:n@71m
         accents              >@m:n/@m
@@ -2985,9 +2985,9 @@
         cleanup              ʔomnˌām
 
 
- 69 Deuteronomium 25:18 107107 subs pm,+k@       >A75XARE80JK@             => ʔˈaḥarˈeʸḵā               < =                           # segol plus yod: glide
-        orig                 >A75XARE80JK@
-        trim                 >a75xare80jk@
+ 69 Deuteronomium 25:18 107113 subs pm,+k@       >A45XARE80JK@             => ʔˈaḥarˈeʸḵā               < =                           # segol plus yod: glide
+        orig                 >A45XARE80JK@
+        trim                 >a45xare80jk@
         accents              >!axar!ejk@
         punctuation          >!axar!ejk@
         rafe                 >!axar!ejk@
@@ -3020,39 +3020,39 @@
         cleanup              ʔˈaḥarˈeʸḵā
 
 
- 70 Genesis 2:18          1007 verb qal impf 1s-,prep >E75<:EFEH.&L.O71W        => ʔˈeʕᵉśeh-llˌô             < =                           # dagesh forte in lamed
-        orig                 >E75<:EFEH.&
-        trim                 >e75<:efeh.&
-        accents              >!e<:efeh.&
-        punctuation          >!e<:efeh.&
-        rafe                 >!e<:efeh.&
-        furtive_patah        >!e<:efeh.&
-        default accent       >!e<:efeh.&
+ 70 Genesis 2:18          1007 verb qal impf 1s-,prep >E45<:EFEH. L.O71W        => ʔˈeʕᵉśeh llˌô             < # ʔˈeʕᵉśeh-llˌô             # dagesh forte in lamed
+        orig                 >E45<:EFEH. 
+        trim                 >e45<:efeh. 
+        accents              >!e<:efeh. 
+        punctuation          >!e<:efeh. 
+        rafe                 >!e<:efeh. 
+        furtive_patah        >!e<:efeh. 
+        default accent       >!e<:efeh. 
         qamets qatan         no special verb form: verb qal impf 1s-
-        qamets_qatan1        >!e<:efeh.&
-        qamets_qatan2        >!e<:efeh.&
-        qamets_qatan3        >!e<:efeh.&
-        qamets_qatan4a       >!e<:efeh.&
-        qamets_qatan4b       >!e<:efeh.&
+        qamets_qatan1        >!e<:efeh. 
+        qamets_qatan2        >!e<:efeh. 
+        qamets_qatan3        >!e<:efeh. 
+        qamets_qatan4a       >!e<:efeh. 
+        qamets_qatan4b       >!e<:efeh. 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        >!e<:efeh.&
-        qamets_qatan_corr    >!e<:efeh.&
-        mobile_schwa1        >!e<:efeh.&
-        mobile_schwa2        >!e<:efeh.&
-        mobile_schwa3        >!e<:efeh.&
-        mobile_schwa4        >!e<:efeh.&
-        dagesh_forte_lene    >!e<:efeh.&
-        dagesh_forte         >!e<:efeh.&
-        dagesh_lene          >!e<:efeh.&
-        silent_aleph         >!e<:efeh.&
-        last_ml              >!e<:efeh.&
-        mappiq_heh           >!e<:efeh&
-        symbols              ʔˈeʕᵉśeh-
-        fixit_i              ʔˈeʕᵉśeh-
-        fixit_w              ʔˈeʕᵉśeh-
-        fixit                ʔˈeʕᵉśeh-
-        punct                ʔˈeʕᵉśeh-
-        cleanup              ʔˈeʕᵉśeh-
+        qamets_qatan5        >!e<:efeh. 
+        qamets_qatan_corr    >!e<:efeh. 
+        mobile_schwa1        >!e<:efeh. 
+        mobile_schwa2        >!e<:efeh. 
+        mobile_schwa3        >!e<:efeh. 
+        mobile_schwa4        >!e<:efeh. 
+        dagesh_forte_lene    >!e<:efeh. 
+        dagesh_forte         >!e<:efeh. 
+        dagesh_lene          >!e<:efeh. 
+        silent_aleph         >!e<:efeh. 
+        last_ml              >!e<:efeh. 
+        mappiq_heh           >!e<:efeh 
+        symbols              ʔˈeʕᵉśeh 
+        fixit_i              ʔˈeʕᵉśeh 
+        fixit_w              ʔˈeʕᵉśeh 
+        fixit                ʔˈeʕᵉśeh 
+        punct                ʔˈeʕᵉśeh 
+        cleanup              ʔˈeʕᵉśeh 
         orig                 L.O71W
         trim                 l.o71w
         accents              l./ow
@@ -3122,39 +3122,39 @@
         cleanup              ʔᵉlōhˈîm
 
 
- 72 Genesis 1:2             28 prepsubs pm,      <AL&P.:N;71J              => ʕal-pᵊnˌê                 < =                           # dagesh lene
-        orig                 <AL&
-        trim                 <al&
-        accents              <al&
-        punctuation          <al&
-        rafe                 <al&
-        furtive_patah        <al&
-        default accent       <al&
+ 72 Genesis 1:2             28 prepsubs pm,      <AL P.:N;71J              => ʕˌal pᵊnˌê                < # ʕal-pᵊnˌê                 # dagesh lene
+        orig                 <AL 
+        trim                 <al 
+        accents              <al 
+        punctuation          <al 
+        rafe                 <al 
+        furtive_patah        <al 
+        default accent       </al 
         qamets qatan         no special verb form: prep
-        qamets_qatan1        <al&
-        qamets_qatan2        <al&
-        qamets_qatan3        <al&
-        qamets_qatan4a       <al&
-        qamets_qatan4b       <al&
+        qamets_qatan1        </al 
+        qamets_qatan2        </al 
+        qamets_qatan3        </al 
+        qamets_qatan4a       </al 
+        qamets_qatan4b       </al 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        <al&
-        qamets_qatan_corr    <al&
-        mobile_schwa1        <al&
-        mobile_schwa2        <al&
-        mobile_schwa3        <al&
-        mobile_schwa4        <al&
-        dagesh_forte_lene    <al&
-        dagesh_forte         <al&
-        dagesh_lene          <al&
-        silent_aleph         <al&
-        last_ml              <al&
-        mappiq_heh           <al&
-        symbols              ʕal-
-        fixit_i              ʕal-
-        fixit_w              ʕal-
-        fixit                ʕal-
-        punct                ʕal-
-        cleanup              ʕal-
+        qamets_qatan5        </al 
+        qamets_qatan_corr    </al 
+        mobile_schwa1        </al 
+        mobile_schwa2        </al 
+        mobile_schwa3        </al 
+        mobile_schwa4        </al 
+        dagesh_forte_lene    </al 
+        dagesh_forte         </al 
+        dagesh_lene          </al 
+        silent_aleph         </al 
+        last_ml              </al 
+        mappiq_heh           </al 
+        symbols              ʕˌal 
+        fixit_i              ʕˌal 
+        fixit_w              ʕˌal 
+        fixit                ʕˌal 
+        punct                ʕˌal 
+        cleanup              ʕˌal 
         orig                 P.:N;71J
         trim                 p.:n;71j
         accents              p.:n/;j
@@ -3189,7 +3189,7 @@
         cleanup              pᵊnˌê
 
 
- 73 Proverbia 10:10     349408 subs sf,          <AY.@92BET                => ʕaṣṣˈāveṯ                 < =                           # qamets is gadol
+ 73 Proverbia 10:10     349418 subs sf,          <AY.@92BET                => ʕaṣṣˈāveṯ                 < =                           # qamets is gadol
         orig                 <AY.@92BET
         trim                 <ay.@92bet
         accents              <ay.!@bet
@@ -3224,7 +3224,7 @@
         cleanup              ʕaṣṣˈāveṯ
 
 
- 74 Jesaia 1:1          212070 nmpr sm,          <UZ.IJ.@94HW.             => ʕuzziyyˈāhû               < =                           # yod with dagesh is not lengthening hireq
+ 74 Jesaia 1:1          212080 nmpr sm,          <UZ.IJ.@94HW.             => ʕuzziyyˈāhû               < =                           # yod with dagesh is not lengthening hireq
         orig                 <UZ.IJ.@94HW.
         trim                 <uz.ij.@94hw.
         accents              <uz.ij.!@hw.
@@ -3259,7 +3259,7 @@
         cleanup              ʕuzziyyˈāhû
 
 
- 75 Joel 1:17           294292 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
+ 75 Joel 1:17           294302 verb qal perf 3p-, <@B:C74W.                 => ʕāvᵊšˈû                   < =                           # qamets: gadol maintained because of verb paradigm
         orig                 <@B:C74W.
         trim                 <@b:c74w.
         accents              <@b:c!w.
@@ -3392,9 +3392,9 @@
         cleanup              ʕˈōśeh
 
 
- 78 Numeri 8:22          75659 subs sf,+@m       <:ABO75D@T@M03            => ʕᵃvˈōḏāṯām                < =                           # first qamets is gadol because of other occurrences, second qamets is gadol because of ending
-        orig                 <:ABO75D@T@M03
-        trim                 <:abo75d@t@m03
+ 78 Numeri 8:22          75663 subs sf,+@m       <:ABO45D@T@M03            => ʕᵃvˈōḏāṯām                < =                           # first qamets is gadol because of other occurrences, second qamets is gadol because of ending
+        orig                 <:ABO45D@T@M03
+        trim                 <:abo45d@t@m03
         accents              <:ab!od@t@m
         punctuation          <:ab!od@t@m
         rafe                 <:ab!od@t@m
@@ -3428,33 +3428,34 @@
         cleanup              ʕᵃvˈōḏāṯām
 
 
- 79 Genesis 1:30           624 subs sm,subs sf,  W.95-L:-K@L&XAJ.A74T      => ˈûlᵊḵol-ḥayyˈaṯ           < =                           # qamets qatan in kol 
-        orig                 W.95-L:-K@L&
-        trim                 w.95-l:-k@l&
-        accents              !w.-l:-k@l&
-        punctuation          !w.-l:-k@l&
-        rafe                 !w.-l:-k@l&
-        furtive_patah        !w.-l:-k@l&
-        default accent       !w.-l:-k@l&
+ 79 Genesis 1:30           624 subs sm,subs sf,  W.95-L:-K@L XAJ.A74T      => ˈûlᵊḵˌol ḥayyˈaṯ          < # ˈûlᵊḵol-ḥayyˈaṯ           # qamets qatan in kol 
+        orig                 W.95-L:-K@L 
+        trim                 w.95-l:-k@l 
+        accents              !w.-l:-k@l 
+        punctuation          !w.-l:-k@l 
+        rafe                 !w.-l:-k@l 
+        furtive_patah        !w.-l:-k@l 
+        default accent       !w.-l:-k/@l 
         qamets qatan         no special verb form: subs sm
-        qamets_qatan1        !w.-l:-k^l&
-        qamets_qatan2        !w.-l:-k^l&
-        qamets_qatan3        !w.-l:-k^l&
-        qamets_qatan4a       !w.-l:-k^l&
-        qamets_qatan4b       !w.-l:-k^l&
+        qamets_qatan1        !w.-l:-k/@l 
+        qamets_qatan2        !w.-l:-k/@l 
+        qamets_qatan3        !w.-l:-k/@l 
+        qamets_qatan4a       !w.-l:-k/@l 
+        qamets_qatan4b       !w.-l:-k/@l 
         qamets qatan         no pron suffix indicated
-        qamets_qatan5        !w.-l:-k^l&
-        qamets_qatan_corr    !w.-l:-k^l&
-        mobile_schwa1        !w.-l%-k^l&
-        mobile_schwa2        !w.-l%-k^l&
-        mobile_schwa3        !w.-l%-k^l&
-        mobile_schwa4        !w.-l%-k^l&
-        dagesh_forte_lene    !w.-l%-k^l&
-        dagesh_forte         !w.-l%-k^l&
-        dagesh_lene          !w.-l%-k^l&
-        silent_aleph         !w.-l%-k^l&
-        last_ml              !w.-l%-k^l&
-        mappiq_heh           !w.-l%-k^l&
+        qamets_qatan5        !w.-l:-k/@l 
+        qamets qatan         correction: k/@l  => k/^l 
+        qamets_qatan_corr    !w.-l:-k/^l 
+        mobile_schwa1        !w.-l%-k/^l 
+        mobile_schwa2        !w.-l%-k/^l 
+        mobile_schwa3        !w.-l%-k/^l 
+        mobile_schwa4        !w.-l%-k/^l 
+        dagesh_forte_lene    !w.-l%-k/^l 
+        dagesh_forte         !w.-l%-k/^l 
+        dagesh_lene          !w.-l%-k/^l 
+        silent_aleph         !w.-l%-k/^l 
+        last_ml              !w.-l%-k/^l 
+        mappiq_heh           !w.-l%-k/^l 
         symbols              ˈû
         fixit_i              ˈû
         fixit_w              ˈû
@@ -3467,12 +3468,12 @@
         fixit                lᵊ
         punct                lᵊ
         cleanup              lᵊ
-        symbols              ḵol-
-        fixit_i              ḵol-
-        fixit_w              ḵol-
-        fixit                ḵol-
-        punct                ḵol-
-        cleanup              ḵol-
+        symbols              ḵˌol 
+        fixit_i              ḵˌol 
+        fixit_w              ḵˌol 
+        fixit                ḵˌol 
+        punct                ḵˌol 
+        cleanup              ḵˌol 
         orig                 XAJ.A74T
         trim                 xaj.a74t
         accents              xaj.!at
@@ -3507,7 +3508,7 @@
         cleanup              ḥayyˈaṯ
 
 
- 80 Genesis 3:14          1454 subs pm,+k@       XAJ.E75JK@00              => ḥayyˈeʸḵā                 < =                           # segol plus yod: glide
+ 80 Genesis 3:14          1454 subs pm,+k@       XAJ.E75JK@                => ḥayyˈeʸḵā                 < =                           # segol plus yod: glide
         orig                 XAJ.E75JK@
         trim                 xaj.e75jk@
         accents              xaj.!ejk@
@@ -3542,7 +3543,7 @@
         cleanup              ḥayyˈeʸḵā
 
 
- 81 Exodus 28:3          43763 subs sf,          X@K:M@92H                 => ḥoḵmˈā                    < =                           # qamets qatan
+ 81 Exodus 28:3          43767 subs sf,          X@K:M@92H                 => ḥoḵmˈā                    < =                           # qamets qatan
         orig                 X@K:M@92H
         trim                 x@k:m@92h
         accents              x@k:m!@h
@@ -3577,7 +3578,7 @@
         cleanup              ḥoḵmˈā
 
 
- 82 Genesis 18:15         8073 verb qal perf 2sf, Y@X@75Q:T.:00             => ṣāḥˈāqt                   < =                           # silent schwa on last consonant after dagesh
+ 82 Genesis 18:15         8073 verb qal perf 2sf, Y@X@75Q:T.:               => ṣāḥˈāqt                   < =                           # silent schwa on last consonant after dagesh
         orig                 Y@X@75Q:T.:
         trim                 y@x@75q:t.:
         accents              y@x!@q:t.:
@@ -3612,7 +3613,7 @@
         cleanup              ṣāḥˈāqt
 
 
- 83 Ezechiel 26:21      277806 verb nif impf 2sf, TIM.@Y:>I71J              => ṯimmāṣᵊʔˌî                < =                           # qamets is long a, no accent marking in verb except merkha on the last syllable
+ 83 Ezechiel 26:21      277816 verb nif impf 2sf, TIM.@Y:>I71J              => ṯimmāṣᵊʔˌî                < =                           # qamets is long a, no accent marking in verb except merkha on the last syllable
         orig                 TIM.@Y:>I71J
         trim                 tim.@y:>i71j
         accents              tim.@y:>/ij
@@ -3642,7 +3643,7 @@
         cleanup              ṯimmāṣᵊʔˌî
 
 
- 84 Exodus 20:13         39800 verb qal impf 2sm, T.,IR:Y@7375X00_S         => ṯirṣˈāḥ                   < =                           # rafe on the taw with dagesh: cancels dagesh
+ 84 Exodus 20:13         39804 verb qal impf 2sm, T.,IR:Y@7375X             => ṯirṣˈāḥ                   < =                           # rafe on the taw with dagesh: cancels dagesh
         orig                 T.,IR:Y@7375X
         trim                 t.,ir:y@7375x
         accents              t.,ir:y!@x
@@ -3677,7 +3678,7 @@
         cleanup              ṯirṣˈāḥ
 
 
- 85 Leviticus 19:12      63975 verb nif impf 2pm, TIC.@B:<71W.              => ṯiššāvᵊʕˌû                < =                           # qamets is long a, no accent marking in verb except merkha on last syllable
+ 85 Leviticus 19:12      63979 verb nif impf 2pm, TIC.@B:<71W.              => ṯiššāvᵊʕˌû                < =                           # qamets is long a, no accent marking in verb except merkha on last syllable
         orig                 TIC.@B:<71W.
         trim                 tic.@b:<71w.
         accents              tic.@b:</w.
