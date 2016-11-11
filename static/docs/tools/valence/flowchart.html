@@ -11822,18 +11822,95 @@ multiple choice lists. Far below in this notebook, these rules will be applied t
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Flowchart-logic">Flowchart logic<a class="anchor-link" href="#Flowchart-logic">&#182;</a></h1><p>Here is the bare logic of the flow charts for the individual verbs.</p>
 <p>The <code>senses</code> data structure is a dictionary keyed by verb lexemes. 
-For each verb it is keyed by <em>sense labels</em>, which is a code for the number of direct objects and the nature of complements that are present in the context.</p>
+For each verb it is keyed by <em>sense labels</em>, which is a code for the presence and nature of direct objects and  complements that are present in the context.</p>
+<p>These are the possible sense labels.</p>
+<p>The <strong>object</strong> column may contain:</p>
+<ul>
+<li><code>n</code> phrase[type=NP] or phrase[type=PP] and starts with &gt;T</li>
+<li><code>l</code> phrase starting with L (but not indirect object or benefactive)</li>
+<li><code>k</code> phrase starting with K</li>
+<li><code>i</code> clause starting with L and having an infinitive as predicate, but not coded as <code>rela=Objc</code></li>
+<li><code>-</code> no object present</li>
+</ul>
+<p>The <strong>complement</strong> column may contain:</p>
+<ul>
+<li><code>i</code> indirect object or adjunct benefactive</li>
+<li><code>p</code> locative, fine distinction within these cases dependent on preposition</li>
+<li><code>c</code> other complement</li>
+<li><code>-</code> no complement present</li>
+<li><code>.</code> presence of complement not relevant</li>
+</ul>
+<table>
+<thead><tr>
+<th>object</th>
+<th>complement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>c</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>i</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>p</code></td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>c</code></td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>i</code></td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>p</code></td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td><code>.</code></td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td><code>.</code></td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td><code>.</code></td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td><code>.</code></td>
+</tr>
+</tbody>
+</table>
 <p>Behind each sense label there is information about the meaning of the verb in such a context.
 The meaning consists of 2 or 3 pieces of information.</p>
 <p>The important part is the second one, the <em>sense template</em>, which consist of a gloss augmented with placeholders for the direct objecs and complements.</p>
 <ul>
-<li><strong>{verb}</strong> the verb occurrence in question</li>
-<li><strong>{dos} </strong> direct objects</li>
-<li><strong>{pdos}</strong> principal direct objects</li>
-<li><strong>{sdos}</strong> secundary direct objects</li>
-<li><strong>{inds}</strong> indirect objects</li>
-<li><strong>{locs}</strong> locatives</li>
-<li><strong>{cpls}</strong> complements, not marked as either indirect object or locative</li>
+<li><code>{verb}</code> the verb occurrence in question</li>
+<li><code>{pdos}</code> principal direct objects (phrase)</li>
+<li><code>{kdos}</code> K-objects (phrase)</li>
+<li><code>{ldos}</code> L-objects (phrase)</li>
+<li><code>{ndos}</code> direct objects (phrase) (none of the above)</li>
+<li><code>{idos}</code> infinitive construct (clause) objects</li>
+<li><code>{cdos}</code> direct objects (clause) (none of the above)</li>
+<li><code>{inds}</code> indirect objects</li>
+<li><code>{locs}</code> locatives</li>
+<li><code>{cpls}</code> complements, not marked as either indirect object or locative</li>
 </ul>
 <p>In case there are multiple entities, the algorithm returns them chunked as phrases/clauses.</p>
 <p>Apart from the template, there is also a <em>status</em> and an optional <em>account</em>.</p>
@@ -11851,97 +11928,129 @@ We tell the user that here we have encountered an error.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">senses_spec</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">&lt;FH</span>
-<span class="s1">00:!: act; take action</span>
-<span class="s1">0i:?: act; take action for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">0l:?: act; take action at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
-<span class="s1">0c:?: do; make; perform; observe </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
-<span class="s1">10:!: do; make; perform; observe </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">1i:?: do; make; perform; observe </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">1l:?: do; make; perform; observe </span><span class="si">{dos}</span><span class="s1"> at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
-<span class="s1">1c:?: make </span><span class="si">{dos}</span><span class="s1"> to be </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">2 :!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{sdos}</span><span class="s1"></span>
+<span class="s1">--:!: act; take action</span>
+<span class="s1">-i:?: act; take action for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">-p:?: act; take action at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
+<span class="s1">-c:?: do; make; perform; observe </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
+<span class="s1">d-:!: do; make; perform; observe </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">di:?: do; make; perform; observe </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">dp:?: do; make; perform; observe </span><span class="si">{dos}</span><span class="s1"> at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
+<span class="s1">dc:?: make </span><span class="si">{dos}</span><span class="s1"> to be </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">n.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: make </span><span class="si">{pdos}</span><span class="s1"> to become </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be as </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:-: !not encountered!</span>
 
 <span class="s1">BR&gt;</span>
-<span class="s1">00:-: !not encountered!</span>
-<span class="s1">0i:?: create for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">0l:?: create at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
-<span class="s1">0c:?: create </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
-<span class="s1">10:!: create </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">1i:?: create </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">1l:?: create </span><span class="si">{dos}</span><span class="s1"> at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
-<span class="s1">1c:?: create </span><span class="si">{dos}</span><span class="s1"> to be </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">2 :!: create </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{sdos}</span><span class="s1"></span>
+<span class="s1">--:-: !not encountered!</span>
+<span class="s1">-i:?: create for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">-p:?: create at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
+<span class="s1">-c:?: create </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
+<span class="s1">d-:!: create </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">di:?: create </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">dp:?: create </span><span class="si">{dos}</span><span class="s1"> at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
+<span class="s1">dc:?: create </span><span class="si">{dos}</span><span class="s1"> to be </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">n.:!: create </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:-: !not encountered!</span>
+<span class="s1">k.:-: !not encountered!</span>
+<span class="s1">i.:-: !not encountered!</span>
 
 <span class="s1">CJT</span>
-<span class="s1">00:-: !not encountered!</span>
-<span class="s1">0i:-: !not encountered!</span>
-<span class="s1">0l:-: !not encountered!</span>
-<span class="s1">0c:?: install; set up; put in place </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
-<span class="s1">10:!: install; set up; put in place </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">1i:?: place </span><span class="si">{dos}</span><span class="s1"> for the benefit of </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">1l:!: place </span><span class="si">{dos}</span><span class="s1"> ... </span><span class="si">{locs}</span><span class="s1"></span>
-<span class="s1">1c:?: make </span><span class="si">{dos}</span><span class="s1"> to be </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">2 :!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{sdos}</span><span class="s1"></span>
+<span class="s1">--:-: !not encountered!</span>
+<span class="s1">-i:-: !not encountered!</span>
+<span class="s1">-p:-: !not encountered!</span>
+<span class="s1">-c:?: install; set up; put in place </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
+<span class="s1">d-:!: install; set up; put in place </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">di:?: place </span><span class="si">{dos}</span><span class="s1"> for the benefit of </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">dp:!: place </span><span class="si">{dos}</span><span class="s1"> ... </span><span class="si">{locs}</span><span class="s1"></span>
+<span class="s1">dc:?: make </span><span class="si">{dos}</span><span class="s1"> to be </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">n.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: make </span><span class="si">{pdos}</span><span class="s1"> to become </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be as </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:?: !specific significance!</span>
 
 <span class="s1">DBQ</span>
-<span class="s1">00:-: !not encountered!</span>
-<span class="s1">0i:?: cling; cleave; adhere to </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as locative</span>
-<span class="s1">0l:!: cling; cleave; adhere after/to </span><span class="si">{locs}</span><span class="s1"></span>
-<span class="s1">0c:?: cling; cleave; adhere to </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as locative</span>
-<span class="s1">10:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
-<span class="s1">1i:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
-<span class="s1">1l:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
-<span class="s1">1c:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
-<span class="s1">2 :-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
+<span class="s1">--:-: !not encountered!</span>
+<span class="s1">-i:?: cling; cleave; adhere to </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as locative</span>
+<span class="s1">-p:!: cling; cleave; adhere after/to </span><span class="si">{locs}</span><span class="s1"></span>
+<span class="s1">-c:?: cling; cleave; adhere to </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as locative</span>
+<span class="s1">d-:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
+<span class="s1">di:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
+<span class="s1">dp:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
+<span class="s1">dc:-: !not encountered! :: Should </span><span class="si">{verb}</span><span class="s1"> be hiphil? :: ?</span>
+<span class="s1">n.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: make </span><span class="si">{pdos}</span><span class="s1"> to become </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be as </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:?: !specific significance!</span>
 
 <span class="s1">FJM</span>
-<span class="s1">00:!: prepare; put in place; make ready</span>
-<span class="s1">0i:?: prepare; put in place; make ready for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">0l:!: make ready; prepare </span><span class="si">{locs}</span><span class="s1"> (specific meaning depending on preposition)</span>
-<span class="s1">0c:?: prepare; put in place; institute </span><span class="si">{pdos}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{pdos}</span><span class="s1"></span>
-<span class="s1">10:!: prepare; put in place; institute </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">1i:?: prepare; put in place; institute </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">1l:!: put; place </span><span class="si">{dos}</span><span class="s1"> ... </span><span class="si">{locs}</span><span class="s1"> (specific meaning depending on preposition)</span>
-<span class="s1">1c:?: make </span><span class="si">{dos}</span><span class="s1"> (to be (as)/to become/to do) </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">2 :!: make </span><span class="si">{pdos}</span><span class="s1"> (to be (as)/to become/to do) </span><span class="si">{sdos}</span><span class="s1"></span>
+<span class="s1">--:!: prepare; put in place; make ready</span>
+<span class="s1">-i:?: prepare; put in place; make ready for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">-p:!: make ready; prepare </span><span class="si">{locs}</span><span class="s1"> (specific meaning depending on preposition)</span>
+<span class="s1">-c:?: prepare; put in place; institute </span><span class="si">{pdos}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{pdos}</span><span class="s1"></span>
+<span class="s1">d-:!: prepare; put in place; institute </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">di:?: prepare; put in place; institute </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">dp:!: put; place </span><span class="si">{dos}</span><span class="s1"> ... </span><span class="si">{locs}</span><span class="s1"> (specific meaning depending on preposition)</span>
+<span class="s1">dc:?: make </span><span class="si">{dos}</span><span class="s1"> (to be (as)/to become/to do) </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">n.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: make </span><span class="si">{pdos}</span><span class="s1"> to become </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be as </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:?: be determined to do </span><span class="si">{idos}</span><span class="s1"></span>
 
 <span class="s1">NTN</span>
-<span class="s1">00:!: (act of) producing; yielding; giving (in itself)</span>
-<span class="s1">0i:!: produce for; yield for; give to </span><span class="si">{inds}</span><span class="s1"></span>
-<span class="s1">0l:-: !not encountered!</span>
-<span class="s1">0c:?: produce; yield; give </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{pdos}</span><span class="s1"></span>
-<span class="s1">10:!: produce; yield; give </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">1i:!: give </span><span class="si">{dos}</span><span class="s1"> to </span><span class="si">{inds}</span><span class="s1"></span>
-<span class="s1">1l:!: place </span><span class="si">{dos}</span><span class="s1"> ... </span><span class="si">{locs}</span><span class="s1"></span>
-<span class="s1">1c:?: make </span><span class="si">{dos}</span><span class="s1"> (to be (as)/to become/to do) </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">2 :!: make </span><span class="si">{pdos}</span><span class="s1"> (to be (as)/to become/to do) </span><span class="si">{sdos}</span><span class="s1"></span>
+<span class="s1">--:!: (act of) producing; yielding; giving (in itself)</span>
+<span class="s1">-i:!: produce for; yield for; give to </span><span class="si">{inds}</span><span class="s1"></span>
+<span class="s1">-p:-: !not encountered!</span>
+<span class="s1">-c:?: produce; yield; give </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{pdos}</span><span class="s1"></span>
+<span class="s1">d-:!: produce; yield; give </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">di:!: give </span><span class="si">{dos}</span><span class="s1"> to </span><span class="si">{inds}</span><span class="s1"></span>
+<span class="s1">dp:!: place </span><span class="si">{dos}</span><span class="s1"> ... </span><span class="si">{locs}</span><span class="s1"></span>
+<span class="s1">dc:?: make </span><span class="si">{dos}</span><span class="s1"> (to be (as)/to become/to do) </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">n.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: make </span><span class="si">{pdos}</span><span class="s1"> to become </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be as </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:!: allow </span><span class="si">{pdos}</span><span class="s1"> to do </span><span class="si">{idos}</span><span class="s1"></span>
 
 <span class="s1">QR&gt;</span>
-<span class="s1">00:!: shout; call; invoke</span>
-<span class="s1">0i:!: call; summon </span><span class="si">{inds}</span><span class="s1"></span>
-<span class="s1">0l:?: call at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct.</span>
-<span class="s1">0c:?: call </span><span class="si">{cpls}</span><span class="s1"> (content) :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
-<span class="s1">10:!: call; summon </span><span class="si">{dos}</span><span class="s1"> (content or addressee)</span>
-<span class="s1">1i:!: summon </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"></span>
-<span class="s1">1l:!: call out </span><span class="si">{dos}</span><span class="s1"> before </span><span class="si">{locs}</span><span class="s1"></span>
-<span class="s1">1c:?: call </span><span class="si">{dos}</span><span class="s1"> (to be named) </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
-<span class="s1">2 :!: call </span><span class="si">{pdos}</span><span class="s1"> (to be named) </span><span class="si">{sdos}</span><span class="s1"></span>
+<span class="s1">--:!: shout; call; invoke</span>
+<span class="s1">-i:!: call; summon </span><span class="si">{inds}</span><span class="s1"></span>
+<span class="s1">-p:?: call at </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct.</span>
+<span class="s1">-c:?: call </span><span class="si">{cpls}</span><span class="s1"> (content) :: </span><span class="si">{cpls}</span><span class="s1"> taken as direct object</span>
+<span class="s1">d-:!: call; summon </span><span class="si">{dos}</span><span class="s1"> (content or addressee)</span>
+<span class="s1">di:!: summon </span><span class="si">{dos}</span><span class="s1"> for </span><span class="si">{inds}</span><span class="s1"></span>
+<span class="s1">dp:!: call out </span><span class="si">{dos}</span><span class="s1"> before </span><span class="si">{locs}</span><span class="s1"></span>
+<span class="s1">dc:?: call </span><span class="si">{dos}</span><span class="s1"> (to be named) </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as extra direct object besides </span><span class="si">{dos}</span><span class="s1"></span>
+<span class="s1">n.:!: call </span><span class="si">{pdos}</span><span class="s1"> (to be named) </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: call </span><span class="si">{pdos}</span><span class="s1"> (to be named) </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: call </span><span class="si">{pdos}</span><span class="s1"> (to be named) according to </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:?: !specific significance!</span>
 
 <span class="s1">ZQN</span>
-<span class="s1">00:!: be old</span>
-<span class="s1">0i:?: be old for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
-<span class="s1">0l:?: be old in </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
-<span class="s1">0c:?: be old ... </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as adjunct</span>
-<span class="s1">10:-: !not encountered!</span>
-<span class="s1">1i:-: !not encountered!</span>
-<span class="s1">1l:-: !not encountered!</span>
-<span class="s1">1c:-: !not encountered!</span>
-<span class="s1">2 :-: !not encountered!</span>
+<span class="s1">--:!: be old</span>
+<span class="s1">-i:?: be old for </span><span class="si">{inds}</span><span class="s1"> :: </span><span class="si">{inds}</span><span class="s1"> taken as benefactive adjunct</span>
+<span class="s1">-p:?: be old in </span><span class="si">{locs}</span><span class="s1"> :: </span><span class="si">{locs}</span><span class="s1"> taken as locative adjunct</span>
+<span class="s1">-c:?: be old ... </span><span class="si">{cpls}</span><span class="s1"> :: </span><span class="si">{cpls}</span><span class="s1"> taken as adjunct</span>
+<span class="s1">d-:-: !not encountered!</span>
+<span class="s1">di:-: !not encountered!</span>
+<span class="s1">dp:-: !not encountered!</span>
+<span class="s1">dc:-: !not encountered!</span>
+<span class="s1">n.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be </span><span class="si">{ndos}</span><span class="s1"></span>
+<span class="s1">c.:-: !not defined principal=</span><span class="si">{pdos}</span><span class="s1">, secundary(clause)=</span><span class="si">{cdos}</span><span class="s1">!</span>
+<span class="s1">l.:!: make </span><span class="si">{pdos}</span><span class="s1"> to become </span><span class="si">{ldos}</span><span class="s1"></span>
+<span class="s1">k.:!: make </span><span class="si">{pdos}</span><span class="s1"> to be as </span><span class="si">{kdos}</span><span class="s1"></span>
+<span class="s1">i.:?: !specific significance!</span>
 <span class="s1">&#39;&#39;&#39;</span>
 </pre></div>
 
@@ -12024,7 +12133,7 @@ Ed. Athalya Brenner-Idan.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
@@ -12069,7 +12178,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;4b&#39;</span>
@@ -12077,7 +12186,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
     <span class="s2">&quot;xmlids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
     <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        oid otype monads</span>
-<span class="s1">        JanetDyk:ft.function rela</span>
+<span class="s1">        JanetDyk:ft.function rela typ</span>
 <span class="s1">        g_word_utf8 trailer_utf8</span>
 <span class="s1">        lex prs uvf sp ls vs vt nametype det gloss</span>
 <span class="s1">        book chapter verse label number</span>
@@ -12104,62 +12213,63 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>  0.00s LOADING API: please wait ... 
-  0.01s DETAIL: COMPILING m: etcbc4b: UP TO DATE
+  0.00s DETAIL: COMPILING m: etcbc4b: UP TO DATE
   0.01s USING main: etcbc4b DATA COMPILED AT: 2015-11-02T15-08-56
   0.01s DETAIL: COMPILING a: complements: UP TO DATE
-  0.01s USING annox: complements DATA COMPILED AT: 2016-10-26T17-57-50
+  0.01s USING annox: complements DATA COMPILED AT: 2016-11-11T18-07-56
   0.01s DETAIL: COMPILING a: lexicon: UP TO DATE
   0.01s USING annox: lexicon DATA COMPILED AT: 2016-07-08T14-32-54
-  0.02s DETAIL: load main: G.node_anchor_min
-  0.14s DETAIL: load main: G.node_anchor_max
-  0.22s DETAIL: load main: G.node_sort
-  0.28s DETAIL: load main: G.node_sort_inv
-  0.69s DETAIL: load main: G.edges_from
-  0.75s DETAIL: load main: G.edges_to
-  0.81s DETAIL: load main: F.etcbc4_db_monads [node] 
-  2.40s DETAIL: load main: F.etcbc4_db_oid [node] 
-  3.57s DETAIL: load main: F.etcbc4_db_otype [node] 
-  4.27s DETAIL: load main: F.etcbc4_ft_det [node] 
-  4.47s DETAIL: load main: F.etcbc4_ft_g_word_utf8 [node] 
-  4.79s DETAIL: load main: F.etcbc4_ft_lex [node] 
-  4.99s DETAIL: load main: F.etcbc4_ft_ls [node] 
-  5.18s DETAIL: load main: F.etcbc4_ft_number [node] 
-  5.90s DETAIL: load main: F.etcbc4_ft_prs [node] 
-  6.16s DETAIL: load main: F.etcbc4_ft_rela [node] 
-  6.51s DETAIL: load main: F.etcbc4_ft_sp [node] 
-  6.71s DETAIL: load main: F.etcbc4_ft_trailer_utf8 [node] 
-  6.84s DETAIL: load main: F.etcbc4_ft_uvf [node] 
-  7.06s DETAIL: load main: F.etcbc4_ft_vs [node] 
-  7.25s DETAIL: load main: F.etcbc4_ft_vt [node] 
-  7.46s DETAIL: load main: F.etcbc4_sft_book [node] 
-  7.48s DETAIL: load main: F.etcbc4_sft_chapter [node] 
-  7.50s DETAIL: load main: F.etcbc4_sft_label [node] 
-  7.54s DETAIL: load main: F.etcbc4_sft_verse [node] 
-  7.56s DETAIL: load main: F.etcbc4_ft_mother [e] 
-  7.64s DETAIL: load main: C.etcbc4_ft_mother -&gt; 
-  7.82s DETAIL: load main: C.etcbc4_ft_mother &lt;- 
-  7.97s DETAIL: load annox lexicon: F.etcbc4_lex_gloss [node] 
-  8.19s DETAIL: load annox lexicon: F.etcbc4_lex_nametype [node] 
-  8.31s DETAIL: load annox complements: F.JanetDyk_ft_f_correction [node] 
-  8.37s DETAIL: load annox complements: F.JanetDyk_ft_function [node] 
-  8.41s DETAIL: load annox complements: F.JanetDyk_ft_grammatical [node] 
-  8.45s DETAIL: load annox complements: F.JanetDyk_ft_lexical [node] 
-  8.48s DETAIL: load annox complements: F.JanetDyk_ft_original [node] 
-  8.50s DETAIL: load annox complements: F.JanetDyk_ft_predication [node] 
-  8.55s DETAIL: load annox complements: F.JanetDyk_ft_s_manual [node] 
-  8.58s DETAIL: load annox complements: F.JanetDyk_ft_semantic [node] 
-  8.63s DETAIL: load annox complements: F.JanetDyk_ft_valence [node] 
-  8.67s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/valence/__log__valence.txt
-  8.78s INFO: LOADING PREPARED data: please wait ... 
-  8.78s prep prep: G.node_sort
-  8.85s prep prep: G.node_sort_inv
-    10s prep prep: L.node_up
-    14s prep prep: L.node_down
-    20s prep prep: V.verses
-    20s prep prep: V.books_la
-    20s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
-    22s INFO: LOADED PREPARED data
-    22s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon, complements FOR TASK valence AT 2016-10-26T18-16-32
+  0.03s DETAIL: load main: G.node_anchor_min
+  0.09s DETAIL: load main: G.node_anchor_max
+  0.16s DETAIL: load main: G.node_sort
+  0.21s DETAIL: load main: G.node_sort_inv
+  0.61s DETAIL: load main: G.edges_from
+  0.67s DETAIL: load main: G.edges_to
+  0.73s DETAIL: load main: F.etcbc4_db_monads [node] 
+  1.40s DETAIL: load main: F.etcbc4_db_oid [node] 
+  2.06s DETAIL: load main: F.etcbc4_db_otype [node] 
+  2.67s DETAIL: load main: F.etcbc4_ft_det [node] 
+  2.87s DETAIL: load main: F.etcbc4_ft_g_word_utf8 [node] 
+  3.15s DETAIL: load main: F.etcbc4_ft_lex [node] 
+  3.31s DETAIL: load main: F.etcbc4_ft_ls [node] 
+  3.49s DETAIL: load main: F.etcbc4_ft_number [node] 
+  3.91s DETAIL: load main: F.etcbc4_ft_prs [node] 
+  4.08s DETAIL: load main: F.etcbc4_ft_rela [node] 
+  4.37s DETAIL: load main: F.etcbc4_ft_sp [node] 
+  4.56s DETAIL: load main: F.etcbc4_ft_trailer_utf8 [node] 
+  4.67s DETAIL: load main: F.etcbc4_ft_typ [node] 
+  4.97s DETAIL: load main: F.etcbc4_ft_uvf [node] 
+  5.14s DETAIL: load main: F.etcbc4_ft_vs [node] 
+  5.31s DETAIL: load main: F.etcbc4_ft_vt [node] 
+  5.49s DETAIL: load main: F.etcbc4_sft_book [node] 
+  5.50s DETAIL: load main: F.etcbc4_sft_chapter [node] 
+  5.52s DETAIL: load main: F.etcbc4_sft_label [node] 
+  5.54s DETAIL: load main: F.etcbc4_sft_verse [node] 
+  5.55s DETAIL: load main: F.etcbc4_ft_mother [e] 
+  5.61s DETAIL: load main: C.etcbc4_ft_mother -&gt; 
+  5.74s DETAIL: load main: C.etcbc4_ft_mother &lt;- 
+  5.86s DETAIL: load annox lexicon: F.etcbc4_lex_gloss [node] 
+  6.05s DETAIL: load annox lexicon: F.etcbc4_lex_nametype [node] 
+  6.15s DETAIL: load annox complements: F.JanetDyk_ft_f_correction [node] 
+  6.18s DETAIL: load annox complements: F.JanetDyk_ft_function [node] 
+  6.21s DETAIL: load annox complements: F.JanetDyk_ft_grammatical [node] 
+  6.24s DETAIL: load annox complements: F.JanetDyk_ft_lexical [node] 
+  6.26s DETAIL: load annox complements: F.JanetDyk_ft_original [node] 
+  6.28s DETAIL: load annox complements: F.JanetDyk_ft_predication [node] 
+  6.31s DETAIL: load annox complements: F.JanetDyk_ft_s_manual [node] 
+  6.34s DETAIL: load annox complements: F.JanetDyk_ft_semantic [node] 
+  6.36s DETAIL: load annox complements: F.JanetDyk_ft_valence [node] 
+  6.40s LOGFILE=/Users/dirk/laf/laf-fabric-output/etcbc4b/valence/__log__valence.txt
+  6.50s INFO: LOADING PREPARED data: please wait ... 
+  6.50s prep prep: G.node_sort
+  6.55s prep prep: G.node_sort_inv
+  6.99s prep prep: L.node_up
+    10s prep prep: L.node_down
+    16s prep prep: V.verses
+    16s prep prep: V.books_la
+    16s ETCBC reference: http://laf-fabric.readthedocs.org/en/latest/texts/ETCBC-reference.html
+    19s INFO: LOADED PREPARED data
+    19s INFO: DATA LOADED FROM SOURCE etcbc4b AND ANNOX lexicon, complements FOR TASK valence AT 2016-11-11T19-37-57
 </pre>
 </div>
 </div>
@@ -12179,7 +12289,7 @@ Feature doc: https://shebanq.ancient-data.org/static/docs/featuredoc/texts/welco
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">home_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
@@ -12205,7 +12315,7 @@ We use predominantly features that come from the correction/enrichment workflow.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pf ... : predication feature</span>
@@ -12216,14 +12326,14 @@ We use predominantly features that come from the correction/enrichment workflow.
 
 <span class="n">pf_predicate</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;regular&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;copula&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">gf_direct_object</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;principal_direct_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NP_direct_object&#39;</span><span class="p">,</span>
     <span class="s1">&#39;direct_object&#39;</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">gf_principal_do</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;principal_direct_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;L_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;K_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;infinitve_object,&#39;</span>
 <span class="p">}</span>
 <span class="n">gf_indirect_object</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;indirect_object&#39;</span><span class="p">,</span>
@@ -12238,10 +12348,6 @@ We use predominantly features that come from the correction/enrichment workflow.
     <span class="s1">&#39;complement&#39;</span><span class="p">,</span>
     <span class="s1">&#39;adjunct&#39;</span><span class="p">,</span>
 <span class="p">}</span>
-
-<span class="n">to_be</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">    HJH[ HWH[</span>
-<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
 
 <span class="n">verbal_stems</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    qal</span>
@@ -12276,10 +12382,85 @@ We use predominantly features that come from the correction/enrichment workflow.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Compiling-the-senses">Compiling the senses<a class="anchor-link" href="#Compiling-the-senses">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">slabels</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">--</span>
+<span class="s1">-c</span>
+<span class="s1">-i</span>
+<span class="s1">-p</span>
+<span class="s1">d-</span>
+<span class="s1">dc</span>
+<span class="s1">di</span>
+<span class="s1">dp</span>
+<span class="s1">n.</span>
+<span class="s1">c.</span>
+<span class="s1">l.</span>
+<span class="s1">k.</span>
+<span class="s1">i.</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">senses</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">senses_blocks</span> <span class="o">=</span> <span class="n">senses_spec</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">senses_blocks</span><span class="p">:</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">verb</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sense_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+    <span class="n">senses</span><span class="p">[</span><span class="n">verb</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sense_parts</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">slabel</span> <span class="ow">in</span> <span class="n">slabels</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">slabel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">senses</span><span class="p">[</span><span class="n">verb</span><span class="p">]:</span>
+            <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;6}</span><span class="s1">: Missing sense label: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">slabel</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">slabel</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">senses</span><span class="p">[</span><span class="n">verb</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">slabel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">slabels</span><span class="p">:</span>
+            <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;6}</span><span class="s1">: Unknown sense label: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">slabel</span><span class="p">))</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Senses for </span><span class="si">{}</span><span class="s1"> verbs:</span><span class="se">\n\t</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">senses</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">senses</span><span class="p">))))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>  0.08s Senses for 8 verbs:
+	&lt;FH
+	BR&gt;
+	CJT
+	DBQ
+	FJM
+	NTN
+	QR&gt;
+	ZQN
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Making-a-verb-clause-index">Making a verb-clause index<a class="anchor-link" href="#Making-a-verb-clause-index">&#182;</a></h1><p>We generate an index which gives for each verb lexeme a list of clauses that have that lexeme as the main verb.
 In the index we store the clause node together with the word node(s) that carries the main verb(s).</p>
-<p>Clauses may have multiple verbs. In many cases it is 'HJH[' (or 'HWH[') plus an other verb.
-In those cases, it is the other verb that is the main verb.</p>
+<p>Clauses may have multiple verbs. In many cases it is a copula plus an other verb.
+In those cases, we are interested in the other verb, so we exclude copulas.</p>
 <p>Yet, there are also sentences with more than one main verb.
 In those cases, we treat both verbs separately as main verb of one and the same clause.</p>
 
@@ -12288,45 +12469,24 @@ In those cases, we treat both verbs separately as main verb of one and the same 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Making the verb-clause index&#39;</span><span class="p">)</span>
-<span class="n">nclauses</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">multiple</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">verb_clause</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
-<span class="n">clause_verb</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+<span class="n">occs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>   <span class="c1"># dictionary of all verb occurrence nodes per verb lexeme</span>
+<span class="n">verb_clause</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>    <span class="c1"># dictionary of all verb occurrence nodes per clause node</span>
+<span class="n">clause_verb</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span> <span class="c1"># idem but for the occurrences of selected verbs</span>
 
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">):</span>
-    <span class="n">nclauses</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">the_verbs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="n">pf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">predication</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">pf_predicate</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;verb&#39;</span><span class="p">:</span> <span class="n">the_verbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_verbs</span><span class="p">):</span>
-        <span class="n">real_verbs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">keep_to_be</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_verbs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">the_verbs</span><span class="p">:</span>
-            <span class="n">vl</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">keep_to_be</span> <span class="ow">or</span> <span class="p">(</span><span class="n">vl</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_be</span><span class="p">):</span> <span class="n">real_verbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">real_verbs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="n">multiple</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">#</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)),</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;chapter&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)),</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">verse</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)),</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;sentence&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)),</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
-            <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">real_verbs</span><span class="p">),</span>
-        <span class="p">))</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">real_verbs</span><span class="p">:</span>
-            <span class="n">vl</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="n">verb_clause</span><span class="p">[</span><span class="n">vl</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">c</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">real_verbs</span><span class="p">):</span>
-            <span class="n">clause_verb</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">real_verbs</span><span class="p">)</span>
-<span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Done&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are </span><span class="si">{}</span><span class="s1"> multiple verb clauses of total </span><span class="si">{}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">multiple</span><span class="p">),</span> <span class="n">nclauses</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">multiple</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;verb&#39;</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">lex</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">lex</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lex</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">senses</span><span class="p">:</span> <span class="k">continue</span>   
+    <span class="n">pf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">predication</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">pf_predicate</span><span class="p">:</span>
+        <span class="n">cn</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+        <span class="n">clause_verb</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">verb_clause</span><span class="p">[</span><span class="n">lex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">cn</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+<span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Done (</span><span class="si">{}</span><span class="s1"> clauses with a flowchart verb)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clause_verb</span><span class="p">)))</span>
 </pre></div>
 
 </div>
@@ -12339,18 +12499,8 @@ In those cases, we treat both verbs separately as main verb of one and the same 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>    16s Making the verb-clause index
-    18s Done
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>There are 3 multiple verb clauses of total 88011 clauses
-Genesis 8:5#9_1 HLK[ XSR[
-Sacharia 8:10#25_1 JY&gt;[ BW&gt;[
-Chronica_II 15:5#14_1 JY&gt;[ BW&gt;[
+<pre>  0.11s Making the verb-clause index
+  2.04s Done (6044 clauses with a flowchart verb)
 </pre>
 </div>
 </div>
@@ -12370,62 +12520,60 @@ Chronica_II 15:5#14_1 JY&gt;[ BW&gt;[
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Finding key constituents&#39;</span><span class="p">)</span>
-<span class="n">directobjects</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">principal_dos</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">secondary_dos</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">cast_constituents</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">indirectobjects</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">locatives</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">complements</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">constituents</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">))</span>
+<span class="n">ckinds</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    dos pdos ndos kdos ldos idos cdos inds locs cpls</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
-<span class="c1"># go through all clauses and collect all types of direct objects</span>
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">):</span> 
+<span class="c1"># go through all relevant clauses and collect all types of direct objects</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clause_verb</span><span class="p">:</span>
+    <span class="n">these_constituents</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
     <span class="c1"># phrase like constituents</span>
-    <span class="n">directobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">principal_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">secondary_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">cast_constituents</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">indirectobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">locatives</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">complements</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">gf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">of</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">sf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">semantic</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">vf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">valence</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">ckind</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_direct_object</span><span class="p">:</span>
-            <span class="n">directobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_principal_do</span><span class="p">:</span>
-            <span class="n">principal_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_indirect_object</span><span class="p">:</span>
-            <span class="n">indirectobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_complement</span><span class="p">:</span>
-            <span class="n">complements</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">sf_locative</span> <span class="ow">and</span> <span class="n">vf</span> <span class="ow">in</span> <span class="n">vf_locative</span><span class="p">:</span>
-            <span class="n">locatives</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">of</span> <span class="p">:</span>
-            <span class="n">cast_constituents</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gf</span> <span class="o">==</span><span class="s1">&#39;principal_direct_object&#39;</span><span class="p">:</span>
+                <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;pdos&#39;</span>
+            <span class="k">elif</span> <span class="n">gf</span> <span class="o">==</span> <span class="s1">&#39;NP_direct_object&#39;</span><span class="p">:</span>
+                <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;ndos&#39;</span>
+            <span class="k">elif</span> <span class="n">gf</span> <span class="o">==</span> <span class="s1">&#39;L_object&#39;</span><span class="p">:</span>
+                <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;ldos&#39;</span>
+            <span class="k">elif</span> <span class="n">gf</span> <span class="o">==</span> <span class="s1">&#39;K_object&#39;</span><span class="p">:</span>
+                <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;kdos&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;dos&#39;</span>
+        <span class="k">elif</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_indirect_object</span><span class="p">:</span>
+            <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;inds&#39;</span>
+        <span class="k">elif</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_complement</span><span class="p">:</span>
+            <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;cpls&#39;</span>
+        <span class="k">elif</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">sf_locative</span> <span class="ow">and</span> <span class="n">vf</span> <span class="ow">in</span> <span class="n">vf_locative</span><span class="p">:</span>
+            <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;locs&#39;</span>
+        <span class="k">if</span> <span class="n">ckind</span><span class="p">:</span> <span class="n">these_constituents</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
     <span class="c1"># clause like constituents: only look for object clauses dependent on this clause</span>
     <span class="k">for</span> <span class="n">ac</span> <span class="ow">in</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;sentence&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)):</span>
         <span class="n">dep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">mother</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dep</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">:</span>
-            <span class="n">gf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="n">gf</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+            <span class="n">ckind</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">gf</span> <span class="ow">in</span> <span class="n">gf_direct_object</span><span class="p">:</span>
-                <span class="n">directobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">gf</span> <span class="o">==</span> <span class="s1">&#39;direct_object&#39;</span><span class="p">:</span>
+                    <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;cdos&#39;</span>
+                <span class="k">elif</span> <span class="n">gf</span> <span class="o">==</span> <span class="s1">&#39;infinitive_object&#39;</span><span class="p">:</span>
+                    <span class="n">ckind</span> <span class="o">=</span> <span class="s1">&#39;idos&#39;</span>
+            <span class="k">if</span> <span class="n">ckind</span><span class="p">:</span> <span class="n">these_constituents</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">these_constituents</span><span class="p">:</span>
+        <span class="n">constituents</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">ckind</span><span class="p">]</span> <span class="o">|=</span> <span class="n">these_constituents</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span>
 
-    <span class="c1"># compute secondary objects, i.e. direct objects minus the principal one if there is one</span>
-    <span class="n">secondary_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">directobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">principal_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-
-    <span class="c1"># order the objects in the natural ordering</span>
-    <span class="c1"># dobjects_order = sorted(dobjects_set, key=NK)</span>
-
-<span class="c1"># NB: the map directobjects has as values sets of nodes.</span>
-<span class="c1"># These nodes can be phrases or clauses.</span>
 <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Done&#39;</span><span class="p">)</span> 
 </pre></div>
 
@@ -12439,8 +12587,8 @@ Chronica_II 15:5#14_1 JY&gt;[ BW&gt;[
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>10m 08s Finding key constituents
-10m 11s Done
+<pre>  2.09s Finding key constituents
+  2.25s Done
 </pre>
 </div>
 </div>
@@ -12451,23 +12599,34 @@ Chronica_II 15:5#14_1 JY&gt;[ BW&gt;[
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">testp</span> <span class="o">=</span> <span class="mi">647761</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;new function = </span><span class="si">{}</span><span class="s1">; text=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testp</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">JanetDyk_ft_function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testp</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">testp</span><span class="p">),</span>
-<span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valence = </span><span class="si">{}</span><span class="s1">; grammatical = </span><span class="si">{}</span><span class="s1">; lexical = </span><span class="si">{}</span><span class="s1">; semantic = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="n">F</span><span class="o">.</span><span class="n">valence</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testp</span><span class="p">),</span>
-    <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testp</span><span class="p">),</span>
-    <span class="n">F</span><span class="o">.</span><span class="n">lexical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testp</span><span class="p">),</span>
-    <span class="n">F</span><span class="o">.</span><span class="n">semantic</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testp</span><span class="p">),</span>
-<span class="p">))</span>
 <span class="n">testc</span> <span class="o">=</span> <span class="mi">440568</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">testc</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">testc</span><span class="p">))))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">complements</span><span class="p">[</span><span class="n">testc</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">showcase</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">otype</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">att1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">otype</span> <span class="o">==</span> <span class="s1">&#39;phrase&#39;</span> <span class="k">else</span> <span class="n">F</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">att2</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">) </span><span class="si">{}{}</span><span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">otype</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">),</span> 
+        <span class="n">T</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">book</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)),</span> 
+            <span class="n">chapter</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;chapter&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">))),</span>
+            <span class="n">verse</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">verse</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">))),</span> 
+            <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;ec&#39;</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valence = </span><span class="si">{}</span><span class="s1">; grammatical = </span><span class="si">{}</span><span class="s1">; lexical = </span><span class="si">{}</span><span class="s1">; semantic = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">valence</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lexical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">semantic</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+    <span class="p">))</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="n">testp</span><span class="p">,</span> <span class="n">testc</span><span class="p">):</span> <span class="n">showcase</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12480,11 +12639,15 @@ Chronica_II 15:5#14_1 JY&gt;[ BW&gt;[
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>new function = Adju; text=Adju
-valence = adjunct; grammatical = NA; lexical = ; semantic = 
-clause: וְיָשֵׂ֥ם לְךָ֖ שָׁלֹֽום׃ ס 
+<pre>647761=phrase (Adju-PP) LK Numeri 6:26	J#&gt; JHWH PNJW &gt;LJK WJ#M LK #LWM00
 
-set()
+valence = adjunct; grammatical = NA; lexical = ; semantic = benefactive
+
+440568=clause (NA-WYq0) WJ#M LK #LWM00
+Numeri 6:26	J#&gt; JHWH PNJW &gt;LJK WJ#M LK #LWM00
+
+valence = None; grammatical = None; lexical = None; semantic = None
+
 </pre>
 </div>
 </div>
@@ -12504,61 +12667,25 @@ set()
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">total_clauses</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="s1">&#39;clause&#39;</span><span class="p">)))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Counting constituents</span>
-<span class="n">cnt_directobjects</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_clauseobjects</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_principal_dos</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_secondary_dos</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_indirectobjects</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_complements</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_locatives</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-<span class="n">cnt_cast_constituents</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
 
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">directobjects</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> 
-    <span class="n">cnt_directobjects</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">nco</span> <span class="o">=</span> <span class="nb">len</span><span class="p">({</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">otype</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;clause&#39;</span><span class="p">})</span>
-    <span class="n">cnt_clauseobjects</span><span class="p">[</span><span class="n">nco</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">principal_dos</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">cnt_principal_dos</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">secondary_dos</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">cnt_secondary_dos</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">indirectobjects</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">cnt_indirectobjects</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">complements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">cnt_complements</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">locatives</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">cnt_locatives</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="ow">in</span> <span class="n">cast_constituents</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="n">cnt_cast_constituents</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">constituents_count</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&gt;5}</span><span class="s1"> clauses in total&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_clauses</span><span class="p">))</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cnt_map</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;direct objects&#39;</span><span class="p">,</span> <span class="n">cnt_directobjects</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;clause objects&#39;</span><span class="p">,</span> <span class="n">cnt_clauseobjects</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;principal objects&#39;</span><span class="p">,</span> <span class="n">cnt_principal_dos</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;secondary objects&#39;</span><span class="p">,</span> <span class="n">cnt_secondary_dos</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;indirect objects&#39;</span><span class="p">,</span> <span class="n">cnt_indirectobjects</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;complements&#39;</span><span class="p">,</span> <span class="n">cnt_complements</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;locatives&#39;</span><span class="p">,</span> <span class="n">cnt_locatives</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;cast constituents&#39;</span><span class="p">,</span> <span class="n">cnt_cast_constituents</span><span class="p">),</span>
-    <span class="p">):</span>
-    <span class="n">thistotal</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cnt_map</span><span class="p">):</span>
-        <span class="n">amount</span> <span class="o">=</span> <span class="n">cnt_map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-        <span class="n">thistotal</span> <span class="o">+=</span> <span class="n">amount</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&gt;5}</span><span class="s1"> clauses with </span><span class="si">{:&gt;2}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&gt;5}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">thistotal</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">constituents</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">ckind</span><span class="p">])</span>
+        <span class="n">constituents_count</span><span class="p">[</span><span class="n">ckind</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">constituents_count</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">count</span><span class="p">:</span> <span class="n">total</span> <span class="o">+=</span> <span class="n">n</span>
+        <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;5}</span><span class="s1"> clauses with </span><span class="si">{:&gt;2}</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> constituents&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">ckind</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;5}</span><span class="s1"> clauses with </span><span class="si">{:&gt;2}</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> constituents&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">ckind</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&gt;5}</span><span class="s1"> clauses with </span><span class="si">{:&gt;2}</span><span class="s1"> flowchart verb&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clause_verb</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12571,48 +12698,45 @@ set()
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>	 88011 clauses in total
-direct objects
-	 81098 clauses with  0 direct objects
-	  5850 clauses with  1 direct objects
-	  1022 clauses with  2 direct objects
-	    41 clauses with  3 direct objects
-	 88011 clauses
-clause objects
-	 88011 clauses with  0 clause objects
-	 88011 clauses
-principal objects
-	 86488 clauses with  0 principal objects
-	  1523 clauses with  1 principal objects
-	 88011 clauses
-secondary objects
-	 81558 clauses with  0 secondary objects
-	  6412 clauses with  1 secondary objects
-	    41 clauses with  2 secondary objects
-	 88011 clauses
-indirect objects
-	 86635 clauses with  0 indirect objects
-	  1373 clauses with  1 indirect objects
-	     3 clauses with  2 indirect objects
-	 88011 clauses
-complements
-	 81802 clauses with  0 complements
-	  5979 clauses with  1 complements
-	   223 clauses with  2 complements
-	     5 clauses with  3 complements
-	     2 clauses with  4 complements
-	 88011 clauses
-locatives
-	 83774 clauses with  0 locatives
-	  4096 clauses with  1 locatives
-	   129 clauses with  2 locatives
-	    12 clauses with  3 locatives
-	 88011 clauses
-cast constituents
-	 86883 clauses with  0 cast constituents
-	  1107 clauses with  1 cast constituents
-	    21 clauses with  2 cast constituents
-	 88011 clauses
+<pre>    2 clauses with  2 dos        constituents
+ 3450 clauses with  1 dos        constituents
+ 1445 clauses with  0 dos        constituents
+ 3452 clauses with  a dos        constituents
+  544 clauses with  1 pdos       constituents
+ 4353 clauses with  0 pdos       constituents
+  544 clauses with  a pdos       constituents
+  338 clauses with  1 ndos       constituents
+ 4559 clauses with  0 ndos       constituents
+  338 clauses with  a ndos       constituents
+   33 clauses with  1 kdos       constituents
+ 4864 clauses with  0 kdos       constituents
+   33 clauses with  a kdos       constituents
+   20 clauses with  2 ldos       constituents
+  622 clauses with  1 ldos       constituents
+ 4255 clauses with  0 ldos       constituents
+  642 clauses with  a ldos       constituents
+ 4897 clauses with  0 idos       constituents
+    0 clauses with  a idos       constituents
+    1 clauses with  2 cdos       constituents
+  153 clauses with  1 cdos       constituents
+ 4743 clauses with  0 cdos       constituents
+  154 clauses with  a cdos       constituents
+    3 clauses with  2 inds       constituents
+  719 clauses with  1 inds       constituents
+ 4175 clauses with  0 inds       constituents
+  722 clauses with  a inds       constituents
+    2 clauses with  3 locs       constituents
+    4 clauses with  2 locs       constituents
+  176 clauses with  1 locs       constituents
+ 4715 clauses with  0 locs       constituents
+  182 clauses with  a locs       constituents
+    2 clauses with  4 cpls       constituents
+    3 clauses with  3 cpls       constituents
+   40 clauses with  2 cpls       constituents
+ 1238 clauses with  1 cpls       constituents
+ 3614 clauses with  0 cpls       constituents
+ 1283 clauses with  a cpls       constituents
+ 6044 clauses with  a flowchart verb
 </pre>
 </div>
 </div>
@@ -12636,7 +12760,7 @@ This file can be used to import into a spreadsheet and check results.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">status_rep</span> <span class="o">=</span> <span class="p">{</span>
@@ -12659,10 +12783,6 @@ This file can be used to import into a spreadsheet and check results.</p>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">phrases</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NK</span><span class="p">):</span>
         <span class="n">ptext</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="si">{}</span><span class="s1">|&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="k">else</span> <span class="s1">&#39;[&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">txt</span><span class="p">:</span>
-            <span class="c1">#ptext += (&#39;&#39;.join(&#39;{}{}&#39;.format(</span>
-            <span class="c1">#    F.g_word_utf8.v(w),</span>
-            <span class="c1">#    F.trailer_utf8.v(w),</span>
-            <span class="c1">#) for w in L.d(&#39;word&#39;,p ))).replace(&#39;\n&#39;,&#39;&#39;)</span>
             <span class="n">ptext</span> <span class="o">+=</span> <span class="n">T</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">textformat</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">gloss</span><span class="p">:</span>
             <span class="n">wtexts</span> <span class="o">=</span> <span class="p">[]</span>
@@ -12681,27 +12801,58 @@ This file can be used to import into a spreadsheet and check results.</p>
         <span class="n">phrases_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ptext</span><span class="p">)</span>
     <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phrases_rep</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">flowchart</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="n">verb</span><span class="p">,</span> <span class="n">dos</span><span class="p">,</span> <span class="n">pdos</span><span class="p">,</span> <span class="n">sdos</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">locs</span><span class="p">,</span> <span class="n">cpls</span><span class="p">):</span>
-    <span class="n">sense_label</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">n_dos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dos</span><span class="p">)</span>
-    <span class="n">n_pdos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdos</span><span class="p">)</span>
-    <span class="n">n_sdos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sdos</span><span class="p">)</span>
-    <span class="n">n_inds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
-    <span class="n">n_locs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">locs</span><span class="p">)</span>
-    <span class="n">n_cpls</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cpls</span><span class="p">)</span>
-    <span class="n">na_cpls</span> <span class="o">=</span> <span class="n">n_inds</span> <span class="o">+</span> <span class="n">n_locs</span> <span class="o">+</span> <span class="n">n_cpls</span>
-    <span class="n">ndo</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">kcp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">debug_messages</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="n">n_dos</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">ndo</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
-    <span class="k">elif</span> <span class="n">n_dos</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndo</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
-    <span class="k">else</span><span class="p">:</span> <span class="n">ndo</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
-    
-    <span class="k">if</span> <span class="n">na_cpls</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">kcp</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
-    <span class="k">elif</span> <span class="n">n_inds</span><span class="p">:</span> <span class="n">kcp</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
-    <span class="k">elif</span> <span class="n">n_locs</span><span class="p">:</span> <span class="n">kcp</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
-    <span class="k">else</span><span class="p">:</span> <span class="n">kcp</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span>
-    <span class="n">sense_label</span> <span class="o">=</span> <span class="n">ndo</span><span class="o">+</span><span class="n">kcp</span> <span class="k">if</span> <span class="n">ndo</span> <span class="o">!=</span> <span class="s1">&#39;2&#39;</span> <span class="k">else</span> <span class="s1">&#39;2&#39;</span>
+<span class="k">def</span> <span class="nf">flowchart</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lex</span><span class="p">,</span> <span class="n">verb</span><span class="p">,</span> <span class="n">consts</span><span class="p">):</span>
+    <span class="n">sense_label</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">n_</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">:</span> <span class="n">n_</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">consts</span><span class="p">[</span><span class="n">ckind</span><span class="p">])</span>
+    <span class="n">char1</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">char2</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># determine char 1 of the sense label</span>
+    <span class="k">if</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;ndos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+    <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;cdos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span>
+    <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;ldos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
+    <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;kdos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+    <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;idos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
+    <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;pdos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># in trouble: if there is a principal direct object, there should be an other object as well</span>
+        <span class="c1"># and the other one should be an NP, object clause, L_object, K_object, or I_object</span>
+        <span class="c1"># If this happens, it is probably the result of manual correction</span>
+        <span class="c1"># We warn, and remedy</span>
+        <span class="n">msg_rep</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_</span><span class="p">[</span><span class="n">ckind</span><span class="p">],</span> <span class="n">ckind</span><span class="p">)</span> <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># there is an other object (dos should only be used if there is a single object)</span>
+            <span class="c1"># we&#39;ll put the dos in the ndos (which was empty)</span>
+            <span class="c1"># This could be caused by a manual enrichment sheet that has been generated </span>
+            <span class="c1"># before the concept of NP_direct_object had been introduced</span>
+            <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+            <span class="n">consts</span><span class="p">[</span><span class="s1">&#39;ndos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">consts</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]</span>
+            <span class="n">debug_messages</span><span class="p">[</span><span class="n">lex</span><span class="p">][</span><span class="s1">&#39;pdos with dos&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">msg_rep</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># there is not another object, we treat this as a single object, so as a dos</span>
+            <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span>
+            <span class="n">consts</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">consts</span><span class="p">[</span><span class="s1">&#39;pdos&#39;</span><span class="p">]</span>
+            <span class="n">debug_messages</span><span class="p">[</span><span class="n">lex</span><span class="p">][</span><span class="s1">&#39;lonely pdos&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">passage</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">msg_rep</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;dos&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">char1</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+    <span class="c1"># determine char 2 of the sense label</span>
+    <span class="k">if</span> <span class="n">char1</span> <span class="ow">in</span> <span class="s1">&#39;nclki&#39;</span><span class="p">:</span>
+        <span class="n">char2</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;inds&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">char2</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
+        <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;cpls&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">char2</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span>
+        <span class="k">elif</span> <span class="n">n_</span><span class="p">[</span><span class="s1">&#39;locs&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">char2</span> <span class="o">=</span> <span class="s1">&#39;p&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">char2</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+
+    <span class="n">sense_label</span> <span class="o">=</span> <span class="n">char1</span><span class="o">+</span><span class="n">char2</span>
     
     <span class="n">sinfo</span> <span class="o">=</span> <span class="n">senses</span><span class="o">.</span>\
         <span class="n">get</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="p">{</span><span class="n">lex</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;no senses given for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lex</span><span class="p">))}})</span><span class="o">.</span>\
@@ -12712,23 +12863,25 @@ This file can be used to import into a spreadsheet and check results.</p>
     <span class="n">action_stat</span> <span class="o">=</span> <span class="n">sinfo</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sinfo</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="n">status</span>
 
     <span class="n">verb_rep</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verb</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">dos_rep</span>  <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dos</span><span class="p">,</span>  <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">pdos_rep</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">pdos</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">sdos_rep</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sdos</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">inds_rep</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">locs_rep</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">locs</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">cpls_rep</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">cpls</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    
-    <span class="n">sense_txt</span> <span class="o">=</span> <span class="n">sense_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">verb</span><span class="o">=</span><span class="n">verb_rep</span><span class="p">,</span> <span class="n">dos</span><span class="o">=</span><span class="n">dos_rep</span><span class="p">,</span> <span class="n">pdos</span><span class="o">=</span><span class="n">pdos_rep</span><span class="p">,</span> <span class="n">sdos</span><span class="o">=</span><span class="n">sdos_rep</span><span class="p">,</span> <span class="n">inds</span><span class="o">=</span><span class="n">inds_rep</span><span class="p">,</span> <span class="n">locs</span><span class="o">=</span><span class="n">locs_rep</span><span class="p">,</span> <span class="n">cpls</span><span class="o">=</span><span class="n">cpls_rep</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">action_txt</span> <span class="o">=</span> <span class="n">action_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">verb</span><span class="o">=</span><span class="n">verb_rep</span><span class="p">,</span> <span class="n">dos</span><span class="o">=</span><span class="n">dos_rep</span><span class="p">,</span> <span class="n">pdos</span><span class="o">=</span><span class="n">pdos_rep</span><span class="p">,</span> <span class="n">sdos</span><span class="o">=</span><span class="n">sdos_rep</span><span class="p">,</span> <span class="n">inds</span><span class="o">=</span><span class="n">inds_rep</span><span class="p">,</span> <span class="n">locs</span><span class="o">=</span><span class="n">locs_rep</span><span class="p">,</span> <span class="n">cpls</span><span class="o">=</span><span class="n">cpls_rep</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">consts_rep</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">ckind</span><span class="p">,</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">consts</span><span class="p">[</span><span class="n">ckind</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">consts</span><span class="p">)</span>
+        
+    <span class="n">sense_txt</span> <span class="o">=</span> <span class="n">sense_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="o">=</span><span class="n">verb_rep</span><span class="p">,</span> <span class="o">**</span><span class="n">consts_rep</span><span class="p">)</span>
+    <span class="n">action_txt</span> <span class="o">=</span> <span class="n">action_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">verb</span><span class="o">=</span><span class="n">verb_rep</span><span class="p">,</span> <span class="o">**</span><span class="n">consts_rep</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">sense_label</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">sense_txt</span><span class="p">,</span> <span class="n">action_txt</span><span class="p">,</span> <span class="n">action_stat</span><span class="p">)</span>
+</pre></div>
 
-<span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    book</span>
 <span class="s1">    chapter</span>
 <span class="s1">    verse</span>
@@ -12740,14 +12893,9 @@ This file can be used to import into a spreadsheet and check results.</p>
 <span class="s1">    sense</span>
 <span class="s1">    action_status</span>
 <span class="s1">    action</span>
-<span class="s1">    #dos</span>
-<span class="s1">    #pdos</span>
-<span class="s1">    #sdos</span>
-<span class="s1">    #inds</span>
-<span class="s1">    #locs</span>
-<span class="s1">    #cpls</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">+</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">#</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ckind</span><span class="p">)</span> <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    text</span>
-<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
 <span class="n">sfields</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    version</span>
@@ -12800,16 +12948,6 @@ This file can be used to import into a spreadsheet and check results.</p>
 
 <span class="n">note_keyword_base</span> <span class="o">=</span> <span class="s1">&#39;valence&#39;</span>
 
-<span class="n">senses</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">senses_blocks</span> <span class="o">=</span> <span class="n">senses_spec</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">senses_blocks</span><span class="p">:</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">verb</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;[&#39;</span>
-    <span class="n">sense_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
-    <span class="n">senses</span><span class="p">[</span><span class="n">verb</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sense_parts</span>
-    <span class="p">)</span>
-
 <span class="n">nnotes</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">lex</span> <span class="ow">in</span> <span class="n">verb_clause</span><span class="p">:</span>
@@ -12830,17 +12968,12 @@ This file can be used to import into a spreadsheet and check results.</p>
         <span class="n">clause_atom_n</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
         
         <span class="n">verb</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;phrase&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
-        <span class="n">dos</span> <span class="o">=</span> <span class="n">directobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-        <span class="n">pdos</span> <span class="o">=</span> <span class="n">principal_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-        <span class="n">sdos</span> <span class="o">=</span> <span class="n">secondary_dos</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-        <span class="n">inds</span> <span class="o">=</span> <span class="n">indirectobjects</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-        <span class="n">locs</span> <span class="o">=</span> <span class="n">locatives</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-        <span class="n">cpls</span> <span class="o">=</span> <span class="n">complements</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">consts</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">n_</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">:</span> <span class="n">n_</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">consts</span><span class="p">[</span><span class="n">ckind</span><span class="p">])</span>
         
-        <span class="p">(</span><span class="n">sense_label</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">sense_txt</span><span class="p">,</span> <span class="n">action_txt</span><span class="p">,</span> <span class="n">action_stat</span><span class="p">)</span> <span class="o">=</span> <span class="n">flowchart</span><span class="p">(</span>
-            <span class="n">lex</span><span class="p">,</span> <span class="n">verb</span><span class="p">,</span> <span class="n">dos</span><span class="p">,</span> <span class="n">pdos</span><span class="p">,</span> <span class="n">sdos</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">locs</span><span class="p">,</span> <span class="n">cpls</span><span class="p">,</span>
-        <span class="p">)</span>
-
+        <span class="p">(</span><span class="n">sense_label</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">sense_txt</span><span class="p">,</span> <span class="n">action_txt</span><span class="p">,</span> <span class="n">action_stat</span><span class="p">)</span> <span class="o">=</span> <span class="n">flowchart</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lex</span><span class="p">,</span> <span class="n">verb</span><span class="p">,</span> <span class="n">consts</span><span class="p">)</span>
+        
         <span class="n">outcome_sta</span><span class="p">[</span><span class="n">status</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">outcome_sta_l</span><span class="p">[</span><span class="n">lex</span><span class="p">][</span><span class="n">status</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">outcome_lab</span><span class="p">[</span><span class="n">sense_label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -12859,12 +12992,7 @@ This file can be used to import into a spreadsheet and check results.</p>
             <span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="n">sense_txt</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span>
             <span class="n">action_stat</span><span class="p">,</span>
             <span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="n">action_txt</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">dos</span><span class="p">),</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">pdos</span><span class="p">),</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">sdos</span><span class="p">),</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">),</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">locs</span><span class="p">),</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">cpls</span><span class="p">),</span>
+            <span class="o">*</span><span class="p">(</span><span class="n">n_</span><span class="p">[</span><span class="n">ckind</span><span class="p">]</span> <span class="k">for</span> <span class="n">ckind</span> <span class="ow">in</span> <span class="n">ckinds</span><span class="p">),</span>
             <span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="n">text</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span>
         <span class="p">))</span>
         <span class="n">ofs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sfields_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -12900,36 +13028,23 @@ This file can be used to import into a spreadsheet and check results.</p>
             <span class="p">))</span>
             <span class="n">nnotes</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             
-<span class="c1"># generate notes for the promotion candidates</span>
-            
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cast_constituents</span><span class="p">:</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cast_constituents</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
-    <span class="n">w1</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">book</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">w1</span><span class="p">))</span>
-    <span class="n">chapter</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">chapter</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;chapter&#39;</span><span class="p">,</span> <span class="n">w1</span><span class="p">))</span>
-    <span class="n">verse</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">verse</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="n">w1</span><span class="p">))</span>
-    <span class="n">clause_atom_n</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="s1">&#39;clause_atom&#39;</span><span class="p">,</span> <span class="n">w1</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cast_constituents</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
-        <span class="n">ps</span> <span class="o">=</span> <span class="n">reptext</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gloss</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ofs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sfields_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">version</span><span class="p">,</span>
-            <span class="n">book</span><span class="p">,</span>
-            <span class="n">chapter</span><span class="p">,</span>
-            <span class="n">verse</span><span class="p">,</span>
-            <span class="n">clause_atom_n</span><span class="p">,</span>
-            <span class="s1">&#39;T&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;?&#39;</span><span class="p">,</span>
-            <span class="n">note_keyword_base</span><span class="o">+</span><span class="s1">&#39; val_cast&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Cast </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> ==&gt; </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">grammatical</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">p</span><span class="p">)),</span>
-        <span class="p">))</span>
-        <span class="n">nnotes</span><span class="p">[</span><span class="s1">&#39;cast&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 <span class="n">of</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="n">ofs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Done&#39;</span><span class="p">)</span>
 
-<span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Computed </span><span class="si">{}</span><span class="s1"> clauses with flowchart&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">outcome_sta</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
-<span class="n">msg</span><span class="p">(</span><span class="s1">&#39;Added notes for cast constituents&#39;</span><span class="p">)</span>
+<span class="n">show_limit</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="k">for</span> <span class="n">lex</span> <span class="ow">in</span> <span class="n">debug_messages</span><span class="p">:</span>
+    <span class="n">msg</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">debug_messages</span><span class="p">[</span><span class="n">lex</span><span class="p">]:</span>
+        <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind</span><span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">debug_messages</span><span class="p">[</span><span class="n">lex</span><span class="p">][</span><span class="n">kind</span><span class="p">]</span>
+        <span class="n">lm</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+        <span class="n">msg</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="se">\n\t\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">show_limit</span><span class="p">]),</span>
+            <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">lm</span> <span class="o">&lt;=</span> <span class="n">show_limit</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="se">\n\t\t</span><span class="s1">AND </span><span class="si">{}</span><span class="s1"> more&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lm</span><span class="o">-</span><span class="n">show_limit</span><span class="p">),</span>
+        <span class="p">),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">inf</span><span class="p">(</span><span class="s1">&#39;Computed </span><span class="si">{}</span><span class="s1"> clauses with flowchart&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">outcome_sta</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="n">withtime</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">ntot</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nnotes</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
     <span class="n">ntot</span> <span class="o">+=</span> <span class="n">n</span>
@@ -12938,18 +13053,19 @@ This file can be used to import into a spreadsheet and check results.</p>
 
 <span class="k">for</span> <span class="n">lex</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">senses</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All lexemes with flowchart specification&#39;</span> <span class="k">if</span> <span class="n">lex</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">lex</span><span class="p">)</span>
-    <span class="n">src_sta</span> <span class="o">=</span> <span class="n">outcome_sta</span> <span class="k">if</span> <span class="n">lex</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">outcome_sta_l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">src_lab</span> <span class="o">=</span> <span class="n">outcome_lab</span> <span class="k">if</span> <span class="n">lex</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">outcome_lab_l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">src_sta</span> <span class="o">=</span> <span class="n">outcome_sta</span> <span class="k">if</span> <span class="n">lex</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">outcome_sta_l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">src_lab</span> <span class="o">=</span> <span class="n">outcome_lab</span> <span class="k">if</span> <span class="n">lex</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">outcome_lab_l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lex</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">))</span>
     <span class="n">tot</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">src_sta</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">src_sta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">tot</span> <span class="o">+=</span> <span class="n">n</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     Status   </span><span class="si">{:&lt;7}</span><span class="s1">: </span><span class="si">{:&gt;4}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status_rep</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">n</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     All status      : </span><span class="si">{:&gt;4}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot</span><span class="p">))</span>
     <span class="n">tot</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">src_lab</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">slabels</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">src_lab</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
         <span class="n">tot</span> <span class="o">+=</span> <span class="n">n</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     Sense    </span><span class="si">{:&lt;7}</span><span class="s1">: </span><span class="si">{:&gt;4}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     All senses     : </span><span class="si">{:&gt;4}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     All senses      : </span><span class="si">{:&gt;4}</span><span class="s1"> clauses&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -12963,222 +13079,238 @@ This file can be used to import into a spreadsheet and check results.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>13m 12s Applying the flowchart
-13m 12s No flowchart definition for verb CLM[
-13m 12s No flowchart definition for verb XNH[
-13m 12s No flowchart definition for verb VBL[
-13m 12s No flowchart definition for verb &gt;BD[
-13m 12s No flowchart definition for verb NYH[
-13m 12s No flowchart definition for verb MCL=[
-13m 12s No flowchart definition for verb LQX[
-13m 12s No flowchart definition for verb RXM[
-13m 12s No flowchart definition for verb XRB[
-13m 12s No flowchart definition for verb ML&gt;[
-13m 12s No flowchart definition for verb &gt;RH[
-13m 12s No flowchart definition for verb &gt;KL[
-13m 12s No flowchart definition for verb CSS[
-13m 12s No flowchart definition for verb PQD[
-13m 12s No flowchart definition for verb XZH[
-13m 12s No flowchart definition for verb NCQ[
-13m 12s No flowchart definition for verb QBY[
-13m 12s No flowchart definition for verb MWL[
-13m 12s No flowchart definition for verb C&lt;H[
-13m 12s No flowchart definition for verb BRK[
-13m 12s No flowchart definition for verb QRB[
-13m 12s No flowchart definition for verb YWH[
-13m 12s No flowchart definition for verb NWS[
-13m 12s No flowchart definition for verb CM&lt;[
-13m 12s No flowchart definition for verb KRT[
-13m 12s No flowchart definition for verb CWB=[
-13m 12s No flowchart definition for verb NBL[
-13m 12s No flowchart definition for verb R&gt;H[
-13m 12s No flowchart definition for verb NPL[
-13m 12s No flowchart definition for verb QDC[
-13m 12s No flowchart definition for verb SBB[
-13m 12s No flowchart definition for verb NF&gt;[
-13m 12s No flowchart definition for verb NGD[
-13m 12s No flowchart definition for verb PG&lt;[
-13m 12s No flowchart definition for verb XRP[
-13m 12s No flowchart definition for verb QRH[
-13m 12s No flowchart definition for verb C&gt;L[
-13m 12s No flowchart definition for verb CQL[
-13m 12s No flowchart definition for verb &lt;MS[
-13m 12s No flowchart definition for verb FMX[
-13m 12s No flowchart definition for verb XCB[
-13m 12s No flowchart definition for verb QBR[
-13m 12s No flowchart definition for verb NBV[
-13m 12s No flowchart definition for verb JCB[
-13m 12s No flowchart definition for verb T&lt;H[
-13m 12s No flowchart definition for verb QWM[
-13m 12s No flowchart definition for verb CBT[
-13m 12s No flowchart definition for verb JY&gt;[
-13m 12s No flowchart definition for verb NVP[
-13m 12s No flowchart definition for verb FKR[
-13m 12s No flowchart definition for verb MWT[
-13m 12s No flowchart definition for verb XV&gt;[
-13m 12s No flowchart definition for verb JRD[
-13m 12s No flowchart definition for verb BR&gt;=[
-13m 12s No flowchart definition for verb LHV[
-13m 12s No flowchart definition for verb NKH[
-13m 12s No flowchart definition for verb BW&gt;[
-13m 12s No flowchart definition for verb &lt;MD[
-13m 12s No flowchart definition for verb &lt;BR=[
-13m 12s No flowchart definition for verb CLX[
-13m 12s No flowchart definition for verb VHR[
-13m 12s No flowchart definition for verb CKX[
-13m 12s No flowchart definition for verb NW&lt;[
-13m 12s No flowchart definition for verb HJH[
-13m 12s No flowchart definition for verb BKH[
-13m 12s No flowchart definition for verb B&lt;L[
-13m 12s No flowchart definition for verb BNH[
-13m 12s No flowchart definition for verb BR&gt;==[
-13m 12s No flowchart definition for verb &lt;BR[
-13m 12s No flowchart definition for verb SPQ[
-13m 12s No flowchart definition for verb PFQ[
-13m 12s No flowchart definition for verb GLH[
-13m 12s No flowchart definition for verb &gt;MR[
-13m 12s No flowchart definition for verb NYX[
-13m 12s No flowchart definition for verb XSM[
-13m 12s No flowchart definition for verb CWB[
-13m 12s No flowchart definition for verb &gt;BH[
-13m 12s No flowchart definition for verb QR&gt;=[
-13m 12s No flowchart definition for verb QYP[
-13m 12s No flowchart definition for verb HLL[
-13m 12s No flowchart definition for verb CPK[
-13m 12s No flowchart definition for verb HLK[
-13m 12s No flowchart definition for verb SWR[
-13m 12s No flowchart definition for verb Y&lt;D[
-13m 12s No flowchart definition for verb NS&lt;[
-13m 12s No flowchart definition for verb &lt;NH[
-13m 12s No flowchart definition for verb ZKR[
-13m 12s No flowchart definition for verb &lt;LH[
-13m 12s No flowchart definition for verb XSR[
-13m 12s No flowchart definition for verb NWX[
-13m 12s No flowchart definition for verb CMM[
-13m 12s No flowchart definition for verb FBR[
-13m 12s No verb DBQ[ in enriched corpus
-13m 12s No verb ZQN[ in enriched corpus
-13m 15s Done
-13m 15s Computed 5725 clauses with flowchart
-13m 15s Added notes for cast constituents
+<pre>  2.90s Applying the flowchart
+  3.66s No verb DBQ in enriched corpus
+  3.66s No verb ZQN in enriched corpus
+  4.38s Done
+FJM
+	lonely pdos
+		Genesis 4:15: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 30:41: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 2 cpls
+		Genesis 45:7: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Exodus 1:11: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Exodus 9:5: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Deuteronomy 12:5: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Deuteronomy 22:17: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		1_Samuel 8:5: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		1_Samuel 8:12: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		2_Samuel 7:23: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		2_Samuel 13:33: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		1_Kings 2:15: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		2_Kings 12:18: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Jeremiah 7:30: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Jeremiah 32:34: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Jeremiah 42:15: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Jeremiah 42:17: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Jeremiah 44:11: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Jeremiah 44:12: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Ezekiel 21:24: 0 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		AND 12 more
+	pdos with dos
+		Genesis 13:16: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 21:13: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 21:18: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 27:37: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 28:18: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 32:13: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 45:8: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 45:9: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 46:3: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Genesis 47:6: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Genesis 47:26: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Genesis 48:20: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Exodus 2:14: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Exodus 14:21: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Exodus 28:12: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 1 cpls
+		Exodus 40:5: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Exodus 40:28: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Leviticus 24:6: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 2 cpls
+		Deuteronomy 10:22: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		Deuteronomy 32:46: 1 dos; 1 pdos; 0 ndos; 0 kdos; 0 ldos; 0 idos; 0 cdos; 0 inds; 0 locs; 0 cpls
+		AND 134 more
 </pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>action     notes: 555
-cast       notes: 1149
-valence    notes: 5725
-Total      notes: 7429
+<pre>Computed 5727 clauses with flowchart
+action     notes: 1197
+valence    notes: 5727
+Total      notes: 6924
 All lexemes with flowchart specification
-     Status   good   : 5107 clauses
-     Status   error  :   63 clauses
-     Status   warning:  555 clauses
-     All status      : 5725 clauses
-     Sense    00     : 1173 clauses
-     Sense    0c     :  111 clauses
-     Sense    0i     :  264 clauses
-     Sense    0l     :  196 clauses
-     Sense    10     : 1766 clauses
-     Sense    1c     :  255 clauses
-     Sense    1i     :  389 clauses
-     Sense    1l     :  656 clauses
-     Sense    2      :  915 clauses
-     All senses     : 5725 clauses
+     Status   error  :  159 clauses
+     Status   warning: 1197 clauses
+     Status   good   : 4371 clauses
+     All status      : 5727 clauses
+     Sense    --     : 1044 clauses
+     Sense    -c     :  249 clauses
+     Sense    -i     :  259 clauses
+     Sense    -p     :   51 clauses
+     Sense    d-     : 1587 clauses
+     Sense    dc     :  816 clauses
+     Sense    di     :  380 clauses
+     Sense    dp     :   74 clauses
+     Sense    n.     :  491 clauses
+     Sense    c.     :  153 clauses
+     Sense    l.     :  590 clauses
+     Sense    k.     :   33 clauses
+     Sense    i.     :    0 clauses
+     All senses      : 5727 clauses
  
-&lt;FH[
-     Status   good   : 2348 clauses
-     Status   warning:  120 clauses
+&lt;FH
+     Status   error  :  119 clauses
+     Status   warning:  119 clauses
+     Status   good   : 2230 clauses
      All status      : 2468 clauses
-     Sense    00     : 1023 clauses
-     Sense    0c     :    4 clauses
-     Sense    0l     :   50 clauses
-     Sense    10     : 1174 clauses
-     Sense    1i     :    1 clauses
-     Sense    1l     :   65 clauses
-     Sense    2      :  151 clauses
-     All senses     : 2468 clauses
+     Sense    --     :  907 clauses
+     Sense    -c     :    6 clauses
+     Sense    -i     :    0 clauses
+     Sense    -p     :   47 clauses
+     Sense    d-     : 1163 clauses
+     Sense    dc     :    0 clauses
+     Sense    di     :    1 clauses
+     Sense    dp     :   65 clauses
+     Sense    n.     :  127 clauses
+     Sense    c.     :  119 clauses
+     Sense    l.     :   26 clauses
+     Sense    k.     :    7 clauses
+     Sense    i.     :    0 clauses
+     All senses      : 2468 clauses
  
-BR&gt;[
-     Status   good   :   29 clauses
+BR&gt;
      Status   error  :    4 clauses
      Status   warning:    3 clauses
+     Status   good   :   29 clauses
      All status      :   36 clauses
-     Sense    00     :    4 clauses
-     Sense    10     :   24 clauses
-     Sense    1l     :    3 clauses
-     Sense    2      :    5 clauses
-     All senses     :   36 clauses
+     Sense    --     :    4 clauses
+     Sense    -c     :    0 clauses
+     Sense    -i     :    0 clauses
+     Sense    -p     :    0 clauses
+     Sense    d-     :   24 clauses
+     Sense    dc     :    0 clauses
+     Sense    di     :    0 clauses
+     Sense    dp     :    3 clauses
+     Sense    n.     :    5 clauses
+     Sense    c.     :    0 clauses
+     Sense    l.     :    0 clauses
+     Sense    k.     :    0 clauses
+     Sense    i.     :    0 clauses
+     All senses      :   36 clauses
  
-CJT[
-     Status   good   :   57 clauses
-     Status   error  :    5 clauses
-     Status   warning:   20 clauses
+CJT
+     Status   error  :    3 clauses
+     Status   warning:   39 clauses
+     Status   good   :   40 clauses
      All status      :   82 clauses
-     Sense    00     :    1 clauses
-     Sense    0c     :    6 clauses
-     Sense    0i     :    1 clauses
-     Sense    0l     :    3 clauses
-     Sense    10     :   12 clauses
-     Sense    1c     :   11 clauses
-     Sense    1i     :    3 clauses
-     Sense    1l     :   18 clauses
-     Sense    2      :   27 clauses
-     All senses     :   82 clauses
+     Sense    --     :    1 clauses
+     Sense    -c     :    8 clauses
+     Sense    -i     :    1 clauses
+     Sense    -p     :    0 clauses
+     Sense    d-     :   10 clauses
+     Sense    dc     :   28 clauses
+     Sense    di     :    3 clauses
+     Sense    dp     :    0 clauses
+     Sense    n.     :   12 clauses
+     Sense    c.     :    1 clauses
+     Sense    l.     :   13 clauses
+     Sense    k.     :    5 clauses
+     Sense    i.     :    0 clauses
+     All senses      :   82 clauses
  
-DBQ[
+DBQ
      All status      :    0 clauses
-     All senses     :    0 clauses
+     Sense    --     :    0 clauses
+     Sense    -c     :    0 clauses
+     Sense    -i     :    0 clauses
+     Sense    -p     :    0 clauses
+     Sense    d-     :    0 clauses
+     Sense    dc     :    0 clauses
+     Sense    di     :    0 clauses
+     Sense    dp     :    0 clauses
+     Sense    n.     :    0 clauses
+     Sense    c.     :    0 clauses
+     Sense    l.     :    0 clauses
+     Sense    k.     :    0 clauses
+     Sense    i.     :    0 clauses
+     All senses      :    0 clauses
  
-FJM[
-     Status   good   :  446 clauses
-     Status   warning:  131 clauses
+FJM
+     Status   error  :    5 clauses
+     Status   warning:  327 clauses
+     Status   good   :  245 clauses
      All status      :  577 clauses
-     Sense    00     :   11 clauses
-     Sense    0c     :   32 clauses
-     Sense    0l     :   31 clauses
-     Sense    10     :   81 clauses
-     Sense    1c     :   90 clauses
-     Sense    1i     :    9 clauses
-     Sense    1l     :  168 clauses
-     Sense    2      :  155 clauses
-     All senses     :  577 clauses
+     Sense    --     :   11 clauses
+     Sense    -c     :   61 clauses
+     Sense    -i     :    0 clauses
+     Sense    -p     :    0 clauses
+     Sense    d-     :   80 clauses
+     Sense    dc     :  257 clauses
+     Sense    di     :    9 clauses
+     Sense    dp     :    0 clauses
+     Sense    n.     :  154 clauses
+     Sense    c.     :    5 clauses
+     Sense    l.     :    0 clauses
+     Sense    k.     :    0 clauses
+     Sense    i.     :    0 clauses
+     All senses      :  577 clauses
  
-NTN[
-     Status   good   : 1667 clauses
-     Status   error  :   54 clauses
-     Status   warning:  189 clauses
-     All status      : 1910 clauses
-     Sense    00     :   55 clauses
-     Sense    0c     :   45 clauses
-     Sense    0i     :  156 clauses
-     Sense    0l     :   54 clauses
-     Sense    10     :  299 clauses
-     Sense    1c     :  144 clauses
-     Sense    1i     :  336 clauses
-     Sense    1l     :  373 clauses
-     Sense    2      :  448 clauses
-     All senses     : 1910 clauses
+NTN
+     Status   error  :   21 clauses
+     Status   warning:  601 clauses
+     Status   good   : 1290 clauses
+     All status      : 1912 clauses
+     Sense    --     :   43 clauses
+     Sense    -c     :   97 clauses
+     Sense    -i     :  152 clauses
+     Sense    -p     :    0 clauses
+     Sense    d-     :  210 clauses
+     Sense    dc     :  504 clauses
+     Sense    di     :  330 clauses
+     Sense    dp     :    0 clauses
+     Sense    n.     :   95 clauses
+     Sense    c.     :   21 clauses
+     Sense    l.     :  440 clauses
+     Sense    k.     :   20 clauses
+     Sense    i.     :    0 clauses
+     All senses      : 1912 clauses
  
-QR&gt;[
-     Status   good   :  560 clauses
-     Status   warning:   92 clauses
+QR&gt;
+     Status   error  :    7 clauses
+     Status   warning:  108 clauses
+     Status   good   :  537 clauses
      All status      :  652 clauses
-     Sense    00     :   79 clauses
-     Sense    0c     :   24 clauses
-     Sense    0i     :  107 clauses
-     Sense    0l     :   58 clauses
-     Sense    10     :  176 clauses
-     Sense    1c     :   10 clauses
-     Sense    1i     :   40 clauses
-     Sense    1l     :   29 clauses
-     Sense    2      :  129 clauses
-     All senses     :  652 clauses
+     Sense    --     :   78 clauses
+     Sense    -c     :   77 clauses
+     Sense    -i     :  106 clauses
+     Sense    -p     :    4 clauses
+     Sense    d-     :  100 clauses
+     Sense    dc     :   27 clauses
+     Sense    di     :   37 clauses
+     Sense    dp     :    6 clauses
+     Sense    n.     :   98 clauses
+     Sense    c.     :    7 clauses
+     Sense    l.     :  111 clauses
+     Sense    k.     :    1 clauses
+     Sense    i.     :    0 clauses
+     All senses      :  652 clauses
  
-ZQN[
+ZQN
      All status      :    0 clauses
-     All senses     :    0 clauses
+     Sense    --     :    0 clauses
+     Sense    -c     :    0 clauses
+     Sense    -i     :    0 clauses
+     Sense    -p     :    0 clauses
+     Sense    d-     :    0 clauses
+     Sense    dc     :    0 clauses
+     Sense    di     :    0 clauses
+     Sense    dp     :    0 clauses
+     Sense    n.     :    0 clauses
+     Sense    c.     :    0 clauses
+     Sense    l.     :    0 clauses
+     Sense    k.     :    0 clauses
+     Sense    i.     :    0 clauses
+     All senses      :    0 clauses
  
 </pre>
 </div>
@@ -13190,7 +13322,7 @@ ZQN[
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span> 
