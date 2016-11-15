@@ -11780,7 +11780,7 @@ You can download this notebook and run it on your computer, provided you have
 the results on 
 <a href="https://shebanq.ancient-data.org">SHEBANQ</a> as a set of <em>Notes</em>.
 See the end of the notebook for precise links.</p>
-<h1 id="Status">Status<a class="anchor-link" href="#Status">&#182;</a></h1><p><strong>Last modified: 2016-07-07</strong></p>
+<h1 id="Status">Status<a class="anchor-link" href="#Status">&#182;</a></h1><p><strong>Last modified: 2016-11-15</strong></p>
 <p>This notebook is not yet finished. 
 It turns out that the ETCBC data at present does not contain all bits and pieces that are needed to follow
 the rules in Janet's flowcharts. It is difficult to find all direct objects, especially implied ones.
@@ -11805,12 +11805,12 @@ We have to</p>
 <p>These are exactly the things that we outsource to the 
 <a href="corr_enrich.html">corr_enrich notebook</a>.</p>
 <h1 id="Generic-flowchart">Generic flowchart<a class="anchor-link" href="#Generic-flowchart">&#182;</a></h1><p>The generic flowchart rules can be read off this diagram.</p>
-<p><img src="images/Valence-Generic.pdf"/></p>
+<p><img src="images/Valence/valence.001.jpeg"/></p>
 <p>In fact, this part of the flowchart requires the most programming effort.</p>
 <h1 id="Specific-flowcharts">Specific flowcharts<a class="anchor-link" href="#Specific-flowcharts">&#182;</a></h1><p>Using the generic flowchart, we state the rules for individual verbs, which can be expressed as simple
 multiple choice lists. Far below in this notebook, these rules will be applied to all clauses.</p>
 <p>As an example, this is a simplified flowchart for NTN in diagram form as we will implement it below.</p>
-<p><img src="images/Valence-NTN.pdf"/></p>
+<p><img src="images/Valence/valence.002.jpeg"/></p>
 
 </div>
 </div>
@@ -11826,17 +11826,29 @@ For each verb it is keyed by <em>sense labels</em>, which is a code for the pres
 <p>These are the possible sense labels.</p>
 <p>The <strong>object</strong> column may contain:</p>
 <ul>
+<li>in case there is a principal direct object and other objects or object-like constituents,
+the first letter indicates that kind of non-principal object<ul>
 <li><code>n</code> phrase[type=NP] or phrase[type=PP] and starts with &gt;T</li>
 <li><code>l</code> phrase starting with L (but not indirect object or benefactive)</li>
 <li><code>k</code> phrase starting with K</li>
-<li><code>i</code> clause starting with L and having an infinitive as predicate, but not coded as <code>rela=Objc</code></li>
-<li><code>-</code> no object present</li>
+<li><code>i</code> clause starting with L and having an infinitive as predicate, 
+but not coded as <code>rela=Objc</code></li>
+</ul>
+</li>
+<li>in case there is a single direct object:<ul>
+<li><code>d</code> (maybe in the shape of a phrase or a clause)</li>
+</ul>
+</li>
+<li>in case of no objects:<ul>
+<li><code>-</code></li>
+</ul>
+</li>
 </ul>
 <p>The <strong>complement</strong> column may contain:</p>
 <ul>
 <li><code>i</code> indirect object</li>
 <li><code>b</code> adjunct benefactive</li>
-<li><code>p</code> locative, fine distinction within these cases dependent on preposition</li>
+<li><code>p</code> locative, there is a fine distinction within these cases dependent on preposition</li>
 <li><code>c</code> other complement</li>
 <li><code>-</code> no complement present</li>
 <li><code>.</code> presence of complement not relevant</li>
@@ -11927,11 +11939,6 @@ The meaning consists of 2 or 3 pieces of information.</p>
 <p>The status is <code>!</code> in normal cases, <code>?</code> in dubious cases, and <code>-</code> in erroneous cases.
 In SHEBANQ these statuses are translated into colors of the notes (blue/orange/red).</p>
 <p>The account contains information about the grounds of which the algorithm has arrived at its conclusions.</p>
-<p>A typical case is <code>NTN[</code> sense <code>0c</code>. This verbs prefers indirect objects and not locatives.
-So when the context has a complement that fails to be classified beforehand as either locative or indirect object, this is the moment that we finally decide it is an indirect object after all.
-But this is risky, so we give it status <code>?</code> and we tell the user that we have decided to change <code>C</code> into <code>I</code> for this complement.</p>
-<p>Likewise, sense <code>0l</code> is not expected to occur. When we encounter it, we conclude that our heuristic for choosing between <code>L</code> and <code>I</code> has failed here, and we overrule that decision and change <code>L</code> to <code>I</code>.
-We tell the user that here we have encountered an error.</p>
 
 </div>
 </div>
@@ -12105,8 +12112,7 @@ You can find it on the Notes page in SHEBANQ:</p>
 <ul>
 <li>Unresolved results: <a href="https://shebanq.ancient-data.org/hebrew/note?version=4b&amp;id=Mnx2YWxfbmI_&amp;tp=txt_tb1">val_nb</a>;</li>
 <li>Uncertain results: <a href="https://shebanq.ancient-data.org/hebrew/note?version=4b&amp;id=Mnx2YWxfd3Ju&amp;tp=txt_tb1">val_wrn</a>;</li>
-<li>Erroneous results: <a href="https://shebanq.ancient-data.org/hebrew/note?version=4b&amp;id=Mnx2YWxfZXJy&amp;tp=txt_tb1">val_err</a>;</li>
-<li>Promotion candidates <a href="https://shebanq.ancient-data.org/hebrew/note?version=4b&amp;id=Mnx2YWxfcHJvbQ__&amp;tp=txt_tb1">val_prom</a></li>
+<li>Erroneous results: <a href="https://shebanq.ancient-data.org/hebrew/note?version=4b&amp;id=Mnx2YWxfZXJy&amp;tp=txt_tb1">val_err</a>.</li>
 </ul>
 <p>So if you follow the <em>valence</em> link you see them all, but you can also focus on the problematic cases.</p>
 <p>And if you are logged in, you can add remarks in free text. Just start typing in one of the new note boxes.
