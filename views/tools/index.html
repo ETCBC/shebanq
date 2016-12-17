@@ -96,8 +96,8 @@ that you can write straight into SHEBANQ as manual notes to the sentence where y
 Just use Notes view.
 If you like to program you own transcription, you can use an extensive set of identified hard cases, that are the by-product
 of this work.</p>
-<p><a target="_blank" href="{{=URL('static', 'docs/tools/phono/phono.html')}}">View notebook</a></p>
-<p><a target="_blank" href="{{=URL('static', 'docs/tools/phono/phono.ipynb')}}" download="phono.ipynb">Download notebook</a>.</p>
+<p><a target="_blank" href="https://rawgit.com/ETCBC/text-fabric/master/phono/phonoTf.html">Phono notebook (TF)</a></p>
+<p><a target="_blank" href="{{=URL('static', 'docs/tools/phono/phono.html')}}">LEGACY (LAF) View notebook</a></p>
 </div>
 
 <div class="tool" id="r">
@@ -123,6 +123,23 @@ R to the Hebrew Text Database.
 <div class="tool" id="shebanq">
 <h4>SHEBANQ (itself)</h4>
 <img src="{{=URL('static', 'docs/tools/shebanq/images/dataflow_dia_small.png')}}" align="right" width="30%"/>
+<p>
+Data version <b>etcbc4c</b> is available from
+<a href="https://github.com/ETCBC/text-fabric-data">text-fabric-data</a>.
+The set of features has changed slightly.
+A corresponding <b>new version</b> of the feature documentation is available at
+<a href="https://etcbc.github.io/text-fabric-data/features/hebrew/etcbc4c/0_overview.html">text-fabric-data: docs</a>.
+</p>
+<p>
+The <b>etcbc4c</b> data is not (yet) available in SHEBANQ, 
+only in 
+<a href="https://github.com/ETCBC/text-fabric/wiki">Text-Fabric</a>,
+the successor of LAF-Fabric.
+LAF-Fabric stays around in order to run legacy notebooks.
+It is recommended to use <b>Text-Fabric</b> for new work.
+</p>
+<p>Some of the notebooks below will be adapted/migrated to Text-Fabric.
+</p>
 <p>SHEBANQ is powered by various databases, that are derived from the ETCBC database.
 Here is a collections of notebooks that carry out the conversion from the LAF representation of the ETCBC database
 up to the SQL files that can be imported in a MYSQL database.
@@ -133,27 +150,33 @@ that need to know the provenance of the data that powers SHEBANQ.<p>
 <a target="_blank" href="{{=URL('static', 'docs/UPDATE.py')}}">update script in python</a>,
 which in turn calls a bunch of notebooks:</p>
 <dl>
-<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/laf2shebanq.html')}}">laf2shebanq</a>
+<dt><a target="_blank" href="https://github.com/ETCBC/text-fabric/blob/master/tfFromLaf/tfFromLAF.ipynb">tfFromLAF</a></dt>
+<dd>This notebook prepares the new version <b>etcbc4c</b> from
+LAF for Text-Fabric, complete with additional ETCBC data such as
+ketiv/qere occurrences.
+</dd>
+
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/laf2shebanq.html')}}">LEGACY laf2shebanq</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/laf2shebanq.ipynb')}}" download="laf2shebanq.ipynb">(download)</a></dt>
 <dd>We construct a relational database, passage, meant to support browsing of texts and highlighting of words.
 It contains the texts themselves, verse by verse, and it contains book and chapter information.
 The passage database also contains a lexicon, which is linked to the word occurrences.</dd>
 
-<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/feature-doc.html')}}">feature-doc</a>
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/feature-doc.html')}}">LEGACY feature-doc</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/feature-doc.ipynb')}}" download="feature-doc.ipynb">(download)</a></dt>
 <dd>This notebook prepares feature documentation.
 It collects the frequency lists of all values of (nearly) all features.
 The result is served by the SHEBANQ website under <b>Help: ETCBC feature doc</b>.
 </dd>
 
-<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.html')}}">lexicon</a>
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.html')}}">LEGACY lexicon</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.ipynb')}}" download="lexicon.ipynb">(download)</a></dt>
 <dd>This notebook prepares additional lexical data for LAF-Fabric: the lexicon and the pre-computed phonetic transcription.
 It also handles ketiv/qere occurrences.
 This data is added as an extra annotation package to the main ETCBC resource. 
 </dd>
 
-<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.html')}}">para_from_px</a>
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.html')}}">LEGACY para_from_px</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.ipynb')}}" download="para_from_px.ipynb">(download)</a></dt>
 <dd>This notebook prepares additional syntactical data for LAF-Fabric: the paragraph structure.
 This data is added as an extra annotation package to the main ETCBC resource. 
@@ -165,7 +188,7 @@ This data is added as an extra annotation package to the main ETCBC resource.
 See query {{=A(T("Too-many"), _href=URL('hebrew', 'query', vars=dict(id=1119, page=1)))}}.
 </dd>
 
-<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/plain.html')}}">plain</a>
+<dt><a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/plain.html')}}">LEGACY plain</a>
     <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/plain.ipynb')}}" download="plain.ipynb">(download)</a></dt>
 <dd>This notebook reconstructs the plain text of the Hebrew Bible in various formats.
 You can also use it to render individual verses for quick copy and paste into your articles.

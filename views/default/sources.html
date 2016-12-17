@@ -54,9 +54,9 @@ That means:</p>
 It has published data, tools and documentation online that enables teams of biblical scholars and developers
 to reproduce all data processing that is needed for SHEBANQ.
 The recommended tool to start with is 
-{{=A('laf-fabric', _href='https://github.com/ETCBC/laf-fabric', _target='_blank')}}.
+{{=A('text-fabric', _href='https://github.com/ETCBC/text-fabric', _target='_blank')}}.
 Its documentation describes in detail how to download the data and set up data-processing workflows.
-For an example of what you can do with the LAF-Fabric/SHEBANQ combination, see <a href="#usergenerated">below</a>.
+For an example of what you can do with the Text-Fabric/SHEBANQ combination, see <a href="#usergenerated">below</a>.
 <p>The ETCBC welcomes contributions that improve and enrich the interface of SHEBANQ.
 We are also open to implement mutual deep linking with other biblical data sources.</p>
 
@@ -81,32 +81,18 @@ We are also open to implement mutual deep linking with other biblical data sourc
 
             <dt><a target="_blank" href="http://dx.doi.org/10.17026%2Fdans-z6y-skyh">ETCBC database version 4b</a></dt>
             <dd><p><b>Snapshot taken from the ETCBC's <i>jacob</i>-server on 2015-11-03</b>. <i>This version has complete feature coverage, but has not yet been completely checked. It has been archived at DANS</i>.</p>
-            <p>For <a target="_blank" href="https://github.com/ETCBC/laf-fabric">LAF-Fabric</a>-users:
-            <i>a compact, compiled version of the data is available from 
-            the github repo <a target="_blank" href="https://github.com/ETCBC/laf-fabric-data">laf-fabric-data</a>.
-            If you clone from this in your home directory, LAF-Fabric can work with it instantly.</i></p>
-            <p>This is the last version before the next finished, stable version from the ETCBC, which we will call <b>4s</b>. Version 4b will not change anymore.</p>
+            <p>For <a target="_blank" href="https://github.com/ETCBC/text-fabric">Text-Fabric</a>-users:
+            <i>a compact, plain text source version of the data is available from 
+            the github repo <a target="_blank" href="https://github.com/ETCBC/text-fabric-data">text-fabric-data</a>.
+            If you clone from this in your <code>~/github</code> directory, Text-Fabric can work with it instantly.</i></p>
+            <p>Text-Fabric works with a newer version of the data: etcbc4<b>c</b>. Version 4b will not change anymore.</p>
             </dd>
 
-            <dt>ETCBC database version 4s</a></dt>
-            <dd><p><b>(future:) Snapshot taken from the ETCBC's <i>jacob</i>-server on ??</b>.
-            <i>This version is to be archived at DANS, and will be released as a finished version</i>.</p></dd>
+            <dt>ETCBC database version 4c (not yet in SHEBANQ)</a></dt>
+            <dd><p><b>Snapshot taken from the ETCBC's <i>jacob</i>-server on 2016-11-04</b>.
+            <i>This version is to be archived at DANS in Text-Fabric format,
+                and will be released in 2017</i>.</p></dd>
         </dl>
-    </dd>
-
-    <dt>Extra data</dt>
-    <dd><p>We have added some additional packages of annotations, that can be used together with the proper ETCBC data.
-    Part of this data has also been used for SHEBANQ: the lexicon data. With LAF-Fabric you can use extra annotation packages in a controlled way.
-    Here we point at two packages. If you have LAF-Fabric, you can
-    <a target="_blank" href="https://surfdrive.surf.nl/files/public.php?service=files&t=c201a146df25c6323544bf36d165408c">download the data</a>
-    and place it in your <pre>laf-fabric-data/etcbc4/annotations</pre>
-    directory. <img src="{{=URL('static', 'images/ExtraData.png')}}"/></p>
-        <ul class="ldisc">
-            <li><b>lexicon</b>, for more info see this
-            <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/lexicon.html')}}">notebook</a>.</li>
-            <li><b>paragraphs</b>, for more info see this
-            <a target="_blank" href="{{=URL('static', 'docs/tools/shebanq/para_from_px.html')}}">notebook</a>.</li>
-        </ul>
     </dd>
 
     <dt><a target="_blank" href="https://github.com/ETCBC">ETCBC</a></dt>
@@ -118,23 +104,45 @@ We are also open to implement mutual deep linking with other biblical data sourc
             It is based on <a target="_blank" href="http://web2py.com">web2py</a>,
             whose <a target="_blank" href="https://github.com/web2py">code</a> is also on Github.</dd>
 
-            <dt><a target="_blank" href="https://github.com/etcbc/shebanq-doc">shebanq-doc</a></dt>
+            <dt><a target="_blank" href="https://github.com/ETCBC/text-fabric">Text-Fabric</a></dt>
+            <dd>
+            The Hebrew Text Database is archived in
+            <a target="_blank" href="https://github.com/ETCBC/text-fabric/wiki/File-formats">TF format</a>, a compact, plain text format.
+            Text-Fabric is a data preprocessing tool that can handle data that is organized this way.
+            It is a Python package.</dd>
+
+            <dt><a target="_blank" href="https://github.com/ETCBC/text-fabric-data">text-fabric-data</a><dt>
+            <dd>Compiled version of the most recent public version of the ETCBC data (4c),
+            in a form that can be readily used by Text-Fabric.
+            It also contains a revised
+            <a href="https://etcbc.github.io/text-fabric-data/features/hebrew/etcbc4c/0_overview.html">feature documentation</a>.
+            </dd>
+
+            <dt><a target="_blank" href="http://nbviewer.jupyter.org/github/etcbc/text-fabric/tree/master/docs/">example notebooks</a></dt>
+            <dd>This a repository with executable <i>notebooks</i>, showing a wide range of things that can be accomplished.
+            See especially the <a href="http://nbviewer.jupyter.org/github/etcbc/text-fabric/blob/master/docs/tutorial.ipynb">text-fabric tutorial</a>
+            A recommended way to do data processing with the ETCBC data is using the concept of the
+            <a target="_blank" href="http://ipython.readthedocs.org/en/stable/">Jupyter Notebook</a>.
+            In a notebook you can describe, document and execute Python code. Such notebooks can easily be shared through github and
+            <a target="_blank" href="http://nbviewer.jupyter.org">NBviewer</a>.</dd>
+
+            <dt><a target="_blank" href="https://github.com/etcbc/shebanq-doc">LEGACY: shebanq-doc</a></dt>
             <dd><a target="_blank" href="https://zenodo.org/badge/latestdoi/498/ETCBC/shebanq-doc"><img src="https://zenodo.org/badge/498/ETCBC/shebanq-doc.svg" alt="10.5281/zenodo.33094"></a>
             Feature-by-feature documentation of the Hebrew Text Database. Here you find the meaning of the linguistic annotations to the text.
             This documentation is written in <i>rst</i> (= ReStructured Text), and from this html documentation can be built.
             The <a target="_blank" href="{{=URL('static', 'docs/featuredoc/features/comments/0_overview.html')}}">built html is included in SHEBANQ</a>.
             </dd>
 
-            <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric">LAF-Fabric</a></dt>
+            <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric">LEGACY:LAF-Fabric</a></dt>
             <dd><a target="_blank" href="https://zenodo.org/badge/latestdoi/498/ETCBC/laf-fabric"><img src="https://zenodo.org/badge/498/ETCBC/laf-fabric.svg" alt="10.5281/zenodo.33093"></a>
             The Hebrew Text Database is archived in the <a target="_blank" href="http://www.iso.org/iso/catalogue_detail.htm?csnumber=37326">LAF format</a>.
             LAF-Fabric is a data preprocessing tool that can handle LAF.
             It is a Python package. On top of it there are packages specialized in the peculiarities of the ETCBC data.</dd>
 
-            <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric-data">laf-fabric-data</a><dt>
+            <dt><a target="_blank" href="https://github.com/ETCBC/laf-fabric-data">LEGACY: laf-fabric-data</a><dt>
             <dd>Compiled version of the most recent public version of the ETCBC data (4b), in a form that can be readily used by LAF-Fabric.</dd>
 
-            <dt><a target="_blank" href="http://nbviewer.jupyter.org/github/ETCBC/laf-fabric-nbs/tree/master/">LAF-Fabric notebooks</a></dt>
+            <dt><a target="_blank" href="http://nbviewer.jupyter.org/github/ETCBC/laf-fabric-nbs/tree/master/">LEGACY:LAF-Fabric notebooks</a></dt>
             <dd>This a repository full of executable <i>notebooks</i>, showing a wide range of things that can be accomplished.
             A recommended way to do data processing with the ETCBC data is using the concept of the
             <a target="_blank" href="http://ipython.readthedocs.org/en/stable/">Jupyter Notebook</a>.

@@ -52,7 +52,7 @@ section_def = (
             (3, 'Editing notes (advanced)'),
             (3, 'Bulk uploading notes'),
     (1, 'Go your own way'),
-            (3, 'Beyond: LAF-Fabric'),
+            (3, 'Beyond: Text-Fabric'),
             (3, 'Tools'),
     (1, 'Documentation and Support'),
 )
@@ -75,7 +75,7 @@ def body_line(level, title, image):
             anchor=make_anchor(title),
             title=title,
             image=image,
-            url=URL('static', 'images/help/help'),
+            url=URL('static', 'docs/help/help'),
         )
     pass
     return bline
