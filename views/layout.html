@@ -85,6 +85,24 @@
     <script src="{{=URL('static','js/markdown.min.js')}}"></script>
     <script src="{{=URL('static', 'js/hebrew.js')}}"></script>
     <noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
+
+    <script type="text/javascript">
+    // <![CDATA[
+     var _paq = _paq || [];
+     _paq.push(['trackPageView']);
+     _paq.push(['enableLinkTracking']);
+     (function() {
+       var u="//stats.dans.knaw.nl/";
+       _paq.push(['setTrackerUrl', u+'danstats.php']);
+       _paq.push(['setSiteId', '6']);
+       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+       g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'danstats.js'; s.parentNode.insertBefore(g,s);
+     } )();
+    // ]]>
+    </script>
+    <noscript><p><img src="https://stats.dans.knaw.nl/danstats.php?idsite=6" style="border:0;" alt="" /></p></noscript>
+
+
     {{block head}}{{end}}
     </head>
 
