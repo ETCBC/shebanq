@@ -1732,6 +1732,9 @@ function HebrewSettings() {
         for (var fld in wb.vs.ddata()) {
             this[fld].apply()
         }
+        for (v in versions) {
+          set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        }
     }
 }
 
@@ -1745,6 +1748,9 @@ function HebrewSetting(fld) {
         wb.vs.dstatesv(vals)
         wb.vs.addHist()
         that.applysetting()
+        for (v in versions) {
+          set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+        }
     })
     this.apply = function() {
         var val = wb.vs.ddata()[this.name]
@@ -2428,6 +2434,12 @@ function set_csv(vr, mr, qw, iid, extra) {
             var csvctrl = $('#csv'+task+'_lnk_'+vr+'_'+qw)
             if (task != 'b' || (tp != 'txt_p' && tp != 'txt_il')) {
                 var ctit = csvctrl.attr('ftitle')
+                if (extra == undefined) {
+                  extra = csvctrl.attr('extra')
+                }
+                else {
+                  csvctrl.attr('extra', extra)
+                }
                 csvctrl.attr('href', wb.vs.csv_url(vr, mr, qw, iid, tp, extra))
                 csvctrl.attr('title', vr+'_'+style[qw]['t']+'_'+iid+'_'+extra+'_'+tp_labels[tp]+'.csv'+ctit)
                 csvctrl.show()
@@ -2631,7 +2643,7 @@ function ViewState(init, pref) {
     }
     this.csv_url = function(vr, mr, qw, iid, tp, extra) {
         var vars = '?version='+vr+'&mr='+mr+'&qw='+qw+'&iid='+iid+'&tp='+tp+'&extra='+extra
-        var data = this.data['hebrewdata']['']
+        var data = wb.vs.ddata()
         for (var name in data) {
             vars += '&'+name+'='+data[name]
         }
