@@ -8,6 +8,8 @@ Disallow: /shebanq/hebrew/verse
 Disallow: /hebrew/verse
 Disallow: /shebanq/hebrew/word
 Disallow: /hebrew/word
+Disallow: /shebanq/hebrew/words
+Disallow: /hebrew/words
 Disallow: /shebanq/hebrew/chart
 Disallow: /hebrew/chart
 Disallow: /shebanq/hebrew/item.csv
@@ -18,8 +20,18 @@ Disallow: /shebanq/hebrew/fields.json
 Disallow: /hebrew/fields.json
 Disallow: /shebanq/user
 Disallow: /user
+Disallow: /shebanq/static/images
+Disallow: /static/images
+Disallow: /shebanq/static/css
+Disallow: /static/css
+Disallow: /shebanq/static/js
+Disallow: /static/js
+Disallow: /shebanq/static/fonts
+Disallow: /static/fonts
 Disallow: /shebanq/appadmin
 Disallow: /appadmin
+Disallow: /shebanq/static/docs/tools/parallel/files
+Disallow: /static/docs/tools/parallel/files
 Disallow: /admin
 
 
