@@ -1,0 +1,41 @@
+<a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
+<input type="hidden" id="itemtag" value=""/>
+<div id="dbmsg_w"></div>
+<p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{if 'id' in wr:}}
+{{for v in version_order:
+    if not versions[v]['present']: continue
+    wrinfo = wr['versions'].get(v, collections.defaultdict(lambda: ''))
+    thisclass = 'this' if v == vr else 'other'
+    arrow = 'down' if v == vr else 'right'
+}}
+<div version="{{=v}}" class="version {{=thisclass}}">
+    <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+    <a id="csvt_lnk_{{=v}}_w" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all occurrences of this word as a csv file"></a>
+    <a id="csvb_lnk_{{=v}}_w" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all occurrences of this word with tab info as a csv file"></a>
+    <a id="csvd_lnk_{{=v}}_w" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all occurrences of this word with data as a csv file"></a>
+    <a id="select_control_chart_{{=v}}_w" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
+    </p>
+    <table>
+        <tr class="detail"><td><span class="wlabel">vocalized</span></td><td class="dd i_hl">{{=wrinfo['g_entry_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">consonantal</span></td><td class="dd i_hl">{{=wrinfo['entry_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">disambiguated</span></td><td class="dd i_hl">{{=wrinfo['entryid_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">vocalized</span></td><td>{{=wrinfo['g_entry']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">consonantal</span></td><td>{{=wrinfo['entry']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">disambiguated</span></td><td class="i_tl">{{=wrinfo['entryid']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">part-of-speech</span></td><td class="i_pos">{{=wrinfo['pos']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">lexical set</span></td><td class="i_subpos">{{=wrinfo['subpos']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">proper noun category</span></td><td class="i_nametype">{{=wrinfo['nametype']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">language</span></td><td class="i_lan">{{=wrinfo['lan']}}</td></tr>
+        <tr class="detail"><td><span class="wlabel">gloss</span></td><td class="i_gl">{{=wrinfo['gloss']}}</td></tr>
+    </table>
+</div>
+{{pass}}
+{{pass}}
+<script type="text/javascript">
+var msgs = {{=XML(msgs)}};
+var w = {{=XML(w)}}
+</script>
+
+

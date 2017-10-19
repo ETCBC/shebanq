@@ -1,0 +1,101 @@
+{{
+statusmap = dict(
+    good='results up to date',
+    error='results outdated',
+    warning='never executed',
+)
+}}
+{{if 'id' not in qr:}}
+    <div id="dbmsg_q"></div>
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{else:}}
+{{if writable:}}
+<input type="hidden" id="qid" value="{{=qr['id']}}"/>
+{{pass}}
+<input type="hidden" id="itemtag" value=""/>
+<div id="bigger">
+    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+u'?goto={}'.format(iidrep)}}"><span id="nameqm">{{=qr['name']}}</span></a>
+    <span class="ir"><a class="ctrl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
+    <input type="text" id="nameq" value="{{=qr['name']}}"/>
+    <div>
+        <p>
+            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=u'{} {}'.format(qr['ufname'], qr['ulname'])}}</span></a>
+            <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=qr['oname']}}</span></a>
+            <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=qr['pname']}}</span></a>
+        </p>
+    </div>
+    <div id="descm" class="old descm">{{=XML(qr['description_md'])}}</div>
+    <textarea id="descq" class="desc">{{=qr['description']}}</textarea>
+    <div version="" class="version this">
+        <table>
+            <tr><td style="padding-left: 0px;"><a class="ctrlb moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
+            <span class="flabel">shared</span></td><td>{{
+            if writable: }}
+                <input qid="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
+            {{else:}}
+                <span class="fa fa-{{='check' if qr['is_shared'] else 'close'}}"></span>
+            {{pass}}</td><td class="dtval"><span id="shared_on">{{=qr['shared_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">created</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['created_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['modified_on']}}</span></td></tr>
+        </table>
+    </div>
+    <div id="dbmsg_q"></div>
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{for v in version_order:
+    if not versions[v]['present']: continue
+    qrinfo = qr['versions'][v]
+    qstatus = qrinfo['status']
+    thisclass = 'this' if v == vr else 'other'
+    is_pub = qrinfo['is_published']
+    id_q = XML('id="statq" ') if v == vr else ''
+    id_m = XML('id="statm" ') if v == vr else ''
+    arrow = 'down' if v == vr else 'right'
+    pclass = 'published' if is_pub else 'unpublished'
+}}
+    <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
+        <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+        <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+        <a id="csvt_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
+        <a id="csvb_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with tab info as a csv file"></a>
+        <a id="csvd_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all words of this query with data as a csv file"></a>
+        <a id="select_control_chart_{{=v}}_q" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
+    {{if writable and v == vr:}}
+            <span class="ir"><a id="editq" href="#" title="edit name, description, and mql" class="ctrl fa fa-pencil fa-lg"></a></span>
+            <span class="ir"><a id="cancq" href="#" title="QUIT editing WITHOUT saving recent changes" class="ctrl fa fa-close fa-lg"></a></span>
+            <span class="ir"><a id="doneq" href="#" title="save changes and QUIT editing" class="ctrl fa fa-check fa-lg"></a></span>
+            <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctrl fa fa-save fa-lg"></a>&nbsp;</span>
+            <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctrl fa fa-cog fa-lg"></a>&nbsp;</span>
+    {{pass}}</p>
+        <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
+    {{if v == vr:}}
+        <div id="dbmsg_qv"></div>
+        <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+    {{pass}}
+        <table>
+            <tr><td><span class="flabel">status</span></td><td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td></tr>
+            <tr><td><span class="flabel">published</span></td><td>{{
+            if writable and v == vr and v != CONTINUOUS:
+            }}<input qid="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_pub else ''}}/>{{
+            pass}}<span {{=XML('id="is_pub_ro"') if writable and v == vr else ''}} class="fa fa-{{='check' if is_pub else 'close'}}"></span>
+            </td><td class="dtval"><span {{=XML('id="published_on"') if v == vr else ''}}>{{=qrinfo['published_on']}}</span></td></tr>
+            <tr><td><span class="flabel">results</span></td><td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresults"') if v == vr else ''}}>{{=qrinfo['results']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">words</span></td><td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultmonads"') if v == vr else ''}}>{{=qrinfo['resultmonads']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"') if v == vr else ''}}>{{=qrinfo['xmodified_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">executed</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"') if v == vr else ''}}>{{=qrinfo['executed_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="flabel">engine</span></td><td>&nbsp;</td><td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldeversions else ''}}"
+                title="this is {{='not ' if qrinfo['eversion'] in oldeversions else ''}}the newest version"><span {{=XML('id="eversion"') if v == vr else ''}}>{{=qrinfo['eversion']}}</span></td></tr>
+        </table>
+    </div>
+{{pass}}
+</div>
+{{pass}}
+<script type="text/javascript">
+var msgs = {{=XML(msgs)}};
+var q = {{=XML(q)}}
+
+var descm = $('#descm')
+d_md = special_links(descm.html())
+descm.html(d_md)
+decorate_crossrefs(descm)
+</script>
+

@@ -1,0 +1,93 @@
+{{
+if side_items:
+    qlimit = 12
+    ulimit = 10
+    klimit = 12
+}}
+<div>
+<ul id="side_list_{{=qw}}">
+    {{
+    for si in side_items:
+        iinfo = si['item']
+        iid = iinfo['id']
+        compp = u''
+        lclass = u''
+        if qw == 'q' or qw == 'n':
+            fname = iinfo['ufname']
+            lname = iinfo['ulname']
+            is_pub = iinfo['is_published']
+            uname = u'{} {}'.format(fname, lname)
+            uname1 = u'{} {}'.format(fname[0], lname)
+            uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
+            clinktext = uname_short
+            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_pub else ''
+        pass
+        if qw == 'q':
+            qname = iinfo['name']
+            desc = iinfo['description']
+            mql = iinfo['mql']
+            qname_short = qname if len(qname) < qlimit else qname[0:qlimit]+'..'
+            title = u'{} by {} {}'.format(qname, fname, lname)
+            dlinktext = qname_short
+            lclass = XML(' class="detail" ')
+            cclass = 'qauth'
+            dclass = 'qname'
+            eclass = 'qdesc'
+        elif qw == 'n':
+            kw = iinfo['kw']
+            kw_short = kw if len(kw) < klimit else kw[0:klimit]+'..'
+            nnotes = iinfo['nnotes']
+            nverses = iinfo['nverses']
+            nlabel = 'note' if nnotes == 1 else 'notes'
+            vlabel = 'verse' if nverses == 1 else 'verses'
+            title = u'{} by {} {}'.format(kw, fname, lname)
+            dlinktext = kw_short
+            cclass = 'nauth'
+            sclass = 'nstat'
+            dclass = 't1_kw'
+            eclass = 'ndesc'
+        elif qw == 'w':
+            wentry = iinfo['entryid']
+            wgloss = iinfo['gloss']
+            pos = iinfo['pos']
+            vc = iinfo['g_entry_heb']
+            entry_heb = iinfo['entry_heb']
+            entryid_heb = iinfo['entryid_heb']
+            title = wentry
+            clinktext = vc if vc else entry_heb
+            dlinktext = wgloss or '?'
+            cclass = 'i_hl'
+            dclass = 'i_gl'
+            eclass = 'wdesc'
+        pass
+        compc = A(clinktext, _href='#', _class=cclass, _iid=iid, _id=u'item_{}{}'.format(qw, iid))
+        compd = SPAN(dlinktext, _class=dclass)
+    }}
+    <li {{=lclass}} id="{{=u'{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
+        <div>{{=XML(colorpicker(qw,iid, '')) if qw != 'n' else ''}}
+            <a href='#' title="more/less info" class="ctrlb fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
+            {{if qw == 'q' or qw == 'n':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}
+        </div>
+        <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
+        {{if qw == 'q':}}
+            <p><a id="bigqf_{{=iid}}" iid="{{=iid}}" href="#" class="ctrl fullc fa fa-arrows-alt"></a>
+            <span class="{{=dclass}}">{{=qname}}</span> by <span class="{{=cclass}}">{{=uname}}</span><br/>
+            <div id="bigq_{{=iid}}" class="bigq">
+                <input type="hidden" id="dv_{{=qw}}{{=iid}}" value="{{=desc}}"></p>
+                <div id="dm_{{=qw}}{{=iid}}" class="descm"></div>
+                <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
+            </div>
+        {{elif qw == 'w':}}
+            <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=cclass}}>{{=entryid_heb}}</span></p>
+        {{elif qw == 'n':}}
+            <p>notes by: <span class="{{=cclass}}">{{=uname}}</span></p>
+            <p>with keyword <span class="{{=dclass}}">{{=kw}}</span></p>
+            <p>In this chapter: <span class="{{=sclass}}">{{=nnotes}}</span> {{=nlabel}}
+            in <span class="{{=sclass}}">{{=nverses}}</span> {{=vlabel}}</p>
+        {{pass}}
+        </div>
+    </li>
+    {{pass}}
+</ul>
+</div>
+{{ pass }}

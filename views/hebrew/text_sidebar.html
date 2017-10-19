@@ -1,0 +1,47 @@
+{{
+for (qw, tags) in (('w', 'words'), ('q', 'queries'), ('n', 'notes')):
+}}
+<div id="side_bar_r{{=qw}}">
+    <div id="side_settings_r{{=qw}}">
+        <table class="hlsettings">
+            <tr>
+                {{if qw != 'n':}}
+                <td id="colorpicker_i{{=qw}}"></td>
+                <td>{{=XML(colorpicker(qw, 'me', ''))}}</td>
+                {{pass}}
+                {{if qw == 'q':}}
+                <td id="theqid"></td>
+                {{pass}}
+                <td>{{
+    for v in version_order:
+        if versions[v]['present']:
+                }}<span id="select_contents_chart_{{=v}}_{{=qw}}"></span>{{
+        pass
+    pass
+                }}</td>
+            </tr>
+        </table>
+    </div>
+    <div id="side_material_r{{=qw}}"></div>
+</div>
+<div id="side_bar_m{{=qw}}">
+    <a id="side_show_m{{=qw}}" class="ctrll" href="#">show {{=tags}}</a>
+    <a id="side_hide_m{{=qw}}" class="ctrll" href="#">hide {{=tags}}</a>
+    <div id="side_settings_m{{=qw}}" class="pnl">
+        <table class="hlsettings">
+            <tr>
+                {{if qw != 'w':}}<td><a href="#" id="hlpub" class="ctrl {{=qw}}pradio fa fa-quote-right" title="show only published {{=tags}}"></a></td>{{pass}}
+                {{if qw != 'n':}}
+                <td><a href="#" id="{{=qw}}hlreset" class="ctrl {{=qw}}hradio fa fa-close" title="reset highlight customization"></a></td>
+                <td><a href="#" id="{{=qw}}hlmany" class="ctrl {{=qw}}hradio fa fa-hand-o-up" title="show all highlights"></a></td>
+                <td><a href="#" id="{{=qw}}hlcustom" class="ctrl {{=qw}}hradio fa fa-hand-o-down" title="only customized highlight colors"></a></td>
+                <td>{{=XML(colorpicker(qw, 'one', '2'))}}</td>
+                <td><a href="#" id="{{=qw}}hlone" class="ctrl {{=qw}}hradio fa fa-hand-o-left" title="choose one highlight color"></a></td>
+                <td><a href="#" id="{{=qw}}hloff" class="ctrl {{=qw}}hradio fa fa-ban" title="highlights off"></a></td>
+                {{pass}}
+            </tr>
+        </table>
+    </div>
+    <div id="side_material_m{{=qw}}" class="pnll"></div>
+</div>
+{{pass}}

@@ -1,0 +1,4 @@
+{{
+    response.headers['Content-Type'] = 'text/csv'
+    response.headers['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+}}{{=XML(data)}}

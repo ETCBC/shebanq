@@ -1,0 +1,143 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = True }}
+{{extend 'layout.html'}}
+
+<input type="hidden" id="qid" value="{{=qid}}"/>
+<div id="queries"></div>
+
+{{ block left_sidebar }}
+
+<p>
+    <a href="#" id="c_view_simple" class="ctrl qvradio">simple</a>
+    <a href="#" id="c_view_advanced" class="ctrl qvradio">advanced</a>
+</p>
+
+<p>Recent
+<a href="#" id="reload_recentq" class="ctrl fa fa-refresh" title="refresh recent query list"></a>
+{{feedurl = URL('feed', 'atom', host=True, extension='')}}
+<a href="{{=feedurl}}" target="_blank" class="ctrl fa fa-rss" title="rss-atom feed for shared queries"></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2F{{=feedurl.replace('/', '%2F').replace(':', '%3A')}}"
+   title="follow queries in feedly"
+   target="blank"><img id="feedlyFollow" src="{{=URL('static', 'images/feedly-follow-logo-green_2x.png')}}"
+   alt="follow queries in feedly" width="28" height="28"></a>
+</p>
+</p>
+<div id="recentq">
+<div id="recentqi"></div>
+</div>
+<p><span id="msg_qr"></span>
+
+<h4>Filter</h4>
+<input type="text" id="filter_contents"/> <span id="filter_msg"></span></p>
+<p class="brq"><a class="ctrl qfradio" href="#" id="filter_control_a">all matches</a>
+<span id="amatches">&nbsp;</span>
+</p>
+<p><a class="ctrl qfradio" href="#" id="filter_control_c">all with children</a>
+<span id="cmatches">&nbsp;</span>
+</p>
+<p class="brq"><a class="ctrl qfradio" href="#" id="filter_control_q">in all queries</a>
+<span id="qmatches">&nbsp;</span>
+</p>
+<p><a class="ctrl qfradio" href="#" id="filter_control_m">in my queries</a>
+<span id="mmatches">&nbsp;</span>
+</p>
+<p class="brq"><a class="ctrl qfradio" href="#" id="filter_control_r">in private queries</a>
+<span id="rmatches">&nbsp;</span>
+</p>
+<p><a class="ctrl qfradio" href="#" id="filter_clear">clear filter</a></p>
+
+<h4>Level</h4>
+<p><a class="ctrl qlradio" href="#" id="level_o">organizations</a> (<span id='count_o'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_p">projects</a> (<span id='count_p'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_u">users</a> (<span id='count_u'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_q">queries</a> (<span id='count_q'></span>)</p>
+<p><a class="ctrl qlradio" href="#" id="level_">manual</a></p>
+
+<script src="{{=URL('static','js/jquery.fancytree-all.min.js')}}"></script>
+<script src="{{=URL('static', 'js/queries.js')}}"></script>
+
+<script type="text/javascript">
+var pq_url = "{{=XML(URL('hebrew', 'query_tree', extension='json'))}}"
+var queriesr_url = "{{=XML(URL('hebrew', 'queriesr', extension='json'))}}"
+var q_url = "{{=XML(URL('hebrew', 'text', extension=''))}}"
+var record_url = "{{=XML(URL('hebrew', 'record', extension='json'))}}"
+</script>
+
+{{ end }}
+
+{{ block right_sidebar }}
+
+<h3><a title="new query" class="n_q" href="#"></a> Enter new query</h3>
+<p id="lmsg">You have to be logged in to enter new queries.</p>
+<div id="opqforms">
+    <div class="form_l" id="form_o">
+        <h4><span id="title_o">New</span> organization</h4>
+        <table>
+            <tr id="nameline_o"><td><span class="flabel">Name</span></td><td><input type="text" id="name_o"/></td></tr>
+            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_o"/><a target="_blank" href="" id="fo_v" oid=""></a></td></tr>
+        </table>
+    </div>
+
+    <div class="form_l" id="form_p">
+        <h4><span id="title_p">New</span> project</h4>
+        <table>
+            <tr id="nameline_p"><td><span class="flabel">Name</span></td><td><input type="text" id="name_p"/></td></tr>
+            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_p"/><a target="_blank" href="" id="fp_v" oid=""></a></td></tr>
+        </table>
+    </div>
+
+    <div class="form_l" id="form_q">
+        <h4><span id="title_q">New</span> query</h4>
+        <table>
+            <tr><td class="flabel">Name</td><td><input type="text" id="name_q"/></td></tr>
+            <tr>
+                <td class="flabel">Organization</td><td><span class="fa fa-check-circle fa-lg s_x" title="select existing organization from the tree"></span>
+                    <a target="_blank" href="" id="fo_q" oid=""></a></td>
+                <td><a id="new_ctrl_o" title="new organization" href="#" class="ctrl fa fa-plus fa-lg"
+                    ></a><a id="newx_ctrl_o" title="use existing organization" href="#" class="ctrl fa fa-times fa-lg"></a></td>
+            </tr>
+            <tr class="detail_o"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_o"/></td></tr>
+            <tr class="detail_o"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_o"/></td></tr>
+            <tr>
+                <td class="flabel">Project</td></td><td><span class="fa fa-check-circle fa-lg s_x" title="select existing project from the tree"></span>
+                    <a target="_blank" href="" id="fp_q" pid=""></a></td>
+                <td><a id="new_ctrl_p" title="new project" href="#" class="ctrl fa fa-plus fa-lg"
+                    ></a><a id="newx_ctrl_p" title="use existing project" href="#" class="ctrl fa fa-times fa-lg"></a></td>
+            </tr>
+            <tr class="detail_p"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_p"/></td></tr>
+            <tr class="detail_p"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_p"/></td></tr>
+        </table>
+    </div>
+</div>
+
+<div id="opqctrl">
+    <div id="opqmsgs"></div>
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_opqmsgs" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+    <span class="ctrl_l" id="ctrl_o">
+       <a href="#" id="cancel_o" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
+       <a href="#" id="save_o" class="ctrl fa fa-save fa-lg" title="save changes"></a>
+       <a href="#" id="done_o" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
+       <input type="hidden" id="id_o" name="lid" value="0"/>
+    </span>
+
+    <span class="ctrl_l" id="ctrl_p">
+       <a href="#" id="cancel_p" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
+       <a href="#" id="save_p" class="ctrl fa fa-save fa-lg" title="save changes"></a>
+       <a href="#" id="done_p" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
+       <input type="hidden" id="id_p" name="lid" value="0"/>
+    </span>
+
+    <span class="ctrl_l" id="ctrl_q">
+       <a href="#" id="cancel_q" class="ctrl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
+       <a href="#" id="save_q" class="ctrl fa fa-save fa-lg" title="save changes"></a>
+       <a href="#" id="done_q" class="ctrl fa fa-check fa-lg" title="save changes and close"></a>
+       <input type="hidden" id="id_q" name="lid" value="0"/>
+    </span>
+
+    <span>
+       <a href="#" id="reload_tree" class="ctrl fa fa-refresh fa-lg" title="refresh tree"></a>
+       <a id="continue_q" href="#" class="ctrl fa fa-arrow-right fa-lg" title="go to the query page to edit the query, run it, and view its results"></a>
+    </span>
+</div>
+
+{{ end }}

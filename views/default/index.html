@@ -1,0 +1,45 @@
+{{ left_sidebar_enabled = True }}
+{{ right_sidebar_enabled = True }}
+{{ extend 'layout.html' }}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+<h4>What is SHEBANQ?</h4>
+<p><b>System for HEBrew Text: ANnotations for Queries and Markup</b></p>
+<p>SHEBANQ is an online environment for studying the Hebrew Bible.</p>
+<p>Scholarly editions of the Bible usually dedicate space to a critical apparatus and various kinds of annotations.</p>
+<p>We introduce the idea of annotating the text with <i>queries</i>.
+They show up next to the chapters where the results are.</p>
+<p>Of course you can also share your hand-written annotations!</p>
+<p>Through SHEBANQ you can fire queries at the morphological and syntactical
+<a href="https://etcbc.github.io/bhsa">BHSA database</a>.</p>
+<p>You can share and publish those queries here and send the links around.</p>
+<p><b>By sharing your queries with others, you may find what you did not search for.</b></p>
+<p>Read all about SHEBANQ by clicking on the icon, or contact
+<a href="mailto:shebanq@ancient-data.org">shebanq@ancient-data.org</a>.</p>
+
+{{block left_sidebar}}
+<p><a target="_blank" href="https://github.com/ETCBC/shebanq/wiki"><img src="{{=URL('static', 'images/shebanq_logo.png')}}" width="200px"/></a></p>
+{{end}}
+
+{{block right_sidebar}}
+<a class="twitter-timeline" href="https://twitter.com/etcbc_vu" data-widget-id="572382814054932480">Tweets by @etcbc_vu</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+{{end}}
+
+<script type="text/javascript">
+$(function () {
+    console.warn('xxxx')
+    var subtract = 250
+    standard_height = window.innerHeight - subtract
+    var canvas_middle = $('.span9')
+    var canvas_side = $('.span3')
+    canvas_middle.css('overflow', 'auto')
+    canvas_middle.css('height', standard_height+'px')
+    canvas_side.css('overflow', 'auto')
+    canvas_side.css('height', standard_height+'px')
+})
+</script>
+

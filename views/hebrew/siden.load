@@ -1,0 +1,34 @@
+<a class="ctrl" id="gobackn" href="#"><span id="namenn">to notes overview </span></a>
+<input type="hidden" id="itemtag" value=""/>
+<div id="dbmsg_n"></div>
+<p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+{{if 'id' in nr and nr['id'] and nr['id'] != '0':}}
+<table>
+    <tr><td><span class="nlabel">author</span></td><td><spanclass="nauth">{{=nr['ufname']}} {{=nr['ulname']}}</span></td></tr>
+    <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['kw']}}</span></td></tr>
+</table>
+{{for v in version_order:
+    if not versions[v]['present']: continue
+    nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))
+    thisclass = 'this' if v == vr else 'other'
+    arrow = 'down' if v == vr else 'right'
+}}
+<div version="{{=v}}" class="version {{=thisclass}}">
+    <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+    <a id="csvt_lnk_{{=v}}_n" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all notes of this set as a csv file"></a>
+    <a id="csvd_lnk_{{=v}}_n" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all notes of this set with clause info as a csv file"></a>
+    <a id="select_control_chart_{{=v}}_n" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
+    </p>
+    <table>
+        <tr class="detail"><td><span class="nlabel">notes</span></td><td class="nstat">{{=nrinfo['n'] or 0}}</td></tr>
+    </table>
+</div>
+{{pass}}
+{{pass}}
+<script type="text/javascript">
+var msgs = {{=XML(msgs)}};
+var n = {{=XML(n)}}
+</script>
+
+
