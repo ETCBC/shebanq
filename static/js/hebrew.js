@@ -219,6 +219,7 @@ function reset_main_width() { // restore the orginal widths of sidebar and main 
 }
 
 function set_edit_width() { // switch to increased sidebar width
+    get_width()
     $('.span3').css('width', edit_side_width)
     $('.span9').css('width', edit_main_width)
 }
