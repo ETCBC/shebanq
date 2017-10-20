@@ -1,4 +1,4 @@
-{{ left_sidebar_enabled = True }}
+{{ left_sidebar_enabled = False }}
 {{ right_sidebar_enabled = True }}
 {{ extend 'layout.html' }}
 
@@ -17,12 +17,10 @@ They show up next to the chapters where the results are.</p>
 <a href="https://etcbc.github.io/bhsa">BHSA database</a>.</p>
 <p>You can share and publish those queries here and send the links around.</p>
 <p><b>By sharing your queries with others, you may find what you did not search for.</b></p>
-<p>Read all about SHEBANQ by clicking on the icon, or contact
+<p>Read all about SHEBANQ on the wiki
+<a title="SHEBANQ Wiki" class="ctrli fa fa-info-circle fa-2x" href="https://github.com/ETCBC/shebanq/wiki"></a>
+or contact
 <a href="mailto:shebanq@ancient-data.org">shebanq@ancient-data.org</a>.</p>
-
-{{block left_sidebar}}
-<p><a target="_blank" href="https://github.com/ETCBC/shebanq/wiki"><img src="{{=URL('static', 'images/shebanq_logo.png')}}" width="200px"/></a></p>
-{{end}}
 
 {{block right_sidebar}}
 <a class="twitter-timeline" href="https://twitter.com/etcbc_vu" data-widget-id="572382814054932480">Tweets by @etcbc_vu</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -40,6 +38,8 @@ $(function () {
     canvas_middle.css('height', standard_height+'px')
     canvas_side.css('overflow', 'auto')
     canvas_side.css('height', standard_height+'px')
+    canvas_side.css('width', '40%')
+    canvas_middle.css('width', '55%')
 })
 </script>
 
