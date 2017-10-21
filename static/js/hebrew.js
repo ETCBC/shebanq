@@ -1410,8 +1410,7 @@ function SelectItems(key) { // both for chapters and for result pages
         })
     }
     this.apply = function() {
-        var showit = false
-        showit = this.gen_html() > 0
+        var showit = showit = this.gen_html() > 0;
         if (!showit) {
             $(this.control).hide()
         }
@@ -1694,7 +1693,7 @@ function MSettings(content) {
         legendc.hide()
         // I forgot why I thought setting the csv exports here was necessary. It is done after filling the sidebars.
         /*
-        for (v in versions) {
+        for (var v in versions) {
             if (versions[v]) {
                 set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
             }
@@ -1765,7 +1764,7 @@ function HebrewSettings() {
         for (var fld in wb.vs.ddata()) {
             this[fld].apply()
         }
-        for (v in versions) {
+        for (var v in versions) {
           set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         }
     }
@@ -1781,7 +1780,7 @@ function HebrewSetting(fld) {
         wb.vs.dstatesv(vals)
         wb.vs.addHist()
         that.applysetting()
-        for (v in versions) {
+        for (var v in versions) {
           set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
         }
     })
@@ -1889,7 +1888,7 @@ function Sidebar(mr, qw) { // the individual sidebar, parametrized with qr and m
     }
     if (mr == 'r') {
         this.cselect = {}
-        for (v in versions) {
+        for (var v in versions) {
             if (versions[v]) {
                 this.add_version(v)
             }
@@ -1966,7 +1965,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
             wb.listsettings[this.qw].apply()
         }
         else {
-            for (v in versions) {
+            for (var v in versions) {
                 if (versions[v]) {
                     wb.sidebars.sidebar['r'+this.qw].cselect[v].init()
                 }
@@ -2276,7 +2275,7 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                 var qx = q.versions[vr];
                 $('#nameqm').html(escapeHTML(q.name || ''))
                 $('#nameq').val(q.name)
-                d_md = special_links(q.description_md)
+                var d_md = special_links(q.description_md)
                 var descm = $('#descm')
                 descm.html(d_md)
                 decorate_crossrefs(descm)

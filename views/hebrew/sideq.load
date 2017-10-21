@@ -45,6 +45,7 @@ statusmap = dict(
     if not versions[v]['present']: continue
     qrinfo = qr['versions'][v]
     qstatus = qrinfo['status']
+    qresults = qrinfo['results']
     thisclass = 'this' if v == vr else 'other'
     is_pub = qrinfo['is_published']
     id_q = XML('id="statq" ') if v == vr else ''
@@ -55,36 +56,69 @@ statusmap = dict(
     <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
         <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
         <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+    {{if v == vr:}}
         <a id="csvt_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
         <a id="csvb_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with tab info as a csv file"></a>
         <a id="csvd_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all words of this query with data as a csv file"></a>
         <a id="select_control_chart_{{=v}}_q" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
-    {{if writable and v == vr:}}
+        <a target="_blank" title="MQL documentation" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/MQL-Quickref">MQL <span class="fa fa-info-circle ctrli"/></a>
+        {{if writable:}}
             <span class="ir"><a id="editq" href="#" title="edit name, description, and mql" class="ctrl fa fa-pencil fa-lg"></a></span>
             <span class="ir"><a id="cancq" href="#" title="QUIT editing WITHOUT saving recent changes" class="ctrl fa fa-close fa-lg"></a></span>
             <span class="ir"><a id="doneq" href="#" title="save changes and QUIT editing" class="ctrl fa fa-check fa-lg"></a></span>
             <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctrl fa fa-save fa-lg"></a>&nbsp;</span>
             <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctrl fa fa-cog fa-lg"></a>&nbsp;</span>
-    {{pass}}</p>
+        {{pass}}
+    {{else:}}
+        <span class="qexer">{{='' if qresults == None else qresults}}</span>
+        <span class="{{=qstatus}}">{{=statusmap[qstatus]}}</span>
+    {{pass}}
+        </p>
         <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
     {{if v == vr:}}
         <div id="dbmsg_qv"></div>
         <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
-    {{pass}}
         <table>
-            <tr><td><span class="flabel">status</span></td><td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td></tr>
-            <tr><td><span class="flabel">published</span></td><td>{{
-            if writable and v == vr and v != CONTINUOUS:
-            }}<input qid="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_pub else ''}}/>{{
-            pass}}<span {{=XML('id="is_pub_ro"') if writable and v == vr else ''}} class="fa fa-{{='check' if is_pub else 'close'}}"></span>
-            </td><td class="dtval"><span {{=XML('id="published_on"') if v == vr else ''}}>{{=qrinfo['published_on']}}</span></td></tr>
-            <tr><td><span class="flabel">results</span></td><td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresults"') if v == vr else ''}}>{{=qrinfo['results']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">words</span></td><td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultmonads"') if v == vr else ''}}>{{=qrinfo['resultmonads']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"') if v == vr else ''}}>{{=qrinfo['xmodified_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">executed</span></td><td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"') if v == vr else ''}}>{{=qrinfo['executed_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">engine</span></td><td>&nbsp;</td><td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldeversions else ''}}"
-                title="this is {{='not ' if qrinfo['eversion'] in oldeversions else ''}}the newest version"><span {{=XML('id="eversion"') if v == vr else ''}}>{{=qrinfo['eversion']}}</span></td></tr>
+            <tr>
+                <td><span class="flabel">status</span></td>
+                <td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="flabel">published</span></td>
+                <td>{{
+                    if writable and v != CONTINUOUS:
+                    }}<input qid="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_pub else ''}}/>{{pass}}<span
+                        {{=XML('id="is_pub_ro"') if writable else ''}}
+                        class="fa fa-{{='check' if is_pub else 'close'}}"
+                      ></span>
+                </td>
+                <td class="dtval"><span {{=XML('id="published_on"')}}>{{=qrinfo['published_on']}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="flabel">results</span></td>
+                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresults"')}}>{{=qresults}}</span></td>
+            </tr>
+            <tr class="detail">
+                <td><span class="flabel">words</span></td>
+                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultmonads"')}}>{{=qrinfo['resultmonads']}}</span></td>
+            </tr>
+            <tr class="detail">
+                <td><span class="flabel">modified</span></td>
+                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"')}}>{{=qrinfo['xmodified_on']}}</span></td>
+            </tr>
+            <tr class="detail">
+                <td><span class="flabel">executed</span></td>
+                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"')}}>{{=qrinfo['executed_on']}}</span></td>
+            </tr>
+            <tr class="detail">
+                <td><span class="flabel">engine</span></td>
+                <td>&nbsp;</td>
+                <td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldeversions else ''}}"
+                    title="this is {{='not ' if qrinfo['eversion'] in oldeversions else ''}}the newest version"
+                ><span {{=XML('id="eversion"')}}>{{=qrinfo['eversion']}}</span></td>
+            </tr>
         </table>
+    {{pass}}
     </div>
 {{pass}}
 </div>
