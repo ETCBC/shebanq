@@ -5,7 +5,6 @@ response.logo = A(IMG(_src=URL('static', 'images/shebanq_logo_small.png')),
                   _class="brand",
                   _href=URL('default', 'index'),
                   _title='Home page',
-                  _target="_blank",
                   _style="margin-bottom: -2em;",
                   )
 

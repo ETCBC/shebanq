@@ -29,16 +29,15 @@ or contact
 
 <script type="text/javascript">
 $(function () {
-    console.warn('xxxx')
     var subtract = 250
     standard_height = window.innerHeight - subtract
     var canvas_middle = $('.span9')
     var canvas_side = $('.span3')
     canvas_middle.css('overflow', 'auto')
-    canvas_middle.css('-webkit-overflow-scrolling', 'touch')
+    canvas_middle.css('webkit-overflow-scrolling', 'touch')
     canvas_middle.css('height', standard_height+'px')
     canvas_side.css('overflow', 'auto')
-    canvas_side.css('-webkit-overflow-scrolling', 'touch')
+    canvas_side.css('webkit-overflow-scrolling', 'touch')
     canvas_side.css('height', standard_height+'px')
     canvas_side.css('width', '40%')
     canvas_middle.css('width', '55%')
