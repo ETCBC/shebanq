@@ -1,4 +1,9 @@
 /* LAYOUT */
+
+.timeline-Body: {
+    -webkit-overflow-scrolling: touch;
+}
+
 /* begin custom navbar */
 
 .navbar-inverse .navbar-inner {
