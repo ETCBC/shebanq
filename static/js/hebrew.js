@@ -214,7 +214,9 @@ function get_width() { // save the orginal widths of sidebar and main area
 function reset_main_width() { // restore the orginal widths of sidebar and main area
     if (orig_side_width != $('.span3').css('width')) {
         $('.span3').css('width', orig_side_width)
+        $('.span3').css('max-width', orig_side_width)
         $('.span9').css('width', orig_main_width)
+        $('.span9').css('max-width', orig_main_width)
     }
 }
 
