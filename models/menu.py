@@ -32,7 +32,7 @@ response.subtitle = ''
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html
 response.meta.author = 'SHEBANQ <shebanq@ancient-data.org>'
-response.meta.description = 'Search engine for biblical Hebrew based on the Biblia Hebraica Stuttgartensia (Amstelodamensis) database (formerly known as ETCBC, historically knows as WIVU)'
+response.meta.description = 'Search engine for biblical Hebrew based on the Biblia Hebraica Stuttgartensia (Amstelodamensis) database (formerly known as ETCBC, historically known as WIVU)'
 response.meta.keywords = 'Hebrew, Text Database, Bible, Query, Annotation, Online Hebrew Bible, Online Bible Hebrew, Hebrew Online Bible, Hebrew Bible Reader, Hebrew Bible Search, Hebrew Bible Research, Data Science, Text Database, Linguistic Queries, WIVU, ETCBC, BHS, BHSA, Biblia Hebraica, Biblia Hebraica Stuttgartensia, Biblia Hebraica Stuttgartensia Amstelodamensis'
 response.meta.generator = 'BHSA Data'
 
