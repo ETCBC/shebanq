@@ -30,7 +30,7 @@ versions = {
         'present': True,
         'fixed': True,
     },
-    '2017': { # not used yet
+    '2017': {
         'name': 'BHSA_2017',
         'date': '2017-10-06',
         'desc': 'Third online version of the BHSA database in SHEBANQ',
@@ -38,7 +38,7 @@ versions = {
         'present': True,
         'fixed': True,
     },
-    'c': { # not used yet
+    'c': {
         'name': 'BHSA_c',
         'date': '',
         'desc': 'Current online version of the BHSA database in SHEBANQ',
