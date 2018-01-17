@@ -97,8 +97,8 @@ if [ "$1" == "-de" ]; then
     if [ "$2" == "" ]; then
         echo "No version specified. Abort"
     else
-        VERSION = "$2"
-        DBNAME = "shebanq_etcbc$VERSION"
+        VERSION="$2"
+        DBNAME="shebanq_etcbc$VERSION"
         echo "unzipping $DBNAME"
         cp $INCOMING/$DBNAME.mql.bz2 $UNPACK
         bunzip2 -f $UNPACK/$DBNAME.mql.bz2
@@ -112,8 +112,8 @@ if [ "$1" == "-d" -o "$1" == "-de" ]; then
     if [ "$2" == "" ]; then
         echo "No version specified. Abort"
     else
-        VERSION = "$2"
-        PDBNAME = "shebanq_passage$VERSION"
+        VERSION="$2"
+        PDBNAME="shebanq_passage$VERSION"
         echo "unzipping $PDBNAME"
         cp $INCOMING/$PDBNAME.sql.gz $UNPACK
         gunzip -f $UNPACK/$PDBNAME.sql.gz
