@@ -1560,12 +1560,13 @@ span.treehl {
     border-radius: 6pt;
     background-color: #fcc889;
 }
-#bol_lnk {
+#bol_lnk,#pbl_lnk {
     float: left;
     margin-left: 1ex;
 }
-#bol_lnk img {
+#bol_lnk img,#pbl_lnk img {
     border-radius: 6px;
+    width: 25px;
 }
 .pdesc {
     text-align: left;

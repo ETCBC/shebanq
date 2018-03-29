@@ -156,6 +156,7 @@ var msg   // messages object
 var host, statichost, page_view_url, query_url, word_url
 var view_url, material_url, data_url, side_url, item_url, chart_url, queries_url, words_url, notes_url, cnotes_url, field_url, fields_url
 var bol_url
+var pbl_url
 var pref    // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
 
 /* fixed dimensions, measures, heights, widths, etc */
@@ -1120,6 +1121,7 @@ function MSelect() { // for book and chapter selection
         $('.mvradio').removeClass('ison')
         $('#version_'+wb.version).addClass('ison')
         var bol = $('#bol_lnk')
+        var pbl = $('#pbl_lnk')
         if (wb.mr == 'm') {
             this.book.apply()
             this.select.apply()
@@ -1129,14 +1131,18 @@ function MSelect() { // for book and chapter selection
             if (book != 'x' && chapter > 0) {
                 bol.attr('href', bol_url+'/ETCBC4/'+book+'/'+chapter)
                 bol.show()
+                pbl.attr('href', pbl_url+'/'+book+'/'+chapter)
+                pbl.show()
             }
             else {
                 bol.hide()
+                pbl.hide()
             }
         }
         else {
             $(this.hid).hide()
             bol.hide()
+            pbl.hide()
         }
     }
     this.set_vselect = function(v) {
