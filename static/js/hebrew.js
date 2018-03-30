@@ -1636,11 +1636,13 @@ function MContent() { // the actual Hebrew content, either plain text or tabbed 
 // MATERIAL SETTINGS (for choosing between plain text and tabbed data)
 
 function adaptDocBaseVersion(targetString) {
-    var versionRep = (wb.version == '4' || wb.version == '4b') ? (wb.version+'/features/comments') : wb.version; 
-    return targetString+'/'+versionRep
+    //var versionRep = (wb.version == '4' || wb.version == '4b') ? (wb.version+'/features/comments') : wb.version; 
+    //return targetString+'/'+versionRep
+    return targetString+'/'+wb.version
 }
 function adaptDocName() {
-    return (wb.version == '4' || wb.version == '4b') ? '/0_overview.html' : '/0_home'; 
+    //return (wb.version == '4' || wb.version == '4b') ? '/0_overview.html' : '/0_home'; 
+    return '/0_home';
 }
 
 

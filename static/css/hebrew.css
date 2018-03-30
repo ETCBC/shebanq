@@ -323,6 +323,9 @@ th.booklang {
     width: 200%;
     font-size: small;
 }
+span[m] {
+    border-radius: 0.3rem;
+}
 span.vref, span.vrefi {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
