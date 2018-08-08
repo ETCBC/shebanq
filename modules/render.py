@@ -2,7 +2,8 @@
 #-*- coding:utf-8 -*-
 
 import collections
-import json,urllib
+import json
+import urllib
 import re
 import xml.etree.ElementTree as ET
 
@@ -120,7 +121,7 @@ field_names = dict(
         sentence_number clause_number clause_atom_number clause_atom_tab
         '''.strip().split(),
 )
-hfields = dict( 
+hfields = dict(
     txt_p=[
         ('word_number', 'monad'),
         ('word_heb', 'text'),

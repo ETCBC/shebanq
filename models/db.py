@@ -40,7 +40,7 @@ versions = {
     },
     'c': {
         'name': 'BHSA_c',
-        'date': '',
+        'date': '2018-08-08',
         'desc': 'Current online version of the BHSA database in SHEBANQ',
         'notes': 'Current version. Will be updated regularly. The underlying data is in the ETCBC/BHSA Github repo.',
         'present': True,
