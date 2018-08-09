@@ -3,7 +3,7 @@
 
 # run it as follows:
 #
-# ./backup.sh                             # if only code or docs has changed
+# ./backup.sh
 
 # This script is set up to work at specific servers.
 # Currently it supports 
@@ -16,13 +16,6 @@
 
 INCOMING="/home/dirkr"
 
-if [ "$HOSTNAME" == "PPJV003" ]; then
-        ON_LWEB=1
-        MYSQL_PDIR="/root"
-        SH_ADIR="/home/www-data"
-        MQL_OPTS="-u root"
-        UNPACK="/home/dirkr/shebanq-unpack"
-fi
 if [ "$HOSTNAME" == "clarin11.dans.knaw.nl" ]; then
         ON_CLARIN=1
         MYSQL_PDIR="/opt/emdros/cfg"
@@ -33,8 +26,6 @@ fi
 
 if [ $ON_CLARIN ]; then
     sudo -n /usr/bin/systemctl stop httpd.service
-else
-    service apache2 stop
 fi
 
 echo "creating database dumps for shebanq_web and shebanq_note"
@@ -47,7 +38,5 @@ sleep 1
 
 if [ $ON_CLARIN ]; then
     sudo -n /usr/bin/systemctl start httpd.service
-else
-    service apache2 start
 fi
 
