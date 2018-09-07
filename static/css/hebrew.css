@@ -945,6 +945,7 @@ dt.lv3 {
     text-align: right;
     margin-right: 0px;
     direction: rtl;
+    unicode-bidi: bidi-override;
 }
 dt.lv3:after {
     content: " ";
@@ -954,6 +955,7 @@ dd.lv3 {
     line-height: 1.7;
     margin-right: 130px;
     direction: rtl;
+    unicode-bidi: bidi-override;
 }
 .tb3 {
     font-size: small;
@@ -971,6 +973,7 @@ dd.lv3 {
     line-height: 1.7;
     text-align: right;
     direction: rtl;
+    unicode-bidi: bidi-override;
 }
 .hebx {
     margin-left: 0em;
@@ -992,6 +995,7 @@ div.txt_tb1,div.txt_tb2,div.txt_tb3 {
     padding-bottom: 0.2em;
     padding-top: 0.2em;
     direction: rtl;
+    unicode-bidi: bidi-override;
 }
 .txt_il {
     text-align: right;
@@ -1042,6 +1046,7 @@ td.c {
 td.ht, td.l_ht {
     text-align: right;
     direction: rtl;
+    unicode-bidi: bidi-override;
     height: 30pt;
     border-left: 1pt solid #aaaaaa;
     border-right: 1pt solid #aaaaaa;
@@ -1056,6 +1061,7 @@ td.pt, td.l_pt {
 td.hl, td.l_hl {
     text-align: right;
     direction: rtl;
+    unicode-bidi: bidi-override;
     height: 30pt;
     border-left: 1pt solid #aaaaaa;
     border-right: 1pt solid #aaaaaa;
