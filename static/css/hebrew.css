@@ -842,6 +842,8 @@ td.t1_txt {
     color: #0088dd;
     margin-right: 1em;
     margin-left: 0.5em;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 .t1_phfn {
     vertical-align: super;
@@ -850,6 +852,8 @@ td.t1_txt {
     color: #aa6644;
     margin-left: -1.5em;
     margin-right: 0.5em;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_tb1 {
     width: 25px;
@@ -861,6 +865,8 @@ td.t1_tb1 {
     color: #0000ff;
     background-color: #ddddff;
     text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_tb10 {
     width: 15px;
@@ -872,6 +878,8 @@ td.t1_tb10 {
     color: #0000ff;
     background-color: #ddddff;
     text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_txttp {
     width: 35px;
@@ -880,6 +888,8 @@ td.t1_txttp {
     font-weight: bold;
     color: #33aa44;
     text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_ctp {
     width: 50px;
@@ -887,6 +897,8 @@ td.t1_ctp {
     font-size: small;
     font-family: Menlo, Courier New, Courier, monospace;
     text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 /* TAB2 */
 dl.lv2 {
@@ -912,22 +924,30 @@ dd.lv2 {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: #0088dd;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 .ctxt2 {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
     color: #0000bb;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 .ccode2 {
     color: #886644;
     font-size: small;
     font-family: Menlo, Courier New, Courier, monospace;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 .ctp2 {
     color: #dd8800;
     font-size: small;
     font-weight: bold;
     font-family: Verdana, Arial, sans-serif;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 .tb2 {
     font-size: small;
