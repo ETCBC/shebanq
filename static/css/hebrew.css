@@ -985,6 +985,10 @@ div.heb,td.heb,p.heb {
     direction: rtl;
     unicode-bidi: bidi-override;
 }
+div.pho,td.pho,p.pho {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
 .hebx {
     margin-left: 0em;
     margin-right: 0.5em;
