@@ -842,7 +842,8 @@ td.t1_txt {
     color: #0088dd;
     margin-right: 1em;
     margin-left: 0.5em;
-    unicode-bidi: plaintext;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 .t1_phfn {
     vertical-align: super;
@@ -851,7 +852,8 @@ td.t1_txt {
     color: #aa6644;
     margin-left: -1.5em;
     margin-right: 0.5em;
-    unicode-bidi: plaintext;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_tb1 {
     width: 25px;
