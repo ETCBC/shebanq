@@ -863,7 +863,8 @@ td.t1_tb1 {
     color: #0000ff;
     background-color: #ddddff;
     text-align: right;
-    unicode-bidi: plaintext;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_tb10 {
     width: 15px;
@@ -875,7 +876,8 @@ td.t1_tb10 {
     color: #0000ff;
     background-color: #ddddff;
     text-align: right;
-    unicode-bidi: plaintext;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_txttp {
     width: 35px;
@@ -884,7 +886,8 @@ td.t1_txttp {
     font-weight: bold;
     color: #33aa44;
     text-align: right;
-    unicode-bidi: plaintext;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 td.t1_ctp {
     width: 50px;
@@ -892,7 +895,8 @@ td.t1_ctp {
     font-size: small;
     font-family: Menlo, Courier New, Courier, monospace;
     text-align: right;
-    unicode-bidi: plaintext;
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 /* TAB2 */
 dl.lv2 {
