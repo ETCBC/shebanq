@@ -842,7 +842,7 @@ td.t1_txt {
     color: #0088dd;
     margin-right: 1em;
     margin-left: 0.5em;
-    direction: ltr;
+    unicode-bidi: plaintext;
 }
 .t1_phfn {
     vertical-align: super;
@@ -851,7 +851,7 @@ td.t1_txt {
     color: #aa6644;
     margin-left: -1.5em;
     margin-right: 0.5em;
-    direction: ltr;
+    unicode-bidi: plaintext;
 }
 td.t1_tb1 {
     width: 25px;
@@ -863,7 +863,7 @@ td.t1_tb1 {
     color: #0000ff;
     background-color: #ddddff;
     text-align: right;
-    direction: ltr;
+    unicode-bidi: plaintext;
 }
 td.t1_tb10 {
     width: 15px;
@@ -875,7 +875,7 @@ td.t1_tb10 {
     color: #0000ff;
     background-color: #ddddff;
     text-align: right;
-    direction: ltr;
+    unicode-bidi: plaintext;
 }
 td.t1_txttp {
     width: 35px;
@@ -884,7 +884,7 @@ td.t1_txttp {
     font-weight: bold;
     color: #33aa44;
     text-align: right;
-    direction: ltr;
+    unicode-bidi: plaintext;
 }
 td.t1_ctp {
     width: 50px;
@@ -892,7 +892,7 @@ td.t1_ctp {
     font-size: small;
     font-family: Menlo, Courier New, Courier, monospace;
     text-align: right;
-    direction: ltr;
+    unicode-bidi: plaintext;
 }
 /* TAB2 */
 dl.lv2 {
