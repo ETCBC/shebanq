@@ -1007,8 +1007,6 @@ div.txt_tb1,div.txt_tb2,div.txt_tb3 {
     border-bottom: 1px solid #bbbbbb;
     padding-bottom: 0.2em;
     padding-top: 0.2em;
-    direction: rtl;
-    unicode-bidi: bidi-override;
 }
 .txt_il {
     text-align: right;
