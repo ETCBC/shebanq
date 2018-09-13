@@ -975,7 +975,7 @@ dd.lv3 {
     line-height: 1.7;
     text-align: right;
 }
-div.heb {
+div.heb,td.heb,p.heb {
     direction: rtl;
     unicode-bidi: bidi-override;
 }
