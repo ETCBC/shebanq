@@ -66,7 +66,7 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
             {{if material.mr == 'm':
                 vclass = 'vrefi' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
             }}
-                <span class="{{=vclass}}">{{=XML(verse_control)}}
+                <span class="{{=vclass}}">&nbsp;{{=XML(verse_control)}}
             {{else:
                 vclass = 'vref' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
             }}

@@ -10,7 +10,8 @@ import xml.etree.ElementTree as ET
 from gluon import current
 from blang import booklangs, booknames
 
-replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
+# no longer needed because the browser now render Hebrew text properly
+# replace_set = {0x059C,0x05A8,0x05BD,0x05A9,0x0594,0x05A4,0x05B4,0x05B1,0x05A5,0x05A0,0x05A9,0x059D,0x0598,0x05B0,0x05BD,0x05B7,0x0595,0x059F,0x05B3,0x059B,0x05B2,0x05AD,0x05BB,0x05B6,0x05C4,0x05B8,0x0599,0x05AE,0x05A3,0x05C5,0x05B5,0x05A1,0x0591,0x0596,0x0593,0x05AF,0x05AB,0x05AC,0x059A,0x05A6,0x05BF,0x05AA,0x05A8,0x05A7,0x05A0,0x0597,0x059E,0x05BD}
 
 biblang = 'Hebrew'
 
@@ -732,7 +733,8 @@ dynamics()
     booklangs = json.dumps(booklangs[biblang]),
 )
 
-def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
+# no longer needed because the browser now render Hebrew text properly
+# def adapted_text(text, user_agent): return '' if text == '' else (text + ('&nbsp;' if ord(text[-1]) in replace_set else '')) if user_agent == 'Chrome' else text
 
 def h_esc(material, fill=True):
     material = material.replace(
@@ -897,7 +899,9 @@ order by word_number
         material = []
         for word in self.get_words():
             if self.tr == 'hb':
-                atext = adapted_text(word[2], user_agent)
+                # no longer needed because the browser now render Hebrew text properly
+                # atext = adapted_text(word[2], user_agent)
+                atext = word[2]
                 sep = word[3]
             elif self.tr == 'ph':
                 atext = word[4]
