@@ -48,12 +48,14 @@ versions = {
     },
 }
 
-db = DAL('mysql://{}:{}@{}/{}'.format(
+connStr = 'mysql://{}:{}@{}/{}'.format(
         config['shebanq_user'],
         config['shebanq_passwd'],
         config['shebanq_host'],
         'shebanq_web',
-    ),
+    )
+# print(connStr)
+db = DAL(connStr,
     migrate_enabled=False, # if session table already exists
     #migrate=False, # if session table does not yet exist
 )
