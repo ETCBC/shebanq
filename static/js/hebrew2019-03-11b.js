@@ -1635,18 +1635,10 @@ function MContent() { // the actual Hebrew content, either plain text or tabbed 
 
 // MATERIAL SETTINGS (for choosing between plain text and tabbed data)
 
-// https://etcbc.github.io/bhsa/features/hebrew/4b/features/comments/pdp.html
-var dvm = {}
-dvm['c'] = 'c'
-dvm['2017'] = dvm['c']
-dvm['4b'] = '4b/features/comments'
-dvm['4'] = dvm['4b']
-
 function adaptDocBaseVersion(targetString) {
     //var versionRep = (wb.version == '4' || wb.version == '4b') ? (wb.version+'/features/comments') : wb.version; 
     //return targetString+'/'+versionRep
-    var docVersion = dvm[wb.version] || dvm['c']
-    return targetString+'/'+docVersion
+    return targetString
 }
 function adaptDocName() {
     //return (wb.version == '4' || wb.version == '4b') ? '/0_overview.html' : '/0_home'; 
