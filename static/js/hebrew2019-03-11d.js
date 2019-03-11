@@ -1641,7 +1641,7 @@ function adaptDocBaseVersion(targetString) {
     return targetString
 }
 function adaptDocName() {
-    return '';
+    return '0_home';
 }
 
 
@@ -2834,7 +2834,7 @@ function special_links(d_md) {
     d_md = d_md.replace(/(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g, '$1b="$2" c="$3" v="$4" href="#" class="fa fw" $5>&#xf100;$6&#xf101;$7')
     d_md = d_md.replace(/(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g, '$1b="$2" c="$3" v="1" href="#" class="fa fw" $4>&#xf100;$5&#xf101;$6')
     d_md = d_md.replace(/(href=['"])shebanq:([^)\n\t '"]+)(['"])/g, '$1'+host+'$2$3 class="fa fw fa-bookmark" ')
-    d_md = d_md.replace(/(href=['"])feature:([^)\n\t '"]+)(['"])/g, '$1'+thisFeaturehost+'/$2.html$3 target="_blank" class="fa fw fa-file-text" ')
+    d_md = d_md.replace(/(href=['"])feature:([^)\n\t '"]+)(['"])/g, '$1'+thisFeaturehost+'/$2$3 target="_blank" class="fa fw fa-file-text" ')
     return special_links_m(d_md)
 }
 
@@ -2844,7 +2844,7 @@ function special_links_m(ntxt) {
     ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="$4" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
     ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g, '<a b="$2" c="$3" v="1" href="#" class="fa fw">&#xf100;$1&#xf101;</a>')
     ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(shebanq:([^)\n\t '"]+)\)/g, '<a href="'+host+'$2" class="fa fw">&#xf02e;$1</a>')
-    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(feature:([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+thisFeaturehost+'/$2.html" class="fa fw">$1&#xf15c;</a>')
+    ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(feature:([^)\n\t '"]+)\)/g, '<a target="_blank" href="'+thisFeaturehost+'/$2" class="fa fw">$1&#xf15c;</a>')
     ntxt = ntxt.replace(/\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g, '<a target="_blank" href="$2" class="fa fw">$1&#xf08e;</a>')
     return ntxt
 }

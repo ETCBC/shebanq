@@ -284,14 +284,14 @@ legend = '''
         <td class="il l_ht">
             <span class="il l_ht_ht">text</span>&nbsp;&nbsp;
             <input type="checkbox" id="ht_ht" name="ht_ht"/>
-                <a target="_blank" href="#" fname="g_word_utf8.html"><span class="l_ht_ht">דְּבַ֥ר</span></a>&nbsp;(qere) &nbsp;
+                <a target="_blank" href="#" fname="g_word_utf8"><span class="l_ht_ht">דְּבַ֥ר</span></a>&nbsp;(qere) &nbsp;
             <input type="checkbox" id="ht_hk" name="ht_hk"/>
-                <a target="_blank" href="#" fname="ketiv.html"><span class="l_ht_hk">כתב</span></a>&nbsp;(ketiv) &nbsp;
+                <a target="_blank" href="#" fname="ketiv"><span class="l_ht_hk">כתב</span></a>&nbsp;(ketiv) &nbsp;
         </td>
     </tr>
     <tr class="il l_pt">
         <td class="c l_pt"><input type="checkbox" id="pt" name="pt"/></td>
-        <td class="il l_pt"><a target="_blank" href="#" fname="phono.html"><span class="l_pt">text dāvˈār</span></a></td>
+        <td class="il l_pt"><a target="_blank" href="#" fname="phono"><span class="l_pt">text dāvˈār</span></a></td>
     </tr>
 
     <tr class="il l_hl">
@@ -299,47 +299,47 @@ legend = '''
         <td class="il l_hl">
             <span class="il l_hl_hlv">lexeme</span>&nbsp;&nbsp;
             <input type="checkbox" id="hl_hlv" name="hl_hlv"/>
-                <a target="_blank" href="#" fname="vocalized_lexeme.html"><span class="il l_hl_hlv">דָּבָר</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="vocalized_lexeme"><span class="il l_hl_hlv">דָּבָר</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="hl_hlc" name="hl_hlc"/>
-                <a target="_blank" href="#" fname="lex_utf8.html"><span class="il l_hl_hlc">דבר/</span></a>
+                <a target="_blank" href="#" fname="lex_utf8"><span class="il l_hl_hlc">דבר/</span></a>
         </td>
     </tr>
 
     <tr class="il l_tt">
         <td class="c l_tt"><input type="checkbox" id="tt" name="tt"/></td>
-        <td class="il l_tt"><a target="_blank" href="#" fname="g_word.html"><span class="l_tt">text</span></a></td>
+        <td class="il l_tt"><a target="_blank" href="#" fname="g_word"><span class="l_tt">text</span></a></td>
     </tr>
 
     <tr class="il l_tl">
         <td class="c l_tl"><input type="checkbox" id="tl" name="tl"/></td>
         <td class="il l_tl">
             <input type="checkbox" id="tl_tlv" name="tl_tlv"/>
-                <a target="_blank" href="#" fname="g_lex.html"><span class="il l_tl_tlv">lexeme-v</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="g_lex"><span class="il l_tl_tlv">lexeme-v</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="tl_tlc" name="tl_tlc"/>
-                <a target="_blank" href="#" fname="lex.html"><span class="il l_tl_tlc">lexeme-c</span></a>
+                <a target="_blank" href="#" fname="lex"><span class="il l_tl_tlc">lexeme-c</span></a>
         </td>
     </tr>
 
     <tr class="il l_gl">
         <td class="c l_gl"><input type="checkbox" id="gl" name="gl"/></td>
-        <td class="il l_gl"><a target="_blank" href="#" fname="gloss.html"><span class="l_gl">gloss</span></a></td>
+        <td class="il l_gl"><a target="_blank" href="#" fname="gloss"><span class="l_gl">gloss</span></a></td>
     </tr>
 
     <tr class="il l_wd1">
         <td class="c l_wd1"><input type="checkbox" id="wd1" name="wd1"/></td>
         <td class="il l_wd1">
             <input type="checkbox" id="wd1_nmtp" name="wd1_nmtp"/>
-                <a target="_blank" href="#" fname="nametype.html"><span class="il l_wd1_nmtp">nametype</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="nametype"><span class="il l_wd1_nmtp">nametype</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_subpos" name="wd1_subpos"/>
-                <a target="_blank" href="#" fname="ls.html"><span class="il l_wd1_subpos">lexical set</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="ls"><span class="il l_wd1_subpos">lexical set</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_pos" name="wd1_pos"/>
-                <a target="_blank" href="#" fname="sp.html"><span class="il l_wd1_pos">part-of-speech</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="sp"><span class="il l_wd1_pos">part-of-speech</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_pdp" name="wd1_pdp"/>
-                <a target="_blank" href="#" fname="pdp.html" title="phrase dependent part-of-speech"><span class="il l_wd1_pdp">pdp</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="pdp" title="phrase dependent part-of-speech"><span class="il l_wd1_pdp">pdp</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_lang" name="wd1_lang"/>
-                <a target="_blank" href="#" fname="language.html"><span class="il l_wd1_lang">language</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="language"><span class="il l_wd1_lang">language</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_n" name="wd1_n"/>
-                <a target="_blank" href="#" fname="monads.html"><span class="n l_wd1_n">monad#</span></a>
+                <a target="_blank" href="#" fname="monads"><span class="n l_wd1_n">monad#</span></a>
         </td>
     </tr>
 
@@ -347,17 +347,17 @@ legend = '''
         <td class="c l_wd2"><input type="checkbox" id="wd2" name="wd2"/></td>
         <td class="il l_wd2">
             <input type="checkbox" id="wd2_gender" name="wd2_gender"/>
-                <a target="_blank" href="#" fname="gn.html"><span class="il l_wd2_gender">gender</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="gn"><span class="il l_wd2_gender">gender</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd2_gnumber" name="wd2_gnumber"/>
-                <a target="_blank" href="#" fname="nu.html"><span class="il l_wd2_gnumber">number</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="nu"><span class="il l_wd2_gnumber">number</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd2_person" name="wd2_person"/>
-                <a target="_blank" href="#" fname="ps.html"><span class="il l_wd2_person">person</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="ps"><span class="il l_wd2_person">person</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd2_state" name="wd2_state"/>
-                <a target="_blank" href="#" fname="st.html"><span class="il l_wd2_state">state</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="st"><span class="il l_wd2_state">state</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd2_tense" name="wd2_tense"/>
-                <a target="_blank" href="#" fname="vt.html"><span class="il l_wd2_tense">tense</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="vt"><span class="il l_wd2_tense">tense</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd2_stem" name="wd2_stem"/>
-                <a target="_blank" href="#" fname="vs.html"><span class="il l_wd2_stem">verbal stem</span></a>
+                <a target="_blank" href="#" fname="vs"><span class="il l_wd2_stem">verbal stem</span></a>
         </td>
     </tr>
 
@@ -365,17 +365,17 @@ legend = '''
         <td class="c l_wd3"><input type="checkbox" id="wd3" name="wd3"/></td>
         <td class="il l_wd3">
             <input type="checkbox" id="wd3_nme" name="wd3_nme"/>
-                <a target="_blank" href="#" fname="nme.html"><span class="il l_wd3_nme">nme</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="nme"><span class="il l_wd3_nme">nme</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd3_pfm" name="wd3_pfm"/>
-                <a target="_blank" href="#" fname="pfm.html"><span class="il l_wd3_pfm">pfm</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="pfm"><span class="il l_wd3_pfm">pfm</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd3_prs" name="wd3_prs"/>
-                <a target="_blank" href="#" fname="prs.html"><span class="il l_wd3_prs">prs</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="prs"><span class="il l_wd3_prs">prs</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd3_uvf" name="wd3_uvf"/>
-                <a target="_blank" href="#" fname="uvf.html"><span class="il l_wd3_uvf">uvf</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="uvf"><span class="il l_wd3_uvf">uvf</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd3_vbe" name="wd3_vbe"/>
-                <a target="_blank" href="#" fname="vbe.html"><span class="il l_wd3_vbe">vbe</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="vbe"><span class="il l_wd3_vbe">vbe</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd3_vbs" name="wd3_vbs"/>
-                <a target="_blank" href="#" fname="vbs.html"><span class="il l_wd3_vbs">vbs</span></a>
+                <a target="_blank" href="#" fname="vbs"><span class="il l_wd3_vbs">vbs</span></a>
         </td>
     </tr>
 
@@ -383,13 +383,13 @@ legend = '''
         <td class="c l_wd4"><input type="checkbox" id="wd4" name="wd4"/></td>
         <td class="il l_wd4">
             <input type="checkbox" id="wd4_statfl" name="wd4_statfl"/>
-                <a target="_blank" href="#" fname="freq_lex.html"><span class="il l_wd4_statfl">freq(lex)</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="freq_lex"><span class="il l_wd4_statfl">freq(lex)</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd4_statrl" name="wd4_statrl"/>
-                <a target="_blank" href="#" fname="rank_lex.html"><span class="il l_wd4_statrl">rank(lex)</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="rank_lex"><span class="il l_wd4_statrl">rank(lex)</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd4_statfo" name="wd4_statfo"/>
-                <a target="_blank" href="#" fname="freq_occ.html"><span class="il l_wd4_statfo">freq(occ)</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="freq_occ"><span class="il l_wd4_statfo">freq(occ)</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd4_statro" name="wd4_statro"/>
-                <a target="_blank" href="#" fname="rank_occ.html"><span class="il l_wd4_statro">rank(occ)</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="rank_occ"><span class="il l_wd4_statro">rank(occ)</span></a>&nbsp;&nbsp;
         </td>
     </tr>
 
@@ -397,9 +397,9 @@ legend = '''
         <td class="c l_sp"><input type="checkbox" id="sp" name="sp"/></td>
         <td class="il l_sp">
             <input type="checkbox" id="sp_rela" name="sp_rela"/>
-                <a target="_blank" href="#" fname="rela.html"><span class="il l_sp_rela">rela</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="rela"><span class="il l_sp_rela">rela</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="sp_n" name="sp_n"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n l_sp_n">subphrase#</span></a>
+                <a target="_blank" href="#" fname="number"><span class="n l_sp_n">subphrase#</span></a>
         </td>
     </tr>
 
@@ -407,19 +407,19 @@ legend = '''
         <td class="c l_ph"><input type="checkbox" id="ph" name="ph"/></td>
         <td class="il l_ph">
             <input type="checkbox" id="ph_det" name="ph_det"/>
-                <a target="_blank" href="#" fname="det.html"><span class="il l_ph_det">determination</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="det"><span class="il l_ph_det">determination</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="ph_fun" name="ph_fun"/>
-                <a target="_blank" href="#" fname="function.html"><span class="il l_ph_fun">function</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="function"><span class="il l_ph_fun">function</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="ph_typ" name="ph_typ"/>
-                <a target="_blank" href="#" fname="typ.html"><span class="il l_ph_typ">type</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="typ"><span class="il l_ph_typ">type</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="ph_rela" name="ph_rela"/>
-                <a target="_blank" href="#" fname="rela.html"><span class="il l_ph_rela">rela</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="rela"><span class="il l_ph_rela">rela</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="ph_arela" name="ph_arela"/>
-                <a target="_blank" href="#" fname="rela.html"><span class="a il l_ph_arela">rela_a</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="rela"><span class="a il l_ph_arela">rela_a</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="ph_an" name="ph_an"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n a il l_ph_an">phrase_a#</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="number"><span class="n a il l_ph_an">phrase_a#</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="ph_n" name="ph_n"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n l_ph_n">phrase#</span></a>
+                <a target="_blank" href="#" fname="number"><span class="n l_ph_n">phrase#</span></a>
         </td>
     </tr>
 
@@ -427,21 +427,21 @@ legend = '''
         <td class="c l_cl"><input type="checkbox" id="cl" name="cl"/></td>
         <td class="il l_cl">
             <input type="checkbox" id="cl_txt" name="cl_txt"/>
-                <a target="_blank" href="#" fname="txt.html"><span class="il l_cl_txt">txt</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="txt"><span class="il l_cl_txt">txt</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_typ" name="cl_typ"/>
-                <a target="_blank" href="#" fname="typ.html"><span class="il l_cl_typ">type</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="typ"><span class="il l_cl_typ">type</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_rela" name="cl_rela"/>
-                <a target="_blank" href="#" fname="rela.html"><span class="il l_cl_rela">rela</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="rela"><span class="il l_cl_rela">rela</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_tab" name="cl_tab"/>
-                <a target="_blank" href="#" fname="tab.html"><span class="il a l_cl_tab">tab</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="tab"><span class="il a l_cl_tab">tab</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_par" name="cl_par"/>
-                <a target="_blank" href="#" fname="pargr.html"><span class="il a l_cl_par">pargr</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="pargr"><span class="il a l_cl_par">pargr</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_code" name="cl_code"/>
-                <a target="_blank" href="#" fname="code.html"><span class="il a l_cl_code">code</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="code"><span class="il a l_cl_code">code</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_an" name="cl_an"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n a il l_cl_an">clause_a#</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="number"><span class="n a il l_cl_an">clause_a#</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="cl_n" name="cl_n"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n l_cl_n">clause#</span></a>
+                <a target="_blank" href="#" fname="number"><span class="n l_cl_n">clause#</span></a>
         </td>
     </tr>
 
@@ -449,9 +449,9 @@ legend = '''
         <td class="c l_sn"><input type="checkbox" id="sn" name="sn"/></td>
         <td class="il l_sn">
             <input type="checkbox" id="sn_an" name="sn_an"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n a il l_sn_an">sentence_a#</span></a>&nbsp;&nbsp;
+                <a target="_blank" href="#" fname="number"><span class="n a il l_sn_an">sentence_a#</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="sn_n" name="sn_n"/>
-                <a target="_blank" href="#" fname="number.html"><span class="n l_sn_n">sentence#</span></a>
+                <a target="_blank" href="#" fname="number"><span class="n l_sn_n">sentence#</span></a>
         </td>
     </tr>
 </table>
@@ -1105,9 +1105,9 @@ def shebanq_repl(match): return u'''{}{}{}'''.format(
         match.group(2),
     )
 feature_pat = re.compile(u'''(href=['"])feature:([^)\n\t '"]+)(['"])''')
-def feature_repl(match): return u'''{}{}/{}.html{} {}'''.format(
+def feature_repl(match): return u'''{}{}/{}{} {}'''.format(
         match.group(1),
-        URL('static', 'docs/featuredoc/features/comments', host=True),
+        URL('static', 'docs/features', host=True),
         match.group(2),
         match.group(3),
         u''' target="_blank" ''',
