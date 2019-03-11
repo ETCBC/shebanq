@@ -1641,7 +1641,6 @@ function adaptDocBaseVersion(targetString) {
     return targetString
 }
 function adaptDocName() {
-    //return (wb.version == '4' || wb.version == '4b') ? '/0_overview.html' : '/0_home'
     return '';
 }
 
