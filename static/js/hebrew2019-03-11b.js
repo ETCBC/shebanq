@@ -1117,7 +1117,7 @@ function MSelect() { // for book and chapter selection
     this.apply = function() { // apply material viewsettings to current material
         var thisFeaturehost = adaptDocBaseVersion(featurehost)+adaptDocName()
         $('.source').attr('href', thisFeaturehost)
-        $('.source').attr('title', 'BHSA feature documentation for selected version ('+wb.version+')')
+        $('.source').attr('title', 'BHSA feature documentation')
         $('.mvradio').removeClass('ison')
         $('#version_'+wb.version).addClass('ison')
         var bol = $('#bol_lnk')
@@ -1641,8 +1641,8 @@ function adaptDocBaseVersion(targetString) {
     return targetString
 }
 function adaptDocName() {
-    //return (wb.version == '4' || wb.version == '4b') ? '/0_overview.html' : '/0_home'; 
-    return '/0_home';
+    //return (wb.version == '4' || wb.version == '4b') ? '/0_overview.html' : '/0_home'
+    return '';
 }
 
 
