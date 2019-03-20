@@ -1115,7 +1115,7 @@ function MSelect() { // for book and chapter selection
     this.book = new SelectBook()
     this.select = new SelectItems('chapter')
     this.apply = function() { // apply material viewsettings to current material
-        var thisFeaturehost = adaptDocBaseVersion(featurehost)+adaptDocName()
+        var thisFeaturehost = adaptDocBaseVersion(featurehost)+'/'+adaptDocName()
         $('.source').attr('href', thisFeaturehost)
         $('.source').attr('title', 'BHSA feature documentation')
         $('.mvradio').removeClass('ison')
