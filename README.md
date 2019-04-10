@@ -1,5 +1,6 @@
 ![shebanq2](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq_logo.png)
 ![shebanq](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq.png)
+[![sha](sha.png) Software Heritage Archive](https://archive.softwareheritage.org/browse/origin/https://github.com/etcbc/shebanq/)
 [![DOI](https://zenodo.org/badge/14582815.svg)](https://zenodo.org/badge/latestdoi/14582815)
 
 SHEBANQ
