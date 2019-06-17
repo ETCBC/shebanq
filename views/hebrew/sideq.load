@@ -68,6 +68,15 @@ statusmap = dict(
             <span class="ir"><a id="doneq" href="#" title="save changes and QUIT editing" class="ctrl fa fa-check fa-lg"></a></span>
             <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctrl fa fa-save fa-lg"></a>&nbsp;</span>
             <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctrl fa fa-cog fa-lg"></a>&nbsp;</span>
+            {{if v in {'4b', '4'}:}}
+                <span class="fa fa-exclamation" title="obsolete version with incomplete linguistic annotations. Version 2017 is recommended."/>
+            {{pass}}
+            {{if v == 'c':}}
+                <span class="fa fa-exclamation" title="this version is subject to change. For publishing, version 2017 is recommended."/>
+            {{pass}}
+            {{if v == '4b':}}
+                <a target="_blank" title="4b - 2017 upgrade guide" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/Upgrade2017">4b-2017 upgrade guide<span class="fa fa-info-circle ctrli"/></a>
+            {{pass}}
         {{pass}}
     {{else:}}
         <span class="qexer">{{='' if qresults == None else qresults}}</span>
