@@ -76,12 +76,12 @@ statusmap = dict(
         </p>
         {{if writable:}}
             {{if v in {'4b', '4'}:}}
-                <p><span class="fa fa-exclamation" title="obsolete version with incomplete linguistic annotations. Version 2017 is recommended."/>
+                <p style="background-color: orange;"><span class="fa fa-exclamation" title="obsolete version with incomplete linguistic annotations. Version 2017 is recommended."/>
                 Obsolete data version. Consider running this query in version 2017.
                 <a target="_blank" title="4(b) - 2017 upgrade guide" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/Upgrade2017">4(b)-2017 upgrade guide<span class="fa fa-info-circle ctrli"/></a></p>
             {{pass}}
             {{if v == 'c':}}
-                <p><span class="fa fa-exclamation" title="this version is subject to change. For publishing, version 2017 is recommended."/></p>
+                <p style="background-color: orange;"><span class="fa fa-exclamation" title="this version is subject to change. For publishing, version 2017 is recommended."/></p>
             {{pass}}
         {{pass}}
         <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
