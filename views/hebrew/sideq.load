@@ -69,11 +69,6 @@ statusmap = dict(
             <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctrl fa fa-save fa-lg"></a>&nbsp;</span>
             <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctrl fa fa-cog fa-lg"></a>&nbsp;</span>
         {{pass}}
-    {{else:}}
-        <span class="qexer">{{='' if qresults == None else qresults}}</span>
-        <span class="{{=qstatus}}">{{=statusmap[qstatus]}}</span>
-    {{pass}}
-        </p>
         {{if writable:}}
             {{if v in {'4b', '4'}:}}
                 <p style="background-color: orange;"><span class="fa fa-exclamation" title="obsolete version with incomplete linguistic annotations. Version 2017 is recommended."/>
@@ -81,9 +76,14 @@ statusmap = dict(
                 <a target="_blank" title="4(b) - 2017 upgrade guide" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/Upgrade2017">4(b)-2017 upgrade guide<span class="fa fa-info-circle ctrli"/></a></p>
             {{pass}}
             {{if v == 'c':}}
-                <p style="background-color: orange;"><span class="fa fa-exclamation" title="this version is subject to change. For publishing, version 2017 is recommended."/></p>
+                <p style="background-color: orange;"><span class="fa fa-exclamation"/>Data version c is subject to change. For publishing, version 2017 is recommended.</p>
             {{pass}}
         {{pass}}
+    {{else:}}
+        <span class="qexer">{{='' if qresults == None else qresults}}</span>
+        <span class="{{=qstatus}}">{{=statusmap[qstatus]}}</span>
+    {{pass}}
+        </p>
         <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
     {{if v == vr:}}
         <div id="dbmsg_qv"></div>
