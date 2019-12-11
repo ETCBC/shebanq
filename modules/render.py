@@ -861,7 +861,7 @@ order by word_number
             word_data = []
             for record in word_records:
                 word_data.append(dict(
-                    (x,h_esc(unicode(y), not (x.endswith('_border') or x in notfillfields))) for (x,y) in record.items(),
+                    ((x,h_esc(unicode(y), not (x.endswith('_border') or x in notfillfields))) for (x,y) in record.items()),
                 ))
         self.xml = xml
         self.word_data = word_data

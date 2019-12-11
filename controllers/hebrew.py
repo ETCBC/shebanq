@@ -3,7 +3,10 @@
 
 #from gluon.custom_import import track_changes; track_changes(True)
 import collections, json, datetime
-from urlparse import urlparse, urlunparse
+# python2
+# from urlparse import urlparse, urlunparse
+# python3
+from urllib.parse import urlparse, urlunparse
 from markdown import markdown
 
 from render import Verses, Verse, verse_simple, Viewsettings, \
