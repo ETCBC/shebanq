@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
-#from gluon.custom_import import track_changes; track_changes(True)
+from gluon.custom_import import track_changes; track_changes(True)
 import collections, json, datetime
 # python2
-# from urlparse import urlparse, urlunparse
+from urlparse import urlparse, urlunparse
 # python3
-from urllib.parse import urlparse, urlunparse
+#from urllib.parse import urlparse, urlunparse
 from markdown import markdown
 
 from render import Verses, Verse, verse_simple, Viewsettings, \

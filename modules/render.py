@@ -67,7 +67,7 @@ tab_views = len(tab_info)
 next_tp = dict(('txt_p' if i == 0 else 'txt_tb{}'.format(i), 'txt_tb{}'.format(i+1) if i < tab_views else 'txt_p') for i in range(tab_views+1))
 
 tr_views = len(tr_info)
-# next_tr is a mapping from a script type to the next: it goes hb => ph => hb 
+# next_tr is a mapping from a script type to the next: it goes hb => ph => hb
 next_tr = dict((tr_info[i], tr_info[(i+1)%2]) for i in range(tr_views))
 
 nt_statorder = 'o*+?-!'
