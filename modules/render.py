@@ -562,6 +562,8 @@ def get_request_val(group, qw, f, default=True):
         x = current.request.vars.get('id', current.request.vars.get('iid', None))
     else:
         x = current.request.vars.get(rvar, None)
+        if rvar == 'extra':
+            x = unicode(x, encoding='utf8')
     if type(x) is list: x = x[0] # this occurs when the same variable occurs multiple times in the request/querystring
     fref = '0' if group == 'colormap' else f
     d = settings[group][qw][fref] if default else None

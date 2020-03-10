@@ -1,4 +1,4 @@
 {{
     response.headers['Content-Type'] = 'text/csv'
-    response.headers['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+    response.headers['Content-Disposition'] = 'attachment; filename="{}"'.format(filename.encode('ascii', 'replace'))
 }}{{=XML(data)}}

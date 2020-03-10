@@ -2484,6 +2484,10 @@ where anchor BETWEEN {chapter_first_m} AND {chapter_last_m}
          chapter_first_m=chapter['first_m'],
     )) if vr in passage_dbs else []
 
+def to_ascii(x):
+    return x.encode('ascii', 'replace')
+
+
 def item_access_read(iidrep=get_request_val('material', '', 'iid')):
     mr = get_request_val('material', '', 'mr')
     qw = get_request_val('material', '', 'qw')
