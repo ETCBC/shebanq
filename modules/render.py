@@ -4,6 +4,7 @@ import collections
 import json
 import urllib
 import re
+from base64 import b64decode, b64encode
 import xml.etree.ElementTree as ET
 
 from gluon import current
@@ -655,9 +656,7 @@ text_tpl = """<table class="il c">
 def iid_encode(qw, idpart, kw=None, sep="|"):
     if qw == "n":
         return (
-            ("{}|{}".format(idpart, kw))
-            .encode("utf8")
-            .encode("base64")
+            b64encode(("{}|{}".format(idpart, kw)).encode("utf8")).decode("utf8")
             .replace("\n", "")
             .replace("=", "_")
         )
@@ -674,7 +673,9 @@ def iid_decode(qw, iidrep, sep="|", rsep=None):
     if qw == "n":
         try:
             (idpart, kw) = (
-                iidrep.replace("_", "=").decode("base64").decode("utf8").split(sep, 1)
+                b64decode(iidrep.replace("_", "=").encode("utf8"))
+                .decode("utf8")
+                .split(sep, 1)
             )
         except Exception:
             (idpart, kw) = (None, None)

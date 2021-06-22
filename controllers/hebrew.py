@@ -907,7 +907,7 @@ def csv(
             result.append(
                 (",".join(trow)).replace("\n", " ").replace("\r", " ")
             )  # no newlines in fields, it is impractical
-    return "\n".join(result)
+    return ("\ufeff" + "\n".join(result)).encode("utf_16_le")
 
 
 def item():
@@ -1913,6 +1913,8 @@ query.name
             "v": [4 for v in rversion_order],
         }
     for (qid, vr, qispub, qpub, qmod, qexe) in pqueryx:
+        if vr not in rversion_index:
+            continue
         qinfo = pqueries[qid]
         qexestatus = None
         if qexe:
@@ -2091,6 +2093,7 @@ select name, id from project order by name
                                         "q", qid, v, qversions[rversion_index[v]]
                                     )
                                     for v in rversion_order
+                                    if v in rversion_index
                                 ),
                                 "qmy" if qown else "",
                                 "" if qshared else "qpriv",
@@ -2155,6 +2158,8 @@ shebanq_web.auth_user.first_name, note.keywords
     rversion_order = [v for v in version_order if versions[v]["present"]]
     rversion_index = dict((x[1], x[0]) for x in enumerate(rversion_order))
     for (amount, nvr, kws, uname, uid) in pnote:
+        if nvr not in rversion_index:
+            continue
         for kw in set(kws.strip().split()):
             nkid = iid_encode("n", uid, kw=kw)
             if nkid not in pnotes:
@@ -2203,6 +2208,7 @@ shebanq_web.auth_user.first_name, note.keywords
                         " ".join(
                             formatversion("n", nkid, v, nversions[rversion_index[v]])
                             for v in rversion_order
+                            if v in rversion_index
                         ),
                         nkid,
                         h_esc(nname),
