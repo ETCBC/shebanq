@@ -1,0 +1,3 @@
+[flake8]
+max-line-length = 88
+builtins = auth,cache,db,DAL,CONTINUOUS,GQLDB,IS_NOT_EMPTY,IS_SLUG,LOAD,note_db,passage_dbs,redirect,request,response,session,SQLDB,SQLFORM,version_order,versions,uid,A,B,DIV,FORM,HTTP,IMG,INPUT,LI,P,PRE,SPAN,T,TABLE,TAG,TD,TR,UL,URL

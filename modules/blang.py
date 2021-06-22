@@ -1,39 +1,39 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
 
 booklangs = {
-'Hebrew': dict(
-    la=(u'latin', u'Latina'),
-    en=(u'english', u'English'),
-    fr=(u'french', u'Français'),
-    de=(u'german', u'Deutsch'),
-    nl=(u'dutch', u'Nederlands'),
-    el=(u'greek', u'Ελληνικά'),
-    he=(u'hebrew', u'עברית'),
-    ru=(u'russian', u'Русский'),
-    es=(u'spanish', u'Español'),
-    ko=(u'korean', u'한국어'),
-    sw=(u'swahili', u'Kiswahili'),
-    tr=(u'turkish', u'Türkçe'),
-    id=(u'indonesian', u'Bahasa Indonesia'),
-    ar=(u'arabic', u'العَرَبِية'),
-    zh=(u'chinese', u'中文'),
-    hi=(u'hindi', u'हिन्दी'),
-    fa=(u'farsi', u'فارسی'),
-    pt=(u'portuguese', u'Português'),
-    syc=(u'syriac', u'ܠܫܢܐ ܣܘܪܝܝܐ'),
-    da=(u'danish', u'Dansk'),
-    am=(u'amharic', u'ኣማርኛ'),
-    bn=(u'bengali', u'বাংলা'),
-    ja=(u'japanese', u'日本語'),
-    pa=(u'punjabi', u'ਪੰਜਾਬੀ'),
-    ur=(u'urdu', u'اُردُو'),
-    yo=(u'yoruba', u'èdè Yorùbá'),
-),
+    "Hebrew": dict(
+        la=("latin", "Latina"),
+        en=("english", "English"),
+        fr=("french", "Français"),
+        de=("german", "Deutsch"),
+        nl=("dutch", "Nederlands"),
+        el=("greek", "Ελληνικά"),
+        he=("hebrew", "עברית"),
+        ru=("russian", "Русский"),
+        es=("spanish", "Español"),
+        ko=("korean", "한국어"),
+        sw=("swahili", "Kiswahili"),
+        tr=("turkish", "Türkçe"),
+        id=("indonesian", "Bahasa Indonesia"),
+        ar=("arabic", "العَرَبِية"),
+        zh=("chinese", "中文"),
+        hi=("hindi", "हिन्दी"),
+        fa=("farsi", "فارسی"),
+        pt=("portuguese", "Português"),
+        syc=("syriac", "ܠܫܢܐ ܣܘܪܝܝܐ"),
+        da=("danish", "Dansk"),
+        am=("amharic", "ኣማርኛ"),
+        bn=("bengali", "বাংলা"),
+        ja=("japanese", "日本語"),
+        pa=("punjabi", "ਪੰਜਾਬੀ"),
+        ur=("urdu", "اُردُو"),
+        yo=("yoruba", "èdè Yorùbá"),
+    ),
 }
 booknames = {
-'Hebrew': dict(
-    la=tuple(u'''
+    "Hebrew": dict(
+        la=tuple(
+            """
             Genesis
             Exodus
             Leviticus
@@ -73,8 +73,10 @@ booknames = {
             Nehemia
             Chronica_I
             Chronica_II
-    '''.strip().split()),
-    en=tuple(u'''
+    """.strip().split()
+        ),
+        en=tuple(
+            """
             Genesis
             Exodus
             Leviticus
@@ -114,8 +116,10 @@ booknames = {
             Nehemiah
             1_Chronicles
             2_Chronicles
-    '''.strip().split()),
-    nl=tuple(u'''
+    """.strip().split()
+        ),
+        nl=tuple(
+            """
             Genesis
             Exodus
             Leviticus
@@ -155,8 +159,10 @@ booknames = {
             Nehemia
             1_Kronieken
             2_Kronieken
-        '''.strip().split()),
-    de=tuple(u'''
+        """.strip().split()
+        ),
+        de=tuple(
+            """
             Genesis
             Exodus
             Levitikus
@@ -196,8 +202,10 @@ booknames = {
             Nehemia
             1_Chronik
             2_Chronik
-        '''.strip().split()),
-    fr=tuple(u'''
+        """.strip().split()
+        ),
+        fr=tuple(
+            """
             Genèse
             Exode
             Lévitique
@@ -237,8 +245,10 @@ booknames = {
             Néhémie
             1_Chroniques
             2_Chroniques
-        '''.strip().split()),
-    el=tuple(u'''
+        """.strip().split()
+        ),
+        el=tuple(
+            """
             Γένεση
             Έξοδος
             Λευιτικό
@@ -246,7 +256,7 @@ booknames = {
             Δευτερονόμιο
             Ιησούς
             Κριταί
-            Σαμουήλ_A'                    
+            Σαμουήλ_A'
             Σαμουήλ_Β'
             Βασιλείς_A'
             Βασιλείς_Β'
@@ -278,8 +288,10 @@ booknames = {
             Νεεμίας
             Χρονικά_Α'
             Χρονικά_Β'
-        '''.strip().split()),
-    he=tuple(u'''
+        """.strip().split()
+        ),
+        he=tuple(
+            """
             בראשית
             שמות
             ויקרא
@@ -319,8 +331,10 @@ booknames = {
             נחמיה
             דברי_הימים_א
             דברי_הימים_ב
-        '''.strip().split()),
-    ru=tuple(u'''
+        """.strip().split()
+        ),
+        ru=tuple(
+            """
             Бытия
             Исход
             Левит
@@ -360,8 +374,10 @@ booknames = {
             Неемия
             1-я_Паралипоменон
             2-я_Паралипоменон
-    '''.strip().split()),
-    es=tuple(u'''
+    """.strip().split()
+        ),
+        es=tuple(
+            """
             Génesis
             Éxodo
             Levítico
@@ -401,8 +417,10 @@ booknames = {
             Nehemías
             1_Crónicas
             2_Crónicas
-    '''.strip().split()),
-    ko=tuple(u'''
+    """.strip().split()
+        ),
+        ko=tuple(
+            """
             창세기
             출애굽기
             레위기
@@ -441,9 +459,11 @@ booknames = {
             에스라
             느헤미야
             역대상
-            역대하 
-    '''.strip().split()),
-    sw=tuple(u'''
+            역대하
+    """.strip().split()
+        ),
+        sw=tuple(
+            """
             Mwanzo
             Kutoka
             Mambo_ya_Walawi
@@ -483,8 +503,10 @@ booknames = {
             Nehemia
             1_Mambo_ya_Nyakati
             2_Mambo_ya_Nyakati
-    '''.strip().split()),
-    tr=tuple(u'''
+    """.strip().split()
+        ),
+        tr=tuple(
+            """
             Yaratılış
             Mısır'dan_Çıkış
             Levililer
@@ -524,8 +546,10 @@ booknames = {
             Nehemya
             1_Tarihler
             2_Tarihler
-    '''.strip().split()),
-    id=tuple(u'''
+    """.strip().split()
+        ),
+        id=tuple(
+            """
             Kejadian
             Keluaran
             Imamat
@@ -565,8 +589,10 @@ booknames = {
             Nehemia
             1_Tawarikh
             2_Tawarikh
-    '''.strip().split()),
-    ar=tuple(u'''
+    """.strip().split()
+        ),
+        ar=tuple(
+            """
             تكوين
             خروج
             لاويين
@@ -606,8 +632,10 @@ booknames = {
             نحميا
             1_اخبار
             2_اخبار
-    '''.strip().split()),
-    zh=tuple(u'''
+    """.strip().split()
+        ),
+        zh=tuple(
+            """
             创世记
             出埃及记
             利未记
@@ -647,8 +675,10 @@ booknames = {
             尼希米记
             历代志上
             历代志下
-    '''.strip().split()),
-    hi=tuple(u'''
+    """.strip().split()
+        ),
+        hi=tuple(
+            """
             उत्पाति
             निर्गमन
             लैव्यव्यवस्थ
@@ -688,8 +718,10 @@ booknames = {
             नहेम्याह
             1_इतिहास
             2_इतिहास
-    '''.strip().split()),
-    fa=tuple(u'''
+    """.strip().split()
+        ),
+        fa=tuple(
+            """
             پيدايش
             خروج
             لاويان
@@ -729,8 +761,10 @@ booknames = {
             نحميا
             اول_تواريخ_ايام
             دوم_تواريخ
-    '''.strip().split()),
-    pt=tuple(u'''
+    """.strip().split()
+        ),
+        pt=tuple(
+            """
             Gênesis
             Êxodo
             Levítico
@@ -770,8 +804,10 @@ booknames = {
             Neemias
             1_Crônicas
             2_Crônicas
-    '''.strip().split()),
-    syc=tuple(u'''
+    """.strip().split()
+        ),
+        syc=tuple(
+            """
             ܒܪܝܬܐ
             ܡܦܩܢܐ
             ܟܗܢ̈ܐ
@@ -811,8 +847,10 @@ booknames = {
             ܢܚܡܝܐ
             ܐ_ܒܪܝܡܝܢ
             ܒ_ܒܪܝܡܝܢ
-    '''.strip().split()),
-    da=tuple(u'''
+    """.strip().split()
+        ),
+        da=tuple(
+            """
             1.Mosebog
             2.Mosebog
             3.Mosebog
@@ -852,8 +890,10 @@ booknames = {
             Nehemias
             1.Krønikebog
             2.Krønikebog
-    '''.strip().split()),
-    am=tuple(u'''
+    """.strip().split()
+        ),
+        am=tuple(
+            """
             ኦሪት_ዘፍጥረት
             ኦሪት_ዘጸአት
             ኦሪት_ዘሌዋውያን
@@ -893,8 +933,10 @@ booknames = {
             መጽሐፈ_ነህምያ።
             መጽሐፈ_ዜና_መዋዕል_ቀዳማዊ።
             መጽሐፈ_ዜና_መዋዕል_ካልዕ።
-    '''.strip().split()),
-    bn=tuple(u'''
+    """.strip().split()
+        ),
+        bn=tuple(
+            """
             আদিপুস্তক
             যাত্রাপুস্তক
             লেবীয়_পুস্তক
@@ -934,8 +976,10 @@ booknames = {
             নেহেমিয়া
             বংশাবলি_১
             বংশাবলি_২
-    '''.strip().split()),
-    ja=tuple(u'''
+    """.strip().split()
+        ),
+        ja=tuple(
+            """
             創世記
             出エジプト記
             レビ記
@@ -975,8 +1019,10 @@ booknames = {
             ネヘミア記
             歴代誌第一
             歴代誌第二
-    '''.strip().split()),
-    pa=tuple(u'''
+    """.strip().split()
+        ),
+        pa=tuple(
+            """
             ਉਤਪਤ
             ਕੂਚ
             ਲੇਵੀਆਂ_ਦੀ_ਪੋਥੀ
@@ -1016,8 +1062,10 @@ booknames = {
             ਨਹਮਯਾਹ
             1_ਇਤਹਾਸ
             2_ਇਤਹਾਸ
-    '''.strip().split()),
-    ur=tuple(u'''
+    """.strip().split()
+        ),
+        ur=tuple(
+            """
             پیدائش
             خروج
             احبار
@@ -1057,8 +1105,10 @@ booknames = {
             نحمیاہ
             اوّل_تواریخ
             دوم_تو_اریخ
-        '''.strip().split()),
-    yo=tuple(u'''
+        """.strip().split()
+        ),
+        yo=tuple(
+            """
             Genesisi
             Eksodu
             Lefitiku
@@ -1098,6 +1148,7 @@ booknames = {
             Nehemiah
             Kronika_Kinni
             Kronika_Keji
-        '''.strip().split()),
-),
+        """.strip().split()
+        ),
+    ),
 }
