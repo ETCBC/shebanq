@@ -868,13 +868,14 @@ def get_fields(tp, qw=qw):
 
 
 class Viewsettings:
-    def __init__(self, versions, CONTINUOUS):
+    def __init__(self, versions):
         self.state = collections.defaultdict(
             lambda: collections.defaultdict(lambda: {})
         )
         self.pref = get_request_val("rest", "", "pref")
-        self.versions = versions
-        self.CONTINUOUS = CONTINUOUS
+        self.versions = {
+            k: v for (k, v) in versions.items() if versions[k]["present"] is not None
+        }
         for group in settings:
             self.state[group] = {}
             for qw in settings[group]:
@@ -946,7 +947,6 @@ var version = '{version}'
     def dynamics(self):
         return """
 var versions = {versions}
-var CONTINUOUS = {CONTINUOUS}
 var vcolors = {vcolors}
 var ccolors = {ccolors}
 var vdefaultcolors = {vdefaultcolors}
@@ -981,7 +981,6 @@ dynamics()
             versions=json.dumps(
                 dict((v, self.versions[v]["present"]) for v in self.versions)
             ),
-            CONTINUOUS='"{}"'.format(self.CONTINUOUS),
             tp_labels=json.dumps(tp_labels),
             tr_labels=json.dumps(tr_labels),
             tab_info=json.dumps(tab_info),

@@ -1,0 +1,129 @@
+# Application workflow:
+
+There is a skeleton page, which has a main area and a left sidebar.
+The skeleton is filled with static html, with certain divs in it that
+will be filled on demand by means of ajax calls.
+
+An actual page is composed by selectively showing and hiding parts of the skeleton and by filling
+divs through ajax calls.
+
+A page is represented by a javascript object with data and methods.
+
+There are two kinds of pages:
+
+*   m: material (showing verses of a chapter)
+*   r: results  (showing verses of a result page)
+
+An m-page has different sidebars than an r-page.
+
+The skeleton has the following parts:
+
+*   Sidebar with
+    *   m-w: viewsettings plus a list of word items
+    *   m-q: viewsettings plus a list of query items
+    *   r-w: viewsettings plus the metadata of an individual word
+    *   r-q: viewsettings plus the metadata of an individual query
+
+*   Main part with
+    *   heading
+    *   material selector (m: book/chapter, r: resultpages)
+    *   settings (text/data selector)
+    *   material (either the verses of a passage or the verses of the resultpage of a query or word)
+    *   share link
+
+There is a viewstate, an object that maintains the viewsettings that can be modified by the user.
+The viewstate object is a member of the page object.
+Viewstate is divided in groups, each group is serialized to a cookie.
+Viewstate is initialized from the querystring and/or the cookies.
+When querystring and cookie conflict, the querystring wins.
+Whenever a user clicks, the viewstate is changed and immediately saved in the corresponding cookie.
+
+Depending on user actions, parts of the skeleton are loaded with HTML, through AJAX calls with methods that
+perform actions when the data has been loaded.
+
+The application goes through the following stages:
+
+*   **init functions**
+    Decorate the fixed parts of the skeleton with jquery actions.
+    Do not change the viewstate, do not look at the viewstate.
+
+*   **click functions (events)**
+    Change the viewstate in response to user actions.
+
+*   **apply functions**
+    Look at the viewstate and adapt the display of the page, this might entail ajax actions.
+    Do not change the viewstate.
+
+*   **process functions**
+    Very much like init functions, but only for content that has been loaded through later AJAX calls.
+
+The cookies are:
+
+*   **material**
+    the current book, chapter, result page, item id,
+    qw (q=query, w=word, tells whether the item in question is a query or a word),
+    mr (m=material, r=result of query or word search, corresponds to the two kinds of pages),
+    tp (text-or-tab setting: whether the material is shown as
+       plain text (txt_p) or as tabbed text in several versions (txt_tb1, txt_tb2, etc.)
+       there is also txt_il for interlinear data, but that is on demand per verse
+    tr (script or phonetic setting: whether the hebrew text is rendered in hebrew script or phonetically)
+    lang (language choice for the book names)
+
+*   **hebrewdata**
+    a list of switches controlling which fields are shown in the interlinear data view
+
+*   **highlights**
+    groups of settings controlling the highlight colors
+    group q: for queries
+    group w: for words
+
+    Both groups contain the same settings:
+    active (which is the active setting: hloff, hlone, hlcustom, hlmany)
+    sel_one (the color if all queries/words are highlighted with one color)
+    get (whether or not to retrieve the side list of relevant items)
+
+*   **colormap**
+    mappings between queries and colors (q) and between words and colors (w),
+    based on the id of queries and words
+
+## Window layout
+
+All variable content is placed in divs with fixed height and scroll bars.
+So the contents of sidebars and main area can be scrolled independently.
+So the main parts of the page are always in view, at fairly stable places.
+
+When editing a query it is important to make room for the query body.
+When editing is happening, the sidebar will be widened at the expense of the main area.
+
+Plans for the near future:
+
+*   **Done** Load data view per verse, not per chapter. A click on the verse number should be the trigger.
+
+*   **Done** Make SHEBANQ able to deal with several versions of the data.
+    Queries will get an execution record per version of the data.
+
+Plans for distant future:
+
+I. integrate the Queries page with this page.
+
+The skeleton will have 4 columns, of which 2 or three are visible at a given time:
+
+A: filter and level controls for the queries tree
+B: the queries tree itself
+C: an individual query, possibly in edit mode, or an individual word
+D: material column: the verses of a chapter, or a page with occurrences of a word, or a page with query results
+
+Then the hebrew.js and the queries.js can be integrated, redundant code can be erased, ajax messages can be done more consistently.
+
+II. replace all usage of cookies by local storage.
+
+The queries page already does not use cookies but local storage.
+Now the parsing of the request.vars occurs server side in Python, maybe it is better to defer all checks to the browser.
+The browser can then keep all view settings to its own, without any need to communicate view settings with the server.
+
+III. send all data from server to browser in JSON form.
+
+The browser generates HTML out of the JSON.
+I am not sure whether this is worth it.
+On the one hand it means smaller data transfers (but they are already fast enough), on the other hand, template code in python is
+much more manageable than in Javascript.

@@ -96,7 +96,7 @@ statusmap = dict(
             <tr>
                 <td><span class="flabel">published</span></td>
                 <td>{{
-                    if writable and v != CONTINUOUS:
+                    if writable:
                     }}<input qid="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_pub else ''}}/>{{pass}}<span
                         {{=XML('id="is_pub_ro"') if writable else ''}}
                         class="fa fa-{{='check' if is_pub else 'close'}}"

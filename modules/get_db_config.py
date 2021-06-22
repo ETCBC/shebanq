@@ -5,6 +5,7 @@ emdros_versions = [
     'emdros 3.4.0',
     '3.4.1.pre12',
     'emdros 3.5.3',
+    'emdros 3.7.3',
 ]
 # copied manually from /opt/emdros/include/emdros/version-emdros.h
 config = dict(shebanq_user='shebanq')

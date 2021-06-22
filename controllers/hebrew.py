@@ -95,7 +95,7 @@ def text():
         )
 
     return dict(
-        viewsettings=Viewsettings(versions, CONTINUOUS),
+        viewsettings=Viewsettings(versions),
         versions=versions,
         colorpicker=colorpicker,
         legend=legend,
@@ -594,9 +594,9 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
             extrafields.append(",\n\tshared_on = '{}'".format(request.utcnow))
         if not shared and o_shared:
             extrafields.append(",\n\tshared_on = null")
-        if pub and not o_pub and vr != CONTINUOUS:
+        if pub and not o_pub:
             extrafields.append(",\n\tpublished_on = '{}'".format(request.utcnow))
-        if (not pub and o_pub) or vr == CONTINUOUS:
+        if (not pub and o_pub):
             extrafields.append(",\n\tpublished_on = null")
         shared = "'T'" if shared else "null"
         pub = "'T'" if pub else "null"
@@ -653,8 +653,8 @@ values
             request.utcnow,
             "'T'" if shared else "null",
             "'{}'".format(request.utcnow) if shared else "null",
-            "'T'" if pub and vr != CONTINUOUS else "null",
-            "'{}'".format(request.utcnow) if pub and vr != CONTINUOUS else "null",
+            "'T'" if pub else "null",
+            "'{}'".format(request.utcnow) if pub else "null",
             "o" if stat not in {"o", "*", "+", "?", "-", "!"} else stat,
             kw.replace("'", "''"),
             ntxt.replace("'", "''"),
@@ -1189,7 +1189,7 @@ def siden():
 
 def words():
     session.forget(response)
-    viewsettings = Viewsettings(versions, CONTINUOUS)
+    viewsettings = Viewsettings(versions)
     vr = get_request_val("material", "", "version", default=False)
     if not vr:
         vr = viewsettings.theversion()
@@ -1377,8 +1377,6 @@ insert into note
                 "{}:{}".format(i + 1, is_published)
             )
             continue
-        if is_published == "T" and version == CONTINUOUS:
-            is_published = ""
         if status not in nt_statclass:
             nerrors += 1
             errors.setdefault("unrecognized status", []).append(
@@ -2798,8 +2796,6 @@ update {} set{} where id = {}
 def upd_published(myid, vr, qid, valsql, msgs):
     mod_date = None
     mod_date_fld = "published_on"
-    if vr == CONTINUOUS:
-        return (mod_date_fld, NULLDT)
     table = "query_exe"
     fname = "is_published"
     clear_cache(r"^items_q_{}_".format(vr))
@@ -2885,18 +2881,6 @@ from query_exe where query_id = {} and version = '{}'
                         (
                             "error",
                             "You can only publish if the query results are up to date",
-                        )
-                    )
-                    break
-                if vr == CONTINUOUS:
-                    msgs.append(
-                        (
-                            "error",
-                            (
-                                "You can only publish if the query results"
-                                " on a fixed version of the data."
-                                ' Version "{}" may change.'
-                            ).format(CONTINUOUS),
                         )
                     )
                     break

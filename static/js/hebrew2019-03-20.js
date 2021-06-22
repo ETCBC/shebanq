@@ -890,14 +890,8 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
                 html += '<td class="nt_user" colspan="3" uid="'+uid+'">'+escapeHTML(user)+'</td>'
                 html += '<td class="nt_pub">'
                 html += '    <a class="ctrli pradio fa fa-share-alt fa-fw '+sharedc+'" href="#" title="shared?"></a>'
-                if (vr == CONTINUOUS) {
-                  html += '<span>'+vr+'</span>'
-                  html += '    <span class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" title="published?"></span>'
-                }
-                else {
-                  html += '<span>'+vr+'</span>'
-                  html += '    <a class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" href="#" title="published?"></a>'
-                }
+                html += '<span>'+vr+'</span>'
+                html += '    <a class="ctrli pradio fa fa-quote-right fa-fw '+pubc+'" href="#" title="published?"></a>'
             }
             html += '</td></tr>'
         }
@@ -2104,12 +2098,10 @@ function SContent(mr, qw) { // the contents of an individual sidebar
                     descm.addClass('desc_dia')
                     descm.css('height', half_standard_height)
                 })
-                if (vr != CONTINUOUS) {
-                  $('#is_pub_c').click(function(e) {
-                      var val = $(this).prop('checked')
-                      that.sendval(q.versions[vr], $(this), val, vr, $(this).attr('qid'), 'is_published', val?'T':'')
-                  })
-                }
+                $('#is_pub_c').click(function(e) {
+                    var val = $(this).prop('checked')
+                    that.sendval(q.versions[vr], $(this), val, vr, $(this).attr('qid'), 'is_published', val?'T':'')
+                })
                 $('#is_shared_c').click(function(e) {
                     var val = $(this).prop('checked')
                     that.sendval(q, $(this), val, vr, $(this).attr('qid'), 'is_shared', val?'T':'')

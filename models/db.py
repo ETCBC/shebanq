@@ -11,9 +11,7 @@ dc_u = config["shebanq_user"]
 dc_p = config["shebanq_passwd"]
 dc_h = config["shebanq_host"]
 
-version_order = """c 2017 4b 4""".split()
-
-CONTINUOUS = "c"
+version_order = """2021 c 2017 4b 4""".split()
 
 versions = {
     "4": {
@@ -21,46 +19,52 @@ versions = {
         "date": "2014-07-14",
         "desc": "First online version of the BHSA database in SHEBANQ",
         "notes": (
-            "Fixed version. The data for this version is a snapshot."
-            "The underlying data is in the ETCBC/BHSA Github repo."
+            "Several unfinished features"
         ),
         "present": True,
-        "fixed": True,
     },
     "4b": {
         "name": "BHSA_4b",
         "date": "2015-11-03",
         "desc": "Second online version of the BHSA database",
         "notes": (
-            "Fixed version. The data for this version is a snapshot."
-            "The underlying data is in the ETCBC/BHSA Github repo."
+            "Fairly complete features"
         ),
         "present": True,
-        "fixed": True,
     },
     "2017": {
         "name": "BHSA_2017",
         "date": "2017-10-06",
         "desc": "Third online version of the BHSA database in SHEBANQ",
         "notes": (
-            "Fixed version. The data for this version is a snapshot."
-            "The underlying data is in the ETCBC/BHSA Github repo."
+            "Many corrections due to reanalysis of certain features"
         ),
         "present": True,
-        "fixed": True,
+    },
+    "2021": {
+        "name": "BHSA_2021",
+        "date": "2017-06-30",
+        "desc": "Fourth online version of the BHSA database in SHEBANQ",
+        "notes": (
+            "More updates"
+        ),
+        "present": False,
     },
     "c": {
         "name": "BHSA_c",
         "date": "2018-08-08",
-        "desc": "Current online version of the BHSA database in SHEBANQ",
+        "desc": "Legacy online version of the BHSA database in SHEBANQ",
         "notes": (
-            "Current version. May receive occasional updates."
-            "The underlying data is in the ETCBC/BHSA Github repo."
+            "Unstable version. Has received occasional updates."
         ),
-        "present": True,
-        "fixed": False,
+        "present": None,
     },
 }
+
+oddVersions = ["4", "4b", "2017", "c"]
+oddVersionSet = set(oddVersions)
+versionOrder = oddVersions + sorted(v for v in versions if v not in oddVersionSet)
+version_order = tuple(v for v in versionOrder if versions[v]["present"] is not None)
 
 connStr = "mysql://{}:{}@{}/{}".format(
     config["shebanq_user"],
