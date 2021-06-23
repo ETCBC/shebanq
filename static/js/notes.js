@@ -4,7 +4,10 @@ var vs = $.initNamespaceStorage('nsview')
 var muting = ns.localStorage
 var nsview = vs.localStorage
 var ftree, upload, msgflt, rdata
-var subtract = 80 // the canvas holding the material gets a height equal to the window height minus this amount
+const subtractn = 80
+/* the canvas holding the material gets a height equal to
+ * the window height minus this amount
+ */
 var control_height = 100 // height for messages and controls
 
 var escapeHTML = (function () {
@@ -319,7 +322,7 @@ function Tree() {
             that.store_select_deep(data.node)
         },
     })
-    var standard_height = window.innerHeight - subtract
+    var standard_height = window.innerHeight - subtractn
     var form_height = standard_height - control_height
     var standard_width = window.innerWidth
     var canvas_left = $('.left-sidebar')

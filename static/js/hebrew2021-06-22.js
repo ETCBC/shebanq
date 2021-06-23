@@ -1,80 +1,142 @@
-// GLOBALS
+/* eslint-env jquery */
+/* eslint-disable no-var, camelcase */
+
+/*globals booklangs, versions*/
+
+/* GLOBALS
+ *
+ */
 
 $.cookie.raw = false
 $.cookie.json = true
 $.cookie.defaults.expires = 30
 $.cookie.defaults.path = "/"
 
-var nsq = $.initNamespaceStorage("muting_q")
-var muting_q = nsq.localStorage
-var nsn = $.initNamespaceStorage("muting_n")
-var muting_n = nsn.localStorage
-// on the Queries page the user can "mute" queries. Which queries are muted, is stored as key value pairs in this local storage bucket.
-// When shebanq shows relevant queries next to a page, muting is taken into account.
+const docName = "0_home"
+const nsq = $.initNamespaceStorage("muting_q")
+const muting_q = nsq.localStorage
+const nsn = $.initNamespaceStorage("muting_n")
+const muting_n = nsn.localStorage
+/* on the Queries page the user can "mute" queries. Which queries are muted,
+ * is stored as key value pairs in this local storage bucket.
+ * When shebanq shows relevant queries next to a page, muting is taken into account.
+ */
 
 /* state variables */
-var vcolors, vdefaultcolors, dncols, dnrows, thebooks, thebooksorder, viewinit, style // parameters dumped by the server, mostly in json form
-var viewfluid, side_fetched, material_fetched, material_kind // transitory flags indicating whether kinds of material and sidebars have loaded content
-var wb // holds the one and only page object
-var msg // messages object
 
-/* url values for AJAX calls from this application */
-// urls from which to fetch additional material through AJAX, the values come from the server
-var host, statichost, page_view_url, query_url, word_url
-var view_url,
-  material_url,
-  data_url,
-  side_url,
-  item_url,
-  chart_url,
-  queries_url,
-  words_url,
-  notes_url,
-  cnotes_url,
-  field_url,
-  fields_url
-var bol_url
-var pbl_url
-var pref // prefix for the cookie names, in order to distinguish settings by the user or settings from clicking on a share link
+/* globals vcolors, vdefaultcolors, dncols, dnrows, thebooks, thebooksorder,
+   viewinit, style, featurehost, markdown, ccolors, q, w, n, msgs
+  */
+/* parameters dumped by the server, mostly in json form
+ */
+let side_fetched, material_fetched, material_kind
+/* transitory flags indicating whether kinds of material and sidebars
+ * have loaded content
+ */
+var wb
+/* holds the one and only page object
+ */
+
+/* url values for AJAX calls from this application
+ * urls from which to fetch additional material through AJAX,
+ * the values come from the server
+ */
+/* globals host, view_url, material_url, data_url, side_url, item_url, chart_url,
+  words_url, notes_url, cnotes_url, field_url, fields_url, bol_url, pbl_url
+ */
+
+/* globals pref */
+/* prefix for the cookie names, in order to distinguish
+ * settings by the user or settings from clicking on a share link
+ */
 
 /* fixed dimensions, measures, heights, widths, etc */
-var subtract = 150 // the canvas holding the material gets a height equal to the window height minus this amount
-var subtractw = 80 // the canvas holding the material gets a height equal to the window height minus this amount
-var window_height
-var standard_height // height of canvas
-var standard_heightw // height of canvas
-var mql_small_height = "10em" // height of mql query body in sidebar
-var mql_small_width = "97%" // height of mql query body in sidebar and in dialog
-var mql_big_width_dia = "60%" // width of query info in dialog mode
-var mql_big_width = "100%" // width of mql query body in sidebar and in dialog
-var orig_side_width, orig_main_width // the widths of sidebar and main area just after loading the initial page
-var edit_side_width = "55%" // the desired width of the sidebar when editing a query body
-var edit_main_width = "40%" // the desired width of the main area when editing a query body
-var chart_width = "400px" // dialog width for charts
-var chart_cols = 30 // number of chapters in a row in a chart
-var tp_labels, tab_info, tab_views, next_tp // number of tab views and dictionary to go cyclically from a text view to the next
-var tr_labels, tr_info, next_tr // number of tab views and dictionary to go cyclically from a text view to the next
-var nt_statclass, nt_statsym, nt_statnext // characteristics for tabbed views with notes
-var booktrans // translation tables for book names
+
+const subtractm = 150
+/* the canvas holding the material gets a height
+ * equal to the window height minus this amount
+ */
+const subtractw = 80
+/* the canvas holding the material gets a height
+ * equal to the window height minus this amount
+ */
+let window_height
+let standard_height
+let half_standard_height
+/* height of canvas
+ */
+let standard_heightw
+/* height of canvas
+ */
+const mql_small_height = "10em"
+/* height of mql query body in sidebar
+ */
+const mql_small_width = "97%"
+/* height of mql query body in sidebar and in dialog
+ */
+const mql_big_width_dia = "60%"
+/* width of query info in dialog mode
+ */
+const mql_big_width = "100%"
+/* width of mql query body in sidebar and in dialog
+ */
+let orig_side_width, orig_main_width
+/* the widths of sidebar and main area just after loading the initial page
+ */
+const edit_side_width = "55%"
+/* the desired width of the sidebar when editing a query body
+ */
+const edit_main_width = "40%"
+/* the desired width of the main area when editing a query body
+ */
+const chart_width = "400px"
+/* dialog width for charts
+ */
+const chart_cols = 30
+/* number of chapters in a row in a chart
+ */
+
+/* globals tp_labels, tab_info, tab_views, next_tp
+ */
+/* number of tab views and dictionary to go cyclically from a text view to the next
+ */
+
+/* globals tr_labels, tr_info, next_tr
+ */
+/* number of tab views and dictionary to go cyclically from a text view to the next
+ */
+
+/* globals nt_statclass, nt_statsym, nt_statnext
+ */
+/* characteristics for tabbed views with notes
+ */
+
+/* globals booktrans
+ */
+/* translation tables for book names
+ */
 
 // TOP LEVEL: DYNAMICS, PAGE, WINDOW, SKELETON
 
+/* exported dynamics */
+
 function dynamics() {
   // top level function, called when the page has loaded
-  viewfluid = {}
-  msg = new Msg("material_settings") // a place where ajax messages can be shown to the user
-  wb = new Page(new ViewState(viewinit, pref)) // wb is the handle to manipulate the whole page
+  // msg = new Msg("material_settings")
+  // a place where ajax messages can be shown to the user
+  wb = new Page(new ViewState(viewinit, pref))
+  // wb is the handle to manipulate the whole page
   wb.init()
   wb.go()
 }
 
-function set_height() {
+const set_height = () => {
   // the heights of the sidebars are set, depending on the height of the window
   window_height = window.innerHeight
-  standard_height = window_height - subtract
+  standard_height = window_height - subtractm
   half_standard_height = 0.4 * standard_height + "px"
   $("#material_txt_p").css("height", standard_height + "px")
-  for (var i = 1; i <= tab_views; i++) {
+  for (let i = 1; i <= tab_views; i++) {
     $("#material_txt_tb" + i).css("height", standard_height + "px")
   }
   $("#side_material_mq").css("max-height", 0.6 * standard_height + "px")
@@ -83,6 +145,8 @@ function set_height() {
   $("#letters").css("height", standard_height + "px")
 }
 
+/* exported set_heightw */
+
 function set_heightw() {
   // the heights of the sidebars are set, depending on the height of the window
   standard_heightw = window.innerHeight - subtractw
@@ -90,13 +154,13 @@ function set_heightw() {
   $("#letters").css("height", standard_heightw + "px")
 }
 
-function get_width() {
+const get_width = () => {
   // save the orginal widths of sidebar and main area
   orig_side_width = $(".span3").css("width")
   orig_main_width = $(".span9").css("width")
 }
 
-function reset_main_width() {
+const reset_main_width = () => {
   // restore the orginal widths of sidebar and main area
   if (orig_side_width != $(".span3").css("width")) {
     $(".span3").css("width", orig_side_width)
@@ -106,73 +170,85 @@ function reset_main_width() {
   }
 }
 
-function set_edit_width() {
+const set_edit_width = () => {
   // switch to increased sidebar width
   get_width()
   $(".span3").css("width", edit_side_width)
   $(".span9").css("width", edit_main_width)
 }
 
-function Page(vs) {
-  // the one and only page object
-  this.vs = vs // the viewstate
-  History.Adapter.bind(window, "statechange", this.vs.goback)
+class Page {
+  /* the one and only page object
+   */
+  constructor(vs) {
+    this.vs = vs // the viewstate
+    History.Adapter.bind(window, "statechange", this.vs.goback)
+    this.picker2 = {}
+    this.picker1 = { q: {}, w: {} }
+    /* will collect the two Colorpicker1 objects, indexed as q w
+     */
+    this.picker1list = { q: {}, w: {} }
+    /* will collect the two lists of Colorpicker1 objects,
+     * index as q w and then by iid
+     */
+  }
 
-  this.init = function () {
+  init() {
     // dress up the skeleton, initialize state variables
     this.material = new Material()
     this.sidebars = new Sidebars()
     set_height()
     get_width()
     this.listsettings = {}
-    for (var qw in { q: 1, w: 1, n: 1 }) {
+    for (const qw of ["q", "w", "n"]) {
       this.listsettings[qw] = new ListSettings(qw)
       if (qw != "n") {
         this.picker2[qw] = this.listsettings[qw].picker2
       }
     }
     this.prev = {}
-    for (var x in this.vs.mstate()) {
+    for (const x in this.vs.mstate()) {
       this.prev[x] = null
     }
     reset_material_status()
   }
-  this.apply = function () {
+
+  apply() {
     // apply the viewstate: hide and show material as prescribed by the viewstate
     this.material.apply()
     this.sidebars.apply()
   }
-  this.go = function () {
+  go() {
     // go to another page view, check whether initial content has to be loaded
     reset_main_width()
     this.apply()
   }
-  this.go_material = function () {
+  go_material() {
     // load other material, whilst keeping the sidebars the same
     this.material.apply()
   }
 
   /*
+   * the origin must be an object which has a member indicating
+   * the type of origin and the kind of page.
 
-the origin must be an object which has a member indicating the type of origin and the kind of page.
-
-1: a color picker 1 from an item in a list
-1a: the color picker 1 on an item page
-2: a color picker 2 on a list page
-3: a button of the list view settings
-4: a click on a word in the text
-5: when the data or text representation is loaded
-
-*/
-  this.highlight2 = function (origin) {
+   * 1: a color picker 1 from an item in a list
+   * 1a: the color picker 1 on an item page
+   * 2: a color picker 2 on a list page
+   * 3: a button of the list view settings
+   * 4: a click on a word in the text
+   * 5: when the data or text representation is loaded
+   */
+  highlight2(origin) {
     /* all highlighting goes through this function
-        highlighting is holistic: when the user changes a view settings, all highlights have to be reevaluated.
-        The only reduction is that word highlighting is completely orthogonal to query result highlighting.
+        highlighting is holistic: when the user changes a view settings,
+        all highlights have to be reevaluated.
+        The only reduction is that word highlighting is completely orthogonal
+        to query result highlighting.
     */
-    var that = this
-    var qw = origin.qw
-    var code = origin.code
-    var active = wb.vs.active(qw)
+    const qw = origin.qw
+    const code = origin.code
+    const active = wb.vs.active(qw)
     if (active == "hlreset") {
       // all viewsettings for either queries or words are restored to 'factory' settings
       this.vs.cstatexx(qw)
@@ -180,28 +256,30 @@ the origin must be an object which has a member indicating the type of origin an
       this.listsettings[qw].apply()
       return
     }
-    var hlradio = $("." + qw + "hradio")
-    var activeo = $("#" + qw + active)
+    const hlradio = $("." + qw + "hradio")
+    const activeo = $("#" + qw + active)
     hlradio.removeClass("ison")
     activeo.addClass("ison")
-    var cmap = this.vs.colormap(qw)
+    const cmap = this.vs.colormap(qw)
 
-    var paintings = {}
+    const paintings = {}
 
-    /* first we are going to compute what to paint, resulting in a list of paint instructions.
-        Then we apply the paint instructions in one batch.
-        */
+    /* first we are going to compute what to paint,
+     * resulting in a list of paint instructions.
+       Then we apply the paint instructions in one batch.
+     */
 
     /* computing the paint instructions */
 
     if (code == "1a") {
-      /* highlights on an r-page (with a single query or word), coming from the associated ColorPicker1
-                This is simple coloring, using a single color.
-            */
-      var iid = origin.iid
-      var paint = cmap[iid] || defcolor(qw == "q", iid)
+      /* highlights on an r-page (with a single query or word),
+       * coming from the associated ColorPicker1
+       * This is simple coloring, using a single color.
+       */
+      const iid = origin.iid
+      const paint = cmap[iid] || defcolor(qw == "q", iid)
       if (qw == "q") {
-        $($.parseJSON($("#themonads").val())).each(function (i, m) {
+        $($.parseJSON($("#themonads").val())).each((i, m) => {
           paintings[m] = paint
         })
       } else if (qw == "w") {
@@ -212,24 +290,27 @@ the origin must be an object which has a member indicating the type of origin an
     }
 
     /* all other cases: highlights on an m-page, responding to a user action
-            This is complex coloring, using multiple colors.
-            First we determine which monads need to be highlighted.
-        */
-    var selclr = wb.vs.sel_one(qw)
-    var custitems = {}
-    var plainitems = {}
+     * This is complex coloring, using multiple colors.
+     * First we determine which monads need to be highlighted.
+     */
+    const selclr = wb.vs.sel_one(qw)
+    const custitems = {}
+    const plainitems = {}
 
     if (qw == "q") {
       /* Queries: highlight customised items with priority over uncustomised items
-                If a word belongs to several query results, the last-applied coloring determines the color that the user sees.
-                We want to promote the customised colors over the non-customized ones, so we compute customized coloring after
-                uncustomized coloring.
-                Skip the muted queries
-            */
-      $("#side_list_" + qw + " li").each(function () {
-        var iid = $(this).attr("iid")
+       * If a word belongs to several query results,
+       * the last-applied coloring determines the color that the user sees.
+       * We want to promote the customised colors over the non-customized ones,
+       * so we compute customized coloring after
+       * uncustomized coloring.
+       * Skip the muted queries
+       */
+      $("#side_list_" + qw + " li").each((i, el) => {
+        const elem = $(el)
+        const iid = elem.attr("iid")
         if (!muting_q.isSet(iid + "")) {
-          var monads = $.parseJSON($("#" + qw + iid).attr("monads"))
+          const monads = $.parseJSON($("#" + qw + iid).attr("monads"))
           if (wb.vs.iscolor(qw, iid)) {
             custitems[iid] = monads
           } else {
@@ -239,14 +320,15 @@ the origin must be an object which has a member indicating the type of origin an
       })
     } else if (qw == "w") {
       // Words: they are disjoint, no priority needed
-      $("#side_list_" + qw + " li").each(function () {
-        var iid = $(this).attr("iid")
+      $("#side_list_" + qw + " li").each((i, el) => {
+        const elem = $(el)
+        const iid = elem.attr("iid")
         if (wb.vs.iscolor(qw, iid)) {
           custitems[iid] = 1
         } else {
           plainitems[iid] = 1
         }
-        var all = $("#" + qw + iid)
+        const all = $("#" + qw + iid)
         if (active == "hlmany" || wb.vs.iscolor(qw, iid)) {
           all.show()
         } else {
@@ -254,11 +336,11 @@ the origin must be an object which has a member indicating the type of origin an
         }
       })
     }
-    var chunks = [custitems, plainitems]
+    const chunks = [custitems, plainitems]
 
-    var clselect = function (iid) {
+    const clselect = iid => {
       // assigns a color to an individual monad, based on the viewsettings
-      var paint = ""
+      let paint = ""
       if (active == "hloff") {
         paint = style[qw]["off"]
       } /*
@@ -266,20 +348,20 @@ the origin must be an object which has a member indicating the type of origin an
         active == "hlone"
       ) {
         paint = selclr
-      } /*
-                viewsetting says: color every applicable item with the same color */ else if (
-        active == "hlmany"
-      ) {
+      } else if (active == "hlmany") {
+        /* viewsetting says: color every applicable item with the same color */
         paint = cmap[iid] || defcolor(qw == "q", iid)
-      } /*
-                viewsetting says:
-                color every item with customized color (if customized) else with query/word-dependent default color */ else if (
-        active == "hlcustom"
-      ) {
+      } else if (active == "hlcustom") {
+        /* viewsetting says:
+         * color every item with customized color (if customized)
+         * else with query/word-dependent default color
+         */
         paint = cmap[iid] || selclr
-      } /*
-                viewsetting says:
-                color every item with customized color (if customized) else with a single chosen color */ else {
+      } else {
+        /* viewsetting says:
+         * color every item with customized color (if customized)
+         * else with a single chosen color
+         */
         paint = selclr
       } /*
                 but this should not occur */
@@ -287,14 +369,15 @@ the origin must be an object which has a member indicating the type of origin an
     }
 
     if (qw == "q") {
-      // Queries: compute the monads to be painted and the colors needed for it
-      for (var c = 0; c < 2; c++) {
-        var chunk = chunks[c]
-        for (var iid in chunk) {
-          var color = clselect(iid)
-          var monads = chunk[iid]
-          for (var m in monads) {
-            var monad = monads[m]
+      /* Queries: compute the monads to be painted and the colors needed for it
+       */
+      for (let c = 0; c < 2; c++) {
+        const chunk = chunks[c]
+        for (const iid in chunk) {
+          const color = clselect(iid)
+          const monads = chunk[iid]
+          for (const m in monads) {
+            const monad = monads[m]
             if (!(monad in paintings)) {
               paintings[monad] = color
             }
@@ -302,63 +385,71 @@ the origin must be an object which has a member indicating the type of origin an
         }
       }
     } else if (qw == "w") {
-      // Words: gather the lexeme_ids to be painted and the colors needed for it
-      for (var c = 0; c < 2; c++) {
-        var chunk = chunks[c]
-        for (var iid in chunk) {
-          var color = style[qw]["off"]
+      /* Words: gather the lexeme_ids to be painted and the colors needed for it
+       */
+      for (let c = 0; c < 2; c++) {
+        const chunk = chunks[c]
+        for (const iid in chunk) {
+          let color = style[qw]["off"]
           if (c == 0) {
-            // do not color the plain items when dealing with words (as opposed to queries)
+            /* do not color the plain items when dealing with words
+             * (as opposed to queries)
+             */
             color = clselect(iid)
           }
           paintings[iid] = color
         }
       }
     }
-    /* maybe the selection of words of queries has changed for the same material, so wipe previous coloring */
-    var monads = $("#material span[m]")
-    var stl = style[qw]["prop"]
-    var clr_off = style[qw]["off"]
+    /* maybe the selection of words of queries has changed for the same material,
+     * so wipe previous coloring
+     */
+    const monads = $("#material span[m]")
+    const stl = style[qw]["prop"]
+    const clr_off = style[qw]["off"]
     monads.css(stl, clr_off)
 
     /* finally, the computed colors are applied */
     this.paint(qw, paintings)
   }
 
-  this.paint = function (qw, paintings) {
+  paint(qw, paintings) {
     // Execute a series of computed paint instructions
-    var stl = style[qw]["prop"]
-    var container = "#material_" + wb.vs.tp()
-    var att = qw == "q" ? "m" : "l"
-    for (var item in paintings) {
-      var color = paintings[item]
+    const stl = style[qw]["prop"]
+    const container = "#material_" + wb.vs.tp()
+    const att = qw == "q" ? "m" : "l"
+    for (const item in paintings) {
+      const color = paintings[item]
       $(container + " span[" + att + '="' + item + '"]').css(stl, vcolors[color][qw])
     }
   }
-
-  this.picker2 = {}
-  this.picker1 = { q: {}, w: {} } // will collect the two Colorpicker1 objects, indexed as q w
-  this.picker1list = { q: {}, w: {} } // will collect the two lists of Colorpicker1 objects, index as q w and then by iid
 }
 
 // MATERIAL
 
-function Material() {
-  // Object corresponding to everything that controls the material in the main part (not in the side bars)
-  var that = this
-  this.name = "material"
-  this.hid = "#" + this.name
-  this.lselect = new LSelect()
-  this.mselect = new MSelect()
-  this.pselect = new PSelect()
-  this.message = new MMessage()
-  this.content = new MContent()
-  this.msettings = new MSettings(this.content)
-  this.adapt = function () {
+class Material {
+  /* Object corresponding to everything that controls the material in the main part
+   * (not in the side bars)
+   */
+  constructor() {
+    this.name = "material"
+    this.hid = "#" + this.name
+    this.lselect = new LSelect()
+    this.mselect = new MSelect()
+    this.pselect = new PSelect()
+    this.message = new MMessage()
+    this.content = new MContent()
+    this.msettings = new MSettings(this.content)
+    this.message.msg("choose a passage or a query or a word")
+  }
+
+  adapt() {
     this.fetch()
   }
-  this.apply = function () {
-    // apply viewsettings to current material
+
+  apply() {
+    /* apply viewsettings to current material
+     */
     wb.version = wb.vs.version()
     wb.mr = wb.vs.mr()
     wb.qw = wb.vs.qw()
@@ -374,11 +465,11 @@ function Material() {
       (wb.mr == "r" && (wb.iid != wb.prev["iid"] || wb.vs.page() != wb.prev["page"]))
     ) {
       reset_material_status()
-      var p_mr = wb.prev["mr"]
-      var p_qw = wb.prev["qw"]
-      var p_iid = wb.prev["iid"]
+      const p_mr = wb.prev["mr"]
+      const p_qw = wb.prev["qw"]
+      const p_iid = wb.prev["iid"]
       if (p_mr == "r" && wb.mr == "m") {
-        var vals = {}
+        const vals = {}
         if (p_qw != "n") {
           vals[p_iid] = wb.vs.colormap(p_qw)[p_iid] || defcolor(p_qw == "q", p_iid)
           wb.vs.cstatesv(p_qw, vals)
@@ -389,44 +480,33 @@ function Material() {
     this.mselect.apply()
     this.pselect.apply()
     this.msettings.apply()
-    var book = wb.vs.book()
-    var chapter = wb.vs.chapter()
-    var page = wb.vs.page()
+    const book = wb.vs.book()
+    const chapter = wb.vs.chapter()
+    const page = wb.vs.page()
     $("#thelang").html(booklangs[wb.vs.lang()][1])
     $("#thebook").html(book != "x" ? booktrans[wb.vs.lang()][book] : "book")
     $("#thechapter").html(chapter > 0 ? chapter : "chapter")
     $("#thepage").html(page > 0 ? "" + page : "")
-    for (var x in wb.vs.mstate()) {
+    for (const x in wb.vs.mstate()) {
       wb.prev[x] = wb.vs.mstate()[x]
     }
   }
-  this.fetch = function () {
+
+  fetch() {
     // get the material by AJAX if needed, and process the material afterward
-    var vars =
-      "?version=" +
-      wb.version +
-      "&mr=" +
-      wb.mr +
-      "&tp=" +
-      wb.vs.tp() +
-      "&tr=" +
-      wb.vs.tr() +
-      "&qw=" +
-      wb.qw +
-      "&lang=" +
-      wb.vs.lang()
-    var do_fetch = false
+    let vars =
+      `?version=${wb.version}&mr=${wb.mr}&tp=${wb.vs.tp()}&tr=${wb.vs.tr()}` +
+      `&qw=${wb.qw}&lang=${wb.vs.lang()}`
+    let do_fetch = false
     if (wb.mr == "m") {
-      vars += "&book=" + wb.vs.book()
-      vars += "&chapter=" + wb.vs.chapter()
+      vars += `&book=${wb.vs.book()}&chapter=${wb.vs.chapter()}`
       do_fetch = wb.vs.book() != "x" && wb.vs.chapter() > 0
     } else {
-      vars += "&iid=" + wb.iid
-      vars += "&page=" + wb.vs.page()
+      vars += `&iid=${wb.iid}&page=${wb.vs.page()}`
       do_fetch = wb.qw == "q" ? wb.iid >= 0 : wb.iid != "-1"
     }
-    var tp = wb.vs.tp()
-    var tr = wb.vs.tr()
+    const tp = wb.vs.tp()
+    const tr = wb.vs.tr()
     if (
       do_fetch &&
       (!material_fetched[tp] || !(tp in material_kind) || material_kind[tp] != tr)
@@ -435,59 +515,58 @@ function Material() {
       wb.sidebars.after_material_fetch()
       $.get(
         material_url + vars,
-        function (html) {
-          var response = $(html)
-          that.pselect.add(response)
-          that.message.add(response)
-          that.content.add(response)
+        html => {
+          const response = $(html)
+          this.pselect.add(response)
+          this.message.add(response)
+          this.content.add(response)
           material_fetched[tp] = true
           material_kind[tp] = tr
-          that.process()
-          that.goto_verse()
+          this.process()
+          this.goto_verse()
         },
         "html"
       )
     } else {
       wb.highlight2({ code: "5", qw: "w" })
       wb.highlight2({ code: "5", qw: "q" })
-      if (true || wb.vs.tp() == "txt_il") {
-        this.msettings.hebrewsettings.apply()
-      }
+      this.msettings.hebrewsettings.apply()
       this.goto_verse()
     }
   }
-  this.goto_verse = function () {
+  goto_verse() {
     // go to the selected verse
     $(".vhl").removeClass("vhl")
-    var vtarget = $(
-      "#material_" +
-        wb.vs.tp() +
-        ">" +
-        (wb.mr == "r" ? "div[tvid]" : 'div[tvid="' + wb.vs.verse() + '"]')
-    ).filter(":first")
+    const xxx = wb.mr == "r" ? "div[tvid]" : `div[tvid="${wb.vs.verse()}"]`
+    const vtarget = $(`#material_${wb.vs.tp()}>${xxx}`).filter(":first")
     if (vtarget != undefined && vtarget[0] != undefined) {
       vtarget[0].scrollIntoView()
       $("#navbar")[0].scrollIntoView()
       vtarget.addClass("vhl")
     }
   }
-  this.process = function () {
-    // process new material obtained by an AJAX call
-    var mf = 0
-    var tp = wb.vs.tp()
-    var tr = wb.vs.tr()
-    for (var x in material_fetched) {
+  process() {
+    /* process new material obtained by an AJAX call
+     */
+    let mf = 0
+    const tp = wb.vs.tp()
+    const tr = wb.vs.tr()
+    for (const x in material_fetched) {
       if (material_fetched[x]) {
         mf += 1
       }
-    } // count how many versions of this material already have been fetched
+    }
+    /* count how many versions of this material already have been fetched
+     */
     if (material_kind[tp] != "" && material_kind != tr) {
-      // and also whether the material has already been fetched in another transcription
+      /* and also whether the material has already been fetched
+       * in another transcription
+       */
       mf += 1
     }
-    var newcontent = $("#material_" + tp)
-    var textcontent = $(".txt_p,.txt_tb1,.txt_tb2,.txt_tb3")
-    var ttextcontent = $(".t1_txt,.lv2")
+    const newcontent = $("#material_" + tp)
+    const textcontent = $(".txt_p,.txt_tb1,.txt_tb2,.txt_tb3")
+    const ttextcontent = $(".t1_txt,.lv2")
     if (wb.vs.tr() == "hb") {
       textcontent.removeClass("pho")
       textcontent.removeClass("phox")
@@ -503,18 +582,21 @@ function Material() {
       textcontent.addClass("phox")
       ttextcontent.addClass("pho")
     }
-    // because some processes like highlighting and assignment of verse number clicks must be suppressed on first time or on subsequent times
+    /* because some processes like highlighting and assignment of verse number clicks
+     * must be suppressed on first time or on subsequent times
+     */
     if (wb.mr == "r") {
       this.pselect.apply()
       if (wb.qw != "n") {
         wb.picker1[wb.qw].adapt(wb.iid, true)
       }
-      $("a.cref").click(function (e) {
+      $("a.cref").click(e => {
         e.preventDefault()
+        const elem = $(e.target)
         wb.vs.mstatesv({
-          book: $(this).attr("book"),
-          chapter: $(this).attr("chapter"),
-          verse: $(this).attr("verse"),
+          book: elem.attr("book"),
+          chapter: elem.attr("chapter"),
+          verse: elem.attr("verse"),
           mr: "m",
         })
         wb.vs.addHist()
@@ -530,58 +612,51 @@ function Material() {
       this.add_cmt(newcontent)
     }
   }
-  this.add_cmt = function (newcontent) {
-    // add actions for the tab1 view
+
+  add_cmt(newcontent) {
+    /* add actions for the tab1 view
+     */
     this.notes = new Notes(newcontent)
   }
 
-  this.add_vrefs = function (newcontent, mf) {
-    var vrefs = newcontent.find(".vradio")
-    vrefs.each(function () {
-      var book = $(this).attr("b")
-      var chapter = $(this).attr("c")
-      var verse = $(this).attr("v")
-      $(this).attr("title", "interlinear data")
+  add_vrefs(newcontent, mf) {
+    const vrefs = newcontent.find(".vradio")
+    vrefs.each((i, el) => {
+      const elem = $(el)
+      elem.attr("title", "interlinear data")
     })
-    vrefs.click(function (e) {
+    vrefs.click(e => {
       e.preventDefault()
-      var bk = $(this).attr("b")
-      var ch = $(this).attr("c")
-      var vs = $(this).attr("v")
-      var base_tp = wb.vs.tp()
-      var dat = $("#" + base_tp + "_txt_il_" + bk + "_" + ch + "_" + vs)
-      var txt = $("#" + base_tp + "_" + bk + "_" + ch + "_" + vs)
-      var legend = $("#datalegend")
-      var legendc = $("#datalegend_control")
-      if ($(this).hasClass("ison")) {
-        $(this).removeClass("ison")
-        $(this).attr("title", "interlinear data")
+      const elem = $(e.target)
+      const bk = elem.attr("b")
+      const ch = elem.attr("c")
+      const vs = elem.attr("v")
+      const base_tp = wb.vs.tp()
+      const dat = $("#" + base_tp + "_txt_il_" + bk + "_" + ch + "_" + vs)
+      const txt = $("#" + base_tp + "_" + bk + "_" + ch + "_" + vs)
+      const legend = $("#datalegend")
+      const legendc = $("#datalegend_control")
+      if (elem.hasClass("ison")) {
+        elem.removeClass("ison")
+        elem.attr("title", "interlinear data")
         legend.hide()
         close_dialog(legend)
         legendc.hide()
         dat.hide()
         txt.show()
       } else {
-        $(this).addClass("ison")
-        $(this).attr("title", "text/tab")
+        elem.addClass("ison")
+        elem.attr("title", "text/tab")
         legendc.show()
         dat.show()
         txt.hide()
         if (dat.attr("lf") == "x") {
           dat.html("fetching data for " + bk + " " + ch + ":" + vs + " ...")
           dat.load(
-            data_url +
-              "?version=" +
-              wb.version +
-              "&book=" +
-              bk +
-              "&chapter=" +
-              ch +
-              "&verse=" +
-              vs,
-            function () {
+            `${data_url}?version=${wb.version}&book=${bk}&chapter=${ch}&verse=${vs}`,
+            () => {
               dat.attr("lf", "v")
-              that.msettings.hebrewsettings.apply()
+              this.msettings.hebrewsettings.apply()
               if (wb.mr == "r") {
                 if (wb.qw != "n") {
                   wb.picker1[wb.qw].adapt(wb.iid, true)
@@ -589,7 +664,7 @@ function Material() {
               } else {
                 wb.highlight2({ code: "5", qw: "w" })
                 wb.highlight2({ code: "5", qw: "q" })
-                that.add_word_actions(dat, mf)
+                this.add_word_actions(dat, mf)
               }
             },
             "html"
@@ -598,85 +673,114 @@ function Material() {
       }
     })
   }
-  this.add_word_actions = function (newcontent, mf) {
-    // Make words clickable, so that they show up in the sidebar
-    newcontent.find("span[l]").click(function (e) {
+
+  add_word_actions(newcontent, mf) {
+    /* Make words clickable, so that they show up in the sidebar
+     */
+    newcontent.find("span[l]").click(e => {
       e.preventDefault()
-      var iid = $(this).attr("l")
-      var qw = "w"
-      var all = $("#" + qw + iid)
+      const elem = $(e.target)
+      const iid = elem.attr("l")
+      const qw = "w"
+      const all = $(`#${qw}${iid}`)
       if (wb.vs.iscolor(qw, iid)) {
         wb.vs.cstatex(qw, iid)
         all.hide()
       } else {
-        var vals = {}
+        const vals = {}
         vals[iid] = defcolor(false, iid)
         wb.vs.cstatesv(qw, vals)
         all.show()
       }
-      var active = wb.vs.active(qw)
+      const active = wb.vs.active(qw)
       if (active != "hlcustom" && active != "hlmany") {
         wb.vs.hstatesv(qw, { active: "hlcustom" })
       }
       if (wb.vs.get("w") == "v") {
         if (iid in wb.picker1list["w"]) {
-          // should not happen but it happens when changing data versions
+          /* should not happen but it happens when changing data versions
+           */
           wb.picker1list["w"][iid].apply(false)
         }
       }
-      wb.highlight2({ code: "4", qw: qw })
+      wb.highlight2({ code: "4", qw })
       wb.vs.addHist()
     })
     if (mf > 1) {
       /* Initially, material gets highlighted once the sidebars have been loaded.
-But when we load a different representation of material (data, tab), the sidebars are still there,
-and after loading the material, highlighs have to be applied.
-*/
+       * But when we load a different representation of material (data, tab),
+       * the sidebars are still there,
+       * and after loading the material, highlighs have to be applied.
+       */
       wb.highlight2({ code: "5", qw: "q" })
       wb.highlight2({ code: "5", qw: "w" })
     }
   }
-  this.message.msg("choose a passage or a query or a word")
 }
 
 // MATERIAL: Notes
 
-function Notes(newcontent) {
-  var that = this
-  this.show = false
-  this.verselist = {}
-  this.version = wb.version
-  this.sav_controls = $("span.nt_main_sav")
-  this.sav_c = this.sav_controls.find('a[tp="s"]')
-  this.rev_c = this.sav_controls.find('a[tp="r"]')
-  this.logged_in = false
-  this.cctrl = $("a.nt_main_ctrl")
+class Notes {
+  constructor(newcontent) {
+    this.show = false
+    this.verselist = {}
+    this.version = wb.version
+    this.sav_controls = $("span.nt_main_sav")
+    this.sav_c = this.sav_controls.find('a[tp="s"]')
+    this.rev_c = this.sav_controls.find('a[tp="r"]')
+    this.logged_in = false
+    this.cctrl = $("a.nt_main_ctrl")
 
-  newcontent.find(".vradio").each(function () {
-    var bk = $(this).attr("b")
-    var ch = $(this).attr("c")
-    var vs = $(this).attr("v")
-    var topl = $(this).closest("div")
-    that.verselist[bk + " " + ch + ":" + vs] = new Notev(
-      that.version,
-      bk,
-      ch,
-      vs,
-      topl.find("span.nt_ctrl"),
-      topl.find("table.t1_table")
-    )
-  })
-  this.msgn = new Msg("nt_main_msg", function () {
-    for (var item in that.verselist) {
-      var notev = that.verselist[item]
-      notev.clear_msg()
-    }
-  })
-  this.apply = function () {
+    newcontent.find(".vradio").each((i, el) => {
+      const elem = $(el)
+      const bk = elem.attr("b")
+      const ch = elem.attr("c")
+      const vs = elem.attr("v")
+      const topl = elem.closest("div")
+      this.verselist[`${bk} ${ch}:${vs}`] = new Notev(
+        this.version,
+        bk,
+        ch,
+        vs,
+        topl.find("span.nt_ctrl"),
+        topl.find("table.t1_table")
+      )
+    })
+    const { verselist } = this
+    this.msgn = new Msg("nt_main_msg", () => {
+      for (const notev of Object.values(verselist)) {
+        notev.clear_msg()
+      }
+    })
+    this.cctrl.click(e => {
+      e.preventDefault()
+      wb.vs.hstatesv("n", { get: wb.vs.get("n") == "v" ? "x" : "v" })
+      this.apply()
+    })
+    this.rev_c.click(e => {
+      e.preventDefault()
+      for (const notev of Object.values(verselist)) {
+        notev.revert()
+      }
+    })
+    this.sav_c.click(e => {
+      e.preventDefault()
+      for (const notev of Object.values(verselist)) {
+        notev.save()
+      }
+      this.msgn.msg(["special", "Done"])
+    })
+    this.msgn.clear()
+    $("span.nt_main_sav").hide()
+    this.apply()
+  }
+
+  apply() {
+    const { verselist } = this
+
     if (wb.vs.get("n") == "v") {
       this.cctrl.addClass("nt_loaded")
-      for (var item in this.verselist) {
-        var notev = this.verselist[item]
+      for (const notev of Object.values(verselist)) {
         notev.show_notes(false)
         this.logged_in = notev.logged_in
       }
@@ -686,91 +790,92 @@ function Notes(newcontent) {
     } else {
       this.cctrl.removeClass("nt_loaded")
       this.sav_controls.hide()
-      for (var item in this.verselist) {
-        var notev = this.verselist[item]
+      for (const notev of Object.values(verselist)) {
         notev.hide_notes()
       }
     }
   }
-  this.cctrl.click(function (e) {
-    e.preventDefault()
-    wb.vs.hstatesv("n", { get: wb.vs.get("n") == "v" ? "x" : "v" })
-    that.apply()
-  })
-  this.rev_c.click(function (e) {
-    e.preventDefault()
-    for (var item in that.verselist) {
-      var notev = that.verselist[item]
-      notev.revert()
-    }
-  })
-  this.sav_c.click(function (e) {
-    e.preventDefault()
-    for (var item in that.verselist) {
-      var notev = that.verselist[item]
-      notev.save()
-    }
-    that.msgn.msg(["special", "Done"])
-  })
-  this.msgn.clear()
-  $("span.nt_main_sav").hide()
-  this.apply()
+
 }
 
-function Notev(vr, bk, ch, vs, ctrl, dest) {
-  var that = this
-  this.loaded = false
-  this.nnotes = 0
-  this.mnotes = 0
-  this.show = false
-  this.edt = false
-  this.dirty = false
-  this.version = vr
-  this.book = bk
-  this.chapter = ch
-  this.verse = vs
-  this.ctrl = ctrl
-  this.dest = dest
-  this.msgn = new Msg("nt_msg_" + this.book + "_" + this.chapter + "_" + this.verse)
-  this.cctrl = this.ctrl.find("a.nt_ctrl")
-  this.sav_controls = this.ctrl.find("span.nt_sav")
-  this.sav_c = this.sav_controls.find('a[tp="s"]')
-  this.edt_c = this.sav_controls.find('a[tp="e"]')
-  this.rev_c = this.sav_controls.find('a[tp="r"]')
+class Notev {
+  constructor(vr, bk, ch, vs, ctrl, dest) {
+    this.loaded = false
+    this.nnotes = 0
+    this.mnotes = 0
+    this.show = false
+    this.edt = false
+    this.dirty = false
+    this.version = vr
+    this.book = bk
+    this.chapter = ch
+    this.verse = vs
+    this.ctrl = ctrl
+    this.dest = dest
+    this.msgn = new Msg("nt_msg_" + this.book + "_" + this.chapter + "_" + this.verse)
+    this.cctrl = this.ctrl.find("a.nt_ctrl")
+    this.sav_controls = this.ctrl.find("span.nt_sav")
+    this.sav_c = this.sav_controls.find('a[tp="s"]')
+    this.edt_c = this.sav_controls.find('a[tp="e"]')
+    this.rev_c = this.sav_controls.find('a[tp="r"]')
 
-  this.fetch = function (adjust_verse) {
-    var senddata = {
-      version: this.version,
-      book: this.book,
-      chapter: this.chapter,
-      verse: this.verse,
-      edit: this.edt,
-    }
+    this.sav_c.click(e => {
+      e.preventDefault()
+      this.save()
+    })
+    this.edt_c.click(e => {
+      e.preventDefault()
+      this.edit()
+    })
+    this.rev_c.click(e => {
+      e.preventDefault()
+      this.revert()
+    })
+    this.cctrl.click(e => {
+      e.preventDefault()
+      this.is_dirty()
+      if (this.show) {
+        this.hide_notes()
+      } else {
+        this.show_notes(true)
+      }
+    })
+
+    this.dest.find("tr.nt_cmt").hide()
+    $("span.nt_main_sav").hide()
+    this.sav_controls.hide()
+  }
+
+  fetch(adjust_verse) {
+    const { version, book, chapter, verse, edt } = this
+    const senddata = { version, book, chapter, verse, edit: edt }
     this.msgn.msg(["info", "fetching notes ..."])
-    $.post(cnotes_url, senddata, function (json) {
-      that.loaded = true
-      that.msgn.clear()
-      json.msgs.forEach(function (m) {
-        that.msgn.msg(m)
-      })
-      if (json.good) {
-        that.process(
-          json.users,
-          json.notes,
-          json.nkey_index,
-          json.changed,
-          json.logged_in
+    $.post(cnotes_url, senddata, data => {
+      this.loaded = true
+      this.msgn.clear()
+      for (const m of data.msgs) {
+        this.msgn.msg(m)
+      }
+      const { good, users, notes, nkey_index, changed, logged_in } = data
+      if (good) {
+        this.process(
+          users,
+          notes,
+          nkey_index,
+          changed,
+          logged_in
         )
         if (adjust_verse) {
           if (wb.mr == "m") {
-            wb.vs.mstatesv({ verse: that.verse })
+            wb.vs.mstatesv({ verse: this.verse })
             wb.material.goto_verse()
           }
         }
       }
     })
   }
-  this.process = function (users, notes, nkey_index, changed, logged_in) {
+
+  process(users, notes, nkey_index, changed, logged_in) {
     if (changed) {
       if (wb.mr == "m") {
         side_fetched["mn"] = false
@@ -787,40 +892,43 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.apply_dirty()
     this.decorate()
   }
-  this.decorate = function () {
+
+  decorate() {
     this.dest
       .find("td.nt_stat")
       .find("a")
-      .click(function (e) {
+      .click(e => {
         e.preventDefault()
-        var statcode = $(this).attr("code")
-        var nextcode = nt_statnext[statcode]
-        var nextsym = nt_statsym[nextcode]
-        var row = $(this).closest("tr")
-        for (var c in nt_statclass) {
+        const elem = $(e.target)
+        const statcode = elem.attr("code")
+        const nextcode = nt_statnext[statcode]
+        const nextsym = nt_statsym[nextcode]
+        const row = elem.closest("tr")
+        for (const c in nt_statclass) {
           row.removeClass(nt_statclass[c])
         }
-        for (var c in nt_statsym) {
-          $(this).removeClass("fa-" + nt_statsym[c])
+        for (const c in nt_statsym) {
+          elem.removeClass(`fa-${nt_statsym[c]}`)
         }
         row.addClass(nt_statclass[nextcode])
-        $(this).attr("code", nextcode)
-        $(this).addClass("fa-" + nextsym)
+        elem.attr("code", nextcode)
+        elem.addClass(`fa-${nextsym}`)
       })
     this.dest
       .find("td.nt_pub")
       .find("a")
-      .click(function (e) {
+      .click(e => {
         e.preventDefault()
-        if ($(this).hasClass("ison")) {
-          $(this).removeClass("ison")
+        const elem = $(e.target)
+        if (elem.hasClass("ison")) {
+          elem.removeClass("ison")
         } else {
-          $(this).addClass("ison")
+          elem.addClass("ison")
         }
       })
     this.dest.find("tr.nt_cmt").show()
     if (this.logged_in) {
-      main_sav_controls.show()
+      $("span.nt_main_sav").show()
       this.sav_controls.show()
       if (this.edt) {
         this.sav_c.show()
@@ -832,20 +940,22 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     }
     decorate_crossrefs(this.dest)
   }
-  this.gen_html_ca = function (canr) {
-    var notes = this.orig_notes[canr]
-    var nkey_index = this.orig_nkey_index
-    var html = ""
+
+  gen_html_ca(canr) {
+    const vr = this.version
+    const notes = this.orig_notes[canr]
+    const nkey_index = this.orig_nkey_index
+    let html = ""
     this.nnotes += notes.length
-    for (var n = 0; n < notes.length; n++) {
-      var nline = notes[n]
-      var kwtrim = $.trim(nline.kw)
-      var kws = kwtrim.split(/\s+/)
-      var uid = nline.uid
-      var mute = false
-      for (var k in kws) {
-        var nkid = nkey_index[uid + " " + kws[k]]
-        if (muting_n.isSet("n" + nkid)) {
+    for (let n = 0; n < notes.length; n++) {
+      const nline = notes[n]
+      const kwtrim = $.trim(nline.kw)
+      const kws = kwtrim.split(/\s+/)
+      const uid = nline.uid
+      let mute = false
+      for (const kw of kws) {
+        const nkid = nkey_index[`${uid} ${kw}`]
+        if (muting_n.isSet(`n${nkid}`)) {
           mute = true
           break
         }
@@ -854,100 +964,62 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         this.mnotes += 1
         continue
       }
-      var user = this.orig_users[uid]
-      var nid = nline.nid
-      var pubc = nline.pub ? "ison" : ""
-      var sharedc = nline.shared ? "ison" : ""
-      var statc = nt_statclass[nline.stat]
-      var statsym = nt_statsym[nline.stat]
-      var ro = nline.ro
-      var edit_att = ro ? "" : ' edit="1"'
-      var edit_class = ro ? "" : " edit"
-      html +=
-        '<tr class="nt_cmt nt_info ' +
-        statc +
-        edit_class +
-        '" nid="' +
-        nid +
-        '" ncanr="' +
-        canr +
-        '"' +
-        edit_att +
-        ">"
+      const user = this.orig_users[uid]
+      const nid = nline.nid
+      const pubc = nline.pub ? "ison" : ""
+      const sharedc = nline.shared ? "ison" : ""
+      const statc = nt_statclass[nline.stat]
+      const statsym = nt_statsym[nline.stat]
+      const ro = nline.ro
+      const edit_att = ro ? "" : ' edit="1"'
+      const edit_class = ro ? "" : " edit"
+      html += (
+        `<tr class="nt_cmt nt_info ${statc}${edit_class}" nid="${nid}"
+          ncanr="${canr}"${edit_att}">`
+      )
       if (ro) {
-        html +=
-          '<td class="nt_stat"><span class="fa fa-' +
-          statsym +
-          ' fa-fw" code="' +
-          nline.stat +
-          '"></span></td>'
-        html += '<td class="nt_kw">' + escapeHTML(nline.kw) + "</td>"
-        var ntxt = special_links(markdown.toHTML(markdownEscape(nline.ntxt)))
-        //var ntxt = special_links_m(escapeHTML(nline.ntxt))
-        //ntxt = markdown.toHTML(ntxt)
-        html += '<td class="nt_cmt">' + ntxt + "</td>"
-        html +=
-          '<td class="nt_user" colspan="3" uid="' +
-          uid +
-          '">' +
-          escapeHTML(user) +
-          "</td>"
+        html += (
+          `<td class="nt_stat">
+            <span class="fa fa-${statsym} fa-fw" code="${nline.stat}"></span>
+          </td>`
+        )
+        html += `<td class="nt_kw">${escapeHTML(nline.kw)}</td>`
+        const ntxt = special_links(markdown.toHTML(markdownEscape(nline.ntxt)))
+        html += `<td class="nt_cmt">${ntxt}</td>`
+        html += `<td class="nt_user" colspan="3" uid="${uid}">${escapeHTML(user)}</td>`
         html += '<td class="nt_pub">'
-        html +=
-          '    <span class="ctrli pradio fa fa-share-alt fa-fw ' +
-          sharedc +
-          '" title="shared?"></span>'
-        html +=
-          '    <span class="ctrli pradio fa fa-quote-right fa-fw ' +
-          pubc +
-          '" title="published?"></span>'
+        html += `<span class="ctrli pradio fa fa-share-alt fa-fw ${sharedc}"
+          title="shared?"></span>`
+        html += `<span class="ctrli pradio fa fa-quote-right fa-fw ${pubc}"
+          title="published?"></span>`
       } else {
-        this.orig_edit.push({ canr: canr, note: nline })
-        html +=
-          '<td class="nt_stat"><a href="#" title="set status" class="fa fa-' +
-          statsym +
-          ' fa-fw" code="' +
-          nline.stat +
-          '"></a></td>'
-        html += '<td class="nt_kw"><textarea>' + nline.kw + "</textarea></td>"
-        html += '<td class="nt_cmt"><textarea>' + nline.ntxt + "</textarea></td>"
-        html +=
-          '<td class="nt_user" colspan="3" uid="' +
-          uid +
-          '">' +
-          escapeHTML(user) +
-          "</td>"
+        this.orig_edit.push({ canr, note: nline })
+        html += `<td class="nt_stat">
+          <a href="#" title="set status" class="fa fa-${statsym} fa-fw"
+          code="${nline.stat}"></a></td>`
+        html += `<td class="nt_kw"><textarea>${nline.kw}</textarea></td>`
+        html += `<td class="nt_cmt"><textarea>${nline.ntxt}</textarea></td>`
+        html += `<td class="nt_user" colspan="3" uid="{uid}">${escapeHTML(user)}</td>`
         html += '<td class="nt_pub">'
-        html +=
-          '    <a class="ctrli pradio fa fa-share-alt fa-fw ' +
-          sharedc +
-          '" href="#" title="shared?"></a>'
-        if (vr == CONTINUOUS) {
-          html += "<span>" + vr + "</span>"
-          html +=
-            '    <span class="ctrli pradio fa fa-quote-right fa-fw ' +
-            pubc +
-            '" title="published?"></span>'
-        } else {
-          html += "<span>" + vr + "</span>"
-          html +=
-            '    <a class="ctrli pradio fa fa-quote-right fa-fw ' +
-            pubc +
-            '" href="#" title="published?"></a>'
-        }
+        html += `<a class="ctrli pradio fa fa-share-alt fa-fw ${sharedc}"
+          href="#" title="shared?"></a>`
+        html += `<span>${vr}</span>`
+        html += `<a class="ctrli pradio fa fa-quote-right fa-fw ${pubc}"
+          href="#" title="published?"></a>`
       }
       html += "</td></tr>"
     }
     return html
   }
-  this.gen_html = function (replace) {
+
+  gen_html(replace) {
     this.mnotes = 0
     if (replace) {
       this.dest.find("tr[ncanr]").remove()
     }
-    for (var canr in this.orig_notes) {
-      var target = this.dest.find("tr[canr=" + canr + "]")
-      var html = this.gen_html_ca(canr)
+    for (const canr in this.orig_notes) {
+      const target = this.dest.find(`tr[canr="${canr}"]`)
+      const html = this.gen_html_ca(canr)
       target.after(html)
     }
     if (this.nnotes == 0) {
@@ -959,62 +1031,59 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
       this.cctrl.removeClass("nt_muted")
     } else {
       this.cctrl.addClass("nt_muted")
-      this.msgn.msg(["special", "muted notes: " + this.mnotes])
+      this.msgn.msg(["special", `muted notes: ${this.mnotes}`])
     }
   }
-  this.sendnotes = function (senddata) {
-    var good = false
+
+  sendnotes(senddata) {
     $.post(
       cnotes_url,
       senddata,
-      function (json) {
-        good = json.good
-        that.msgn.clear()
-        json.msgs.forEach(function (m) {
-          that.msgn.msg(m)
-        })
-        if (json.good) {
-          that.dest.find("tr[ncanr]").remove()
-          that.process(
-            json.users,
-            json.notes,
-            json.nkey_index,
-            json.changed,
-            json.logged_in
+      data => {
+        const { good, users, notes, nkey_index, changed, logged_in } = data
+        this.msgn.clear()
+        for (const m of data.msgs) {
+          this.msgn.msg(m)
+        }
+        if (good) {
+          this.dest.find("tr[ncanr]").remove()
+          this.process(
+            users,
+            notes,
+            nkey_index,
+            changed,
+            logged_in
           )
         }
       },
       "json"
     )
   }
-  this.dest.find("tr.nt_cmt").hide()
-  var main_sav_controls = $("span.nt_main_sav")
-  this.is_dirty = function () {
-    var notes = this.dest.find("tr[edit]")
-    var dirty = false
+
+  is_dirty() {
+    let dirty = false
     if (this.orig_edit == undefined) {
       this.dirty = false
       return
     }
-    for (var n = 0; n < this.orig_edit.length; n++) {
-      var canr = this.orig_edit[n].canr
-      var o_note = this.orig_edit[n].note
-      var nid = o_note.nid
-      var uid = o_note.uid
-      var n_note =
+    for (let n = 0; n < this.orig_edit.length; n++) {
+      const canr = this.orig_edit[n].canr
+      const o_note = this.orig_edit[n].note
+      const nid = o_note.nid
+      const n_note =
         nid == 0
-          ? this.dest.find('tr[nid="0"][ncanr="' + canr + '"]')
-          : this.dest.find('tr[nid="' + nid + '"]')
-      var o_stat = o_note.stat
-      var n_stat = n_note.find("td.nt_stat a").attr("code")
-      var o_kw = $.trim(o_note.kw)
-      var n_kw = $.trim(n_note.find("td.nt_kw textarea").val())
-      var o_ntxt = o_note.ntxt
-      var n_ntxt = $.trim(n_note.find("td.nt_cmt textarea").val())
-      var o_shared = o_note.shared
-      var n_shared = n_note.find("td.nt_pub a").first().hasClass("ison")
-      var o_pub = o_note.pub
-      var n_pub = n_note.find("td.nt_pub a").last().hasClass("ison")
+          ? this.dest.find(`tr[nid="0"][ncanr="${canr}"]`)
+          : this.dest.find(`tr[nid="${nid}"]`)
+      const o_stat = o_note.stat
+      const n_stat = n_note.find("td.nt_stat a").attr("code")
+      const o_kw = $.trim(o_note.kw)
+      const n_kw = $.trim(n_note.find("td.nt_kw textarea").val())
+      const o_ntxt = o_note.ntxt
+      const n_ntxt = $.trim(n_note.find("td.nt_cmt textarea").val())
+      const o_shared = o_note.shared
+      const n_shared = n_note.find("td.nt_pub a").first().hasClass("ison")
+      const o_pub = o_note.pub
+      const n_pub = n_note.find("td.nt_pub a").last().hasClass("ison")
       if (
         o_stat != n_stat ||
         o_kw != n_kw ||
@@ -1029,59 +1098,48 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     this.dirty = dirty
     this.apply_dirty()
   }
-  this.apply_dirty = function () {
+
+  apply_dirty() {
     if (this.dirty) {
       this.cctrl.addClass("dirty")
     } else if (this.cctrl.hasClass("dirty")) {
       this.cctrl.removeClass("dirty")
     }
   }
-  this.sav_c.click(function (e) {
-    e.preventDefault()
-    that.save()
-  })
-  this.edt_c.click(function (e) {
-    e.preventDefault()
-    that.edit()
-  })
-  this.rev_c.click(function (e) {
-    e.preventDefault()
-    that.revert()
-  })
-  this.save = function () {
+  save() {
     this.edt = false
-    var data = {
-      version: this.version,
-      book: this.book,
-      chapter: this.chapter,
-      verse: this.verse,
+    const { version, book, chapter, verse, edt } = this
+    const data = {
+      version,
+      book,
+      chapter,
+      verse,
       save: true,
-      edit: this.edt,
+      edit: edt,
     }
-    var notes = this.dest.find("tr[edit]")
-    var notelines = []
+    const notelines = []
     if (this.orig_edit == undefined) {
       return
     }
-    for (var n = 0; n < this.orig_edit.length; n++) {
-      var canr = this.orig_edit[n].canr
-      var o_note = this.orig_edit[n].note
-      var nid = o_note.nid
-      var uid = o_note.uid
-      var n_note =
+    for (let n = 0; n < this.orig_edit.length; n++) {
+      const canr = this.orig_edit[n].canr
+      const o_note = this.orig_edit[n].note
+      const nid = o_note.nid
+      const uid = o_note.uid
+      const n_note =
         nid == 0
-          ? this.dest.find('tr[nid="0"][ncanr="' + canr + '"]')
-          : this.dest.find('tr[nid="' + nid + '"]')
-      var o_stat = o_note.stat
-      var n_stat = n_note.find("td.nt_stat a").attr("code")
-      var o_kw = $.trim(o_note.kw)
-      var n_kw = $.trim(n_note.find("td.nt_kw textarea").val())
-      var o_ntxt = o_note.ntxt
-      var n_ntxt = $.trim(n_note.find("td.nt_cmt textarea").val())
-      var o_shared = o_note.shared
-      var n_shared = n_note.find("td.nt_pub a").first().hasClass("ison")
-      var o_pub = o_note.pub
-      var n_pub = n_note.find("td.nt_pub a").last().hasClass("ison")
+          ? this.dest.find(`tr[nid="0"][ncanr="${canr}"]`)
+          : this.dest.find(`tr[nid="${nid}"]`)
+      const o_stat = o_note.stat
+      const n_stat = n_note.find("td.nt_stat a").attr("code")
+      const o_kw = $.trim(o_note.kw)
+      const n_kw = $.trim(n_note.find("td.nt_kw textarea").val())
+      const o_ntxt = o_note.ntxt
+      const n_ntxt = $.trim(n_note.find("td.nt_cmt textarea").val())
+      const o_shared = o_note.shared
+      const n_shared = n_note.find("td.nt_pub a").first().hasClass("ison")
+      const o_pub = o_note.pub
+      const n_pub = n_note.find("td.nt_pub a").last().hasClass("ison")
       if (
         o_stat != n_stat ||
         o_kw != n_kw ||
@@ -1090,12 +1148,12 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         o_pub != n_pub
       ) {
         notelines.push({
-          nid: nid,
-          canr: canr,
+          nid,
+          canr,
           stat: n_stat,
           kw: n_kw,
           ntxt: n_ntxt,
-          uid: uid,
+          uid,
           shared: n_shared,
           pub: n_pub,
         })
@@ -1108,35 +1166,36 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
     }
     this.sendnotes(data)
   }
-  this.edit = function () {
+
+  edit() {
     this.edt = true
     this.fetch(true)
   }
-  this.revert = function () {
+
+  revert() {
     this.edt = false
-    var data = {
-      version: this.version,
-      book: this.book,
-      chapter: this.chapter,
-      verse: this.verse,
+    const { version, book, chapter, verse, edt } = this
+    const data = {
+      version,
+      book,
+      chapter,
+      verse,
       save: true,
-      edit: this.edt,
+      edit: edt,
     }
     data["notes"] = JSON.stringify([])
     this.sendnotes(data)
-    //this.gen_html(this.orig_users, this.orig_notes, true)
-    //this.dirty = false
-    //this.apply_dirty()
-    //this.decorate()
   }
-  this.hide_notes = function () {
+
+  hide_notes() {
     this.show = false
     this.cctrl.removeClass("nt_loaded")
     this.sav_controls.hide()
     this.dest.find("tr.nt_cmt").hide()
     this.msgn.hide()
   }
-  this.show_notes = function (adjust_verse) {
+
+  show_notes(adjust_verse) {
     this.show = true
     this.cctrl.addClass("nt_loaded")
     this.msgn.show()
@@ -1155,55 +1214,57 @@ function Notev(vr, bk, ch, vs, ctrl, dest) {
         }
       }
       if (wb.mr == "m") {
-        wb.vs.mstatesv({ verse: that.verse })
+        wb.vs.mstatesv({ verse: this.verse })
         wb.material.goto_verse()
       }
     }
   }
-  this.clear_msg = function () {
+
+  clear_msg() {
     this.msgn.clear()
   }
-  this.cctrl.click(function (e) {
-    e.preventDefault()
-    that.is_dirty()
-    if (that.show) {
-      that.hide_notes()
-    } else {
-      that.show_notes(true)
-    }
-  })
-  main_sav_controls.hide()
-  this.sav_controls.hide()
 }
 
-// MATERIAL: SELECTION
+/* MATERIAL: SELECTION
+ *
+ */
 
-function MSelect() {
-  // for book and chapter selection
-  var that = this
-  this.name = "select_passage"
-  this.hid = "#" + this.name
-  this.book = new SelectBook()
-  this.select = new SelectItems("chapter")
-  this.apply = function () {
-    // apply material viewsettings to current material
-    var thisFeaturehost = adaptDocBaseVersion(featurehost) + "/" + adaptDocName()
+class MSelect {
+  /* for book and chapter selection
+   */
+
+  constructor() {
+    this.name = "select_passage"
+    this.hid = "#" + this.name
+    this.book = new SelectBook()
+    this.select = new SelectItems("chapter")
+    for (const v in versions) {
+      this.set_vselect(v)
+    }
+    $("#self_link").hide()
+  }
+
+  apply() {
+    /* apply material viewsettings to current material
+     */
+    const thisFeaturehost = `${featurehost}/${docName}`
     $(".source").attr("href", thisFeaturehost)
     $(".source").attr("title", "BHSA feature documentation")
     $(".mvradio").removeClass("ison")
     $("#version_" + wb.version).addClass("ison")
-    var bol = $("#bol_lnk")
-    var pbl = $("#pbl_lnk")
+    const bol = $("#bol_lnk")
+    const pbl = $("#pbl_lnk")
+
     if (wb.mr == "m") {
       this.book.apply()
       this.select.apply()
       $(this.hid).show()
-      var book = wb.vs.book()
-      var chapter = wb.vs.chapter()
+      const book = wb.vs.book()
+      const chapter = wb.vs.chapter()
       if (book != "x" && chapter > 0) {
-        bol.attr("href", bol_url + "/ETCBC4/" + book + "/" + chapter)
+        bol.attr("href", `${bol_url}/ETCBC4/${book}/${chapter}`)
         bol.show()
-        pbl.attr("href", pbl_url + "/" + book + "/" + chapter)
+        pbl.attr("href", `${pbl_url}/${book}/${chapter}`)
         pbl.show()
       } else {
         bol.hide()
@@ -1215,9 +1276,10 @@ function MSelect() {
       pbl.hide()
     }
   }
-  this.set_vselect = function (v) {
+
+  set_vselect(v) {
     if (versions[v]) {
-      $("#version_" + v).click(function (e) {
+      $(`#version_${v}`).click(e => {
         e.preventDefault()
         side_fetched["mw"] = false
         side_fetched["mq"] = false
@@ -1227,21 +1289,20 @@ function MSelect() {
       })
     }
   }
-  for (var v in versions) {
-    this.set_vselect(v)
-  }
-  $("#self_link").hide()
 }
 
-function PSelect() {
-  // for result page selection
-  var that = this
-  var select = "#select_contents_page"
-  this.name = "select_pages"
-  this.hid = "#" + this.name
-  this.select = new SelectItems("page")
-  this.apply = function () {
-    // apply result page selection: fill in headings on the page
+class PSelect {
+  /* for result page selection
+   */
+  constructor() {
+    this.name = "select_pages"
+    this.hid = `#${this.name}`
+    this.select = new SelectItems("page")
+  }
+
+  apply() {
+    /* apply result page selection: fill in headings on the page
+     */
     if (wb.mr == "r") {
       this.select.apply()
       $(this.hid).show()
@@ -1249,21 +1310,31 @@ function PSelect() {
       $(this.hid).hide()
     }
   }
-  this.add = function (response) {
-    // add the content portion of the response to the content portion of the page
+
+  add(response) {
+    /* add the content portion of the response to the content portion of the page
+     */
+    const select = "#select_contents_page"
     if (wb.mr == "r") {
       $(select).html(response.find(select).html())
     }
   }
 }
 
-function LSelect() {
-  // language selection
-  var that = this
-  this.name = "select_contents_lang"
-  this.hid = "#" + this.name
-  this.control = "#select_control_lang"
-  this.present = function () {
+class LSelect {
+  /* language selection
+   */
+  constructor() {
+    this.name = "select_contents_lang"
+    this.hid = "#" + this.name
+    this.control = "#select_control_lang"
+    $(this.control).click(e => {
+      e.preventDefault()
+      $(this.hid).dialog("open")
+    })
+  }
+
+  present() {
     $(this.hid).dialog({
       autoOpen: false,
       dialogClass: "items",
@@ -1273,85 +1344,83 @@ function LSelect() {
       width: "250px",
     })
   }
-  this.gen_html = function () {
-    // generate a new lang selector
-    var thelang = wb.vs.lang()
-    var nitems = booklangs.length
+
+  gen_html() {
+    /* generate a new lang selector
+     */
+    const thelang = wb.vs.lang()
+    const nitems = booklangs.length
     this.lastitem = nitems
-    var ht = ""
+    let ht = ""
     ht += '<table class="pagination">'
-    var langs = Object.keys(booklangs).sort()
-    for (var i in langs) {
-      var item = langs[i]
-      var langinfo = booklangs[item]
-      var name_en = langinfo[0]
-      var name_own = langinfo[1]
-      var clactive = thelang == item ? ' class="active"' : ""
-      ht +=
-        "<tr><td" +
-        clactive +
-        '><a class="itemnav" href="#" item="' +
-        item +
-        '">' +
-        name_own +
-        "</td>"
-      ht +=
-        "<td" +
-        clactive +
-        '><a class="itemnav" href="#" item="' +
-        item +
-        '">' +
-        name_en +
-        "</td></tr>"
+    const langs = Object.keys(booklangs).sort()
+    for (const item of langs) {
+      const langinfo = booklangs[item]
+      const name_en = langinfo[0]
+      const name_own = langinfo[1]
+      const clactive = thelang == item ? ' class="active"' : ""
+      ht += `
+      <tr>
+        <td${clactive}>
+          <a class="itemnav" href="#" item="${item}">${name_own}
+        </td>
+        <td${clactive}>
+          <a class="itemnav" href="#" item="${item}">${name_en}</td>
+      </tr>`
     }
     ht += "</table>"
     $(this.hid).html(ht)
     return nitems
   }
-  this.add_item = function (item) {
-    item.click(function (e) {
+
+  add_item(item) {
+    item.click(e => {
       e.preventDefault()
-      var newobj = $(this).closest("li")
-      var isloaded = newobj.hasClass("active")
+      const elem = $(e.target)
+      const newobj = elem.closest("li")
+      const isloaded = newobj.hasClass("active")
       if (!isloaded) {
-        var vals = {}
-        vals["lang"] = $(this).attr("item")
+        const vals = {}
+        vals["lang"] = elem.attr("item")
         wb.vs.mstatesv(vals)
-        that.update_vlabels()
+        this.update_vlabels()
         wb.vs.addHist()
         wb.material.apply()
-        //wb.go()
       }
     })
   }
-  this.update_vlabels = function () {
-    $("span[book]").each(function () {
-      $(this).html(booktrans[wb.vs.lang()][$(this).attr("book")])
+
+  update_vlabels() {
+    $("span[book]").each((i, el) => {
+      const elem = $(el)
+      elem.html(booktrans[wb.vs.lang()][elem.attr("book")])
     })
   }
 
-  this.apply = function () {
-    var showit = false
+  apply() {
     this.gen_html()
-    $("#select_contents_lang .itemnav").each(function () {
-      that.add_item($(this))
+    $("#select_contents_lang .itemnav").each((i, el) => {
+      const elem = $(el)
+      this.add_item(elem)
     })
     $(this.control).show()
     this.present()
   }
-  $(this.control).click(function (e) {
-    e.preventDefault()
-    $(that.hid).dialog("open")
-  })
 }
 
-function SelectBook() {
+class SelectBook {
   // book selection
-  var that = this
-  this.name = "select_contents_book"
-  this.hid = "#" + this.name
-  this.control = "#select_control_book"
-  this.present = function () {
+  constructor() {
+    this.name = "select_contents_book"
+    this.hid = "#" + this.name
+    this.control = "#select_control_book"
+    $(this.control).click(e => {
+      e.preventDefault()
+      $(this.hid).dialog("open")
+    })
+  }
+
+  present() {
     $(this.hid).dialog({
       autoOpen: false,
       dialogClass: "items",
@@ -1361,42 +1430,41 @@ function SelectBook() {
       width: "110px",
     })
   }
-  this.gen_html = function () {
-    // generate a new book selector
-    var thebook = wb.vs.book()
-    var lang = wb.vs.lang()
-    var thisbooksorder = thebooksorder[wb.version]
-    var nitems = thisbooksorder.length
+
+  gen_html() {
+    /* generate a new book selector
+     */
+    const thebook = wb.vs.book()
+    const lang = wb.vs.lang()
+    const thisbooksorder = thebooksorder[wb.version]
+    const nitems = thisbooksorder.length
+
     this.lastitem = nitems
-    var ht = ""
+
+    let ht = ""
     ht += '<div class="pagination"><ul>'
-    for (var i in thisbooksorder) {
-      var item = thisbooksorder[i]
-      var itemrep = booktrans[lang][item]
-      if (thebook == item) {
-        ht +=
-          '<li class="active"><a class="itemnav" href="#" item="' +
-          item +
-          '">' +
-          itemrep +
-          "</a></li>"
-      } else {
-        ht +=
-          '<li><a class="itemnav" href="#" item="' + item + '">' + itemrep + "</a></li>"
-      }
+    for (const item of thisbooksorder) {
+      const itemrep = booktrans[lang][item]
+      const liCls = thebook == item ? ' class="active"' : ''
+      ht += `
+        <li${liCls}>
+          <a class="itemnav" href="#" item="${item}">${itemrep}</a>
+        </li>`
     }
     ht += "</ul></div>"
     $(this.hid).html(ht)
     return nitems
   }
-  this.add_item = function (item) {
-    item.click(function (e) {
+
+  add_item(item) {
+    item.click(e => {
       e.preventDefault()
-      var newobj = $(this).closest("li")
-      var isloaded = newobj.hasClass("active")
+      const elem = $(e.target)
+      const newobj = elem.closest("li")
+      const isloaded = newobj.hasClass("active")
       if (!isloaded) {
-        var vals = {}
-        vals["book"] = $(this).attr("item")
+        const vals = {}
+        vals["book"] = elem.attr("item")
         vals["chapter"] = "1"
         vals["verse"] = "1"
         wb.vs.mstatesv(vals)
@@ -1405,111 +1473,116 @@ function SelectBook() {
       }
     })
   }
-  this.apply = function () {
-    var showit = false
+
+  apply() {
     this.gen_html()
-    $("#select_contents_book .itemnav").each(function () {
-      that.add_item($(this))
+    $("#select_contents_book .itemnav").each((i, el) => {
+      const elem = $(el)
+      this.add_item(elem)
     })
     $(this.control).show()
     this.present()
   }
-  $(this.control).click(function (e) {
-    e.preventDefault()
-    $(that.hid).dialog("open")
-  })
 }
 
-function SelectItems(key) {
-  // both for chapters and for result pages
-  var that = this
-  this.key = key
-  this.other_key = key == "chapter" ? "page" : "chapter"
-  this.name = "select_contents_" + this.key
-  this.other_name = "select_contents_" + this.other_key
-  this.hid = "#" + this.name
-  this.other_hid = "#" + this.other_name
-  this.control = "#select_control_" + this.key
-  this.prev = $("#prev_" + this.key)
-  this.next = $("#next_" + this.key)
-  this.go = function () {
+class SelectItems {
+  /* both for chapters and for result pages
+   */
+  constructor(key) {
+    this.key = key
+    this.other_key = key == "chapter" ? "page" : "chapter"
+    this.name = "select_contents_" + this.key
+    this.other_name = "select_contents_" + this.other_key
+    this.hid = "#" + this.name
+    this.other_hid = "#" + this.other_name
+    this.control = "#select_control_" + this.key
+    this.prev = $("#prev_" + this.key)
+    this.next = $("#next_" + this.key)
+
+    this.prev.click(e => {
+      e.preventDefault()
+      const elem = $(e.target)
+      const vals = {}
+      vals[this.key] = elem.attr("contents")
+      vals["verse"] = "1"
+      wb.vs.mstatesv(vals)
+      wb.vs.addHist()
+      this.go()
+    })
+    this.next.click(e => {
+      e.preventDefault()
+      const elem = $(e.target)
+      const vals = {}
+      vals[this.key] = elem.attr("contents")
+      vals["verse"] = "1"
+      wb.vs.mstatesv(vals)
+      wb.vs.addHist()
+      this.go()
+    })
+    $(this.control).click(e => {
+      e.preventDefault()
+      $(this.hid).dialog("open")
+    })
+  }
+
+  go() {
     if (this.key == "chapter") {
       wb.go()
     } else {
       wb.go_material()
     }
   }
-  this.prev.click(function (e) {
-    e.preventDefault()
-    var vals = {}
-    vals[that.key] = $(this).attr("contents")
-    vals["verse"] = "1"
-    wb.vs.mstatesv(vals)
-    wb.vs.addHist()
-    that.go()
-  })
-  this.next.click(function (e) {
-    e.preventDefault()
-    var vals = {}
-    vals[that.key] = $(this).attr("contents")
-    vals["verse"] = "1"
-    wb.vs.mstatesv(vals)
-    wb.vs.addHist()
-    that.go()
-  })
-  this.present = function () {
+
+  present() {
     close_dialog($(this.other_hid))
     $(this.hid).dialog({
       autoOpen: false,
       dialogClass: "items",
       closeOnEscape: true,
       modal: false,
-      title: "choose " + that.key,
+      title: "choose " + this.key,
       width: "200px",
     })
   }
-  this.gen_html = function () {
-    // generate a new page selector
+
+  gen_html() {
+    /* generate a new page selector
+     */
+    let theitem
+    let itemlist
+    let nitems
+
     if (this.key == "chapter") {
-      var thebook = wb.vs.book()
-      var theitem = wb.vs.chapter()
-      var nitems = thebook != "x" ? thebooks[wb.version][thebook] : 0
+      const thebook = wb.vs.book()
+      theitem = wb.vs.chapter()
+      nitems = thebook != "x" ? thebooks[wb.version][thebook] : 0
       this.lastitem = nitems
-      var itemlist = new Array(nitems)
-      for (var i = 0; i < nitems; i++) {
+      itemlist = new Array(nitems)
+      for (let i = 0; i < nitems; i++) {
         itemlist[i] = i + 1
       }
     } else {
-      // 'page'
-      var theitem = wb.vs.page()
-      var nitems = $("#rp_pages").val()
+      /* 'page'
+       */
+      theitem = wb.vs.page()
+      nitems = $("#rp_pages").val()
       this.lastitem = nitems
-      var itemlist = []
+      itemlist = []
       if (nitems) {
         itemlist = $.parseJSON($("#rp_pagelist").val())
       }
     }
-    var ht = ""
+
+    let ht = ""
     if (nitems != undefined) {
       if (nitems != 0) {
         ht = '<div class="pagination"><ul>'
-        for (var i in itemlist) {
-          var item = itemlist[i]
-          if (theitem == item) {
-            ht +=
-              '<li class="active"><a class="itemnav" href="#" item="' +
-              item +
-              '">' +
-              item +
-              "</a></li>"
-          } else {
-            ht +=
-              '<li><a class="itemnav" href="#" item="' +
-              item +
-              '">' +
-              item +
-              "</a></li>"
-          }
+        for (const item of itemlist) {
+          const liCls = theitem == item ? ' class="active"' : ''
+          ht += `
+          <li${liCls}>
+            <a class="itemnav" href="#" item="${item}">${item}</a>
+          </li>`
         }
         ht += "</ul></div>"
       }
@@ -1517,31 +1590,35 @@ function SelectItems(key) {
     }
     return nitems
   }
-  this.add_item = function (item) {
-    item.click(function (e) {
+
+  add_item(item) {
+    item.click(e => {
       e.preventDefault()
-      var newobj = $(this).closest("li")
-      var isloaded = newobj.hasClass("active")
+      const elem = $(e.target)
+      const newobj = elem.closest("li")
+      const isloaded = newobj.hasClass("active")
       if (!isloaded) {
-        var vals = {}
-        vals[that.key] = $(this).attr("item")
+        const vals = {}
+        vals[this.key] = elem.attr("item")
         vals["verse"] = "1"
         wb.vs.mstatesv(vals)
         wb.vs.addHist()
-        that.go()
+        this.go()
       }
     })
   }
-  this.apply = function () {
-    var showit = (showit = this.gen_html() > 0)
+
+  apply() {
+    const showit = this.gen_html() > 0
     if (!showit) {
       $(this.control).hide()
     } else {
-      $("#select_contents_" + this.key + " .itemnav").each(function () {
-        that.add_item($(this))
+      $(`#select_contents_${this.key} .itemnav`).each((i, el) => {
+        const elem = $(el)
+        this.add_item(elem)
       })
       $(this.control).show()
-      var thisitem = parseInt(this.key == "page" ? wb.vs.page() : wb.vs.chapter())
+      const thisitem = parseInt(this.key == "page" ? wb.vs.page() : wb.vs.chapter())
       if (thisitem == undefined || thisitem == 1) {
         this.prev.hide()
       } else {
@@ -1557,40 +1634,34 @@ function SelectItems(key) {
     }
     this.present()
   }
-  $(this.control).click(function (e) {
-    e.preventDefault()
-    $(that.hid).dialog("open")
-  })
 }
 
-function CSelect(vr, qw) {
-  // for chart selection
-  var that = this
-  this.vr = vr
-  this.qw = qw
-  this.control = "#select_control_chart_" + vr + "_" + qw
-  this.select = "#select_contents_chart_" + vr + "_" + qw
-  this.loaded = {}
-  this.init = function () {
-    $(that.control).click(function (e) {
+class CSelect {
+  /* for chart selection
+   */
+  constructor(vr, qw) {
+    this.vr = vr
+    this.qw = qw
+    this.control = `#select_control_chart_${vr}_${qw}`
+    this.select = `#select_contents_chart_${vr}_${qw}`
+    this.loaded = {}
+  }
+
+  init() {
+    $(this.control).click(e => {
       e.preventDefault()
-      that.apply()
+      this.apply()
     })
   }
-  this.apply = function () {
-    if (!that.loaded[that.qw + "_" + wb.iid]) {
+
+  apply() {
+    if (!this.loaded[`${this.qw}_${wb.iid}`]) {
       if (
-        $("#select_contents_chart_" + that.vr + "_" + that.qw + "_" + wb.iid).length ==
+        $(`#select_contents_chart_${this.vr}_${this.qw}_${wb.iid}`).length ==
         0
       ) {
         $(this.select).append(
-          '<span id="select_contents_chart_' +
-            that.vr +
-            "_" +
-            that.qw +
-            "_" +
-            wb.iid +
-            '"></span>'
+          `<span id="select_contents_chart_${this.vr}_${this.qw}_${wb.iid}"></span>`
         )
       }
       this.fetch(wb.iid)
@@ -1598,64 +1669,71 @@ function CSelect(vr, qw) {
       this.show()
     }
   }
-  this.fetch = function (iid) {
-    var vars = "?version=" + this.vr + "&qw=" + this.qw + "&iid=" + iid
-    $(this.select + "_" + iid).load(
-      chart_url + vars,
-      function () {
-        that.loaded[that.qw + "_" + iid] = true
-        that.process(iid)
+
+  fetch(iid) {
+    const vars = `?version=${this.vr}&qw=${this.qw}&iid=${iid}`
+    $(`${this.select}_${iid}`).load(
+      `${chart_url}${vars}`,
+      () => {
+        this.loaded[`${this.qw}_${iid}`] = true
+        this.process(iid)
       },
       "html"
     )
   }
-  this.process = function (iid) {
+
+  process(iid) {
     this.gen_html(iid)
-    $(this.select + "_" + iid + " .cnav").each(function () {
-      that.add_item($(this), iid)
+    $(`${this.select}_${iid} .cnav`).each((i, el) => {
+      const elem = $(el)
+      this.add_item(elem, iid)
     })
-    $("#theitemc").click(function (e) {
+    $("#theitemc").click(e => {
       e.preventDefault()
-      var vals = {}
+      const vals = {}
       vals["iid"] = iid
       vals["mr"] = "r"
-      vals["version"] = that.vr
-      vals["qw"] = that.qw
+      vals["version"] = this.vr
+      vals["qw"] = this.qw
       wb.vs.mstatesv(vals)
       wb.vs.addHist()
       wb.go()
     })
     $("#theitemc").html(
-      "Back to " + $("#theitem").html() + " (version " + that.vr + ")"
-    ) // fill in the Back to query/word line in a chart
+      `Back to ${$("#theitem").html()} (version ${this.vr})`
+    )
+    /* fill in the Back to query/word line in a chart
+     */
     this.present(iid)
     this.show(iid)
   }
 
-  this.present = function (iid) {
-    $(this.select + "_" + iid).dialog({
+  present(iid) {
+    $(`${this.select}_${iid}`).dialog({
       autoOpen: false,
       dialogClass: "items",
       closeOnEscape: true,
-      close: function () {
-        that.loaded[that.qw + "_" + iid] = false
-        $(that.select + "_" + iid).html("")
+      close: () => {
+        this.loaded[`${this.qw}_${iid}`] = false
+        $(`${this.select}_${iid}`).html("")
       },
       modal: false,
-      title: "chart for " + style[that.qw]["tag"] + " (version " + that.vr + ")",
+      title: `chart for ${style[this.qw]["tag"]} (version ${this.vr})`,
       width: chart_width,
       position: { my: "left top", at: "left top", of: window },
     })
   }
-  this.show = function (iid) {
-    $(this.select + "_" + iid).dialog("open")
+
+  show(iid) {
+    $(`${this.select}_${iid}`).dialog("open")
   }
 
-  this.gen_html = function (iid) {
-    // generate a new chart
-    var nbooks = 0
-    var booklist = $("#r_chartorder" + this.qw).val()
-    var bookdata = $("#r_chart" + this.qw).val()
+  gen_html(iid) {
+    /* generate a new chart
+     */
+    let nbooks = 0
+    let booklist = $(`#r_chartorder${this.qw}`).val()
+    let bookdata = $(`#r_chart${this.qw}`).val()
     if (booklist) {
       booklist = $.parseJSON(booklist)
       bookdata = $.parseJSON(bookdata)
@@ -1664,36 +1742,39 @@ function CSelect(vr, qw) {
       booklist = []
       bookdata = {}
     }
-    var ht = ""
-    ht +=
-      '<p><a id="theitemc" title="back to ' +
-      style[this.qw]["tag"] +
-      " (version " +
-      that.vr +
-      ')" href="#">back</a></p>'
-    ht += '<table class="chart">'
-    var ccl = ccolors.length
-    for (var b in booklist) {
-      var book = booklist[b]
-      var blocks = bookdata[book]
-      ht +=
-        '<tr><td class="bnm">' + book + '</td><td class="chp"><table class="chp"><tr>'
-      var l = 0
-      for (var i = 0; i < blocks.length; i++) {
+    let ht = ""
+    ht += `
+      <p>
+        <a id="theitemc"
+          title="back to ${style[this.qw]["tag"]} (version ${this.vr})"
+          href="#">back</a>
+        </p>
+        <table class="chart">`
+
+    const ccl = ccolors.length
+    for (const book of booklist) {
+      const blocks = bookdata[book]
+      ht += `
+        <tr>
+          <td class="bnm">${book}</td>
+          <td class="chp"><table class="chp">
+        <tr>`
+      let l = 0
+      for (let i = 0; i < blocks.length; i++) {
         if (l == chart_cols) {
           ht += "</tr><tr>"
           l = 0
         }
-        var block_info = blocks[i]
-        var chnum = block_info[0]
-        var ch_range = block_info[1] + "-" + block_info[2]
-        var blres = block_info[3]
-        var blsize = block_info[4]
-        var blres_select = blres >= ccl ? ccl - 1 : blres
-        var z = ccolors[blres_select]
-        var s = "&nbsp;"
-        var sz = ""
-        var sc = ""
+        const block_info = blocks[i]
+        const chnum = block_info[0]
+        const ch_range = block_info[1] + "-" + block_info[2]
+        const blres = block_info[3]
+        const blsize = block_info[4]
+        const blres_select = blres >= ccl ? ccl - 1 : blres
+        const z = ccolors[blres_select]
+        let s = "&nbsp;"
+        let sz = ""
+        let sc = ""
         if (blsize < 25) {
           s = "="
           sc = "s1"
@@ -1704,48 +1785,42 @@ function CSelect(vr, qw) {
         if (blsize < 100) {
           sz = " (" + blsize + "%)"
         }
-        ht +=
-          '<td class="' +
-          z +
-          '"><a title="' +
-          ch_range +
-          sz +
-          ": " +
-          blres +
-          '" class="cnav ' +
-          sc +
-          '" href="#" b=' +
-          book +
-          ' ch="' +
-          chnum +
-          '">' +
-          s +
-          "</a></td>"
+        ht += `
+          <td class="${z}">
+            <a
+              title="${ch_range}${sz}: ${blres}"
+              class="cnav ${sc}"
+              href="#"
+              b=${book} ch="${chnum}"
+            >${s}</a>
+          </td>`
         l++
       }
       ht += "</tr></table></td></tr>"
     }
     ht += "</table>"
-    $(this.select + "_" + iid).html(ht)
+    $(`${this.select}_${iid}`).html(ht)
     return nbooks
   }
-  this.add_item = function (item, iid) {
-    item.click(function (e) {
+
+  add_item(item, iid) {
+    item.click(e => {
       e.preventDefault()
-      var vals = {}
-      vals["book"] = $(this).attr("b")
-      vals["chapter"] = $(this).attr("ch")
+      const elem = $(e.target)
+      let vals = {}
+      vals["book"] = elem.attr("b")
+      vals["chapter"] = elem.attr("ch")
       vals["mr"] = "m"
-      vals["version"] = that.vr
+      vals["version"] = this.vr
       wb.vs.mstatesv(vals)
       wb.vs.hstatesv("q", { sel_one: "white", active: "hlcustom" })
       wb.vs.hstatesv("w", { sel_one: "black", active: "hlcustom" })
       wb.vs.cstatexx("q")
       wb.vs.cstatexx("w")
-      if (that.qw != "n") {
+      if (this.qw != "n") {
         vals = {}
-        vals[iid] = wb.vs.colormap(that.qw)[iid] || defcolor(that.qw == "q", iid)
-        wb.vs.cstatesv(that.qw, vals)
+        vals[iid] = wb.vs.colormap(this.qw)[iid] || defcolor(this.qw == "q", iid)
+        wb.vs.cstatesv(this.qw, vals)
       }
       wb.vs.addHist()
       wb.go()
@@ -1753,31 +1828,43 @@ function CSelect(vr, qw) {
   }
 }
 
-// MATERIAL (messages when retrieving, storing the contents)
+/* MATERIAL (messages when retrieving, storing the contents)
+ *
+ */
 
-function MMessage() {
+class MMessage {
   // diagnostic output
-  this.name = "material_message"
-  this.hid = "#" + this.name
-  this.add = function (response) {
+  //
+  constructor() {
+    this.name = "material_message"
+    this.hid = "#" + this.name
+  }
+
+  add(response) {
     $(this.hid).html(response.children(this.hid).html())
   }
-  this.msg = function (m) {
+
+  msg(m) {
     $(this.hid).html(m)
   }
 }
 
-function MContent() {
-  // the actual Hebrew content, either plain text or tabbed data
-  this.name_content = "#material_content"
-  this.select = function () {}
-  this.add = function (response) {
-    $("#material_" + wb.vs.tp()).html(response.children(this.name_content).html())
+class MContent {
+  /* the actual Hebrew content, either plain text or tabbed data
+   */
+  constructor() {
+    this.name_content = "#material_content"
+    this.select = () => {}
   }
-  this.show = function () {
-    var this_tp = wb.vs.tp()
-    for (var tp in next_tp) {
-      var this_material = $("#material_" + tp)
+
+  add(response) {
+    $(`#material_${wb.vs.tp()}`).html(response.children(this.name_content).html())
+  }
+
+  show() {
+    const this_tp = wb.vs.tp()
+    for (const tp in next_tp) {
+      const this_material = $(`#material_${tp}`)
       if (this_tp == tp) {
         this_material.show()
       } else {
@@ -1787,60 +1874,112 @@ function MContent() {
   }
 }
 
-// MATERIAL SETTINGS (for choosing between plain text and tabbed data)
+/* MATERIAL SETTINGS (for choosing between plain text and tabbed data)
+ *
+ */
 
-function adaptDocBaseVersion(targetString) {
-  //var versionRep = (wb.version == '4' || wb.version == '4b') ? (wb.version+'/features/comments') : wb.version;
-  //return targetString+'/'+versionRep
-  return targetString
-}
-function adaptDocName() {
-  return "0_home"
-}
+class MSettings {
+  constructor(content) {
+    const hltext = $("#mtxt_p")
+    const hltabbed = $("#mtxt_tb1")
+    this.legend = $("#datalegend")
+    this.legendc = $("#datalegend_control")
+    this.name = "material_settings"
+    this.hid = `#${this.name}`
+    this.content = content
+    this.hebrewsettings = new HebrewSettings()
 
-function MSettings(content) {
-  var that = this
-  var hltext = $("#mtxt_p")
-  var hltabbed = $("#mtxt_tb1")
-  var legend = $("#datalegend")
-  var legendc = $("#datalegend_control")
-  this.name = "material_settings"
-  this.hid = "#" + this.name
-  this.content = content
-  this.hebrewsettings = new HebrewSettings()
-  hltext.show()
-  hltabbed.show()
-  legendc.click(function (e) {
-    e.preventDefault()
-    $("#datalegend")
-      .find("a[fname]")
-      .each(function () {
-        var thisFeaturehost = adaptDocBaseVersion(featurehost)
-        var url = thisFeaturehost + "/" + $(this).attr("fname")
-        $(this).attr("href", url)
+    hltext.show()
+    hltabbed.show()
+
+    this.legendc.click(e => {
+      e.preventDefault()
+      $("#datalegend")
+        .find("a[fname]")
+        .each((i, el) => {
+          const elem = $(el)
+          const url = `${featurehost}/${elem.attr("fname")}`
+          elem.attr("href", url)
+        })
+      this.legend.dialog({
+        autoOpen: true,
+        dialogClass: "legend",
+        closeOnEscape: true,
+        modal: false,
+        title: "legend",
+        width: "600px",
       })
-    legend.dialog({
-      autoOpen: true,
-      dialogClass: "legend",
-      closeOnEscape: true,
-      modal: false,
-      title: "legend",
-      width: "600px",
     })
-  })
-  this.apply = function () {
-    var hlradio = $(".mhradio")
-    var plradio = $(".mtradio")
-    var new_tp = wb.vs.tp()
-    var new_tr = wb.vs.tr()
-    var newc = $("#m" + new_tp)
-    var newp = $("#m" + new_tr)
+
+    $(".mhradio").click(e => {
+      e.preventDefault()
+      const elem = $(e.target)
+      const old_tp = wb.vs.tp()
+      let new_tp = elem.attr("id").substring(1)
+      if (old_tp == "txt_p") {
+        if (old_tp == new_tp) {
+          return
+        }
+      } else if (old_tp == new_tp) {
+        new_tp = next_tp[old_tp]
+        if (new_tp == "txt_p") {
+          new_tp = next_tp[new_tp]
+        }
+      }
+      wb.vs.mstatesv({ tp: new_tp })
+      wb.vs.addHist()
+      this.apply()
+    })
+
+    $(".mtradio").click(e => {
+      e.preventDefault()
+      const elem = $(e.target)
+      const old_tr = wb.vs.tr()
+      let new_tr = elem.attr("id").substring(1)
+      if (old_tr == new_tr) {
+        new_tr = next_tr[old_tr]
+      }
+
+      wb.vs.mstatesv({ tr: new_tr })
+      wb.vs.addHist()
+      this.apply()
+    })
+
+    for (let i = 1; i <= tab_views; i++) {
+      const mc = $(`#mtxt_tb${i}`)
+      mc.attr("title", tab_info[`txt_tb${i}`])
+      if (i == 1) {
+        mc.show()
+      } else {
+        mc.hide()
+      }
+    }
+
+    for (const l in tr_labels) {
+      const t = tr_info[l]
+      const mc = $(`#m${t}`)
+      mc.attr("title", tr_labels[t])
+      if (l == "hb") {
+        mc.show()
+      } else {
+        mc.hide()
+      }
+    }
+  }
+
+  apply() {
+    const hlradio = $(".mhradio")
+    const plradio = $(".mtradio")
+    const new_tp = wb.vs.tp()
+    const new_tr = wb.vs.tr()
+    const newc = $(`#m${new_tp}`)
+    const newp = $(`#m${new_tr}`)
     hlradio.removeClass("ison")
     plradio.removeClass("ison")
     if (new_tp != "txt_p" && new_tp != "txt_il") {
-      for (var i = 1; i <= tab_views; i++) {
-        var mc = $("#mtxt_tb" + i)
-        if ("txt_tb" + i == new_tp) {
+      for (let i = 1; i <= tab_views; i++) {
+        const mc = $(`#mtxt_tb${i}`)
+        if (`txt_tb${i}` == new_tp) {
           mc.show()
         } else {
           mc.hide()
@@ -1852,217 +1991,159 @@ function MSettings(content) {
     newc.addClass("ison")
     newp.addClass("ison")
     this.content.show()
-    legend.hide()
-    close_dialog(legend)
-    legendc.hide()
-    // I forgot why I thought setting the csv exports here was necessary. It is done after filling the sidebars.
-    /*
-        for (var v in versions) {
-            if (versions[v]) {
-                set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
-            }
-        }
-        */
+    this.legend.hide()
+    close_dialog(this.legend)
+    this.legendc.hide()
     wb.material.adapt()
   }
-  $(".mhradio").click(function (e) {
-    e.preventDefault()
-    var old_tp = wb.vs.tp()
-    var new_tp = $(this).attr("id").substring(1)
-    if (old_tp == "txt_p") {
-      if (old_tp == new_tp) {
-        return
-      }
-    } else if (old_tp == new_tp) {
-      new_tp = next_tp[old_tp]
-      if (new_tp == "txt_p") {
-        new_tp = next_tp[new_tp]
-      }
-    }
-
-    wb.vs.mstatesv({ tp: new_tp })
-    wb.vs.addHist()
-    that.apply()
-  })
-  $(".mtradio").click(function (e) {
-    e.preventDefault()
-    var old_tr = wb.vs.tr()
-    var new_tr = $(this).attr("id").substring(1)
-    if (old_tr == new_tr) {
-      new_tr = next_tr[old_tr]
-    }
-
-    wb.vs.mstatesv({ tr: new_tr })
-    wb.vs.addHist()
-    that.apply()
-  })
-  for (var i = 1; i <= tab_views; i++) {
-    var mc = $("#mtxt_tb" + i)
-    mc.attr("title", tab_info["txt_tb" + i])
-    if (i == 1) {
-      mc.show()
-    } else {
-      mc.hide()
-    }
-  }
-  for (var l in tr_labels) {
-    var t = tr_info[l]
-    var mc = $("#m" + t)
-    mc.attr("title", tr_labels[t])
-    if (l == "hb") {
-      mc.show()
-    } else {
-      mc.hide()
-    }
-  }
 }
 
-// HEBREW DATA (which fields to show if interlinear text is displayed)
+/* HEBREW DATA (which fields to show if interlinear text is displayed)
+ *
+ */
 
-function HebrewSettings() {
-  for (var fld in wb.vs.ddata()) {
-    this[fld] = new HebrewSetting(fld)
+class HebrewSettings {
+  constructor() {
+    for (const fld in wb.vs.ddata()) {
+      this[fld] = new HebrewSetting(fld)
+    }
   }
-  this.apply = function () {
-    for (var fld in wb.vs.ddata()) {
+
+  apply() {
+    for (const fld in wb.vs.ddata()) {
       this[fld].apply()
     }
-    for (var v in versions) {
+    for (const v in versions) {
       set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
     }
   }
 }
 
-function HebrewSetting(fld) {
-  var that = this
-  this.name = fld
-  this.hid = "#" + this.name
-  $(this.hid).click(function (e) {
-    var vals = {}
-    vals[fld] = $(this).prop("checked") ? "v" : "x"
-    wb.vs.dstatesv(vals)
-    wb.vs.addHist()
-    that.applysetting()
-    for (var v in versions) {
-      set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
-    }
-  })
-  this.apply = function () {
-    var val = wb.vs.ddata()[this.name]
+class HebrewSetting {
+  constructor(fld) {
+    this.name = fld
+    this.hid = `#${this.name}`
+    $(this.hid).click(e => {
+      const elem = $(e.target)
+      const vals = {}
+      vals[fld] = elem.prop("checked") ? "v" : "x"
+      wb.vs.dstatesv(vals)
+      wb.vs.addHist()
+      this.applysetting()
+      for (const v in versions) {
+        set_csv(v, wb.vs.mr(), wb.vs.qw(), wb.vs.iid())
+      }
+    })
+  }
+
+  apply() {
+    const val = wb.vs.ddata()[this.name]
     $(this.hid).prop("checked", val == "v")
     this.applysetting()
   }
-  this.applysetting = function () {
+
+  applysetting() {
     if (wb.vs.ddata()[this.name] == "v") {
-      $("." + this.name).each(function () {
-        $(this).show()
+      $(`.${this.name}`).each((i, el) => {
+        const elem = $(el)
+        elem.show()
       })
     } else {
-      $("." + this.name).each(function () {
-        $(this).hide()
+      $(`.${this.name}`).each((i, el) => {
+        const elem = $(el)
+        elem.hide()
       })
     }
   }
 }
 
-// SIDEBARS
+/* SIDEBARS
+ *
+ */
 
-/*
-
-The main material kan be two kinds (mr)
-
-m = material: chapters from books
-r = query/word results
-
-There are four kinds of sidebars, indicated by two letters, of which the first indicates the mr
-
-mq = list of queries relevant to main material
-mw = list of words relevant to main material
-rq = display of query record, the main material are the query results
-rw = display of word record, the main material are the word results
-
-The list sidebars (m) have a color picker for selecting a uniform highlight color,
-plus controls for deciding whether no, uniform, custom, or many colors will be used.
-
-The record-side bars (r) only have a single color picker, for
-choosing the color associated with the item (a query or a word).
-
-When items are displayed in the list sidebars, they each have a color picker that
-is identical to the one used for that item in the record sidebar.
-
-The colorpickers for choosing an associated item color, consist of a checkbox and a proper colorpicker.
-The checkbox indicates whether the color is customized.
-A color gets customized when the user selects an other color than the default one, or by checking the box.
-
-When the user has chosen custom colors, all highlights will be done with the uniform color, except
-the customized ones.
-
-Queries are highlighted by background color, words by foreground colors.
-Although the names for background and foreground colors are identical, their actual values are not.
-Foreground colors are darkened, background colors are lightened.
-This is done for better visibility.
-
-All color asscociations are preserved in cookies, one for queries, and one for words.
-Nowhere else are they stored, but they can be exported as a (lomg) link.
-By using the share link, the user can preserve color settings in a notebook, or mail them to colleagues.
-
-*/
-
-function Sidebars() {
+class Sidebars {
   // TOP LEVEL: all four kinds of sidebars
-  this.sidebar = {}
-  for (var mr in { m: 1, r: 1 }) {
-    for (var qw in { q: 1, w: 1, n: 1 }) {
-      this.sidebar[mr + qw] = new Sidebar(mr, qw)
+  constructor() {
+    this.sidebar = {}
+    for (const mr of ["m", "r"]) {
+      for (const qw of ["q", "w", "n"]) {
+        this.sidebar[`${mr}${qw}`] = new Sidebar(mr, qw)
+      }
     }
+    side_fetched = {}
   }
-  side_fetched = {}
-  this.apply = function () {
-    for (var mr in { m: 1, r: 1 }) {
-      for (var qw in { q: 1, w: 1, n: 1 }) {
-        this.sidebar[mr + qw].apply()
+
+  apply() {
+    for (const mr of ["m", "r"]) {
+      for (const qw of ["q", "w", "n"]) {
+        this.sidebar[`${mr}${qw}`].apply()
       }
     }
   }
-  this.after_material_fetch = function () {
-    for (var qw in { q: 1, w: 1, n: 1 }) {
-      side_fetched["m" + qw] = false
+
+  after_material_fetch() {
+    for (const qw of ["q", "w", "n"]) {
+      side_fetched[`m${qw}`] = false
     }
   }
-  this.after_item_fetch = function () {
-    for (var qw in { q: 1, w: 1, n: 1 }) {
-      side_fetched["r" + qw] = false
+
+  after_item_fetch() {
+    for (const qw of ["q", "w", "n"]) {
+      side_fetched[`r${qw}`] = false
     }
   }
 }
 
-// SPECIFIC sidebars, the [mr][qw] type is frozen into the object
+/* SPECIFIC sidebars, the [mr][qw] type is frozen into the object
+ *
+ */
 
-function Sidebar(mr, qw) {
-  // the individual sidebar, parametrized with qr and mw to specify one of the four kinds
-  var that = this
-  this.mr = mr
-  this.qw = qw
-  this.name = "side_bar_" + mr + qw
-  this.hid = "#" + this.name
-  var thebar = $(this.hid)
-  var thelist = $("#side_material_" + mr + qw)
-  var theset = $("#side_settings_" + mr + qw)
-  var hide = $("#side_hide_" + mr + qw)
-  var show = $("#side_show_" + mr + qw)
-  this.content = new SContent(mr, qw)
-  this.add_version = function (v) {
-    this.cselect[v] = new CSelect(v, qw)
-  }
-  if (mr == "r") {
-    this.cselect = {}
-    for (var v in versions) {
-      if (versions[v]) {
-        this.add_version(v)
+class Sidebar {
+  /* the individual sidebar, parametrized with qr and mw
+   * to specify one of the four kinds
+   */
+  constructor(mr, qw) {
+    this.mr = mr
+    this.qw = qw
+    this.name = `side_bar_${mr}${qw}`
+    this.hid = `#${this.name}`
+    this.hide = $(`#side_hide_${mr}${qw}`)
+    this.show = $(`#side_show_${mr}${qw}`)
+    this.content = new SContent(mr, qw)
+
+    if (mr == "r") {
+      this.cselect = {}
+      for (const v in versions) {
+        if (versions[v]) {
+          this.add_version(v)
+        }
       }
     }
+    this.show.click(e => {
+      e.preventDefault()
+      wb.vs.hstatesv(this.qw, { get: "v" })
+      wb.vs.addHist()
+      this.apply()
+    })
+
+    this.hide.click(e => {
+      e.preventDefault()
+      wb.vs.hstatesv(this.qw, { get: "x" })
+      wb.vs.addHist()
+      this.apply()
+    })
   }
-  this.apply = function () {
+
+  add_version(v) {
+    const { qw } = this
+    this.cselect[v] = new CSelect(v, qw)
+  }
+
+  apply() {
+    const { mr, qw, hide, show } = this
+    const thebar = $(this.hid)
+    const thelist = $(`#side_material_${mr}${qw}`)
+    const theset = $(`#side_settings_${mr}${qw}`)
     if (this.mr != wb.mr || (this.mr == "r" && this.qw != wb.qw)) {
       thebar.hide()
     } else {
@@ -2087,149 +2168,152 @@ function Sidebar(mr, qw) {
       this.content.apply()
     }
   }
-  show.click(function (e) {
-    e.preventDefault()
-    wb.vs.hstatesv(that.qw, { get: "v" })
-    wb.vs.addHist()
-    that.apply()
-  })
-  hide.click(function (e) {
-    e.preventDefault()
-    wb.vs.hstatesv(that.qw, { get: "x" })
-    wb.vs.addHist()
-    that.apply()
-  })
 }
 
-// SIDELIST MATERIAL
+/* SIDELIST MATERIAL
+ *
+ */
 
-function SContent(mr, qw) {
+class SContent {
   // the contents of an individual sidebar
-  var that = this
-  this.mr = mr
-  this.qw = qw
-  this.other_mr = this.mr == "m" ? "r" : "m"
-  var thebar = $(this.hid)
-  var thelist = $("#side_material_" + mr + qw)
-  var hide = $("#side_hide_" + mr + qw)
-  var show = $("#side_show_" + mr + qw)
-  this.name = "side_material_" + mr + qw
-  this.hid = "#" + this.name
-  this.msg = function (m) {
+  constructor(mr, qw) {
+    this.mr = mr
+    this.qw = qw
+    this.other_mr = this.mr == "m" ? "r" : "m"
+    const thebar = $(this.hid)
+    const hide = $("#side_hide_" + mr + qw)
+    const show = $("#side_show_" + mr + qw)
+    this.name = "side_material_" + mr + qw
+    this.hid = "#" + this.name
+
+    if (mr == "r") {
+      if (qw != "n") {
+        wb.picker1[qw] = new Colorpicker1(qw, null, true, false)
+      }
+    }
+  }
+
+  msg(m) {
     $(this.hid).html(m)
   }
-  this.set_vselect = function (v) {
+
+  set_vselect(v) {
     if (versions[v]) {
-      $("#version_s_" + v).click(function (e) {
+      $(`#version_s_${v}`).click(e => {
         e.preventDefault()
         wb.vs.mstatesv({ version: v })
         wb.go()
       })
     }
   }
-  this.process = function () {
+
+  process() {
+    const { mr, qw } = this
+
     wb.sidebars.after_item_fetch()
     this.sidelistitems()
     if (this.mr == "m") {
       wb.listsettings[this.qw].apply()
     } else {
-      for (var v in versions) {
+      for (const v in versions) {
         if (versions[v]) {
-          wb.sidebars.sidebar["r" + this.qw].cselect[v].init()
+          wb.sidebars.sidebar[`r${this.qw}`].cselect[v].init()
         }
       }
-      var vr = wb.version
-      var iid = wb.vs.iid()
-      $(".moredetail").click(function (e) {
+
+      const vr = wb.version
+      const iid = wb.vs.iid()
+
+      $(".moredetail").click(e => {
         e.preventDefault()
-        toggle_detail($(this))
+        const elem = $(e.target)
+        toggle_detail(elem)
       })
       $(".detail").hide()
-      $('div[version="' + vr + '"]')
+      $(`div[version="${vr}"]`)
         .find(".detail")
         .show()
-      this.msgo = new Msg("dbmsg_" + qw)
+
+      this.msgo = new Msg(`dbmsg_${qw}`)
+
+      let ufname, ulname
+
       if (qw == "q") {
         this.info = q
         $("#theqid").html(q.id)
-        var ufname = escapeHTML(q.ufname || "")
-        var ulname = escapeHTML(q.ulname || "")
-        var qname = escapeHTML(q.name || "")
-        $("#itemtag").val(ufname + " " + ulname + ": " + qname)
-        that.msgov = new Msg("dbmsg_qv")
+        ufname = escapeHTML(q.ufname || "")
+        ulname = escapeHTML(q.ulname || "")
+        const qname = escapeHTML(q.name || "")
+        $("#itemtag").val(`${ufname} ${ulname}: ${qname}`)
+        this.msgov = new Msg("dbmsg_qv")
         $("#is_pub_c").show()
         $("#is_pub_ro").hide()
       } else if (qw == "w") {
         this.info = w
         if ("versions" in w) {
-          var wvr = w.versions[vr]
-          var wentryh = escapeHTML(wvr.entry_heb)
-          var wentryid = escapeHTML(wvr.entryid)
-          $("#itemtag").val(wentryh + ": " + wentryid)
+          const wvr = w.versions[vr]
+          const wentryh = escapeHTML(wvr.entry_heb)
+          const wentryid = escapeHTML(wvr.entryid)
+          $("#itemtag").val(`${wentryh}: ${wentryid}`)
           $("#gobackw").attr(
             "href",
-            words_url +
-              "?lan=" +
-              wvr.lan +
-              "&letter=" +
-              wvr.entry_heb.charCodeAt(0) +
-              "&goto=" +
-              w.id
+            `${words_url}?lan=${wvr.lan}&` +
+            `letter=${wvr.entry_heb.charCodeAt(0)}&goto=${w.id}`
           )
         }
       } else if (qw == "n") {
         this.info = n
         if ("versions" in n) {
-          var ufname = escapeHTML(n.ufname)
-          var ulname = escapeHTML(n.ulname)
-          var kw = escapeHTML(n.kw)
-          var nvr = n.versions[vr]
-          $("#itemtag").val(ufname + " " + ulname + ": " + kw)
-          $("#gobackn").attr("href", notes_url + "?goto=" + n.id)
+          ufname = escapeHTML(n.ufname)
+          ulname = escapeHTML(n.ulname)
+          const kw = escapeHTML(n.kw)
+          const nvr = n.versions[vr]
+          $("#itemtag").val(`${ufname} ${ulname}: ${kw}`)
+          $("#gobackn").attr("href", `${notes_url}?goto=${n.id}`)
         }
       }
       if ("versions" in this.info) {
-        for (var v in this.info.versions) {
-          var extra = qw == "w" ? "" : ufname + "_" + ulname
+        for (const v in this.info.versions) {
+          const extra = qw == "w" ? "" : `${ufname}_${ulname}`
           this.set_vselect(v)
           set_csv(v, mr, qw, iid, extra)
         }
       }
-      msgs.forEach(function (m) {
-        that.msgo.msg(m)
-      })
+      for (const m of msgs) {
+        this.msgo.msg(m)
+      }
     }
 
-    var thistitle
+    let thistitle
     if (this.mr == "m") {
       thistitle =
-        "[" +
-        wb.vs.version() +
-        "] " +
-        wb.vs.book() +
-        " " +
-        wb.vs.chapter() +
-        ":" +
-        wb.vs.verse()
+        `[${wb.vs.version()}] ${wb.vs.book()} ${wb.vs.chapter()}:${wb.vs.verse()}`
     } else {
       thistitle = $("#itemtag").val()
-      $("#theitem").html(thistitle + " ") // fill in the title of the query/word/note above the verse material and put it in the page title as well
+      $("#theitem").html(`${thistitle} `)
+      /* fill in the title of the query/word/note above the verse material
+       * and put it in the page title as well
+       */
     }
     document.title = thistitle
 
     if (this.qw == "q") {
       if (this.mr == "m") {
-        // in the sidebar list of queries: the mql query body can be popped up as a dialog for viewing it in a larger canvas
-        $(".fullc").click(function (e) {
+        /* in the sidebar list of queries:
+         * the mql query body can be popped up as a dialog for viewing it
+         * in a larger canvas
+         */
+        $(".fullc").click(e => {
           e.preventDefault()
-          var thisiid = $(this).attr("iid")
-          var mqlq = $("#area_" + thisiid)
-          var dia = $("#bigq_" + thisiid).dialog({
+          const elem = $(e.target)
+          const thisiid = elem.attr("iid")
+          const mqlq = $(`#area_${thisiid}`)
+          const dia = $(`#bigq_${thisiid}`).dialog({
             dialogClass: "mql_dialog",
             closeOnEscape: true,
-            close: function () {
+            close: () => {
               dia.dialog("destroy")
-              var mqlq = $("#area_" + thisiid)
+              const mqlq = $(`#area_${thisiid}`)
               mqlq.css("height", mql_small_height)
               mqlq.css("width", mql_small_width)
             },
@@ -2243,30 +2327,34 @@ function SContent(mr, qw) {
           mqlq.css("width", mql_big_width)
         })
       } else {
-        // in the sidebar item view of a single query: the mql query body can be popped up as a dialog for viewing it in a larger canvas
-        var vr = wb.version
-        var fullc = $(".fullc")
-        var editq = $("#editq")
-        var execq = $("#execq")
-        var saveq = $("#saveq")
-        var cancq = $("#cancq")
-        var doneq = $("#doneq")
-        var nameq = $("#nameq")
-        var descm = $("#descm")
-        var descq = $("#descq")
-        var mqlq = $("#mqlq")
-        var pube = $("#is_pub_c")
-        var pubr = $("#is_pub_ro")
-        var is_pub = "versions" in q && vr in q.versions && q.versions[vr].is_published
-        fullc.click(function (e) {
+        /* in the sidebar item view of a single query:
+         * the mql query body can be popped up as a dialog for viewing it
+         * in a larger canvas
+         */
+        const vr = wb.version
+        const fullc = $(".fullc")
+        const editq = $("#editq")
+        const execq = $("#execq")
+        const saveq = $("#saveq")
+        const cancq = $("#cancq")
+        const doneq = $("#doneq")
+        const nameq = $("#nameq")
+        const descm = $("#descm")
+        const descq = $("#descq")
+        const mqlq = $("#mqlq")
+        const pube = $("#is_pub_c")
+        const pubr = $("#is_pub_ro")
+        const is_pub = "versions" in q && vr in q.versions && q.versions[vr].is_published
+
+        fullc.click(e => {
           e.preventDefault()
           fullc.hide()
-          var dia = $("#bigger")
+          const dia = $("#bigger")
             .closest("div")
             .dialog({
               dialogClass: "mql_dialog",
               closeOnEscape: true,
-              close: function () {
+              close: () => {
                 dia.dialog("destroy")
                 mqlq.css("height", mql_small_height)
                 descm.removeClass("desc_dia")
@@ -2285,32 +2373,35 @@ function SContent(mr, qw) {
           descm.addClass("desc_dia")
           descm.css("height", half_standard_height)
         })
-        if (vr != CONTINUOUS) {
-          $("#is_pub_c").click(function (e) {
-            var val = $(this).prop("checked")
-            that.sendval(
-              q.versions[vr],
-              $(this),
-              val,
-              vr,
-              $(this).attr("qid"),
-              "is_published",
-              val ? "T" : ""
-            )
-          })
-        }
-        $("#is_shared_c").click(function (e) {
-          var val = $(this).prop("checked")
-          that.sendval(
-            q,
-            $(this),
+
+        $("#is_pub_c").click(e => {
+          const elem = $(e.target)
+          const val = elem.prop("checked")
+          this.sendval(
+            q.versions[vr],
+            elem,
             val,
             vr,
-            $(this).attr("qid"),
+            elem.attr("qid"),
+            "is_published",
+            val ? "T" : ""
+          )
+        })
+
+        $("#is_shared_c").click(e => {
+          const elem = $(e.target)
+          const val = elem.prop("checked")
+          this.sendval(
+            q,
+            elem,
+            val,
+            vr,
+            elem.attr("qid"),
             "is_shared",
             val ? "T" : ""
           )
         })
+
         nameq.hide()
         descq.hide()
         descm.show()
@@ -2325,12 +2416,13 @@ function SContent(mr, qw) {
         doneq.hide()
         pube.show()
         pubr.hide()
-        editq.click(function (e) {
+
+        editq.click(e => {
           e.preventDefault()
-          var is_pub = q.versions[vr].is_published
-          that.saved_name = nameq.val()
-          that.saved_desc = descq.val()
-          that.saved_mql = mqlq.val()
+          const is_pub = q.versions[vr].is_published
+          this.saved_name = nameq.val()
+          this.saved_desc = descq.val()
+          this.saved_mql = mqlq.val()
           set_edit_width()
           if (!is_pub) {
             nameq.show()
@@ -2346,11 +2438,12 @@ function SContent(mr, qw) {
           mqlq.prop("readonly", is_pub)
           mqlq.css("height", "20em")
         })
-        cancq.click(function (e) {
+
+        cancq.click(e => {
           e.preventDefault()
-          nameq.val(that.saved_name)
-          descq.val(that.saved_desc)
-          mqlq.val(that.saved_mql)
+          nameq.val(this.saved_name)
+          descq.val(this.saved_desc)
+          mqlq.val(this.saved_mql)
           reset_main_width()
           nameq.hide()
           descq.hide()
@@ -2364,7 +2457,8 @@ function SContent(mr, qw) {
           mqlq.prop("readonly", true)
           mqlq.css("height", "10em")
         })
-        doneq.click(function (e) {
+
+        doneq.click(e => {
           e.preventDefault()
           reset_main_width()
           nameq.hide()
@@ -2378,7 +2472,7 @@ function SContent(mr, qw) {
           pubr.hide()
           mqlq.prop("readonly", true)
           mqlq.css("height", "10em")
-          var data = {
+          const data = {
             version: wb.version,
             qid: $("#qid").val(),
             name: $("#nameq").val(),
@@ -2386,11 +2480,12 @@ function SContent(mr, qw) {
             mql: $("#mqlq").val(),
             execute: false,
           }
-          that.sendvals(data)
+          this.sendvals(data)
         })
-        saveq.click(function (e) {
+
+        saveq.click(e => {
           e.preventDefault()
-          var data = {
+          const data = {
             version: wb.version,
             qid: $("#qid").val(),
             name: $("#nameq").val(),
@@ -2398,15 +2493,15 @@ function SContent(mr, qw) {
             mql: $("#mqlq").val(),
             execute: false,
           }
-          that.sendvals(data)
+          this.sendvals(data)
         })
-        execq.click(function (e) {
+        execq.click(e => {
           e.preventDefault()
           execq.addClass("fa-spin")
-          var msg = that.msgov
+          const msg = this.msgov
           msg.clear()
           msg.msg(["special", "executing query ..."])
-          var data = {
+          const data = {
             version: wb.version,
             qid: $("#qid").val(),
             name: $("#nameq").val(),
@@ -2414,14 +2509,15 @@ function SContent(mr, qw) {
             mql: $("#mqlq").val(),
             execute: true,
           }
-          that.sendvals(data)
+          this.sendvals(data)
         })
       }
     }
   }
-  this.setstatus = function (vr, cls) {
-    var statq = cls != null ? cls : $("#statq" + vr).attr("class")
-    var statm =
+
+  setstatus(vr, cls) {
+    const statq = cls != null ? cls : $(`#statq${vr}`).attr("class")
+    const statm =
       statq == "good"
         ? "results up to date"
         : statq == "error"
@@ -2429,27 +2525,27 @@ function SContent(mr, qw) {
         : "never executed"
     $("#statm").html(statm)
   }
-  this.sendval = function (q, checkbx, newval, vr, iid, fname, val) {
-    var good = false
-    var senddata = {}
+
+  sendval(q, checkbx, newval, vr, iid, fname, val) {
+    const senddata = {}
     senddata.version = vr
     senddata.qid = iid
     senddata.fname = fname
     senddata.val = val
+
     $.post(
       field_url,
       senddata,
-      function (json) {
-        good = json.good
-        var mod_dates = json.mod_dates
-        var mod_cls = json.mod_cls
+      data => {
+        const { good, mod_dates, mod_cls, extra, msgs } = data
+
         if (good) {
-          for (var mod_date_fld in mod_dates) {
-            $("#" + mod_date_fld).html(mod_dates[mod_date_fld])
+          for (const mod_date_fld in mod_dates) {
+            $(`#${mod_date_fld}`).html(mod_dates[mod_date_fld])
           }
-          for (var mod_cl in mod_cls) {
-            var cl = mod_cls[mod_cl]
-            var dest = $(mod_cl)
+          for (const mod_cl in mod_cls) {
+            const cl = mod_cls[mod_cl]
+            const dest = $(mod_cl)
             dest.removeClass("fa-check fa-close published")
             dest.addClass(cl)
           }
@@ -2457,16 +2553,17 @@ function SContent(mr, qw) {
         } else {
           checkbx.prop("checked", !newval)
         }
-        var extra = json.extra
-        for (var fld in extra) {
-          var instr = extra[fld]
-          var prop = instr[0]
-          var val = instr[1]
+
+        for (const fld in extra) {
+          const instr = extra[fld]
+          const prop = instr[0]
+          const val = instr[1]
+
           if (prop == "check") {
-            var dest = $("#" + fld + "_c")
+            const dest = $(`#${fld}_c`)
             dest.prop("checked", val)
           } else if (prop == "show") {
-            var dest = $("#" + fld)
+            const dest = $(`#${fld}`)
             if (val) {
               dest.show()
             } else {
@@ -2474,44 +2571,47 @@ function SContent(mr, qw) {
             }
           }
         }
-        var msg = fname == "is_shared" ? that.msgo : that.msgov
+        const msg = fname == "is_shared" ? this.msgo : this.msgov
         msg.clear()
-        json.msgs.forEach(function (m) {
+        for (const m of msgs) {
           msg.msg(m)
-        })
+        }
       },
       "json"
     )
   }
-  this.sendvals = function (senddata) {
-    var good = false
-    var execute = senddata.execute
-    var vr = senddata.version
+
+  sendvals(senddata) {
+    const { execute, version: vr } = senddata
+
     $.post(
       fields_url,
       senddata,
-      function (json) {
-        good = json.good
-        var q = json.q
-        var msg = that.msgov
+      data => {
+        const { good, q, msgs } = data
+
+        const msg = this.msgov
         msg.clear()
-        json.msgs.forEach(function (m) {
+
+        for (const m of msgs) {
           msg.msg(m)
-        })
+        }
+
         if (good) {
-          var qx = q.versions[vr]
+          const { oldeversions } = data
+          const qx = q.versions[vr]
           $("#nameqm").html(escapeHTML(q.name || ""))
           $("#nameq").val(q.name)
-          var d_md = special_links(q.description_md)
-          var descm = $("#descm")
+          const d_md = special_links(q.description_md)
+          const descm = $("#descm")
           descm.html(d_md)
           decorate_crossrefs(descm)
           $("#descq").val(q.description)
           $("#mqlq").val(qx.mql)
-          var ev = $("#eversion")
-          var evtd = ev.closest("td")
+          const ev = $("#eversion")
+          const evtd = ev.closest("td")
           ev.html(qx.eversion)
-          if (qx.eversion in json.oldeversions) {
+          if (qx.eversion in oldeversions) {
             evtd.addClass("oldexeversion")
             evtd.attr("title", "this is not the newest version")
           } else {
@@ -2523,14 +2623,14 @@ function SContent(mr, qw) {
           $("#qresults").html(qx.results)
           $("#qresultmonads").html(qx.resultmonads)
           $("#statq").removeClass("error warning good").addClass(qx.status)
-          that.setstatus("", qx.status)
+          this.setstatus("", qx.status)
           wb.sidebars.sidebar["rq"].content.info = q
         }
         if (execute) {
           reset_material_status()
           wb.material.adapt()
-          var show_chart = close_dialog(
-            $("#select_contents_chart_" + vr + "_q_" + q.id)
+          const show_chart = close_dialog(
+            $(`#select_contents_chart_${vr}_q_${q.id}`)
           )
           if (show_chart) {
             wb.sidebars.sidebar["rq"].cselect[vr].apply()
@@ -2541,110 +2641,126 @@ function SContent(mr, qw) {
       "json"
     )
   }
-  this.apply = function () {
+
+  apply() {
     if (wb.mr == this.mr && (this.mr == "r" || wb.vs.get(this.qw) == "v")) {
       this.fetch()
     }
   }
-  this.fetch = function () {
-    var vars = "?version=" + wb.version + "&mr=" + this.mr + "&qw=" + this.qw
-    var do_fetch = false
-    var extra = ""
-    if (this.mr == "m") {
-      vars += "&book=" + wb.vs.book()
-      vars += "&chapter=" + wb.vs.chapter()
-      if (this.qw == "q" || this.qw == "n") {
-        vars += "&" + this.qw + "pub=" + wb.vs.pub(this.qw)
+
+  fetch() {
+    const { version, iid } = wb
+    const { mr, qw } = this
+    const thelist = $("#side_material_" + mr + qw)
+
+    let vars = `?version=${version}&mr={mr}&qw=${qw}`
+
+    let do_fetch = false
+    let extra = ""
+
+    if (mr == "m") {
+      vars += `&book=${wb.vs.book()}&chapter=${wb.vs.chapter()}`
+      if (qw == "q" || qw == "n") {
+        vars += `&${qw}pub=${wb.vs.pub(qw)}`
       }
       do_fetch = wb.vs.book() != "x" && wb.vs.chapter() > 0
       extra = "m"
     } else {
-      vars += "&iid=" + wb.iid
-      do_fetch = wb.qw == "q" ? wb.iid >= 0 : wb.iid != "-1"
-      extra = this.qw + "m"
+      vars += `&iid=${iid}`
+      do_fetch = wb.qw == "q" ? iid >= 0 : iid != "-1"
+      extra = `${qw}m`
     }
-    if (do_fetch && !side_fetched[this.mr + this.qw]) {
-      this.msg(
-        "fetching " + style[this.qw]["tag" + (this.mr == "m" ? "s" : "")] + " ..."
-      )
-      if (this.mr == "m") {
+    if (do_fetch && !side_fetched[`${mr}${qw}`]) {
+      const tag = `tag${mr == "m" ? "s" : ""}`
+      this.msg(`fetching ${style[qw][tag]} ...`)
+      if (mr == "m") {
         thelist.load(
-          side_url + extra + vars,
-          function () {
-            side_fetched[that.mr + that.qw] = true
-            that.process()
+          `${side_url}${extra}${vars}`,
+          () => {
+            side_fetched[`${mr}${qw}`] = true
+            this.process()
           },
           "html"
         )
       } else {
         $.get(
-          side_url + extra + vars,
-          function (html) {
+          `${side_url}${extra}${vars}`,
+          html => {
             thelist.html(html)
-            side_fetched[that.mr + that.qw] = true
-            that.process()
+            side_fetched[`${mr}${qw}`] = true
+            this.process()
           },
           "html"
         )
       }
     }
   }
-  this.sidelistitems = function () {
-    // the list of items in an m-sidebar
-    if (this.mr == "m") {
-      if (this.qw != "n") {
-        wb.picker1list[this.qw] = {}
+
+  sidelistitems() {
+    /* the list of items in an m-sidebar
+    */
+    const { mr, qw } = this
+
+    if (mr == "m") {
+      if (qw != "n") {
+        wb.picker1list[qw] = {}
       }
-      var qwlist = $("#side_list_" + this.qw + " li")
-      qwlist.each(function () {
-        var iid = $(this).attr("iid")
-        that.sidelistitem(iid)
-        if (that.qw != "n") {
-          wb.picker1list[that.qw][iid] = new Colorpicker1(that.qw, iid, false, false)
+      const qwlist = $(`#side_list_${qw} li`)
+      qwlist.each((i, el) => {
+        const elem = $(el)
+        const iid = elem.attr("iid")
+        this.sidelistitem(iid)
+        if (qw != "n") {
+          wb.picker1list[qw][iid] = new Colorpicker1(qw, iid, false, false)
         }
       })
     }
   }
-  this.sidelistitem = function (iid) {
-    // individual item in an m-sidebar
-    var itop = $("#" + this.qw + iid)
-    var more = $("#m_" + this.qw + iid)
-    var desc = $("#d_" + this.qw + iid)
-    var item = $("#item_" + this.qw + iid)
-    var all = $("#" + this.qw + iid)
+
+  sidelistitem(iid) {
+    /* individual item in an m-sidebar
+     */
+    const { qw } = this
+
+    const itop = $(`#${qw}${iid}`)
+    const more = $(`#m_${qw}${iid}`)
+    const desc = $(`#d_${qw}${iid}`)
+    const item = $(`#item_${qw}${iid}`)
+    const all = $(`#${qw}${iid}`)
+
     desc.hide()
-    more.click(function (e) {
+
+    more.click(e => {
       e.preventDefault()
-      toggle_detail($(this), desc, that.qw == "q" ? put_markdown : undefined)
+      const elem = $(e.target)
+      toggle_detail(elem, desc, qw == "q" ? put_markdown : undefined)
     })
-    item.click(function (e) {
+
+    item.click(e => {
       e.preventDefault()
-      var qw = that.qw
-      wb.vs.mstatesv({ mr: that.other_mr, qw: qw, iid: $(this).attr("iid"), page: 1 })
+      const elem = $(e.target)
+      const { qw } = this
+      wb.vs.mstatesv({ mr: this.other_mr, qw, iid: elem.attr("iid"), page: 1 })
       wb.vs.addHist()
       wb.go()
     })
-    if (this.qw == "w") {
-      if (!wb.vs.iscolor(this.qw, iid)) {
+
+    if (qw == "w") {
+      if (!wb.vs.iscolor(qw, iid)) {
         all.hide()
       }
-    } else if (this.qw == "q") {
-      if (muting_q.isSet("q" + iid)) {
+    } else if (qw == "q") {
+      if (muting_q.isSet(`q${iid}`)) {
         itop.hide()
       } else {
         itop.show()
       }
-    } else if (this.qw == "n") {
-      if (muting_n.isSet("n" + iid)) {
+    } else if (qw == "n") {
+      if (muting_n.isSet(`n${iid}`)) {
         itop.hide()
       } else {
         itop.show()
       }
-    }
-  }
-  if (this.mr == "r") {
-    if (this.qw != "n") {
-      wb.picker1[this.qw] = new Colorpicker1(this.qw, null, true, false)
     }
   }
 }
@@ -2766,7 +2882,9 @@ function Colorpicker1(qw, iid, is_item, do_highlight) {
   this.apply = function (do_highlight) {
     var color = wb.vs.color(this.qw, this.iid) || defcolor(this.qw == "q", this.iid)
     var target = this.qw == "q" ? sel : selw
-    target.css(stl, vcolors[color][this.qw]) // apply state to the selected cell
+    if (color) {
+      target.css(stl, vcolors[color][this.qw]) // apply state to the selected cell
+    }
     selc.prop("checked", wb.vs.iscolor(this.qw, this.iid)) // apply state to the checkbox
     if (do_highlight) {
       wb.highlight2(this)
@@ -2814,10 +2932,11 @@ function Colorpicker1(qw, iid, is_item, do_highlight) {
     that.apply(true)
   })
   picker.hide()
-  $(".c" + this.qw + "." + this.qw + pointer + ">a").each(function () {
+  $(".c" + this.qw + "." + this.qw + pointer + ">a").each((i, el) => {
     //initialize the individual color cells in the picker
-    var target = that.qw == "q" ? $(this).closest("td") : $(this)
-    target.css(stl, vcolors[$(this).html()][that.qw])
+    const elem = $(el)
+    var target = that.qw == "q" ? elem.closest("td") : elem
+    target.css(stl, vcolors[elem.html()][that.qw])
   })
   this.apply(do_highlight)
 }
@@ -2876,10 +2995,11 @@ function Colorpicker2(qw, do_highlight) {
     that.apply(true)
   })
   picker.hide()
-  $(".c" + this.qw + "." + this.qw + "one>a").each(function () {
+  $(".c" + this.qw + "." + this.qw + "one>a").each((i, el) => {
     //initialize the individual color cells in the picker
-    var target = that.qw == "q" ? $(this).closest("td") : $(this)
-    target.css(stl, vcolors[$(this).html()][that.qw])
+    const elem = $(el)
+    var target = that.qw == "q" ? elem.closest("td") : elem
+    target.css(stl, vcolors[elem.html()][that.qw])
   })
   this.apply(do_highlight)
 }
@@ -3155,7 +3275,6 @@ function decorate_crossrefs(dest) {
 }
 
 function special_links(d_md) {
-  var thisFeaturehost = adaptDocBaseVersion(featurehost)
   d_md = d_md.replace(
     /<a [^>]*href=['"]image[\n\t ]+([^)\n\t '"]+)['"][^>]*>(.*?)(<\/a>)/g,
     '<br/><img src="$1"/><br/>$2<br/>'
@@ -3174,13 +3293,12 @@ function special_links(d_md) {
   )
   d_md = d_md.replace(
     /(href=['"])feature:([^)\n\t '"]+)(['"])/g,
-    "$1" + thisFeaturehost + '/$2$3 target="_blank" class="fa fw fa-file-text" '
+    "$1" + featurehost + '/$2$3 target="_blank" class="fa fw fa-file-text" '
   )
   return special_links_m(d_md)
 }
 
 function special_links_m(ntxt) {
-  var thisFeaturehost = adaptDocBaseVersion(featurehost)
   ntxt = ntxt.replace(
     /\[([^\]\n\t]+)\]\(image[\n\t ]+([^)\n\t '"]+)\)/g,
     '<br/><img src="$2"/><br/>$1<br/>'
@@ -3199,7 +3317,7 @@ function special_links_m(ntxt) {
   )
   ntxt = ntxt.replace(
     /\[([^\]\n\t]+)\]\(feature:([^)\n\t '"]+)\)/g,
-    '<a target="_blank" href="' + thisFeaturehost + '/$2" class="fa fw">$1&#xf15c;</a>'
+    '<a target="_blank" href="' + featurehost + '/$2" class="fa fw">$1&#xf15c;</a>'
   )
   ntxt = ntxt.replace(
     /\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g,

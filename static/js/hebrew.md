@@ -127,3 +127,44 @@ The browser generates HTML out of the JSON.
 I am not sure whether this is worth it.
 On the one hand it means smaller data transfers (but they are already fast enough), on the other hand, template code in python is
 much more manageable than in Javascript.
+
+# Sidebars
+
+The main material can be two kinds (mr)
+
+m = material: chapters from books
+r = query/word results
+
+There are four kinds of sidebars, indicated by two letters,
+of which the first indicates the mr
+
+mq = list of queries relevant to main material
+mw = list of words relevant to main material
+rq = display of query record, the main material are the query results
+rw = display of word record, the main material are the word results
+
+The list sidebars (m) have a color picker for selecting a uniform highlight color,
+plus controls for deciding whether no, uniform, custom, or many colors will be used.
+
+The record-side bars (r) only have a single color picker, for
+choosing the color associated with the item (a query or a word).
+
+When items are displayed in the list sidebars, they each have a color picker that
+is identical to the one used for that item in the record sidebar.
+
+The colorpickers for choosing an associated item color, consist of a checkbox and a proper colorpicker.
+The checkbox indicates whether the color is customized.
+A color gets customized when the user selects an other color than the default one, or by checking the box.
+
+When the user has chosen custom colors, all highlights will be done with the uniform color, except
+the customized ones.
+
+Queries are highlighted by background color, words by foreground colors.
+Although the names for background and foreground colors are identical, their actual values are not.
+Foreground colors are darkened, background colors are lightened.
+This is done for better visibility.
+
+All color asscociations are preserved in cookies, one for queries, and one for words.
+Nowhere else are they stored, but they can be exported as a (lomg) link.
+By using the share link, the user can preserve color settings in a notebook,
+or mail them to colleagues.
