@@ -653,10 +653,56 @@ text_tpl = """<table class="il c">
 </table>"""
 
 
+CACHING = True
+CACHING_RAM_ONLY = True
+
+
+def from_cache(cache, ckey, func, expire):
+    if CACHING:
+        if CACHING_RAM_ONLY:
+            result = cache.ram(ckey, func, time_expire=expire)
+        else:
+            result = cache.ram(
+                ckey,
+                lambda: cache.disk(ckey, func, time_expire=expire),
+                time_expire=expire,
+            )
+    else:
+        result = func()
+    return result
+
+
+def clear_cache(cache, ckeys):
+    cache.ram.clear(regex=ckeys)
+    if not CACHING_RAM_ONLY:
+        cache.disk.clear(regex=ckeys)
+
+
+def get_books(passage_dbs, vr):  # get book information: number of chapters per book
+    if vr in passage_dbs:
+        books_data = passage_dbs[vr].executesql(
+            """
+select book.id, book.name, max(chapter_num)
+from chapter inner join book
+on chapter.book_id = book.id group by name order by book.id
+;
+"""
+        )
+        books_order = [x[1] for x in books_data]
+        books = dict((x[1], x[2]) for x in books_data)
+        book_id = dict((x[1], x[0]) for x in books_data)
+        book_name = dict((x[0], x[1]) for x in books_data)
+        result = (books, books_order, book_id, book_name)
+    else:
+        result = ({}, [], {}, {})
+    return result
+
+
 def iid_encode(qw, idpart, kw=None, sep="|"):
     if qw == "n":
         return (
-            b64encode(("{}|{}".format(idpart, kw)).encode("utf8")).decode("utf8")
+            b64encode(("{}|{}".format(idpart, kw)).encode("utf8"))
+            .decode("utf8")
             .replace("\n", "")
             .replace("=", "_")
         )
@@ -757,7 +803,7 @@ def get_request_val(group, qw, f, default=True):
     else:
         x = current.request.vars.get(rvar, None)
         if rvar == "extra":
-            x = str(x, encoding="utf8")
+            x = str(x)
     if type(x) is list:
         x = x[0]
         # this occurs when the same variable occurs multiple times
@@ -869,7 +915,11 @@ def get_fields(tp, qw=qw):
 
 
 class Viewsettings:
-    def __init__(self, versions):
+    def __init__(self, cache, passage_dbs, URL, versions):
+        self.cache = cache
+        self.passage_dbs = passage_dbs
+        self.URL = URL
+
         self.state = collections.defaultdict(
             lambda: collections.defaultdict(lambda: {})
         )
@@ -931,6 +981,26 @@ class Viewsettings:
                     )
                     current.response.cookies[self.pref + group + qw]["path"] = "/"
 
+        books = {}
+        books_order = {}
+        book_id = {}
+        book_name = {}
+
+        self.books = books
+        self.books_order = books_order
+        self.book_id = book_id
+        self.book_name = book_name
+
+        cache = self.cache
+        passage_dbs = self.passage_dbs
+
+        for vr in versions:
+            if not versions[vr]["present"]:
+                continue
+            (books[vr], books_order[vr], book_id[vr], book_name[vr]) = from_cache(
+                cache, "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
+            )
+
     def theversion(self):
         return self.state["material"][""]["version"]
 
@@ -945,31 +1015,62 @@ var version = '{version}'
             version=self.state["material"][""]["version"],
         )
 
-    def dynamics(self):
+    def writeConfig(self):
+        URL = self.URL
+
         return """
-var versions = {versions}
-var vcolors = {vcolors}
-var ccolors = {ccolors}
-var vdefaultcolors = {vdefaultcolors}
-var dncols = {dncols}
-var dnrows = {dnrows}
-var viewinit = {initstate}
-var style = {style}
-var pref = {pref}
-var tp_labels = {tp_labels}
-var tr_labels = {tr_labels}
-var tab_info = {tab_info}
-var tab_views = {tab_views}
-var tr_info = {tr_info}
-var next_tp = {next_tp}
-var next_tr = {next_tr}
-var nt_statclass = {nt_statclass}
-var nt_statsym = {nt_statsym}
-var nt_statnext = {nt_statnext}
-var bookla = {bookla}
-var booktrans = {booktrans}
-var booklangs = {booklangs}
-dynamics()
+var Config = {{
+versions: {versions},
+vcolors: {vcolors},
+ccolors: {ccolors},
+vdefaultcolors: {vdefaultcolors},
+dncols: {dncols},
+dnrows: {dnrows},
+viewinit: {initstate},
+style: {style},
+pref: {pref},
+tp_labels: {tp_labels},
+tr_labels: {tr_labels},
+tab_info: {tab_info},
+tab_views: {tab_views},
+tr_info: {tr_info},
+next_tp: {next_tp},
+next_tr: {next_tr},
+nt_statclass: {nt_statclass},
+nt_statsym: {nt_statsym},
+nt_statnext: {nt_statnext},
+bookla: {bookla},
+booktrans: {booktrans},
+booklangs: {booklangs},
+books: {books},
+booksorder: {booksorder},
+featurehost: "{featurehost}",
+bol_url: "{bol_url}",
+pbl_url: "{pbl_url}",
+host: "{host}",
+query_url: "{query_url}",
+word_url: "{word_url}",
+words_url: "{words_url}",
+note_url: "{note_url}",
+notes_url: "{notes_url}",
+field_url: "{field_url}",
+fields_url: "{fields_url}",
+cnotes_url: "{cnotes_url}",
+page_view_url: "{page_view_url}",
+view_url: "{view_url}",
+material_url: "{material_url}",
+data_url: "{data_url}",
+side_url: "{side_url}",
+item_url: "{item_url}",
+chart_url: "{chart_url}",
+pn_url: "{pn_url}",
+n_url: "{n_url}",
+upload_url: "{upload_url}",
+pq_url: "{pq_url}",
+queriesr_url: "{queriesr_url}",
+q_url: "{q_url}",
+record_url: "{record_url}",
+}}
 """.format(
             vdefaultcolors=json.dumps(vdefaultcolors),
             initstate=json.dumps(self.state),
@@ -995,7 +1096,44 @@ dynamics()
             bookla=json.dumps(booknames[biblang]["la"]),
             booktrans=json.dumps(booktrans),
             booklangs=json.dumps(booklangs[biblang]),
+            booksorder=json.dumps(self.books_order),
+            books=json.dumps(self.books),
+            featurehost="https://etcbc.github.io/bhsa/features",
+            bol_url="http://bibleol.3bmoodle.dk/text/show_text",
+            pbl_url="https://parabible.com",
+            host=URL("hebrew", "text", host=True),
+            query_url=URL("hebrew", "query", "", host=True),
+            word_url=URL("hebrew", "word", "", host=True),
+            words_url=URL("hebrew", "words", extension=""),
+            note_url=URL("hebrew", "note", "", host=True),
+            notes_url=URL("hebrew", "notes", "", host=True),
+            field_url=URL("hebrew", "field", extension="json"),
+            fields_url=URL("hebrew", "fields", extension="json"),
+            cnotes_url=URL("hebrew", "cnotes", extension="json"),
+            page_view_url=URL("hebrew", "text", host=True),
+            view_url=URL("hebrew", "text", host=True),
+            material_url=URL("hebrew", "material", host=True),
+            data_url=URL("hebrew", "verse", host=True),
+            side_url=URL("hebrew", "side", host=True),
+            item_url=URL("hebrew", "item.csv", host=True),
+            chart_url=URL("hebrew", "chart", host=True),
+            pn_url=URL("hebrew", "note_tree", extension="json"),
+            n_url=URL("hebrew", "text", extension=""),
+            upload_url=URL("hebrew", "note_upload", extension="json"),
+            pq_url=URL('hebrew', 'query_tree', extension='json'),
+            queriesr_url=URL('hebrew', 'queriesr', extension='json'),
+            q_url=URL('hebrew', 'text', extension=''),
+            record_url=URL('hebrew', 'record', extension='json'),
         )
+
+    def dynamics(self):
+        config = self.writeConfig()
+
+        return f"""
+{config}
+var P = setup()
+dynamics(P)
+"""
 
 
 def h_esc(material, fill=True):

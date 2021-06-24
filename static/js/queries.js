@@ -1,46 +1,18 @@
-var pq_url, q_url, record_url, queriesr_url
-var ns = $.initNamespaceStorage('muting_q')
-var vs = $.initNamespaceStorage('qsview')
-var muting = ns.localStorage
-var qsview = vs.localStorage
-var ftree, msgflt, msgopq, rdata
-const subtractq = 80 // the canvas holding the material gets a height equal to the window height minus this amount
-var control_height = 100 // height for messages and controls
+/* eslint-env jquery */
+/* eslint-disable camelcase */
 
-var escapeHTML = (function () {
-    'use strict';
-    var chr = {
-        '&': '&amp;', '<': '&lt;',  '>': '&gt;'
-    };
-    return function (text) {
-        return text.replace(/[&<>]/g, function (a) { return chr[a]; });
-    };
-}());
-
-var Request = {
-    parameter: function(name) {
-        return this.parameters()[name]
-    },
-    parameters: function(uri) {
-        var i, parameter, params, query, result;
-        result = {};
-        if (!uri) {
-            uri = window.location.search;
-        }
-        if (uri.indexOf("?") === -1) {
-            return {};
-        }
-        query = uri.slice(1);
-        params = query.split("&");
-        i = 0;
-        while (i < params.length) {
-            parameter = params[i].split("=");
-            result[parameter[0]] = parameter[1];
-            i++;
-        }
-        return result;
-    }
-}
+const ns = $.initNamespaceStorage('muting_q')
+const vs = $.initNamespaceStorage('qsview')
+const muting = ns.localStorage
+const qsview = vs.localStorage
+let ftree, msgflt, msgopq, rdata
+const subtractq = 80
+/* the canvas holding the material gets a height equal to
+ * the window height minus this amount
+ */
+const control_height = 100
+/* height for messages and controls
+ */
 
 function Recent() {
     var that = this
@@ -417,49 +389,49 @@ function Tree() {
                 name.prop('readonly', view)
                 name.val(rec.name)
                 if (tp == 'q') {
-                    var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
-                    var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                    var oname = (rec.oname == undefined)?'':escHT(rec.oname);
+                    var pname = (rec.pname == undefined)?'':escHT(rec.pname);
                     $('#fo_'+tp).attr('href', rec.owebsite)
-                    $('#fo_'+tp).html(escapeHTML(oname))
+                    $('#fo_'+tp).html(escHT(oname))
                     $('#fp_'+tp).attr('href', rec.pwebsite)
-                    $('#fp_'+tp).html(escapeHTML(pname))
+                    $('#fp_'+tp).html(escHT(pname))
                     $('#fo_'+tp).attr('oid', rec.oid)
                     $('#fp_'+tp).attr('pid', rec.pid)
                 }
                 else {
                     $('#website_'+tp).val(rec.website)
                     $('#f'+tp+'_v').attr('href', rec.owebsite)
-                    $('#f'+tp+'_v').html(escapeHTML(rec.name))
+                    $('#f'+tp+'_v').html(escHT(rec.name))
                 }
             }
             else if (update && senddata.lid != '0') {
                 if (tp == 'q') {
                     if (good) {
-                        var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
-                        var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                        var oname = (rec.oname == undefined)?'':escHT(rec.oname);
+                        var pname = (rec.pname == undefined)?'':escHT(rec.pname);
                         that.hide_new_q(rec.id, 'o')
                         that.hide_new_q(rec.id, 'p')
                         $('#fo_'+tp).attr('href', rec.owebsite)
-                        $('#fo_'+tp).html(escapeHTML(oname))
+                        $('#fo_'+tp).html(escHT(oname))
                         $('#fp_'+tp).attr('href', rec.pwebsite)
-                        $('#fp_'+tp).html(escapeHTML(pname))
+                        $('#fp_'+tp).html(escHT(pname))
                         $('#fo_'+tp).attr('oid', rec.oid)
                         $('#fp_'+tp).attr('pid', rec.pid)
                         $('#title_q').html('Modify')
                     }
                     else {
                         if (ogood) {
-                            var oname = (orec.name == undefined)?'':escapeHTML(orec.name);
+                            var oname = (orec.name == undefined)?'':escHT(orec.name);
                             that.hide_new_q(orec.id, 'o')
                             $('#fo_'+tp).attr('href', orec.website)
-                            $('#fo_'+tp).html(escapeHTML(oname))
+                            $('#fo_'+tp).html(escHT(oname))
                             $('#fo_'+tp).attr('oid', orec.id)
                         }
                         if (pgood) {
-                            var pname = (prec.name == undefined)?'':escapeHTML(prec.name);
+                            var pname = (prec.name == undefined)?'':escHT(prec.name);
                             that.hide_new_q(prec.id, 'p')
                             $('#fp_'+tp).attr('href', prec.website)
-                            $('#fp_'+tp).html(escapeHTML(pname))
+                            $('#fp_'+tp).html(escHT(pname))
                             $('#fp_'+tp).attr('pid', prec.id)
                         }
                     }
@@ -467,12 +439,12 @@ function Tree() {
                 else {
                     $('#website_'+tp).val(rec.website)
                     $('#f'+tp+'_v').attr('href', rec.owebsite)
-                    $('#f'+tp+'_v').html(escapeHTML(rec.name))
+                    $('#f'+tp+'_v').html(escHT(rec.name))
                 }
                 var elem = (tp == 'q')?'a':'span'
                 var moditem = that.moditem.find(elem+'[n=1]')
                 if (moditem != undefined) {
-                    moditem.html(escapeHTML(rec.name))
+                    moditem.html(escHT(rec.name))
                 }
             }
             else if (update && senddata.lid == '0') {
@@ -481,31 +453,31 @@ function Tree() {
                 }
                 if (tp == 'q') {
                     if (good) {
-                        var oname = (rec.oname == undefined)?'':escapeHTML(rec.oname);
-                        var pname = (rec.pname == undefined)?'':escapeHTML(rec.pname);
+                        var oname = (rec.oname == undefined)?'':escHT(rec.oname);
+                        var pname = (rec.pname == undefined)?'':escHT(rec.pname);
                         that.hide_new_q(rec.id, 'o')
                         that.hide_new_q(rec.id, 'p')
                         $('#fo_'+tp).attr('href', rec.owebsite)
-                        $('#fo_'+tp).html(escapeHTML(oname))
+                        $('#fo_'+tp).html(escHT(oname))
                         $('#fp_'+tp).attr('href', rec.pwebsite)
-                        $('#fp_'+tp).html(escapeHTML(pname))
+                        $('#fp_'+tp).html(escHT(pname))
                         $('#fo_'+tp).attr('oid', rec.oid)
                         $('#fp_'+tp).attr('pid', rec.pid)
                         $('#title_q').html('Modify')
                     }
                     else {
                         if (ogood) {
-                            var oname = (orec.name == undefined)?'':escapeHTML(orec.name);
+                            var oname = (orec.name == undefined)?'':escHT(orec.name);
                             that.hide_new_q(orec.id, 'o')
                             $('#fo_'+tp).attr('href', orec.website)
-                            $('#fo_'+tp).html(escapeHTML(oname))
+                            $('#fo_'+tp).html(escHT(oname))
                             $('#fo_'+tp).attr('oid', orec.id)
                         }
                         if (pgood) {
-                            var pname = (prec.name == undefined)?'':escapeHTML(prec.name);
+                            var pname = (prec.name == undefined)?'':escHT(prec.name);
                             that.hide_new_q(prec.id, 'p')
                             $('#fp_'+tp).attr('href', prec.website)
-                            $('#fp_'+tp).html(escapeHTML(pname))
+                            $('#fp_'+tp).html(escHT(pname))
                             $('#fp_'+tp).attr('pid', prec.id)
                         }
                     }

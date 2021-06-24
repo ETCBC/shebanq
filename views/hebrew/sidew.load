@@ -34,8 +34,10 @@
 {{pass}}
 {{pass}}
 <script type="text/javascript">
-var msgs = {{=XML(msgs)}};
-var w = {{=XML(w)}}
+var State = {
+    msgs: {{=XML(msgs)}},
+    w: {{=XML(w)}},
+}
 </script>
 
 

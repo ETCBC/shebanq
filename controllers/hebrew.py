@@ -29,6 +29,9 @@ from render import (
     booklangs,
     booknames,
     booktrans,
+    from_cache,
+    clear_cache,
+    get_books
 )
 from mql import mql
 from get_db_config import emdros_versions
@@ -41,30 +44,6 @@ BLOCK_SIZE = 500
 PUBLISH_FREEZE = datetime.timedelta(weeks=1)
 PUBLISH_FREEZE_MSG = "1 week"
 NULLDT = "____-__-__ __:__:__"
-
-CACHING = True
-CACHING_RAM_ONLY = True
-
-
-def from_cache(ckey, func, expire):
-    if CACHING:
-        if CACHING_RAM_ONLY:
-            result = cache.ram(ckey, func, time_expire=expire)
-        else:
-            result = cache.ram(
-                ckey,
-                lambda: cache.disk(ckey, func, time_expire=expire),
-                time_expire=expire,
-            )
-    else:
-        result = func()
-    return result
-
-
-def clear_cache(ckeys):
-    cache.ram.clear(regex=ckeys)
-    if not CACHING_RAM_ONLY:
-        cache.disk.clear(regex=ckeys)
 
 
 def books():
@@ -83,24 +62,12 @@ var booklangs = {booklangs};
 
 def text():
     session.forget(response)
-    books = {}
-    books_order = {}
-    book_id = {}
-    book_name = {}
-    for vr in versions:
-        if not versions[vr]["present"]:
-            continue
-        (books[vr], books_order[vr], book_id[vr], book_name[vr]) = from_cache(
-            "books_{}_".format(vr), lambda: get_books(vr), None
-        )
 
     return dict(
-        viewsettings=Viewsettings(versions),
+        viewsettings=Viewsettings(cache, passage_dbs, URL, versions),
         versions=versions,
         colorpicker=colorpicker,
         legend=legend,
-        booksorder=json.dumps(books_order),
-        books=json.dumps(books),
         tp_labels=tp_labels,
         tab_views=tab_views,
         tr_labels=tr_labels,
@@ -110,7 +77,7 @@ def text():
 
 def get_clause_atom_fmonad(vr):
     (books, books_order, book_id, book_name) = from_cache(
-        "books_{}_".format(vr), lambda: get_books(vr), None
+        cache, "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
     )
     sql = """
 select book_id, ca_num, first_m
@@ -158,26 +125,6 @@ order by
     for (can,) in ca_data:
         clause_atoms.append(can)
     return clause_atoms
-
-
-def get_books(vr):  # get book information: number of chapters per book
-    if vr in passage_dbs:
-        books_data = passage_dbs[vr].executesql(
-            """
-select book.id, book.name, max(chapter_num)
-from chapter inner join book
-on chapter.book_id = book.id group by name order by book.id
-;
-"""
-        )
-        books_order = [x[1] for x in books_data]
-        books = dict((x[1], x[2]) for x in books_data)
-        book_id = dict((x[1], x[0]) for x in books_data)
-        book_name = dict((x[0], x[1]) for x in books_data)
-        result = (books, books_order, book_id, book_name)
-    else:
-        result = ({}, [], {}, {})
-    return result
 
 
 def get_blocks(
@@ -288,6 +235,7 @@ def material():
     page = get_request_val("material", "", "page")
     mrrep = "m" if mr == "m" else qw
     return from_cache(
+        cache,
         "verses_{}_{}_{}_{}_{}_{}_{}_".format(
             vr,
             mrrep,
@@ -378,6 +326,7 @@ def verse():
 
     if request.extension == "json":
         return from_cache(
+            cache,
             "versej_{}_{}_{}_{}_".format(vr, bk, ch, vs),
             lambda: verse_simple(passage_dbs, vr, bk, ch, vs),
             None,
@@ -386,6 +335,7 @@ def verse():
     if vs is None:
         return dict(good=False, msgs=msgs)
     return from_cache(
+        cache,
         "verse_{}_{}_{}_{}_{}_".format(vr, bk, ch, vs, tr),
         lambda: verse_c(vr, bk, ch, vs, tr, msgs),
         None,
@@ -431,6 +381,7 @@ def cnotes():
     edit = check_bool("edit")
     save = check_bool("save")
     clause_atoms = from_cache(
+        cache,
         "clause_atoms_{}_{}_{}_{}_".format(vr, bk, ch, vs),
         lambda: get_clause_atoms(vr, bk, ch, vs),
         None,
@@ -672,10 +623,11 @@ values
         msgs.append(("warning", "No changes"))
     else:
         changed = True
-        clear_cache(r"^items_n_{}_{}_{}_".format(vr, bk, ch))
+        clear_cache(cache, r"^items_n_{}_{}_{}_".format(vr, bk, ch))
         if len(new_notes):
             for kw in {new_notes[canr][3] for canr in new_notes}:
                 clear_cache(
+                    cache,
                     r"^verses_{}_{}_{}_".format(vr, "n", iid_encode("n", myid, kw=kw))
                 )
         if len(del_notes):
@@ -683,6 +635,7 @@ values
                 if nid in old_notes:
                     kw = old_notes[nid][3]
                     clear_cache(
+                        cache,
                         r"^verses_{}_{}_{}_".format(
                             vr, "n", iid_encode("n", myid, kw=kw)
                         )
@@ -818,6 +771,7 @@ def sidem():
     ch = get_request_val("material", "", "chapter")
     pub = get_request_val("highlights", qw, "pub") if qw != "w" else ""
     return from_cache(
+        cache,
         "items_{}_{}_{}_{}_{}_".format(qw, vr, bk, ch, pub),
         lambda: sidem_c(vr, qw, bk, ch, pub),
         None,
@@ -907,7 +861,7 @@ def csv(
             result.append(
                 (",".join(trow)).replace("\n", " ").replace("\r", " ")
             )  # no newlines in fields, it is impractical
-    return ("\ufeff" + "\n".join(result)).encode("utf_16_le")
+    return "\n".join(result)
 
 
 def item():
@@ -1001,6 +955,7 @@ def chart():  # controller to produce a chart of query results or lexeme occurre
         result.update(qw=qw)
         return result
     return from_cache(
+        cache,
         "chart_{}_{}_{}_".format(vr, qw, iidrep),
         lambda: chart_c(vr, qw, iidrep),
         None,
@@ -1189,13 +1144,14 @@ def siden():
 
 def words():
     session.forget(response)
-    viewsettings = Viewsettings(versions)
+    viewsettings = Viewsettings(cache, passage_dbs, URL, versions)
     vr = get_request_val("material", "", "version", default=False)
     if not vr:
         vr = viewsettings.theversion()
     lan = get_request_val("rest", "", "lan")
     letter = get_request_val("rest", "", "letter")
     return from_cache(
+        cache,
         "words_page_{}_{}_{}_".format(vr, lan, letter),
         lambda: words_page(viewsettings, vr, lan, letter),
         None,
@@ -1209,7 +1165,10 @@ def queries():
     if qid is not None:
         if not query_auth_read(qid):
             qid = 0
-    return dict(qid=qid)
+    return dict(
+        viewsettings=Viewsettings(cache, passage_dbs, URL, versions),
+        qid=qid,
+    )
 
 
 def notes():
@@ -1217,7 +1176,10 @@ def notes():
     msgs = []
     nkid = check_id("goto", "n", "note", msgs)
     (may_upload, myid) = check_upload()
-    return dict(nkid=nkid, may_upload=may_upload, uid=myid)
+    return dict(
+        viewsettings=Viewsettings(cache, passage_dbs, URL, versions),
+        nkid=nkid, may_upload=may_upload, uid=myid
+    )
 
 
 def check_upload(no_controller=True):
@@ -1258,7 +1220,8 @@ def load_notes(uid, filetext, msgs):
         if versions[vr]["present"]:
             my_versions.add(vr)
             book_info[vr] = from_cache(
-                "books_{}_".format(vr), lambda: get_books(vr), None
+                cache,
+                "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
             )[0]
     normative_fields = "\t".join(
         """
@@ -1461,9 +1424,9 @@ insert into note
         for chunk in chunks:
             sql = "{} {};".format(sqlhead, ",\n".join(chunk))
             note_db.executesql(sql)
-        clear_cache(r"^items_n_")
+        clear_cache(cache, r"^items_n_")
         for vr in my_versions:
-            clear_cache(r"^verses_{}_n_".format(vr))
+            clear_cache(cache, r"^verses_{}_n_".format(vr))
     for msg in sorted(errors):
         msgs.append(
             ["error", "{}: {}".format(msg, ",".join(str(i) for i in errors[msg]))]
@@ -1474,6 +1437,7 @@ insert into note
 
 def words_page(viewsettings, vr, lan=None, letter=None):
     (letters, words) = from_cache(
+        cache,
         "words_data_{}_".format(vr), lambda: get_words_data(vr), None
     )
     return dict(
@@ -2781,7 +2745,7 @@ def upd_shared(myid, qid, valsql, msgs):
     mod_date_fld = "shared_on"
     table = "query"
     fname = "is_shared"
-    clear_cache(r"^items_q_")
+    clear_cache(cache, r"^items_q_")
     fieldval = " {} = '{}'".format(fname, valsql)
     mod_date = request.utcnow.replace(microsecond=0) if valsql == "T" else None
     mod_date_sql = "null" if mod_date is None else "'{}'".format(mod_date)
@@ -2804,7 +2768,7 @@ def upd_published(myid, vr, qid, valsql, msgs):
     mod_date_fld = "published_on"
     table = "query_exe"
     fname = "is_published"
-    clear_cache(r"^items_q_{}_".format(vr))
+    clear_cache(cache, r"^items_q_{}_".format(vr))
     verify_version(qid, vr)
     fieldval = " {} = '{}'".format(fname, valsql)
     mod_date = request.utcnow.replace(microsecond=0) if valsql == "T" else None
@@ -3069,7 +3033,7 @@ update {} set{} where id = {}
                 qid,
             )
             db.executesql(sql)
-            clear_cache(r"^items_q_")
+            clear_cache(cache, r"^items_q_")
         if len(fldx):
             sql = """
 update {} set{} where query_id = {} and version = '{}'
@@ -3083,7 +3047,7 @@ update {} set{} where query_id = {} and version = '{}'
                 vr,
             )
             db.executesql(sql)
-            clear_cache(r"^items_q_{}_".format(vr))
+            clear_cache(cache, r"^items_q_{}_".format(vr))
         q_record = get_query_info(
             auth.user is not None,
             qid,
@@ -3507,9 +3471,9 @@ delete from monads where query_exe_id={}
     )
     # Here we clear stuff that will become invalid because of a (re)execution of a query
     # and the deleting of previous results and the storing of new results.
-    clear_cache(r"^verses_{}_q_{}_".format(vr, iid))
-    clear_cache(r"^items_q_{}_".format(vr))
-    clear_cache(r"^chart_{}_q_{}_".format(vr, iid))
+    clear_cache(cache, r"^verses_{}_q_{}_".format(vr, iid))
+    clear_cache(cache, r"^items_q_{}_".format(vr))
+    clear_cache(cache, r"^chart_{}_q_{}_".format(vr, iid))
     nrows = len(rows)
     if nrows == 0:
         return
@@ -3593,6 +3557,7 @@ group by version
 
 def load_n_notes(vr, iid, kw):
     clause_atom_first = from_cache(
+        cache,
         "clause_atom_f_{}_".format(vr), lambda: get_clause_atom_fmonad(vr), None
     )
     kw_sql = kw.replace("'", "''")
@@ -3649,6 +3614,7 @@ def normalize_ranges(ranges, fromset=None):
 def get_pagination(vr, p, monad_sets):
     verse_boundaries = (
         from_cache(
+            cache,
             "verse_boundaries_{}_".format(vr),
             lambda: passage_dbs[vr].executesql(
                 """
@@ -3724,9 +3690,11 @@ def get_chart(
     chart_order = []
     if len(monads):
         (books, books_order, book_id, book_name) = from_cache(
-            "books_{}_".format(vr), lambda: get_books(vr), None
+            cache,
+            "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
         )
         (blocks, block_mapping) = from_cache(
+            cache,
             "blocks_{}_".format(vr), lambda: get_blocks(vr), None
         )
         results = {}

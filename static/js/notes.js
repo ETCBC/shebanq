@@ -1,395 +1,416 @@
-var pn_url, n_url, record_url
-var ns = $.initNamespaceStorage('muting_n')
-var vs = $.initNamespaceStorage('nsview')
-var muting = ns.localStorage
-var nsview = vs.localStorage
-var ftree, upload, msgflt, rdata
+/* eslint-env jquery */
+/* eslint-disable camelcase, no-new */
+
+/* globals Config, Msg */
+
+const ns = $.initNamespaceStorage("muting_n")
+const vs = $.initNamespaceStorage("nsview")
+const muting = ns.localStorage
+const nsview = vs.localStorage
+let ftree, msgflt, rdata
 const subtractn = 80
 /* the canvas holding the material gets a height equal to
  * the window height minus this amount
  */
-var control_height = 100 // height for messages and controls
+const control_height = 100
+/* height for messages and controls
+ */
 
-var escapeHTML = (function () {
-    'use strict';
-    var chr = {
-        '&': '&amp;', '<': '&lt;',  '>': '&gt;'
-    };
-    return function (text) {
-        return text.replace(/[&<>]/g, function (a) { return chr[a]; });
-    };
-}());
-
-var Request = {
-    parameter: function(name) {
-        return this.parameters()[name]
-    },
-    parameters: function(uri) {
-        var i, parameter, params, query, result;
-        result = {};
-        if (!uri) {
-            uri = window.location.search;
-        }
-        if (uri.indexOf("?") === -1) {
-            return {};
-        }
-        query = uri.slice(1);
-        params = query.split("&");
-        i = 0;
-        while (i < params.length) {
-            parameter = params[i].split("=");
-            result[parameter[0]] = parameter[1];
-            i++;
-        }
-        return result;
-    }
-}
-
-function View() {
-    var that = this
+class View {
+  constructor() {
     this.prevstate = false
-    if (!nsview.isSet('simple')) {
-        nsview.set('simple', true)
+    if (!nsview.isSet("simple")) {
+      nsview.set("simple", true)
     }
-    this.nvradio = $('.nvradio')
-    this.csimple = $('#c_view_simple')
-    this.cadvanced = $('#c_view_advanced')
+    this.nvradio = $(".nvradio")
+    this.csimple = $("#c_view_simple")
+    this.cadvanced = $("#c_view_advanced")
 
-    this.adjust_view = function() {
-        var simple = nsview.get('simple');
-        this.nvradio.removeClass('ison');
-        (simple?this.csimple:this.cadvanced).addClass('ison')
-        if (this.prevstate != simple) {
-            if (simple) {
-                $('.brn').hide()
-            }
-            else {
-                $('.brn').show()
-            }
-            this.prevstate = simple
-        }
-    }
-
-    this.csimple.click(function(e) {e.preventDefault();
-        nsview.set('simple', true)
-        that.adjust_view()
+    this.csimple.click(e => {
+      e.preventDefault()
+      nsview.set("simple", true)
+      this.adjust_view()
     })
-    this.cadvanced.click(function(e) {e.preventDefault();
-        nsview.set('simple', false)
-        that.adjust_view()
+
+    this.cadvanced.click(e => {
+      e.preventDefault()
+      nsview.set("simple", false)
+      this.adjust_view()
     })
     this.adjust_view()
+  }
+
+  adjust_view() {
+    const simple = nsview.get("simple")
+    this.nvradio.removeClass("ison")
+    ;(simple ? this.csimple : this.cadvanced).addClass("ison")
+    if (this.prevstate != simple) {
+      if (simple) {
+        $(".brn").hide()
+      } else {
+        $(".brn").show()
+      }
+      this.prevstate = simple
+    }
+  }
 }
 
-function Level() {
-    var that = this
-    var levels = {u: 1, n: 2}
-    this.expand_all = function() {
-        ftree.ftw.visit(function(n) {
-            n.setExpanded(true, {noAnimation: true, noEvents: false})
-        }, true)
+class Level {
+  constructor() {
+    this.levels = { u: 1, n: 2 }
+
+    $(".nlradio").removeClass("ison")
+    if (!nsview.isSet("level")) {
+      nsview.set("level", "u")
     }
-
-    this.expand_level = function(level) {
-        $('.nlradio').removeClass('ison')
-        $('#level_'+level).addClass('ison')
-        nsview.set('level', level)
-        if (level in levels) {
-            var numlevel = levels[level]
-            ftree.ftw.visit(function(n) {
-                var nlevel = n.getLevel()
-                n.setExpanded(nlevel <= numlevel , {noAnimation: true, noEvents: false})
-            }, true)
-        }
-    }
-
-    this.initlevel = function() {
-        this.expand_level(nsview.get('level'))
-    }
-    $('.nlradio').removeClass('ison')
-    if (!nsview.isSet('level')) {nsview.set('level', 'u')}
-    $('#level_u').click(function(e) {e.preventDefault();that.expand_level('u')})
-    $('#level_n').click(function(e) {e.preventDefault();that.expand_level('n')})
-    $('#level_').click(function(e) {e.preventDefault();that.expand_level('')})
-}
-
-function Filter() {
-    var that = this
-    this.patc = $('#filter_contents')
-
-    this.clear = function() {
-        ftree.ftw.clearFilter()
-        msgflt.clear()
-        msgflt.msg(['good', 'no filter applied'])
-        $('.nfradio').removeClass('ison')
-        nsview.remove('filter_mode')
-        $('#filter_clear').hide()
-        $('#amatches').html('')
-        $('#cmatches').html('')
-        $('#nmatches').html('')
-        $('#count_u').html(rdata.u)
-        $('#count_n').html(rdata.n)
-    }
-    this.pnsearch = function(kind) {
-        var pat = this.patc.val()
-        nsview.set('filter_pat', pat);
-        var amatches = 0
-        var cmatches = 0
-        var nmatches = 0
-        if (pat == '') {
-            amatches = -1
-            cmatches = -1
-            nmatches = -1
-        }
-        $('.nfradio').removeClass('ison')
-        if (pat == '') {
-            this.clear()
-            return
-        }
-        else {
-            msgflt.clear()
-            msgflt.msg(['special', 'filter applied'])
-        }
-        $('#filter_control_'+kind).addClass('ison')
-        nsview.set('filter_mode', kind)
-
-        ftree.level.expand_all()
-        if (kind == 'a') {
-            amatches = ftree.ftw.filterNodes(pat, false)
-            $('#amatches').html(amatches>=0?('('+amatches+')'):'')
-        }
-        else if (kind == 'c') {
-            cmatches = ftree.ftw.filterBranches(pat)
-            $('#cmatches').html(cmatches>=0?('('+cmatches+')'):'')
-        }
-        else if (kind == 'n') {
-            nmatches = ftree.ftw.filterNodes(pat, true)
-            $('#nmatches').html(nmatches>=0?('('+nmatches+')'):'')
-        }
-        $('#filter_clear').show()
-        var submatch = 'span.fancytree-submatch'
-        var match = 'span.fancytree-match'
-        var base_u = '#queries>ul>li>ul>li>'
-        var match_u = $(base_u+match).length
-        var submatch_u = $(base_u+submatch).length
-        var base_n = base_n+'ul>li>'
-        var match_n = $(base_n+match).length
-        $('#count_u').html('<span class="match">'+match_u+'</span> <span class="brn submatch">'+submatch_u+'</span>')
-        $('#count_n').html('<span class="match">'+match_n+'</span>')
-        if (ftree.view.simple) {
-            $('.brn').hide()
-        }
-    }
-
-    $('#filter_clear').hide()
-    $('#filter_contents').val(nsview.isSet('filter_pat')?nsview.get('filter_pat'):'')
-    if (nsview.isSet('filter_mode')) {
-        this.pnsearch(nsview.get('filter_mode'))
-        $('#filter_clear').show()
-    }
-
-
-    $('#filter_control_a').click(function(e) {e.preventDefault();that.pnsearch('a')})
-    $('#filter_control_c').click(function(e) {e.preventDefault();that.pnsearch('c')})
-    $('#filter_control_n').click(function(e) {e.preventDefault();that.pnsearch('q')})
-
-    $('#filter_clear').click(function(e) {e.preventDefault();that.clear()})
-}
-
-function Msg(destination) {
-    var that = this
-    this.destination = $('#'+destination)
-    this.trashc = $('#trash_'+destination)
-    this.clear = function() {
-        this.destination.html('')
-        this.trashc.hide()
-    }
-    this.trashc.click(function(e) {e.preventDefault();
-        that.clear()
+    $("#level_u").click(e => {
+      e.preventDefault()
+      this.expand_level("u")
     })
-    this.msg = function(msgobj) {
-        var mtext = this.destination.html()
-        this.destination.html(mtext+'<p class="'+msgobj[0]+'">'+msgobj[1]+'</p>')
-        this.trashc.show()
-    }
-    this.trashc.hide()
-}
-function Tree() {
-    var that = this
-    this.tps = {u: 'user', n:'note'}
+    $("#level_n").click(e => {
+      e.preventDefault()
+      this.expand_level("n")
+    })
+    $("#level_").click(e => {
+      e.preventDefault()
+      this.expand_level("")
+    })
+  }
 
-    this.store_select = function(node) {
-        if (!node.folder) {
-            var iid = node.key
-            if (node.selected) {
-                muting.set(iid, 1)
-            }
-            else {
-                if (muting.isSet(iid)) {
-                    muting.remove(iid)
-                }
-            }
-        }
+  expand_all() {
+    ftree.ftw.visit(n => {
+      n.setExpanded(true, { noAnimation: true, noEvents: false })
+    }, true)
+  }
+
+  expand_level(level) {
+    const { levels } = this
+
+    $(".nlradio").removeClass("ison")
+    $(`#level_${level}`).addClass("ison")
+    nsview.set("level", level)
+    if (level in levels) {
+      const numlevel = levels[level]
+      ftree.ftw.visit(n => {
+        const nlevel = n.getLevel()
+        n.setExpanded(nlevel <= numlevel, { noAnimation: true, noEvents: false })
+      }, true)
     }
-    this.store_select_deep = function(node) {
-        this.store_select(node)
-        var children = node.children
-        if (children != null) {
-            for (n in children) {
-                this.store_select_deep(children[n])
-            }
-        }
+  }
+
+  initlevel() {
+    this.expand_level(nsview.get("level"))
+  }
+}
+
+class Filter {
+  constructor() {
+    this.patc = $("#filter_contents")
+
+    $("#filter_clear").hide()
+    $("#filter_contents").val(nsview.isSet("filter_pat") ? nsview.get("filter_pat") : "")
+    if (nsview.isSet("filter_mode")) {
+      this.pnsearch(nsview.get("filter_mode"))
+      $("#filter_clear").show()
     }
-    this.dress_notes = function() {
-        $('#notes a.md').addClass('fa fa-level-down')
-        $('#notes a[nkid]').each(function() {
-            var vr = $(this).attr('v')
-            var extra = (vr == undefined)?'':'&version='+vr;
-            $(this).attr('href', n_url+'?iid='+$(this).attr('nkid')+extra+'&page=1&mr=r&qw=n&tp=txt_tb1&nget=v')
-        })
-        $('#notes a.md').click(function(e) {e.preventDefault();
-            var uname = $(this).closest('ul').closest('li').find('span[n]').html()
-            var tit = $(this).prev()
-            var lnk = tit.attr('href')
-            var nname = tit.html()
-            window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', '['+uname+': '+nname+']('+lnk+')')
-        })
+
+    $("#filter_control_a").click(e => {
+      e.preventDefault()
+      this.pnsearch("a")
+    })
+    $("#filter_control_c").click(e => {
+      e.preventDefault()
+      this.pnsearch("c")
+    })
+    $("#filter_control_n").click(e => {
+      e.preventDefault()
+      this.pnsearch("q")
+    })
+    $("#filter_clear").click(e => {
+      e.preventDefault()
+      this.clear()
+    })
+  }
+
+  clear() {
+    ftree.ftw.clearFilter()
+    msgflt.clear()
+    msgflt.msg(["good", "no filter applied"])
+    $(".nfradio").removeClass("ison")
+    nsview.remove("filter_mode")
+    $("#filter_clear").hide()
+    $("#amatches").html("")
+    $("#cmatches").html("")
+    $("#nmatches").html("")
+    $("#count_u").html(rdata.u)
+    $("#count_n").html(rdata.n)
+  }
+
+  pnsearch(kind) {
+    const pat = this.patc.val()
+    nsview.set("filter_pat", pat)
+    let amatches = 0
+    let cmatches = 0
+    let nmatches = 0
+    if (pat == "") {
+      amatches = -1
+      cmatches = -1
+      nmatches = -1
     }
-    this.gotonote = function(nkid) {
-        if (nkid != undefined && nkid != '0') {
-            var nnode = this.ftw.getNodeByKey('n'+nkid)
-            if (nnode != null) {
-                nnode.makeVisible({noAnimation: true})
-                $('.treehl').removeClass('treehl')
-                $('a[nkid="'+nkid+'"]').closest('span').addClass('treehl')
-                $(nnode.li)[0].scrollIntoView()
-            }
-        }
+    $(".nfradio").removeClass("ison")
+    if (pat == "") {
+      this.clear()
+      return
+    } else {
+      msgflt.clear()
+      msgflt.msg(["special", "filter applied"])
     }
+    $(`#filter_control_${kind}`).addClass("ison")
+    nsview.set("filter_mode", kind)
+
+    ftree.level.expand_all()
+    if (kind == "a") {
+      amatches = ftree.ftw.filterNodes(pat, false)
+      $("#amatches").html(amatches >= 0 ? `(${amatches})` : "")
+    } else if (kind == "c") {
+      cmatches = ftree.ftw.filterBranches(pat)
+      $("#cmatches").html(cmatches >= 0 ? `(${cmatches})` : "")
+    } else if (kind == "n") {
+      nmatches = ftree.ftw.filterNodes(pat, true)
+      $("#nmatches").html(nmatches >= 0 ? `(${nmatches})` : "")
+    }
+    $("#filter_clear").show()
+    const submatch = "span.fancytree-submatch"
+    const match = "span.fancytree-match"
+    const base_u = "#queries>ul>li>ul>li>"
+    const match_u = $(base_u + match).length
+    const submatch_u = $(base_u + submatch).length
+    const base_n = base_n + "ul>li>"
+    const match_n = $(base_n + match).length
+    $("#count_u").html(`
+      <span class="match">${match_u}</span>
+      <span class="brn submatch">${submatch_u}</span>`
+    )
+    $("#count_n").html(`<span class="match">${match_n}</span>`)
+    if (ftree.view.simple) {
+      $(".brn").hide()
+    }
+  }
+}
+
+class Tree {
+  constructor() {
+    const { pn_url } = Config
+
+    this.tps = { u: "user", n: "note" }
+
+    const tree = this
 
     $("#notes").fancytree({
-        extensions: ["persist", "filter"],
-        checkbox: true,
-        selectMode: 3,
-        activeVisible: true,
-        toggleEffect: false,
-        clickFolderMode: 2,
-        focusOnSelect: false,
-        quicksearch: true,
-        icons: false,
-        persist: {
-            cookiePrefix: 'ft-n-',
-            store: 'local',
-            types: 'expanded selected',
-        },
-        source: {
-            url: pn_url,
-            dataType: "json",
-        },
-        filter: {
-            mode: 'hide',
-        },
-        init: function(e, data) {
-            muting.removeAll()
-            that.ftw =  $("#notes").fancytree('getTree')
-            var s = that.ftw.getSelectedNodes(true)
-            for (i in s) {
-                that.store_select_deep(s[i])
-            }
-            that.ftw.render(true, true)
-            that.dress_notes()
-            rdata = that.ftw.rootNode.children[0].data
-            $('#count_u').html(rdata.u)
-            $('#count_n').html(rdata.n)
-            msgflt = new Msg('filter_msg')
-            that.view = new View()
-            that.level = new Level()
-            that.filter = new Filter()
-            that.level.initlevel()
-            that.gotonote($('#nkid').val()) 
-        },
-        expand: function(e, data) {
-            if (that.level != undefined) {
-                that.level.expand_level('')
-            }
-        },
-        collapse: function(e, data) {
-            if (that.level != undefined) {
-                that.level.expand_level('')
-            }
-        },
-        select: function(e, data) {
-            that.store_select_deep(data.node)
-        },
+      extensions: ["persist", "filter"],
+      checkbox: true,
+      selectMode: 3,
+      activeVisible: true,
+      toggleEffect: false,
+      clickFolderMode: 2,
+      focusOnSelect: false,
+      quicksearch: true,
+      icons: false,
+      persist: {
+        cookiePrefix: "ft-n-",
+        store: "local",
+        types: "expanded selected",
+      },
+      source: {
+        url: pn_url,
+        dataType: "json",
+      },
+      filter: {
+        mode: "hide",
+      },
+      init: () => {
+        muting.removeAll()
+        tree.ftw = $("#notes").fancytree("getTree")
+        const s = tree.ftw.getSelectedNodes(true)
+        for (const i in s) {
+          tree.store_select_deep(s[i])
+        }
+        tree.ftw.render(true, true)
+        tree.dress_notes()
+        rdata = tree.ftw.rootNode.children[0].data
+        $("#count_u").html(rdata.u)
+        $("#count_n").html(rdata.n)
+        msgflt = new Msg("filter_msg")
+        tree.view = new View()
+        tree.level = new Level()
+        tree.filter = new Filter()
+        tree.level.initlevel()
+        tree.gotonote($("#nkid").val())
+      },
+      expand: () => {
+        const { level } = tree
+        if (level != undefined) {
+          level.expand_level("")
+        }
+      },
+      collapse: () => {
+        const { level } = tree
+        if (level != undefined) {
+          level.expand_level("")
+        }
+      },
+      select: (e, data) => {
+        tree.store_select_deep(data.node)
+      },
     })
-    var standard_height = window.innerHeight - subtractn
-    var form_height = standard_height - control_height
-    var standard_width = window.innerWidth
-    var canvas_left = $('.left-sidebar')
-    var canvas_middle = $('.span6')
-    var canvas_right = $('.right-sidebar')
-    canvas_left.css('height', standard_height+'px')
-    $('#notes').css('height', standard_height+'px')
-    $('#opqforms').css('height', form_height+'px')
-    $('#opqctrl').css('height', control_height+'px')
-    canvas_right.css('height', standard_height+'px')
+
+    const standard_height = window.innerHeight - subtractn
+    const form_height = standard_height - control_height
+    const canvas_left = $(".left-sidebar")
+    const canvas_right = $(".right-sidebar")
+    canvas_left.css("height", standard_height + "px")
+    $("#notes").css("height", standard_height + "px")
+    $("#opqforms").css("height", form_height + "px")
+    $("#opqctrl").css("height", control_height + "px")
+    canvas_right.css("height", standard_height + "px")
+  }
+
+  store_select(node) {
+    const { folder, key: iid, selected } = node
+    if (!folder) {
+      if (selected) {
+        muting.set(iid, 1)
+      } else {
+        if (muting.isSet(iid)) {
+          muting.remove(iid)
+        }
+      }
+    }
+  }
+
+  store_select_deep(node) {
+    const { children } = node
+    this.store_select(node)
+    if (children != null) {
+      for (const n in children) {
+        this.store_select_deep(children[n])
+      }
+    }
+  }
+
+  dress_notes() {
+    const { n_url } = Config
+    $("#notes a.md").addClass("fa fa-level-down")
+    $("#notes a[nkid]").each((i, el) => {
+      const elem = $(el)
+      const vr = elem.attr("v")
+      const extra = vr == undefined ? "" : "&version=" + vr
+      elem.attr(
+        "href",
+        n_url +
+          "?iid=" +
+          elem.attr("nkid") +
+          extra +
+          "&page=1&mr=r&qw=n&tp=txt_tb1&nget=v"
+      )
+    })
+    $("#notes a.md").click(e => {
+      e.preventDefault()
+      const elem = $(e.target)
+      const uname = elem.closest("ul").closest("li").find("span[n]").html()
+      const tit = elem.prev()
+      const lnk = tit.attr("href")
+      const nname = tit.html()
+      window.prompt(
+        "Press <Cmd-C> and then <Enter> to copy link on clipboard",
+        `[${uname}: ${nname}](${lnk})`
+      )
+    })
+  }
+
+  gotonote(nkid) {
+    if (nkid != undefined && nkid != "0") {
+      const nnode = this.ftw.getNodeByKey("n" + nkid)
+      if (nnode != null) {
+        nnode.makeVisible({ noAnimation: true })
+        $(".treehl").removeClass("treehl")
+        $(`a[nkid="${nkid}"]`)
+          .closest("span")
+          .addClass("treehl")
+        $(nnode.li)[0].scrollIntoView()
+      }
+    }
+  }
 }
 
-function Upload() {
-    var that = this
-    this.inpt = $('#ncsv')
-    this.ctrl = $('#ncsv_upload')
+class Upload {
+  constructor() {
+    this.inpt = $("#ncsv")
+    this.ctrl = $("#ncsv_upload")
     this.limit = 20 * 1024 * 1024
-    this.ftype = 'text/csv'
-    this.init = function() {
-        this.msgs = new Msg('upl_msgs')
-        this.ctrl.hide()
-        this.inpt.change(function() {
-            that.file = this.files[0]
-            if(that.file.name.length > 0) {
-                var msize = (that.file.size/1024).toFixed(1)
-                if (that.file.type != that.ftype) {
-                    that.msgs.msg(['error', 'File has type '+that.file.type+'; should be '+that.ftype]);
-                }
-                else if(that.file.size >= that.limit) {
-                    that.msgs.msg(['error', 'File has size '+msize+'Kb; should be less than '+(that.limit/1024)+'Kb']);
-                }
-                else { 
-                    that.msgs.msg(['good', 'File has type '+that.file.type+' and size '+msize+'Kb']);
-                    that.ctrl.show()
-                }
-            }
-        })
-        this.ctrl.click(function(e) {e.preventDefault();
-            that.fsubmit()
-            that.ctrl.hide()
-            that.inpt.val('')
-        })
-    }
-    this.fsubmit = function() {
-        var fd = new FormData(document.getElementById("fileinfo"));
-        this.msgs.msg(['special', 'uploading ...'])
-        $.ajax({
-          url: upload_url,
-          type: "POST",
-          data: fd,
-          enctype: 'multipart/form-data',
-          processData: false,  // tell jQuery not to process the data
-          contentType: false   // tell jQuery not to set contentType
-        }).done(function( data ) {
-            data.msgs.forEach(function(m) {
-                that.msgs.msg(m)
-            })
-        }, 'json');
-        return false;
-    }
+    this.ftype = "text/csv"
     if (this.inpt) {
-        this.init()
+      this.init()
     }
+  }
+
+  init() {
+    this.msgs = new Msg("upl_msgs")
+    this.ctrl.hide()
+    const { msgs, ctrl, limit, ftype, inpt } = this
+    inpt.change(() => {
+      this.file = this.files[0]
+      const { file } = this
+      if (file.name.length > 0) {
+        const msize = (file.size / 1024).toFixed(1)
+        if (file.type != this.ftype) {
+          msgs.msg([
+            "error",
+            `File has type ${file.type}; should be ${ftype}`,
+          ])
+        } else if (file.size >= limit) {
+          msgs.msg([
+            "error",
+            `File has size ${msize}Kb; should be less than ${limit / 1024}Kb`,
+          ])
+        } else {
+          msgs.msg([
+            "good",
+            `File has type ${file.type} and size ${msize}Kb`,
+          ])
+          ctrl.show()
+        }
+      }
+    })
+    ctrl.click(e => {
+      e.preventDefault()
+      this.fsubmit()
+      ctrl.hide()
+      inpt.val("")
+    })
+  }
+  fsubmit() {
+    const { upload_url } = Config
+    const { msgs } = this
+    const fd = new FormData(document.getElementById("fileinfo"))
+    msgs.msg(["special", "uploading ..."])
+    $.ajax({
+      url: upload_url,
+      type: "POST",
+      data: fd,
+      enctype: "multipart/form-data",
+      processData: false, // tell jQuery not to process the data
+      contentType: false, // tell jQuery not to set contentType
+    }).done(data => {
+      for (const m of data.msgs) {
+        msgs.msg(m)
+      }
+    }, "json")
+    return false
+  }
 }
 
-$(function(){
-    ftree = new Tree()
-    upload = new Upload()
+$(() => {
+  ftree = new Tree()
+  new Upload()
 })
-

@@ -1,40 +1,47 @@
+/* eslint-env jquery */
+/* eslint-disable camelcase */
 
 function deselectText() {
-    if (document.selection) {
-        document.selection.empty();
-    } else if (window.getSelection) {
-        window.getSelection().removeAllRanges();
-    }
+  if (document.selection) {
+    document.selection.empty()
+  } else if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  }
 }
 function selectText(containerid) {
-    deselectText()
-    if (document.selection) {
-        var range = document.body.createTextRange();
-        range.moveToElementText(document.getElementById(containerid));
-        range.select();
-    } else if (window.getSelection) {
-        var range = document.createRange();
-        range.selectNode(document.getElementById(containerid));
-        window.getSelection().addRange(range);
-    }
+  deselectText()
+  if (document.selection) {
+    var range = document.body.createTextRange()
+    range.moveToElementText(document.getElementById(containerid))
+    range.select()
+  } else if (window.getSelection) {
+    var range = document.createRange()
+    range.selectNode(document.getElementById(containerid))
+    window.getSelection().addRange(range)
+  }
 }
 
-jQuery(function(){
-	var script_source = jQuery('script[src*="share.js"]').attr('src');
-        var params = function(name,default_value) {
-            var match = RegExp('[?&]' + name + '=([^&]*)').exec(script_source);
-            return match && decodeURIComponent(match[1].replace(/\+/g, ' '))||default_value;
-        }
-	var path = params('static','social');
-	var url = encodeURIComponent(window.location.href);
-	var host =  window.location.hostname;
-    var qmsg = {
-        good: 'The results of this query have been obtained after the query body has been last modified',
-        warning: 'This query has never been executed in SHEBANQ',
-        error: 'The body of this query has been changed after its current results have been obtained.',
-    }
+jQuery(function () {
+  const { query_url, word_url, note_url, page_view_url } = Config
 
-	var tbar = '\
+  var script_source = jQuery('script[src*="share.js"]').attr("src")
+  var params = function (name, default_value) {
+    var match = RegExp("[?&]" + name + "=([^&]*)").exec(script_source)
+    return (match && decodeURIComponent(match[1].replace(/\+/g, " "))) || default_value
+  }
+  var path = params("static", "social")
+  var url = encodeURIComponent(window.location.href)
+  var host = window.location.hostname
+  var qmsg = {
+    good:
+      "The results of this query have been obtained after the query body has been last modified",
+    warning: "This query has never been executed in SHEBANQ",
+    error:
+      "The body of this query has been changed after its current results have been obtained.",
+  }
+
+  var tbar =
+    '\
 <div id="socialdrawer">\
     <p id="citeh">Cite</p>\
     <table align="center">\
@@ -82,137 +89,238 @@ jQuery(function(){
     <p id="cdiagpub"></p>\
     <p id="cdiagsts"></p>\
 </div>\
-';	
-	// Add the share tool bar.
-	jQuery('body').append(tbar); 
-	var st = jQuery('#socialdrawer');
-	st.css({'opacity':'.7','z-index':'3000','background':'#FFF','border':'solid 1px #666','border-width':' 1px 0 0 1px','height':'20px','width':'40px','position':'fixed','bottom':'0','right':'0','padding':'2px 5px','overflow':'hidden','-webkit-border-top-left-radius':' 12px','-moz-border-radius-topleft':' 12px','border-top-left-radius':' 12px','-moz-box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)','-webkit-box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)','box-shadow':' -3px -3px 3px rgba(0,0,0,0.5)'});
-	jQuery('#citeh').css({'margin':'2px 3px','text-shadow':' 1px 1px 1px #FFF','color':'#444','font-size':'12px','line-height':'1em'});
-    jQuery('#socialdrawer td,#socialdrawer th').css({'width': '120px', 'text-align': 'center', 'border-left': '2px solid #888888', 'border-right': '2px solid #888888'});
-    jQuery('#socialdrawer .detail').hide()
-	// hover
-    $('#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_htc,#clip_pv_nl').click(function(e) {e.preventDefault();
-        window.prompt('Press <Cmd-C> and then <Enter> to copy link on clipboard', $(this).attr('lnk'))
-    })
-    $('#clip_pv_cn').click(function(e) {e.preventDefault();
-        var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
-        var slink = $('#self_link')
-        slink.show()
-        slink.attr('href', shebanq_url_raw)
-        selectText('material')
-    })
-    $('#xc_qx').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_qx')) })
-    $('#xc_q').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_q')) })
-    $('#xc_w').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_w')) })
-    $('#xc_n').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_n')) })
-    $('#xc_pv').click(function(e){e.preventDefault(); toggle_detail($(this), $('#x_pv')) })
-	st.click(function(e){e.preventDefault();
-        var shebanq_url_raw = page_view_url+wb.vs.getvars()+'&pref=alt'
-        var shebanq_url_note
-        var shebanq_url_rawc
-        var shebanq_url_note_pref = 'shebanq:'
-        var shebanq_url_show_vars = '&version='+wb.version+'&mr='+wb.mr+'&qw='+wb.qw+'&tp='+wb.vs.tp()+'&tr='+wb.vs.tr()
-        var shebanq_url_side_vars = '&wget='+wb.vs.get('w')+'&qget='+wb.vs.get('q')+'&nget='+wb.vs.get('n')
-        var shebanq_url = encodeURIComponent(shebanq_url_raw)
-        var vr = wb.version
-        var pvtitle
-        $('#citeh').hide()
-        $('#cdiagpub').html('')
-        $('#cdiagsts').html('')
-        $('.clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts').removeClass('error warning good special')
-        if (wb.mr == 'm') {
-	        //pvtitle = escape($('title').text());
-            pvtitle = 'bhsa'+vr+' '+$('#thebook').html()+' '+$('#thechapter').html()+':'+wb.vs.verse();
-            shebanq_url_note = shebanq_url_note_pref+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+'&verse='+wb.vs.verse()+shebanq_url_show_vars+shebanq_url_side_vars
-            shebanq_url_rawc = page_view_url+'?book='+wb.vs.book()+'&chapter='+wb.vs.chapter()+'&verse='+wb.vs.verse()+shebanq_url_show_vars+shebanq_url_side_vars
-            $('.clip_qx').hide()
-            $('.clip_q').hide()
-            $('.clip_w').hide()
-            $('.clip_n').hide()
+'
+  // Add the share tool bar.
+  jQuery("body").append(tbar)
+  var st = jQuery("#socialdrawer")
+  st.css({
+    opacity: ".7",
+    "z-index": "3000",
+    background: "#FFF",
+    border: "solid 1px #666",
+    "border-width": " 1px 0 0 1px",
+    height: "20px",
+    width: "40px",
+    position: "fixed",
+    bottom: "0",
+    right: "0",
+    padding: "2px 5px",
+    overflow: "hidden",
+    "-webkit-border-top-left-radius": " 12px",
+    "-moz-border-radius-topleft": " 12px",
+    "border-top-left-radius": " 12px",
+    "-moz-box-shadow": " -3px -3px 3px rgba(0,0,0,0.5)",
+    "-webkit-box-shadow": " -3px -3px 3px rgba(0,0,0,0.5)",
+    "box-shadow": " -3px -3px 3px rgba(0,0,0,0.5)",
+  })
+  jQuery("#citeh").css({
+    margin: "2px 3px",
+    "text-shadow": " 1px 1px 1px #FFF",
+    color: "#444",
+    "font-size": "12px",
+    "line-height": "1em",
+  })
+  jQuery("#socialdrawer td,#socialdrawer th").css({
+    width: "120px",
+    "text-align": "center",
+    "border-left": "2px solid #888888",
+    "border-right": "2px solid #888888",
+  })
+  jQuery("#socialdrawer .detail").hide()
+  // hover
+  $(
+    "#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_htc,#clip_pv_nl"
+  ).click(function (e) {
+    e.preventDefault()
+    window.prompt(
+      "Press <Cmd-C> and then <Enter> to copy link on clipboard",
+      $(this).attr("lnk")
+    )
+  })
+  $("#clip_pv_cn").click(function (e) {
+    e.preventDefault()
+    var shebanq_url_raw = page_view_url + P.vs.getvars() + "&pref=alt"
+    var slink = $("#self_link")
+    slink.show()
+    slink.attr("href", shebanq_url_raw)
+    selectText("material")
+  })
+  $("#xc_qx").click(function (e) {
+    e.preventDefault()
+    toggle_detail($(this), $("#x_qx"))
+  })
+  $("#xc_q").click(function (e) {
+    e.preventDefault()
+    toggle_detail($(this), $("#x_q"))
+  })
+  $("#xc_w").click(function (e) {
+    e.preventDefault()
+    toggle_detail($(this), $("#x_w"))
+  })
+  $("#xc_n").click(function (e) {
+    e.preventDefault()
+    toggle_detail($(this), $("#x_n"))
+  })
+  $("#xc_pv").click(function (e) {
+    e.preventDefault()
+    toggle_detail($(this), $("#x_pv"))
+  })
+  st.click(function (e) {
+    e.preventDefault()
+    var shebanq_url_raw = page_view_url + P.vs.getvars() + "&pref=alt"
+    var shebanq_url_note
+    var shebanq_url_rawc
+    var shebanq_url_note_pref = "shebanq:"
+    var shebanq_url_show_vars =
+      "&version=" +
+      P.version +
+      "&mr=" +
+      P.mr +
+      "&qw=" +
+      P.qw +
+      "&tp=" +
+      P.vs.tp() +
+      "&tr=" +
+      P.vs.tr()
+    var shebanq_url_side_vars =
+      "&wget=" + P.vs.get("w") + "&qget=" + P.vs.get("q") + "&nget=" + P.vs.get("n")
+    var shebanq_url = encodeURIComponent(shebanq_url_raw)
+    var vr = P.version
+    var pvtitle
+    $("#citeh").hide()
+    $("#cdiagpub").html("")
+    $("#cdiagsts").html("")
+    $(
+      ".clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts"
+    ).removeClass("error warning good special")
+    if (P.mr == "m") {
+      //pvtitle = escape($('title').text());
+      pvtitle =
+        "bhsa" +
+        vr +
+        " " +
+        $("#thebook").html() +
+        " " +
+        $("#thechapter").html() +
+        ":" +
+        P.vs.verse()
+      shebanq_url_note =
+        shebanq_url_note_pref +
+        "?book=" +
+        P.vs.book() +
+        "&chapter=" +
+        P.vs.chapter() +
+        "&verse=" +
+        P.vs.verse() +
+        shebanq_url_show_vars +
+        shebanq_url_side_vars
+      shebanq_url_rawc =
+        page_view_url +
+        "?book=" +
+        P.vs.book() +
+        "&chapter=" +
+        P.vs.chapter() +
+        "&verse=" +
+        P.vs.verse() +
+        shebanq_url_show_vars +
+        shebanq_url_side_vars
+      $(".clip_qx").hide()
+      $(".clip_q").hide()
+      $(".clip_w").hide()
+      $(".clip_n").hide()
+    } else if (P.mr == "r") {
+      shebanq_url_note =
+        shebanq_url_note_pref +
+        "?id=" +
+        P.iid +
+        "&page=" +
+        P.vs.page() +
+        shebanq_url_show_vars
+      shebanq_url_rawc =
+        page_view_url + "?id=" + P.iid + "&page=" + P.vs.page() + shebanq_url_show_vars
+      var iinfo = P.sidebars.sidebar["r" + P.qw].content.info
+      if (P.qw == "q") {
+        pvtitle = iinfo.ufname + " " + iinfo.ulname + ": " + iinfo.name
+        var is_shared = iinfo.is_shared
+        var is_pub = iinfo.versions[vr].is_published
+        var qstatus = iinfo.versions[vr].status
+        if (is_shared) {
+          if (!is_pub) {
+            $(".clip_qx.clr").addClass("warning")
+            $("#cdiagpub").addClass("warning")
+            $("#cdiagpub").html(
+              "Beware of citing this query. It has not been published. It may be changed later."
+            )
+          } else {
+            $(".clip_qx.clr").addClass("special")
+            $("#cdiagpub").addClass("special")
+            $("#cdiagpub").html(
+              "This query has been published. If that happened more than a week ago, it can be safely cited. It will not be changed anymore."
+            )
+          }
+          $(".clip_q.clr").addClass(qstatus)
+          $("#cdiagsts").addClass(qstatus)
+          $("#cdiagsts").html(qmsg[qstatus])
+        } else {
+          $(".clip_qx.clr").addClass("error")
+          $(".clip_q.clr").addClass("error")
+          $(".clip_pv.clr").addClass("error")
+          $("#cdiagpub").addClass("error")
+          $("#cdiagpub").html(
+            "This query is not accessible to others because it is not shared."
+          )
         }
-        else if (wb.mr == 'r') {
-            shebanq_url_note = shebanq_url_note_pref+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
-            shebanq_url_rawc = page_view_url+'?id='+wb.iid+'&page='+wb.vs.page()+shebanq_url_show_vars
-            var iinfo = wb.sidebars.sidebar['r'+wb.qw].content.info
-            if (wb.qw == 'q') {
-                pvtitle = iinfo.ufname+' '+iinfo.ulname+': '+iinfo.name
-                var is_shared = iinfo.is_shared
-                var is_pub = iinfo.versions[vr].is_published
-                var qstatus = iinfo.versions[vr].status
-                if (is_shared) {
-                    if (!is_pub) {
-                        $('.clip_qx.clr').addClass('warning')
-                        $('#cdiagpub').addClass('warning')
-                        $('#cdiagpub').html('Beware of citing this query. It has not been published. It may be changed later.')
-                    }
-                    else {
-                        $('.clip_qx.clr').addClass('special')
-                        $('#cdiagpub').addClass('special')
-                        $('#cdiagpub').html('This query has been published. If that happened more than a week ago, it can be safely cited. It will not be changed anymore.')
-                    }
-                    $('.clip_q.clr').addClass(qstatus)
-                    $('#cdiagsts').addClass(qstatus)
-                    $('#cdiagsts').html(qmsg[qstatus])
-                }
-                else {
-                    $('.clip_qx.clr').addClass('error')
-                    $('.clip_q.clr').addClass('error')
-                    $('.clip_pv.clr').addClass('error')
-                    $('#cdiagpub').addClass('error')
-                    $('#cdiagpub').html('This query is not accessible to others because it is not shared.')
-                }
-                var quote_url = query_url+'?id='+wb.iid
-                var quotev_url = query_url+'?version='+vr+'&id='+wb.iid
-                $('#clip_qx_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
-                $('#clip_qx_ht').attr('lnk', quotev_url)
-                $('#clip_q_md').attr('lnk', '['+pvtitle+']('+quote_url+')')
-                $('#clip_q_ht').attr('lnk', quote_url)
-                $('.clip_qx').show()
-                $('.clip_q').show()
-                $('.clip_w').hide()
-                $('.clip_n').hide()
-            }
-            else if (wb.qw == 'w') {
-                var vinfo = iinfo.versions[vr]
-                pvtitle = vinfo.entryid_heb+' ('+vinfo.entryid+')'
-                var quotev_url = word_url+'?version='+vr+'&id='+wb.iid
-                $('#clip_w_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
-                $('#clip_w_ht').attr('lnk', quotev_url)
-                $('.clip_w.clr').addClass('special')
-                $('.clip_qx').hide()
-                $('.clip_q').hide()
-                $('.clip_w').show()
-                $('.clip_n').hide()
-            }
-            else if (wb.qw == 'n') {
-                var ufname = escapeHTML(iinfo.ufname)
-                var ulname = escapeHTML(iinfo.ulname)
-                var kw = escapeHTML(iinfo.kw)
-                pvtitle = ufname+' '+ulname+' - '+kw
-                var quotev_url = note_url+'?version='+vr+'&id='+wb.iid+'&tp=txt_tb1&nget=v'
-                $('#clip_n_md').attr('lnk', '['+pvtitle+']('+quotev_url+')')
-                $('#clip_n_ht').attr('lnk', quotev_url)
-                $('.clip_n.clr').addClass('special')
-                $('.clip_qx').hide()
-                $('.clip_q').hide()
-                $('.clip_w').hide()
-                $('.clip_n').show()
-            }
-        }
-        $('#clip_pv_md').attr('lnk', '['+pvtitle+']('+shebanq_url_raw+')')
-        $('#clip_pv_ht').attr('lnk', shebanq_url_raw)
-        $('#clip_pv_htc').attr('lnk', shebanq_url_rawc)
-        $('#clip_pv_nl').attr('lnk', shebanq_url_note)
-        $('#clip_pv_cn').attr('lnk', shebanq_url_raw)
-        $('#clip_pv_cn').attr('tit', pvtitle)
-        jQuery(this).animate({height:'260px', width:'570px', opacity: 0.95}, 300);
-    });
-	//leave
-	st.mouseleave(function(){ 
-        $('#self_link').hide()
-        deselectText()
-        $('#citeh').show()
-	    st.animate({height:'20px', width: '40px', opacity: .7}, 300); 
-	    return false;
-    });
-});
+        var quote_url = query_url + "?id=" + P.iid
+        var quotev_url = query_url + "?version=" + vr + "&id=" + P.iid
+        $("#clip_qx_md").attr("lnk", "[" + pvtitle + "](" + quotev_url + ")")
+        $("#clip_qx_ht").attr("lnk", quotev_url)
+        $("#clip_q_md").attr("lnk", "[" + pvtitle + "](" + quote_url + ")")
+        $("#clip_q_ht").attr("lnk", quote_url)
+        $(".clip_qx").show()
+        $(".clip_q").show()
+        $(".clip_w").hide()
+        $(".clip_n").hide()
+      } else if (P.qw == "w") {
+        var vinfo = iinfo.versions[vr]
+        pvtitle = vinfo.entryid_heb + " (" + vinfo.entryid + ")"
+        var quotev_url = word_url + "?version=" + vr + "&id=" + P.iid
+        $("#clip_w_md").attr("lnk", "[" + pvtitle + "](" + quotev_url + ")")
+        $("#clip_w_ht").attr("lnk", quotev_url)
+        $(".clip_w.clr").addClass("special")
+        $(".clip_qx").hide()
+        $(".clip_q").hide()
+        $(".clip_w").show()
+        $(".clip_n").hide()
+      } else if (P.qw == "n") {
+        var ufname = escHT(iinfo.ufname)
+        var ulname = escHT(iinfo.ulname)
+        var kw = escHT(iinfo.kw)
+        pvtitle = ufname + " " + ulname + " - " + kw
+        var quotev_url =
+          note_url + "?version=" + vr + "&id=" + P.iid + "&tp=txt_tb1&nget=v"
+        $("#clip_n_md").attr("lnk", "[" + pvtitle + "](" + quotev_url + ")")
+        $("#clip_n_ht").attr("lnk", quotev_url)
+        $(".clip_n.clr").addClass("special")
+        $(".clip_qx").hide()
+        $(".clip_q").hide()
+        $(".clip_w").hide()
+        $(".clip_n").show()
+      }
+    }
+    $("#clip_pv_md").attr("lnk", "[" + pvtitle + "](" + shebanq_url_raw + ")")
+    $("#clip_pv_ht").attr("lnk", shebanq_url_raw)
+    $("#clip_pv_htc").attr("lnk", shebanq_url_rawc)
+    $("#clip_pv_nl").attr("lnk", shebanq_url_note)
+    $("#clip_pv_cn").attr("lnk", shebanq_url_raw)
+    $("#clip_pv_cn").attr("tit", pvtitle)
+    jQuery(this).animate({ height: "260px", width: "570px", opacity: 0.95 }, 300)
+  })
+  //leave
+  st.mouseleave(function () {
+    $("#self_link").hide()
+    deselectText()
+    $("#citeh").show()
+    st.animate({ height: "20px", width: "40px", opacity: 0.7 }, 300)
+    return false
+  })
+})

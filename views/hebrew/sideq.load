@@ -134,10 +134,12 @@ statusmap = dict(
 </div>
 {{pass}}
 <script type="text/javascript">
-var msgs = {{=XML(msgs)}};
-var q = {{=XML(q)}}
+var State = {
+    msgs: {{=XML(msgs)}},
+    q: {{=XML(q)}},
+}
 
-var descm = $('#descm')
+const descm = $('#descm')
 d_md = special_links(descm.html())
 descm.html(d_md)
 decorate_crossrefs(descm)

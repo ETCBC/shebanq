@@ -131,7 +131,7 @@ rules:
     - destructuring: any
       ignoreReadBeforeAssign: false
   prefer-destructuring:
-    - off
+    - warn
     - array: false
       object: true
     - enforceForRenamedProperties: false
