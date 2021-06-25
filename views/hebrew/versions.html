@@ -1,10 +1,10 @@
-        <div id="select_version">
-            <a href="#" class="source ctrli">bhsa <span class="fa fa-info-circle"/></a>
-            {{for v in version_order:
-                vinfo = versions[v]
-                vdate = vinfo['date'] or 'recent'
-                title = '{}: {} [{}]'.format(vdate, vinfo['desc'], vinfo['notes'])
-            }}{{if vinfo['present']:}}<a title="{{=title}}" href="#" id="version_{{=v}}" class="ctrl mvradio">{{=v}}</a>{{
-            else:}}<span title="{{=title}}" class="ctrl mvradio isdis">{{=v}}</a>{{pass}}
-            {{pass}}
-        </div>
+<div id="select_version">
+    <a href="#" class="source ctrli">bhsa <span class="fa fa-info-circle"/></a>
+    {{for v in version_order:
+        vinfo = versions[v]
+        vdate = vinfo['date'] or 'recent'
+        title = '{}: {} [{}]'.format(vdate, vinfo['desc'], vinfo['notes'])
+    }}{{if vinfo['present']:}}<a title="{{=title}}" href="#" id="version_{{=v}}" class="ctrl mvradio">{{=v}}</a>{{
+    else:}}<span title="{{=title}}" class="ctrl mvradio isdis">{{=v}}</a>{{pass}}
+    {{pass}}
+</div>

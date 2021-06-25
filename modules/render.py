@@ -924,9 +924,11 @@ class Viewsettings:
             lambda: collections.defaultdict(lambda: {})
         )
         self.pref = get_request_val("rest", "", "pref")
+
         self.versions = {
-            k: v for (k, v) in versions.items() if versions[k]["present"] is not None
+            v: info for (v, info) in versions.items() if info["present"] is not None
         }
+
         for group in settings:
             self.state[group] = {}
             for qw in settings[group]:
@@ -994,26 +996,18 @@ class Viewsettings:
         cache = self.cache
         passage_dbs = self.passage_dbs
 
-        for vr in versions:
-            if not versions[vr]["present"]:
+        for (v, vinfo) in self.versions.items():
+            if not vinfo["present"]:
                 continue
-            (books[vr], books_order[vr], book_id[vr], book_name[vr]) = from_cache(
-                cache, "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
+            (books[v], books_order[v], book_id[v], book_name[v]) = from_cache(
+                cache, "books_{}_".format(v), lambda: get_books(passage_dbs, v), None
             )
 
     def theversion(self):
         return self.state["material"][""]["version"]
 
     def versionstate(self):
-        return """
-var versions = {versions}
-var version = '{version}'
-""".format(
-            versions=json.dumps(
-                dict((v, self.versions[v]["present"]) for v in self.versions)
-            ),
-            version=self.state["material"][""]["version"],
-        )
+        return self.state["material"][""]["version"]
 
     def writeConfig(self):
         URL = self.URL
@@ -1081,7 +1075,7 @@ record_url: "{record_url}",
             dncols=dncols,
             dnrows=dnrows,
             versions=json.dumps(
-                dict((v, self.versions[v]["present"]) for v in self.versions)
+                [v for (v, inf) in self.versions.items() if inf["present"]]
             ),
             tp_labels=json.dumps(tp_labels),
             tr_labels=json.dumps(tr_labels),
@@ -1120,20 +1114,11 @@ record_url: "{record_url}",
             pn_url=URL("hebrew", "note_tree", extension="json"),
             n_url=URL("hebrew", "text", extension=""),
             upload_url=URL("hebrew", "note_upload", extension="json"),
-            pq_url=URL('hebrew', 'query_tree', extension='json'),
-            queriesr_url=URL('hebrew', 'queriesr', extension='json'),
-            q_url=URL('hebrew', 'text', extension=''),
-            record_url=URL('hebrew', 'record', extension='json'),
+            pq_url=URL("hebrew", "query_tree", extension="json"),
+            queriesr_url=URL("hebrew", "queriesr", extension="json"),
+            q_url=URL("hebrew", "text", extension=""),
+            record_url=URL("hebrew", "record", extension="json"),
         )
-
-    def dynamics(self):
-        config = self.writeConfig()
-
-        return f"""
-{config}
-var P = setup()
-dynamics(P)
-"""
 
 
 def h_esc(material, fill=True):

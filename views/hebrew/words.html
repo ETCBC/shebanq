@@ -1,8 +1,6 @@
 {{ left_sidebar_enabled = True }}
 {{ extend 'layout.html' }}
 
-<script src="{{=URL('static', 'js/words.js')}}"></script>
-
 {{ block head }}
 {{
 other_lan = 'arc' if lan == 'hbo' else 'hbo'
@@ -96,12 +94,14 @@ for t in tables:
 </div>
 {{ end }}
 
+<script type="text/javascript">{{=XML(viewsettings.writeConfig())}}</script>
 <script type="text/javascript">
-var lan = "{{=lan}}"
-var letter = "{{=letter}}"
-{{=XML(versionstate)}}
-$(function () {
-    words_init()
-})
+var ConfigW = {
+  version: "{{=version}}",
+  lan: "{{=lan}}",
+  letter: "{{=letter}}",
+}
 </script>
+<script src="{{=URL('static', 'js/app/words.js')}}" type="module"></script>
+
 

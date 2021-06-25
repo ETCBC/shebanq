@@ -1,5 +1,5 @@
 parserOptions:
-  sourceType: script
+  sourceType: module
   failOnError: true
   ecmaVersion: 2021
 
@@ -28,7 +28,8 @@ rules:
     - warn
     - ignoreRestSiblings: true
   no-implicit-globals: off
-  no-invalid-this: off
+  no-invalid-this:
+    - error
   no-loop-func: warn
   no-multi-spaces: warn
   no-new: warn
@@ -41,7 +42,7 @@ rules:
   no-useless-concat: warn
   no-useless-escape: warn
   camelcase:
-    - warn
+    - off
     - properties: always
   comma-dangle:
     - warn
@@ -137,7 +138,8 @@ rules:
     - enforceForRenamedProperties: false
   prefer-rest-params: warn
   prefer-spread: warn
-  prefer-template: off
+  prefer-template:
+    - warn
   rest-spread-spacing:
     - warn
     - never

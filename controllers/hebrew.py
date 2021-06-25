@@ -65,7 +65,6 @@ def text():
 
     return dict(
         viewsettings=Viewsettings(cache, passage_dbs, URL, versions),
-        versions=versions,
         colorpicker=colorpicker,
         legend=legend,
         tp_labels=tp_labels,
@@ -1440,8 +1439,11 @@ def words_page(viewsettings, vr, lan=None, letter=None):
         cache,
         "words_data_{}_".format(vr), lambda: get_words_data(vr), None
     )
+    version = viewsettings.versionstate()
+
     return dict(
-        versionstate=viewsettings.versionstate(),
+        version=version,
+        viewsettings=viewsettings,
         lan=lan,
         letter=letter,
         letters=letters,

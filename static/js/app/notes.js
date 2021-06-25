@@ -1,12 +1,11 @@
 /* eslint-env jquery */
-/* eslint-disable camelcase, no-new */
+/* eslint-disable no-new */
 
-/* globals Config, Msg */
+/* globals L, Config */
 
-const ns = $.initNamespaceStorage("muting_n")
-const vs = $.initNamespaceStorage("nsview")
-const muting = ns.localStorage
-const nsview = vs.localStorage
+import { LStorage } from "./page.js"
+import { Msg } from "./msg.js"
+
 let ftree, msgflt, rdata
 const subtractn = 80
 /* the canvas holding the material gets a height equal to
@@ -18,6 +17,7 @@ const control_height = 100
 
 class View {
   constructor() {
+    const { nsview } = L
     this.prevstate = false
     if (!nsview.isSet("simple")) {
       nsview.set("simple", true)
@@ -41,6 +41,7 @@ class View {
   }
 
   adjust_view() {
+    const { nsview } = L
     const simple = nsview.get("simple")
     this.nvradio.removeClass("ison")
     ;(simple ? this.csimple : this.cadvanced).addClass("ison")
@@ -57,6 +58,7 @@ class View {
 
 class Level {
   constructor() {
+    const { nsview } = L
     this.levels = { u: 1, n: 2 }
 
     $(".nlradio").removeClass("ison")
@@ -84,6 +86,7 @@ class Level {
   }
 
   expand_level(level) {
+    const { nsview } = L
     const { levels } = this
 
     $(".nlradio").removeClass("ison")
@@ -99,16 +102,20 @@ class Level {
   }
 
   initlevel() {
+    const { nsview } = L
     this.expand_level(nsview.get("level"))
   }
 }
 
 class Filter {
   constructor() {
+    const { nsview } = L
     this.patc = $("#filter_contents")
 
     $("#filter_clear").hide()
-    $("#filter_contents").val(nsview.isSet("filter_pat") ? nsview.get("filter_pat") : "")
+    $("#filter_contents").val(
+      nsview.isSet("filter_pat") ? nsview.get("filter_pat") : ""
+    )
     if (nsview.isSet("filter_mode")) {
       this.pnsearch(nsview.get("filter_mode"))
       $("#filter_clear").show()
@@ -133,6 +140,7 @@ class Filter {
   }
 
   clear() {
+    const { nsview } = L
     ftree.ftw.clearFilter()
     msgflt.clear()
     msgflt.msg(["good", "no filter applied"])
@@ -147,6 +155,7 @@ class Filter {
   }
 
   pnsearch(kind) {
+    const { nsview } = L
     const pat = this.patc.val()
     nsview.set("filter_pat", pat)
     let amatches = 0
@@ -183,14 +192,13 @@ class Filter {
     const submatch = "span.fancytree-submatch"
     const match = "span.fancytree-match"
     const base_u = "#queries>ul>li>ul>li>"
-    const match_u = $(base_u + match).length
-    const submatch_u = $(base_u + submatch).length
-    const base_n = base_n + "ul>li>"
-    const match_n = $(base_n + match).length
+    const match_u = $(`${base_u}${match}`).length
+    const submatch_u = $(`${base_u}${submatch}`).length
+    const base_n = `${base_n}ul>li>`
+    const match_n = $(`${base_n}${match}`).length
     $("#count_u").html(`
       <span class="match">${match_u}</span>
-      <span class="brn submatch">${submatch_u}</span>`
-    )
+      <span class="brn submatch">${submatch_u}</span>`)
     $("#count_n").html(`<span class="match">${match_n}</span>`)
     if (ftree.view.simple) {
       $(".brn").hide()
@@ -201,6 +209,7 @@ class Filter {
 class Tree {
   constructor() {
     const { pn_url } = Config
+    const { muting_n: muting } = L
 
     this.tps = { u: "user", n: "note" }
 
@@ -268,14 +277,49 @@ class Tree {
     const form_height = standard_height - control_height
     const canvas_left = $(".left-sidebar")
     const canvas_right = $(".right-sidebar")
-    canvas_left.css("height", standard_height + "px")
-    $("#notes").css("height", standard_height + "px")
-    $("#opqforms").css("height", form_height + "px")
-    $("#opqctrl").css("height", control_height + "px")
-    canvas_right.css("height", standard_height + "px")
+    canvas_left.css("height", `${standard_height}px`)
+    $("#notes").css("height", `${standard_height}px`)
+    $("#opqforms").css("height", `${form_height}px`)
+    $("#opqctrl").css("height", `${control_height}px`)
+    canvas_right.css("height", `${standard_height}px`)
+
+    const detailcontrols = `<a
+        class="showc fa fa-chevron-right"
+        href="#"
+        title="Show details"
+      ></a><a
+        class="hidec fa fa-chevron-down"
+        href="#"
+        title="Hide details"></a>`
+
+    $('dt.cps').each((i, e) => {
+        const elem = $(e.target)
+        const orig = elem.html()
+        elem.html(`${detailcontrols}&nbsp;${orig}`)
+    })
+    $('dd.cps').hide()
+    $('.hidec').hide()
+    $('.showc').show()
+    $('.hidec').click(e => {
+        e.preventDefault()
+        const elem = $(e.target)
+        const refo = elem.closest('dt')
+        refo.next().hide()
+        refo.find('.hidec').hide()
+        refo.find('.showc').show()
+    })
+    $('.showc').click(e => {
+        e.preventDefault()
+        const elem = $(e.target)
+        const refo = elem.closest('dt')
+        refo.next().show()
+        refo.find('.hidec').show()
+        refo.find('.showc').hide()
+    })
   }
 
   store_select(node) {
+    const { muting_n: muting } = L
     const { folder, key: iid, selected } = node
     if (!folder) {
       if (selected) {
@@ -304,14 +348,10 @@ class Tree {
     $("#notes a[nkid]").each((i, el) => {
       const elem = $(el)
       const vr = elem.attr("v")
-      const extra = vr == undefined ? "" : "&version=" + vr
+      const extra = vr == undefined ? "" : `&version=${vr}`
       elem.attr(
         "href",
-        n_url +
-          "?iid=" +
-          elem.attr("nkid") +
-          extra +
-          "&page=1&mr=r&qw=n&tp=txt_tb1&nget=v"
+        `${n_url}?iid=${elem.attr("nkid")}${extra}&page=1&mr=r&qw=n&tp=txt_tb1&nget=v`
       )
     })
     $("#notes a.md").click(e => {
@@ -330,13 +370,11 @@ class Tree {
 
   gotonote(nkid) {
     if (nkid != undefined && nkid != "0") {
-      const nnode = this.ftw.getNodeByKey("n" + nkid)
+      const nnode = this.ftw.getNodeByKey(`n${nkid}`)
       if (nnode != null) {
         nnode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")
-        $(`a[nkid="${nkid}"]`)
-          .closest("span")
-          .addClass("treehl")
+        $(`a[nkid="${nkid}"]`).closest("span").addClass("treehl")
         $(nnode.li)[0].scrollIntoView()
       }
     }
@@ -364,20 +402,14 @@ class Upload {
       if (file.name.length > 0) {
         const msize = (file.size / 1024).toFixed(1)
         if (file.type != this.ftype) {
-          msgs.msg([
-            "error",
-            `File has type ${file.type}; should be ${ftype}`,
-          ])
+          msgs.msg(["error", `File has type ${file.type}; should be ${ftype}`])
         } else if (file.size >= limit) {
           msgs.msg([
             "error",
             `File has size ${msize}Kb; should be less than ${limit / 1024}Kb`,
           ])
         } else {
-          msgs.msg([
-            "good",
-            `File has type ${file.type} and size ${msize}Kb`,
-          ])
+          msgs.msg(["good", `File has type ${file.type} and size ${msize}Kb`])
           ctrl.show()
         }
       }
@@ -411,6 +443,7 @@ class Upload {
 }
 
 $(() => {
+  window.L = new LStorage()
   ftree = new Tree()
   new Upload()
 })

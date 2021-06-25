@@ -31,7 +31,8 @@
 <p><a class="ctrl nlradio" href="#" id="level_">manual</a></p>
 
 <script src="{{=URL('static','js/jquery.fancytree-all.min.js')}}"></script>
-<script src="{{=URL('static', 'js/notes.js')}}"></script>
+<script type="text/javascript">{{=XML(viewsettings.writeConfig())}}</script>
+<script src="{{=URL('static', 'js/app/notes.js')}}" type="module"></script>
 
 {{ end }}
 
@@ -56,42 +57,5 @@ Please contact <a href="mailto:shebanq@ancient-data.org">shebanq@ancient-data.or
 <div id="upl_msgs"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_upl_msgs" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 {{pass}}
-
-<script type="text/javascript">
-{{=XML(viewsettings.writeConfig())}}
-
-const detailcontrols = `<a
-    class="showc fa fa-chevron-right"
-    href="#"
-    title="Show details"
-  ></a><a
-    class="hidec fa fa-chevron-down"
-    href="#"
-    title="Hide details"></a>`
-$('dt.cps').each(e => {
-    const elem = $(e.target)
-    var orig = elem.html()
-    elem.html(`${detailcontrols}&nbsp;${orig}`)
-})
-$('dd.cps').hide()
-$('.hidec').hide()
-$('.showc').show()
-$('.hidec').click(e => {
-    e.preventDefault();
-    const elem = $(e.target)
-    const refo = elem.closest('dt')
-    refo.next().hide()
-    refo.find('.hidec').hide()
-    refo.find('.showc').show()
-})
-$('.showc').click(e => {
-    e.preventDefault();
-    const elem = $(e.target)
-    const refo = elem.closest('dt')
-    refo.next().show()
-    refo.find('.hidec').show()
-    refo.find('.showc').hide()
-})
-</script>
 
 {{ end }}
