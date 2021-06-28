@@ -1259,7 +1259,8 @@ insert into note
     this_chunk = []
     this_i = 0
     # for (i, linenl) in enumerate(str(filetext.value, encoding="utf8").split("\n")):
-    for (i, linenl) in enumerate(filetext.value.split("\n")):
+    # for (i, linenl) in enumerate(filetext.value.split("\n")):
+    for (i, linenl) in enumerate(filetext.value.decode("utf8").split("\n")):
         line = linenl.rstrip()
         if line == "":
             continue

@@ -406,12 +406,10 @@ class Tree {
     })
 
     const standard_height = window.innerHeight - subtractq
-    const form_height = standard_height - control_height
     const canvas_left = $(".left-sidebar")
     const canvas_right = $(".right-sidebar")
     canvas_left.css("height", `${standard_height}px`)
     $("#queries").css("height", `${standard_height}px`)
-    $("#opqforms").css("height", `${form_height}px`)
     $("#opqctrl").css("height", `${control_height}px`)
     canvas_right.css("height", `${standard_height}px`)
   }

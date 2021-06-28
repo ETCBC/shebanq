@@ -300,6 +300,10 @@ class SContent {
         const is_pub =
           "versions" in q && vr in q.versions && q.versions[vr].is_published
 
+        const d_md = special_links(descm.html())
+        descm.html(d_md)
+        P.decorate_crossrefs(descm)
+
         fullc.click(e => {
           e.preventDefault()
           const { window_height, half_standard_height } = P

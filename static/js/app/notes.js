@@ -11,9 +11,6 @@ const subtractn = 80
 /* the canvas holding the material gets a height equal to
  * the window height minus this amount
  */
-const control_height = 100
-/* height for messages and controls
- */
 
 class View {
   constructor() {
@@ -274,13 +271,10 @@ class Tree {
     })
 
     const standard_height = window.innerHeight - subtractn
-    const form_height = standard_height - control_height
     const canvas_left = $(".left-sidebar")
     const canvas_right = $(".right-sidebar")
     canvas_left.css("height", `${standard_height}px`)
     $("#notes").css("height", `${standard_height}px`)
-    $("#opqforms").css("height", `${form_height}px`)
-    $("#opqctrl").css("height", `${control_height}px`)
     canvas_right.css("height", `${standard_height}px`)
 
     const detailcontrols = `<a
@@ -396,20 +390,22 @@ class Upload {
     this.msgs = new Msg("upl_msgs")
     this.ctrl.hide()
     const { msgs, ctrl, limit, ftype, inpt } = this
-    inpt.change(() => {
-      this.file = this.files[0]
-      const { file } = this
-      if (file.name.length > 0) {
-        const msize = (file.size / 1024).toFixed(1)
-        if (file.type != this.ftype) {
-          msgs.msg(["error", `File has type ${file.type}; should be ${ftype}`])
+    inpt.change(e => {
+      const elem = e.target
+      const file = elem.files[0]
+      this.file = file
+      const { name, size, type } = file
+      if (name.length > 0) {
+        const msize = (size / 1024).toFixed(1)
+        if (type != this.ftype) {
+          msgs.msg(["error", `File has type ${type}; should be ${ftype}`])
         } else if (file.size >= limit) {
           msgs.msg([
             "error",
             `File has size ${msize}Kb; should be less than ${limit / 1024}Kb`,
           ])
         } else {
-          msgs.msg(["good", `File has type ${file.type} and size ${msize}Kb`])
+          msgs.msg(["good", `File has type ${type} and size ${msize}Kb`])
           ctrl.show()
         }
       }

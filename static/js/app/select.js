@@ -14,21 +14,17 @@ export class MSelect {
    */
 
   constructor() {
-    const { versions } = Config
     this.name = "select_passage"
     this.hid = `#${this.name}`
     this.book = new SelectBook()
     this.select = new SelectItems("chapter")
-    for (const v of versions) {
-      this.set_vselect(v)
-    }
     $("#self_link").hide()
   }
 
   apply() {
     /* apply material viewsettings to current material
      */
-    const { featurehost, bol_url, pbl_url } = Config
+    const { versions, featurehost, bol_url, pbl_url } = Config
 
     const thisFeaturehost = `${featurehost}/${docName}`
     $(".source").attr("href", thisFeaturehost)
@@ -38,6 +34,9 @@ export class MSelect {
     const bol = $("#bol_lnk")
     const pbl = $("#pbl_lnk")
 
+    for (const v of versions) {
+      this.set_vselect(v)
+    }
     if (P.mr == "m") {
       this.book.apply()
       this.select.apply()

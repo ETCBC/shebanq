@@ -138,10 +138,5 @@ var State = {
     msgs: {{=XML(msgs)}},
     q: {{=XML(q)}},
 }
-
-const descm = $('#descm')
-d_md = special_links(descm.html())
-descm.html(d_md)
-P.decorate_crossrefs(descm)
 </script>
 
