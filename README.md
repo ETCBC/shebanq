@@ -1,10 +1,13 @@
 # SHEBANQ
-![shebanq2](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq_logo.png)
-![shebanq](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq.png)
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/ETCBC/shebanq/)](https://archive.softwareheritage.org/browse/origin/https://github.com/ETCBC/shebanq/)
 [![DOI](https://zenodo.org/badge/14582815.svg)](https://zenodo.org/badge/latestdoi/14582815)
+
+![shebanq2](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq_logo.png)
+![shebanq](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq.png)
+
 [![etcbc](static/images/etcbc.png)](http://www.etcbc.nl)
 [![dans](static/images/dans.png)](https://dans.knaw.nl/en)
+[![tf](static/images/tf-small.png)](https://annotation.github.io/text-fabric/tf)
 
 ### BHSA Family
 
