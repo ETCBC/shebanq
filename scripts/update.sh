@@ -33,7 +33,7 @@ if [ $ON_CLARIN ]; then
     sudo -n /usr/bin/systemctl stop httpd.service
 fi
 
-# upgrade web2py in -w is given
+# upgrade web2py if -w is given
 
 if [ "$1" == "-w" ]; then
     echo "- Upgrading web2py ..."
