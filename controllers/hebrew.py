@@ -3281,7 +3281,7 @@ where
         pubv=pubv,
         pubx=pubx,
     )
-    print(q_hits_chapter)
+    # print(q_hits_chapter)
     return db.executesql(q_hits_chapter)
 
 
