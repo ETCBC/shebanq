@@ -55,7 +55,7 @@ APACHE_DIR="/etc/httpd/conf.d"
 EMDROSVERSION="3.7.3"
 WEB2PY="web2py_src.zip"
 
-DATA_VERSIONS="4 4b 2017 2021"
+DATA_VERSIONS="4 4b 2017 c 2021"
 
 if [ -f "$UNPACK" ]; then
     rm -rf "$UNPACK"
@@ -208,8 +208,8 @@ if [ "$doall" == "v" ] || [ "$domysqlconfig" == "v" ]; then
     fi
 fi
 
-skippdb="v"
-skipedb="v"
+skippdb="x"
+skipedb="x"
 skipudb="x"
 
 if [ "$doall" == "v" ] || [ "$domysqlload" == "v" ]; then
@@ -262,11 +262,11 @@ if [ "$doall" == "v" ] || [ "$domysqlload" == "v" ]; then
     echo "0-0-0    LOAD DATA end    0-0-0"
 fi
 
-pullonly="v"
+skipclone="v"
 
 if [ "$doall" == "v" ] || [ "$doshebanq" == "v" ]; then
     cd "$APP_DIR"
-    if [ "$pullonly" == "v" ]; then
+    if [ "$skipclone" == "v" ]; then
         echo "0-0-0    SHEBANQ pull    0-0-0"
         cd shebanq
         git reset --hard
@@ -281,9 +281,9 @@ if [ "$doall" == "v" ] || [ "$doshebanq" == "v" ]; then
     fi
 fi
 
-skipwsgi="v"
-skipweb2py="v"
-skipshebanq="v"
+skipwsgi="x"
+skipweb2py="x"
+skipshebanq="x"
 skipextradirs="x"
 
 if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then

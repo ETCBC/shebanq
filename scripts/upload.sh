@@ -1,5 +1,5 @@
 INCOMING="/home/dirkr/shebanq-install"
-VERSIONS="4 4b 2017 2021"
+DATA_VERSIONS="4 4b 2017 c 2021"
 DATASOURCE="/Users/dirk/github/etcbc/bhsa/shebanq"
 SCRIPTSOURCE="/Users/dirk/github/etcbc/shebanq/scripts"
 
@@ -124,7 +124,7 @@ if [ "$doall" == "v" ] || [ "$doscripts" == "v" ]; then
 fi
 
 if [ "$doall" == "v" ] || [ "$docorpus" == "v" ]; then
-    for version in $VERSIONS
+    for version in $DATA_VERSIONS
     do
         echo "Uploading version $version ..."
         thissrc="$DATASOURCE/$version"
