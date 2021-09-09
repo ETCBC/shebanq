@@ -42,7 +42,6 @@ statusmap = dict(
     <div id="dbmsg_q"></div>
     <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 {{for v in version_order:
-    if not versions[v]['present']: continue
     qrinfo = qr['versions'][v]
     qstatus = qrinfo['status']
     qresults = qrinfo['results']

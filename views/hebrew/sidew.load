@@ -4,7 +4,6 @@
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in wr:}}
 {{for v in version_order:
-    if not versions[v]['present']: continue
     wrinfo = wr['versions'].get(v, collections.defaultdict(lambda: ''))
     thisclass = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'

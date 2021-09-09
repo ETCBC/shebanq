@@ -449,7 +449,7 @@ class Tree {
     })
     $("#queries a.md").click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const uname = elem.closest("ul").closest("li").find("span[n]").html()
       const tit = elem.prev()
       const lnk = tit.attr("href")
@@ -869,7 +869,7 @@ class Tree {
       const objs = $(`.v_${tp}`)
       objs.click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
         this.op_selection(tp)
         elem.closest("span").addClass("treehl")
@@ -883,7 +883,7 @@ class Tree {
       const objs = $(`.s_${tp}`)
       objs.click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         if (tp == "o") {
           const o = elem.closest("li")
           const oid = o.find("a[lid]").attr("lid")
@@ -932,7 +932,7 @@ class Tree {
       const objs = $(`.n_${tp}`)
       objs.click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
         this.op_selection(tp)
         if (tp == "q") {
@@ -950,7 +950,7 @@ class Tree {
       const objs = $(`.r_${tp}`)
       objs.click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
         this.op_selection(tp)
         elem.closest("span").addClass("treehl")

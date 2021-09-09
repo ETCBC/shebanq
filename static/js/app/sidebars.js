@@ -174,7 +174,7 @@ class SContent {
 
       $(".moredetail").click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         toggle_detail(elem)
       })
       $(".detail").hide()
@@ -256,7 +256,7 @@ class SContent {
          */
         $(".fullc").click(e => {
           e.preventDefault()
-          const elem = $(e.target)
+          const elem = $(e.delegateTarget)
           const { window_height } = P
           const thisiid = elem.attr("iid")
           const mqlq = $(`#area_${thisiid}`)
@@ -334,7 +334,7 @@ class SContent {
         })
 
         $("#is_pub_c").click(e => {
-          const elem = $(e.target)
+          const elem = $(e.delegateTarget)
           const val = elem.prop("checked")
           this.sendval(
             q.versions[vr],
@@ -348,7 +348,7 @@ class SContent {
         })
 
         $("#is_shared_c").click(e => {
-          const elem = $(e.target)
+          const elem = $(e.delegateTarget)
           const val = elem.prop("checked")
           this.sendval(q, elem, val, vr, elem.attr("qid"), "is_shared", val ? "T" : "")
         })
@@ -692,13 +692,13 @@ class SContent {
 
     more.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       toggle_detail(elem, desc, qw == "q" ? put_markdown : undefined)
     })
 
     item.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const { qw } = this
       P.vs.mstatesv({ mr: this.other_mr, qw, iid: elem.attr("iid"), page: 1 })
       P.vs.addHist()

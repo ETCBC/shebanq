@@ -160,7 +160,7 @@ export class LSelect {
   add_item(item) {
     item.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const newobj = elem.closest("li")
       const isloaded = newobj.hasClass("active")
       if (!isloaded) {
@@ -248,7 +248,7 @@ class SelectBook {
   add_item(item) {
     item.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const newobj = elem.closest("li")
       const isloaded = newobj.hasClass("active")
       if (!isloaded) {
@@ -290,7 +290,7 @@ class SelectItems {
 
     this.prev.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const vals = {}
       vals[this.key] = elem.attr("contents")
       vals["verse"] = "1"
@@ -300,7 +300,7 @@ class SelectItems {
     })
     this.next.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const vals = {}
       vals[this.key] = elem.attr("contents")
       vals["verse"] = "1"
@@ -385,7 +385,7 @@ class SelectItems {
   add_item(item) {
     item.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const newobj = elem.closest("li")
       const isloaded = newobj.hasClass("active")
       if (!isloaded) {
@@ -599,7 +599,7 @@ export class CSelect {
   add_item(item, iid) {
     item.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       let vals = {}
       vals["book"] = elem.attr("b")
       vals["chapter"] = elem.attr("ch")

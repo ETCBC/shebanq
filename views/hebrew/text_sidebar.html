@@ -14,9 +14,7 @@ for (qw, tags) in (('w', 'words'), ('q', 'queries'), ('n', 'notes')):
                 {{pass}}
                 <td>{{
     for v in version_order:
-        if versions[v]['present']:
                 }}<span id="select_contents_chart_{{=v}}_{{=qw}}"></span>{{
-        pass
     pass
                 }}</td>
             </tr>

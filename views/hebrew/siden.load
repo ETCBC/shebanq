@@ -8,7 +8,6 @@
     <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['kw']}}</span></td></tr>
 </table>
 {{for v in version_order:
-    if not versions[v]['present']: continue
     nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))
     thisclass = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'

@@ -995,8 +995,6 @@ class Viewsettings:
         passage_dbs = self.passage_dbs
 
         for (v, vinfo) in self.versions.items():
-            if not vinfo["present"]:
-                continue
             (books[v], books_order[v], book_id[v], book_name[v]) = from_cache(
                 cache, "books_{}_".format(v), lambda: get_books(passage_dbs, v), None
             )
@@ -1072,9 +1070,7 @@ record_url: "{record_url}",
             pref='"{}"'.format(self.pref),
             dncols=dncols,
             dnrows=dnrows,
-            versions=json.dumps(
-                [v for (v, inf) in self.versions.items() if inf["present"]]
-            ),
+            versions=json.dumps(list(self.versions)),
             tp_labels=json.dumps(tp_labels),
             tr_labels=json.dumps(tr_labels),
             tab_info=json.dumps(tab_info),

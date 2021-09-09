@@ -134,7 +134,7 @@ export class Page {
     const crossrefs = dest.find("a[b]")
     crossrefs.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const vals = {}
       vals["book"] = elem.attr("b")
       vals["chapter"] = elem.attr("c")

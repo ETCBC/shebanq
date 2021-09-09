@@ -185,7 +185,7 @@ $(() => {
     "#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_htc,#clip_pv_nl"
   ).click(e => {
     e.preventDefault()
-    const elem = $(e.target)
+    const elem = $(e.delegateTarget)
     window.prompt(
       "Press <Cmd-C> and then <Enter> to copy link on clipboard",
       elem.attr("lnk")
@@ -201,32 +201,31 @@ $(() => {
   })
   $("#xc_qx").click(e => {
     e.preventDefault()
-    const elem = $(e.target)
+    const elem = $(e.delegateTarget)
     toggle_detail(elem, $("#x_qx"))
   })
   $("#xc_q").click(e => {
     e.preventDefault()
-    const elem = $(e.target)
+    const elem = $(e.delegateTarget)
     toggle_detail(elem, $("#x_q"))
   })
   $("#xc_w").click(e => {
     e.preventDefault()
-    const elem = $(e.target)
+    const elem = $(e.delegateTarget)
     toggle_detail(elem, $("#x_w"))
   })
   $("#xc_n").click(e => {
     e.preventDefault()
-    const elem = $(e.target)
+    const elem = $(e.delegateTarget)
     toggle_detail(elem, $("#x_n"))
   })
   $("#xc_pv").click(e => {
     e.preventDefault()
-    const elem = $(e.target)
+    const elem = $(e.delegateTarget)
     toggle_detail(elem, $("#x_pv"))
   })
   st.click(e => {
     e.preventDefault()
-    const elem = $(e.target)
     const shebanq_url_raw = `${page_view_url}${P.vs.getvars()}&pref=alt`
     let shebanq_url_note
     let shebanq_url_rawc

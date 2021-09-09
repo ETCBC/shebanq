@@ -287,7 +287,7 @@ class Tree {
         title="Hide details"></a>`
 
     $('dt.cps').each((i, e) => {
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         const orig = elem.html()
         elem.html(`${detailcontrols}&nbsp;${orig}`)
     })
@@ -296,7 +296,7 @@ class Tree {
     $('.showc').show()
     $('.hidec').click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         const refo = elem.closest('dt')
         refo.next().hide()
         refo.find('.hidec').hide()
@@ -304,7 +304,7 @@ class Tree {
     })
     $('.showc').click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         const refo = elem.closest('dt')
         refo.next().show()
         refo.find('.hidec').show()
@@ -350,7 +350,7 @@ class Tree {
     })
     $("#notes a.md").click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const uname = elem.closest("ul").closest("li").find("span[n]").html()
       const tit = elem.prev()
       const lnk = tit.attr("href")
@@ -391,7 +391,7 @@ class Upload {
     this.ctrl.hide()
     const { msgs, ctrl, limit, ftype, inpt } = this
     inpt.change(e => {
-      const elem = e.target
+      const elem = e.delegateTarget
       const file = elem.files[0]
       this.file = file
       const { name, size, type } = file

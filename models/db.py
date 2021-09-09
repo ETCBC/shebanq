@@ -13,7 +13,7 @@ dc_h = config["shebanq_host"]
 
 version_order = """2021 c 2017 4b 4""".split()
 
-versionsData = {
+versions = {
     "4": {
         "name": "BHSA_4",
         "date": "2014-07-14",
@@ -21,7 +21,7 @@ versionsData = {
         "notes": (
             "Several unfinished features"
         ),
-        "present": True,
+        "active": False,
     },
     "4b": {
         "name": "BHSA_4b",
@@ -30,7 +30,7 @@ versionsData = {
         "notes": (
             "Fairly complete features"
         ),
-        "present": True,
+        "active": False,
     },
     "2017": {
         "name": "BHSA_2017",
@@ -39,7 +39,7 @@ versionsData = {
         "notes": (
             "Many corrections due to reanalysis of certain features"
         ),
-        "present": True,
+        "active": True,
     },
     "2021": {
         "name": "BHSA_2021",
@@ -48,24 +48,24 @@ versionsData = {
         "notes": (
             "More updates"
         ),
-        "present": True,
+        "active": True,
     },
     "c": {
         "name": "BHSA_c",
         "date": "2018-08-08",
         "desc": "Legacy online version of the BHSA database in SHEBANQ",
         "notes": (
-            "Unstable version. Has received occasional updates."
+            "Has received occasional updates in the past, but will not change anymore."
         ),
-        "present": None,
+        "active": False,
     },
 }
-versions = {k: v for (k, v) in versionsData.items() if v["present"] is not None}
 
-oddVersions = ["4", "4b", "2017"]
+oddVersions = ["4", "4b", "2017", "c"]
 oddVersionSet = set(oddVersions)
 versionOrder = oddVersions + sorted(v for v in versions if v not in oddVersionSet)
 version_order = tuple(v for v in versionOrder)
+version_index = dict((x[1], x[0]) for x in enumerate(version_order))
 
 connStr = "mysql://{}:{}@{}/{}".format(
     config["shebanq_user"],
@@ -94,8 +94,6 @@ note_db = DAL(
 )
 
 for vr in version_order:
-    if not versions[vr]["present"]:
-        continue
     passage_dbs[vr] = DAL(
         "mysql://{}:{}@{}/{}".format(dc_u, dc_p, dc_h, "shebanq_passage{}".format(vr)),
         migrate_enabled=False,

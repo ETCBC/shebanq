@@ -65,7 +65,7 @@ export class Colorpicker1 {
       /* process a click on a colored cell of the picker
        */
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const { picker } = this
       close_dialog(picker)
 
@@ -158,7 +158,7 @@ export class Colorpicker2 {
       /* process a click on a colored cell of the picker
        */
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const { picker } = this
       close_dialog(picker)
       const { qw } = this

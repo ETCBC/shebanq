@@ -180,7 +180,7 @@ export class Material {
       }
       $("a.cref").click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         P.vs.mstatesv({
           book: elem.attr("book"),
           chapter: elem.attr("chapter"),
@@ -217,7 +217,7 @@ export class Material {
     })
     vrefs.click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const bk = elem.attr("b")
       const ch = elem.attr("c")
       const vs = elem.attr("v")
@@ -269,7 +269,7 @@ export class Material {
      */
     newcontent.find("span[l]").click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const iid = elem.attr("l")
       const qw = "w"
       const all = $(`#${qw}${iid}`)

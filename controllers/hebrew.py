@@ -31,7 +31,7 @@ from render import (
     booktrans,
     from_cache,
     clear_cache,
-    get_books
+    get_books,
 )
 from mql import mql
 from get_db_config import emdros_versions
@@ -441,9 +441,7 @@ order by
         users[myid] = "me"
         for ca in clause_atoms:
             notes_proto[ca][myid] = [
-                dict(
-                    uid=myid, nid=0, shared=True, pub=False, stat="o", kw="", ntxt=""
-                )
+                dict(uid=myid, nid=0, shared=True, pub=False, stat="o", kw="", ntxt="")
             ]
             ca_users[ca][myid] = None
     good = True
@@ -451,9 +449,7 @@ order by
         msgs.append(
             (
                 "error",
-                "Cannot lookup notes for {} {}:{} in version {}".format(
-                    bk, ch, vs, vr
-                ),
+                "Cannot lookup notes for {} {}:{} in version {}".format(bk, ch, vs, vr),
             )
         )
         good = False
@@ -546,7 +542,7 @@ def note_save(myid, vr, bk, ch, vs, these_clause_atoms, msgs):
             extrafields.append(",\n\tshared_on = null")
         if pub and not o_pub:
             extrafields.append(",\n\tpublished_on = '{}'".format(request.utcnow))
-        if (not pub and o_pub):
+        if not pub and o_pub:
             extrafields.append(",\n\tpublished_on = null")
         shared = "'T'" if shared else "null"
         pub = "'T'" if pub else "null"
@@ -627,7 +623,7 @@ values
             for kw in {new_notes[canr][3] for canr in new_notes}:
                 clear_cache(
                     cache,
-                    r"^verses_{}_{}_{}_".format(vr, "n", iid_encode("n", myid, kw=kw))
+                    r"^verses_{}_{}_{}_".format(vr, "n", iid_encode("n", myid, kw=kw)),
                 )
         if len(del_notes):
             for nid in del_notes:
@@ -637,7 +633,7 @@ values
                         cache,
                         r"^verses_{}_{}_{}_".format(
                             vr, "n", iid_encode("n", myid, kw=kw)
-                        )
+                        ),
                     )
     return changed
 
@@ -1177,7 +1173,9 @@ def notes():
     (may_upload, myid) = check_upload()
     return dict(
         viewsettings=Viewsettings(cache, passage_dbs, URL, versions),
-        nkid=nkid, may_upload=may_upload, uid=myid
+        nkid=nkid,
+        may_upload=may_upload,
+        uid=myid,
     )
 
 
@@ -1216,12 +1214,10 @@ def load_notes(uid, filetext, msgs):
     my_versions = set()
     book_info = {}
     for vr in versions:
-        if versions[vr]["present"]:
-            my_versions.add(vr)
-            book_info[vr] = from_cache(
-                cache,
-                "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
-            )[0]
+        my_versions.add(vr)
+        book_info[vr] = from_cache(
+            cache, "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
+        )[0]
     normative_fields = "\t".join(
         """
         version
@@ -1437,8 +1433,7 @@ insert into note
 
 def words_page(viewsettings, vr, lan=None, letter=None):
     (letters, words) = from_cache(
-        cache,
-        "words_data_{}_".format(vr), lambda: get_words_data(vr), None
+        cache, "words_data_{}_".format(vr), lambda: get_words_data(vr), None
     )
     version = viewsettings.versionstate()
 
@@ -1498,8 +1493,6 @@ select * from lexicon where id = '{}'
     )
     w_record = dict(id=iid, versions={})
     for v in versions:
-        if not versions[v]["present"]:
-            continue
         records = passage_dbs[v].executesql(sql, as_dict=True)
         if records is None:
             msgs.append(
@@ -1800,17 +1793,13 @@ def query_tree():
         if ltype in {"o", "p"}:
             if myid is not None:
                 if lid:
-                    rename = '<a class="r_{}" lid="{}" href="#"></a>'.format(
-                        ltype, lid
-                    )
+                    rename = '<a class="r_{}" lid="{}" href="#"></a>'.format(ltype, lid)
                 select = '<a class="s_{} fa fa-lg" lid="{}" href="#"></a>'.format(
                     ltype, lid
                 )
             else:
                 if lid:
-                    rename = '<a class="v_{}" lid="{}" href="#"></a>'.format(
-                        ltype, lid
-                    )
+                    rename = '<a class="v_{}" lid="{}" href="#"></a>'.format(ltype, lid)
         return '{} <span n="1">{}</span><span class="brq">({})</span> {}'.format(
             select, h_esc(name), badge, rename
         )
@@ -1868,8 +1857,6 @@ query.name
     pquery = db.executesql(pquery_sql)
     pqueryx = db.executesql(pqueryx_sql)
     pqueries = collections.OrderedDict()
-    rversion_order = [v for v in version_order if versions[v]["present"]]
-    rversion_index = dict((x[1], x[0]) for x in enumerate(rversion_order))
     for (qid, oname, oid, pname, pid, uname, uid, qname, qshared) in pquery:
         qsharedstatus = qshared == "T"
         qownstatus = uid == myid
@@ -1877,11 +1864,9 @@ query.name
             "": (oname, oid, pname, pid, uname, uid, qname, qsharedstatus, qownstatus),
             "publ": False,
             "good": False,
-            "v": [4 for v in rversion_order],
+            "v": [4 for v in version_order],
         }
     for (qid, vr, qispub, qpub, qmod, qexe) in pqueryx:
-        if vr not in rversion_index:
-            continue
         qinfo = pqueries[qid]
         qexestatus = None
         if qexe:
@@ -1904,7 +1889,7 @@ query.name
             if qexestatus is None
             else 5
         )
-        qinfo["v"][rversion_index[vr]] = qstatus
+        qinfo["v"][version_index[vr]] = qstatus
         if qpubstatus or qpubstatus is None:
             qinfo["publ"] = True
         if qexestatus:
@@ -2057,10 +2042,9 @@ select name, id from project order by name
                             ).format(
                                 " ".join(
                                     formatversion(
-                                        "q", qid, v, qversions[rversion_index[v]]
+                                        "q", qid, v, qversions[version_index[v]]
                                     )
-                                    for v in rversion_order
-                                    if v in rversion_index
+                                    for v in version_order
                                 ),
                                 "qmy" if qown else "",
                                 "" if qshared else "qpriv",
@@ -2122,16 +2106,12 @@ shebanq_web.auth_user.first_name, note.keywords
 
     pnote = note_db.executesql(pnote_sql)
     pnotes = collections.OrderedDict()
-    rversion_order = [v for v in version_order if versions[v]["present"]]
-    rversion_index = dict((x[1], x[0]) for x in enumerate(rversion_order))
     for (amount, nvr, kws, uname, uid) in pnote:
-        if nvr not in rversion_index:
-            continue
         for kw in set(kws.strip().split()):
             nkid = iid_encode("n", uid, kw=kw)
             if nkid not in pnotes:
-                pnotes[nkid] = {"": (uname, uid, kw), "v": [0 for v in rversion_order]}
-            pnotes[nkid]["v"][rversion_index[nvr]] = amount
+                pnotes[nkid] = {"": (uname, uid, kw), "v": [0 for v in version_order]}
+            pnotes[nkid]["v"][version_index[nvr]] = amount
 
     tree = collections.OrderedDict()
     countset = collections.defaultdict(lambda: set())
@@ -2173,9 +2153,8 @@ shebanq_web.auth_user.first_name, note.keywords
                         '{}</a> <a class="md" href="#"></a>'
                     ).format(
                         " ".join(
-                            formatversion("n", nkid, v, nversions[rversion_index[v]])
-                            for v in rversion_order
-                            if v in rversion_index
+                            formatversion("n", nkid, v, nversions[version_index[v]])
+                            for v in version_order
                         ),
                         nkid,
                         h_esc(nname),
@@ -2204,10 +2183,8 @@ def formatversion(qw, lid, vr, st):
         elif st == 5:
             icon = "clock-o"
             cls = "error"
-        return (
-            '<a href="#" class="ctrl br{} {} fa fa-{}" {}id="{}" v="{}"></a>'.format(
-                qw, cls, icon, qw, lid, vr
-            )
+        return '<a href="#" class="ctrl br{} {} fa fa-{}" {}id="{}" v="{}"></a>'.format(
+            qw, cls, icon, qw, lid, vr
         )
     else:
         return '<a href="#" class="ctrl br{}" nkid="{}" v="{}">{}</a>'.format(
@@ -2377,9 +2354,7 @@ def check_website(tp, val, msgs):
             break
         netloc = url_comps.netloc
         if "." not in netloc:
-            msgs.append(
-                ("error", "no location in {label} website".format(label=label))
-            )
+            msgs.append(("error", "no location in {label} website".format(label=label)))
             break
         result = urlunparse(url_comps).replace("'", "''")
     return result
@@ -2511,9 +2486,7 @@ def record():
                     msgs.append(
                         (
                             "error",
-                            "invalid instruction for organization {}!".format(
-                                do_new_o
-                            ),
+                            "invalid instruction for organization {}!".format(do_new_o),
                         )
                     )
                     break
@@ -2645,7 +2618,11 @@ def upd_record(tp, lid, myid, fields, msgs, fvalues=None):
     for x in [1]:
         valsql = check_name(
             # tp, lid, myid, str(use_values["name"], encoding="utf-8"), msgs
-            tp, lid, myid, use_values["name"], msgs
+            tp,
+            lid,
+            myid,
+            use_values["name"],
+            msgs,
         )
         if valsql is None:
             break
@@ -3114,7 +3091,6 @@ def query_fields(vr, q_record, recordx, single_version=False):
                 ),
             )
             for v in versions
-            if versions[v]["present"]
         )
         for rx in recordx:
             vx = rx["version"]
@@ -3282,8 +3258,8 @@ def get_q_hits(vr, chapter, pub):
     else:
         pubv = " and query_exe.is_published = 'T'"
         pubx = ""
-    return db.executesql(
-        """
+
+    q_hits_chapter = """
 select DISTINCT
     query_exe.query_id as query_id,
     GREATEST(first_m, {chapter_first_m}) as first_m,
@@ -3299,13 +3275,14 @@ where
     ({chapter_first_m} BETWEEN first_m AND last_m)
 ;
 """.format(
-            chapter_last_m=chapter["last_m"],
-            chapter_first_m=chapter["first_m"],
-            vr=vr,
-            pubv=pubv,
-            pubx=pubx,
-        )
+        chapter_last_m=chapter["last_m"],
+        chapter_first_m=chapter["first_m"],
+        vr=vr,
+        pubv=pubv,
+        pubx=pubx,
     )
+    print(q_hits_chapter)
+    return db.executesql(q_hits_chapter)
 
 
 def get_w_occs(vr, chapter):
@@ -3562,8 +3539,7 @@ group by version
 
 def load_n_notes(vr, iid, kw):
     clause_atom_first = from_cache(
-        cache,
-        "clause_atom_f_{}_".format(vr), lambda: get_clause_atom_fmonad(vr), None
+        cache, "clause_atom_f_{}_".format(vr), lambda: get_clause_atom_fmonad(vr), None
     )
     kw_sql = kw.replace("'", "''")
     myid = auth.user.id if auth.user is not None else None
@@ -3695,12 +3671,10 @@ def get_chart(
     chart_order = []
     if len(monads):
         (books, books_order, book_id, book_name) = from_cache(
-            cache,
-            "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
+            cache, "books_{}_".format(vr), lambda: get_books(passage_dbs, vr), None
         )
         (blocks, block_mapping) = from_cache(
-            cache,
-            "blocks_{}_".format(vr), lambda: get_blocks(vr), None
+            cache, "blocks_{}_".format(vr), lambda: get_blocks(vr), None
         )
         results = {}
 

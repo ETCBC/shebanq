@@ -189,7 +189,7 @@ class Notev {
       .find("a")
       .click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         const statcode = elem.attr("code")
         const nextcode = nt_statnext[statcode]
         const nextsym = nt_statsym[nextcode]
@@ -209,7 +209,7 @@ class Notev {
       .find("a")
       .click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         if (elem.hasClass("ison")) {
           elem.removeClass("ison")
         } else {

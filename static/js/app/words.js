@@ -58,7 +58,7 @@ class View {
     $("[wii]").hide()
     $("[gi]").click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const i = elem.attr("gi")
       $(`[wi="${i}"]`).toggle()
       $(`[wii="${i}"]`).toggle()

@@ -92,7 +92,7 @@ export class MSettings {
 
     $(".mhradio").click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const old_tp = P.vs.tp()
       let new_tp = elem.attr("id").substring(1)
       if (old_tp == "txt_p") {
@@ -112,7 +112,7 @@ export class MSettings {
 
     $(".mtradio").click(e => {
       e.preventDefault()
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const old_tr = P.vs.tr()
       let new_tr = elem.attr("id").substring(1)
       if (old_tr == new_tr) {
@@ -209,7 +209,7 @@ class HebrewSetting {
     this.name = fld
     this.hid = `#${this.name}`
     $(this.hid).click(e => {
-      const elem = $(e.target)
+      const elem = $(e.delegateTarget)
       const vals = {}
       vals[fld] = elem.prop("checked") ? "v" : "x"
       P.vs.dstatesv(vals)
@@ -255,7 +255,7 @@ export class LSettings {
       const hlradio = $(`.${qw}hradio`)
       hlradio.click(e => {
         e.preventDefault()
-        const elem = $(e.target)
+        const elem = $(e.delegateTarget)
         P.vs.hstatesv(this.qw, { active: elem.attr("id").substring(1) })
         P.vs.addHist()
         P.highlight2({ code: "3", qw: this.qw })
