@@ -3118,6 +3118,8 @@ def query_fields(vr, q_record, recordx, single_version=False):
         )
         for rx in recordx:
             vx = rx["version"]
+            if vx not in versions:
+                continue
             dest = q_record["versions"][vx]
             dest.update(rx)
             dest["status"] = qstatus(dest)
