@@ -62,7 +62,7 @@ versionsData = {
 }
 versions = {k: v for (k, v) in versionsData.items() if v["present"] is not None}
 
-oddVersions = ["4", "4b", "2017", "c"]
+oddVersions = ["4", "4b", "2017"]
 oddVersionSet = set(oddVersions)
 versionOrder = oddVersions + sorted(v for v in versions if v not in oddVersionSet)
 version_order = tuple(v for v in versionOrder)
