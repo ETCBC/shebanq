@@ -1851,9 +1851,9 @@ select
     auth_user.id as uid,
     query.name as qname, query.is_shared as is_shared
 from query
-inner join organization on query.organization = organization.id
-inner join project on query.project = project.id
 inner join auth_user on query.created_by = auth_user.id
+inner join project on query.project = project.id
+inner join organization on query.organization = organization.id
 {}
 order by organization.name,
 project.name,

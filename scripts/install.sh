@@ -157,6 +157,7 @@ fi
 
 if [ "$doall" == "v" ] || [ "$dopython" == "v" ]; then
     echo "0-0-0    INSTALL PYTHON MODULES    0-0-0"
+    yum install python36-devel
     yum install python3-markdown
 fi
 
@@ -190,12 +191,13 @@ if [ "$doall" == "v" ] || [ "$doemdros" == "v" ]; then
 
     echo "EMDROS INSTALL"
     make install
+
+    cp -r "$INCOMING/cfg" "$EMDROS_DIR"
+    chown -R apache:apache "$EMDROS_DIR"
 fi
 
 if [ "$doall" == "v" ] || [ "$domysqlconfig" == "v" ]; then
     echo "0-0-0    CONFIGURE MYSQL    0-0-0"
-    cp -r cfg "$EMDROS_DIR"
-    chown -R apache:apache "$EMDROS_DIR/cfg"
 
     if [ "$PRODUCTION" == "x" ]; then
         cp shebanq.cnf /etc/my.cnf.d/
@@ -206,8 +208,9 @@ if [ "$doall" == "v" ] || [ "$domysqlconfig" == "v" ]; then
     fi
 fi
 
-skippdb="x"
-skipedb="x"
+skippdb="v"
+skipedb="v"
+skipudb="x"
 
 if [ "$doall" == "v" ] || [ "$domysqlload" == "v" ]; then
     echo "0-0-0    LOAD DATA start    0-0-0"
@@ -237,13 +240,41 @@ if [ "$doall" == "v" ] || [ "$domysqlload" == "v" ]; then
             rm "$UNPACK/$edbname.mql"
         fi
     done
+    if [ "$skipudb" != "v" ]; then
+        for udbname in shebanq_note shebanq_web
+        do
+            echo "0-0-0        DB $udbname        0-0-0"
+
+            echo "creating fresh $udbname"
+            mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "drop database if exists $udbname;"
+            mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "create database $udbname;"
+
+            echo "unzipping $udbname"
+            cp "$INCOMING/$udbname.sql.gz" "$UNPACK"
+            gunzip -f "$UNPACK/$udbname.sql.gz"
+
+            echo "loading $udbname"
+            echo "use $udbname" | cat - $UNPACK/$udbname.sql | mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt
+
+            rm "$UNPACK/$udbname.sql"
+        done
+    fi
     echo "0-0-0    LOAD DATA end    0-0-0"
 fi
 
+pullonly="v"
+
 if [ "$doall" == "v" ] || [ "$doshebanq" == "v" ]; then
-    echo "0-0-0    SHEBANQ start    0-0-0"
     cd "$APP_DIR"
-    git clone "https://github.com/etcbc/shebanq"
+    if [ "$pullonly" == "v" ]; then
+        echo "0-0-0    SHEBANQ pull    0-0-0"
+        cd shebanq
+        git reset --hard
+        git pull origin master
+    else
+        echo "0-0-0    SHEBANQ clone    0-0-0"
+        git clone "https://github.com/etcbc/shebanq"
+    fi
 fi
 
 skipwsgi="v"
@@ -280,6 +311,17 @@ if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then
         unzip $WEB2PY
         rm $WEB2PY
         mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
+        cp "$INCOMING/parameters_443.py" web2py
+        cp "$INCOMING/routes.py" web2py
+
+        cd "$APP_DIR/web2py"
+        echo "Compiling python code in admin"
+        python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
+
+        echo "Removing welcome app"
+        rm -rf "$APP_DIR/web2py/applications/welcome"
+        rm -rf "$APP_DIR/web2py/applications/examples"
+        rm -rf "$APP_DIR/web2py/welcome.w2p"
 
         setsebool -P httpd_tmp_exec on
     fi
@@ -292,24 +334,12 @@ if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then
         fi
         ln -s "$APP_DIR/shebanq" shebanq
 
-        cp "$INCOMING/parameters_443.py" "$APP_DIR/web2py"
-        cp "$INCOMING/routes.py" "$APP_DIR/web2py"
-
         cd "$APP_DIR"
         chown -R apache:apache web2py
         chown -R apache:apache shebanq
 
-        cd "$APP_DIR/web2py"
-        echo "Compiling python code in admin"
-        python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
-
         echo "Compiling python code in shebanq"
         python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
-
-        echo "Removing welcome app"
-        rm -rf "$APP_DIR/web2py/applications/welcome"
-        rm -rf "$APP_DIR/web2py/applications/examples"
-        rm -rf "$APP_DIR/web2py/welcome.w2p"
     fi
 
     if [ "$skipextradirs" != "v" ]; then
@@ -339,7 +369,6 @@ if [ "$doall" == "v" ] || [ "$doapache" == "v" ]; then
     if [ -e "$APACHE_DIR/welcome.conf" ]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
     fi
-    cp "$INCOMING/apache/ancient-data.org.conf" "$APACHE_DIR"
     cp "$INCOMING/apache/shebanq.ancient-data.org.conf" "$APACHE_DIR"
     cp "$INCOMING/wsgi.conf" "$APACHE_DIR"
 
