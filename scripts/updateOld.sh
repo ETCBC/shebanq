@@ -1,19 +1,18 @@
 #!/bin/bash
-# This a the script that you can run on the acceptation/production server of SHEBANQ to update the code and the data
+# This a the script that you can run on the production server of SHEBANQ to update the code and the data
 
 # run it as follows:
 #
-# ./update.sh                            # if only code or docs has changed
-# ./update.sh -w                         # upgrade web2py
-# ./update.sh -d   version               # if there are changes in the passage databases
-# ./update.sh -de  version               # if there are changes in the emdros databases
+# ./update.sh                              # if only code or docs has changed
+# ./update.sh -w                           # upgrade web2py
+# ./update.sh -d   version                 # if there are changes in the passage databases
+# ./update.sh -de  version                 # if there are changes in the emdros databases
 #
 # -de includes the actions for -d and that includes the actions for no arguments.
 
 # This script is set up to work at specific servers.
 # Currently it supports 
-#   clarin31.dans.knaw.nl (SELINUX, production)
-#   tclarin31.dans.knaw.nl (SELINUX, staging)
+#   clarin11.dans.knaw.nl (SELINUX)
 
 # MYSQL_PDIR: directory with config files for talking with mysql
 # SH_ADIR   : directory where the web app shebanq resides (and also web2py itself)
@@ -21,24 +20,18 @@
 # UNPACK    : directory where installation files are unpacked
 
 INCOMING="/home/dirkr/shebanq-install"
-MYSQL_PDIR="/opt/emdros/cfg"
-SH_ADIR="/opt/web-apps"
-UNPACK="/data/shebanq/unpack"
 
-if [ "$HOSTNAME" == "clarin31.dans.knaw.nl" ]; then
-    echo "Updating PRODUCTION machine ..."
-    PRODUCTION=1
-    MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
-elif [ "$HOSTNAME" == "tclarin31.dans.knaw.nl" ]; then
-    echo "Updating STAGING machine ..."
-    PRODUCTION=0
-    MQL_OPTS="-u shebanq_admin"
-else
-    echo "Update not supported on machine $HOSTNAME"
-    exit
+if [ "$HOSTNAME" == "clarin11.dans.knaw.nl" ]; then
+        ON_CLARIN=1
+        MYSQL_PDIR="/opt/emdros/cfg"
+        SH_ADIR="/opt/web-apps"
+        MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
+        UNPACK="/data/shebanq/unpack"
 fi
 
-sudo -n /usr/bin/systemctl stop httpd.service
+if [ $ON_CLARIN ]; then
+    sudo -n /usr/bin/systemctl stop httpd.service
+fi
 
 # upgrade web2py if -w is given
 
@@ -91,11 +84,14 @@ cd applications/admin
 python -m compileall models modules
 cd $SH_ADIR/shebanq
 python -m compileall models modules
-chown dirkr:shebanq $SH_ADIR/web2py/welcome.w2p
+if [ $ON_CLARIN ]; then
+    # chown dirkr:shebanq $SH_ADIR/web2py/web2py.log
+    chown dirkr:shebanq $SH_ADIR/web2py/welcome.w2p
+fi
 sleep 1
 
 cd $SH_ADIR/shebanq
-mkdir -p "$UNPACK"
+mkdir -p $UNPACK
 
 if [ "$1" == "-de" ]; then
     if [ "$2" == "" ]; then
@@ -134,4 +130,7 @@ fi
 
 sleep 2
 
-sudo -n /usr/bin/systemctl start httpd.service
+if [ $ON_CLARIN ]; then
+    sudo -n /usr/bin/systemctl start httpd.service
+fi
+
