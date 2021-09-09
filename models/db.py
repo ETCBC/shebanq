@@ -13,7 +13,7 @@ dc_h = config["shebanq_host"]
 
 version_order = """2021 c 2017 4b 4""".split()
 
-versions = {
+versionsData = {
     "4": {
         "name": "BHSA_4",
         "date": "2014-07-14",
@@ -60,11 +60,12 @@ versions = {
         "present": None,
     },
 }
+versions = {k: v for (k, v) in versionsData.items() if v["present"] is not None}
 
 oddVersions = ["4", "4b", "2017", "c"]
 oddVersionSet = set(oddVersions)
 versionOrder = oddVersions + sorted(v for v in versions if v not in oddVersionSet)
-version_order = tuple(v for v in versionOrder if versions[v]["present"] is not None)
+version_order = tuple(v for v in versionOrder)
 
 connStr = "mysql://{}:{}@{}/{}".format(
     config["shebanq_user"],

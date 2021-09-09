@@ -271,6 +271,10 @@ if [ "$doall" == "v" ] || [ "$doshebanq" == "v" ]; then
         cd shebanq
         git reset --hard
         git pull origin master
+        cd "$APP_DIR"
+        chown -R apache:apache shebanq
+        cd web2py
+        python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
     else
         echo "0-0-0    SHEBANQ clone    0-0-0"
         git clone "https://github.com/etcbc/shebanq"
@@ -339,6 +343,7 @@ if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then
         chown -R apache:apache shebanq
 
         echo "Compiling python code in shebanq"
+        cd web2py
         python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
     fi
 

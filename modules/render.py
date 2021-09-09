@@ -925,9 +925,7 @@ class Viewsettings:
         )
         self.pref = get_request_val("rest", "", "pref")
 
-        self.versions = {
-            v: info for (v, info) in versions.items() if info["present"] is not None
-        }
+        self.versions = {v: info for (v, info) in versions.items()}
 
         for group in settings:
             self.state[group] = {}
