@@ -3,7 +3,7 @@
     {{for v in version_order:
         vinfo = versions[v]
         vdate = vinfo['date'] or 'recent'
-        title = '{}: {} [{}]'.format(vdate, vinfo['desc'], vinfo['notes'])
+        title = f"{vdate}: {vinfo['desc']} [{vinfo['notes']}]"
     }}<a title="{{=title}}" href="#" id="version_{{=v}}" class="ctrl mvradio">{{=v}}</a>
     {{pass}}
 </div>

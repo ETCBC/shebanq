@@ -14,12 +14,12 @@ statusmap = dict(
 {{pass}}
 <input type="hidden" id="itemtag" value=""/>
 <div id="bigger">
-    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+'?goto={}'.format(iidrep)}}"><span id="nameqm">{{=qr['name']}}</span></a>
+    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+f'?goto={iidrep}'}}"><span id="nameqm">{{=qr['name']}}</span></a>
     <span class="ir"><a class="ctrl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
         <p>
-            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{='{} {}'.format(qr['ufname'], qr['ulname'])}}</span></a>
+            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=f'{qr['ufname']} {qr['ulname']}'}}</span></a>
             <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=qr['oname']}}</span></a>
             <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=qr['pname']}}</span></a>
         </p>
@@ -57,8 +57,8 @@ statusmap = dict(
         <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
     {{if v == vr:}}
         <a id="csvt_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
-        <a id="csvb_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with tab info as a csv file"></a>
-        <a id="csvd_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all words of this query with data as a csv file"></a>
+        <a id="csvb_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with extra data as a csv file. The current view determines which features are added."></a>
+        <a id="csvd_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all words of this query with extra data as a csv file. The legend determines which features are added."></a>
         <a id="select_control_chart_{{=v}}_q" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
         <a target="_blank" title="MQL documentation" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/MQL-Quickref">MQL <span class="fa fa-info-circle ctrli"/></a>
         {{if writable:}}

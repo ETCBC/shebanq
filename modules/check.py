@@ -1,0 +1,211 @@
+from urllib.parse import urlparse, urlunparse
+
+from constants import TPS
+from helpers import iid_decode
+
+
+class Check:
+    def __init__(self, request, db):
+        self.request = request
+        self.db = db
+
+    def isUnique(self, tp, lid, val, myid, msgs):
+        db = self.db
+
+        result = False
+        (label, table) = TPS[tp]
+        for x in [1]:
+            if tp == "q":
+                check_sql = f"""
+select id from query where name = '{val}' and query.created_by = {myid}
+;
+"""
+            else:
+                check_sql = f"""
+select id from {table} where name = '{val}'
+;
+"""
+            try:
+                ids = db.executesql(check_sql)
+            except Exception:
+                msgs.append(("error", f"cannot check the unicity of {val} as {label}!"))
+                break
+            if len(ids) and (lid == 0 or ids[0][0] != int(lid)):
+                msgs.append(("error", f"the {label} name is already taken!"))
+                break
+            result = True
+        return result
+
+    def isName(self, tp, lid, myid, val, msgs):
+        label = TPS[tp][0]
+        result = None
+        for x in [1]:
+            if len(val) > 64:
+                msgs.append(
+                    (
+                        "error",
+                        f"{label} name is longer than 64 characters!",
+                    )
+                )
+                break
+            val = val.strip()
+            if val == "":
+                msgs.append(
+                    ("error", f"{label} name consists completely of white space!")
+                )
+                break
+            val = val.replace("'", "''")
+            if not self.isUnique(tp, lid, val, myid, msgs):
+                break
+            result = val
+        return result
+
+    def isDescription(self, tp, val, msgs):
+        label = TPS[tp][0]
+        result = None
+        for x in [1]:
+            if len(val) > 8192:
+                msgs.append(
+                    ("error", f"{label} description is longer than 8192 characters!")
+                )
+                break
+            result = val.replace("'", "''")
+        return result
+
+    def isMql(self, tp, val, msgs):
+        label = TPS[tp][0]
+        result = None
+        for x in [1]:
+            if len(val) > 8192:
+                msgs.append(
+                    (
+                        "error",
+                        f"{label} mql is longer than 8192 characters!",
+                    )
+                )
+                break
+            result = val.replace("'", "''")
+        return result
+
+    def isPublished(self, tp, val, msgs):
+        label = TPS[tp][0]
+        result = None
+        for x in [1]:
+            if len(val) > 10 or (len(val) > 0 and not val.isalnum()):
+                msgs.append(
+                    (
+                        "error",
+                        f"{label} published status has an invalid value {val}",
+                    )
+                )
+                break
+            result = "T" if val == "T" else ""
+        return result
+
+    def isWebsite(self, tp, val, msgs):
+        label = TPS[tp][0]
+        result = None
+        for x in [1]:
+            if len(val) > 512:
+                msgs.append(
+                    ("error", f"{label} website is longer than 512 characters!")
+                )
+                break
+            val = val.strip()
+            if val == "":
+                msgs.append(
+                    ("error", f"{label} website consists completely of white space!")
+                )
+                break
+            try:
+                url_comps = urlparse(val)
+            except ValueError:
+                msgs.append(("error", f"invalid syntax in {label} website !"))
+                break
+            scheme = url_comps.scheme
+            if scheme not in {"http", "https"}:
+                msgs.append(
+                    ("error", f"{label} website does not start with http(s)://")
+                )
+                break
+            netloc = url_comps.netloc
+            if "." not in netloc:
+                msgs.append(("error", f"no location in {label} website"))
+                break
+            result = urlunparse(url_comps).replace("'", "''")
+        return result
+
+    def isInt(self, var, label, msgs):
+        request = self.request
+
+        val = request.vars[var]
+        if val is None:
+            msgs.append(("error", f"No {label} number given"))
+            return None
+        if len(val) > 10 or not val.isdigit():
+            msgs.append(("error", f"Not a valid {label}"))
+            return None
+        return int(val)
+
+    def isBool(self, var):
+        request = self.request
+
+        val = request.vars[var]
+        if (
+            val is None
+            or len(val) > 10
+            or not val.isalpha()
+            or val not in {"true", "false"}
+            or val == "false"
+        ):
+            return False
+        return True
+
+    def isId(self, var, tp, label, msgs, valrep=None):
+        request = self.request
+
+        if valrep is None:
+            valrep = request.vars[var]
+        if valrep is None:
+            msgs.append(("error", f"No {label} id given"))
+            return None
+        if tp in {"w", "q", "n"}:
+            (val, kw) = iid_decode(tp, valrep)
+        else:
+            val = valrep
+            if len(valrep) > 10 or not valrep.isdigit():
+                msgs.append(("error", f"Not a valid {label} id"))
+                return None
+            val = int(valrep)
+        if tp == "n":
+            return valrep
+        return val
+
+    def isRel(self, tp, val, msgs):
+        db = self.db
+
+        (label, table) = TPS[tp]
+        result = None
+        for x in [1]:
+            check_sql = f"""
+select count(*) as occurs from {table} where id = {val}
+;
+"""
+            try:
+                occurs = db.executesql(check_sql)[0][0]
+            except Exception:
+                msgs.append(
+                    (
+                        "error",
+                        f"cannot check the occurrence of {label} id {val}!",
+                    )
+                )
+                break
+            if not occurs:
+                if val == 0:
+                    msgs.append(("error", f"No {label} chosen!"))
+                else:
+                    msgs.append(("error", f"There is no {label} {val}!"))
+                break
+            result = val
+        return result

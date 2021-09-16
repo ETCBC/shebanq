@@ -67,15 +67,13 @@ versionOrder = oddVersions + sorted(v for v in versions if v not in oddVersionSe
 version_order = tuple(v for v in versionOrder)
 version_index = dict((x[1], x[0]) for x in enumerate(version_order))
 
-connStr = "mysql://{}:{}@{}/{}".format(
-    config["shebanq_user"],
-    config["shebanq_passwd"],
-    config["shebanq_host"],
-    "shebanq_web",
-)
-# print(connStr)
+connUser = f"{dc_u}:{dc_p}@{dc_h}"
+connStrWeb = f"mysql://{connUser}/shebanq_web"
+connStrNote = f"mysql://{connUser}/shebanq_note"
+connStrPassage = f"mysql://{connUser}/shebanq_passage"
+
 db = DAL(
-    connStr,
+    connStrWeb,
     migrate_enabled=False,  # if session table already exists
     # migrate=False, # if session table does not yet exist
 )
@@ -83,19 +81,14 @@ db = DAL(
 passage_dbs = {}
 
 note_db = DAL(
-    "mysql://{}:{}@{}/{}".format(
-        config["shebanq_user"],
-        config["shebanq_passwd"],
-        config["shebanq_host"],
-        "shebanq_note",
-    ),
+    connStrNote,
     migrate_enabled=False,  # if session table already exists
     # migrate=False, # if session table does not yet exist
 )
 
 for vr in version_order:
     passage_dbs[vr] = DAL(
-        "mysql://{}:{}@{}/{}".format(dc_u, dc_p, dc_h, "shebanq_passage{}".format(vr)),
+        f"{connStrPassage}{vr}",
         migrate_enabled=False,
     )
 

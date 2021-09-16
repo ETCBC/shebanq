@@ -1,9 +1,8 @@
 /* eslint-env jquery */
-/* globals Config, P */
+/* globals Config, P, State */
 
-import { close_dialog } from "./helpers.js"
+import { close_dialog, escHT } from "./helpers.js"
 import { Colorpicker2 } from "./colorpicker.js"
-
 
 export class MMessage {
   /* diagnostic output
@@ -55,9 +54,16 @@ export class MContent {
 
 export class MSettings {
   constructor(content) {
-    const { featurehost } = Config
-
-    const { next_tp, next_tr, tab_info, tab_views, tr_info, tr_labels } = Config
+    const {
+      featurehost,
+      next_tp,
+      next_tr,
+      tab_info,
+      tab_views,
+      tr_info,
+      tr_labels,
+      versions,
+    } = Config
 
     const hltext = $("#mtxt_p")
     const hltabbed = $("#mtxt_tb1")
@@ -108,6 +114,20 @@ export class MSettings {
       P.vs.mstatesv({ tp: new_tp })
       P.vs.addHist()
       this.apply()
+      const mr = P.vs.mr()
+      const qw = P.vs.qw()
+      if (mr == "r") {
+        let extra = undefined
+        if (qw == "q") {
+          const { q } = State
+          const ufname = escHT(q.ufname || "")
+          const ulname = escHT(q.ulname || "")
+          extra = `${ufname}_${ulname}`
+        }
+        for (const v of versions) {
+          P.set_csv(v, mr, qw, P.vs.iid(), extra)
+        }
+      }
     })
 
     $(".mtradio").click(e => {
@@ -248,7 +268,9 @@ export class LSettings {
   constructor(qw) {
     this.qw = qw
 
-    const { sidebars: { side_fetched, sidebar } } = P
+    const {
+      sidebars: { side_fetched, sidebar },
+    } = P
 
     if (qw != "n") {
       this.picker2 = new Colorpicker2(this.qw, false)
@@ -292,4 +314,3 @@ export class LSettings {
     }
   }
 }
-

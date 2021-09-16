@@ -16,8 +16,8 @@ if side_items:
             fname = iinfo['ufname']
             lname = iinfo['ulname']
             is_pub = iinfo['is_published']
-            uname = '{} {}'.format(fname, lname)
-            uname1 = '{} {}'.format(fname[0], lname)
+            uname = f'{fname} {lname}'
+            uname1 = f'{fname[0]} {lname}'
             uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
             clinktext = uname_short
             compp = SPAN(_class='fa fa-quote-right fa-fw') if is_pub else ''
@@ -27,7 +27,7 @@ if side_items:
             desc = iinfo['description']
             mql = iinfo['mql']
             qname_short = qname if len(qname) < qlimit else qname[0:qlimit]+'..'
-            title = '{} by {} {}'.format(qname, fname, lname)
+            title = f'{qname} by {fname} {lname}'
             dlinktext = qname_short
             lclass = XML(' class="detail" ')
             cclass = 'qauth'
@@ -40,7 +40,7 @@ if side_items:
             nverses = iinfo['nverses']
             nlabel = 'note' if nnotes == 1 else 'notes'
             vlabel = 'verse' if nverses == 1 else 'verses'
-            title = '{} by {} {}'.format(kw, fname, lname)
+            title = f'{kw} by {fname} {lname}'
             dlinktext = kw_short
             cclass = 'nauth'
             sclass = 'nstat'
@@ -60,10 +60,10 @@ if side_items:
             dclass = 'i_gl'
             eclass = 'wdesc'
         pass
-        compc = A(clinktext, _href='#', _class=cclass, _iid=iid, _id='item_{}{}'.format(qw, iid))
+        compc = A(clinktext, _href='#', _class=cclass, _iid=iid, _id=f'item_{qw}{iid}')
         compd = SPAN(dlinktext, _class=dclass)
     }}
-    <li {{=lclass}} id="{{='{}{}'.format(qw,iid)}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
+    <li {{=lclass}} id="{{=f'{qw}{iid}'}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
         <div>{{=XML(colorpicker(qw,iid, '')) if qw != 'n' else ''}}
             <a href='#' title="more/less info" class="ctrlb fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
             {{if qw == 'q' or qw == 'n':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}

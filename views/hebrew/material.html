@@ -60,7 +60,7 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
         {{pass}}
         {{for verse in material.verses:
             (pb, b, c, v) = verse.label()
-            verse_control = '<a b="{book}" c="{chapter}" v="{verse}" class="vradio" href="#">{verse}</a>'.format(book=b, chapter=c, verse=v)
+            verse_control = f'<a b="{b}" c="{c}" v="{v}" class="vradio" href="#">{v}</a>'
         }}
             <div class="{{=tp}}" tvid="{{=v}}">
             {{if material.mr == 'm':

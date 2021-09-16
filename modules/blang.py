@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+BIBLANG = "Hebrew"
+
 
 booklangs = {
     "Hebrew": dict(
@@ -1152,3 +1153,12 @@ booknames = {
         ),
     ),
 }
+
+# make a translation table from latin book names (the ETCBC ones)
+# to the specific languages
+booktrans = {}
+for lng in booknames[BIBLANG]:
+    for (i, book) in enumerate(booknames[BIBLANG][lng]):
+        booktrans.setdefault(lng, {})[booknames[BIBLANG]["la"][i]] = book
+
+bknames = ",".join(sorted(booknames[BIBLANG]))

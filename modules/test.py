@@ -1,14 +1,11 @@
-from mql import mql
+class X:
+    def __init__(self, offset):
+        def inc(x):
+            return offset + x
 
-q = '''
-Select all objects where
-[sentence
-  [word focus lex='JHWH/']
-  [word focus lex='>LHJM/']
-]
-GO
-'''
+        setattr(self, "inc", inc)
 
-msgs = []
 
-print(mql('4b', q))
+xobj = X(5)
+
+print(xobj.inc(6))

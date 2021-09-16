@@ -196,16 +196,26 @@ if [ "$doall" == "v" ] || [ "$doemdros" == "v" ]; then
     chown -R apache:apache "$EMDROS_DIR"
 fi
 
+skipusers="v"
+skipgrants="v"
+
 if [ "$doall" == "v" ] || [ "$domysqlconfig" == "v" ]; then
     echo "0-0-0    CONFIGURE MYSQL    0-0-0"
 
     if [ "$PRODUCTION" == "x" ]; then
         cp shebanq.cnf /etc/my.cnf.d/
-        echo "0-0-0        create users        0-0-0"
-        mysql -u root < "$CFG_DIR/user.sql"
-        echo "0-0-0        grant privileges        0-0-0"
-        mysql -u root < grants.sql
+        if [ "$skipusers" != "v" ]; then
+            echo "0-0-0        create users        0-0-0"
+            mysql -u root < "$CFG_DIR/user.sql"
+        fi
+        if [ "$skipgrants" != "v" ]; then
+            echo "0-0-0        grant privileges        0-0-0"
+            mysql -u root < grants.sql
+        fi
     fi
+
+    setsebool -P httpd_can_network_connect 1
+    setsebool -P httpd_can_network_connect_db 1
 fi
 
 skippdb="x"
@@ -374,7 +384,7 @@ if [ "$doall" == "v" ] || [ "$doapache" == "v" ]; then
     if [ -e "$APACHE_DIR/welcome.conf" ]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
     fi
-    cp "$INCOMING/apache/shebanq.ancient-data.org.conf" "$APACHE_DIR"
+    cp $INCOMING/apache/*.conf "$APACHE_DIR"
     cp "$INCOMING/wsgi.conf" "$APACHE_DIR"
 
     service httpd restart

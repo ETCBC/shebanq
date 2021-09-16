@@ -148,7 +148,7 @@ export class Page {
   }
 
   set_csv(vr, mr, qw, iid, extraGiven) {
-    const { tp_labels } = Config
+    const { tp_labels, style } = Config
 
     if (mr == "r") {
       const tasks = { t: "txt_p", d: "txt_il" }
@@ -158,6 +158,7 @@ export class Page {
 
       for (const task in tasks) {
         const tp = tasks[task]
+        const tpLab = tp_labels[tp]
         const csvctrl = $(`#csv${task}_lnk_${vr}_${qw}`)
         if (task != "b" || (tp != "txt_p" && tp != "txt_il")) {
           const ctit = csvctrl.attr("ftitle")
@@ -171,7 +172,7 @@ export class Page {
           csvctrl.attr("href", P.vs.csv_url(vr, mr, qw, iid, tp, extra))
           csvctrl.attr(
             "title",
-            `${vr}_$[style[qw]["t"]}_${iid}_${extra}_${tp_labels[tp]}.csv${ctit}`
+            `${vr}_${style[qw]["t"]}_${iid}_${extra}_${tpLab}.csv${ctit} (${tpLab})`
           )
           csvctrl.show()
         } else {
