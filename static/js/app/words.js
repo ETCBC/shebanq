@@ -33,13 +33,13 @@ class View {
   }
 
   set_vselect(v, gotoword) {
-    const { words_url } = Config
+    const { wordsUrl } = Config
     const { lan, letter } = ConfigW
 
     $(`#version_${v}`).click(e => {
       e.preventDefault()
       this.version = v
-      window.location.href = `${words_url}?version=${v}&lan=${lan}&letter=${letter}&goto=${gotoword}`
+      window.location.href = `${wordsUrl}?version=${v}&lan=${lan}&letter=${letter}&goto=${gotoword}`
     })
   }
 

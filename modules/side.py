@@ -1,4 +1,4 @@
-from viewsettings import colorpicker
+from viewsettings import colorPicker
 from helpers import debug
 
 
@@ -25,28 +25,28 @@ class SIDE:
         Query = self.Query
         Note = self.Note
 
-        (book, chapter) = Material.get_passage(vr, bk, ch)
+        (book, chapter) = Material.getPassage(vr, bk, ch)
         if not chapter:
             result = dict(
-                colorpicker=colorpicker,
-                side_items=[],
+                colorPicker=colorPicker,
+                sideItems=[],
                 qw=qw,
             )
         else:
             if qw == "q":
                 debug(f"original function PUB={pub}")
-                monad_sets = Query.get_items(vr, chapter, pub == "v")
-                side_items = Query.group(vr, monad_sets)
+                slotSets = Query.getItems(vr, chapter, pub == "v")
+                sideItems = Query.group(vr, slotSets)
             elif qw == "w":
-                monad_sets = Word.get_items(vr, chapter)
-                side_items = Word.group(vr, monad_sets)
+                slotSets = Word.getItems(vr, chapter)
+                sideItems = Word.group(vr, slotSets)
             elif qw == "n":
-                side_items = Note.get_items(vr, book, chapter, pub)
+                sideItems = Note.getItems(vr, book, chapter, pub)
             else:
-                side_items = []
+                sideItems = []
             result = dict(
-                colorpicker=colorpicker,
-                side_items=side_items,
+                colorPicker=colorPicker,
+                sideItems=sideItems,
                 qw=qw,
             )
         return result

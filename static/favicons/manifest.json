@@ -1,5 +1,5 @@
 {
-	"name": "SHEBANQ",
+    "name": "SHEBANQ",
 	"icons": [
 		{
 			"src": "\/android-chrome-36x36.png?v=PYYw2o4bvx",
@@ -38,6 +38,6 @@
 			"density": 4
 		}
 	],
-	"start_url": "https:\/\/shebanq.ancient-data.org",
+	"startUrl": "https:\/\/shebanq.ancient-data.org",
 	"display": "standalone"
 }

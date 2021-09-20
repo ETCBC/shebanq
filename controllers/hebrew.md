@@ -54,7 +54,7 @@ Here are the cache keys we are using:
 books_{vr}_                                   list of books plus fixed book info
 blocks_{vr}_                                  list of 500w blocks plus boundary info
 verse_boundaries                              for each verse its starting and ending
-                                              monad (word number)
+                                              slot (word number)
 verses_{vr}_{mqwn}_{bk/iid}_{ch/page}_{tp}_   verses on a material page, either for a chapter,
                                               or an occurrences page of a lexeme,
                                               or a results page of a query execution

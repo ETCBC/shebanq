@@ -1,51 +1,51 @@
 import collections
 import json
 
-from helpers import h_esc, iid_encode, formatVersion
+from helpers import hEsc, iEncode, formatVersion
 
 
 class NOTETREE:
     def __init__(
         self,
         auth,
-        note_db,
-        version_order,
-        version_index,
+        NOTE_DB,
+        VERSION_ORDER,
+        VERSION_INDEX,
     ):
         self.auth = auth
-        self.note_db = note_db
-        self.version_order = version_order
-        self.version_index = version_index
+        self.NOTE_DB = NOTE_DB
+        self.VERSION_ORDER = VERSION_ORDER
+        self.VERSION_INDEX = VERSION_INDEX
 
     def get(self, now):
         auth = self.auth
-        note_db = self.note_db
-        version_order = self.version_order
-        version_index = self.version_index
+        NOTE_DB = self.NOTE_DB
+        VERSION_ORDER = self.VERSION_ORDER
+        VERSION_INDEX = self.VERSION_INDEX
 
-        myid = None
+        myId = None
         if auth.user:
-            myid = auth.user.id
+            myId = auth.user.id
         linfo = collections.defaultdict(lambda: {})
 
-        def title_badge(lid, ltype, tot):
+        def titleBadge(lid, ltype, tot):
             name = linfo[ltype][lid] if ltype is not None else "Shared Notes"
             badge = ""
             if tot != 0:
                 badge = f'<span class="total special"> {tot}</span>'
-            return f'<span n="1">{h_esc(name)}</span><span class="brn">({badge})</span>'
+            return f'<span n="1">{hEsc(name)}</span><span class="brn">({badge})</span>'
 
         condition = (
             """
 where note.is_shared = 'T'
 """
-            if myid is None
+            if myId is None
             else f"""
-where note.is_shared = 'T' or note.created_by = {myid}
+where note.is_shared = 'T' or note.created_by = {myId}
 """
         )
 
-        pnote_sql = f"""
+        projectNoteSql = f"""
 select
     count(note.id) as amount,
     note.version,
@@ -61,62 +61,63 @@ shebanq_web.auth_user.first_name, note.keywords
 ;
 """
 
-        pnote = note_db.executesql(pnote_sql)
-        pnotes = collections.OrderedDict()
-        for (amount, nvr, kws, uname, uid) in pnote:
+        projectNote = NOTE_DB.executesql(projectNoteSql)
+        projectNotes = collections.OrderedDict()
+        for (amount, nvr, kws, uname, uid) in projectNote:
             for kw in set(kws.strip().split()):
-                nkid = iid_encode("n", uid, kw=kw)
-                if nkid not in pnotes:
-                    pnotes[nkid] = {
+                keyId = iEncode("n", uid, kw=kw)
+                if keyId not in projectNotes:
+                    projectNotes[keyId] = {
                         "": (uname, uid, kw),
-                        "v": [0 for v in version_order],
+                        "v": [0 for v in VERSION_ORDER],
                     }
-                pnotes[nkid]["v"][version_index[nvr]] = amount
+                projectNotes[keyId]["v"][VERSION_INDEX[nvr]] = amount
 
         tree = collections.OrderedDict()
-        countset = collections.defaultdict(lambda: set())
-        countu = collections.defaultdict(lambda: 0)
+        countSet = collections.defaultdict(lambda: set())
+        countUser = collections.defaultdict(lambda: 0)
         count = 0
-        for nkid in pnotes:
-            pninfo = pnotes[nkid]
-            (uname, uid, nname) = pninfo[""]
-            countset["u"].add(uid)
-            countset["n"].add(nkid)
+        for keyId in projectNotes:
+            projectNoteInfo = projectNotes[keyId]
+            (uname, uid, noteName) = projectNoteInfo[""]
+            countSet["u"].add(uid)
+            countSet["n"].add(keyId)
             linfo["u"][uid] = uname
-            tree.setdefault(uid, []).append(nkid)
+            tree.setdefault(uid, []).append(keyId)
             count += 1
-            countu[uid] += 1
+            countUser[uid] += 1
 
         linfo["u"][0] = ""
-        linfo["n"] = pnotes
+        linfo["n"] = projectNotes
 
-        ccount = dict((x[0], len(x[1])) for x in countset.items())
-        ccount["uid"] = myid
-        title = title_badge(None, None, count)
-        dest = [dict(title=str(title), folder=True, children=[], data=ccount)]
-        curdest = dest[-1]["children"]
-        cursource = tree
-        for uid in cursource:
-            utot = countu[uid]
-            utitle = title_badge(uid, "u", utot)
-            curdest.append(dict(title=str(utitle), folder=True, children=[]))
-            curudest = curdest[-1]["children"]
-            curusource = cursource[uid]
-            for nkid in curusource:
-                pninfo = linfo["n"][nkid]
-                (uname, uid, nname) = pninfo[""]
-                nversions = pninfo["v"]
-                vrep = " ".join(
-                    formatVersion("n", nkid, v, nversions[version_index[v]])
-                    for v in version_order
+        categoryCount = dict((x[0], len(x[1])) for x in countSet.items())
+        categoryCount["uid"] = myId
+        title = titleBadge(None, None, count)
+        dest = [dict(title=str(title), folder=True, children=[], data=categoryCount)]
+        curDest = dest[-1]["children"]
+        curSource = tree
+        for uid in curSource:
+            userTotal = countUser[uid]
+            userTitle = titleBadge(uid, "u", userTotal)
+            curDest.append(dict(title=str(userTitle), folder=True, children=[]))
+            curUserDest = curDest[-1]["children"]
+            curUserSource = curSource[uid]
+            for keyId in curUserSource:
+                projectNoteInfo = linfo["n"][keyId]
+                (uname, uid, noteName) = projectNoteInfo[""]
+                noteVersions = projectNoteInfo["v"]
+                versionRep = " ".join(
+                    formatVersion("n", keyId, v, noteVersions[VERSION_INDEX[v]])
+                    for v in VERSION_ORDER
                 )
-                curudest.append(
+                curUserDest.append(
                     dict(
                         title=(
-                            f'{vrep} <a class="n nt_kw" n="1" nkid="{nkid}" href="#">'
-                            '{h_esc(nname)}</a> <a class="md" href="#"></a>'
+                            f"""{versionRep} <a
+class="n nt_kw" n="1" nkid="{keyId}" href="#">"""
+                            '{hEsc(noteName)}</a> <a class="md" href="#"></a>'
                         ),
-                        key=f"n{nkid}",
+                        key=f"n{keyId}",
                         folder=False,
                     ),
                 )

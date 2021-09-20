@@ -1,3 +1,4 @@
+from datetime import datetime
 from base64 import b64decode, b64encode
 
 
@@ -9,11 +10,19 @@ def debug(msg):
         print(msg)
 
 
-def heb_key(x):
+def isodt(dt=None):
+    return (
+        datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        if dt is None
+        else dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    )
+
+
+def hebKey(x):
     return x.replace("שׁ", "ששׁ").replace("שׂ", "ששׂ")
 
 
-def iid_encode(qw, idpart, kw=None, sep="|"):
+def iEncode(qw, idpart, kw=None, sep="|"):
     if qw == "n":
         return (
             b64encode((f"{idpart}|{kw}").encode("utf8"))
@@ -28,22 +37,22 @@ def iid_encode(qw, idpart, kw=None, sep="|"):
     return str(idpart)
 
 
-def iid_decode(qw, iidrep, sep="|", rsep=None):
-    idpart = iidrep
+def iDecode(qw, iidRep, sep="|", rsep=None):
+    idpart = iidRep
     kw = ""
     if qw == "n":
         try:
             (idpart, kw) = (
-                b64decode(iidrep.replace("_", "=").encode("utf8"))
+                b64decode(iidRep.replace("_", "=").encode("utf8"))
                 .decode("utf8")
                 .split(sep, 1)
             )
         except Exception:
             (idpart, kw) = (None, None)
     if qw == "w":
-        (idpart, kw) = (iidrep, "")
+        (idpart, kw) = (iidRep, "")
     if qw == "q":
-        (idpart, kw) = (int(iidrep) if iidrep.isdigit() else 0, "")
+        (idpart, kw) = (int(iidRep) if iidRep.isdigit() else 0, "")
     if rsep is None:
         result = (idpart, kw)
     else:
@@ -54,7 +63,7 @@ def iid_decode(qw, iidrep, sep="|", rsep=None):
     return result
 
 
-def h_esc(material, fill=True):
+def hEsc(material, fill=True):
     material = (
         material.replace("&", "&amp;")
         .replace("<", "&lt;")
@@ -69,7 +78,7 @@ def h_esc(material, fill=True):
     return material
 
 
-def to_ascii(x):
+def toAscii(x):
     return x.encode("ascii", "replace")
 
 
@@ -90,28 +99,28 @@ def formatVersion(qw, lid, vr, st):
         elif st == 5:
             icon = "clock-o"
             cls = "error"
-        return f"""<a href="#" class="ctrl br{qw} {cls} fa fa-{icon}"
+        return f"""<a href="#" class="ctl br{qw} {cls} fa fa-{icon}"
 {qw}id="{lid}" v="{vr}"></a>"""
 
     else:
         strep = st if st else "-"
-        return f'<a href="#" class="ctrl br{qw}" nkid="{lid}" v="{vr}">{strep}</a>'
+        return f'<a href="#" class="ctl br{qw}" nkid="{lid}" v="{vr}">{strep}</a>'
 
 
 def pagelist(page, pages, spread):
     factor = 1
-    filtered_pages = {1, page, pages}
+    filteredPages = {1, page, pages}
     while factor <= pages:
-        page_base = factor * int(page / factor)
-        filtered_pages |= {
-            page_base + int((i - spread / 2) * factor)
+        pageBase = factor * int(page / factor)
+        filteredPages |= {
+            pageBase + int((i - spread / 2) * factor)
             for i in range(2 * int(spread / 2) + 1)
         }
         factor *= spread
-    return sorted(i for i in filtered_pages if i > 0 and i <= pages)
+    return sorted(i for i in filteredPages if i > 0 and i <= pages)
 
 
-def count_monads(rows):
+def countSlots(rows):
     covered = set()
     for (b, e) in rows:
         covered |= set(range(b, e + 1))
@@ -126,14 +135,14 @@ def flatten(msets):
     return list(sorted(result))
 
 
-def collapse_into_ranges(monads):
+def collapseToRanges(slots):
     covered = set()
-    for (start,) in monads:
+    for (start,) in slots:
         covered.add(start)
-    return normalize_ranges(None, fromset=covered)
+    return normRanges(None, fromset=covered)
 
 
-def normalize_ranges(ranges, fromset=None):
+def normRanges(ranges, fromset=None):
     covered = set()
     if fromset is not None:
         covered = fromset
@@ -141,65 +150,31 @@ def normalize_ranges(ranges, fromset=None):
         for (start, end) in ranges:
             for i in range(start, end + 1):
                 covered.add(i)
-    cur_start = None
-    cur_end = None
+    curStart = None
+    curEnd = None
     result = []
     for i in sorted(covered):
         if i not in covered:
-            if cur_end is not None:
-                result.append((cur_start, cur_end - 1))
-            cur_start = None
-            cur_end = None
-        elif cur_end is None or i > cur_end:
-            if cur_end is not None:
-                result.append((cur_start, cur_end - 1))
-            cur_start = i
-            cur_end = i + 1
+            if curEnd is not None:
+                result.append((curStart, curEnd - 1))
+            curStart = None
+            curEnd = None
+        elif curEnd is None or i > curEnd:
+            if curEnd is not None:
+                result.append((curStart, curEnd - 1))
+            curStart = i
+            curEnd = i + 1
         else:
-            cur_end = i + 1
-    if cur_end is not None:
-        result.append((cur_start, cur_end - 1))
+            curEnd = i + 1
+    if curEnd is not None:
+        result.append((curStart, curEnd - 1))
     return (len(covered), result)
 
 
-# we need to h_esc the markdown text
+# we need to hEsc the markdown text
 # but markdown does an extra layer of escaping & inside href attributes.
 # we have to unescape doubly escaped &
 
 
 def sanitize(text):
     return text.replace("&amp;amp;", "&amp;")
-
-
-def feed(db):
-    pqueryx_sql = """
-select
-    query.id as qid,
-    auth_user.first_name as ufname,
-    auth_user.last_name as ulname,
-    query.name as qname,
-    query.description as qdesc,
-    qe.id as qvid,
-    qe.executed_on as qexe,
-    qe.version as qver
-from query inner join
-    (
-        select t1.id, t1.query_id, t1.executed_on, t1.version
-        from query_exe t1
-          left outer join query_exe t2
-            on (
-                t1.query_id = t2.query_id and
-                t1.executed_on < t2.executed_on and
-                t2.executed_on >= t2.modified_on
-            )
-        where
-            (t1.executed_on is not null and t1.executed_on >= t1.modified_on) and
-            t2.query_id is null
-    ) as qe
-on qe.query_id = query.id
-inner join auth_user on query.created_by = auth_user.id
-where query.is_shared = 'T'
-order by qe.executed_on desc, auth_user.last_name
-"""
-
-    return db.executesql(pqueryx_sql)

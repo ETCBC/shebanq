@@ -4,13 +4,13 @@ import json
 from markdown import markdown
 
 from constants import NULLDT, PUBLISH_FREEZE, PUBLISH_FREEZE_MSG
-from helpers import normalize_ranges, h_esc
+from helpers import normRanges, hEsc
 
 
 RECENT_LIMIT = 50
 
 
-def datetime_str(fields):
+def dateTimeStr(fields):
     for f in (
         "created_on",
         "modified_on",
@@ -27,28 +27,28 @@ def datetime_str(fields):
             fields[f] = fields[f] == "T"
 
 
-def qstatus(qx_record):
-    if not qx_record["executed_on"]:
+def qstatus(qxRecord):
+    if not qxRecord["executed_on"]:
         return "warning"
-    if qx_record["executed_on"] < qx_record["xmodified_on"]:
+    if qxRecord["executed_on"] < qxRecord["xmodified_on"]:
         return "error"
     return "good"
 
 
 class QUERY:
     def __init__(
-        self, Check, Caching, auth, db, versions
+        self, Check, Caching, auth, db, VERSIONS
     ):
         self.Check = Check
         self.Caching = Caching
         self.auth = auth
         self.db = db
-        self.versions = versions
+        self.VERSIONS = VERSIONS
 
     def dep(self, QueryChapter):
         self.QueryChapter = QueryChapter
 
-    def get_items(self, vr, chapter, onlyPub):
+    def getItems(self, vr, chapter, onlyPub):
         Caching = self.Caching
 
         pubStatus = Caching.get(
@@ -67,50 +67,50 @@ class QUERY:
         if chapterId is None:
             return result
 
-        for (qid, monads) in queriesFromChapter.get(chapterId, {}).items():
-            if onlyPub and not pubStatus.get(qid, {}).get(vr, False):
+        for (queryId, slots) in queriesFromChapter.get(chapterId, {}).items():
+            if onlyPub and not pubStatus.get(queryId, {}).get(vr, False):
                 continue
-            for (first_m, last_m) in monads:
-                result.append((qid, first_m, last_m))
+            for (firstSlot, lastSlot) in slots:
+                result.append((queryId, firstSlot, lastSlot))
         return result
 
     def load(self, vr, iid):
         db = self.db
 
-        xid = self.get_exe(vr, iid)
+        xid = self.getExe(vr, iid)
         if xid is None:
-            return normalize_ranges([])
-        monad_sets = db.executesql(
+            return normRanges([])
+        slotSets = db.executesql(
             f"""
 select first_m, last_m from monads where query_exe_id = {xid} order by first_m
 ;
 """
         )
-        return normalize_ranges(monad_sets)
+        return normRanges(slotSets)
 
-    def group(self, vr, monadSets):
-        monads = collections.defaultdict(lambda: set())
-        for (qid, b, e) in monadSets:
-            monads[qid] |= set(range(b, e + 1))
+    def group(self, vr, slotSets):
+        slots = collections.defaultdict(lambda: set())
+        for (queryId, b, e) in slotSets:
+            slots[queryId] |= set(range(b, e + 1))
         r = []
-        if len(monads):
+        if len(slots):
             msgs = []
-            queryrecords = self.get_info(
+            queryrecords = self.getInfo(
                 False,
-                (str(q) for q in monads),
+                (str(q) for q in slots),
                 vr,
                 msgs,
-                with_ids=False,
-                single_version=True,
+                withIds=False,
+                singleVersion=True,
                 po=False,
             )
             for q in queryrecords:
                 r.append(
-                    {"item": q, "monads": json.dumps(sorted(list(monads[q["id"]])))}
+                    {"item": q, "slots": json.dumps(sorted(list(slots[q["id"]])))}
                 )
         return r
 
-    def get_exe(self, vr, iid):
+    def getExe(self, vr, iid):
         db = self.db
 
         recordx = db.executesql(
@@ -123,14 +123,14 @@ select id from query_exe where query_id = {iid} and version = '{vr}'
             return None
         return recordx[0][0]
 
-    def get_info(
+    def getInfo(
         self,
-        show_private_fields,
+        showPrivateFields,
         iid,
         vr,
         msgs,
-        single_version=False,
-        with_ids=True,
+        singleVersion=False,
+        withIds=True,
         po=False,
     ):
         db = self.db
@@ -141,7 +141,7 @@ select id from query_exe where query_id = {iid} and version = '{vr}'
     project.id as pid,
     organization.id as oid
 """
-            if with_ids and po
+            if withIds and po
             else ""
         )
 
@@ -158,7 +158,7 @@ select id from query_exe where query_id = {iid} and version = '{vr}'
     query_exe.is_published as is_published,
     query_exe.published_on as published_on
 """
-            if single_version
+            if singleVersion
             else ""
         )
 
@@ -177,7 +177,7 @@ select id from query_exe where query_id = {iid} and version = '{vr}'
             """,
     auth_user.email as uemail
 """
-            if show_private_fields
+            if showPrivateFields
             else """,
         'n.n@not.disclosed' as uemail
     """
@@ -200,7 +200,7 @@ select id from query_exe where query_id = {iid} and version = '{vr}'
             f"""
 inner join query_exe on query_exe.query_id = query.id and query_exe.version = '{vr}'
 """
-            if single_version
+            if singleVersion
             else ""
         )
 
@@ -217,7 +217,7 @@ inner join project on query.project = project.id
             f"""
 where query.id in ({",".join(iid)})
 """
-            if single_version
+            if singleVersion
             else f"""
 where query.id = {iid}
 """
@@ -227,7 +227,7 @@ where query.id = {iid}
             """
 order by auth_user.last_name, query.name
 """
-            if single_version
+            if singleVersion
             else ""
         )
 
@@ -238,21 +238,21 @@ on query.created_by = auth_user.id
 {sqlr}{sqlpr}{sqlc}{sqlo}
 ;
 """
-        records = db.executesql(sql, as_dict=True)
+        records = db.executesql(sql, asDict=True)
         if records is None:
             msgs.append(("error", "Cannot lookup query(ies)"))
             return None
-        if single_version:
-            for q_record in records:
-                self.fields(vr, q_record, [], single_version=True)
+        if singleVersion:
+            for queryRecord in records:
+                self.fields(vr, queryRecord, [], singleVersion=True)
             return records
         else:
             if len(records) == 0:
                 msgs.append(("error", f"No query with id {iid}"))
                 return None
-            q_record = records[0]
-            q_record["description_md"] = markdown(
-                q_record["description"] or "", output_format="xhtml5"
+            queryRecord = records[0]
+            queryRecord["description_md"] = markdown(
+                queryRecord["description"] or "", output_format="xhtml5"
             )
             sql = f"""
 select
@@ -270,16 +270,16 @@ from query_exe
 where query_id = {iid}
 ;
 """
-            recordx = db.executesql(sql, as_dict=True)
-            self.fields(vr, q_record, recordx, single_version=False)
-            return q_record
+            recordx = db.executesql(sql, asDict=True)
+            self.fields(vr, queryRecord, recordx, singleVersion=False)
+            return queryRecord
 
-    def fields(self, vr, q_record, recordx, single_version=False):
-        versions = self.versions
+    def fields(self, vr, queryRecord, recordx, singleVersion=False):
+        VERSIONS = self.VERSIONS
 
-        datetime_str(q_record)
-        if not single_version:
-            q_record["versions"] = dict(
+        dateTimeStr(queryRecord)
+        if not singleVersion:
+            queryRecord["versions"] = dict(
                 (
                     v,
                     dict(
@@ -295,23 +295,23 @@ where query_id = {iid}
                         published_on=None,
                     ),
                 )
-                for v in versions
+                for v in VERSIONS
             )
             for rx in recordx:
                 vx = rx["version"]
-                if vx not in versions:
+                if vx not in VERSIONS:
                     continue
-                dest = q_record["versions"][vx]
+                dest = queryRecord["versions"][vx]
                 dest.update(rx)
                 dest["status"] = qstatus(dest)
-                datetime_str(dest)
+                dateTimeStr(dest)
 
     def store(self, vr, iid, rows, is_shared):
         Caching = self.Caching
         QueryChapter = self.QueryChapter
         db = self.db
 
-        xid = self.get_exe(vr, iid)
+        xid = self.getExe(vr, iid)
         if xid is None:
             return
         db.executesql(
@@ -326,23 +326,23 @@ delete from monads where query_exe_id={xid}
         Caching.clear(f"^verses_{vr}_q_{iid}_")
         Caching.clear(f"^items_q_{vr}_")
         Caching.clear(f"^chart_{vr}_q_{iid}_")
-        nrows = len(rows)
-        if nrows > 0:
-            limit_row = 10000
+        nRows = len(rows)
+        if nRows > 0:
+            limitRow = 10000
             start = """
 insert into monads (query_exe_id, first_m, last_m) values
 """
             query = ""
             r = 0
-            while r < nrows:
+            while r < nRows:
                 if query != "":
                     db.executesql(query)
                     query = ""
                 query += start
-                s = min(r + limit_row, len(rows))
+                s = min(r + limitRow, len(rows))
                 row = rows[r]
                 query += f"({xid},{row[0]},{row[1]})"
-                if r + 1 < nrows:
+                if r + 1 < nRows:
                     for row in rows[r + 1:s]:
                         query += f",({xid},{row[0]},{row[1]})"
                 r = s
@@ -352,83 +352,83 @@ insert into monads (query_exe_id, first_m, last_m) values
 
         QueryChapter.updateQCindex(vr, iid)
 
-    def upd_shared(self, myid, qid, valsql, now, msgs):
+    def updShared(self, myId, queryId, valsql, now, msgs):
         Caching = self.Caching
         QueryChapter = self.QueryChapter
         db = self.db
-        versions = self.versions
+        VERSIONS = self.VERSIONS
 
-        mod_date = None
-        mod_date_fld = "shared_on"
+        modDate = None
+        modDateFld = "shared_on"
         table = "query"
         fname = "is_shared"
         Caching.clear(r"^items_q_")
         fieldval = f" {fname} = '{valsql}'"
-        mod_date = now.replace(microsecond=0) if valsql == "T" else None
-        mod_date_sql = "null" if mod_date is None else str(mod_date)
-        fieldval += f", {mod_date_fld} = {mod_date_sql} "
+        modDate = now.replace(microsecond=0) if valsql == "T" else None
+        modDateSql = "null" if modDate is None else str(modDate)
+        fieldval += f", {modDateFld} = {modDateSql} "
         sql = f"""
-update {table} set{fieldval} where id = {qid}
+update {table} set{fieldval} where id = {queryId}
 ;
 """
         db.executesql(sql)
-        for vr in versions:
-            QueryChapter.updateQCindex(vr, qid)
+        for vr in VERSIONS:
+            QueryChapter.updateQCindex(vr, queryId)
         thismsg = "modified"
         thismsg = "shared" if valsql == "T" else "UNshared"
         msgs.append(("good", thismsg))
-        return (mod_date_fld, str(mod_date) if mod_date else NULLDT)
+        return (modDateFld, str(modDate) if modDate else NULLDT)
 
-    def upd_published(self, myid, vr, qid, valsql, now, msgs):
+    def updPublished(self, myId, vr, queryId, valsql, now, msgs):
         Caching = self.Caching
         QueryChapter = self.QueryChapter
         db = self.db
 
-        mod_date = None
-        mod_date_fld = "published_on"
+        modDate = None
+        modDateFld = "published_on"
         table = "query_exe"
         fname = "is_published"
         Caching.clear(f"^items_q_{vr}_")
-        self.verify_version(qid, vr)
+        self.verifyVersion(queryId, vr)
         fieldval = f" {fname} = '{valsql}'"
-        mod_date = now.replace(microsecond=0) if valsql == "T" else None
-        mod_date_sql = "null" if mod_date is None else str(mod_date)
-        fieldval += f", {mod_date_fld} = {mod_date_sql} "
+        modDate = now.replace(microsecond=0) if valsql == "T" else None
+        modDateSql = "null" if modDate is None else str(modDate)
+        fieldval += f", {modDateFld} = {modDateSql} "
         sql = f"""
-update {table} set{fieldval} where query_id = {qid} and version = '{vr}'
+update {table} set{fieldval} where query_id = {queryId} and version = '{vr}'
 ;
 """
         db.executesql(sql)
         thismsg = "modified"
         thismsg = "published" if valsql == "T" else "UNpublished"
-        QueryChapter.updatePubStatus(vr, qid, valsql == "T")
+        QueryChapter.updatePubStatus(vr, queryId, valsql == "T")
         msgs.append(("good", thismsg))
-        return (mod_date_fld, str(mod_date) if mod_date else NULLDT)
+        return (modDateFld, str(modDate) if modDate else NULLDT)
 
-    def upd_field(self, vr, qid, fname, val, now, msgs):
+    def updField(self, vr, queryId, fname, val, now, msgs):
         auth = self.auth
         db = self.db
         Check = self.Check
 
         good = False
-        myid = None
-        mod_dates = {}
-        mod_cls = {}
+        myId = None
+        modDates = {}
+        modCls = {}
         extra = {}
         if auth.user:
-            myid = auth.user.id
+            myId = auth.user.id
         for x in [1]:
             valsql = Check.isPublished("q", val, msgs)
             if valsql is None:
                 break
             if fname == "is_shared" and valsql == "":
                 sql = f"""
-select count(*) from query_exe where query_id = {qid} and is_published = 'T'
+select count(*) from query_exe where query_id = {queryId} and is_published = 'T'
 ;
 """
                 pv = db.executesql(sql)
-                has_public_versions = pv is not None and len(pv) == 1 and pv[0][0] > 0
-                if has_public_versions:
+                hasPublicVersions = pv is not None and len(pv) == 1 and pv[0][0] > 0
+                if hasPublicVersions:
                     msgs.append(
                         (
                             "error",
@@ -440,20 +440,20 @@ select count(*) from query_exe where query_id = {qid} and is_published = 'T'
                     )
                     break
             if fname == "is_published":
-                mod_cls[
+                modCls[
                     "#is_pub_ro"
                 ] = f"""fa-{"check" if valsql == "T" else "close"}"""
-                mod_cls[f'div[version="{vr}"]'] = (
+                modCls[f'div[version="{vr}"]'] = (
                     "published" if valsql == "T" else "unpublished"
                 )
                 extra["execq"] = ("show", valsql != "T")
                 if valsql == "T":
                     sql = f"""
 select executed_on, modified_on as xmodified_on
-from query_exe where query_id = {qid} and version = '{vr}'
+from query_exe where query_id = {queryId} and version = '{vr}'
 ;
 """
-                    pv = db.executesql(sql, as_dict=True)
+                    pv = db.executesql(sql, asDict=True)
                     if pv is None or len(pv) != 1:
                         msgs.append(
                             (
@@ -475,30 +475,30 @@ from query_exe where query_id = {qid} and version = '{vr}'
                         )
                         break
                     sql = f"""
-select is_shared from query where id = {qid}
+select is_shared from query where id = {queryId}
 ;
 """
                     pv = db.executesql(sql)
                     is_shared = pv is not None and len(pv) == 1 and pv[0][0] == "T"
                     if not is_shared:
-                        (mod_date_fld, mod_date) = self.upd_shared(
-                            myid, qid, "T", now, msgs
+                        (modDateFld, modDate) = self.updShared(
+                            myId, queryId, "T", now, msgs
                         )
-                        mod_dates[mod_date_fld] = mod_date
+                        modDates[modDateFld] = modDate
                         extra["is_shared"] = ("checked", True)
                 else:
                     sql = f"""
-select published_on from query_exe where query_id = {qid} and version = '{vr}'
+select published_on from query_exe where query_id = {queryId} and version = '{vr}'
 ;
 """
                     pv = db.executesql(sql)
-                    pdate_ok = (
+                    pubDateOk = (
                         pv is None
                         or len(pv) != 1
                         or pv[0][0] is None
                         or pv[0][0] > now - PUBLISH_FREEZE
                     )
-                    if not pdate_ok:
+                    if not pubDateOk:
                         msgs.append(
                             (
                                 "error",
@@ -515,27 +515,27 @@ select published_on from query_exe where query_id = {qid} and version = '{vr}'
 
         if good:
             if fname == "is_shared":
-                (mod_date_fld, mod_date) = self.upd_shared(myid, qid, valsql, now, msgs)
+                (modDateFld, modDate) = self.updShared(myId, queryId, valsql, now, msgs)
             else:
-                (mod_date_fld, mod_date) = self.upd_published(
-                    myid, vr, qid, valsql, now, msgs
+                (modDateFld, modDate) = self.updPublished(
+                    myId, vr, queryId, valsql, now, msgs
                 )
-            mod_dates[mod_date_fld] = mod_date
-        return (good, mod_dates, mod_cls, extra)
+            modDates[modDateFld] = modDate
+        return (good, modDates, modCls, extra)
 
-    def verify_version(self, qid, vr):
+    def verifyVersion(self, queryId, vr):
         db = self.db
 
-        exist_version = db.executesql(
+        existVersion = db.executesql(
             f"""
-select id from query_exe where version = '{vr}' and query_id = {qid}
+select id from query_exe where version = '{vr}' and query_id = {queryId}
 ;
 """
         )
-        if exist_version is None or len(exist_version) == 0:
+        if existVersion is None or len(existVersion) == 0:
             db.executesql(
                 f"""
-insert into query_exe (id, version, query_id) values (null, '{vr}', {qid})
+insert into query_exe (id, version, query_id) values (null, '{vr}', {queryId})
 ;
 """
             )
@@ -563,7 +563,7 @@ insert into query_exe (id, version, query_id) values (null, '{vr}', {qid})
 
         db = self.db
 
-        pqueryx_sql = f"""
+        projectQueryXSql = f"""
 select
     query.id as qid,
     auth_user.first_name as ufname,
@@ -592,11 +592,46 @@ order by qe.executed_on desc, auth_user.last_name
 limit {RECENT_LIMIT};
 """
 
-        pqueryx = db.executesql(pqueryx_sql)
+        pqueryx = db.executesql(projectQueryXSql)
         pqueries = []
-        for (qid, ufname, ulname, qname, qexe, qver) in pqueryx:
-            text = h_esc(f"{ufname[0]} {ulname[0:9]}: {qname[0:20]}")
-            title = h_esc(f"{ufname} {ulname}: {qname}")
-            pqueries.append(dict(id=qid, text=text, title=title, version=qver))
+        for (queryId, ufname, ulname, qname, qexe, qver) in pqueryx:
+            text = hEsc(f"{ufname[0]} {ulname[0:9]}: {qname[0:20]}")
+            title = hEsc(f"{ufname} {ulname}: {qname}")
+            pqueries.append(dict(id=queryId, text=text, title=title, version=qver))
 
         return dict(data=json.dumps(dict(queries=pqueries, msgs=[], good=True)))
+
+    def feed(self):
+        db = self.db
+
+        sql = """
+    select
+        query.id as qid,
+        auth_user.first_name as ufname,
+        auth_user.last_name as ulname,
+        query.name as qname,
+        query.description as qdesc,
+        qe.id as qvid,
+        qe.executed_on as qexe,
+        qe.version as qver
+    from query inner join
+        (
+            select t1.id, t1.query_id, t1.executed_on, t1.version
+            from query_exe t1
+              left outer join query_exe t2
+                on (
+                    t1.query_id = t2.query_id and
+                    t1.executed_on < t2.executed_on and
+                    t2.executed_on >= t2.modified_on
+                )
+            where
+                (t1.executed_on is not null and t1.executed_on >= t1.modified_on) and
+                t2.query_id is null
+        ) as qe
+    on qe.query_id = query.id
+    inner join auth_user on query.created_by = auth_user.id
+    where query.is_shared = 'T'
+    order by qe.executed_on desc, auth_user.last_name
+    """
+
+        return db.executesql(sql)

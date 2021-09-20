@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 
-from get_db_config import config
+from dbconfig import CONFIG
 from gluon.tools import Auth, Crud, Service, PluginManager
 from gluon.contrib.login_methods.rpx_account import use_janrain
 
 
 request.requires_https()
 
-dc_u = config["shebanq_user"]
-dc_p = config["shebanq_passwd"]
-dc_h = config["shebanq_host"]
+dc_u = CONFIG["shebanqUser"]
+dc_p = CONFIG["shebanqPassword"]
+dc_h = CONFIG["shebanqHost"]
 
-version_order = """2021 c 2017 4b 4""".split()
+VERSION_ORDER = """2021 c 2017 4b 4""".split()
 
-versions = {
+VERSIONS = {
     "4": {
         "name": "BHSA_4",
         "date": "2014-07-14",
@@ -63,9 +63,9 @@ versions = {
 
 oddVersions = ["4", "4b", "2017", "c"]
 oddVersionSet = set(oddVersions)
-versionOrder = oddVersions + sorted(v for v in versions if v not in oddVersionSet)
-version_order = tuple(v for v in versionOrder)
-version_index = dict((x[1], x[0]) for x in enumerate(version_order))
+VERSION_ORDER = oddVersions + sorted(v for v in VERSIONS if v not in oddVersionSet)
+VERSION_ORDER = tuple(v for v in VERSION_ORDER)
+VERSION_INDEX = dict((x[1], x[0]) for x in enumerate(VERSION_ORDER))
 
 connUser = f"{dc_u}:{dc_p}@{dc_h}"
 connStrWeb = f"mysql://{connUser}/shebanq_web"
@@ -78,16 +78,16 @@ db = DAL(
     # migrate=False, # if session table does not yet exist
 )
 
-passage_dbs = {}
+PASSAGE_DBS = {}
 
-note_db = DAL(
+NOTE_DB = DAL(
     connStrNote,
     migrate_enabled=False,  # if session table already exists
     # migrate=False, # if session table does not yet exist
 )
 
-for vr in version_order:
-    passage_dbs[vr] = DAL(
+for vr in VERSION_ORDER:
+    PASSAGE_DBS[vr] = DAL(
         f"{connStrPassage}{vr}",
         migrate_enabled=False,
     )
@@ -113,7 +113,7 @@ auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = False
 # If the user tried to access the register page but is already logged in,
 # redirect to profile.
-auth.settings.logged_url = URL("user", args="profile")
+auth.settings.loggedUrl = URL("user", args="profile")
 
 use_janrain(auth, filename="private/janrain.key")
 

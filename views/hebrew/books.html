@@ -12,16 +12,16 @@
 
 jQuery(function(){
     let html = '<tr class="books">\n'
-    const langs = Object.keys(booklangs).sort()
+    const langs = Object.keys(bookLangs).sort()
     for (const lang of langs) {
-        const langinfo = booklangs[lang]
+        const langinfo = bookLangs[lang]
         const name_en = langinfo[0]
         const name_own = langinfo[1] 
         const name_own_m = name_own.replace(/ /g, '<br/>')
         html += `<th class="booklang" title="${lang}=${name_en}">${name_own_m}</th>\n`
-        for (const b in bookla) {
-            const book = bookla[b]
-            const book_t = booktrans[lang][book].replace(/_/g, ' ')
+        for (const b in bookLatin) {
+            const book = bookLatin[b]
+            const book_t = bookTrans[lang][book].replace(/_/g, ' ')
             html += `<td class="book">${book_t}</td>\n`
             if (book == 'Reges_II' || book == 'Maleachi') {
                 html += `<th class="booklang" title="${lang}=${name_en}">${name_own_m}</th>\n`

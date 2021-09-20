@@ -1,9 +1,9 @@
 <div id="select_version">
-    <a href="#" class="source ctrli">bhsa <span class="fa fa-info-circle"/></a>
-    {{for v in version_order:
-        vinfo = versions[v]
-        vdate = vinfo['date'] or 'recent'
-        title = f"{vdate}: {vinfo['desc']} [{vinfo['notes']}]"
-    }}<a title="{{=title}}" href="#" id="version_{{=v}}" class="ctrl mvradio">{{=v}}</a>
+    <a href="#" class="source ctli">bhsa <span class="fa fa-info-circle"/></a>
+    {{for v in VERSION_ORDER:
+        versionInfo = VERSIONS[v]
+        versionDate = versionInfo['date'] or 'recent'
+        title = f"{versionDate}: {versionInfo['desc']} [{versionInfo['notes']}]"
+    }}<a title="{{=title}}" href="#" id="version_{{=v}}" class="ctl mvradio">{{=v}}</a>
     {{pass}}
 </div>

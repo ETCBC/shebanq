@@ -26,7 +26,7 @@ const selectText = containerid => {
 }
 
 $(() => {
-  const { query_url, word_url, note_url, page_view_url } = Config
+  const { queryUrl, wordUrl, noteUrl, pageViewUrl } = Config
 
   const qmsg = {
     good:
@@ -45,63 +45,63 @@ $(() => {
                 <a
                   lnk="" href="#" id="clip_qx_md"
                   title="link to query version (markdown)"
-                  class="ctrl fa fa-level-down fa-lg fa-fw"></a>
+                  class="ctl fa fa-level-down fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_qx_ht"
                   title="link to query version (html)"
-                  class="ctrl fa fa-external-link fa-lg fa-fw"></a>
+                  class="ctl fa fa-external-link fa-lg fa-fw"></a>
             </td>
             <td class="clip_q clr">
                 <a
                   lnk="" href="#" id="clip_q_md"
                   title="link to query (markdown)"
-                  class="ctrl fa fa-level-down fa-lg fa-fw"></a>
+                  class="ctl fa fa-level-down fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_q_ht"
                   title="link to query (html)"
-                  class="ctrl fa fa-external-link fa-lg fa-fw"></a>
+                  class="ctl fa fa-external-link fa-lg fa-fw"></a>
             </td>
             <td class="clip_w clr">
                 <a
                   lnk="" href="#" id="clip_w_md"
                   title="link to word (markdown)"
-                  class="ctrl fa fa-level-down fa-lg fa-fw"></a>
+                  class="ctl fa fa-level-down fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_w_ht"
                   title="link to word (html)"
-                  class="ctrl fa fa-external-link fa-lg fa-fw"></a>
+                  class="ctl fa fa-external-link fa-lg fa-fw"></a>
             </td>
             <td class="clip_n clr">
                 <a
                   lnk="" href="#" id="clip_n_md"
                   title="link to note set (markdown)"
-                  class="ctrl fa fa-level-down fa-lg fa-fw"></a>
+                  class="ctl fa fa-level-down fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_n_ht"
                   title="link to note set (html)"
-                  class="ctrl fa fa-external-link fa-lg fa-fw"></a>
+                  class="ctl fa fa-external-link fa-lg fa-fw"></a>
             </td>
             <td class="clip_pv clr">
                 <a
                   lnk="" href="#" id="clip_pv_md"
                   title="link to page content and appearance (markdown)"
-                  class="ctrl fa fa-level-down fa-lg fa-fw"></a>
+                  class="ctl fa fa-level-down fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_pv_ht"
                   title="link to page content and appearance (html)"
-                  class="ctrl fa fa-external-link-square fa-lg fa-fw"></a>
+                  class="ctl fa fa-external-link-square fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_pv_htc"
                   title="link to page content (html)"
-                  class="ctrl fa fa-external-link fa-lg fa-fw"></a>
+                  class="ctl fa fa-external-link fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_pv_nl"
                   title="internal link to page content"
-                  class="ctrl fa fa-bookmark fa-lg fa-fw"></a>
+                  class="ctl fa fa-bookmark fa-lg fa-fw"></a>
                 <a
                   lnk="" href="#" id="clip_pv_cn"
                   title="copy page content"
-                  class="ctrl fa fa-file-text-o fa-lg fa-fw"></a>
+                  class="ctl fa fa-file-text-o fa-lg fa-fw"></a>
             </td>
         </tr>
         <tr>
@@ -113,33 +113,33 @@ $(() => {
         </tr>
         <tr class="citexpl">
             <td class="clip_qx">
-              <span id="xc_qx" class="ctrl fa fa-chevron-right fa-fw"></span>
+              <span id="xc_qx" class="ctl fa fa-chevron-right fa-fw"></span>
               <span id="x_qx" class="detail">cite query with its results on
                 <i>this</i> data version</span>
               </td>
             <td class="clip_q">
-              <span id="xc_q" class="ctrl fa fa-chevron-right fa-fw"></span>
+              <span id="xc_q" class="ctl fa fa-chevron-right fa-fw"></span>
               <span id="x_q" class="detail">share link to query page</span>
             </td>
             <td class="clip_w">
-              <span id="xc_w" class="ctrl fa fa-chevron-right fa-fw"></span>
+              <span id="xc_w" class="ctl fa fa-chevron-right fa-fw"></span>
               <span id="x_w" class="detail">cite word with its occs on
                 <i>this</i> data version</span>
               </td>
             <td class="clip_n">
-              <span id="xc_n" class="ctrl fa fa-chevron-right fa-fw"></span>
+              <span id="xc_n" class="ctl fa fa-chevron-right fa-fw"></span>
               <span id="x_n" class="detail">cite note set with its members</span>
             </td>
             <td class="clip_pv">
-              <span id="xc_pv" class="ctrl fa fa-chevron-right fa-fw"></span>
+              <span id="xc_pv" class="ctl fa fa-chevron-right fa-fw"></span>
               <span id="x_pv" class="detail">share link to this page
                 with or without view settings, or as internal note link,
                 or copy page contents to paste in mail, Evernote, etc.</span>
             </td>
         </tr>
     </table>
-    <p id="cdiagpub"></p>
-    <p id="cdiagsts"></p>
+    <p id="diagpub"></p>
+    <p id="diagstatus"></p>
 </div>
 `
   /* Add the share tool bar.
@@ -193,10 +193,10 @@ $(() => {
   })
   $("#clip_pv_cn").click(e => {
     e.preventDefault()
-    const shebanq_url_raw = `${page_view_url}${P.vs.getvars()}&pref=alt`
+    const shebanqUrl_raw = `${pageViewUrl}${P.vs.getvars()}&pref=alt`
     const slink = $("#self_link")
     slink.show()
-    slink.attr("href", shebanq_url_raw)
+    slink.attr("href", shebanqUrl_raw)
     selectText("material")
   })
   $("#xc_qx").click(e => {
@@ -226,10 +226,10 @@ $(() => {
   })
   st.click(e => {
     e.preventDefault()
-    const shebanq_url_raw = `${page_view_url}${P.vs.getvars()}&pref=alt`
-    let shebanq_url_note
-    let shebanq_url_rawc
-    const shebanq_url_note_pref = "shebanq:"
+    const shebanqUrl_raw = `${pageViewUrl}${P.vs.getvars()}&pref=alt`
+    let shebanqUrl_note
+    let shebanqUrl_rawc
+    const shebanqUrl_note_pref = "shebanq:"
 
     const { version: vr, mr, qw, vs, iid } = P
     const tp = vs.tp()
@@ -243,31 +243,31 @@ $(() => {
     const chapter = vs.chapter()
     const verse = vs.verse()
     const page = vs.page()
-    const shebanq_url_show_vars = `"&version=${vr}&mr=${mr}&qw=${qw}&tp=${tp}&tr=${tr}`
-    const shebanq_url_side_vars = `&wget=${w}&qget=${q}&nget=${n}`
-    const sv = `${shebanq_url_show_vars}${shebanq_url_side_vars}`
+    const shebanqUrl_show_vars = `"&version=${vr}&mr=${mr}&qw=${qw}&tp=${tp}&tr=${tr}`
+    const shebanqUrl_side_vars = `&wget=${w}&qget=${q}&nget=${n}`
+    const sv = `${shebanqUrl_show_vars}${shebanqUrl_side_vars}`
 
     $("#citeh").hide()
-    $("#cdiagpub").html("")
-    $("#cdiagsts").html("")
+    $("#diagpub").html("")
+    $("#diagstatus").html("")
     $(
-      ".clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#cdiagpub,#cdiagsts"
+      ".clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#diagpub,#diagstatus"
     ).removeClass("error warning good special")
 
     let pvtitle
 
     if (mr == "m") {
       pvtitle = `bhsa${vr} ${thebook} ${thechapter}:${verse}`
-      shebanq_url_note = `${shebanq_url_note_pref}?book=${book}&chapter=${chapter}&verse=${verse}${sv}`
-      shebanq_url_rawc = `${page_view_url}?book=${book}&chapter=${chapter}&verse=${verse}${sv}`
+      shebanqUrl_note = `${shebanqUrl_note_pref}?book=${book}&chapter=${chapter}&verse=${verse}${sv}`
+      shebanqUrl_rawc = `${pageViewUrl}?book=${book}&chapter=${chapter}&verse=${verse}${sv}`
 
       $(".clip_qx").hide()
       $(".clip_q").hide()
       $(".clip_w").hide()
       $(".clip_n").hide()
     } else if (P.mr == "r") {
-      shebanq_url_note = `${shebanq_url_note_pref}?id=${iid}&page=${page}${shebanq_url_show_vars}`
-      shebanq_url_rawc = `${page_view_url}?id=${iid}&page=${page}${shebanq_url_show_vars}`
+      shebanqUrl_note = `${shebanqUrl_note_pref}?id=${iid}&page=${page}${shebanqUrl_show_vars}`
+      shebanqUrl_rawc = `${pageViewUrl}?id=${iid}&page=${page}${shebanqUrl_show_vars}`
 
       const iinfo = P.sidebars.sidebar[`r${qw}`].content.info
       if (qw == "q") {
@@ -284,46 +284,46 @@ $(() => {
         if (is_shared) {
           if (!is_pub) {
             $(".clip_qx.clr").addClass("warning")
-            $("#cdiagpub").addClass("warning")
-            $("#cdiagpub").html(
+            $("#diagpub").addClass("warning")
+            $("#diagpub").html(
               "Beware of citing this query. It has not been published. It may be changed later."
             )
           } else {
             $(".clip_qx.clr").addClass("special")
-            $("#cdiagpub").addClass("special")
-            $("#cdiagpub").html(
+            $("#diagpub").addClass("special")
+            $("#diagpub").html(
               "This query has been published. If that happened more than a week ago, it can be safely cited. It will not be changed anymore."
             )
           }
           $(".clip_q.clr").addClass(qstatus)
-          $("#cdiagsts").addClass(qstatus)
-          $("#cdiagsts").html(qmsg[qstatus])
+          $("#diagstatus").addClass(qstatus)
+          $("#diagstatus").html(qmsg[qstatus])
         } else {
           $(".clip_qx.clr").addClass("error")
           $(".clip_q.clr").addClass("error")
           $(".clip_pv.clr").addClass("error")
-          $("#cdiagpub").addClass("error")
-          $("#cdiagpub").html(
+          $("#diagpub").addClass("error")
+          $("#diagpub").html(
             "This query is not accessible to others because it is not shared."
           )
         }
-        const quote_url = `${query_url}?id=${iid}`
-        const quotev_url = `${query_url}?version=${vr}&id=${iid}`
-        $("#clip_qx_md").attr("lnk", `[${pvtitle}](${quotev_url})`)
-        $("#clip_qx_ht").attr("lnk", quotev_url)
-        $("#clip_q_md").attr("lnk", `[${pvtitle}](${quote_url})`)
-        $("#clip_q_ht").attr("lnk", quote_url)
+        const quoteUrl = `${queryUrl}?id=${iid}`
+        const quotevUrl = `${queryUrl}?version=${vr}&id=${iid}`
+        $("#clip_qx_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
+        $("#clip_qx_ht").attr("lnk", quotevUrl)
+        $("#clip_q_md").attr("lnk", `[${pvtitle}](${quoteUrl})`)
+        $("#clip_q_ht").attr("lnk", quoteUrl)
         $(".clip_qx").show()
         $(".clip_q").show()
         $(".clip_w").hide()
         $(".clip_n").hide()
       } else if (qw == "w") {
-        const vinfo = iinfo.versions[vr]
-        const { entryid, entryid_heb } = vinfo
+        const versionInfo = iinfo.versions[vr]
+        const { entryid, entryid_heb } = versionInfo
         pvtitle = `${entryid_heb} (${entryid})`
-        const quotev_url = `${word_url}?version=${vr}&id=${iid}`
-        $("#clip_w_md").attr("lnk", `[${pvtitle}](${quotev_url})`)
-        $("#clip_w_ht").attr("lnk", quotev_url)
+        const quotevUrl = `${wordUrl}?version=${vr}&id=${iid}`
+        $("#clip_w_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
+        $("#clip_w_ht").attr("lnk", quotevUrl)
         $(".clip_w.clr").addClass("special")
         $(".clip_qx").hide()
         $(".clip_q").hide()
@@ -335,9 +335,9 @@ $(() => {
         const ulnamex = escHT(ulname)
         const kwx = escHT(kw)
         pvtitle = `${ufnamex} ${ulnamex} - ${kwx}`
-        const quotev_url = `${note_url}?version=${vr}&id=${iid}&tp=txt_tb1&nget=v`
-        $("#clip_n_md").attr("lnk", `[${pvtitle}](${quotev_url})`)
-        $("#clip_n_ht").attr("lnk", quotev_url)
+        const quotevUrl = `${noteUrl}?version=${vr}&id=${iid}&tp=txt1&nget=v`
+        $("#clip_n_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
+        $("#clip_n_ht").attr("lnk", quotevUrl)
         $(".clip_n.clr").addClass("special")
         $(".clip_qx").hide()
         $(".clip_q").hide()
@@ -345,11 +345,11 @@ $(() => {
         $(".clip_n").show()
       }
     }
-    $("#clip_pv_md").attr("lnk", `[${pvtitle}](${shebanq_url_raw})`)
-    $("#clip_pv_ht").attr("lnk", shebanq_url_raw)
-    $("#clip_pv_htc").attr("lnk", shebanq_url_rawc)
-    $("#clip_pv_nl").attr("lnk", shebanq_url_note)
-    $("#clip_pv_cn").attr("lnk", shebanq_url_raw)
+    $("#clip_pv_md").attr("lnk", `[${pvtitle}](${shebanqUrl_raw})`)
+    $("#clip_pv_ht").attr("lnk", shebanqUrl_raw)
+    $("#clip_pv_htc").attr("lnk", shebanqUrl_rawc)
+    $("#clip_pv_nl").attr("lnk", shebanqUrl_note)
+    $("#clip_pv_cn").attr("lnk", shebanqUrl_raw)
     $("#clip_pv_cn").attr("tit", pvtitle)
     st.animate({ height: "260px", width: "570px", opacity: 0.95 }, 300)
   })

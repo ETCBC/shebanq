@@ -144,9 +144,9 @@ class Filter {
     $(".nfradio").removeClass("ison")
     nsview.remove("filter_mode")
     $("#filter_clear").hide()
-    $("#amatches").html("")
-    $("#cmatches").html("")
-    $("#nmatches").html("")
+    $("#allmatches").html("")
+    $("#branchmatches").html("")
+    $("#notematches").html("")
     $("#count_u").html(rdata.u)
     $("#count_n").html(rdata.n)
   }
@@ -155,13 +155,13 @@ class Filter {
     const { nsview } = L
     const pat = this.patc.val()
     nsview.set("filter_pat", pat)
-    let amatches = 0
-    let cmatches = 0
-    let nmatches = 0
+    let allMatches = 0
+    let branchMatches = 0
+    let noteMatches = 0
     if (pat == "") {
-      amatches = -1
-      cmatches = -1
-      nmatches = -1
+      allMatches = -1
+      branchMatches = -1
+      noteMatches = -1
     }
     $(".nfradio").removeClass("ison")
     if (pat == "") {
@@ -176,14 +176,14 @@ class Filter {
 
     ftree.level.expand_all()
     if (kind == "a") {
-      amatches = ftree.ftw.filterNodes(pat, false)
-      $("#amatches").html(amatches >= 0 ? `(${amatches})` : "")
+      allMatches = ftree.ftw.filterNodes(pat, false)
+      $("#allmatches").html(allMatches >= 0 ? `(${allMatches})` : "")
     } else if (kind == "c") {
-      cmatches = ftree.ftw.filterBranches(pat)
-      $("#cmatches").html(cmatches >= 0 ? `(${cmatches})` : "")
+      branchMatches = ftree.ftw.filterBranches(pat)
+      $("#branchmatches").html(branchMatches >= 0 ? `(${branchMatches})` : "")
     } else if (kind == "n") {
-      nmatches = ftree.ftw.filterNodes(pat, true)
-      $("#nmatches").html(nmatches >= 0 ? `(${nmatches})` : "")
+      noteMatches = ftree.ftw.filterNodes(pat, true)
+      $("#notematches").html(noteMatches >= 0 ? `(${noteMatches})` : "")
     }
     $("#filter_clear").show()
     const submatch = "span.fancytree-submatch"
@@ -205,7 +205,7 @@ class Filter {
 
 class Tree {
   constructor() {
-    const { pn_url } = Config
+    const { pnUrl } = Config
     const { muting_n: muting } = L
 
     this.tps = { u: "user", n: "note" }
@@ -228,7 +228,7 @@ class Tree {
         types: "expanded selected",
       },
       source: {
-        url: pn_url,
+        url: pnUrl,
         dataType: "json",
       },
       filter: {
@@ -337,7 +337,7 @@ class Tree {
   }
 
   dress_notes() {
-    const { n_url } = Config
+    const { nUrl } = Config
     $("#notes a.md").addClass("fa fa-level-down")
     $("#notes a[nkid]").each((i, el) => {
       const elem = $(el)
@@ -345,7 +345,7 @@ class Tree {
       const extra = vr == undefined ? "" : `&version=${vr}`
       elem.attr(
         "href",
-        `${n_url}?iid=${elem.attr("nkid")}${extra}&page=1&mr=r&qw=n&tp=txt_tb1&nget=v`
+        `${nUrl}?iid=${elem.attr("nkid")}${extra}&page=1&mr=r&qw=n&tp=txt1&nget=v`
       )
     })
     $("#notes a.md").click(e => {
@@ -378,7 +378,7 @@ class Tree {
 class Upload {
   constructor() {
     this.inpt = $("#ncsv")
-    this.ctrl = $("#ncsv_upload")
+    this.ctl = $("#ncsv_upload")
     this.limit = 20 * 1024 * 1024
     this.ftype = "text/csv"
     if (this.inpt) {
@@ -388,8 +388,8 @@ class Upload {
 
   init() {
     this.msgs = new Msg("upl_msgs")
-    this.ctrl.hide()
-    const { msgs, ctrl, limit, ftype, inpt } = this
+    this.ctl.hide()
+    const { msgs, ctl, limit, ftype, inpt } = this
     inpt.change(e => {
       const elem = e.delegateTarget
       const file = elem.files[0]
@@ -406,24 +406,24 @@ class Upload {
           ])
         } else {
           msgs.msg(["good", `File has type ${type} and size ${msize}Kb`])
-          ctrl.show()
+          ctl.show()
         }
       }
     })
-    ctrl.click(e => {
+    ctl.click(e => {
       e.preventDefault()
       this.fsubmit()
-      ctrl.hide()
+      ctl.hide()
       inpt.val("")
     })
   }
   fsubmit() {
-    const { upload_url } = Config
+    const { uploadUrl } = Config
     const { msgs } = this
     const fd = new FormData(document.getElementById("fileinfo"))
     msgs.msg(["special", "uploading ..."])
     $.ajax({
-      url: upload_url,
+      url: uploadUrl,
       type: "POST",
       data: fd,
       enctype: "multipart/form-data",

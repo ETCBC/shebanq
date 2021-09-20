@@ -64,8 +64,8 @@ The cookies are:
     qw (q=query, w=word, tells whether the item in question is a query or a word),
     mr (m=material, r=result of query or word search, corresponds to the two kinds of pages),
     tp (text-or-tab setting: whether the material is shown as
-       plain text (txt_p) or as tabbed text in several versions (txt_tb1, txt_tb2, etc.)
-       there is also txt_il for interlinear data, but that is on demand per verse
+       plain text (txtp) or as tabbed text in several versions (txt1, txt2, etc.)
+       there is also txtd for interlinear data, but that is on demand per verse
     tr (script or phonetic setting: whether the hebrew text is rendered in hebrew script or phonetically)
     lang (language choice for the book names)
 

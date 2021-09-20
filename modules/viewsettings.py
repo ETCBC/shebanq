@@ -4,7 +4,7 @@ import urllib
 
 from gluon import current
 
-from blang import BIBLANG, booklangs, booknames, booktrans
+from blang import BIBLANG, BOOK_LANGS, BOOK_NAMES, BOOK_TRANS
 from viewdefs import (
     SETTINGS,
     VALIDATION,
@@ -12,24 +12,24 @@ from viewdefs import (
     DNROWS,
     NEXT_TP,
     NEXT_TR,
-    NT_STATCLASS,
-    NT_STATSYM,
-    NT_STATNEXT,
+    NOTE_STATUS_CLS,
+    NOTE_STATUS_SYM,
+    NOTE_STATUS_NXT,
     TAB_INFO,
     TAB_VIEWS,
     TP_LABELS,
     TR_INFO,
     TR_LABELS,
-    VCOLORS,
-    VDEFAULTCOLORS,
-    STYLE,
+    COLORS,
+    COLORS_DEFAULT,
+    SHB_STYLE,
     getRequestVal,
-    make_ccolors,
+    makeColors,
 )
 
 
 class Viewsettings:
-    def __init__(self, Chunk, URL, versions):
+    def __init__(self, Chunk, URL, VERSIONS):
         self.Chunk = Chunk
         self.URL = URL
 
@@ -38,17 +38,17 @@ class Viewsettings:
         )
         self.pref = getRequestVal("rest", "", "pref")
 
-        self.versions = {v: info for (v, info) in versions.items()}
+        self.VERSIONS = {v: info for (v, info) in VERSIONS.items()}
 
         for group in SETTINGS:
             self.state[group] = {}
             for qw in SETTINGS[group]:
                 self.state[group][qw] = {}
-                from_cookie = {}
+                fromCookie = {}
                 if (self.pref + group + qw) in current.request.cookies:
                     if self.pref == "my":
                         try:
-                            from_cookie = json.loads(
+                            fromCookie = json.loads(
                                 urllib.parse.unquote(
                                     current.request.cookies[
                                         self.pref + group + qw
@@ -58,53 +58,57 @@ class Viewsettings:
                         except ValueError:
                             pass
                 if group == "colormap":
-                    for fid in from_cookie:
+                    for fid in fromCookie:
                         if len(fid) <= 32 and fid.replace("_", "").isalnum():
-                            vstate = VALIDATION[group][qw]["0"](None, from_cookie[fid])
-                            if vstate is not None:
-                                self.state[group][qw][fid] = vstate
+                            validationState = VALIDATION[group][qw]["0"](
+                                None, fromCookie[fid]
+                            )
+                            if validationState is not None:
+                                self.state[group][qw][fid] = validationState
                     for f in current.request.vars:
                         if not f.startswith(f"c_{qw}"):
                             continue
                         fid = f[3:]
                         if len(fid) <= 32 and fid.replace("_", "").isalnum():
-                            vstate = getRequestVal(group, qw, fid, default=False)
-                            if vstate is not None:
-                                from_cookie[fid] = vstate
-                                self.state[group][qw][fid] = vstate
+                            validationState = getRequestVal(
+                                group, qw, fid, default=False
+                            )
+                            if validationState is not None:
+                                fromCookie[fid] = validationState
+                                self.state[group][qw][fid] = validationState
                 elif group != "rest":
                     for f in SETTINGS[group][qw]:
                         init = SETTINGS[group][qw][f]
-                        vstate = VALIDATION[group][qw][f](
-                            init, from_cookie.get(f, None)
+                        validationState = VALIDATION[group][qw][f](
+                            init, fromCookie.get(f, None)
                         )
                         vstater = getRequestVal(group, qw, f, default=False)
                         if vstater is not None:
-                            vstate = vstater
-                        from_cookie[f] = vstate
-                        self.state[group][qw][f] = vstate
+                            validationState = vstater
+                        fromCookie[f] = validationState
+                        self.state[group][qw][f] = validationState
 
                 if group != "rest":
                     current.response.cookies[
                         self.pref + group + qw
-                    ] = urllib.parse.quote(json.dumps(from_cookie))
+                    ] = urllib.parse.quote(json.dumps(fromCookie))
                     current.response.cookies[self.pref + group + qw]["expires"] = (
                         30 * 24 * 3600
                     )
                     current.response.cookies[self.pref + group + qw]["path"] = "/"
 
         books = {}
-        books_order = {}
-        book_id = {}
-        book_name = {}
+        booksOrder = {}
+        bookId = {}
+        bookName = {}
 
         self.books = books
-        self.books_order = books_order
-        self.book_id = book_id
-        self.book_name = book_name
+        self.booksOrder = booksOrder
+        self.bookId = bookId
+        self.bookName = bookName
 
-        for (v, vinfo) in self.versions.items():
-            (books[v], books_order[v], book_id[v], book_name[v]) = Chunk.get_books(v)
+        for v in self.VERSIONS:
+            (books[v], booksOrder[v], bookId[v], bookName[v]) = Chunk.getBooks(v)
 
     def theversion(self):
         return self.state["material"][""]["version"]
@@ -117,55 +121,55 @@ class Viewsettings:
 
         return f"""
 var Config = {{
-versions: {json.dumps(list(self.versions))},
-vcolors: {json.dumps(VCOLORS)},
-ccolors: {json.dumps(make_ccolors())},
-vdefaultcolors: {json.dumps(VDEFAULTCOLORS)},
+versions: {json.dumps(list(self.VERSIONS))},
+colorsV: {json.dumps(COLORS)},
+colorsCls: {json.dumps(makeColors())},
+colorsDefault: {json.dumps(COLORS_DEFAULT)},
 dncols: {DNCOLS},
 dnrows: {DNROWS},
 viewinit: {json.dumps(self.state)},
-style: {json.dumps(STYLE)},
+shbStyle: {json.dumps(SHB_STYLE)},
 pref: str(self.pref),
-tp_labels: {json.dumps(TP_LABELS)},
-tr_labels: {json.dumps(TR_LABELS)},
-tab_info: {json.dumps(TAB_INFO)},
-tab_views: {TAB_VIEWS},
-tr_info: {json.dumps(TR_INFO)},
-next_tp: {json.dumps(NEXT_TP)},
-next_tr: {json.dumps(NEXT_TR)},
-nt_statclass: {json.dumps(NT_STATCLASS)},
-nt_statsym: {json.dumps(NT_STATSYM)},
-nt_statnext: {json.dumps(NT_STATNEXT)},
-bookla: {json.dumps(booknames[BIBLANG]["la"])},
-booktrans: {json.dumps(booktrans)},
-booklangs: {json.dumps(booklangs[BIBLANG])},
+tpLabels: {json.dumps(TP_LABELS)},
+trLabels: {json.dumps(TR_LABELS)},
+tabInfo: {json.dumps(TAB_INFO)},
+tabViews: {TAB_VIEWS},
+trInfo: {json.dumps(TR_INFO)},
+nextTp: {json.dumps(NEXT_TP)},
+nextTr: {json.dumps(NEXT_TR)},
+noteStatusCls: {json.dumps(NOTE_STATUS_CLS)},
+noteStatusSym: {json.dumps(NOTE_STATUS_SYM)},
+noteStatusNxt: {json.dumps(NOTE_STATUS_NXT)},
+bookLatin: {json.dumps(BOOK_NAMES[BIBLANG]["la"])},
+bookTrans: {json.dumps(BOOK_TRANS)},
+bookLangs: {json.dumps(BOOK_LANGS[BIBLANG])},
 books: {json.dumps(self.books)},
-booksorder: {json.dumps(self.books_order)},
-featurehost: "https://etcbc.github.io/bhsa/features",
-bol_url: "http://bibleol.3bmoodle.dk/text/show_text",
-pbl_url: "https://parabible.com",
+bookOrder: {json.dumps(self.booksOrder)},
+featureHost: "https://etcbc.github.io/bhsa/features",
 host: "{URL("hebrew", "text", host=True)}",
-query_url: "{URL("hebrew", "query", "", host=True)}",
-word_url: "{URL("hebrew", "word", "", host=True)}",
-words_url: "{URL("hebrew", "words", extension="")}",
-note_url: "{URL("hebrew", "note", "", host=True)}",
-notes_url: "{URL("hebrew", "notes", "", host=True)}",
-field_url: "{URL("hebrew", "field", extension="json")}",
-fields_url: "{URL("hebrew", "fields", extension="json")}",
-cnotes_url: "{URL("hebrew", "cnotes", extension="json")}",
-page_view_url: "{URL("hebrew", "text", host=True)}",
-view_url: "{URL("hebrew", "text", host=True)}",
-material_url: "{URL("hebrew", "material", host=True)}",
-data_url: "{URL("hebrew", "verse", host=True)}",
-side_url: "{URL("hebrew", "side", host=True)}",
-item_url: "{URL("hebrew", "item.csv", host=True)}",
-chart_url: "{URL("hebrew", "chart", host=True)}",
-pn_url: "{URL("hebrew", "note_tree", extension="json")}",
-n_url: "{URL("hebrew", "text", extension="")}",
-upload_url: "{URL("hebrew", "note_upload", extension="json")}",
-pq_url: "{URL("hebrew", "query_tree", extension="json")}",
-queriesr_url: "{URL("hebrew", "queriesr", extension="json")}",
-q_url: "{URL("hebrew", "text", extension="")}",
-record_url: "{URL("hebrew", "record", extension="json")}",
+bolUrl: "http://bibleol.3bmoodle.dk/text/show_text",
+pblUrl: "https://parabible.com",
+queryUrl: "{URL("hebrew", "query", "", host=True)}",
+wordUrl: "{URL("hebrew", "word", "", host=True)}",
+wordsUrl: "{URL("hebrew", "words", extension="")}",
+noteUrl: "{URL("hebrew", "note", "", host=True)}",
+notesUrl: "{URL("hebrew", "notes", "", host=True)}",
+fieldUrl: "{URL("hebrew", "field", extension="json")}",
+fieldsUrl: "{URL("hebrew", "fields", extension="json")}",
+verseNotesUrl: "{URL("hebrew", "versenotes", extension="json")}",
+pageViewUrl: "{URL("hebrew", "text", host=True)}",
+viewUrl: "{URL("hebrew", "text", host=True)}",
+materialUrl: "{URL("hebrew", "material", host=True)}",
+dataUrl: "{URL("hebrew", "verse", host=True)}",
+sideUrl: "{URL("hebrew", "side", host=True)}",
+itemUrl: "{URL("hebrew", "item.csv", host=True)}",
+chartUrl: "{URL("hebrew", "chart", host=True)}",
+pnUrl: "{URL("hebrew", "notetree", extension="json")}",
+nUrl: "{URL("hebrew", "text", extension="")}",
+uploadUrl: "{URL("hebrew", "noteupload", extension="json")}",
+pqUrl: "{URL("hebrew", "querytree", extension="json")}",
+queriesrUrl: "{URL("hebrew", "queriesr", extension="json")}",
+qUrl: "{URL("hebrew", "text", extension="")}",
+recordUrl: "{URL("hebrew", "record", extension="json")}",
 }}
 """

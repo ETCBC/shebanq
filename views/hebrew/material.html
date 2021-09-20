@@ -42,19 +42,19 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
 </div>
 
 <div id="material_content">
-    <input type="hidden" id="themonads" value="{{=monads}}"/>
+    <input type="hidden" id="theslots" value="{{=slots}}"/>
 {{ if material != None: }}
     {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}
         {{tp = material.tp}}
-        {{if tp == 'txt_tb1':}}
-        <div class="nt_main_ctrl">
-            <a title="show/hide all comments" href="#" class="nt_main_ctrl fa fa-comments fa-fw"></a>
+        {{if tp == 'txt1':}}
+        <div class="nt_main_ctl">
+            <a title="show/hide all comments" href="#" class="nt_main_ctl fa fa-comments fa-fw"></a>
             <span class="nt_main_sav">
-                <a tp="s" class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
-                <a tp="r" class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
+                <a tp="s" class="ctli fa fa-check fa-fw" href="#" title="save"></a>
+                <a tp="r" class="ctli fa fa-close fa-fw" href="#" title="revert"></a>
             </span>
-            <a href="#" title="clear diagnostic messages"><span id="trash_nt_main_msg" class="ctrl fa fa-trash fa-lg"></span></a>
+            <a href="#" title="clear diagnostic messages"><span id="trash_nt_main_msg" class="ctl fa fa-trash fa-lg"></span></a>
             <span id="nt_main_msg" class="nt_main_msg"></span>
         </div>
         {{pass}}
@@ -64,28 +64,28 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
         }}
             <div class="{{=tp}}" tvid="{{=v}}">
             {{if material.mr == 'm':
-                vclass = 'vrefi' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
+                verseClass = 'vrefi' if tp == 'txtp' or tp == 'txtd' else 'vreft'
             }}
-                <span class="{{=vclass}}">&nbsp;{{=XML(verse_control)}}
+                <span class="{{=verseClass}}">&nbsp;{{=XML(verse_control)}}
             {{else:
-                vclass = 'vref' if tp == 'txt_p' or tp == 'txt_il' else 'vreft'
+                verseClass = 'vref' if tp == 'txtp' or tp == 'txtd' else 'vreft'
             }}
-                <span class="{{=vclass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" verse="{{=v}}" class="cref"><span book="{{=b}}">{{=pb}}</span> {{=c}}:</a> {{=XML(verse_control)}}
+                <span class="{{=verseClass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" verse="{{=v}}" class="cref"><span book="{{=b}}">{{=pb}}</span> {{=c}}:</a> {{=XML(verse_control)}}
             {{pass}}{{
-            if tp == 'txt_tb1':
-                    }}<span class="nt_ctrl">
-                        <a title="show/hide comments" href="#" class="nt_ctrl fa fa-comment fa-fw"></a>
+            if tp == 'txt1':
+                    }}<span class="nt_ctl">
+                        <a title="show/hide comments" href="#" class="nt_ctl fa fa-comment fa-fw"></a>
                         <span class="nt_sav">
-                            <a tp="s" class="ctrli fa fa-check fa-fw" href="#" title="save"></a>
-                            <a tp="e" class="ctrli fa fa-pencil fa-fw" href="#" title="edit"></a>
-                            <a tp="r" class="ctrli fa fa-close fa-fw" href="#" title="revert"></a>
+                            <a tp="s" class="ctli fa fa-check fa-fw" href="#" title="save"></a>
+                            <a tp="e" class="ctli fa fa-pencil fa-fw" href="#" title="edit"></a>
+                            <a tp="r" class="ctli fa fa-close fa-fw" href="#" title="revert"></a>
                         </span>
-                        <a href="#" title="clear diagnostic messages"><span id="trash_nt_msg_{{=b}}_{{=c}}_{{=v}}" class="ctrl ir fa fa-trash fa-lg"></span></a>
+                        <a href="#" title="clear diagnostic messages"><span id="trash_nt_msg_{{=b}}_{{=c}}_{{=v}}" class="ctl ir fa fa-trash fa-lg"></span></a>
                         <span id="nt_msg_{{=b}}_{{=c}}_{{=v}}" class="nt_msg"></span>
                     </span>{{
             pass
                 }}</span>
-                <span id="{{=tp}}_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txt_il_base" id="{{=tp}}_txt_il_{{=b}}_{{=c}}_{{=v}}" lf="x"></span>
+                <span id="{{=tp}}_{{=b}}_{{=c}}_{{=v}}">{{=XML(verse.material(ua))}}</span><span class="txtd_base" id="{{=tp}}_txtd_{{=b}}_{{=c}}_{{=v}}" lf="x"></span>
             </div>
         {{ pass }}
     {{ pass }}

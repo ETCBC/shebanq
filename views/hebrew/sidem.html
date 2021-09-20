@@ -1,5 +1,5 @@
 {{
-if side_items:
+if sideItems:
     qlimit = 12
     ulimit = 10
     klimit = 12
@@ -7,7 +7,7 @@ if side_items:
 <div>
 <ul id="side_list_{{=qw}}">
     {{
-    for si in side_items:
+    for si in sideItems:
         iinfo = si['item']
         iid = iinfo['id']
         compp = ''
@@ -30,7 +30,7 @@ if side_items:
             title = f'{qname} by {fname} {lname}'
             dlinktext = qname_short
             lclass = XML(' class="detail" ')
-            cclass = 'qauth'
+            authCls = 'qauth'
             dclass = 'qname'
             eclass = 'qdesc'
         elif qw == 'n':
@@ -42,7 +42,7 @@ if side_items:
             vlabel = 'verse' if nverses == 1 else 'verses'
             title = f'{kw} by {fname} {lname}'
             dlinktext = kw_short
-            cclass = 'nauth'
+            authCls = 'nauth'
             sclass = 'nstat'
             dclass = 't1_kw'
             eclass = 'ndesc'
@@ -50,37 +50,37 @@ if side_items:
             wentry = iinfo['entryid']
             wgloss = iinfo['gloss']
             pos = iinfo['pos']
-            vc = iinfo['g_entry_heb']
+            entryHeb = iinfo['g_entry_heb']
             entry_heb = iinfo['entry_heb']
             entryid_heb = iinfo['entryid_heb']
             title = wentry
-            clinktext = vc if vc else entry_heb
+            clinktext = entryHeb if entryHeb else entry_heb
             dlinktext = wgloss or '?'
-            cclass = 'i_hl'
+            authCls = 'i_hl'
             dclass = 'i_gl'
             eclass = 'wdesc'
         pass
-        compc = A(clinktext, _href='#', _class=cclass, _iid=iid, _id=f'item_{qw}{iid}')
+        compc = A(clinktext, _href='#', _class=authCls, _iid=iid, _id=f'item_{qw}{iid}')
         compd = SPAN(dlinktext, _class=dclass)
     }}
-    <li {{=lclass}} id="{{=f'{qw}{iid}'}}" iid="{{=iid}}" title="{{=title}}" monads="{{=si['monads']}}">
-        <div>{{=XML(colorpicker(qw,iid, '')) if qw != 'n' else ''}}
-            <a href='#' title="more/less info" class="ctrlb fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
+    <li {{=lclass}} id="{{=f'{qw}{iid}'}}" iid="{{=iid}}" title="{{=title}}" slots="{{=si['slots']}}">
+        <div>{{=XML(colorPicker(qw,iid, '')) if qw != 'n' else ''}}
+            <a href='#' title="more/less info" class="ctlexpand fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
             {{if qw == 'q' or qw == 'n':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}
         </div>
         <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
         {{if qw == 'q':}}
-            <p><a id="bigqf_{{=iid}}" iid="{{=iid}}" href="#" class="ctrl fullc fa fa-arrows-alt"></a>
-            <span class="{{=dclass}}">{{=qname}}</span> by <span class="{{=cclass}}">{{=uname}}</span><br/>
+            <p><a id="bigqf_{{=iid}}" iid="{{=iid}}" href="#" class="ctl fullc fa fa-arrows-alt"></a>
+            <span class="{{=dclass}}">{{=qname}}</span> by <span class="{{=authCls}}">{{=uname}}</span><br/>
             <div id="bigq_{{=iid}}" class="bigq">
                 <input type="hidden" id="dv_{{=qw}}{{=iid}}" value="{{=desc}}"></p>
                 <div id="dm_{{=qw}}{{=iid}}" class="descm"></div>
                 <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
             </div>
         {{elif qw == 'w':}}
-            <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=cclass}}>{{=entryid_heb}}</span></p>
+            <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=authCls}}>{{=entryid_heb}}</span></p>
         {{elif qw == 'n':}}
-            <p>notes by: <span class="{{=cclass}}">{{=uname}}</span></p>
+            <p>notes by: <span class="{{=authCls}}">{{=uname}}</span></p>
             <p>with keyword <span class="{{=dclass}}">{{=kw}}</span></p>
             <p>In this chapter: <span class="{{=sclass}}">{{=nnotes}}</span> {{=nlabel}}
             in <span class="{{=sclass}}">{{=nverses}}</span> {{=vlabel}}</p>

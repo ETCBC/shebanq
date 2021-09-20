@@ -1,7 +1,7 @@
 from urllib.parse import urlparse, urlunparse
 
 from constants import TPS
-from helpers import iid_decode
+from helpers import iDecode
 
 
 class Check:
@@ -9,24 +9,24 @@ class Check:
         self.request = request
         self.db = db
 
-    def isUnique(self, tp, lid, val, myid, msgs):
+    def isUnique(self, tp, lid, val, myId, msgs):
         db = self.db
 
         result = False
         (label, table) = TPS[tp]
         for x in [1]:
             if tp == "q":
-                check_sql = f"""
-select id from query where name = '{val}' and query.created_by = {myid}
+                checkSql = f"""
+select id from query where name = '{val}' and query.created_by = {myId}
 ;
 """
             else:
-                check_sql = f"""
+                checkSql = f"""
 select id from {table} where name = '{val}'
 ;
 """
             try:
-                ids = db.executesql(check_sql)
+                ids = db.executesql(checkSql)
             except Exception:
                 msgs.append(("error", f"cannot check the unicity of {val} as {label}!"))
                 break
@@ -36,7 +36,7 @@ select id from {table} where name = '{val}'
             result = True
         return result
 
-    def isName(self, tp, lid, myid, val, msgs):
+    def isName(self, tp, lid, myId, val, msgs):
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -55,7 +55,7 @@ select id from {table} where name = '{val}'
                 )
                 break
             val = val.replace("'", "''")
-            if not self.isUnique(tp, lid, val, myid, msgs):
+            if not self.isUnique(tp, lid, val, myId, msgs):
                 break
             result = val
         return result
@@ -118,21 +118,21 @@ select id from {table} where name = '{val}'
                 )
                 break
             try:
-                url_comps = urlparse(val)
+                urlComps = urlparse(val)
             except ValueError:
                 msgs.append(("error", f"invalid syntax in {label} website !"))
                 break
-            scheme = url_comps.scheme
+            scheme = urlComps.scheme
             if scheme not in {"http", "https"}:
                 msgs.append(
                     ("error", f"{label} website does not start with http(s)://")
                 )
                 break
-            netloc = url_comps.netloc
+            netloc = urlComps.netloc
             if "." not in netloc:
                 msgs.append(("error", f"no location in {label} website"))
                 break
-            result = urlunparse(url_comps).replace("'", "''")
+            result = urlunparse(urlComps).replace("'", "''")
         return result
 
     def isInt(self, var, label, msgs):
@@ -170,7 +170,7 @@ select id from {table} where name = '{val}'
             msgs.append(("error", f"No {label} id given"))
             return None
         if tp in {"w", "q", "n"}:
-            (val, kw) = iid_decode(tp, valrep)
+            (val, kw) = iDecode(tp, valrep)
         else:
             val = valrep
             if len(valrep) > 10 or not valrep.isdigit():
@@ -187,12 +187,12 @@ select id from {table} where name = '{val}'
         (label, table) = TPS[tp]
         result = None
         for x in [1]:
-            check_sql = f"""
+            checkSql = f"""
 select count(*) as occurs from {table} where id = {val}
 ;
 """
             try:
-                occurs = db.executesql(check_sql)[0][0]
+                occurs = db.executesql(checkSql)[0][0]
             except Exception:
                 msgs.append(
                     (

@@ -1,28 +1,28 @@
 import re
 
-from helpers import h_esc
+from helpers import hEsc
 
 
 class Urls:
     def __init__(self, URL):
         self.URL = URL
 
-        image_pat = re.compile(
+        imagePat = re.compile(
             """<a [^>]*href=['"]image[\n\t ]+([^)\n\t '"]+)['"][^>]*>(.*?)</a>"""
         )
 
-        def image_repl(match):
+        def imageRepl(match):
             return f"""<br/><img src="{match.group(1)}"/><br/>{match.group(2)}<br/>"""
 
-        verse_pat = re.compile(
+        versePat = re.compile(
             r"""(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+([^:)\n\t '"]+)"""
             r""":([^)\n\t '"]+)(['"][^>]*>.*?</a>)"""
         )
 
-        def verse_repl(match):
+        def verseRepl(match):
             return (
                 match.group(1)
-                + h_esc(
+                + hEsc(
                     URL(
                         "hebrew",
                         "text",
@@ -38,15 +38,15 @@ class Urls:
                 + match.group(5)
             )
 
-        chapter_pat = re.compile(
+        chapterPat = re.compile(
             """(<a [^>]*href=['"])([^)\n\t ]+)[\n\t ]+"""
             """([^)\n\t '"]+)(['"][^>]*>.*?</a>)"""
         )
 
-        def chapter_repl(match):
+        def chapterRepl(match):
             return (
                 match.group(1)
-                + h_esc(
+                + hEsc(
                     URL(
                         "hebrew",
                         "text",
@@ -62,26 +62,26 @@ class Urls:
                 + match.group(4)
             )
 
-        shebanq_pat = re.compile("""(href=['"])shebanq:([^)\n\t '"]+['"])""")
+        shebanqPat = re.compile("""(href=['"])shebanq:([^)\n\t '"]+['"])""")
 
-        def shebanq_repl(match):
+        def shebanqRepl(match):
             return match.group(1) + URL("hebrew", "text", host=True) + match.group(2)
 
-        feature_pat = re.compile("""(href=['"])feature:([^)\n\t '"]+)(['"])""")
+        featurePat = re.compile("""(href=['"])feature:([^)\n\t '"]+)(['"])""")
 
-        def feature_repl(match):
+        def featureRepl(match):
             return (
                 f"""{match.group(1)}{URL("static", "docs/features", host=True)}/"""
                 f"""{match.group(2)}{match.group(3)} """
                 '''target="_blank"'''
             )
 
-        def special_links(d_md):
-            d_md = image_pat.sub(image_repl, d_md)
-            d_md = verse_pat.sub(verse_repl, d_md)
-            d_md = chapter_pat.sub(chapter_repl, d_md)
-            d_md = shebanq_pat.sub(shebanq_repl, d_md)
-            d_md = feature_pat.sub(feature_repl, d_md)
-            return d_md
+        def specialLinks(md):
+            md = imagePat.sub(imageRepl, md)
+            md = versePat.sub(verseRepl, md)
+            md = chapterPat.sub(chapterRepl, md)
+            md = shebanqPat.sub(shebanqRepl, md)
+            md = featurePat.sub(featureRepl, md)
+            return md
 
-        setattr(self, "special_links", special_links)
+        setattr(self, "specialLinks", specialLinks)

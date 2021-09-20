@@ -7,15 +7,15 @@ statusmap = dict(
 }}
 {{if 'id' not in qr:}}
     <div id="dbmsg_q"></div>
-    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{else:}}
 {{if writable:}}
 <input type="hidden" id="qid" value="{{=qr['id']}}"/>
 {{pass}}
 <input type="hidden" id="itemtag" value=""/>
 <div id="bigger">
-    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+f'?goto={iidrep}'}}"><span id="nameqm">{{=qr['name']}}</span></a>
-    <span class="ir"><a class="ctrl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
+    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+f'?goto={iidRep}'}}"><span id="nameqm">{{=qr['name']}}</span></a>
+    <span class="ir"><a class="ctl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
         <p>
@@ -28,7 +28,7 @@ statusmap = dict(
     <textarea id="descq" class="desc">{{=qr['description']}}</textarea>
     <div version="" class="version this">
         <table>
-            <tr><td style="padding-left: 0px;"><a class="ctrlb moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
+            <tr><td style="padding-left: 0px;"><a class="ctlexpand moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
             <span class="flabel">shared</span></td><td>{{
             if writable: }}
                 <input qid="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
@@ -40,8 +40,8 @@ statusmap = dict(
         </table>
     </div>
     <div id="dbmsg_q"></div>
-    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
-{{for v in version_order:
+    <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctl ir fa fa-trash fa-lg"></span></a></p>
+{{for v in VERSION_ORDER:
     qrinfo = qr['versions'][v]
     qstatus = qrinfo['status']
     qresults = qrinfo['results']
@@ -53,26 +53,26 @@ statusmap = dict(
     pclass = 'published' if is_pub else 'unpublished'
 }}
     <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
-        <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+        <p><a class="ctlexpand moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
         <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
     {{if v == vr:}}
-        <a id="csvt_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
-        <a id="csvb_lnk_{{=v}}_q" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with extra data as a csv file. The current view determines which features are added."></a>
-        <a id="csvd_lnk_{{=v}}_q" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all words of this query with extra data as a csv file. The legend determines which features are added."></a>
-        <a id="select_control_chart_{{=v}}_q" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
-        <a target="_blank" title="MQL documentation" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/MQL-Quickref">MQL <span class="fa fa-info-circle ctrli"/></a>
+        <a id="csvt_lnk_{{=v}}_q" href="#" class="ctl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
+        <a id="csvb_lnk_{{=v}}_q" href="#" class="ctl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with extra data as a csv file. The current view determines which features are added."></a>
+        <a id="csvd_lnk_{{=v}}_q" href="#" class="ctl fa fa-table fa-lg" ftitle=" :download all words of this query with extra data as a csv file. The legend determines which features are added."></a>
+        <a id="select_control_chart_{{=v}}_q" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view result in a clickable bar chart"></a>
+        <a target="_blank" title="MQL documentation" class="ctli" href="https://github.com/ETCBC/shebanq/wiki/MQL-Quickref">MQL <span class="fa fa-info-circle ctli"/></a>
         {{if writable:}}
-            <span class="ir"><a id="editq" href="#" title="edit name, description, and mql" class="ctrl fa fa-pencil fa-lg"></a></span>
-            <span class="ir"><a id="cancq" href="#" title="QUIT editing WITHOUT saving recent changes" class="ctrl fa fa-close fa-lg"></a></span>
-            <span class="ir"><a id="doneq" href="#" title="save changes and QUIT editing" class="ctrl fa fa-check fa-lg"></a></span>
-            <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctrl fa fa-save fa-lg"></a>&nbsp;</span>
-            <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctrl fa fa-cog fa-lg"></a>&nbsp;</span>
+            <span class="ir"><a id="editq" href="#" title="edit name, description, and mql" class="ctl fa fa-pencil fa-lg"></a></span>
+            <span class="ir"><a id="cancq" href="#" title="QUIT editing WITHOUT saving recent changes" class="ctl fa fa-close fa-lg"></a></span>
+            <span class="ir"><a id="doneq" href="#" title="save changes and QUIT editing" class="ctl fa fa-check fa-lg"></a></span>
+            <span class="ir"><a id="saveq" href="#" title="SAVE changes" class="ctl fa fa-save fa-lg"></a>&nbsp;</span>
+            <span class="ir"><a id="execq" href="#" title="save changes and EXECUTE query" class="ctl fa fa-cog fa-lg"></a>&nbsp;</span>
         {{pass}}
         {{if writable:}}
             {{if v in {'4b', '4'}:}}
                 <p style="background-color: orange;"><span class="fa fa-exclamation" title="obsolete version with incomplete linguistic annotations. Version 2017 is recommended."/>
                 Obsolete data version. Consider running this query in version 2017.
-                <a target="_blank" title="4(b) - 2017 upgrade guide" class="ctrli" href="https://github.com/ETCBC/shebanq/wiki/Upgrade2017">4(b)-2017 upgrade guide<span class="fa fa-info-circle ctrli"/></a></p>
+                <a target="_blank" title="4(b) - 2017 upgrade guide" class="ctli" href="https://github.com/ETCBC/shebanq/wiki/Upgrade2017">4(b)-2017 upgrade guide<span class="fa fa-info-circle ctli"/></a></p>
             {{pass}}
             {{if v == 'c':}}
                 <p style="background-color: orange;"><span class="fa fa-exclamation"/>Data version c is subject to change. For publishing, version 2017 is recommended.</p>
@@ -86,7 +86,7 @@ statusmap = dict(
         <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
     {{if v == vr:}}
         <div id="dbmsg_qv"></div>
-        <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+        <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctl ir fa fa-trash fa-lg"></span></a></p>
         <table>
             <tr>
                 <td><span class="flabel">status</span></td>
@@ -109,7 +109,7 @@ statusmap = dict(
             </tr>
             <tr class="detail">
                 <td><span class="flabel">words</span></td>
-                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultmonads"')}}>{{=qrinfo['resultmonads']}}</span></td>
+                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultslots"')}}>{{=qrinfo['resultmonads']}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="flabel">modified</span></td>
@@ -122,8 +122,8 @@ statusmap = dict(
             <tr class="detail">
                 <td><span class="flabel">engine</span></td>
                 <td>&nbsp;</td>
-                <td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldeversions else ''}}"
-                    title="this is {{='not ' if qrinfo['eversion'] in oldeversions else ''}}the newest version"
+                <td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldEmdrosVersions else ''}}"
+                    title="this is {{='not ' if qrinfo['eversion'] in oldEmdrosVersions else ''}}the newest version"
                 ><span {{=XML('id="eversion"')}}>{{=qrinfo['eversion']}}</span></td>
             </tr>
         </table>

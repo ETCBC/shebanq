@@ -18,7 +18,7 @@ export const put_markdown = wdg => {
   const did = wdg.attr("did")
   const src = $(`#dv_${did}`)
   const mdw = $(`#dm_${did}`)
-  mdw.html(special_links(markdown.toHTML(src.val())))
+  mdw.html(specialLinks(markdown.toHTML(src.val())))
 }
 
 export const toggle_detail = (wdg, detail, extra) => {
@@ -39,8 +39,8 @@ export const toggle_detail = (wdg, detail, extra) => {
   wdg.addClass(othercl)
 }
 
-export const special_links = d_mdGiven => {
-  const { featurehost, host } = Config
+export const specialLinks = d_mdGiven => {
+  const { featureHost, host } = Config
 
   let d_md = d_mdGiven
   d_md = d_md.replace(
@@ -61,7 +61,7 @@ export const special_links = d_mdGiven => {
   )
   d_md = d_md.replace(
     /(href=['"])feature:([^)\n\t '"]+)(['"])/g,
-    `$1${featurehost}/$2$3 target="_blank" class="fa fw fa-file-text" `
+    `$1${featureHost}/$2$3 target="_blank" class="fa fw fa-file-text" `
   )
   d_md = d_md.replace(
     /\[([^\]\n\t]+)\]\(image[\n\t ]+([^)\n\t '"]+)\)/g,
@@ -81,7 +81,7 @@ export const special_links = d_mdGiven => {
   )
   d_md = d_md.replace(
     /\[([^\]\n\t]+)\]\(feature:([^)\n\t '"]+)\)/g,
-    `<a target="_blank" href="${featurehost}/$2" class="fa fw">$1&#xf15c;</a>`
+    `<a target="_blank" href="${featureHost}/$2" class="fa fw">$1&#xf15c;</a>`
   )
   d_md = d_md.replace(
     /\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g,
@@ -95,24 +95,24 @@ export const defcolor = (qw, iid) => {
    *
    * The data for the computation comes from the server
    * and is stored in the javascript global variable Config
-   * vdefaultcolors, dncols, dnrows
+   * colorsDefault, dncols, dnrows
    */
-  const { style, vdefaultcolors, dncols, dnrows } = Config
+  const { shbStyle, colorsDefault, dncols, dnrows } = Config
 
   let result
-  if (qw in style) {
-    result = style[qw]["default"]
+  if (qw in shbStyle) {
+    result = shbStyle[qw]["default"]
   } else if (qw) {
-    const mod = iid % vdefaultcolors.length
-    result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
+    const mod = iid % colorsDefault.length
+    result = colorsDefault[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
   } else {
     const iidstr = iid == null ? "" : iid
     let sumiid = 0
     for (let i = 0; i < iidstr.length; i++) {
       sumiid += iidstr.charCodeAt(i)
     }
-    const mod = sumiid % vdefaultcolors.length
-    result = vdefaultcolors[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
+    const mod = sumiid % colorsDefault.length
+    result = colorsDefault[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
   }
   return result
 }

@@ -1,20 +1,20 @@
-<a class="ctrl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
+<a class="ctl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
 <input type="hidden" id="itemtag" value=""/>
 <div id="dbmsg_w"></div>
-<p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctrl ir fa fa-trash fa-lg"></span></a></p>
+<p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in wr:}}
-{{for v in version_order:
+{{for v in VERSION_ORDER:
     wrinfo = wr['versions'].get(v, collections.defaultdict(lambda: ''))
     thisclass = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'
 }}
 <div version="{{=v}}" class="version {{=thisclass}}">
-    <p><a class="ctrlb moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
+    <p><a class="ctlexpand moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
     <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
-    <a id="csvt_lnk_{{=v}}_w" href="#" class="ctrl fa fa-list fa-lg" ftitle=" :download all occurrences of this word as a csv file"></a>
-    <a id="csvb_lnk_{{=v}}_w" href="#" class="ctrl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all occurrences of this word with extra data as a csv file. The current view determines which features are added."></a>
-    <a id="csvd_lnk_{{=v}}_w" href="#" class="ctrl fa fa-table fa-lg" ftitle=" :download all occurrences of this word with extra data as a csv file. The legend determines which features are added."></a>
-    <a id="select_control_chart_{{=v}}_w" href="#" class="ctrl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
+    <a id="csvt_lnk_{{=v}}_w" href="#" class="ctl fa fa-list fa-lg" ftitle=" :download all occurrences of this word as a csv file"></a>
+    <a id="csvb_lnk_{{=v}}_w" href="#" class="ctl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all occurrences of this word with extra data as a csv file. The current view determines which features are added."></a>
+    <a id="csvd_lnk_{{=v}}_w" href="#" class="ctl fa fa-table fa-lg" ftitle=" :download all occurrences of this word with extra data as a csv file. The legend determines which features are added."></a>
+    <a id="select_control_chart_{{=v}}_w" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
         <tr class="detail"><td><span class="wlabel">vocalized</span></td><td class="dd i_hl">{{=wrinfo['g_entry_heb']}}</td></tr>

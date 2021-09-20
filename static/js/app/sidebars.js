@@ -4,13 +4,13 @@
 import {
   toggle_detail,
   escHT,
-  special_links,
+  specialLinks,
   close_dialog,
   put_markdown,
 } from "./helpers.js"
 import { Msg } from "./msg.js"
 import { CSelect } from "./select.js"
-import { Colorpicker1 } from "./colorpicker.js"
+import { ColorPicker1 } from "./colorpicker.js"
 
 export class Sidebars {
   /* TOP LEVEL: all four kinds of sidebars
@@ -138,7 +138,7 @@ class SContent {
 
     if (mr == "r") {
       if (qw != "n") {
-        P.picker1[qw] = new Colorpicker1(qw, null, true, false)
+        P.picker1[qw] = new ColorPicker1(qw, null, true, false)
       }
     }
   }
@@ -156,7 +156,7 @@ class SContent {
   }
 
   process() {
-    const { versions, words_url, notes_url } = Config
+    const { versions, wordsUrl, notesUrl } = Config
 
     const { mr, qw } = this
 
@@ -205,7 +205,7 @@ class SContent {
           $("#itemtag").val(`${wentryh}: ${wentryid}`)
           $("#gobackw").attr(
             "href",
-            `${words_url}?lan=${wvr.lan}&` +
+            `${wordsUrl}?lan=${wvr.lan}&` +
               `letter=${wvr.entry_heb.charCodeAt(0)}&goto=${w.id}`
           )
         }
@@ -217,7 +217,7 @@ class SContent {
           ulname = escHT(n.ulname)
           const kw = escHT(n.kw)
           $("#itemtag").val(`${ufname} ${ulname}: ${kw}`)
-          $("#gobackn").attr("href", `${notes_url}?goto=${n.id}`)
+          $("#gobackn").attr("href", `${notesUrl}?goto=${n.id}`)
         }
       }
       if ("versions" in this.info) {
@@ -300,7 +300,7 @@ class SContent {
         const is_pub =
           "versions" in q && vr in q.versions && q.versions[vr].is_published
 
-        const d_md = special_links(descm.html())
+        const d_md = specialLinks(descm.html())
         descm.html(d_md)
         P.decorate_crossrefs(descm)
 
@@ -478,7 +478,7 @@ class SContent {
   }
 
   sendval(q, checkbx, newval, vr, iid, fname, val) {
-    const { field_url } = Config
+    const { fieldUrl } = Config
 
     const senddata = {}
     senddata.version = vr
@@ -487,7 +487,7 @@ class SContent {
     senddata.val = val
 
     $.post(
-      field_url,
+      fieldUrl,
       senddata,
       data => {
         const { good, mod_dates, mod_cls, extra, msgs } = data
@@ -535,12 +535,12 @@ class SContent {
   }
 
   sendvals(senddata) {
-    const { fields_url } = Config
+    const { fieldsUrl } = Config
 
     const { execute, version: vr } = senddata
 
     $.post(
-      fields_url,
+      fieldsUrl,
       senddata,
       data => {
         const { good, q, msgs } = data
@@ -553,11 +553,11 @@ class SContent {
         }
 
         if (good) {
-          const { oldeversions } = data
+          const { oldEmdrosVersions } = data
           const qx = q.versions[vr]
           $("#nameqm").html(escHT(q.name || ""))
           $("#nameq").val(q.name)
-          const d_md = special_links(q.description_md)
+          const d_md = specialLinks(q.description_md)
           const descm = $("#descm")
           descm.html(d_md)
           P.decorate_crossrefs(descm)
@@ -566,7 +566,7 @@ class SContent {
           const ev = $("#eversion")
           const evtd = ev.closest("td")
           ev.html(qx.eversion)
-          if (qx.eversion in oldeversions) {
+          if (qx.eversion in oldEmdrosVersions) {
             evtd.addClass("oldexeversion")
             evtd.attr("title", "this is not the newest version")
           } else {
@@ -576,7 +576,7 @@ class SContent {
           $("#executed_on").html(qx.executed_on)
           $("#xmodified_on").html(qx.xmodified_on)
           $("#qresults").html(qx.results)
-          $("#qresultmonads").html(qx.resultmonads)
+          $("#qresultslots").html(qx.resultmonads)
           $("#statq").removeClass("error warning good").addClass(qx.status)
           this.setstatus("", qx.status)
           P.sidebars.sidebar["rq"].content.info = q
@@ -602,7 +602,7 @@ class SContent {
   }
 
   fetch() {
-    const { style, side_url } = Config
+    const { shbStyle, sideUrl } = Config
     const {
       version,
       iid,
@@ -631,10 +631,10 @@ class SContent {
     }
     if (do_fetch && !side_fetched[`${mr}${qw}`]) {
       const tag = `tag${mr == "m" ? "s" : ""}`
-      this.msg(`fetching ${style[qw][tag]} ...`)
+      this.msg(`fetching ${shbStyle[qw][tag]} ...`)
       if (mr == "m") {
         thelist.load(
-          `${side_url}${extra}${vars}`,
+          `${sideUrl}${extra}${vars}`,
           () => {
             side_fetched[`${mr}${qw}`] = true
             this.process()
@@ -643,7 +643,7 @@ class SContent {
         )
       } else {
         $.get(
-          `${side_url}${extra}${vars}`,
+          `${sideUrl}${extra}${vars}`,
           html => {
             thelist.html(html)
             side_fetched[`${mr}${qw}`] = true
@@ -670,7 +670,7 @@ class SContent {
         const iid = elem.attr("iid")
         this.sidelistitem(iid)
         if (qw != "n") {
-          P.picker1list[qw][iid] = new Colorpicker1(qw, iid, false, false)
+          P.picker1list[qw][iid] = new ColorPicker1(qw, iid, false, false)
         }
       })
     }

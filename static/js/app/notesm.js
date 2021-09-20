@@ -1,7 +1,7 @@
 /* eslint-env jquery */
 /* globals Config, P, L, markdown */
 
-import { escHT, special_links, markdownEscape } from "./helpers.js"
+import { escHT, specialLinks, markdownEscape } from "./helpers.js"
 import { Msg } from "./msg.js"
 
 export class Notes {
@@ -12,8 +12,8 @@ export class Notes {
     this.sav_controls = $("span.nt_main_sav")
     this.sav_c = this.sav_controls.find('a[tp="s"]')
     this.rev_c = this.sav_controls.find('a[tp="r"]')
-    this.logged_in = false
-    this.cctrl = $("a.nt_main_ctrl")
+    this.loggedIn = false
+    this.mainCtrl = $("a.nt_main_ctl")
 
     newcontent.find(".vradio").each((i, el) => {
       const elem = $(el)
@@ -26,7 +26,7 @@ export class Notes {
         bk,
         ch,
         vs,
-        topl.find("span.nt_ctrl"),
+        topl.find("span.nt_ctl"),
         topl.find("table.t1_table")
       )
     })
@@ -36,7 +36,7 @@ export class Notes {
         notev.clear_msg()
       }
     })
-    this.cctrl.click(e => {
+    this.mainCtrl.click(e => {
       e.preventDefault()
       P.vs.hstatesv("n", { get: P.vs.get("n") == "v" ? "x" : "v" })
       this.apply()
@@ -63,16 +63,16 @@ export class Notes {
     const { verselist } = this
 
     if (P.vs.get("n") == "v") {
-      this.cctrl.addClass("nt_loaded")
+      this.mainCtrl.addClass("nt_loaded")
       for (const notev of Object.values(verselist)) {
         notev.show_notes(false)
-        this.logged_in = notev.logged_in
+        this.loggedIn = notev.loggedIn
       }
-      if (this.logged_in) {
+      if (this.loggedIn) {
         this.sav_controls.show()
       }
     } else {
-      this.cctrl.removeClass("nt_loaded")
+      this.mainCtrl.removeClass("nt_loaded")
       this.sav_controls.hide()
       for (const notev of Object.values(verselist)) {
         notev.hide_notes()
@@ -82,7 +82,7 @@ export class Notes {
 }
 
 class Notev {
-  constructor(vr, bk, ch, vs, ctrl, dest) {
+  constructor(vr, bk, ch, vs, ctl, dest) {
     this.loaded = false
     this.nnotes = 0
     this.mnotes = 0
@@ -93,20 +93,20 @@ class Notev {
     this.book = bk
     this.chapter = ch
     this.verse = vs
-    this.ctrl = ctrl
+    this.ctl = ctl
     this.dest = dest
 
     const { book, chapter, verse } = this
     this.msgn = new Msg(`nt_msg_${book}_${chapter}_${verse}`)
-    this.cctrl = ctrl.find("a.nt_ctrl")
-    this.sav_controls = ctrl.find("span.nt_sav")
+    this.noteCtrl = ctl.find("a.nt_ctl")
+    this.sav_controls = ctl.find("span.nt_sav")
 
     const { sav_controls } = this
     this.sav_c = sav_controls.find('a[tp="s"]')
     this.edt_c = sav_controls.find('a[tp="e"]')
     this.rev_c = sav_controls.find('a[tp="r"]')
 
-    const { sav_c, edt_c, rev_c, cctrl } = this
+    const { sav_c, edt_c, rev_c, noteCtrl } = this
 
     sav_c.click(e => {
       e.preventDefault()
@@ -120,7 +120,7 @@ class Notev {
       e.preventDefault()
       this.revert()
     })
-    cctrl.click(e => {
+    noteCtrl.click(e => {
       e.preventDefault()
       this.is_dirty()
       if (this.show) {
@@ -136,20 +136,20 @@ class Notev {
   }
 
   fetch(adjust_verse) {
-    const { cnotes_url } = Config
+    const { verseNotesUrl } = Config
 
     const { version, book, chapter, verse, edt, msgn } = this
     const senddata = { version, book, chapter, verse, edit: edt }
     msgn.msg(["info", "fetching notes ..."])
-    $.post(cnotes_url, senddata, data => {
+    $.post(verseNotesUrl, senddata, data => {
       this.loaded = true
       msgn.clear()
       for (const m of data.msgs) {
         msgn.msg(m)
       }
-      const { good, users, notes, nkey_index, changed, logged_in } = data
+      const { good, users, notes, keyIndex, changed, loggedIn } = data
       if (good) {
-        this.process(users, notes, nkey_index, changed, logged_in)
+        this.process(users, notes, keyIndex, changed, loggedIn)
         if (adjust_verse) {
           if (P.mr == "m") {
             P.vs.mstatesv({ verse })
@@ -160,7 +160,7 @@ class Notev {
     })
   }
 
-  process(users, notes, nkey_index, changed, logged_in) {
+  process(users, notes, keyIndex, changed, loggedIn) {
     const {
       sidebars: { side_fetched, sidebar },
     } = P
@@ -172,9 +172,9 @@ class Notev {
     }
     this.orig_users = users
     this.orig_notes = notes
-    this.orig_nkey_index = nkey_index
+    this.origKeyIndex = keyIndex
     this.orig_edit = []
-    this.logged_in = logged_in
+    this.loggedIn = loggedIn
     this.gen_html(true)
     this.dirty = false
     this.apply_dirty()
@@ -182,8 +182,8 @@ class Notev {
   }
 
   decorate() {
-    const { nt_statclass, nt_statsym, nt_statnext } = Config
-    const { dest, logged_in, sav_controls, edt, sav_c, edt_c } = this
+    const { noteStatusCls, noteStatusSym, noteStatusNxt } = Config
+    const { dest, loggedIn, sav_controls, edt, sav_c, edt_c } = this
     dest
       .find("td.nt_stat")
       .find("a")
@@ -191,16 +191,16 @@ class Notev {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         const statcode = elem.attr("code")
-        const nextcode = nt_statnext[statcode]
-        const nextsym = nt_statsym[nextcode]
+        const nextcode = noteStatusNxt[statcode]
+        const nextsym = noteStatusSym[nextcode]
         const row = elem.closest("tr")
-        for (const c in nt_statclass) {
-          row.removeClass(nt_statclass[c])
+        for (const c in noteStatusCls) {
+          row.removeClass(noteStatusCls[c])
         }
-        for (const c in nt_statsym) {
-          elem.removeClass(`fa-${nt_statsym[c]}`)
+        for (const c in noteStatusSym) {
+          elem.removeClass(`fa-${noteStatusSym[c]}`)
         }
-        row.addClass(nt_statclass[nextcode])
+        row.addClass(noteStatusCls[nextcode])
         elem.attr("code", nextcode)
         elem.addClass(`fa-${nextsym}`)
       })
@@ -217,7 +217,7 @@ class Notev {
         }
       })
     dest.find("tr.nt_cmt").show()
-    if (logged_in) {
+    if (loggedIn) {
       $("span.nt_main_sav").show()
       sav_controls.show()
       if (edt) {
@@ -232,11 +232,11 @@ class Notev {
   }
 
   gen_html_ca(canr) {
-    const { nt_statclass, nt_statsym } = Config
+    const { noteStatusCls, noteStatusSym } = Config
     const { muting_n } = L
     const vr = this.version
     const notes = this.orig_notes[canr]
-    const nkey_index = this.orig_nkey_index
+    const keyIndex = this.origKeyIndex
     let html = ""
     this.nnotes += notes.length
     for (let n = 0; n < notes.length; n++) {
@@ -246,7 +246,7 @@ class Notev {
       const kws = kwtrim.split(/\s+/)
       let mute = false
       for (const kw of kws) {
-        const nkid = nkey_index[`${uid} ${kw}`]
+        const nkid = keyIndex[`${uid} ${kw}`]
         if (muting_n.isSet(`n${nkid}`)) {
           mute = true
           break
@@ -259,8 +259,8 @@ class Notev {
       const user = this.orig_users[uid]
       const pubc = pub ? "ison" : ""
       const sharedc = shared ? "ison" : ""
-      const statc = nt_statclass[nline.stat]
-      const statsym = nt_statsym[nline.stat]
+      const statc = noteStatusCls[nline.stat]
+      const statsym = noteStatusSym[nline.stat]
       const edit_att = ro ? "" : ' edit="1"'
       const edit_class = ro ? "" : " edit"
       html += `<tr class="nt_cmt nt_info ${statc}${edit_class}" nid="${nid}"
@@ -270,13 +270,13 @@ class Notev {
             <span class="fa fa-${statsym} fa-fw" code="${nline.stat}"></span>
           </td>`
         html += `<td class="nt_kw">${escHT(nline.kw)}</td>`
-        const ntxt = special_links(markdown.toHTML(markdownEscape(nline.ntxt)))
+        const ntxt = specialLinks(markdown.toHTML(markdownEscape(nline.ntxt)))
         html += `<td class="nt_cmt">${ntxt}</td>`
         html += `<td class="nt_user" colspan="3" uid="${uid}">${escHT(user)}</td>`
         html += '<td class="nt_pub">'
-        html += `<span class="ctrli pradio fa fa-share-alt fa-fw ${sharedc}"
+        html += `<span class="ctli pradio fa fa-share-alt fa-fw ${sharedc}"
           title="shared?"></span>`
-        html += `<span class="ctrli pradio fa fa-quote-right fa-fw ${pubc}"
+        html += `<span class="ctli pradio fa fa-quote-right fa-fw ${pubc}"
           title="published?"></span>`
       } else {
         this.orig_edit.push({ canr, note: nline })
@@ -287,10 +287,10 @@ class Notev {
         html += `<td class="nt_cmt"><textarea>${nline.ntxt}</textarea></td>`
         html += `<td class="nt_user" colspan="3" uid="{uid}">${escHT(user)}</td>`
         html += '<td class="nt_pub">'
-        html += `<a class="ctrli pradio fa fa-share-alt fa-fw ${sharedc}"
+        html += `<a class="ctli pradio fa fa-share-alt fa-fw ${sharedc}"
           href="#" title="shared?"></a>`
         html += `<span>${vr}</span>`
-        html += `<a class="ctrli pradio fa fa-quote-right fa-fw ${pubc}"
+        html += `<a class="ctli pradio fa fa-quote-right fa-fw ${pubc}"
           href="#" title="published?"></a>`
       }
       html += "</td></tr>"
@@ -309,33 +309,33 @@ class Notev {
       target.after(html)
     }
     if (this.nnotes == 0) {
-      this.cctrl.addClass("nt_empty")
+      this.noteCtrl.addClass("nt_empty")
     } else {
-      this.cctrl.removeClass("nt_empty")
+      this.noteCtrl.removeClass("nt_empty")
     }
     if (this.mnotes == 0) {
-      this.cctrl.removeClass("nt_muted")
+      this.noteCtrl.removeClass("nt_muted")
     } else {
-      this.cctrl.addClass("nt_muted")
+      this.noteCtrl.addClass("nt_muted")
       this.msgn.msg(["special", `muted notes: ${this.mnotes}`])
     }
   }
 
   sendnotes(senddata) {
-    const { cnotes_url } = Config
+    const { verseNotesUrl } = Config
 
     $.post(
-      cnotes_url,
+      verseNotesUrl,
       senddata,
       data => {
-        const { good, users, notes, nkey_index, changed, logged_in } = data
+        const { good, users, notes, keyIndex, changed, loggedIn } = data
         this.msgn.clear()
         for (const m of data.msgs) {
           this.msgn.msg(m)
         }
         if (good) {
           this.dest.find("tr[ncanr]").remove()
-          this.process(users, notes, nkey_index, changed, logged_in)
+          this.process(users, notes, keyIndex, changed, loggedIn)
         }
       },
       "json"
@@ -383,9 +383,9 @@ class Notev {
 
   apply_dirty() {
     if (this.dirty) {
-      this.cctrl.addClass("dirty")
-    } else if (this.cctrl.hasClass("dirty")) {
-      this.cctrl.removeClass("dirty")
+      this.noteCtrl.addClass("dirty")
+    } else if (this.noteCtrl.hasClass("dirty")) {
+      this.noteCtrl.removeClass("dirty")
     }
   }
   save() {
@@ -469,7 +469,7 @@ class Notev {
 
   hide_notes() {
     this.show = false
-    this.cctrl.removeClass("nt_loaded")
+    this.noteCtrl.removeClass("nt_loaded")
     this.sav_controls.hide()
     this.dest.find("tr.nt_cmt").hide()
     this.msgn.hide()
@@ -477,13 +477,13 @@ class Notev {
 
   show_notes(adjust_verse) {
     this.show = true
-    this.cctrl.addClass("nt_loaded")
+    this.noteCtrl.addClass("nt_loaded")
     this.msgn.show()
     if (!this.loaded) {
       this.fetch(adjust_verse)
     } else {
       this.dest.find("tr.nt_cmt").show()
-      if (this.logged_in) {
+      if (this.loggedIn) {
         this.sav_controls.show()
         if (this.edt) {
           this.sav_c.show()

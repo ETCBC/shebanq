@@ -2,29 +2,29 @@ import collections
 import json
 
 from constants import PUBLISH_FREEZE
-from helpers import h_esc, iid_encode, formatVersion
+from helpers import hEsc, iEncode, formatVersion
 
 
 class QUERYTREE:
-    def __init__(self, auth, db, version_order, version_index):
+    def __init__(self, auth, db, VERSION_ORDER, VERSION_INDEX):
         self.auth = auth
         self.db = db
-        self.version_order = version_order
-        self.version_index = version_index
+        self.VERSION_ORDER = VERSION_ORDER
+        self.VERSION_INDEX = VERSION_INDEX
 
     def get(self, now):
         auth = self.auth
         db = self.db
-        version_order = self.version_order
-        version_index = self.version_index
+        VERSION_ORDER = self.VERSION_ORDER
+        VERSION_INDEX = self.VERSION_INDEX
 
-        myid = None
+        myId = None
         if auth.user:
-            myid = auth.user.id
-        linfo = collections.defaultdict(lambda: {})
+            myId = auth.user.id
+        labelInfo = collections.defaultdict(lambda: {})
 
-        def title_badge(lid, ltype, publ, good, num, tot):
-            name = linfo[ltype][lid] if ltype is not None else "Shared Queries"
+        def titleBadge(lid, ltype, publ, good, num, tot):
+            name = labelInfo[ltype][lid] if ltype is not None else "Shared Queries"
             nums = []
             if publ != 0:
                 nums.append(f'<span class="special fa fa-quote-right"> {publ}</span>')
@@ -45,7 +45,7 @@ class QUERYTREE:
             rename = ""
             select = ""
             if ltype in {"o", "p"}:
-                if myid is not None:
+                if myId is not None:
                     if lid:
                         rename = f'<a class="r_{ltype}" lid="{lid}" href="#"></a>'
                     select = f'<a class="s_{ltype} fa fa-lg" lid="{lid}" href="#"></a>'
@@ -53,19 +53,19 @@ class QUERYTREE:
                     if lid:
                         rename = f'<a class="v_{ltype}" lid="{lid}" href="#"></a>'
             return f"""{select}
-<span n="1">{h_esc(name)}</span><span class="brq">({badge})</span> {rename}"""
+<span n="1">{hEsc(name)}</span><span class="brq">({badge})</span> {rename}"""
 
         condition = (
             """
 where query.is_shared = 'T'
 """
-            if myid is None
+            if myId is None
             else f"""
-where query.is_shared = 'T' or query.created_by = {myid}
+where query.is_shared = 'T' or query.created_by = {myId}
 """
         )
 
-        pqueryx_sql = f"""
+        projectQueryXSql = f"""
 select
     query_exe.query_id,
     query_exe.version,
@@ -78,7 +78,7 @@ inner join query on query.id = query_exe.query_id
 {condition};
 """
 
-        pquery_sql = f"""
+        projectQuerySql = f"""
 select
     query.id as qid,
     organization.name as oname, organization.id as oid,
@@ -99,223 +99,261 @@ query.name
 ;
 """
 
-        pquery = db.executesql(pquery_sql)
-        pqueryx = db.executesql(pqueryx_sql)
-        pqueries = collections.OrderedDict()
-        for (qid, oname, oid, pname, pid, uname, uid, qname, qshared) in pquery:
-            qsharedstatus = qshared == "T"
-            qownstatus = uid == myid
-            pqueries[qid] = {
+        projectQuery = db.executesql(projectQuerySql)
+        projectQueryX = db.executesql(projectQueryXSql)
+        projectQueries = collections.OrderedDict()
+        for (
+            queryId,
+            orgName,
+            orgId,
+            projectName,
+            projectId,
+            userName,
+            userId,
+            queryName,
+            queryShared,
+        ) in projectQuery:
+            qSharedStatus = queryShared == "T"
+            qOwnStatus = userId == myId
+            projectQueries[queryId] = {
                 "": (
-                    oname,
-                    oid,
-                    pname,
-                    pid,
-                    uname,
-                    uid,
-                    qname,
-                    qsharedstatus,
-                    qownstatus,
+                    orgName,
+                    orgId,
+                    projectName,
+                    projectId,
+                    userName,
+                    userId,
+                    queryName,
+                    qSharedStatus,
+                    qOwnStatus,
                 ),
                 "publ": False,
                 "good": False,
-                "v": [4 for v in version_order],
+                "v": [4 for v in VERSION_ORDER],
             }
-        for (qid, vr, qispub, qpub, qmod, qexe) in pqueryx:
-            qinfo = pqueries[qid]
-            qexestatus = None
-            if qexe:
-                qexestatus = qexe >= qmod
-            qpubstatus = (
+        for (
+            queryId,
+            vr,
+            queryIsPub,
+            queryPubOn,
+            queryModOn,
+            queryExeOn,
+        ) in projectQueryX:
+            queryInfo = projectQueries[queryId]
+            queryExeStatus = None
+            if queryExeOn:
+                queryExeStatus = queryExeOn >= queryModOn
+            queryPubStatus = (
                 False
-                if qispub != "T"
+                if queryIsPub != "T"
                 else None
-                if qpub > now - PUBLISH_FREEZE
+                if queryPubOn > now - PUBLISH_FREEZE
                 else True
             )
-            qstatus = (
+            queryStatus = (
                 1
-                if qpubstatus
+                if queryPubStatus
                 else 2
-                if qpubstatus is None
+                if queryPubStatus is None
                 else 3
-                if qexestatus
+                if queryExeStatus
                 else 4
-                if qexestatus is None
+                if queryExeStatus is None
                 else 5
             )
-            qinfo["v"][version_index[vr]] = qstatus
-            if qpubstatus or qpubstatus is None:
-                qinfo["publ"] = True
-            if qexestatus:
-                qinfo["good"] = True
+            queryInfo["v"][VERSION_INDEX[vr]] = queryStatus
+            if queryPubStatus or queryPubStatus is None:
+                queryInfo["publ"] = True
+            if queryExeStatus:
+                queryInfo["good"] = True
 
-        porg_sql = """
+        projectOrgSql = """
 select name, id from organization order by name
 ;
 """
-        porg = db.executesql(porg_sql)
+        porg = db.executesql(projectOrgSql)
 
-        pproj_sql = """
+        projectSql = """
 select name, id from project order by name
 ;
 """
-        pproj = db.executesql(pproj_sql)
+        project = db.executesql(projectSql)
 
         tree = collections.OrderedDict()
-        countset = collections.defaultdict(lambda: set())
-        counto = collections.defaultdict(lambda: 0)
-        counto_publ = collections.defaultdict(lambda: 0)
-        counto_good = collections.defaultdict(lambda: 0)
-        counto_tot = collections.defaultdict(lambda: 0)
-        countp = collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
-        countp_publ = collections.defaultdict(
+        countSet = collections.defaultdict(lambda: set())
+        countOrg = collections.defaultdict(lambda: 0)
+        countOrgPub = collections.defaultdict(lambda: 0)
+        countOrgGood = collections.defaultdict(lambda: 0)
+        countOrgTotal = collections.defaultdict(lambda: 0)
+        countProject = collections.defaultdict(
             lambda: collections.defaultdict(lambda: 0)
         )
-        countp_good = collections.defaultdict(
+        countProjectPub = collections.defaultdict(
             lambda: collections.defaultdict(lambda: 0)
         )
-        countp_tot = collections.defaultdict(lambda: 0)
-        countu = collections.defaultdict(
+        countProjectGood = collections.defaultdict(
+            lambda: collections.defaultdict(lambda: 0)
+        )
+        countProjectTotal = collections.defaultdict(lambda: 0)
+        countUser = collections.defaultdict(
             lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
         )
-        countu_publ = collections.defaultdict(
+        countUserPub = collections.defaultdict(
             lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
         )
-        countu_good = collections.defaultdict(
+        countUserGood = collections.defaultdict(
             lambda: collections.defaultdict(lambda: collections.defaultdict(lambda: 0))
         )
-        countu_tot = collections.defaultdict(lambda: 0)
+        countUserTotal = collections.defaultdict(lambda: 0)
         count = 0
-        count_publ = 0
-        count_good = 0
-        for qid in pqueries:
-            pqinfo = pqueries[qid]
-            (oname, oid, pname, pid, uname, uid, qname, qshared, qown) = pqinfo[""]
-            qpubl = pqinfo["publ"]
-            qgood = pqinfo["good"]
-            countset["o"].add(oid)
-            countset["p"].add(pid)
-            countset["u"].add(uid)
-            countset["q"].add(qid)
-            linfo["o"][oid] = oname
-            linfo["p"][pid] = pname
-            linfo["u"][uid] = uname
-            if qown:
-                countset["m"].add(qid)
-            if not qshared:
-                countset["r"].add(qid)
-            if qpubl:
-                countu_publ[oid][pid][uid] += 1
-                countp_publ[oid][pid] += 1
-                counto_publ[oid] += 1
-                count_publ += 1
-            if qgood:
-                countu_good[oid][pid][uid] += 1
-                countp_good[oid][pid] += 1
-                counto_good[oid] += 1
-                count_good += 1
-            tree.setdefault(oid, collections.OrderedDict()).setdefault(
-                pid, collections.OrderedDict()
-            ).setdefault(uid, []).append(qid)
+        countPub = 0
+        countGood = 0
+        for queryId in projectQueries:
+            projectQueryInfo = projectQueries[queryId]
+            (
+                orgName,
+                orgId,
+                projectName,
+                projectId,
+                userName,
+                userId,
+                queryName,
+                queryShared,
+                queryOwn,
+            ) = projectQueryInfo[""]
+            queryPub = projectQueryInfo["publ"]
+            queryGood = projectQueryInfo["good"]
+            countSet["o"].add(orgId)
+            countSet["p"].add(projectId)
+            countSet["u"].add(userId)
+            countSet["q"].add(queryId)
+            labelInfo["o"][orgId] = orgName
+            labelInfo["p"][projectId] = projectName
+            labelInfo["u"][userId] = userName
+            if queryOwn:
+                countSet["m"].add(queryId)
+            if not queryShared:
+                countSet["r"].add(queryId)
+            if queryPub:
+                countUserPub[orgId][projectId][userId] += 1
+                countProjectPub[orgId][projectId] += 1
+                countOrgPub[orgId] += 1
+                countPub += 1
+            if queryGood:
+                countUserGood[orgId][projectId][userId] += 1
+                countProjectGood[orgId][projectId] += 1
+                countOrgGood[orgId] += 1
+                countGood += 1
+            tree.setdefault(orgId, collections.OrderedDict()).setdefault(
+                projectId, collections.OrderedDict()
+            ).setdefault(userId, []).append(queryId)
             count += 1
-            counto[oid] += 1
-            countp[oid][pid] += 1
-            countu[oid][pid][uid] += 1
-            counto_tot[oid] += 1
-            countp_tot[pid] += 1
-            countu_tot[uid] += 1
+            countOrg[orgId] += 1
+            countProject[orgId][projectId] += 1
+            countUser[orgId][projectId][userId] += 1
+            countOrgTotal[orgId] += 1
+            countProjectTotal[projectId] += 1
+            countUserTotal[userId] += 1
 
-        linfo["o"][0] = "Projects without Queries"
-        linfo["p"][0] = "New Project"
-        linfo["u"][0] = ""
-        linfo["q"] = pqueries
-        counto[0] = 0
-        countp[0][0] = 0
-        for (oname, oid) in porg:
-            if oid in linfo["o"]:
+        labelInfo["o"][0] = "Projects without Queries"
+        labelInfo["p"][0] = "New Project"
+        labelInfo["u"][0] = ""
+        labelInfo["q"] = projectQueries
+        countOrg[0] = 0
+        countProject[0][0] = 0
+        for (orgName, orgId) in porg:
+            if orgId in labelInfo["o"]:
                 continue
-            countset["o"].add(oid)
-            linfo["o"][oid] = oname
-            tree[oid] = collections.OrderedDict()
+            countSet["o"].add(orgId)
+            labelInfo["o"][orgId] = orgName
+            tree[orgId] = collections.OrderedDict()
 
-        for (pname, pid) in pproj:
-            if pid in linfo["p"]:
+        for (projectName, projectId) in project:
+            if projectId in labelInfo["p"]:
                 continue
-            countset["o"].add(0)
-            countset["p"].add(pid)
-            linfo["p"][pid] = pname
+            countSet["o"].add(0)
+            countSet["p"].add(projectId)
+            labelInfo["p"][projectId] = projectName
             tree.setdefault(0, collections.OrderedDict())[
-                pid
+                projectId
             ] = collections.OrderedDict()
 
-        ccount = dict((x[0], len(x[1])) for x in countset.items())
-        ccount["uid"] = myid
-        title = title_badge(None, None, count_publ, count_good, count, count)
-        dest = [dict(title=str(title), folder=True, children=[], data=ccount)]
-        curdest = dest[-1]["children"]
-        cursource = tree
-        for oid in cursource:
-            onum = counto[oid]
-            opubl = counto_publ[oid]
-            ogood = counto_good[oid]
-            otot = counto_tot[oid]
-            otitle = title_badge(oid, "o", opubl, ogood, onum, otot)
-            curdest.append(dict(title=str(otitle), folder=True, children=[]))
-            curodest = curdest[-1]["children"]
-            curosource = cursource[oid]
-            for pid in curosource:
-                pnum = countp[oid][pid]
-                ppubl = countp_publ[oid][pid]
-                pgood = countp_good[oid][pid]
-                ptot = countp_tot[pid]
-                ptitle = title_badge(pid, "p", ppubl, pgood, pnum, ptot)
-                curodest.append(dict(title=str(ptitle), folder=True, children=[]))
-                curpdest = curodest[-1]["children"]
-                curpsource = curosource[pid]
-                for uid in curpsource:
-                    unum = countu[oid][pid][uid]
-                    upubl = countu_publ[oid][pid][uid]
-                    ugood = countu_good[oid][pid][uid]
-                    utot = countu_tot[uid]
-                    utitle = title_badge(uid, "u", upubl, ugood, unum, utot)
-                    curpdest.append(dict(title=str(utitle), folder=True, children=[]))
-                    curudest = curpdest[-1]["children"]
-                    curusource = curpsource[uid]
-                    for qid in curusource:
-                        pqinfo = linfo["q"][qid]
+        categoryCount = dict((x[0], len(x[1])) for x in countSet.items())
+        categoryCount["userId"] = myId
+        title = titleBadge(None, None, countPub, countGood, count, count)
+        dest = [dict(title=str(title), folder=True, children=[], data=categoryCount)]
+        curDest = dest[-1]["children"]
+        curSource = tree
+        for orgId in curSource:
+            orgN = countOrg[orgId]
+            orgPub = countOrgPub[orgId]
+            orgGood = countOrgGood[orgId]
+            orgTot = countOrgTotal[orgId]
+            orgTitle = titleBadge(orgId, "o", orgPub, orgGood, orgN, orgTot)
+            curDest.append(dict(title=str(orgTitle), folder=True, children=[]))
+            curOrgDest = curDest[-1]["children"]
+            curOrgSource = curSource[orgId]
+            for projectId in curOrgSource:
+                projectN = countProject[orgId][projectId]
+                projectPub = countProjectPub[orgId][projectId]
+                projectPub = countProjectGood[orgId][projectId]
+                projectTot = countProjectTotal[projectId]
+                projectTitle = titleBadge(
+                    projectId, "p", projectPub, projectPub, projectN, projectTot
+                )
+                curOrgDest.append(
+                    dict(title=str(projectTitle), folder=True, children=[])
+                )
+                curProjectDest = curOrgDest[-1]["children"]
+                curProjectSource = curOrgSource[projectId]
+                for userId in curProjectSource:
+                    userN = countUser[orgId][projectId][userId]
+                    userPub = countUserPub[orgId][projectId][userId]
+                    userGood = countUserGood[orgId][projectId][userId]
+                    userTot = countUserTotal[userId]
+                    userTitle = titleBadge(
+                        userId, "u", userPub, userGood, userN, userTot
+                    )
+                    curProjectDest.append(
+                        dict(title=str(userTitle), folder=True, children=[])
+                    )
+                    curUserDest = curProjectDest[-1]["children"]
+                    curUserSource = curProjectSource[userId]
+                    for queryId in curUserSource:
+                        projectQueryInfo = labelInfo["q"][queryId]
                         (
-                            oname,
-                            oid,
-                            pname,
-                            pid,
-                            uname,
-                            uid,
-                            qname,
-                            qshared,
-                            qown,
-                        ) = pqinfo[""]
-                        qpubl = pqinfo["publ"]
-                        qgood = pqinfo["good"]
-                        qversions = pqinfo["v"]
-                        qorep = "r" if qown else "v"
-                        qmrep = ("qmy" if qown else "",)
-                        qshrep = "" if qshared else "qpriv"
-                        qidrep = (iid_encode("q", qid),)
-                        rename = f'<a class="{qorep}_q" lid="{qidrep}" href="#"></a>'
-                        vrep = " ".join(
-                            formatVersion("q", qid, v, qversions[version_index[v]])
-                            for v in version_order
+                            orgName,
+                            orgId,
+                            projectName,
+                            projectId,
+                            userName,
+                            userId,
+                            queryName,
+                            queryShared,
+                            queryOwn,
+                        ) = projectQueryInfo[""]
+                        queryPub = projectQueryInfo["publ"]
+                        queryGood = projectQueryInfo["good"]
+                        queryVersions = projectQueryInfo["v"]
+                        queryOwnRep = "r" if queryOwn else "v"
+                        queryMyRep = ("qmy" if queryOwn else "",)
+                        querySharedRep = "" if queryShared else "qpriv"
+                        queryIdRep = (iEncode("q", queryId),)
+                        rename = f"""<a
+class="{queryOwnRep}_q" lid="{queryIdRep}" href="#"></a>"""
+                        versionRep = " ".join(
+                            formatVersion(
+                                "q", queryId, v, queryVersions[VERSION_INDEX[v]]
+                            )
+                            for v in VERSION_ORDER
                         )
-                        curudest.append(
+                        curUserDest.append(
                             dict(
-                                title=(
-                                    f'{vrep} <a class="q {qmrep} {qshrep}" '
-                                    f'n="1" qid="{qid}" href="#">'
-                                    f"{h_esc(qname)}</a> "
-                                    f'<a class="md" href="#"></a> {rename}'
-                                ),
-                                key=f"q{qid}",
+                                title=f"""{versionRep} <a
+class="q {queryMyRep} {querySharedRep}"
+n="1" qid="{queryId}" href="#">{hEsc(queryName)}</a>
+<a class="md" href="#"></a> {rename}""",
+                                key=f"q{queryId}",
                                 folder=False,
                             )
                         )

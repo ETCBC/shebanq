@@ -26,15 +26,15 @@ export class ViewState {
     return vars
   }
 
-  csv_url(vr, mr, qw, iid, tp, extra) {
-    const { item_url } = Config
+  csvUrl(vr, mr, qw, iid, tp, extra) {
+    const { itemUrl } = Config
 
     let vars = `?version=${vr}&mr=${mr}&qw=${qw}&iid=${iid}&tp=${tp}&extra=${extra}`
     const data = P.vs.ddata()
     for (const name in data) {
       vars += `&${name}=${data[name]}`
     }
-    return `${item_url}${vars}`
+    return `${itemUrl}${vars}`
   }
 
   goback() {
@@ -45,16 +45,16 @@ export class ViewState {
   }
 
   addHist() {
-    const { style, view_url } = Config
+    const { shbStyle, viewUrl } = Config
 
     let title
     if (this.mr() == "m") {
       title = `[${this.version()}] ${this.book()} ${this.chapter()}:${this.verse()}`
     } else {
-      title = `${style[this.qw()]["Tag"]} ${this.iid()} p${this.page()}`
+      title = `${shbStyle[this.qw()]["Tag"]} ${this.iid()} p${this.page()}`
     }
     this.from_push = true
-    History.pushState(this.data, title, view_url)
+    History.pushState(this.data, title, viewUrl)
     this.from_push = false
   }
 

@@ -2,16 +2,25 @@ import collections
 
 from gluon import current
 
-from blang import bknames
+from blang import BK_NAMES
 from helpers import debug
 
 
-nrows = 4
-ncols = 4
+NROWS = 4
+NCOLS = 4
 DNROWS = 3
 DNCOLS = 4
 
-ccolor_spec = """
+colorSpec = """
+    red,#ff0000,#ff0000,1 salmon,#ff6688,#ee7799,1 orange,#ffcc66,#eebb55,1
+    yellow,#ffff00,#dddd00,1 green,#00ff00,#00bb00,1 spring,#ddff77,#77dd44,1
+    tropical,#66ffcc,#55ddbb,1 turquoise,#00ffff,#00eeee,1 blue,#8888ff,#0000ff,1
+    skye,#66ccff,#55bbff,1 lilac,#cc88ff,#aa22ff,1 magenta,#ff00ff,#ee00ee,1
+    grey,#eeeeee,#eeeeee,0 gray,#aaaaaa,#aaaaaa,0 black,#000000,#000000,0
+    white,#ffffff,#ffffff,0
+"""
+
+colorSpecCls = """
      0,z0
      1,z1
      2,z2
@@ -22,44 +31,34 @@ ccolor_spec = """
     51,z7
 """
 
-vcolor_spec = """
-    red,#ff0000,#ff0000,1 salmon,#ff6688,#ee7799,1 orange,#ffcc66,#eebb55,1
-    yellow,#ffff00,#dddd00,1 green,#00ff00,#00bb00,1 spring,#ddff77,#77dd44,1
-    tropical,#66ffcc,#55ddbb,1 turquoise,#00ffff,#00eeee,1 blue,#8888ff,#0000ff,1
-    skye,#66ccff,#55bbff,1 lilac,#cc88ff,#aa22ff,1 magenta,#ff00ff,#ee00ee,1
-    grey,#eeeeee,#eeeeee,0 gray,#aaaaaa,#aaaaaa,0 black,#000000,#000000,0
-    white,#ffffff,#ffffff,0
-"""
+colorProto = [tuple(spec.split(",")) for spec in colorSpec.strip().split()]
+COLORS_DEFAULT = [x[0] for x in colorProto if x[3] == "1"]
+COLOR_NAMES = [x[0] for x in colorProto]
+COLORS = dict((x[0], dict(q=x[1], w=x[2])) for x in colorProto)
 
-vcolor_proto = [tuple(vc.split(",")) for vc in vcolor_spec.strip().split()]
-VDEFAULTCOLORS = [x[0] for x in vcolor_proto if x[3] == "1"]
-vcolornames = [x[0] for x in vcolor_proto]
-VCOLORS = dict((x[0], dict(q=x[1], w=x[2])) for x in vcolor_proto)
-ndefcolors = len(VDEFAULTCOLORS)
-
-if nrows * ncols != len(vcolornames):
+if NROWS * NCOLS != len(COLOR_NAMES):
     debug(
         "View settings: mismatch in number of colors: "
-        f"{nrows} * {ncols} != {len(vcolornames)}"
+        f"{NROWS} * {NCOLS} != {len(COLOR_NAMES)}"
     )
-if DNROWS * DNCOLS != len(VDEFAULTCOLORS):
+if DNROWS * DNCOLS != len(COLORS_DEFAULT):
     debug(
         "View settings: mismatch in number of default colors: "
-        f"{DNROWS} * {DNCOLS} != {len(VDEFAULTCOLORS)}"
+        f"{DNROWS} * {DNCOLS} != {len(COLORS_DEFAULT)}"
     )
 
 
 TAB_INFO = dict(
-    txt_tb1="Notes view",
-    txt_tb2="Syntax view",
-    txt_tb3="Abstract view",
+    txt1="Notes view",
+    txt2="Syntax view",
+    txt3="Abstract view",
 )
 TP_LABELS = dict(
-    txt_p="text",
-    txt_tb1="Notes",
-    txt_tb2="Syntax",
-    txt_tb3="Abstract",
-    txt_il="data",
+    txtp="text",
+    txt1="Notes",
+    txt2="Syntax",
+    txt3="Abstract",
+    txtd="data",
 )
 TR_INFO = ["hb", "ph"]
 TR_LABELS = dict(
@@ -69,21 +68,20 @@ TR_LABELS = dict(
 
 TAB_VIEWS = len(TAB_INFO)
 # NEXT_TP is a mapping from a text type to the next:
-# it goes txt_p => txt_tb1 => txt_tb2 => ... => txt_p
+# it goes txtp => txt1 => txt2 => ... => txtp
 NEXT_TP = dict(
     (
-        "txt_p" if i == 0 else f"txt_tb{i}",
-        f"txt_tb{i + 1}" if i < TAB_VIEWS else "txt_p",
+        "txtp" if i == 0 else f"txt{i}",
+        f"txt{i + 1}" if i < TAB_VIEWS else "txtp",
     )
     for i in range(TAB_VIEWS + 1)
 )
 
-tr_views = len(TR_INFO)
 # NEXT_TR is a mapping from a script type to the next: it goes hb => ph => hb
-NEXT_TR = dict((TR_INFO[i], TR_INFO[(i + 1) % 2]) for i in range(tr_views))
+NEXT_TR = dict((TR_INFO[i], TR_INFO[(i + 1) % 2]) for i in range(len(TR_INFO)))
 
-nt_statorder = "o*+?-!"
-NT_STATCLASS = {
+noteStatusOrder = "o*+?-!"
+NOTE_STATUS_CLS = {
     "o": "nt_info",
     "+": "nt_good",
     "-": "nt_error",
@@ -91,7 +89,7 @@ NT_STATCLASS = {
     "!": "nt_special",
     "*": "nt_note",
 }
-NT_STATSYM = {
+NOTE_STATUS_SYM = {
     "o": "circle",
     "+": "check-circle",
     "-": "times-circle",
@@ -99,20 +97,20 @@ NT_STATSYM = {
     "!": "info-circle",
     "*": "star",
 }
-NT_STATNEXT = {}
-for (i, x) in enumerate(nt_statorder):
-    NT_STATNEXT[x] = nt_statorder[(i + 1) % len(nt_statorder)]
+NOTE_STATUS_NXT = {}
+for (i, x) in enumerate(noteStatusOrder):
+    NOTE_STATUS_NXT[x] = noteStatusOrder[(i + 1) % len(noteStatusOrder)]
 
-hfields = dict(
-    txt_p=[
-        ("word_number", "monad"),
+HEBREW_FIELDS = dict(
+    txtp=[
+        ("word_number", "slot"),
         ("word_heb", "text"),
         ("word_ktv", "ktv"),
         ("word_phono", "phtext"),
         ("word_phono_sep", "phsep"),
     ],
-    txt_tb1=[
-        ("word_number", "monad"),
+    txt1=[
+        ("word_number", "slot"),
         ("word_heb", "text"),
         ("word_ktv", "ktv"),
         ("word_phono", "phtext"),
@@ -123,8 +121,8 @@ hfields = dict(
         ("clause_typ", "typ"),
         ("clause_atom_tab", "tab"),
     ],
-    txt_tb2=[
-        ("word_number", "monad"),
+    txt2=[
+        ("word_number", "slot"),
         ("word_heb", "text"),
         ("word_ktv", "ktv"),
         ("word_phono", "phtext"),
@@ -136,8 +134,8 @@ hfields = dict(
         ("clause_atom_tab", "tab"),
         ("clause_atom_code", "code"),
     ],
-    txt_tb3=[
-        ("word_number", "monad"),
+    txt3=[
+        ("word_number", "slot"),
         ("word_heb", "text"),
         ("word_ktv", "ktv"),
         ("word_lex", "lexeme-t"),
@@ -148,14 +146,14 @@ hfields = dict(
     ],
 )
 
-hebrewdata_lines_spec = """
+HEBREW_DATA_SPEC = """
     ht:ht_ht=word_heb=text-h,ht_hk=word_ktv=ketiv
     pt:pt=word_phono=text-p
     hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
     tt:tt=word_tran=text-t
     tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
     gl:gl=word_gloss=gloss
-    wd1:wd1_nmtp=word_nmtp=nametype,wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=monad
+    wd1:wd1_nmtp=word_nmtp=nametype,wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=slot
     wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
     wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
     wd4:wd4_statfl=word_freq_lex=freq-lex,wd4_statrl=word_rank_lex=rank-lex,wd4_statfo=word_freq_occ=freq-occ,wd4_statro=word_rank_occ=rank-occ
@@ -164,13 +162,13 @@ hebrewdata_lines_spec = """
     cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_par=clause_atom_pargr=par,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
     sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
 """.strip().split()
-hebrewdata_lines = []
-for item in hebrewdata_lines_spec:
-    (line, fieldspec) = item.split(":")
-    fields = [x.split("=") for x in fieldspec.split(",")]
-    hebrewdata_lines.append((line, tuple(fields)))
+hebrewDataLines = []
+for item in HEBREW_DATA_SPEC:
+    (line, fieldSpec) = item.split(":")
+    fields = [x.split("=") for x in fieldSpec.split(",")]
+    hebrewDataLines.append((line, tuple(fields)))
 
-STYLE = dict(
+SHB_STYLE = dict(
     q=dict(
         prop="background-color",
         default="grey",
@@ -206,18 +204,18 @@ STYLE = dict(
 SETTINGS = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
 VALIDATION = collections.defaultdict(lambda: collections.defaultdict(lambda: {}))
 
-txt_tbs = ",".join(f"txt_tb{t}" for t in range(1, TAB_VIEWS + 1))
-trlabs = ",".join(TR_LABELS)
+txtTbs = ",".join(f"txt{t}" for t in range(1, TAB_VIEWS + 1))
+trLabs = ",".join(TR_LABELS)
 
-specs = dict(
+SPECS = dict(
     material=(
         """version book chapter verse iid page mr qw tp tr lang""",
         (
             """alnum:10 alnum:30 int:1-150 int:1-200 base64:1024 """
-            f"""int:1-1000000 enum:m,r enum:q,w,n enum:txt_p,{txt_tbs},txt_il """
-            f"""enum:{trlabs} enum:{bknames}"""
+            f"""int:1-1000000 enum:m,r enum:q,w,n enum:txtp,{txtTbs},txtd """
+            f"""enum:{trLabs} enum:{BK_NAMES}"""
         ),
-        {"": """4 Genesis 1 1 None 1 x m txt_p hb en"""},
+        {"": """4 Genesis 1 1 None 1 x m txtp hb en"""},
     ),
     hebrewdata=(
         """
@@ -289,7 +287,7 @@ specs = dict(
 )
 
 
-def vcompile(tp):
+def compileValues(tp):
     if tp == "bool":
         return lambda d, x: x if x in {"x", "v"} else d
     (t, v) = tp.split(":")
@@ -324,91 +322,88 @@ def vcompile(tp):
             else d
         )
     elif t == "enum":
-        vals = set(VCOLORS.keys()) if v == "color" else set(v.split(","))
+        vals = set(COLORS.keys()) if v == "color" else set(v.split(","))
         return lambda d, x: x if x is not None and x in vals else d
 
 
-for group in specs:
-    (flds, types, init) = specs[group]
+for group in SPECS:
+    (flds, types, init) = SPECS[group]
     flds = flds.strip().split()
     types = types.strip().split()
-    valtype = [vcompile(tp) for tp in types]
+    valtype = [compileValues(tp) for tp in types]
     for qw in init:
-        initk = init[qw].strip().split()
+        initK = init[qw].strip().split()
         for (i, f) in enumerate(flds):
-            this_initk = initk[i]
-            if this_initk == "None":
-                this_initk = ""
-            SETTINGS[group][qw][f] = this_initk
+            thisInitK = initK[i]
+            if thisInitK == "None":
+                thisInitK = ""
+            SETTINGS[group][qw][f] = thisInitK
             VALIDATION[group][qw][f] = valtype[i]
 
 
-def make_ccolors():
-    ccolor_proto = [tuple(cc.split(",")) for cc in ccolor_spec.strip().split()]
-    ccolors = []
-    prevl = 0
-    for (l, z) in ccolor_proto:
-        newl = int(l) + 1
-        for i in range(prevl, newl):
-            ccolors.append(z)
-        prevl = newl
-    return ccolors
+def makeColors():
+    colorProtoCls = [tuple(spec.split(",")) for spec in colorSpecCls.strip().split()]
+    colorsCls = []
+    prevL = 0
+    for (l, z) in colorProtoCls:
+        newL = int(l) + 1
+        for i in range(prevL, newL):
+            colorsCls.append(z)
+        prevL = newL
+    return colorsCls
 
 
-def ccell(qw, iid, c):
-    return '\t\t<td class="c{qw} {qw}{iid}"><a href="#">{vcolornames[c]}</a></td>'
+def colorCell(qw, iid, c):
+    return f"""\t\t<td class="c{qw} {qw}{iid}"><a href="#">{COLOR_NAMES[c]}</a></td>"""
 
 
-def crow(qw, iid, r):
-    cells = "\n".join(ccell(qw, iid, c) for c in range(r * ncols, (r + 1) * ncols))
+def colorRow(qw, iid, r):
+    cells = "\n".join(colorCell(qw, iid, c) for c in range(r * NCOLS, (r + 1) * NCOLS))
     return f"\t<tr>\n{cells}\n\t</tr>"
 
 
-def ctable(qw, iid):
-    cs = "\n".join(crow(qw, iid, r) for r in range(nrows))
+def colorTable(qw, iid):
+    cs = "\n".join(colorRow(qw, iid, r) for r in range(NROWS))
     return f'<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'
 
 
-def vsel(qw, iid, typ):
+def selectColor(qw, iid, typ):
     content = "&nbsp;" if qw == "q" else "w"
-    selc = (
+    selCtl = (
         ""
         if typ
-        else f"""<span class="pickedc cc_selc_{qw}"
-><input type="checkbox" id="selc_{qw}{iid}" name="selc_{qw}{iid}"
+        else f"""<span class="pickedc"
+><input type="checkbox" id="select_{qw}{iid}" name="select_{qw}{iid}"
 /></span>&nbsp;"""
     )
-    sel = f"""<span class="picked cc_sel_{qw}" id="sel_{qw}{iid}"
+    sel = f"""<span class="picked colorselect_{qw}" id="sel_{qw}{iid}"
 ><a href="#">{content}</a></span>"""
-    return selc + sel
+    return selCtl + sel
 
 
-def colorpicker(qw, iid, typ):
-    return f"{vsel(qw, iid, typ)}{ctable(qw, iid)}\n"
+def colorPicker(qw, iid, typ):
+    return f"{selectColor(qw, iid, typ)}{colorTable(qw, iid)}\n"
 
 
-def get_fields(tp, qw=qw):
+def getFields(tp, qw=qw):
     if qw is None or qw != "n":
-        if tp == "txt_il":
-            thesehfields = []
-            for (line, fields) in hebrewdata_lines:
+        if tp == "txtd":
+            hebrewFields = []
+            for (line, fields) in hebrewDataLines:
                 if getRequestVal("hebrewdata", "", line) == "v":
-                    for (f, name, pretty_name) in fields:
+                    for (f, name, prettyName) in fields:
                         if getRequestVal("hebrewdata", "", f) == "v":
-                            thesehfields.append((name, pretty_name))
+                            hebrewFields.append((name, prettyName))
         else:
-            thesehfields = hfields[tp]
-        return thesehfields
+            hebrewFields = HEBREW_FIELDS[tp]
+        return hebrewFields
     else:
-        if tp == "txt_p":
-            fields = (
+        hebrewFields = (
                 ("clause_atom", "ca_nr"),
                 ("shebanq_note.note.keywords", "keyw"),
                 ("shebanq_note.note.status", "status"),
                 ("shebanq_note.note.ntext", "note"),
-            )
-        else:
-            fields = (
+            ) if tp == "txtp" else (
                 ("clause_atom", "ca_nr"),
                 ("clause_atom.text", "ca_txt"),
                 ("shebanq_note.note.keywords", "keyw"),
@@ -423,7 +418,7 @@ def get_fields(tp, qw=qw):
                 ),
                 ('ifnull(shebanq_note.note.published_on, "") as pub', "published_on"),
             )
-        return fields
+        return hebrewFields
 
 
 def getRequestVal(group, qw, f, default=True):

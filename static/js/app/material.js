@@ -30,7 +30,7 @@ export class Material {
   apply() {
     /* apply viewsettings to current material
      */
-    const { booklangs, booktrans } = Config
+    const { bookLangs, bookTrans } = Config
     P.version = P.vs.version()
     P.mr = P.vs.mr()
     P.qw = P.vs.qw()
@@ -64,8 +64,8 @@ export class Material {
     const book = P.vs.book()
     const chapter = P.vs.chapter()
     const page = P.vs.page()
-    $("#thelang").html(booklangs[P.vs.lang()][1])
-    $("#thebook").html(book != "x" ? booktrans[P.vs.lang()][book] : "book")
+    $("#thelang").html(bookLangs[P.vs.lang()][1])
+    $("#thebook").html(book != "x" ? bookTrans[P.vs.lang()][book] : "book")
     $("#thechapter").html(chapter > 0 ? chapter : "chapter")
     $("#thepage").html(page > 0 ? `${page}` : "")
     for (const x in P.vs.mstate()) {
@@ -76,7 +76,7 @@ export class Material {
   fetch() {
     /* get the material by AJAX if needed, and process the material afterward
      */
-    const { material_url } = Config
+    const { materialUrl } = Config
     const { material_fetched, material_kind } = P
 
     let vars =
@@ -99,7 +99,7 @@ export class Material {
       this.message.msg("fetching data ...")
       P.sidebars.after_material_fetch()
       $.get(
-        `${material_url}${vars}`,
+        `${materialUrl}${vars}`,
         html => {
           const response = $(html)
           this.pselect.add(response)
@@ -124,11 +124,11 @@ export class Material {
      */
     $(".vhl").removeClass("vhl")
     const xxx = P.mr == "r" ? "div[tvid]" : `div[tvid="${P.vs.verse()}"]`
-    const vtarget = $(`#material_${P.vs.tp()}>${xxx}`).filter(":first")
-    if (vtarget != undefined && vtarget[0] != undefined) {
-      vtarget[0].scrollIntoView()
+    const verseTarget = $(`#material_${P.vs.tp()}>${xxx}`).filter(":first")
+    if (verseTarget != undefined && verseTarget[0] != undefined) {
+      verseTarget[0].scrollIntoView()
       $("#navbar")[0].scrollIntoView()
-      vtarget.addClass("vhl")
+      verseTarget.addClass("vhl")
     }
   }
   process() {
@@ -153,7 +153,7 @@ export class Material {
       mf += 1
     }
     const newcontent = $(`#material_${tp}`)
-    const textcontent = $(".txt_p,.txt_tb1,.txt_tb2,.txt_tb3")
+    const textcontent = $(".txtp,.txt1,.txt2,.txt3")
     const ttextcontent = $(".t1_txt,.lv2")
     if (P.vs.tr() == "hb") {
       textcontent.removeClass("pho")
@@ -194,9 +194,9 @@ export class Material {
       this.add_word_actions(newcontent, mf)
     }
     this.add_vrefs(newcontent, mf)
-    if (P.vs.tp() == "txt_il") {
+    if (P.vs.tp() == "txtd") {
       this.msettings.hebrewsettings.apply()
-    } else if (P.vs.tp() == "txt_tb1") {
+    } else if (P.vs.tp() == "txt1") {
       this.add_cmt(newcontent)
     }
   }
@@ -208,7 +208,7 @@ export class Material {
   }
 
   add_vrefs(newcontent, mf) {
-    const { data_url } = Config
+    const { dataUrl } = Config
 
     const vrefs = newcontent.find(".vradio")
     vrefs.each((i, el) => {
@@ -222,7 +222,7 @@ export class Material {
       const ch = elem.attr("c")
       const vs = elem.attr("v")
       const base_tp = P.vs.tp()
-      const dat = $(`#${base_tp}_txt_il_${bk}_${ch}_${vs}`)
+      const dat = $(`#${base_tp}_txtd_${bk}_${ch}_${vs}`)
       const txt = $(`#${base_tp}_${bk}_${ch}_${vs}`)
       const legend = $("#datalegend")
       const legendc = $("#datalegend_control")
@@ -243,7 +243,7 @@ export class Material {
         if (dat.attr("lf") == "x") {
           dat.html(`fetching data for ${bk} ${ch}:${vs} ...`)
           dat.load(
-            `${data_url}?version=${P.version}&book=${bk}&chapter=${ch}&verse=${vs}`,
+            `${dataUrl}?version=${P.version}&book=${bk}&chapter=${ch}&verse=${vs}`,
             () => {
               dat.attr("lf", "v")
               this.msettings.hebrewsettings.apply()

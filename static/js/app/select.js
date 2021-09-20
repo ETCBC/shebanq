@@ -24,9 +24,9 @@ export class MSelect {
   apply() {
     /* apply material viewsettings to current material
      */
-    const { versions, featurehost, bol_url, pbl_url } = Config
+    const { versions, featureHost, bolUrl, pblUrl } = Config
 
-    const thisFeaturehost = `${featurehost}/${docName}`
+    const thisFeaturehost = `${featureHost}/${docName}`
     $(".source").attr("href", thisFeaturehost)
     $(".source").attr("title", "BHSA feature documentation")
     $(".mvradio").removeClass("ison")
@@ -44,9 +44,9 @@ export class MSelect {
       const book = P.vs.book()
       const chapter = P.vs.chapter()
       if (book != "x" && chapter > 0) {
-        bol.attr("href", `${bol_url}/ETCBC4/${book}/${chapter}`)
+        bol.attr("href", `${bolUrl}/ETCBC4/${book}/${chapter}`)
         bol.show()
-        pbl.attr("href", `${pbl_url}/${book}/${chapter}`)
+        pbl.attr("href", `${pblUrl}/${book}/${chapter}`)
         pbl.show()
       } else {
         bol.hide()
@@ -130,16 +130,16 @@ export class LSelect {
   gen_html() {
     /* generate a new lang selector
      */
-    const { booklangs } = Config
+    const { bookLangs } = Config
 
     const thelang = P.vs.lang()
-    const nitems = booklangs.length
+    const nitems = bookLangs.length
     this.lastitem = nitems
     let ht = ""
     ht += '<table class="pagination">'
-    const langs = Object.keys(booklangs).sort()
+    const langs = Object.keys(bookLangs).sort()
     for (const item of langs) {
-      const langinfo = booklangs[item]
+      const langinfo = bookLangs[item]
       const name_en = langinfo[0]
       const name_own = langinfo[1]
       const clactive = thelang == item ? ' class="active"' : ""
@@ -175,11 +175,11 @@ export class LSelect {
   }
 
   update_vlabels() {
-    const { booktrans } = Config
+    const { bookTrans } = Config
 
     $("span[book]").each((i, el) => {
       const elem = $(el)
-      elem.html(booktrans[P.vs.lang()][elem.attr("book")])
+      elem.html(bookTrans[P.vs.lang()][elem.attr("book")])
     })
   }
 
@@ -221,11 +221,11 @@ class SelectBook {
   gen_html() {
     /* generate a new book selector
      */
-    const { booktrans, booksorder } = Config
+    const { bookTrans, bookOrder } = Config
 
     const thebook = P.vs.book()
     const lang = P.vs.lang()
-    const thisbooksorder = booksorder[P.version]
+    const thisbooksorder = bookOrder[P.version]
     const nitems = thisbooksorder.length
 
     this.lastitem = nitems
@@ -233,7 +233,7 @@ class SelectBook {
     let ht = ""
     ht += '<div class="pagination"><ul>'
     for (const item of thisbooksorder) {
-      const itemrep = booktrans[lang][item]
+      const itemrep = bookTrans[lang][item]
       const liCls = thebook == item ? ' class="active"' : ""
       ht += `
         <li${liCls}>
@@ -459,11 +459,11 @@ export class CSelect {
   }
 
   fetch(iid) {
-    const { chart_url } = Config
+    const { chartUrl } = Config
 
     const vars = `?version=${this.vr}&qw=${this.qw}&iid=${iid}`
     $(`${this.select}_${iid}`).load(
-      `${chart_url}${vars}`,
+      `${chartUrl}${vars}`,
       () => {
         this.loaded[`${this.qw}_${iid}`] = true
         this.process(iid)
@@ -474,7 +474,7 @@ export class CSelect {
 
   process(iid) {
     this.gen_html(iid)
-    $(`${this.select}_${iid} .cnav`).each((i, el) => {
+    $(`${this.select}_${iid} .chartnav`).each((i, el) => {
       const elem = $(el)
       this.add_item(elem, iid)
     })
@@ -497,7 +497,7 @@ export class CSelect {
   }
 
   present(iid) {
-    const { style } = Config
+    const { shbStyle } = Config
     const { chart_width } = P
 
     $(`${this.select}_${iid}`).dialog({
@@ -509,7 +509,7 @@ export class CSelect {
         $(`${this.select}_${iid}`).html("")
       },
       modal: false,
-      title: `chart for ${style[this.qw]["tag"]} (version ${this.vr})`,
+      title: `chart for ${shbStyle[this.qw]["tag"]} (version ${this.vr})`,
       width: chart_width,
       position: { my: "left top", at: "left top", of: window },
     })
@@ -522,7 +522,7 @@ export class CSelect {
   gen_html(iid) {
     /* generate a new chart
      */
-    const { style, ccolors } = Config
+    const { shbStyle, colorsCls } = Config
 
     let nbooks = 0
     let booklist = $(`#r_chartorder${this.qw}`).val()
@@ -539,12 +539,12 @@ export class CSelect {
     ht += `
       <p>
         <a id="theitemc"
-          title="back to ${style[this.qw]["tag"]} (version ${this.vr})"
+          title="back to ${shbStyle[this.qw]["tag"]} (version ${this.vr})"
           href="#">back</a>
         </p>
         <table class="chart">`
 
-    const ccl = ccolors.length
+    const nColorsC = colorsCls.length
     for (const book of booklist) {
       const blocks = bookdata[book]
       ht += `
@@ -563,8 +563,8 @@ export class CSelect {
         const ch_range = `${block_info[1]}-${block_info[2]}`
         const blres = block_info[3]
         const blsize = block_info[4]
-        const blres_select = blres >= ccl ? ccl - 1 : blres
-        const z = ccolors[blres_select]
+        const blres_select = blres >= nColorsC ? nColorsC - 1 : blres
+        const z = colorsCls[blres_select]
         let s = "&nbsp;"
         let sz = ""
         let sc = ""
@@ -582,7 +582,7 @@ export class CSelect {
           <td class="${z}">
             <a
               title="${ch_range}${sz}: ${blres}"
-              class="cnav ${sc}"
+              class="chartnav ${sc}"
               href="#"
               b=${book} ch="${chnum}"
             >${s}</a>

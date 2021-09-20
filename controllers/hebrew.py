@@ -6,25 +6,16 @@ import json
 
 from checks import TPS
 
+from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
 from helpers import (
     Viewsettings,
-    colorpicker,
+    colorPicker,
     getRequestVal,
-    style,
-    tp_labels,
-    tab_views,
-    tr_info,
-    tr_labels,
-    iid_decode,
-    booklangs,
-    booknames,
-    booktrans,
-    clear_cache,
+    iDecode,
     debug,
-    flatten,
-    count_monads,
+    countSlots,
 )
-from viewdefs import get_fields
+from viewdefs import getFields, TP_LABELS, TR_INFO, TR_LABELS, TAB_VIEWS, SHB_STYLE
 
 from boiler import LEGEND
 
@@ -40,22 +31,24 @@ from notetree import NOTETREE
 from querychapter import QUERYCHAPTER
 from side import SIDE
 from chart import CHART
+from csvdata import CSVDATA
 
 from mql import mql
-from get_db_config import emdros_versions
+from dbconfig import EMDROS_VERSIONS
 
 Check = CHECK(request)
 Caching = CACHING(cache)
-Chunk = CHUNK(Caching, passage_dbs, versions)
-Material = MATERIAL(Caching, passage_dbs)
-Word = WORD(Caching, passage_dbs, versions)
-Query = QUERY(Check, Caching, auth, db, passage_dbs, versions)
-QueryTree = QUERYTREE(auth, db, version_order, version_index)
-Note = NOTE(Caching, Chunk, auth, db, note_db, passage_dbs, versions)
-NoteTree = NOTETREE(auth, note_db, version_order, version_index)
-QueryChapter = QUERYCHAPTER(Caching, db, passage_dbs)
+Chunk = CHUNK(Caching, PASSAGE_DBS)
+Material = MATERIAL(Caching, PASSAGE_DBS)
+Word = WORD(Caching, PASSAGE_DBS, VERSIONS)
+Query = QUERY(Check, Caching, auth, db, PASSAGE_DBS, VERSIONS)
+QueryTree = QUERYTREE(auth, db, VERSION_ORDER, VERSION_INDEX)
+Note = NOTE(Caching, Chunk, auth, db, NOTE_DB, VERSIONS)
+NoteTree = NOTETREE(auth, NOTE_DB, VERSION_ORDER, VERSION_INDEX)
+QueryChapter = QUERYCHAPTER(Caching, db, PASSAGE_DBS)
 Side = SIDE(Caching, Material, Word, Query, Note)
 Chart = CHART(Chunk, Word, Query, Note)
+CsvData = CSVDATA(auth, Word, Query, PASSAGE_DBS)
 
 Query.dep(QueryChapter)
 
@@ -65,9 +58,9 @@ track_changes(True)
 def books():
     session.forget(response)
     jsinit = f"""
-var bookla = {json.dumps(booknames["Hebrew"]["la"])};
-var booktrans = {json.dumps(booktrans)};
-var booklangs = {json.dumps(booklangs["Hebrew"])};
+var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};
+var bookTrans = {json.dumps(BOOK_TRANS)};
+var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
 """
     return dict(jsinit=jsinit)
 
@@ -75,17 +68,17 @@ var booklangs = {json.dumps(booklangs["Hebrew"])};
 def text():
     session.forget(response)
 
-    for vr in versions:
+    for vr in VERSIONS:
         QueryChapter.makeQCindex(vr)
 
     return dict(
-        viewsettings=Viewsettings(Chunk, URL, versions),
-        colorpicker=colorpicker,
+        viewsettings=Viewsettings(Chunk, URL, VERSIONS),
+        colorPicker=colorPicker,
         legend=LEGEND,
-        tp_labels=tp_labels,
-        tab_views=tab_views,
-        tr_labels=tr_labels,
-        tr_info=tr_info,
+        TP_LABELS=TP_LABELS,
+        TAB_VIEWS=TAB_VIEWS,
+        TR_LABELS=TR_LABELS,
+        TR_INFO=TR_INFO,
     )
 
 
@@ -99,8 +92,8 @@ def material():
     tp = getRequestVal("material", "", "tp")
     tr = getRequestVal("material", "", "tr")
     lang = getRequestVal("material", "", "lang")
-    iidrep = getRequestVal("material", "", "iid")
-    (authorized, msg) = item_access_read(iidrep=iidrep)
+    iidRep = getRequestVal("material", "", "iid")
+    (authorized, msg) = item_access_read(iidRep=iidRep)
     if not authorized:
         return dict(
             version=vr,
@@ -113,10 +106,10 @@ def material():
             page=0,
             pagelist=json.dumps([]),
             material=None,
-            monads=json.dumps([]),
+            slots=json.dumps([]),
         )
     page = getRequestVal("material", "", "page")
-    return Material.get(vr, mr, qw, bk, iidrep, ch, page, tp, tr, lang)
+    return Material.get(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang)
 
 
 def verse():
@@ -129,32 +122,32 @@ def verse():
     tr = getRequestVal("material", "", "tr")
 
     if request.extension == "json":
-        return (Chunk.get_verse_simple(vr, bk, ch, vs),)
+        return (Chunk.getVerseSimple(vr, bk, ch, vs),)
 
     if vs is None:
         return dict(good=False, msgs=msgs)
-    return (Chunk.get_verse(vr, bk, ch, vs, tr, msgs),)
+    return (Chunk.getVerse(vr, bk, ch, vs, tr, msgs),)
 
 
-def cnotes():
+def versenotes():
     session.forget(response)
-    myid = None
+    myId = None
     msgs = []
     if auth.user:
-        myid = auth.user.id
-    logged_in = myid is not None
+        myId = auth.user.id
+    loggedIn = myId is not None
     vr = getRequestVal("material", "", "version")
     bk = getRequestVal("material", "", "book")
     ch = getRequestVal("material", "", "chapter")
     vs = getRequestVal("material", "", "verse")
     edit = Check.isBool("edit")
     save = Check.isBool("save")
-    clause_atoms = Chunk.get_clause_atoms(vr, bk, ch, vs)
+    clauseAtoms = Chunk.getClauseAtoms(vr, bk, ch, vs)
     changed = False
     now = request.utcnow
 
     if save:
-        if myid is None:
+        if myId is None:
             msgs.append(("error", "You have to be logged in when you save notes"))
         else:
             notes = (
@@ -162,9 +155,9 @@ def cnotes():
                 if request.post_vars and request.post_vars.notes
                 else []
             )
-            changed = Note.save(myid, vr, bk, ch, vs, now, notes, clause_atoms, msgs)
-    return Note.inChapter(
-        vr, bk, ch, vs, myid, clause_atoms, changed, now, msgs, logged_in, edit
+            changed = Note.save(myId, vr, bk, ch, vs, now, notes, clauseAtoms, msgs)
+    return Note.inVerse(
+        vr, bk, ch, vs, myId, clauseAtoms, changed, now, msgs, loggedIn, edit
     )
 
 
@@ -179,34 +172,34 @@ def sidem():
     return Side.get(vr, qw, bk, ch, pub)
 
 
-def query():
-    session.forget(response)
-    iidrep = getRequestVal("material", "", "iid")
-    request.vars["mr"] = "r"
-    request.vars["qw"] = "q"
-    if request.extension == "json":
-        (authorized, msg) = item_access_read(iidrep=iidrep)
-        if not authorized:
-            result = dict(good=False, msg=[msg], data={})
-        else:
-            vr = getRequestVal("material", "", "version")
-            msgs = []
-            (iid, kw) = iid_decode("q", iidrep)
-            qrecord = Query.get_info(
-                False, iid, vr, msgs, with_ids=False, single_version=False, po=True
-            )
-            result = dict(good=qrecord is not None, msg=msgs, data=qrecord)
-        return dict(data=json.dumps(result))
-    else:
-        request.vars["page"] = 1
-    return text()
-
-
 def word():
     session.forget(response)
     request.vars["mr"] = "r"
     request.vars["qw"] = "w"
     request.vars["page"] = 1
+    return text()
+
+
+def query():
+    session.forget(response)
+    iidRep = getRequestVal("material", "", "iid")
+    request.vars["mr"] = "r"
+    request.vars["qw"] = "q"
+    if request.extension == "json":
+        (authorized, msg) = item_access_read(iidRep=iidRep)
+        if not authorized:
+            result = dict(good=False, msg=[msg], data={})
+        else:
+            vr = getRequestVal("material", "", "version")
+            msgs = []
+            (iid, kw) = iDecode("q", iidRep)
+            qrecord = Query.getInfo(
+                False, iid, vr, msgs, withIds=False, singleVersion=False, po=True
+            )
+            result = dict(good=qrecord is not None, msg=msgs, data=qrecord)
+        return dict(data=json.dumps(result))
+    else:
+        request.vars["page"] = 1
     return text()
 
 
@@ -218,33 +211,13 @@ def note():
     return text()
 
 
-def csv(
-    data,
-):
-    """converts an data structure of rows and fields into a csv string.
-    With proper quotations and escapes
-    """
-    result = []
-    if data is not None:
-        for row in data:
-            prow = [str(x) for x in row]
-            trow = [
-                f'''"{x.replace('"', '""')}"''' if '"' in x or "," in x else x
-                for x in prow
-            ]
-            result.append(
-                (",".join(trow)).replace("\n", " ").replace("\r", " ")
-            )  # no newlines in fields, it is impractical
-    return "\n".join(result)
-
-
 def item():
     """controller to produce a csv file of query results or lexeme occurrences
     Where fields are specified in the current legend
     """
     session.forget(response)
     vr = getRequestVal("material", "", "version")
-    iidrep = getRequestVal("material", "", "iid")
+    iidRep = getRequestVal("material", "", "iid")
     qw = getRequestVal("material", "", "qw")
     tp = getRequestVal("material", "", "tp")
     extra = getRequestVal("rest", "", "extra")
@@ -252,104 +225,37 @@ def item():
         extra = "_" + extra
     if len(extra) > 64:
         extra = extra[0:64]
-    (iid, kw) = iid_decode(qw, iidrep)
-    iidrep2 = iid_decode(qw, iidrep, rsep=" ")
-    filename = f"{vr}_{style[qw]['t']}{iidrep2}_{tp_labels[tp]}{extra}.csv"
-    (authorized, msg) = item_access_read(iidrep=iidrep)
-    if not authorized:
-        return dict(filename=filename, data=msg)
-    hfields = get_fields(tp, qw=qw)
-    if qw == "n":
-        head_row = ["book", "chapter", "verse"] + [hf[1] for hf in hfields]
-        kw_sql = kw.replace("'", "''")
-        myid = auth.user.id if auth.user is not None else None
-        extra = "" if myid is None else f""" or created_by = {myid} """
+    (iid, kw) = iDecode(qw, iidRep)
+    iidRep2 = iDecode(qw, iidRep, rsep=" ")
+    fileName = f"{vr}_{SHB_STYLE[qw]['t']}{iidRep2}_{TP_LABELS[tp]}{extra}.csv"
+    (authorized, msg) = item_access_read(iidRep=iidRep)
 
-        hflist = ", ".join(hf[0] for hf in hfields)
-        sql = f"""
-select
-    shebanq_note.note.book, shebanq_note.note.chapter, shebanq_note.note.verse,
-    {hflist}
-from shebanq_note.note
-inner join book on shebanq_note.note.book = book.name
-inner join clause_atom on clause_atom.ca_num = shebanq_note.note.clause_atom
-    and clause_atom.book_id = book.id
-where shebanq_note.note.keywords like '% {kw_sql} %'
-    and shebanq_note.note.version = '{vr}'
-    and (shebanq_note.note.is_shared = 'T' {extra})
-;
-"""
-        data = passage_dbs[vr].executesql(sql) if vr in passage_dbs else []
-    else:
-        head_row = ["book", "chapter", "verse"] + [hf[1] for hf in hfields]
-        (nmonads, monad_sets) = Query.load(vr, iid) if qw == "q" else Word.load(vr, iid)
-        monads = flatten(monad_sets)
-        data = []
-        if len(monads):
-            hflist = ", ".join(f"word.{hf[0]}" for hf in hfields)
-            monadsVal = ",".join(str(x) for x in monads)
-            sql = f"""
-select
-    book.name, chapter.chapter_num, verse.verse_num,
-    {hflist}
-from word
-inner join word_verse on
-    word_verse.anchor = word.word_number
-inner join verse on
-    verse.id = word_verse.verse_id
-inner join chapter on
-    verse.chapter_id = chapter.id
-inner join book on
-    chapter.book_id = book.id
-where
-    word.word_number in ({monadsVal})
-order by
-    word.word_number
-;
-"""
-            data = passage_dbs[vr].executesql(sql) if vr in passage_dbs else []
-    return dict(filename=filename, data=csv([head_row] + list(data)))
+    if not authorized:
+        return dict(fileName=fileName, data=msg)
+
+    hebrewFields = getFields(tp, qw=qw)
+    data = CsvData(vr, iid, kw, hebrewFields)
+    return dict(fileName=fileName, data=data)
 
 
 def chart():  # controller to produce a chart of query results or lexeme occurrences
     session.forget(response)
     vr = getRequestVal("material", "", "version")
-    iidrep = getRequestVal("material", "", "iid")
+    iidRep = getRequestVal("material", "", "iid")
     qw = getRequestVal("material", "", "qw")
-    (authorized, msg) = item_access_read(iidrep=iidrep)
+    (authorized, msg) = item_access_read(iidRep=iidRep)
     if not authorized:
         result = Chart.compose(vr, [])
         result.update(qw=qw)
         return result
-    return Chart.get(vr, qw, iidrep)
-
-
-def sideqm():
-    session.forget(response)
-    iidrep = getRequestVal("material", "", "iid")
-    vr = getRequestVal("material", "", "version")
-    (authorized, msg) = item_access_read(iidrep=iidrep)
-    if authorized:
-        msg = "fetching query"
-    return dict(
-        load=LOAD(
-            "hebrew",
-            "sideq",
-            extension="load",
-            vars=dict(mr="r", qw="q", version=vr, iid=iidrep),
-            ajax=False,
-            ajax_trap=True,
-            target="querybody",
-            content=msg,
-        )
-    )
+    return Chart.get(vr, qw, iidRep)
 
 
 def sidewm():
     session.forget(response)
-    iidrep = getRequestVal("material", "", "iid")
+    iidRep = getRequestVal("material", "", "iid")
     vr = getRequestVal("material", "", "version")
-    (authorized, msg) = item_access_read(iidrep=iidrep)
+    (authorized, msg) = item_access_read(iidRep=iidRep)
     if authorized:
         msg = "fetching word"
     return dict(
@@ -357,7 +263,7 @@ def sidewm():
             "hebrew",
             "sidew",
             extension="load",
-            vars=dict(mr="r", qw="w", version=vr, iid=iidrep),
+            vars=dict(mr="r", qw="w", version=vr, iid=iidRep),
             ajax=False,
             ajax_trap=True,
             target="wordbody",
@@ -366,77 +272,45 @@ def sidewm():
     )
 
 
+def sideqm():
+    session.forget(response)
+    iidRep = getRequestVal("material", "", "iid")
+    vr = getRequestVal("material", "", "version")
+    (authorized, msg) = item_access_read(iidRep=iidRep)
+    if authorized:
+        msg = "fetching query"
+    return dict(
+        load=LOAD(
+            "hebrew",
+            "sideq",
+            extension="load",
+            vars=dict(mr="r", qw="q", version=vr, iid=iidRep),
+            ajax=False,
+            ajax_trap=True,
+            target="querybody",
+            content=msg,
+        )
+    )
+
+
 def sidenm():
     session.forget(response)
-    iidrep = getRequestVal("material", "", "iid")
+    iidRep = getRequestVal("material", "", "iid")
     vr = getRequestVal("material", "", "version")
-    msg = f"Not a valid id {iidrep}"
-    if iidrep:
+    msg = f"Not a valid id {iidRep}"
+    if iidRep:
         msg = "fetching note set"
     return dict(
         load=LOAD(
             "hebrew",
             "siden",
             extension="load",
-            vars=dict(mr="r", qw="n", version=vr, iid=iidrep),
+            vars=dict(mr="r", qw="n", version=vr, iid=iidRep),
             ajax=False,
             ajax_trap=True,
             target="notebody",
             content=msg,
         )
-    )
-
-
-def sideq():
-    session.forget(response)
-    if not request.ajax:
-        redirect(URL("hebrew", "query", extension="", vars=request.vars))
-    msgs = []
-    iidrep = getRequestVal("material", "", "iid")
-    vr = getRequestVal("material", "", "version")
-    (iid, kw) = iid_decode("q", iidrep)
-    (authorized, msg) = query_auth_read(iid)
-    if iid == 0 or not authorized:
-        msgs.append(("error", msg))
-        return dict(
-            writable=False,
-            iidrep=iidrep,
-            vr=vr,
-            qr=dict(),
-            q=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-            oldeversions=set(emdros_versions[0:-1]),
-        )
-    q_record = Query.get_info(
-        auth.user is not None,
-        iid,
-        vr,
-        msgs,
-        with_ids=True,
-        single_version=False,
-        po=True,
-    )
-    if q_record is None:
-        return dict(
-            writable=True,
-            iidrep=iidrep,
-            vr=vr,
-            qr=dict(),
-            q=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-            oldeversions=set(emdros_versions[0:-1]),
-        )
-
-    (authorized, msg) = query_auth_write(iid=iid)
-
-    return dict(
-        writable=authorized,
-        iidrep=iidrep,
-        vr=vr,
-        qr=q_record,
-        q=json.dumps(q_record),
-        msgs=json.dumps(msgs),
-        oldeversions=set(emdros_versions[0:-1]),
     )
 
 
@@ -446,8 +320,8 @@ def sidew():
         redirect(URL("hebrew", "word", extension="", vars=request.vars))
     msgs = []
     vr = getRequestVal("material", "", "version")
-    iidrep = getRequestVal("material", "", "iid")
-    (iid, kw) = iid_decode("w", iidrep)
+    iidRep = getRequestVal("material", "", "iid")
+    (iid, kw) = iDecode("w", iidRep)
     (authorized, msg) = word_auth_read(vr, iid)
     if not authorized:
         msgs.append(("error", msg))
@@ -456,12 +330,65 @@ def sidew():
             w=json.dumps(dict()),
             msgs=json.dumps(msgs),
         )
-    w_record = Word.get_info(iid, vr, msgs)
+    wordRecord = Word.getInfo(iid, vr, msgs)
     return dict(
         vr=vr,
-        wr=w_record,
-        w=json.dumps(w_record),
+        wr=wordRecord,
+        w=json.dumps(wordRecord),
         msgs=json.dumps(msgs),
+    )
+
+
+def sideq():
+    session.forget(response)
+    if not request.ajax:
+        redirect(URL("hebrew", "query", extension="", vars=request.vars))
+    msgs = []
+    iidRep = getRequestVal("material", "", "iid")
+    vr = getRequestVal("material", "", "version")
+    (iid, kw) = iDecode("q", iidRep)
+    (authorized, msg) = query_auth_read(iid)
+    if iid == 0 or not authorized:
+        msgs.append(("error", msg))
+        return dict(
+            writable=False,
+            iidRep=iidRep,
+            vr=vr,
+            qr=dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+            oldEmdrosVersions=set(EMDROS_VERSIONS[0:-1]),
+        )
+    queryRecord = Query.getInfo(
+        auth.user is not None,
+        iid,
+        vr,
+        msgs,
+        withIds=True,
+        singleVersion=False,
+        po=True,
+    )
+    if queryRecord is None:
+        return dict(
+            writable=True,
+            iidRep=iidRep,
+            vr=vr,
+            qr=dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+            oldEmdrosVersions=set(EMDROS_VERSIONS[0:-1]),
+        )
+
+    (authorized, msg) = query_auth_write(iid=iid)
+
+    return dict(
+        writable=authorized,
+        iidRep=iidRep,
+        vr=vr,
+        qr=queryRecord,
+        q=json.dumps(queryRecord),
+        msgs=json.dumps(msgs),
+        oldEmdrosVersions=set(EMDROS_VERSIONS[0:-1]),
     )
 
 
@@ -471,8 +398,8 @@ def siden():
         redirect(URL("hebrew", "note", extension="", vars=request.vars))
     msgs = []
     vr = getRequestVal("material", "", "version")
-    iidrep = getRequestVal("material", "", "iid")
-    (iid, kw) = iid_decode("n", iidrep)
+    iidRep = getRequestVal("material", "", "iid")
+    (iid, kw) = iDecode("n", iidRep)
     if not iid:
         msg = f"Not a valid id {iid}"
         msgs.append(("error", msg))
@@ -481,18 +408,18 @@ def siden():
             n=json.dumps(dict()),
             msgs=json.dumps(msgs),
         )
-    n_record = Note.get_info(iidrep, vr, msgs)
+    noteRecord = Note.getInfo(iidRep, vr, msgs)
     return dict(
         vr=vr,
-        nr=n_record,
-        n=json.dumps(n_record),
+        nr=noteRecord,
+        n=json.dumps(noteRecord),
         msgs=json.dumps(msgs),
     )
 
 
 def words():
     session.forget(response)
-    viewsettings = Viewsettings(Chunk, URL, versions)
+    viewsettings = Viewsettings(Chunk, URL, VERSIONS)
     vr = getRequestVal("material", "", "version", default=False)
     if not vr:
         vr = viewsettings.theversion()
@@ -504,13 +431,13 @@ def words():
 def queries():
     session.forget(response)
     msgs = []
-    qid = Check.isId("goto", "q", "query", msgs)
-    if qid is not None:
-        if not query_auth_read(qid):
-            qid = 0
+    queryId = Check.isId("goto", "q", "query", msgs)
+    if queryId is not None:
+        if not query_auth_read(queryId):
+            queryId = 0
     return dict(
-        viewsettings=Viewsettings(Chunk, URL, versions),
-        qid=qid,
+        viewsettings=Viewsettings(Chunk, URL, VERSIONS),
+        queryId=queryId,
     )
 
 
@@ -518,38 +445,38 @@ def notes():
     session.forget(response)
     msgs = []
     nkid = Check.isId("goto", "n", "note", msgs)
-    (may_upload, myid) = check_upload()
+    (may_upload, myId) = check_upload()
     return dict(
-        viewsettings=Viewsettings(Chunk, URL, versions),
+        viewsettings=Viewsettings(Chunk, URL, VERSIONS),
         nkid=nkid,
         may_upload=may_upload,
-        uid=myid,
+        uid=myId,
     )
 
 
 def check_upload(no_controller=True):
-    myid = None
+    myId = None
     may_upload = False
     if auth.user:
-        myid = auth.user.id
-    if myid:
+        myId = auth.user.id
+    if myId:
         sql = f"""
-select uid from uploaders where uid = {myid}
+select uid from uploaders where uid = {myId}
     """
         records = db.executesql(sql)
-        may_upload = records is not None and len(records) == 1 and records[0][0] == myid
-    return (may_upload, myid)
+        may_upload = records is not None and len(records) == 1 and records[0][0] == myId
+    return (may_upload, myId)
 
 
 @auth.requires_login()
-def note_upload():
+def noteupload():
     session.forget(response)
     msgs = []
     good = True
     uid = request.vars.uid
-    (may_upload, myid) = check_upload()
-    if may_upload and str(myid) == uid:
-        good = Note.upload(myid, request.vars.file, request.utcnow, msgs)
+    (may_upload, myId) = check_upload()
+    if may_upload and str(myId) == uid:
+        good = Note.upload(myId, request.vars.file, request.utcnow, msgs)
     else:
         good = False
         msgs.append(["error", "you are not allowed to upload notes as csv files"])
@@ -566,19 +493,19 @@ def note_upload():
 # The unpointed one does turn up in the right place.
 
 
+def notetree():
+    session.forget(response)
+    return NoteTree.get(request.utcnow)
+
+
 def queriesr():
     session.forget(response)
     return Query.recent()
 
 
-def query_tree():
+def querytree():
     session.forget(response)
     return QueryTree.get(request.utcnow)
-
-
-def note_tree():
-    session.forget(response)
-    return NoteTree.get(request.utcnow)
 
 
 def record():
@@ -590,7 +517,7 @@ def record():
     good = False
     ogood = False
     pgood = False
-    myid = auth.user.id if auth.user is not None else None
+    myId = auth.user.id if auth.user is not None else None
     for x in [1]:
         tp = request.vars.tp
         if tp not in TPS:
@@ -605,7 +532,7 @@ def record():
             msgs.append(("error", f"invalid instruction {upd}!"))
             break
         upd = True if upd == "true" else False
-        if upd and not myid:
+        if upd and not myId:
             msgs.append(("error", "for updating you have to be logged in!"))
             break
         fields = ["name"]
@@ -653,7 +580,7 @@ def record():
                     (ogood, oid) = upd_record(
                         "o",
                         0,
-                        myid,
+                        myId,
                         subfields,
                         msgs,
                         fvalues=[request.vars.oname, request.vars.owebsite],
@@ -671,7 +598,7 @@ def record():
                     (pgood, pid) = upd_record(
                         "p",
                         0,
-                        myid,
+                        myId,
                         subfields,
                         msgs,
                         fvalues=[request.vars.pname, request.vars.pwebsite],
@@ -689,7 +616,7 @@ def record():
                 if oid is None or pid is None:
                     break
                 fvalues.extend([oid, pid])
-            (good, new_lid) = upd_record(tp, lid, myid, fields, msgs, fvalues=fvalues)
+            (good, new_lid) = upd_record(tp, lid, myId, fields, msgs, fvalues=fvalues)
             if not good:
                 break
             lid = new_lid
@@ -717,7 +644,7 @@ inner join project on query.project = project.id
 where query.id = {lid}
 ;
 """,
-                    as_dict=True,
+                    asDict=True,
                 )
         else:
             if lid == 0:
@@ -728,7 +655,7 @@ where query.id = {lid}
 select {",".join(fields)} from {table} where id = {lid}
 ;
 """,
-                    as_dict=True,
+                    asDict=True,
                 )
         if not dbrecord:
             msgs.append(("error", f"No {label} with id {lid}"))
@@ -749,7 +676,7 @@ select {",".join(fields)} from {table} where id = {lid}
     )
 
 
-def upd_record(tp, lid, myid, fields, msgs, fvalues=None):
+def upd_record(tp, lid, myId, fields, msgs, fvalues=None):
     updrecord = {}
     good = False
     (label, table) = TPS[tp]
@@ -760,33 +687,33 @@ def upd_record(tp, lid, myid, fields, msgs, fvalues=None):
         use_values[field] = value
 
     for x in [1]:
-        valsql = Check.isName(
+        valSql = Check.isName(
             tp,
             lid,
-            myid,
+            myId,
             use_values["name"],
             msgs,
         )
-        if valsql is None:
+        if valSql is None:
             break
-        updrecord["name"] = valsql
+        updrecord["name"] = valSql
         if tp == "q":
             val = Check.isId(
                 "oid", "o", TPS["o"][0], msgs, valrep=str(use_values["organization"])
             )
             if val is None:
                 break
-            valsql = Check.isRel("o", val, msgs)
-            if valsql is None:
+            valSql = Check.isRel("o", val, msgs)
+            if valSql is None:
                 break
-            updrecord["organization"] = valsql
+            updrecord["organization"] = valSql
             val = Check.isId(
                 "pid", "p", TPS["p"][0], msgs, valrep=str(use_values["project"])
             )
-            valsql = Check.isRel("p", val, msgs)
-            if valsql is None:
+            valSql = Check.isRel("p", val, msgs)
+            if valSql is None:
                 break
-            updrecord["project"] = valsql
+            updrecord["project"] = valSql
             fld = "modified_on"
             updrecord[fld] = request.utcnow
             fields.append(fld)
@@ -795,13 +722,13 @@ def upd_record(tp, lid, myid, fields, msgs, fvalues=None):
                 updrecord[fld] = request.utcnow
                 fields.append(fld)
                 fld = "created_by"
-                updrecord[fld] = myid
+                updrecord[fld] = myId
                 fields.append(fld)
         else:
-            valsql = Check.isWebsite(tp, use_values["website"], msgs)
-            if valsql is None:
+            valSql = Check.isWebsite(tp, use_values["website"], msgs)
+            if valSql is None:
                 break
-            updrecord["website"] = valsql
+            updrecord["website"] = valSql
         good = True
     if good:
         if lid:
@@ -836,8 +763,8 @@ def field():
     mod_cls = ""
     extra = {}
     for x in [1]:
-        qid = Check.isId("qid", "q", "query", msgs)
-        if qid is None:
+        queryId = Check.isId("qid", "q", "query", msgs)
+        if queryId is None:
             break
         fname = request.vars.fname
         val = request.vars.val
@@ -845,13 +772,13 @@ def field():
         if fname is None or fname not in {"is_shared", "is_published"}:
             msgs.append("error", "Illegal field name {}")
             break
-        (authorized, msg) = query_auth_write(qid)
+        (authorized, msg) = query_auth_write(queryId)
         if not authorized:
             msgs.append(("error", msg))
             break
         now = request.utcnow
-        (good, mod_dates, mod_cls, extra) = Query.upd_field(
-            vr, qid, fname, val, now, msgs
+        (good, mod_dates, mod_cls, extra) = Query.updField(
+            vr, queryId, fname, val, now, msgs
         )
     return dict(
         data=json.dumps(
@@ -866,26 +793,26 @@ def fields():
     session.forget(response)
     msgs = []
     good = False
-    myid = auth.user.id if auth.user is not None else None
+    myId = auth.user.id if auth.user is not None else None
     flds = {}
     fldx = {}
     vr = request.vars.version
-    q_record = {}
+    queryRecord = {}
 
     is_published = False
     is_shared = False
 
     for x in [1]:
-        qid = Check.isId("qid", "q", "query", msgs)
-        if qid is None:
+        queryId = Check.isId("qid", "q", "query", msgs)
+        if queryId is None:
             break
-        (authorized, msg) = query_auth_write(qid)
+        (authorized, msg) = query_auth_write(queryId)
         if not authorized:
             msgs.append(("error", msg))
             break
 
-        Query.verify_version(qid, vr)
-        oldrecord = db.executesql(
+        Query.verifyVersion(queryId, vr)
+        oldRecord = db.executesql(
             f"""
 select
     query.name as name,
@@ -895,35 +822,35 @@ select
     query_exe.is_published as is_published
 from query inner join query_exe on
     query.id = query_exe.query_id and query_exe.version = '{vr}'
-where query.id = {qid}
+where query.id = {queryId}
 ;
 """,
-            as_dict=True,
+            asDict=True,
         )
-        if oldrecord is None or len(oldrecord) == 0:
-            msgs.append(("error", f"No query with id {qid}"))
+        if oldRecord is None or len(oldRecord) == 0:
+            msgs.append(("error", f"No query with id {queryId}"))
             break
-        oldvals = oldrecord[0]
-        is_shared = oldvals["is_shared"] == "T"
-        is_published = oldvals["is_published"] == "T"
+        oldVals = oldRecord[0]
+        is_shared = oldVals["is_shared"] == "T"
+        is_published = oldVals["is_published"] == "T"
         if not is_published:
-            # newname = str(request.vars.name, encoding="utf-8")
-            newname = request.vars.name
-            if oldvals["name"] != newname:
-                valsql = Check.isName("q", qid, myid, newname, msgs)
-                if valsql is None:
+            # newName = str(request.vars.name, encoding="utf-8")
+            newName = request.vars.name
+            if oldVals["name"] != newName:
+                valSql = Check.isName("q", queryId, myId, newName, msgs)
+                if valSql is None:
                     break
-                flds["name"] = valsql
+                flds["name"] = valSql
                 flds["modified_on"] = request.utcnow
-            newmql = request.vars.mql
-            # newmql_u = str(newmql, encoding="utf-8")
-            newmql_u = newmql
-            if oldvals["mql"] != newmql_u:
+            newMql = request.vars.mql
+            # newmql_u = str(newMql, encoding="utf-8")
+            newmql_u = newMql
+            if oldVals["mql"] != newmql_u:
                 msgs.append(("warning", "query body modified"))
-                valsql = Check.isMql("q", newmql_u, msgs)
-                if valsql is None:
+                valSql = Check.isMql("q", newmql_u, msgs)
+                if valSql is None:
                     break
-                fldx["mql"] = valsql
+                fldx["mql"] = valSql
                 fldx["modified_on"] = request.utcnow
             else:
                 msgs.append(("good", "same query body"))
@@ -937,68 +864,78 @@ where query.id = {qid}
                     ),
                 )
             )
-        # newdesc = str(request.vars.description, encoding="utf-8")
-        newdesc = request.vars.description
-        if oldvals["description"] != newdesc:
-            valsql = Check.isDescription("q", newdesc, msgs)
-            if valsql is None:
+        # newDesc = str(request.vars.description, encoding="utf-8")
+        newDesc = request.vars.description
+        if oldVals["description"] != newDesc:
+            valSql = Check.isDescription("q", newDesc, msgs)
+            if valSql is None:
                 break
-            flds["description"] = valsql
+            flds["description"] = valSql
             flds["modified_on"] = request.utcnow
         good = True
     if good:
         execute = not is_published and request.vars.execute
-        xgood = True
+        exeGood = True
         if execute == "true":
-            (xgood, limit_exceeded, nresults, xmonads, this_msgs, eversion) = mql(
-                vr, newmql
-            )
-            if xgood and not limit_exceeded:
-                Query.store(vr, qid, xmonads, is_shared)
+            (
+                exeGood,
+                limitExceeded,
+                nResults,
+                exeSlots,
+                theseMsgs,
+                emdrosVersion,
+            ) = mql(vr, newMql)
+            if exeGood and not limitExceeded:
+                Query.store(vr, queryId, exeSlots, is_shared)
                 fldx["executed_on"] = request.utcnow
-                fldx["eversion"] = eversion
-                nresultmonads = count_monads(xmonads)
-                fldx["results"] = nresults
-                fldx["resultmonads"] = nresultmonads
+                fldx["eversion"] = emdrosVersion
+                nResultSlots = countSlots(exeSlots)
+                fldx["results"] = nResults
+                fldx["resultmonads"] = nResultSlots
                 msgs.append(("good", "Query executed"))
             else:
-                Query.store(vr, qid, [], is_shared)
-            msgs.extend(this_msgs)
+                Query.store(vr, queryId, [], is_shared)
+            msgs.extend(theseMsgs)
         if len(flds):
-            fieldrep = ", ".join(f" {f} = '{flds[f]}'" for f in flds if f != "status")
+            fieldRep = ", ".join(f" {f} = '{flds[f]}'" for f in flds if f != "status")
             sql = f"""
-update query set{fieldrep} where id = {qid}
+update query set{fieldRep} where id = {queryId}
 ;
 """
             db.executesql(sql)
-            clear_cache(cache, r"^items_q_")
+            Caching.clear(cache, r"^items_q_")
         if len(fldx):
-            fieldrep = ", ".join(f" {f} = '{fldx[f]}'" for f in fldx if f != "status")
+            fieldRep = ", ".join(f" {f} = '{fldx[f]}'" for f in fldx if f != "status")
             sql = f"""
-update query_exe set{fieldrep} where query_id = {qid} and version = '{vr}'
+update query_exe set{fieldRep} where query_id = {queryId} and version = '{vr}'
 ;
 """
             db.executesql(sql)
-            clear_cache(cache, f"^items_q_{vr}_")
-        q_record = Query.get_info(
+            Caching.clear(cache, f"^items_q_{vr}_")
+        queryRecord = Query.getInfo(
             auth.user is not None,
-            qid,
+            queryId,
             vr,
             msgs,
-            with_ids=False,
-            single_version=False,
+            withIds=False,
+            singleVersion=False,
             po=True,
         )
 
-    oldeversions = dict((x, 1) for x in emdros_versions[0:-1])
+    oldEmdrosVersions = dict((x, 1) for x in EMDROS_VERSIONS[0:-1])
     return dict(
         data=json.dumps(
-            dict(msgs=msgs, good=good and xgood, q=q_record, oldeversions=oldeversions)
+            dict(
+                msgs=msgs,
+                good=good and exeGood,
+                q=queryRecord,
+                oldEmdrosVersions=oldEmdrosVersions,
+            )
         )
     )
 
 
-def item_access_read(iidrep=getRequestVal("material", "", "iid")):
+def item_access_read(iidRep=getRequestVal("material", "", "iid")):
     mr = getRequestVal("material", "", "mr")
     qw = getRequestVal("material", "", "qw")
     if mr == "m":
@@ -1008,11 +945,11 @@ def item_access_read(iidrep=getRequestVal("material", "", "iid")):
     if qw == "n":
         return (True, "")
     if qw == "q":
-        if iidrep is not None:
-            (iid, kw) = iid_decode(qw, iidrep)
+        if iidRep is not None:
+            (iid, kw) = iDecode(qw, iidRep)
             if iid > 0:
                 return query_auth_read(iid)
-    return (None, f"Not a valid id {iidrep}")
+    return (None, f"Not a valid id {iidRep}")
 
 
 def query_auth_read(iid):
@@ -1025,12 +962,12 @@ def query_auth_read(iid):
 select * from query where id = {iid}
 ;
 """,
-            as_dict=True,
+            asDict=True,
         )
-        q_record = q_records[0] if q_records else {}
-        if q_record:
-            authorized = q_record["is_shared"] or (
-                auth.user is not None and q_record["created_by"] == auth.user.id
+        queryRecord = q_records[0] if q_records else {}
+        if queryRecord:
+            authorized = queryRecord["is_shared"] or (
+                auth.user is not None and queryRecord["created_by"] == auth.user.id
             )
     msg = (
         f"No query with id {iid}"
@@ -1042,15 +979,15 @@ select * from query where id = {iid}
 
 def word_auth_read(vr, iid):
     authorized = None
-    if not iid or vr not in passage_dbs:
+    if not iid or vr not in PASSAGE_DBS:
         authorized = False
     else:
-        words = passage_dbs[vr].executesql(
+        words = PASSAGE_DBS[vr].executesql(
             f"""
 select * from lexicon where id = '{iid}'
 ;
 """,
-            as_dict=True,
+            asDict=True,
         )
         word = words[0] if words else {}
         if word:
@@ -1059,7 +996,7 @@ select * from lexicon where id = '{iid}'
         f"No word with id {iid}"
         if authorized is None
         else f"No data version {vr}"
-        if vr not in passage_dbs
+        if vr not in PASSAGE_DBS
         else ""
     )
     return (authorized, msg)
@@ -1075,12 +1012,12 @@ def query_auth_write(iid):
 select * from query where id = {iid}
 ;
 """,
-            as_dict=True,
+            asDict=True,
         )
-        q_record = q_records[0] if q_records else {}
-        if q_record is not None:
+        queryRecord = q_records[0] if q_records else {}
+        if queryRecord is not None:
             authorized = (
-                auth.user is not None and q_record["created_by"] == auth.user.id
+                auth.user is not None and queryRecord["created_by"] == auth.user.id
             )
     msg = (
         f"No item with id {iid}"

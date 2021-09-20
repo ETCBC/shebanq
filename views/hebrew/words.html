@@ -75,7 +75,7 @@ for t in tables:
 {{ for let in letters[other_lan]:
     lclass = ' ison' if letter == let  and lan == 'arc' else ''
 }}
-    <p class="ctrld d{{=lclass}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='arc', letter=let)))}}</p>
+    <p class="ctld d{{=lclass}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='arc', letter=let)))}}</p>
 {{pass}}
 </td>
 <td>
@@ -83,7 +83,7 @@ for t in tables:
 {{ for let in letters[lan]:
     lclass = ' ison' if letter == let  and lan == 'hbo' else ''
 }}
-    <p class="ctrld d{{=lclass}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='hbo', letter=let)))}}</p>
+    <p class="ctld d{{=lclass}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='hbo', letter=let)))}}</p>
 {{pass}}
 </td>
 <td>

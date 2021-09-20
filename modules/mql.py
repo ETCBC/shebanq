@@ -2,12 +2,12 @@ import sys
 
 sys.path.append("/opt/emdros/lib/emdros")
 import EmdrosPy3 as EmdrosPy  # noqa E402
-from get_db_config import config, emdros_versions  # noqa E402
+from dbconfig import CONFIG, EMDROS_VERSIONS  # noqa E402
 
 db = "shebanq_etcbc"
 
-OLD_EMDROS_VERSIONS = set(emdros_versions[0:-1])
-EMDROS_VERSION = emdros_versions[-1]
+OLD_EMDROS_VERSIONS = set(EMDROS_VERSIONS[0:-1])
+EMDROS_VERSION = EMDROS_VERSIONS[-1]
 
 
 def sanitize(query, msgs):
@@ -22,7 +22,7 @@ def sanitize(query, msgs):
     return result + "\nGO\n"
 
 
-def to_monadsets(setstr):
+def toSlotSets(setstr):
     elems = setstr[2:-2].strip()
     if elems == "":
         return []
@@ -46,29 +46,29 @@ class LimitError(Exception):
         Exception.__init__(self, message)
 
 
-def sheaf_results(sheaf):
-    sh_iter = sheaf.iterator()
+def sheafResults(sheaf):
+    itr = sheaf.iterator()
     n = 0
-    while sh_iter.hasNext():
-        straw = sh_iter.current()
-        n += straw_results(straw)
+    while itr.hasNext():
+        straw = itr.current()
+        n += strawResults(straw)
         if n > ITER_LIMIT:
             raise LimitError("")
-        sh_iter.next()
+        itr.next()
     return n
 
 
-def straw_results(straw):
+def strawResults(straw):
     n = 1
-    st_iter = straw.const_iterator()
-    while st_iter.hasNext():
-        mo = st_iter.current()
+    itr = straw.const_iterator()
+    while itr.hasNext():
+        mo = itr.current()
         if not mo.sheafIsEmpty():
             sheaf = mo.getSheaf()
-            n *= sheaf_results(sheaf)
+            n *= sheafResults(sheaf)
             if n > ITER_LIMIT:
                 raise LimitError("")
-        st_iter.next()
+        itr.next()
     return n
 
 
@@ -76,16 +76,16 @@ def mql(vr, query):
     env = EmdrosPy.EmdrosEnv(
         EmdrosPy.kOKConsole,
         EmdrosPy.kCSUTF8,
-        config["shebanq_host"],
-        config["shebanq_user"],
-        config["shebanq_passwd"],
+        CONFIG["shebanqHost"],
+        CONFIG["shebanqUser"],
+        CONFIG["shebanqPassword"],
         db + vr,
         EmdrosPy.kMySQL,
     )
-    compiler_result = False
+    compilerResult = False
     msgs = []
-    good = env.executeString(sanitize(query, msgs), compiler_result, False, False)[1]
-    limit_exceeded = False
+    good = env.executeString(sanitize(query, msgs), compilerResult, False, False)[1]
+    limitExceeded = False
     if not good:
         msgs.append(("error", env.getCompilerError()))
         return (False, False, None, None, msgs, EMDROS_VERSION)
@@ -100,12 +100,12 @@ def mql(vr, query):
                 return (False, False, 0, [], msgs, EMDROS_VERSION)
             else:
                 try:
-                    n = sheaf_results(sheaf)
+                    n = sheafResults(sheaf)
                 except LimitError:
                     n = ITER_LIMIT
-                    limit_exceeded = True
-                if not limit_exceeded:
-                    ms = to_monadsets(sheaf.getSOM(True).toString())
+                    limitExceeded = True
+                if not limitExceeded:
+                    ms = toSlotSets(sheaf.getSOM(True).toString())
                 else:
                     ms = []
                     msgs.append(
@@ -119,4 +119,4 @@ But: [chapter [word] .. [word] .. [word] ]
 """,
                         )
                     )
-                return (True, limit_exceeded, n, ms, msgs, EMDROS_VERSION)
+                return (True, limitExceeded, n, ms, msgs, EMDROS_VERSION)

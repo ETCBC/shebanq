@@ -3,8 +3,8 @@
 
 import { close_dialog, defcolor } from "./helpers.js"
 
-export class Colorpicker1 {
-  /* the colorpicker associated with individual items
+export class ColorPicker1 {
+  /* the ColorPicker associated with individual items
    *
    * These pickers show up in lists of items (in mq and mw sidebars) and
    * near individual items (in rq and rw sidebars).
@@ -16,17 +16,17 @@ export class Colorpicker1 {
    * of the associated Settings object.
    */
   constructor(qw, iid, is_item, do_highlight) {
-    const { style, vcolors } = Config
+    const { shbStyle, colors } = Config
 
     const pointer = is_item ? "me" : iid
     this.code = is_item ? "1a" : "1"
     this.qw = qw
     this.iid = iid
     this.picker = $(`#picker_${qw}${pointer}`)
-    this.stl = style[qw]["prop"]
+    this.stl = shbStyle[qw]["prop"]
     this.sel = $(`#sel_${qw}${pointer}`)
     this.selw = $(`#sel_${qw}${pointer}>a`)
-    this.selc = $(`#selc_${qw}${pointer}`)
+    this.select = $(`#select_${qw}${pointer}`)
 
     this.sel.click(e => {
       e.preventDefault()
@@ -35,12 +35,12 @@ export class Colorpicker1 {
         closeOnEscape: true,
         modal: true,
         title: "choose a color",
-        position: { my: "right top", at: "left top", of: this.selc },
+        position: { my: "right top", at: "left top", of: this.select },
         width: "200px",
       })
     })
 
-    this.selc.click(() => {
+    this.select.click(() => {
       /* process a click on the selectbox of the picker
        */
       const { qw, iid, picker } = this
@@ -85,7 +85,7 @@ export class Colorpicker1 {
       const elem = $(el)
       const { qw } = this
       const target = qw == "q" ? elem.closest("td") : elem
-      target.css(this.stl, vcolors[elem.html()][qw])
+      target.css(this.stl, colors[elem.html()][qw])
     })
     this.apply(do_highlight)
   }
@@ -96,17 +96,17 @@ export class Colorpicker1 {
   }
 
   apply(do_highlight) {
-    const { vcolors } = Config
+    const { colors } = Config
 
-    const { qw, iid, stl, sel, selc, selw } = this
+    const { qw, iid, stl, sel, select, selw } = this
     const color = P.vs.color(qw, iid) || defcolor(qw == "q", iid)
     const target = qw == "q" ? sel : selw
     if (color) {
-      target.css(stl, vcolors[color][qw])
+      target.css(stl, colors[color][qw])
       /* apply state to the selected cell
        */
     }
-    selc.prop("checked", P.vs.iscolor(qw, iid))
+    select.prop("checked", P.vs.iscolor(qw, iid))
     /* apply state to the checkbox
      */
     if (do_highlight) {
@@ -115,8 +115,8 @@ export class Colorpicker1 {
   }
 }
 
-export class Colorpicker2 {
-  /* the colorpicker associated with the view settings in a sidebar
+export class ColorPicker2 {
+  /* the ColorPicker associated with the view settings in a sidebar
    *
    * These pickers show up at the top of the individual sidebars,
    * only on mq and mw sidebars.
@@ -133,12 +133,12 @@ export class Colorpicker2 {
    * of the associated Settings object.
    */
   constructor(qw, do_highlight) {
-    const { style, vcolors } = Config
+    const { shbStyle, colors } = Config
 
     this.code = "2"
     this.qw = qw
     this.picker = $(`#picker_${qw}one`)
-    this.stl = style[this.qw]["prop"]
+    this.stl = shbStyle[this.qw]["prop"]
     this.sel = $(`#sel_${qw}one`)
     this.selw = $(`#sel_${qw}one>a`)
 
@@ -180,18 +180,18 @@ export class Colorpicker2 {
       const elem = $(el)
       const { qw, stl } = this
       const target = qw == "q" ? elem.closest("td") : elem
-      target.css(stl, vcolors[elem.html()][qw])
+      target.css(stl, colors[elem.html()][qw])
     })
     this.apply(do_highlight)
   }
 
   apply(do_highlight) {
-    const { vcolors } = Config
+    const { colors } = Config
 
     const { qw, stl, sel, selw } = this
     const color = P.vs.sel_one(qw) || defcolor(qw, null)
     const target = qw == "q" ? sel : selw
-    target.css(stl, vcolors[color][qw])
+    target.css(stl, colors[color][qw])
     /* apply state to the selected cell
      */
     if (do_highlight) {

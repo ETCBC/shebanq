@@ -1,5 +1,5 @@
 FIELDNAMES = dict(
-    txt_il="""
+    txtd="""
         word_heb word_ktv word_phono word_vlex word_clex
         word_tran word_lex word_glex word_gloss
         word_nmtp word_subpos word_pos word_pdp word_lang word_number
@@ -14,22 +14,22 @@ FIELDNAMES = dict(
         clause_rela clause_typ clause_txt
         sentence_border sentence_number sentence_atom_number
         """.strip().split(),
-    txt_p="""
+    txtp="""
         word_phono word_phono_sep
         """.strip().split(),
-    txt_tb1="""
+    txt1="""
         word_heb word_ktv word_phono word_phono_sep word_number
         phrase_border phrase_number phrase_function
         sentence_number clause_number clause_atom_number
         clause_atom_tab clause_txt clause_typ
         """.strip().split(),
-    txt_tb2="""
+    txt2="""
         word_heb word_ktv word_phono word_phono_sep word_number
         phrase_border phrase_function
         sentence_number clause_number clause_atom_number
         clause_atom_tab clause_atom_code clause_txt clause_typ
         """.strip().split(),
-    txt_tb3="""
+    txt3="""
         word_heb word_ktv word_phono word_phono_sep word_number
         word_lex word_pos word_gender
         phrase_border
@@ -115,7 +115,7 @@ LEGEND = """
                 ><span class="il l_wd1_lang">language</span></a>&nbsp;&nbsp;
             <input type="checkbox" id="wd1_n" name="wd1_n"/>
                 <a target="_blank" href="#" fname="monads"
-                ><span class="n l_wd1_n">monad#</span></a>
+                ><span class="n l_wd1_n">slot#</span></a>
         </td>
     </tr>
 

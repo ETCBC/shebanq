@@ -12,8 +12,8 @@ Disallow: /shebanq/hebrew/chart
 Disallow: /hebrew/chart
 Disallow: /shebanq/hebrew/item.csv
 Disallow: /hebrew/item.csv
-Disallow: /shebanq/hebrew/cnotes.json
-Disallow: /hebrew/cnotes.json
+Disallow: /shebanq/hebrew/versenotes.json
+Disallow: /hebrew/versenotes.json
 Disallow: /shebanq/hebrew/fields.json
 Disallow: /hebrew/fields.json
 Disallow: /shebanq/user

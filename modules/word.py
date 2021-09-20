@@ -1,20 +1,20 @@
 import collections
 import json
 
-from helpers import collapse_into_ranges, heb_key
+from helpers import collapseToRanges, hebKey
 
 
 class WORD:
-    def __init__(self, Caching, passage_dbs, versions):
+    def __init__(self, Caching, PASSAGE_DBS, VERSIONS):
         self.Caching = Caching
-        self.passage_dbs = passage_dbs
-        self.versions = versions
+        self.PASSAGE_DBS = PASSAGE_DBS
+        self.VERSIONS = VERSIONS
 
-    def get_items(self, vr, chapter):
-        passage_dbs = self.passage_dbs
+    def getItems(self, vr, chapter):
+        PASSAGE_DBS = self.PASSAGE_DBS
 
         return (
-            passage_dbs[vr].executesql(
+            PASSAGE_DBS[vr].executesql(
                 f"""
 select anchor, lexicon_id
 from word_verse
@@ -22,58 +22,58 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
 ;
 """
             )
-            if vr in passage_dbs
+            if vr in PASSAGE_DBS
             else []
         )
 
     def load(self, vr, lexeme_id):
-        passage_dbs = self.passage_dbs
-        monads = (
-            passage_dbs[vr].executesql(
+        PASSAGE_DBS = self.PASSAGE_DBS
+        slots = (
+            PASSAGE_DBS[vr].executesql(
                 f"""
 select anchor from word_verse where lexicon_id = '{lexeme_id}' order by anchor
 ;
 """
             )
-            if vr in passage_dbs
+            if vr in PASSAGE_DBS
             else []
         )
-        return collapse_into_ranges(monads)
+        return collapseToRanges(slots)
 
     def group(self, vr, occurrences):
-        passage_dbs = self.passage_dbs
+        PASSAGE_DBS = self.PASSAGE_DBS
 
-        if vr not in passage_dbs:
+        if vr not in PASSAGE_DBS:
             return []
-        wids = collections.defaultdict(lambda: [])
+        wordIds = collections.defaultdict(lambda: [])
         for x in occurrences:
-            wids[x[1]].append(x[0])
+            wordIds[x[1]].append(x[0])
         r = []
-        if len(wids):
-            widsrep = ",".join("'{x}'" for x in wids)
-            wsql = f"""
-select * from lexicon where id in ({widsrep})
+        if len(wordIds):
+            wordIdsRep = ",".join("'{x}'" for x in wordIds)
+            wordSql = f"""
+select * from lexicon where id in ({wordIdsRep})
 ;
 """
-            wordrecords = sorted(
-                passage_dbs[vr].executesql(wsql, as_dict=True),
-                key=lambda x: heb_key(x["entryid_heb"]),
+            wordRecords = sorted(
+                PASSAGE_DBS[vr].executesql(wordSql, asDict=True),
+                key=lambda x: hebKey(x["entryid_heb"]),
             )
-            for w in wordrecords:
-                r.append({"item": w, "monads": json.dumps(wids[w["id"]])})
+            for w in wordRecords:
+                r.append({"item": w, "slots": json.dumps(wordIds[w["id"]])})
         return r
 
-    def get_info(self, iid, vr, msgs):
-        passage_dbs = self.passage_dbs
-        versions = self.versions
+    def getInfo(self, iid, vr, msgs):
+        PASSAGE_DBS = self.PASSAGE_DBS
+        VERSIONS = self.VERSIONS
 
         sql = f"""
 select * from lexicon where id = '{iid}'
 ;
 """
-        w_record = dict(id=iid, versions={})
-        for v in versions:
-            records = passage_dbs[v].executesql(sql, as_dict=True)
+        wordRecord = dict(id=iid, versions={})
+        for v in VERSIONS:
+            records = PASSAGE_DBS[v].executesql(sql, asDict=True)
             if records is None:
                 msgs.append(
                     ("error", f"Cannot lookup word with id {iid} in version {v}")
@@ -81,26 +81,26 @@ select * from lexicon where id = '{iid}'
             elif len(records) == 0:
                 msgs.append(("warning", f"No word with id {iid} in version {v}"))
             else:
-                w_record["versions"][v] = records[0]
-        return w_record
+                wordRecord["versions"][v] = records[0]
+        return wordRecord
 
     def get_data(self, vr):
-        passage_dbs = self.passage_dbs
+        PASSAGE_DBS = self.PASSAGE_DBS
 
-        if vr not in passage_dbs:
+        if vr not in PASSAGE_DBS:
             return ({}, {})
-        ddata = sorted(
-            passage_dbs[vr].executesql(
+        hebrewData = sorted(
+            PASSAGE_DBS[vr].executesql(
                 """
 select id, entry_heb, entryid_heb, lan, gloss from lexicon
 ;
 """
             ),
-            key=lambda x: (x[3], heb_key(x[2])),
+            key=lambda x: (x[3], hebKey(x[2])),
         )
         letters = dict(arc=[], hbo=[])
         words = dict(arc={}, hbo={})
-        for (wid, e, eid, lan, gloss) in ddata:
+        for (wid, e, eid, lan, gloss) in hebrewData:
             letter = ord(e[0])
             if letter not in words[lan]:
                 letters[lan].append(letter)

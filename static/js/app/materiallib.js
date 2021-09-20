@@ -2,7 +2,7 @@
 /* globals Config, P, State */
 
 import { close_dialog, escHT } from "./helpers.js"
-import { Colorpicker2 } from "./colorpicker.js"
+import { ColorPicker2 } from "./colorpicker.js"
 
 export class MMessage {
   /* diagnostic output
@@ -34,10 +34,10 @@ export class MContent {
   }
 
   show() {
-    const { next_tp } = Config
+    const { nextTp } = Config
 
     const this_tp = P.vs.tp()
-    for (const tp in next_tp) {
+    for (const tp in nextTp) {
       const this_material = $(`#material_${tp}`)
       if (this_tp == tp) {
         this_material.show()
@@ -55,18 +55,18 @@ export class MContent {
 export class MSettings {
   constructor(content) {
     const {
-      featurehost,
-      next_tp,
-      next_tr,
-      tab_info,
-      tab_views,
-      tr_info,
-      tr_labels,
+      featureHost,
+      nextTp,
+      nextTr,
+      tabInfo,
+      tabViews,
+      trInfo,
+      trLabels,
       versions,
     } = Config
 
-    const hltext = $("#mtxt_p")
-    const hltabbed = $("#mtxt_tb1")
+    const hltext = $("#mtxtp")
+    const hltabbed = $("#mtxt1")
     this.legend = $("#datalegend")
     this.legendc = $("#datalegend_control")
     this.name = "material_settings"
@@ -83,7 +83,7 @@ export class MSettings {
         .find("a[fname]")
         .each((i, el) => {
           const elem = $(el)
-          const url = `${featurehost}/${elem.attr("fname")}`
+          const url = `${featureHost}/${elem.attr("fname")}`
           elem.attr("href", url)
         })
       this.legend.dialog({
@@ -101,14 +101,14 @@ export class MSettings {
       const elem = $(e.delegateTarget)
       const old_tp = P.vs.tp()
       let new_tp = elem.attr("id").substring(1)
-      if (old_tp == "txt_p") {
+      if (old_tp == "txtp") {
         if (old_tp == new_tp) {
           return
         }
       } else if (old_tp == new_tp) {
-        new_tp = next_tp[old_tp]
-        if (new_tp == "txt_p") {
-          new_tp = next_tp[new_tp]
+        new_tp = nextTp[old_tp]
+        if (new_tp == "txtp") {
+          new_tp = nextTp[new_tp]
         }
       }
       P.vs.mstatesv({ tp: new_tp })
@@ -136,7 +136,7 @@ export class MSettings {
       const old_tr = P.vs.tr()
       let new_tr = elem.attr("id").substring(1)
       if (old_tr == new_tr) {
-        new_tr = next_tr[old_tr]
+        new_tr = nextTr[old_tr]
       }
 
       P.vs.mstatesv({ tr: new_tr })
@@ -144,9 +144,9 @@ export class MSettings {
       this.apply()
     })
 
-    for (let i = 1; i <= tab_views; i++) {
-      const mc = $(`#mtxt_tb${i}`)
-      mc.attr("title", tab_info[`txt_tb${i}`])
+    for (let i = 1; i <= tabViews; i++) {
+      const mc = $(`#mtxt${i}`)
+      mc.attr("title", tabInfo[`txt${i}`])
       if (i == 1) {
         mc.show()
       } else {
@@ -154,10 +154,10 @@ export class MSettings {
       }
     }
 
-    for (const l in tr_labels) {
-      const t = tr_info[l]
+    for (const l in trLabels) {
+      const t = trInfo[l]
       const mc = $(`#m${t}`)
-      mc.attr("title", tr_labels[t])
+      mc.attr("title", trLabels[t])
       if (l == "hb") {
         mc.show()
       } else {
@@ -167,7 +167,7 @@ export class MSettings {
   }
 
   apply() {
-    const { tab_views } = Config
+    const { tabViews } = Config
 
     const hlradio = $(".mhradio")
     const plradio = $(".mtradio")
@@ -177,10 +177,10 @@ export class MSettings {
     const newp = $(`#m${new_tr}`)
     hlradio.removeClass("ison")
     plradio.removeClass("ison")
-    if (new_tp != "txt_p" && new_tp != "txt_il") {
-      for (let i = 1; i <= tab_views; i++) {
-        const mc = $(`#mtxt_tb${i}`)
-        if (`txt_tb${i}` == new_tp) {
+    if (new_tp != "txtp" && new_tp != "txtd") {
+      for (let i = 1; i <= tabViews; i++) {
+        const mc = $(`#mtxt${i}`)
+        if (`txt${i}` == new_tp) {
           mc.show()
         } else {
           mc.hide()
@@ -273,7 +273,7 @@ export class LSettings {
     } = P
 
     if (qw != "n") {
-      this.picker2 = new Colorpicker2(this.qw, false)
+      this.picker2 = new ColorPicker2(this.qw, false)
       const hlradio = $(`.${qw}hradio`)
       hlradio.click(e => {
         e.preventDefault()

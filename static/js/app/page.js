@@ -62,10 +62,10 @@ export class Page {
     History.Adapter.bind(window, "statechange", this.vs.goback.bind(this.vs))
     this.picker2 = {}
     this.picker1 = { q: {}, w: {} }
-    /* will collect the two Colorpicker1 objects, indexed as q w
+    /* will collect the two ColorPicker1 objects, indexed as q w
      */
     this.picker1list = { q: {}, w: {} }
-    /* will collect the two lists of Colorpicker1 objects,
+    /* will collect the two lists of ColorPicker1 objects,
      * index as q w and then by iid
      */
   }
@@ -74,16 +74,16 @@ export class Page {
     /* the heights of the sidebars are set, depending on the height of the window
      */
     const subtractm = 150
-    const { tab_views } = Config
+    const { tabViews } = Config
     const window_height = window.innerHeight
     this.window_height = window_height
     const standard_height = window_height - subtractm
     this.standard_height = standard_height
     this.half_standard_height = `${0.4 * standard_height}px`
 
-    $("#material_txt_p").css("height", `${standard_height}px`)
-    for (let i = 1; i <= tab_views; i++) {
-      $(`#material_txt_tb${i}`).css("height", `${standard_height}px`)
+    $("#material_txtp").css("height", `${standard_height}px`)
+    for (let i = 1; i <= tabViews; i++) {
+      $(`#material_txt${i}`).css("height", `${standard_height}px`)
     }
     $("#side_material_mq").css("max-height", `${0.6 * standard_height}px`)
     $("#side_material_mw").css("max-height", `${0.35 * standard_height}px`)
@@ -120,13 +120,13 @@ export class Page {
   }
 
   reset_material_status() {
-    const { tab_views } = Config
+    const { tabViews } = Config
 
-    this.material_fetched = { txt_p: false }
-    this.material_kind = { txt_p: "" }
-    for (let i = 1; i <= tab_views; i++) {
-      this.material_fetched[`txt_tb${i}`] = false
-      this.material_kind[`txt_tb${i}`] = ""
+    this.material_fetched = { txtp: false }
+    this.material_kind = { txtp: "" }
+    for (let i = 1; i <= tabViews; i++) {
+      this.material_fetched[`txt${i}`] = false
+      this.material_kind[`txt${i}`] = ""
     }
   }
 
@@ -148,35 +148,35 @@ export class Page {
   }
 
   set_csv(vr, mr, qw, iid, extraGiven) {
-    const { tp_labels, style } = Config
+    const { tpLabels, shbStyle } = Config
 
     if (mr == "r") {
-      const tasks = { t: "txt_p", d: "txt_il" }
+      const tasks = { t: "txtp", d: "txtd" }
       if (qw != "n") {
         tasks["b"] = P.vs.tp()
       }
 
       for (const task in tasks) {
         const tp = tasks[task]
-        const tpLab = tp_labels[tp]
-        const csvctrl = $(`#csv${task}_lnk_${vr}_${qw}`)
-        if (task != "b" || (tp != "txt_p" && tp != "txt_il")) {
-          const ctit = csvctrl.attr("ftitle")
+        const tpLab = tpLabels[tp]
+        const csvctl = $(`#csv${task}_lnk_${vr}_${qw}`)
+        if (task != "b" || (tp != "txtp" && tp != "txtd")) {
+          const tit = csvctl.attr("ftitle")
           let extra
           if (extraGiven == undefined) {
-            extra = csvctrl.attr("extra")
+            extra = csvctl.attr("extra")
           } else {
-            csvctrl.attr("extra", extraGiven)
+            csvctl.attr("extra", extraGiven)
             extra = extraGiven
           }
-          csvctrl.attr("href", P.vs.csv_url(vr, mr, qw, iid, tp, extra))
-          csvctrl.attr(
+          csvctl.attr("href", P.vs.csvUrl(vr, mr, qw, iid, tp, extra))
+          csvctl.attr(
             "title",
-            `${vr}_${style[qw]["t"]}_${iid}_${extra}_${tpLab}.csv${ctit} (${tpLab})`
+            `${vr}_${shbStyle[qw]["t"]}_${iid}_${extra}_${tpLab}.csv${tit} (${tpLab})`
           )
-          csvctrl.show()
+          csvctl.show()
         } else {
-          csvctrl.hide()
+          csvctl.hide()
         }
       }
     }
@@ -244,7 +244,7 @@ export class Page {
         The only reduction is that word highlighting is completely orthogonal
         to query result highlighting.
     */
-    const { style } = Config
+    const { shbStyle } = Config
 
     const { qw, iid, code } = origin
     const { muting_q } = L
@@ -262,7 +262,7 @@ export class Page {
     const activeo = $(`#${qw}${active}`)
     hlradio.removeClass("ison")
     activeo.addClass("ison")
-    const cmap = vs.colormap(qw)
+    const colorMap = vs.colormap(qw)
 
     const paintings = {}
 
@@ -278,9 +278,9 @@ export class Page {
        * coming from the associated ColorPicker1
        * This is simple coloring, using a single color.
        */
-      const paint = cmap[iid] || defcolor(qw == "q", iid)
+      const paint = colorMap[iid] || defcolor(qw == "q", iid)
       if (qw == "q") {
-        $($.parseJSON($("#themonads").val())).each((i, m) => {
+        $($.parseJSON($("#theslots").val())).each((i, m) => {
           paintings[m] = paint
         })
       } else if (qw == "w") {
@@ -292,9 +292,9 @@ export class Page {
 
     /* all other cases: highlights on an m-page, responding to a user action
      * This is complex coloring, using multiple colors.
-     * First we determine which monads need to be highlighted.
+     * First we determine which slots need to be highlighted.
      */
-    const selclr = P.vs.sel_one(qw)
+    const selectColor = P.vs.sel_one(qw)
     const custitems = {}
     const plainitems = {}
 
@@ -311,11 +311,11 @@ export class Page {
         const elem = $(el)
         const iid = elem.attr("iid")
         if (!muting_q.isSet(`${iid}`)) {
-          const monads = $.parseJSON($(`#${qw}${iid}`).attr("monads"))
+          const slots = $.parseJSON($(`#${qw}${iid}`).attr("slots"))
           if (P.vs.iscolor(qw, iid)) {
-            custitems[iid] = monads
+            custitems[iid] = slots
           } else {
-            plainitems[iid] = monads
+            plainitems[iid] = slots
           }
         }
       })
@@ -341,48 +341,48 @@ export class Page {
     const chunks = [custitems, plainitems]
 
     const clselect = iid => {
-      /* assigns a color to an individual monad, based on the viewsettings
+      /* assigns a color to an individual slot, based on the viewsettings
        */
       let paint = ""
       if (active == "hloff") {
-        paint = style[qw]["off"]
+        paint = shbStyle[qw]["off"]
       } /*
                 viewsetting says: do not color any item */ else if (
         active == "hlone"
       ) {
-        paint = selclr
+        paint = selectColor
       } else if (active == "hlmany") {
         /* viewsetting says: color every applicable item with the same color */
-        paint = cmap[iid] || defcolor(qw == "q", iid)
+        paint = colorMap[iid] || defcolor(qw == "q", iid)
       } else if (active == "hlcustom") {
         /* viewsetting says:
          * color every item with customized color (if customized)
          * else with query/word-dependent default color
          */
-        paint = cmap[iid] || selclr
+        paint = colorMap[iid] || selectColor
       } else {
         /* viewsetting says:
          * color every item with customized color (if customized)
          * else with a single chosen color
          */
-        paint = selclr
+        paint = selectColor
       } /*
                 but this should not occur */
       return paint
     }
 
     if (qw == "q") {
-      /* Queries: compute the monads to be painted and the colors needed for it
+      /* Queries: compute the slots to be painted and the colors needed for it
        */
       for (let c = 0; c < 2; c++) {
         const chunk = chunks[c]
         for (const iid in chunk) {
           const color = clselect(iid)
-          const monads = chunk[iid]
-          for (const m in monads) {
-            const monad = monads[m]
-            if (!(monad in paintings)) {
-              paintings[monad] = color
+          const slots = chunk[iid]
+          for (const m in slots) {
+            const slot = slots[m]
+            if (!(slot in paintings)) {
+              paintings[slot] = color
             }
           }
         }
@@ -393,7 +393,7 @@ export class Page {
       for (let c = 0; c < 2; c++) {
         const chunk = chunks[c]
         for (const iid in chunk) {
-          let color = style[qw]["off"]
+          let color = shbStyle[qw]["off"]
           if (c == 0) {
             /* do not color the plain items when dealing with words
              * (as opposed to queries)
@@ -407,10 +407,10 @@ export class Page {
     /* maybe the selection of words of queries has changed for the same material,
      * so wipe previous coloring
      */
-    const monads = $("#material span[m]")
-    const stl = style[qw]["prop"]
-    const clr_off = style[qw]["off"]
-    monads.css(stl, clr_off)
+    const slots = $("#material span[m]")
+    const stl = shbStyle[qw]["prop"]
+    const clr_off = shbStyle[qw]["off"]
+    slots.css(stl, clr_off)
 
     /* finally, the computed colors are applied */
     this.paint(qw, paintings)
@@ -419,14 +419,14 @@ export class Page {
   paint(qw, paintings) {
     /* Execute a series of computed paint instructions
      */
-    const { style, vcolors } = Config
+    const { shbStyle, colors } = Config
 
-    const stl = style[qw]["prop"]
+    const stl = shbStyle[qw]["prop"]
     const container = `#material_${P.vs.tp()}`
     const att = qw == "q" ? "m" : "l"
     for (const item in paintings) {
       const color = paintings[item]
-      $(`${container} span[${att}="${item}"]`).css(stl, vcolors[color][qw])
+      $(`${container} span[${att}="${item}"]`).css(stl, colors[color][qw])
     }
   }
 }

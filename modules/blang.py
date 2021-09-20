@@ -1,7 +1,7 @@
 BIBLANG = "Hebrew"
 
 
-booklangs = {
+BOOK_LANGS = {
     "Hebrew": dict(
         la=("latin", "Latina"),
         en=("english", "English"),
@@ -31,7 +31,7 @@ booklangs = {
         yo=("yoruba", "èdè Yorùbá"),
     ),
 }
-booknames = {
+BOOK_NAMES = {
     "Hebrew": dict(
         la=tuple(
             """
@@ -1156,9 +1156,9 @@ booknames = {
 
 # make a translation table from latin book names (the ETCBC ones)
 # to the specific languages
-booktrans = {}
-for lng in booknames[BIBLANG]:
-    for (i, book) in enumerate(booknames[BIBLANG][lng]):
-        booktrans.setdefault(lng, {})[booknames[BIBLANG]["la"][i]] = book
+BOOK_TRANS = {}
+for lng in BOOK_NAMES[BIBLANG]:
+    for (i, book) in enumerate(BOOK_NAMES[BIBLANG][lng]):
+        BOOK_TRANS.setdefault(lng, {})[BOOK_NAMES[BIBLANG]["la"][i]] = book
 
-bknames = ",".join(sorted(booknames[BIBLANG]))
+BK_NAMES = ",".join(sorted(BOOK_NAMES[BIBLANG]))

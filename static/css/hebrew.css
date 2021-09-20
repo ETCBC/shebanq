@@ -308,11 +308,11 @@ th.booklang {
    this is needed for good scrolling on ios devices. Without it, scrolling is either not smooth, or not possible at all on
    mobile safari
 */
-#material_txt_p,#material_txt_tb1,#material_txt_tb2,#material_txt_tb3,#queries,#recentq,#notes,#opqforms,#opqctrl,#words,#letters {
+#material_txtp,#material_txt1,#material_txt2,#material_txt3,#queries,#recentq,#notes,#opqforms,#opqctl,#words,#letters {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 }
-#opqforms,#opqctrl {
+#opqforms,#opqctl {
     display: none;
 }
 #recentq {
@@ -373,7 +373,7 @@ td#theqid {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctrl.ison,.fa.ctrlb.ison,.fa.ctrli.ison,.fa.ctrld.ison,.fa.ctrll.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctl.ison,.fa.ctlexpand.ison,.fa.ctli.ison,.fa.ctld.ison,.fa.ctll.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
@@ -441,24 +441,24 @@ table.hlsettings {
 
 /* CONTROLS */
 
-.ctrl {
+.ctl {
     border-radius: 6pt;
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
     padding: 2pt;
 }
-.ctrlb {
+.ctlexpand {
     border-radius: 0pt;
     border: 0pt solid #ffffff;
     background-color: #fafffa;
     padding: 0pt;
 }
-.ctrli {
+.ctli {
     border-radius: 6pt;
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
 }
-.source.ctrli {
+.source.ctli {
     padding: 1pt;
     background-color: #ffffff;
     font-size: large;
@@ -467,13 +467,13 @@ table.hlsettings {
     display: inline;
     vertical-align: text-bottom;
 }
-.ctrld {
+.ctld {
     border-radius: 4pt;
     border: 1pt solid #eeeeee;
     padding-top: 1pt;
     padding-bottom: 1pt;
 }
-.ctrll {
+.ctll {
     border-radius: 8pt;
     border: 1pt solid #dde6dd;
     background-color: #eef1ee;
@@ -515,7 +515,7 @@ table.hlsettings {
     background-color: #eef1ee;
     padding: 2pt;
 }
-.pnll, .form_l, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
+.pnll, .formquery, #side_bar_mq, #side_bar_mw, #side_bar_rq, #side_bar_rw, #querybody {
     border-radius: 12pt;
     border: 1pt solid #dde6dd;
     background-color: #eef1ee;
@@ -589,10 +589,10 @@ td.cw a {
     padding-left: 4pt;
     padding-right: 4pt;
 }
-.picked.cc_sel_q {
+.picked.colorselect_q {
     color: #000000;
 }
-.picked.cc_sel_w {
+.picked.colorselect_w {
     background-color: #fafafa;
     font-size: large;
     font-weight: bold;
@@ -673,7 +673,7 @@ div.desc_dia {
 div.descm {
     background-color: #fefbfe;
 }
-.fa.ctrl,.fa.ctrlb,.fa.ctrli,.fa.ctrld,.fa.ctrll {
+.fa.ctl,.fa.ctlexpand,.fa.ctli,.fa.ctld,.fa.ctll {
     color: #000000;
 }
 span.ir {
@@ -714,7 +714,7 @@ tr.nt_cmt td {
     border-left: 1px solid #bbbbbb;
     border-right: 1px solid #bbbbbb;
 }
-div.nt_main_ctrl {
+div.nt_main_ctl {
     font-family: Verdana, Arial, sans-serif;
     text-align: left;
     unicode-bidi: embed;
@@ -729,11 +729,11 @@ div.nt_main_ctrl {
 .nt_muted {
     color: #ff00ff;
 }
-span.nt_ctrl {
+span.nt_ctl {
     font-family: Verdana, Arial, sans-serif;
     text-align: left;
 }
-a.nt_ctrl {
+a.nt_ctl {
     border-radius: 6pt;
     border: 1pt solid #dde6dd;
     background-color: #fafffa;
@@ -975,7 +975,7 @@ dd.lv3 {
 
 /* HEBREW DATA */
 
-.txt_p,.txt_tb1,.txt_tb2,.txt_tb3 {
+.txtp,.txt1,.txt2,.txt3 {
     color: #000000;
 }
 .heb {
@@ -1006,15 +1006,15 @@ div.pho,td.pho,p.pho {
     margin-left: 0.5em;
     margin-right: 0em;
 }
-div.txt_tb1,div.txt_tb2,div.txt_tb3 {
+div.txt1,div.txt2,div.txt3 {
     border-bottom: 1px solid #bbbbbb;
     padding-bottom: 0.2em;
     padding-top: 0.2em;
 }
-.txt_il {
+.txtd {
     text-align: right;
 }
-.txt_il_base {
+.txtd_base {
     font-family: Verdana, Arial, sans-serif;
     font-size: small;
 }

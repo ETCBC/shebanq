@@ -4,22 +4,21 @@ from verse import Verse
 
 
 class CHUNK:
-    def __init__(self, Caching, passage_dbs, versions):
+    def __init__(self, Caching, PASSAGE_DBS):
         self.Caching = Caching
-        self.passage_dbs = passage_dbs
-        self.versions = versions
+        self.PASSAGE_DBS = PASSAGE_DBS
 
-    def get_books(self, vr):
+    def getBooks(self, vr):
         Caching = self.Caching
 
-        return Caching.get(f"books_{vr}_", lambda: self.get_books_c(vr), None)
+        return Caching.get(f"books_{vr}_", lambda: self.getBooks_c(vr), None)
 
-    def get_books_c(self, vr):
+    def getBooks_c(self, vr):
         # get book information: number of chapters per book
-        passage_dbs = self.passage_dbs
+        PASSAGE_DBS = self.PASSAGE_DBS
 
-        if vr in passage_dbs:
-            books_data = passage_dbs[vr].executesql(
+        if vr in PASSAGE_DBS:
+            booksData = PASSAGE_DBS[vr].executesql(
                 """
 select book.id, book.name, max(chapter_num)
 from chapter inner join book
@@ -27,36 +26,36 @@ on chapter.book_id = book.id group by name order by book.id
 ;
 """
             )
-            books_order = [x[1] for x in books_data]
-            books = dict((x[1], x[2]) for x in books_data)
-            book_id = dict((x[1], x[0]) for x in books_data)
-            book_name = dict((x[0], x[1]) for x in books_data)
-            result = (books, books_order, book_id, book_name)
+            booksOrder = [x[1] for x in booksData]
+            books = dict((x[1], x[2]) for x in booksData)
+            bookId = dict((x[1], x[0]) for x in booksData)
+            bookName = dict((x[0], x[1]) for x in booksData)
+            result = (books, booksOrder, bookId, bookName)
         else:
             result = ({}, [], {}, {})
         return result
 
-    def get_verse_simple(self, vr, bk, ch, vs):
+    def getVerseSimple(self, vr, bk, ch, vs):
         Caching = self.Caching
 
         return Caching.get(
             f"versej_{vr}_{bk}_{ch}_{vs}_",
-            lambda: self.get_verse_simple_c(vr, bk, ch, vs),
+            lambda: self.getVerseSimple_c(vr, bk, ch, vs),
             None,
         )
 
-    def get_verse_simple_c(self, vr, bk, ch, vs):
-        passage_dbs = self.passage_dbs
+    def getVerseSimple_c(self, vr, bk, ch, vs):
+        PASSAGE_DBS = self.PASSAGE_DBS
 
-        passage_db = passage_dbs[vr] if vr in passage_dbs else None
+        passageDb = PASSAGE_DBS[vr] if vr in PASSAGE_DBS else None
         msgs = []
         good = True
         data = dict()
-        if passage_db is None:
+        if passageDb is None:
             msgs.append(("Error", f"No such version: {vr}"))
             good = False
         if good:
-            verse_info = passage_db.executesql(
+            verseInfo = passageDb.executesql(
                 f"""
 select verse.id, verse.text from verse
 inner join chapter on verse.chapter_id=chapter.id
@@ -65,13 +64,13 @@ where book.name = '{bk}' and chapter.chapter_num = {ch} and verse_num = {vs}
 ;
 """
             )
-            if len(verse_info) == 0:
+            if len(verseInfo) == 0:
                 msgs.append(("Error", f"No such verse: {bk} {ch}:{vs}"))
                 good = False
             else:
-                data = verse_info[0]
+                data = verseInfo[0]
                 vid = data[0]
-                word_info = passage_db.executesql(
+                wordInfo = passageDb.executesql(
                     f"""
 select word.word_phono, word.word_phono_sep
 from word
@@ -83,36 +82,36 @@ order by word_number
 """
                 )
                 data = dict(
-                    text=data[1], phonetic="".join(x[0] + x[1] for x in word_info)
+                    text=data[1], phonetic="".join(x[0] + x[1] for x in wordInfo)
                 )
         return json.dumps(dict(good=good, msgs=msgs, data=data), ensure_ascii=False)
 
-    def get_verse(self, vr, bk, ch, vs, tr, msgs):
+    def getVerse(self, vr, bk, ch, vs, tr, msgs):
         Caching = self.Caching
 
         return Caching.get(
             f"verse_{vr}_{bk}_{ch}_{vs}_{tr}_",
-            lambda: self.get_verse_c(vr, bk, ch, vs, tr, msgs),
+            lambda: self.getVerse_c(vr, bk, ch, vs, tr, msgs),
             None,
         )
 
-    def get_verse_c(self, vr, bk, ch, vs, tr, msgs):
-        passage_dbs = self.passage_dbs
+    def getVerse_c(self, vr, bk, ch, vs, tr, msgs):
+        PASSAGE_DBS = self.PASSAGE_DBS
 
         material = Verse(
-            passage_dbs,
+            PASSAGE_DBS,
             vr,
             bk,
             ch,
             vs,
             xml=None,
-            word_data=None,
-            tp="txt_il",
+            wordData=None,
+            tp="txtd",
             tr=tr,
             mr=None,
         )
         good = True
-        if len(material.word_data) == 0:
+        if len(material.wordData) == 0:
             msgs.append(("error", f"{bk} {ch}:{vs} does not exist"))
             good = False
         result = dict(
@@ -122,46 +121,46 @@ order by word_number
         )
         return result
 
-    def get_clause_atom_fmonad(self, vr):
+    def getClauseAtomFirstSlot(self, vr):
         Caching = self.Caching
 
         return Caching.get(
             f"clause_atom_f_{vr}_",
-            lambda: self.get_clause_atom_fmonad_c(vr),
+            lambda: self.getClauseAtomFirstSlot_c(vr),
             None,
         )
 
-    def get_clause_atom_fmonad_c(self, vr):
-        passage_dbs = self.passage_dbs
+    def getClauseAtomFirstSlot_c(self, vr):
+        PASSAGE_DBS = self.PASSAGE_DBS
 
-        (books, books_order, book_id, book_name) = self.get_books(vr)
+        (books, booksOrder, bookId, bookName) = self.getBooks(vr)
         sql = """
 select book_id, ca_num, first_m
 from clause_atom
 ;
 """
-        ca_data = passage_dbs[vr].executesql(sql) if vr in passage_dbs else []
-        clause_atom_first = {}
-        for (bid, can, fm) in ca_data:
-            bnm = book_name[bid]
-            clause_atom_first.setdefault(bnm, {})[can] = fm
-        return clause_atom_first
+        caData = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
+        caFirst = {}
+        for (bid, can, fm) in caData:
+            bnm = bookName[bid]
+            caFirst.setdefault(bnm, {})[can] = fm
+        return caFirst
 
-    def get_clause_atoms(self, vr, bk, ch, vs):
+    def getClauseAtoms(self, vr, bk, ch, vs):
         Caching = self.Caching
         return Caching.get(
             f"clause_atoms_{vr}_{bk}_{ch}_{vs}_",
-            lambda: self.get_clause_atoms_c(vr, bk, ch, vs),
+            lambda: self.getClauseAtoms_c(vr, bk, ch, vs),
             None,
         )
 
-    def get_clause_atoms_c(self, vr, bk, ch, vs):
+    def getClauseAtoms_c(self, vr, bk, ch, vs):
         # get clauseatoms for each verse
-        passage_dbs = self.passage_dbs
+        PASSAGE_DBS = self.PASSAGE_DBS
 
-        clause_atoms = []
-        ca_data = (
-            passage_dbs[vr].executesql(
+        clauseAtoms = []
+        caData = (
+            PASSAGE_DBS[vr].executesql(
                 f"""
 select
    distinct word.clause_atom_number
@@ -182,10 +181,10 @@ order by
 ;
 """
             )
-            if vr in passage_dbs
+            if vr in PASSAGE_DBS
             else []
         )
 
-        for (can,) in ca_data:
-            clause_atoms.append(can)
-        return clause_atoms
+        for (can,) in caData:
+            clauseAtoms.append(can)
+        return clauseAtoms

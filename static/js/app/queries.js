@@ -38,10 +38,10 @@ class Recent {
   }
 
   fetch() {
-    const { queriesr_url } = Config
+    const { queriesrUrl } = Config
 
     this.msgqr.msg(["info", "fetching recent queries ..."])
-    $.post(queriesr_url, {}, json => {
+    $.post(queriesrUrl, {}, json => {
       this.loaded = true
       this.msgqr.clear()
       const { msgs, good, queries } = json
@@ -236,11 +236,11 @@ class Filter {
     $(".qfradio").removeClass("ison")
     qsview.remove("filter_mode")
     $("#filter_clear").hide()
-    $("#amatches").html("")
-    $("#cmatches").html("")
-    $("#qmatches").html("")
-    $("#mmatches").html("")
-    $("#rmatches").html("")
+    $("#allmatches").html("")
+    $("#branchmatches").html("")
+    $("#querymatches").html("")
+    $("#mymatches").html("")
+    $("#privatematches").html("")
     $("#count_o").html(rdata.o)
     $("#count_p").html(rdata.p)
     $("#count_u").html(rdata.u)
@@ -251,17 +251,17 @@ class Filter {
     const { in_my, in_private, patc } = this
     const pat = patc.val()
     qsview.set("filter_pat", pat)
-    let amatches = 0
-    let cmatches = 0
-    let qmatches = 0
-    let mmatches = 0
-    let rmatches = 0
+    let allMatches = 0
+    let branchMatches = 0
+    let queryMatches = 0
+    let myMatches = 0
+    let privateMatches = 0
     if (pat == "") {
-      amatches = -1
-      cmatches = -1
-      qmatches = -1
-      mmatches = -1
-      rmatches = -1
+      allMatches = -1
+      branchMatches = -1
+      queryMatches = -1
+      myMatches = -1
+      privateMatches = -1
     }
     $(".qfradio").removeClass("ison")
     if (kind == "m") {
@@ -282,20 +282,20 @@ class Filter {
 
     ftree.level.expand_all()
     if (kind == "a") {
-      amatches = ftree.ftw.filterNodes(pat, false)
-      $("#amatches").html(amatches >= 0 ? `(${amatches})` : "")
+      allMatches = ftree.ftw.filterNodes(pat, false)
+      $("#allmatches").html(allMatches >= 0 ? `(${allMatches})` : "")
     } else if (kind == "c") {
-      cmatches = ftree.ftw.filterBranches(pat)
-      $("#cmatches").html(cmatches >= 0 ? `(${cmatches})` : "")
+      branchMatches = ftree.ftw.filterBranches(pat)
+      $("#branchmatches").html(branchMatches >= 0 ? `(${branchMatches})` : "")
     } else if (kind == "q") {
-      qmatches = ftree.ftw.filterNodes(pat, true)
-      $("#qmatches").html(qmatches >= 0 ? `(${qmatches})` : "")
+      queryMatches = ftree.ftw.filterNodes(pat, true)
+      $("#querymatches").html(queryMatches >= 0 ? `(${queryMatches})` : "")
     } else if (kind == "m") {
-      mmatches = ftree.ftw.filterNodes(in_my(pat), true)
-      $("#mmatches").html(mmatches >= 0 ? `(${mmatches})` : "")
+      myMatches = ftree.ftw.filterNodes(in_my(pat), true)
+      $("#mymatches").html(myMatches >= 0 ? `(${myMatches})` : "")
     } else if (kind == "r") {
-      rmatches = ftree.ftw.filterNodes(in_private(pat), true)
-      $("#rmatches").html(rmatches >= 0 ? `(${rmatches})` : "")
+      privateMatches = ftree.ftw.filterNodes(in_private(pat), true)
+      $("#privatematches").html(privateMatches >= 0 ? `(${privateMatches})` : "")
     }
     $("#filter_clear").show()
     const submatch = "span.fancytree-submatch"
@@ -329,7 +329,7 @@ class Filter {
 
 class Tree {
   constructor() {
-    const { pq_url } = Config
+    const { pqUrl } = Config
     const { muting_q: muting } = L
 
     this.tps = { o: "organization", p: "project", q: "query" }
@@ -355,7 +355,7 @@ class Tree {
         types: "expanded selected",
       },
       source: {
-        url: pq_url,
+        url: pqUrl,
         dataType: "json",
       },
       filter: {
@@ -410,7 +410,7 @@ class Tree {
     const canvas_right = $(".right-sidebar")
     canvas_left.css("height", `${standard_height}px`)
     $("#queries").css("height", `${standard_height}px`)
-    $("#opqctrl").css("height", `${control_height}px`)
+    $("#opqctl").css("height", `${control_height}px`)
     canvas_right.css("height", `${standard_height}px`)
   }
 
@@ -439,13 +439,13 @@ class Tree {
   }
 
   dress_queries() {
-    const { q_url } = Config
+    const { qUrl } = Config
     $("#queries a.md").addClass("fa fa-level-down")
     $("#queries a[qid]").each((i, el) => {
       const elem = $(el)
       const vr = elem.attr("v")
       const extra = vr == undefined ? "" : `&version=${vr}`
-      elem.attr("href", `${q_url}?iid=${elem.attr("qid")}${extra}&page=1&mr=r&qw=q`)
+      elem.attr("href", `${qUrl}?iid=${elem.attr("qid")}${extra}&page=1&mr=r&qw=q`)
     })
     $("#queries a.md").click(e => {
       e.preventDefault()
@@ -462,7 +462,7 @@ class Tree {
   }
 
   record(tp, o, update, view) {
-    const { record_url, q_url } = Config
+    const { recordUrl, qUrl } = Config
 
     const lid = $(`#id_${tp}`).val()
     if (!update && lid == "0" && tp != "q") {
@@ -488,7 +488,7 @@ class Tree {
     }
 
     $.post(
-      record_url,
+      recordUrl,
       senddata,
       json => {
         const {
@@ -627,7 +627,7 @@ class Tree {
         if (update && good && tp == "q") {
           $("#continue_q").attr(
             "href",
-            `${q_url}?iid=${$("#id_q").val()}&page=1&mr=r&qw=q`
+            `${qUrl}?iid=${$("#id_q").val()}&page=1&mr=r&qw=q`
           )
           $("#continue_q").show()
         } else {
@@ -639,10 +639,10 @@ class Tree {
   }
 
   do_edit_controls_q() {
-    const ctlo = $("#new_ctrl_o")
-    const ctlp = $("#new_ctrl_p")
-    const ctlxo = $("#newx_ctrl_o")
-    const ctlxp = $("#newx_ctrl_p")
+    const ctlo = $("#new_ctl_o")
+    const ctlp = $("#new_ctl_p")
+    const ctlxo = $("#newx_ctl_o")
+    const ctlxp = $("#newx_ctl_p")
     const detailo = $(".detail_o")
     const detailp = $(".detail_p")
     const existo = $("#fo_q")
@@ -686,18 +686,18 @@ class Tree {
   }
 
   hide_new_q(lid, tp) {
-    $(`#new_ctrl_${tp}`).show()
-    $(`#newx_ctrl_${tp}`).hide()
+    $(`#new_ctl_${tp}`).show()
+    $(`#newx_ctl_${tp}`).hide()
     $(`.detail_${tp}`).hide()
     $(`#f${tp}_q`).show()
     this.do_new[tp] = false
   }
 
   do_view_controls_q() {
-    const ctlo = $("#new_ctrl_o")
-    const ctlp = $("#new_ctrl_p")
-    const ctlxo = $("#newx_ctrl_o")
-    const ctlxp = $("#newx_ctrl_p")
+    const ctlo = $("#new_ctl_o")
+    const ctlp = $("#new_ctl_p")
+    const ctlxo = $("#newx_ctl_o")
+    const ctlxp = $("#newx_ctl_p")
     const detailo = $(".detail_o")
     const detailp = $(".detail_p")
     detailo.hide()
@@ -710,8 +710,8 @@ class Tree {
 
   do_create(tp, obj) {
     msgopq.clear()
-    $(".form_l").hide()
-    $(".ctrl_l").hide()
+    $(".formquery").hide()
+    $(".ctlquery").hide()
     $(`#title_${tp}`).html("New")
     $(`#name_${tp}`).val("")
     let o = null
@@ -730,9 +730,9 @@ class Tree {
     $(`#id_${tp}`).val(0)
     this.record(tp, o, false, false)
     $("#opqforms").show()
-    $("#opqctrl").show()
+    $("#opqctl").show()
     $(`#form_${tp}`).show()
-    $(`#ctrl_${tp}`).show()
+    $(`#ctl_${tp}`).show()
     $(".old").hide()
   }
 
@@ -755,15 +755,15 @@ class Tree {
     this.moditem = obj.closest("span")
     msgopq.clear()
     msgopq.msg(["info", "loading ..."])
-    $(".form_l").hide()
-    $(".ctrl_l").hide()
+    $(".formquery").hide()
+    $(".ctlquery").hide()
     $(`#title_${tp}`).html("Modify")
     $(`#id_${tp}`).val(lid)
     this.record(tp, o, false, false)
     $("#opqforms").show()
-    $("#opqctrl").show()
+    $("#opqctl").show()
     $(`#form_${tp}`).show()
-    $(`#ctrl_${tp}`).show()
+    $(`#ctl_${tp}`).show()
     $(".old").show()
   }
 
@@ -783,13 +783,13 @@ class Tree {
     }
     msgopq.clear()
     msgopq.msg(["info", "loading ..."])
-    $(".form_l").hide()
-    $(".ctrl_l").hide()
+    $(".formquery").hide()
+    $(".ctlquery").hide()
     $(`#title_${tp}`).html("View")
     $(`#id_${tp}`).val(lid)
     this.record(tp, o, false, true)
     $("#opqforms").show()
-    $("#opqctrl").show()
+    $("#opqctl").show()
     $(`#form_${tp}`).show()
     if (tp == "o" || tp == "p") {
       $(`#nameline_${tp}`).hide()
@@ -849,8 +849,8 @@ class Tree {
 
   viewinit() {
     $("#lmsg").show()
-    $(".form_l").hide()
-    $(".ctrl_l").hide()
+    $(".formquery").hide()
+    $(".ctlquery").hide()
     $(".treehl").removeClass("treehl")
     this.select_hide()
   }
@@ -910,7 +910,7 @@ class Tree {
     }
     for (const t in this.tps) {
       $(`#form_${t}`).hide()
-      $(`#ctrl_${t}`).hide()
+      $(`#ctl_${t}`).hide()
       viewtp(t)
       if (t == "q") {
         select_init("o")
@@ -973,7 +973,7 @@ class Tree {
         $(".treehl").removeClass("treehl")
         this.select_hide()
         $(`#form_${tp}`).hide()
-        $(`#ctrl_${tp}`).hide()
+        $(`#ctl_${tp}`).hide()
       })
       $(`#done_${tp}`).click(e => {
         e.preventDefault()
@@ -981,7 +981,7 @@ class Tree {
         this.record(tp, null, true, false)
         this.select_hide()
         $(`#form_${tp}`).hide()
-        $(`#ctrl_${tp}`).hide()
+        $(`#ctl_${tp}`).hide()
       })
       $("#reload_tree").click(e => {
         e.preventDefault()
@@ -990,20 +990,20 @@ class Tree {
     }
     for (const t in this.tps) {
       $(`#form_${t}`).hide()
-      $(`#ctrl_${t}`).hide()
+      $(`#ctl_${t}`).hide()
       createtp(t)
       updatetp(t)
       formtp(t)
     }
   }
 
-  gotoquery(qid) {
-    if (qid != undefined && qid != "0") {
-      const qnode = this.ftw.getNodeByKey(`q${qid}`)
+  gotoquery(queryId) {
+    if (queryId != undefined && queryId != "0") {
+      const qnode = this.ftw.getNodeByKey(`q${queryId}`)
       if (qnode != undefined) {
         qnode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")
-        $(`a[qid=${qid}]`).closest("span").addClass("treehl")
+        $(`a[qid=${queryId}]`).closest("span").addClass("treehl")
         $(qnode.li)[0].scrollIntoView({
           behavior: "smooth",
         })
