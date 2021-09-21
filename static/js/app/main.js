@@ -13,9 +13,9 @@ const setup = () => {
   /* top level, called when the page has loaded
    * inserts the Config global var
    */
-  const { viewinit, pref } = Config
+  const { viewInit, pref } = Config
   window.L = new LStorage
-  window.P = new Page(new ViewState(viewinit, pref))
+  window.P = new Page(new ViewState(viewInit, pref))
 }
 
 const dynamics = () => {

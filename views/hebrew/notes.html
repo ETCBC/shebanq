@@ -2,7 +2,7 @@
 {{ right_sidebar_enabled = True }}
 {{extend 'layout.html'}}
 
-<input type="hidden" id="nkid" value="{{=nkid}}"/>
+<input type="hidden" id="key_id" value="{{=key_id}}"/>
 <div id="notes"></div>
 
 {{ block left_sidebar }}
@@ -31,14 +31,14 @@
 <p><a class="ctl nlradio" href="#" id="level_">manual</a></p>
 
 <script src="{{=URL('static','js/jquery.fancytree-all.min.js')}}"></script>
-<script type="text/javascript">{{=XML(viewsettings.writeConfig())}}</script>
+<script type="text/javascript">{{=XML(ViewSettings.writeConfig())}}</script>
 <script src="{{=URL('static', 'js/app/notes.js')}}" type="module"></script>
 
 {{ end }}
 
 {{ block right_sidebar }}
 
-{{if not may_upload:}}
+{{if not mayUpload:}}
 <h4>Bulk note upload through csv</h4>
 <p>You are not allowed to upload csv files with notes.
 Please contact <a href="mailto:shebanq@ancient-data.org">shebanq@ancient-data.org</a> for permissions.</p>
@@ -48,9 +48,9 @@ Please contact <a href="mailto:shebanq@ancient-data.org">shebanq@ancient-data.or
 <p>Here are the
 <a target="_blank" href="https://github.com/ETCBC/shebanq/wiki/Notes-Bulk">specifications</a>.
 </p>
-{{if may_upload:}}
+{{if mayUpload:}}
 <form method="post" id="fileinfo" name="fileinfo">
-    <input type="hidden" name="uid" value="{{=uid}}"/>
+    <input type="hidden" name="userid" value="{{=userid}}"/>
     <label>Choose csv file:</label> <input type="file" name="file" id="ncsv" required />
 </form>
 <p><a class="ctl" id="ncsv_upload" href='#'>upload and process</a></p>

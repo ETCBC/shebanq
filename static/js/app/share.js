@@ -193,7 +193,7 @@ $(() => {
   })
   $("#clip_pv_cn").click(e => {
     e.preventDefault()
-    const shebanqUrl_raw = `${pageViewUrl}${P.vs.getvars()}&pref=alt`
+    const shebanqUrl_raw = `${pageViewUrl}${P.viewState.getvars()}&pref=alt`
     const slink = $("#self_link")
     slink.show()
     slink.attr("href", shebanqUrl_raw)
@@ -226,23 +226,23 @@ $(() => {
   })
   st.click(e => {
     e.preventDefault()
-    const shebanqUrl_raw = `${pageViewUrl}${P.vs.getvars()}&pref=alt`
+    const shebanqUrl_raw = `${pageViewUrl}${P.viewState.getvars()}&pref=alt`
     let shebanqUrl_note
     let shebanqUrl_rawc
     const shebanqUrl_note_pref = "shebanq:"
 
-    const { version: vr, mr, qw, vs, iid } = P
-    const tp = vs.tp()
-    const tr = vs.tr()
-    const w = vs.get("w")
-    const q = vs.get("q")
-    const n = vs.get("n")
+    const { version: vr, mr, qw, viewState, iid } = P
+    const tp = viewState.tp()
+    const tr = viewState.tr()
+    const w = viewState.get("w")
+    const q = viewState.get("q")
+    const n = viewState.get("n")
     const thebook = $("#thebook").html()
     const thechapter = $("#thechapter").html()
-    const book = vs.book()
-    const chapter = vs.chapter()
-    const verse = vs.verse()
-    const page = vs.page()
+    const book = viewState.book()
+    const chapter = viewState.chapter()
+    const verse = viewState.verse()
+    const page = viewState.page()
     const shebanqUrl_show_vars = `"&version=${vr}&mr=${mr}&qw=${qw}&tp=${tp}&tr=${tr}`
     const shebanqUrl_side_vars = `&wget=${w}&qget=${q}&nget=${n}`
     const sv = `${shebanqUrl_show_vars}${shebanqUrl_side_vars}`
@@ -272,17 +272,17 @@ $(() => {
       const iinfo = P.sidebars.sidebar[`r${qw}`].content.info
       if (qw == "q") {
         const {
-          ufname,
-          ulname,
+          first_name,
+          last_name,
           name,
           is_shared,
-          is_published: is_pub,
+          is_published,
           versions,
         } = iinfo
-        pvtitle = `${ufname} ${ulname}: ${name}`
+        pvtitle = `${first_name} ${last_name}: ${name}`
         const qstatus = versions[vr].status
         if (is_shared) {
-          if (!is_pub) {
+          if (!is_published) {
             $(".clip_qx.clr").addClass("warning")
             $("#diagpub").addClass("warning")
             $("#diagpub").html(
@@ -330,11 +330,11 @@ $(() => {
         $(".clip_w").show()
         $(".clip_n").hide()
       } else if (qw == "n") {
-        const { ufname, ulname, kw } = iinfo
-        const ufnamex = escHT(ufname)
-        const ulnamex = escHT(ulname)
-        const kwx = escHT(kw)
-        pvtitle = `${ufnamex} ${ulnamex} - ${kwx}`
+        const { first_name, last_name, keywords } = iinfo
+        const first_nameX = escHT(first_name)
+        const last_nameX = escHT(last_name)
+        const kwx = escHT(keywords)
+        pvtitle = `${first_nameX} ${last_nameX} - ${kwx}`
         const quotevUrl = `${noteUrl}?version=${vr}&id=${iid}&tp=txt1&nget=v`
         $("#clip_n_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
         $("#clip_n_ht").attr("lnk", quotevUrl)

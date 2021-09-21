@@ -21,10 +21,10 @@ class QUERYTREE:
         myId = None
         if auth.user:
             myId = auth.user.id
-        labelInfo = collections.defaultdict(lambda: {})
+        objInfo = collections.defaultdict(lambda: {})
 
-        def titleBadge(lid, ltype, publ, good, num, tot):
-            name = labelInfo[ltype][lid] if ltype is not None else "Shared Queries"
+        def titleBadge(obj_id, objType, publ, good, num, tot):
+            name = objInfo[objType][obj_id] if objType is not None else "Shared Queries"
             nums = []
             if publ != 0:
                 nums.append(f'<span class="special fa fa-quote-right"> {publ}</span>')
@@ -32,26 +32,33 @@ class QUERYTREE:
                 nums.append(f'<span class="good fa fa-gears"> {good}</span>')
             badge = ""
             if len(nums) == 0:
-                nrep = ", ".join(nums)
+                nRep = ", ".join(nums)
                 if tot == num:
-                    badge = f'<span class="total">{nrep}</span>'
+                    badge = f'<span class="total">{nRep}</span>'
                 else:
-                    badge = f'{nrep} of <span class="total">{tot}</span>'
+                    badge = f'{nRep} of <span class="total">{tot}</span>'
             else:
                 if tot == num:
-                    badge = f'{nrep} of <span class="total">{num}</span>'
+                    badge = f'{nRep} of <span class="total">{num}</span>'
                 else:
-                    badge = f'{nrep} of {num} of all <span class="total">{tot}</span>'
+                    badge = f'{nRep} of {num} of all <span class="total">{tot}</span>'
             rename = ""
             select = ""
-            if ltype in {"o", "p"}:
+            if objType in {"o", "p"}:
                 if myId is not None:
-                    if lid:
-                        rename = f'<a class="r_{ltype}" lid="{lid}" href="#"></a>'
-                    select = f'<a class="s_{ltype} fa fa-lg" lid="{lid}" href="#"></a>'
+                    if obj_id:
+                        rename = (
+                            f'<a class="r_{objType}" obj_id="{obj_id}" href="#"></a>'
+                        )
+                    select = (
+                        f"""<a
+class="s_{objType} fa fa-lg" obj_id="{obj_id}" href="#"></a>"""
+                    )
                 else:
-                    if lid:
-                        rename = f'<a class="v_{ltype}" lid="{lid}" href="#"></a>'
+                    if obj_id:
+                        rename = (
+                            f'<a class="v_{objType}" obj_id="{obj_id}" href="#"></a>'
+                        )
             return f"""{select}
 <span n="1">{hEsc(name)}</span><span class="brq">({badge})</span> {rename}"""
 
@@ -80,12 +87,12 @@ inner join query on query.id = query_exe.query_id
 
         projectQuerySql = f"""
 select
-    query.id as qid,
-    organization.name as oname, organization.id as oid,
-    project.name as pname, project.id as pid,
+    query.id as query_id,
+    organization.name as org_name, organization.id as org_id,
+    project.name as project_name, project.id as project_id,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname,
-    auth_user.id as uid,
-    query.name as qname, query.is_shared as is_shared
+    auth_user.id as user_id,
+    query.name as query_name, query.is_shared as is_shared
 from query
 inner join auth_user on query.created_by = auth_user.id
 inner join project on query.project = project.id
@@ -103,26 +110,26 @@ query.name
         projectQueryX = db.executesql(projectQueryXSql)
         projectQueries = collections.OrderedDict()
         for (
-            queryId,
+            query_id,
             orgName,
-            orgId,
+            org_id,
             projectName,
-            projectId,
+            project_id,
             userName,
-            userId,
+            user_id,
             queryName,
             queryShared,
         ) in projectQuery:
             qSharedStatus = queryShared == "T"
-            qOwnStatus = userId == myId
-            projectQueries[queryId] = {
+            qOwnStatus = user_id == myId
+            projectQueries[query_id] = {
                 "": (
                     orgName,
-                    orgId,
+                    org_id,
                     projectName,
-                    projectId,
+                    project_id,
                     userName,
-                    userId,
+                    user_id,
                     queryName,
                     qSharedStatus,
                     qOwnStatus,
@@ -132,22 +139,22 @@ query.name
                 "v": [4 for v in VERSION_ORDER],
             }
         for (
-            queryId,
+            query_id,
             vr,
-            queryIsPub,
-            queryPubOn,
-            queryModOn,
-            queryExeOn,
+            queryIs_published,
+            queryPublished_on,
+            queryMod_on,
+            queryExe_on,
         ) in projectQueryX:
-            queryInfo = projectQueries[queryId]
+            queryInfo = projectQueries[query_id]
             queryExeStatus = None
-            if queryExeOn:
-                queryExeStatus = queryExeOn >= queryModOn
+            if queryExe_on:
+                queryExeStatus = queryExe_on >= queryMod_on
             queryPubStatus = (
                 False
-                if queryIsPub != "T"
+                if queryIs_published != "T"
                 else None
-                if queryPubOn > now - PUBLISH_FREEZE
+                if queryPublished_on > now - PUBLISH_FREEZE
                 else True
             )
             queryStatus = (
@@ -208,126 +215,126 @@ select name, id from project order by name
         count = 0
         countPub = 0
         countGood = 0
-        for queryId in projectQueries:
-            projectQueryInfo = projectQueries[queryId]
+        for query_id in projectQueries:
+            projectQueryInfo = projectQueries[query_id]
             (
                 orgName,
-                orgId,
+                org_id,
                 projectName,
-                projectId,
+                project_id,
                 userName,
-                userId,
+                user_id,
                 queryName,
                 queryShared,
                 queryOwn,
             ) = projectQueryInfo[""]
             queryPub = projectQueryInfo["publ"]
             queryGood = projectQueryInfo["good"]
-            countSet["o"].add(orgId)
-            countSet["p"].add(projectId)
-            countSet["u"].add(userId)
-            countSet["q"].add(queryId)
-            labelInfo["o"][orgId] = orgName
-            labelInfo["p"][projectId] = projectName
-            labelInfo["u"][userId] = userName
+            countSet["o"].add(org_id)
+            countSet["p"].add(project_id)
+            countSet["u"].add(user_id)
+            countSet["q"].add(query_id)
+            objInfo["o"][org_id] = orgName
+            objInfo["p"][project_id] = projectName
+            objInfo["u"][user_id] = userName
             if queryOwn:
-                countSet["m"].add(queryId)
+                countSet["m"].add(query_id)
             if not queryShared:
-                countSet["r"].add(queryId)
+                countSet["r"].add(query_id)
             if queryPub:
-                countUserPub[orgId][projectId][userId] += 1
-                countProjectPub[orgId][projectId] += 1
-                countOrgPub[orgId] += 1
+                countUserPub[org_id][project_id][user_id] += 1
+                countProjectPub[org_id][project_id] += 1
+                countOrgPub[org_id] += 1
                 countPub += 1
             if queryGood:
-                countUserGood[orgId][projectId][userId] += 1
-                countProjectGood[orgId][projectId] += 1
-                countOrgGood[orgId] += 1
+                countUserGood[org_id][project_id][user_id] += 1
+                countProjectGood[org_id][project_id] += 1
+                countOrgGood[org_id] += 1
                 countGood += 1
-            tree.setdefault(orgId, collections.OrderedDict()).setdefault(
-                projectId, collections.OrderedDict()
-            ).setdefault(userId, []).append(queryId)
+            tree.setdefault(org_id, collections.OrderedDict()).setdefault(
+                project_id, collections.OrderedDict()
+            ).setdefault(user_id, []).append(query_id)
             count += 1
-            countOrg[orgId] += 1
-            countProject[orgId][projectId] += 1
-            countUser[orgId][projectId][userId] += 1
-            countOrgTotal[orgId] += 1
-            countProjectTotal[projectId] += 1
-            countUserTotal[userId] += 1
+            countOrg[org_id] += 1
+            countProject[org_id][project_id] += 1
+            countUser[org_id][project_id][user_id] += 1
+            countOrgTotal[org_id] += 1
+            countProjectTotal[project_id] += 1
+            countUserTotal[user_id] += 1
 
-        labelInfo["o"][0] = "Projects without Queries"
-        labelInfo["p"][0] = "New Project"
-        labelInfo["u"][0] = ""
-        labelInfo["q"] = projectQueries
+        objInfo["o"][0] = "Projects without Queries"
+        objInfo["p"][0] = "New Project"
+        objInfo["u"][0] = ""
+        objInfo["q"] = projectQueries
         countOrg[0] = 0
         countProject[0][0] = 0
-        for (orgName, orgId) in porg:
-            if orgId in labelInfo["o"]:
+        for (orgName, org_id) in porg:
+            if org_id in objInfo["o"]:
                 continue
-            countSet["o"].add(orgId)
-            labelInfo["o"][orgId] = orgName
-            tree[orgId] = collections.OrderedDict()
+            countSet["o"].add(org_id)
+            objInfo["o"][org_id] = orgName
+            tree[org_id] = collections.OrderedDict()
 
-        for (projectName, projectId) in project:
-            if projectId in labelInfo["p"]:
+        for (projectName, project_id) in project:
+            if project_id in objInfo["p"]:
                 continue
             countSet["o"].add(0)
-            countSet["p"].add(projectId)
-            labelInfo["p"][projectId] = projectName
+            countSet["p"].add(project_id)
+            objInfo["p"][project_id] = projectName
             tree.setdefault(0, collections.OrderedDict())[
-                projectId
+                project_id
             ] = collections.OrderedDict()
 
         categoryCount = dict((x[0], len(x[1])) for x in countSet.items())
-        categoryCount["userId"] = myId
+        categoryCount["user_id"] = myId
         title = titleBadge(None, None, countPub, countGood, count, count)
         dest = [dict(title=str(title), folder=True, children=[], data=categoryCount)]
         curDest = dest[-1]["children"]
         curSource = tree
-        for orgId in curSource:
-            orgN = countOrg[orgId]
-            orgPub = countOrgPub[orgId]
-            orgGood = countOrgGood[orgId]
-            orgTot = countOrgTotal[orgId]
-            orgTitle = titleBadge(orgId, "o", orgPub, orgGood, orgN, orgTot)
+        for org_id in curSource:
+            orgN = countOrg[org_id]
+            orgPub = countOrgPub[org_id]
+            orgGood = countOrgGood[org_id]
+            orgTot = countOrgTotal[org_id]
+            orgTitle = titleBadge(org_id, "o", orgPub, orgGood, orgN, orgTot)
             curDest.append(dict(title=str(orgTitle), folder=True, children=[]))
             curOrgDest = curDest[-1]["children"]
-            curOrgSource = curSource[orgId]
-            for projectId in curOrgSource:
-                projectN = countProject[orgId][projectId]
-                projectPub = countProjectPub[orgId][projectId]
-                projectPub = countProjectGood[orgId][projectId]
-                projectTot = countProjectTotal[projectId]
+            curOrgSource = curSource[org_id]
+            for project_id in curOrgSource:
+                projectN = countProject[org_id][project_id]
+                projectPub = countProjectPub[org_id][project_id]
+                projectPub = countProjectGood[org_id][project_id]
+                projectTot = countProjectTotal[project_id]
                 projectTitle = titleBadge(
-                    projectId, "p", projectPub, projectPub, projectN, projectTot
+                    project_id, "p", projectPub, projectPub, projectN, projectTot
                 )
                 curOrgDest.append(
                     dict(title=str(projectTitle), folder=True, children=[])
                 )
                 curProjectDest = curOrgDest[-1]["children"]
-                curProjectSource = curOrgSource[projectId]
-                for userId in curProjectSource:
-                    userN = countUser[orgId][projectId][userId]
-                    userPub = countUserPub[orgId][projectId][userId]
-                    userGood = countUserGood[orgId][projectId][userId]
-                    userTot = countUserTotal[userId]
+                curProjectSource = curOrgSource[project_id]
+                for user_id in curProjectSource:
+                    userN = countUser[org_id][project_id][user_id]
+                    userPub = countUserPub[org_id][project_id][user_id]
+                    userGood = countUserGood[org_id][project_id][user_id]
+                    userTot = countUserTotal[user_id]
                     userTitle = titleBadge(
-                        userId, "u", userPub, userGood, userN, userTot
+                        user_id, "u", userPub, userGood, userN, userTot
                     )
                     curProjectDest.append(
                         dict(title=str(userTitle), folder=True, children=[])
                     )
                     curUserDest = curProjectDest[-1]["children"]
-                    curUserSource = curProjectSource[userId]
-                    for queryId in curUserSource:
-                        projectQueryInfo = labelInfo["q"][queryId]
+                    curUserSource = curProjectSource[user_id]
+                    for query_id in curUserSource:
+                        projectQueryInfo = objInfo["q"][query_id]
                         (
                             orgName,
-                            orgId,
+                            org_id,
                             projectName,
-                            projectId,
+                            project_id,
                             userName,
-                            userId,
+                            user_id,
                             queryName,
                             queryShared,
                             queryOwn,
@@ -338,12 +345,12 @@ select name, id from project order by name
                         queryOwnRep = "r" if queryOwn else "v"
                         queryMyRep = ("qmy" if queryOwn else "",)
                         querySharedRep = "" if queryShared else "qpriv"
-                        queryIdRep = (iEncode("q", queryId),)
+                        queryIdRep = (iEncode("q", query_id),)
                         rename = f"""<a
-class="{queryOwnRep}_q" lid="{queryIdRep}" href="#"></a>"""
+class="{queryOwnRep}_q" obj_id="{queryIdRep}" href="#"></a>"""
                         versionRep = " ".join(
                             formatVersion(
-                                "q", queryId, v, queryVersions[VERSION_INDEX[v]]
+                                "q", query_id, v, queryVersions[VERSION_INDEX[v]]
                             )
                             for v in VERSION_ORDER
                         )
@@ -351,9 +358,9 @@ class="{queryOwnRep}_q" lid="{queryIdRep}" href="#"></a>"""
                             dict(
                                 title=f"""{versionRep} <a
 class="q {queryMyRep} {querySharedRep}"
-n="1" qid="{queryId}" href="#">{hEsc(queryName)}</a>
+n="1" query_id="{query_id}" href="#">{hEsc(queryName)}</a>
 <a class="md" href="#"></a> {rename}""",
-                                key=f"q{queryId}",
+                                key=f"q{query_id}",
                                 folder=False,
                             )
                         )

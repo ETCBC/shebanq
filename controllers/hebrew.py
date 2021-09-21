@@ -4,18 +4,24 @@ from gluon.custom_import import track_changes
 
 import json
 
-from checks import TPS
+from constants import TPS
 
 from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
 from helpers import (
-    Viewsettings,
-    colorPicker,
     getRequestVal,
     iDecode,
     debug,
     countSlots,
 )
-from viewdefs import getFields, TP_LABELS, TR_INFO, TR_LABELS, TAB_VIEWS, SHB_STYLE
+from viewdefs import (
+    colorPicker,
+    getFields,
+    TP_LABELS,
+    TR_INFO,
+    TR_LABELS,
+    TAB_VIEWS,
+    SHB_STYLE,
+)
 
 from boiler import LEGEND
 
@@ -32,6 +38,7 @@ from querychapter import QUERYCHAPTER
 from side import SIDE
 from chart import CHART
 from csvdata import CSVDATA
+from viewsettings import VIEWSETTINGS
 
 from mql import mql
 from dbconfig import EMDROS_VERSIONS
@@ -72,7 +79,7 @@ def text():
         QueryChapter.makeQCindex(vr)
 
     return dict(
-        viewsettings=Viewsettings(Chunk, URL, VERSIONS),
+        ViewSettings=VIEWSETTINGS(Chunk, URL, VERSIONS),
         colorPicker=colorPicker,
         legend=LEGEND,
         TP_LABELS=TP_LABELS,
@@ -93,7 +100,7 @@ def material():
     tr = getRequestVal("material", "", "tr")
     lang = getRequestVal("material", "", "lang")
     iidRep = getRequestVal("material", "", "iid")
-    (authorized, msg) = item_access_read(iidRep=iidRep)
+    (authorized, msg) = authReadItem(iidRep=iidRep)
     if not authorized:
         return dict(
             version=vr,
@@ -167,9 +174,9 @@ def sidem():
     qw = getRequestVal("material", "", "qw")
     bk = getRequestVal("material", "", "book")
     ch = getRequestVal("material", "", "chapter")
-    pub = getRequestVal("highlights", qw, "pub") if qw != "w" else ""
-    debug(f"cached function PUB={pub}")
-    return Side.get(vr, qw, bk, ch, pub)
+    is_published = getRequestVal("highlights", qw, "pub") if qw != "w" else ""
+    debug(f"cached function PUB={is_published}")
+    return Side.get(vr, qw, bk, ch, is_published)
 
 
 def word():
@@ -186,13 +193,13 @@ def query():
     request.vars["mr"] = "r"
     request.vars["qw"] = "q"
     if request.extension == "json":
-        (authorized, msg) = item_access_read(iidRep=iidRep)
+        (authorized, msg) = authReadItem(iidRep=iidRep)
         if not authorized:
             result = dict(good=False, msg=[msg], data={})
         else:
             vr = getRequestVal("material", "", "version")
             msgs = []
-            (iid, kw) = iDecode("q", iidRep)
+            (iid, keywords) = iDecode("q", iidRep)
             qrecord = Query.getInfo(
                 False, iid, vr, msgs, withIds=False, singleVersion=False, po=True
             )
@@ -225,16 +232,16 @@ def item():
         extra = "_" + extra
     if len(extra) > 64:
         extra = extra[0:64]
-    (iid, kw) = iDecode(qw, iidRep)
+    (iid, keywords) = iDecode(qw, iidRep)
     iidRep2 = iDecode(qw, iidRep, rsep=" ")
     fileName = f"{vr}_{SHB_STYLE[qw]['t']}{iidRep2}_{TP_LABELS[tp]}{extra}.csv"
-    (authorized, msg) = item_access_read(iidRep=iidRep)
+    (authorized, msg) = authReadItem(iidRep=iidRep)
 
     if not authorized:
         return dict(fileName=fileName, data=msg)
 
     hebrewFields = getFields(tp, qw=qw)
-    data = CsvData(vr, iid, kw, hebrewFields)
+    data = CsvData(vr, iid, keywords, hebrewFields)
     return dict(fileName=fileName, data=data)
 
 
@@ -243,7 +250,7 @@ def chart():  # controller to produce a chart of query results or lexeme occurre
     vr = getRequestVal("material", "", "version")
     iidRep = getRequestVal("material", "", "iid")
     qw = getRequestVal("material", "", "qw")
-    (authorized, msg) = item_access_read(iidRep=iidRep)
+    (authorized, msg) = authReadItem(iidRep=iidRep)
     if not authorized:
         result = Chart.compose(vr, [])
         result.update(qw=qw)
@@ -255,7 +262,7 @@ def sidewm():
     session.forget(response)
     iidRep = getRequestVal("material", "", "iid")
     vr = getRequestVal("material", "", "version")
-    (authorized, msg) = item_access_read(iidRep=iidRep)
+    (authorized, msg) = authReadItem(iidRep=iidRep)
     if authorized:
         msg = "fetching word"
     return dict(
@@ -276,7 +283,7 @@ def sideqm():
     session.forget(response)
     iidRep = getRequestVal("material", "", "iid")
     vr = getRequestVal("material", "", "version")
-    (authorized, msg) = item_access_read(iidRep=iidRep)
+    (authorized, msg) = authReadItem(iidRep=iidRep)
     if authorized:
         msg = "fetching query"
     return dict(
@@ -321,8 +328,8 @@ def sidew():
     msgs = []
     vr = getRequestVal("material", "", "version")
     iidRep = getRequestVal("material", "", "iid")
-    (iid, kw) = iDecode("w", iidRep)
-    (authorized, msg) = word_auth_read(vr, iid)
+    (iid, keywords) = iDecode("w", iidRep)
+    (authorized, msg) = authReadWord(vr, iid)
     if not authorized:
         msgs.append(("error", msg))
         return dict(
@@ -346,8 +353,8 @@ def sideq():
     msgs = []
     iidRep = getRequestVal("material", "", "iid")
     vr = getRequestVal("material", "", "version")
-    (iid, kw) = iDecode("q", iidRep)
-    (authorized, msg) = query_auth_read(iid)
+    (iid, keywords) = iDecode("q", iidRep)
+    (authorized, msg) = authReadQuery(iid)
     if iid == 0 or not authorized:
         msgs.append(("error", msg))
         return dict(
@@ -357,7 +364,7 @@ def sideq():
             qr=dict(),
             q=json.dumps(dict()),
             msgs=json.dumps(msgs),
-            oldEmdrosVersions=set(EMDROS_VERSIONS[0:-1]),
+            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
         )
     queryRecord = Query.getInfo(
         auth.user is not None,
@@ -376,10 +383,10 @@ def sideq():
             qr=dict(),
             q=json.dumps(dict()),
             msgs=json.dumps(msgs),
-            oldEmdrosVersions=set(EMDROS_VERSIONS[0:-1]),
+            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
         )
 
-    (authorized, msg) = query_auth_write(iid=iid)
+    (authorized, msg) = authWriteQuery(iid=iid)
 
     return dict(
         writable=authorized,
@@ -388,7 +395,7 @@ def sideq():
         qr=queryRecord,
         q=json.dumps(queryRecord),
         msgs=json.dumps(msgs),
-        oldEmdrosVersions=set(EMDROS_VERSIONS[0:-1]),
+        emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
     )
 
 
@@ -399,7 +406,7 @@ def siden():
     msgs = []
     vr = getRequestVal("material", "", "version")
     iidRep = getRequestVal("material", "", "iid")
-    (iid, kw) = iDecode("n", iidRep)
+    (iid, keywords) = iDecode("n", iidRep)
     if not iid:
         msg = f"Not a valid id {iid}"
         msgs.append(("error", msg))
@@ -419,44 +426,44 @@ def siden():
 
 def words():
     session.forget(response)
-    viewsettings = Viewsettings(Chunk, URL, VERSIONS)
+    ViewSettings = VIEWSETTINGS(Chunk, URL, VERSIONS)
     vr = getRequestVal("material", "", "version", default=False)
     if not vr:
-        vr = viewsettings.theversion()
+        vr = ViewSettings.theversion()
     lan = getRequestVal("rest", "", "lan")
     letter = getRequestVal("rest", "", "letter")
-    return Word.page(viewsettings, vr, lan=lan, letter=letter)
+    return Word.page(ViewSettings, vr, lan=lan, letter=letter)
 
 
 def queries():
     session.forget(response)
     msgs = []
-    queryId = Check.isId("goto", "q", "query", msgs)
-    if queryId is not None:
-        if not query_auth_read(queryId):
-            queryId = 0
+    query_id = Check.isId("goto", "q", "query", msgs)
+    if query_id is not None:
+        if not authReadQuery(query_id):
+            query_id = 0
     return dict(
-        viewsettings=Viewsettings(Chunk, URL, VERSIONS),
-        queryId=queryId,
+        ViewSettings=VIEWSETTINGS(Chunk, URL, VERSIONS),
+        query_id=query_id,
     )
 
 
 def notes():
     session.forget(response)
     msgs = []
-    nkid = Check.isId("goto", "n", "note", msgs)
-    (may_upload, myId) = check_upload()
+    key_id = Check.isId("goto", "n", "note", msgs)
+    (mayUpload, myId) = authUpload()
     return dict(
-        viewsettings=Viewsettings(Chunk, URL, VERSIONS),
-        nkid=nkid,
-        may_upload=may_upload,
-        uid=myId,
+        ViewSettings=VIEWSETTINGS(Chunk, URL, VERSIONS),
+        key_id=key_id,
+        mayUpload=mayUpload,
+        user_id=myId,
     )
 
 
-def check_upload(no_controller=True):
+def authUpload(no_controller=True):
     myId = None
-    may_upload = False
+    mayUpload = False
     if auth.user:
         myId = auth.user.id
     if myId:
@@ -464,8 +471,8 @@ def check_upload(no_controller=True):
 select uid from uploaders where uid = {myId}
     """
         records = db.executesql(sql)
-        may_upload = records is not None and len(records) == 1 and records[0][0] == myId
-    return (may_upload, myId)
+        mayUpload = records is not None and len(records) == 1 and records[0][0] == myId
+    return (mayUpload, myId)
 
 
 @auth.requires_login()
@@ -473,9 +480,9 @@ def noteupload():
     session.forget(response)
     msgs = []
     good = True
-    uid = request.vars.uid
-    (may_upload, myId) = check_upload()
-    if may_upload and str(myId) == uid:
+    user_id = request.vars.user_id
+    (mayUpload, myId) = authUpload()
+    if mayUpload and str(myId) == user_id:
         good = Note.upload(myId, request.vars.file, request.utcnow, msgs)
     else:
         good = False
@@ -508,15 +515,15 @@ def querytree():
     return QueryTree.get(request.utcnow)
 
 
-def record():
+def querymeta():
     session.forget(response)
     msgs = []
     record = {}
-    orecord = {}
-    precord = {}
+    orgRecord = {}
+    projectRecord = {}
     good = False
-    ogood = False
-    pgood = False
+    orgGood = False
+    projectGood = False
     myId = auth.user.id if auth.user is not None else None
     for x in [1]:
         tp = request.vars.tp
@@ -524,9 +531,9 @@ def record():
             msgs.append(("error", f"unknown type {tp}!"))
             break
         (label, table) = TPS[tp]
-        lid = Check.isId("lid", tp, label, msgs)
+        obj_id = Check.isId("obj_id", tp, label, msgs)
         upd = request.vars.upd
-        if lid is None:
+        if obj_id is None:
             break
         if upd not in {"true", "false"}:
             msgs.append(("error", f"invalid instruction {upd}!"))
@@ -543,228 +550,233 @@ def record():
             fields.append("website")
         if upd:
             (authorized, msg) = (
-                query_auth_write(lid) if tp == "q" else auth_write(label)
+                authWriteQuery(obj_id) if tp == "q" else authWrite(label)
             )
         else:
-            (authorized, msg) = query_auth_read(lid) if tp == "q" else auth_read(label)
+            (authorized, msg) = authReadQuery(obj_id) if tp == "q" else authRead(label)
         if not authorized:
             msgs.append(("error", msg))
             break
         if upd:
-            fvalues = None
+            fieldValues = None
             if tp == "q":
                 subfields = ["name", "website"]
-                fvalues = [request.vars.name]
-                do_new_o = request.vars.do_new_o
-                do_new_p = request.vars.do_new_p
-                if do_new_o not in {"true", "false"}:
+                fieldValues = [request.vars.name]
+                doNewOrg = request.vars.do_new_o
+                doNewProject = request.vars.doNewProject
+                if doNewOrg not in {"true", "false"}:
                     msgs.append(
                         (
                             "error",
-                            f"invalid instruction for organization {do_new_o}!",
+                            f"invalid instruction for organization {doNewOrg}!",
                         )
                     )
                     break
-                do_new_o = do_new_o == "true"
-                if do_new_p not in {"true", "false"}:
+                doNewOrg = doNewOrg == "true"
+                if doNewProject not in {"true", "false"}:
                     msgs.append(
                         (
                             "error",
-                            f"invalid instruction for project {do_new_p}!",
+                            f"invalid instruction for project {doNewProject}!",
                         )
                     )
                     break
-                do_new_p = do_new_p == "true"
-                ogood = True
-                if do_new_o:
-                    (ogood, oid) = upd_record(
+                doNewProject = doNewProject == "true"
+                orgGood = True
+                if doNewOrg:
+                    (orgGood, org_id) = updQueryMeta(
                         "o",
                         0,
                         myId,
                         subfields,
                         msgs,
-                        fvalues=[request.vars.oname, request.vars.owebsite],
+                        fieldValues=[request.vars.org_name, request.vars.org_website],
                     )
-                    if ogood:
-                        orecord = dict(
-                            id=oid,
-                            name=request.vars.oname,
-                            website=request.vars.owebsite,
+                    if orgGood:
+                        orgRecord = dict(
+                            id=org_id,
+                            name=request.vars.org_name,
+                            website=request.vars.org_website,
                         )
                 else:
-                    oid = Check.isId("oid", "o", TPS["o"][0], msgs)
-                pgood = True
-                if do_new_p:
-                    (pgood, pid) = upd_record(
+                    org_id = Check.isId("org_id", "o", TPS["o"][0], msgs)
+                projectGood = True
+                if doNewProject:
+                    (projectGood, project_id) = updQueryMeta(
                         "p",
                         0,
                         myId,
                         subfields,
                         msgs,
-                        fvalues=[request.vars.pname, request.vars.pwebsite],
+                        fieldValues=[
+                            request.vars.project_name,
+                            request.vars.project_website,
+                        ],
                     )
-                    if pgood:
-                        precord = dict(
-                            id=pid,
-                            name=request.vars.pname,
-                            website=request.vars.pwebsite,
+                    if projectGood:
+                        projectRecord = dict(
+                            id=project_id,
+                            name=request.vars.project_name,
+                            website=request.vars.project_website,
                         )
                 else:
-                    pid = Check.isId("pid", "p", TPS["o"][0], msgs)
-                if not ogood or not pgood:
+                    project_id = Check.isId("project_id", "p", TPS["o"][0], msgs)
+                if not orgGood or not projectGood:
                     break
-                if oid is None or pid is None:
+                if org_id is None or project_id is None:
                     break
-                fvalues.extend([oid, pid])
-            (good, new_lid) = upd_record(tp, lid, myId, fields, msgs, fvalues=fvalues)
+                fieldValues.extend([org_id, project_id])
+            (good, obj_idNew) = updQueryMeta(
+                tp, obj_id, myId, fields, msgs, fieldValues=fieldValues
+            )
             if not good:
                 break
-            lid = new_lid
+            obj_id = obj_idNew
         else:
             good = True
-        dbrecord = None
+        dbRecord = None
         if tp == "q":
-            if lid == 0:
-                dbrecord = [0, "", 0, "", "", 0, "", ""]
+            if obj_id == 0:
+                dbRecord = [0, "", 0, "", "", 0, "", ""]
             else:
-                dbrecord = db.executesql(
+                dbRecord = db.executesql(
                     f"""
 select
 query.id as id,
 query.name as name,
-organization.id as oid,
-organization.name as oname,
-organization.website as owebsite,
-project.id as pid,
-project.name as pname,
-project.website as pwebsite
+organization.id as org_id,
+organization.name as org_name,
+organization.website as org_website,
+project.id as project_id,
+project.name as project_name,
+project.website as project_website
 from query
 inner join organization on query.organization = organization.id
 inner join project on query.project = project.id
-where query.id = {lid}
+where query.id = {obj_id}
 ;
 """,
                     asDict=True,
                 )
         else:
-            if lid == 0:
-                dbrecord = [0, "", ""]
+            if obj_id == 0:
+                dbRecord = [0, "", ""]
             else:
-                dbrecord = db.executesql(
+                dbRecord = db.executesql(
                     f"""
-select {",".join(fields)} from {table} where id = {lid}
+select {",".join(fields)} from {table} where id = {obj_id}
 ;
 """,
                     asDict=True,
                 )
-        if not dbrecord:
-            msgs.append(("error", f"No {label} with id {lid}"))
+        if not dbRecord:
+            msgs.append(("error", f"No {label} with id {obj_id}"))
             break
-        record = dbrecord[0]
+        record = dbRecord[0]
     return dict(
         data=json.dumps(
             dict(
                 record=record,
-                orecord=orecord,
-                precord=precord,
+                orgRecord=orgRecord,
+                projectRecord=projectRecord,
                 msgs=msgs,
                 good=good,
-                ogood=ogood,
-                pgood=pgood,
+                orgGood=orgGood,
+                projectGood=projectGood,
             )
         )
     )
 
 
-def upd_record(tp, lid, myId, fields, msgs, fvalues=None):
-    updrecord = {}
+def updQueryMeta(tp, obj_id, myId, fields, msgs, fieldValues=None):
+    updMeta = {}
     good = False
     (label, table) = TPS[tp]
-    use_values = {}
+    useValues = {}
     for i in range(len(fields)):
         field = fields[i]
-        value = fvalues[i] if fvalues is not None else request.vars[field]
-        use_values[field] = value
+        value = fieldValues[i] if fieldValues is not None else request.vars[field]
+        useValues[field] = value
 
     for x in [1]:
         valSql = Check.isName(
             tp,
-            lid,
+            obj_id,
             myId,
-            use_values["name"],
+            useValues["name"],
             msgs,
         )
         if valSql is None:
             break
-        updrecord["name"] = valSql
+        updMeta["name"] = valSql
         if tp == "q":
             val = Check.isId(
-                "oid", "o", TPS["o"][0], msgs, valrep=str(use_values["organization"])
+                "org_id", "o", TPS["o"][0], msgs, valrep=str(useValues["organization"])
             )
             if val is None:
                 break
             valSql = Check.isRel("o", val, msgs)
             if valSql is None:
                 break
-            updrecord["organization"] = valSql
+            updMeta["organization"] = valSql
             val = Check.isId(
-                "pid", "p", TPS["p"][0], msgs, valrep=str(use_values["project"])
+                "project_id", "p", TPS["p"][0], msgs, valrep=str(useValues["project"])
             )
             valSql = Check.isRel("p", val, msgs)
             if valSql is None:
                 break
-            updrecord["project"] = valSql
+            updMeta["project"] = valSql
             fld = "modified_on"
-            updrecord[fld] = request.utcnow
+            updMeta[fld] = request.utcnow
             fields.append(fld)
-            if lid == 0:
+            if obj_id == 0:
                 fld = "created_on"
-                updrecord[fld] = request.utcnow
+                updMeta[fld] = request.utcnow
                 fields.append(fld)
                 fld = "created_by"
-                updrecord[fld] = myId
+                updMeta[fld] = myId
                 fields.append(fld)
         else:
-            valSql = Check.isWebsite(tp, use_values["website"], msgs)
+            valSql = Check.isWebsite(tp, useValues["website"], msgs)
             if valSql is None:
                 break
-            updrecord["website"] = valSql
+            updMeta["website"] = valSql
         good = True
     if good:
-        if lid:
-            fieldvals = [f" {f} = '{updrecord[f]}'" for f in fields]
-            sql = f"""update {table} set{",".join(fieldvals)} where id = {lid};"""
-            thismsg = "updated"
+        if obj_id:
+            fieldVals = [f" {f} = '{updMeta[f]}'" for f in fields]
+            sql = f"""update {table} set{",".join(fieldVals)} where id = {obj_id};"""
+            thisMsg = "updated"
         else:
-            fieldvals = [f"'{updrecord[f]}'" for f in fields]
+            fieldVals = [f"'{updMeta[f]}'" for f in fields]
             sql = f"""
-insert into {table} ({",".join(fields)}) values ({",".join(fieldvals)})
+insert into {table} ({",".join(fields)}) values ({",".join(fieldVals)})
 ;
 """
-            thismsg = f"{label} added"
+            thisMsg = f"{label} added"
         db.executesql(sql)
-        if lid == 0:
-            lid = db.executesql(
+        if obj_id == 0:
+            obj_id = db.executesql(
                 """
 select last_insert_id() as x
 ;
 """
             )[0][0]
 
-        msgs.append(("good", thismsg))
-    return (good, lid)
+        msgs.append(("good", thisMsg))
+    return (good, obj_id)
 
 
-def field():
+def querymetafield():
     session.forget(response)
     msgs = []
     good = False
-    mod_dates = {}
-    mod_cls = ""
+    modDates = {}
+    modCls = ""
     extra = {}
     for x in [1]:
-        queryId = Check.isId("qid", "q", "query", msgs)
-        if queryId is None:
+        query_id = Check.isId("query_id", "q", "query", msgs)
+        if query_id is None:
             break
         fname = request.vars.fname
         val = request.vars.val
@@ -772,24 +784,22 @@ def field():
         if fname is None or fname not in {"is_shared", "is_published"}:
             msgs.append("error", "Illegal field name {}")
             break
-        (authorized, msg) = query_auth_write(queryId)
+        (authorized, msg) = authWriteQuery(query_id)
         if not authorized:
             msgs.append(("error", msg))
             break
         now = request.utcnow
-        (good, mod_dates, mod_cls, extra) = Query.updField(
-            vr, queryId, fname, val, now, msgs
+        (good, modDates, modCls, extra) = Query.updField(
+            vr, query_id, fname, val, now, msgs
         )
     return dict(
         data=json.dumps(
-            dict(
-                msgs=msgs, good=good, mod_dates=mod_dates, mod_cls=mod_cls, extra=extra
-            )
+            dict(msgs=msgs, good=good, modDates=modDates, modCls=modCls, extra=extra)
         )
     )
 
 
-def fields():
+def querymetafields():
     session.forget(response)
     msgs = []
     good = False
@@ -803,16 +813,16 @@ def fields():
     is_shared = False
 
     for x in [1]:
-        queryId = Check.isId("qid", "q", "query", msgs)
-        if queryId is None:
+        query_id = Check.isId("query_id", "q", "query", msgs)
+        if query_id is None:
             break
-        (authorized, msg) = query_auth_write(queryId)
+        (authorized, msg) = authWriteQuery(query_id)
         if not authorized:
             msgs.append(("error", msg))
             break
 
-        Query.verifyVersion(queryId, vr)
-        oldRecord = db.executesql(
+        Query.verifyVersion(query_id, vr)
+        recordOld = db.executesql(
             f"""
 select
     query.name as name,
@@ -822,32 +832,29 @@ select
     query_exe.is_published as is_published
 from query inner join query_exe on
     query.id = query_exe.query_id and query_exe.version = '{vr}'
-where query.id = {queryId}
+where query.id = {query_id}
 ;
 """,
             asDict=True,
         )
-        if oldRecord is None or len(oldRecord) == 0:
-            msgs.append(("error", f"No query with id {queryId}"))
+        if recordOld is None or len(recordOld) == 0:
+            msgs.append(("error", f"No query with id {query_id}"))
             break
-        oldVals = oldRecord[0]
-        is_shared = oldVals["is_shared"] == "T"
-        is_published = oldVals["is_published"] == "T"
+        valsOld = recordOld[0]
+        is_shared = valsOld["is_shared"] == "T"
+        is_published = valsOld["is_published"] == "T"
         if not is_published:
-            # newName = str(request.vars.name, encoding="utf-8")
-            newName = request.vars.name
-            if oldVals["name"] != newName:
-                valSql = Check.isName("q", queryId, myId, newName, msgs)
+            nameNew = request.vars.name
+            if valsOld["name"] != nameNew:
+                valSql = Check.isName("q", query_id, myId, nameNew, msgs)
                 if valSql is None:
                     break
                 flds["name"] = valSql
                 flds["modified_on"] = request.utcnow
-            newMql = request.vars.mql
-            # newmql_u = str(newMql, encoding="utf-8")
-            newmql_u = newMql
-            if oldVals["mql"] != newmql_u:
+            mqlNew = request.vars.mql
+            if valsOld["mql"] != mqlNew:
                 msgs.append(("warning", "query body modified"))
-                valSql = Check.isMql("q", newmql_u, msgs)
+                valSql = Check.isMql("q", mqlNew, msgs)
                 if valSql is None:
                     break
                 fldx["mql"] = valSql
@@ -864,10 +871,9 @@ where query.id = {queryId}
                     ),
                 )
             )
-        # newDesc = str(request.vars.description, encoding="utf-8")
-        newDesc = request.vars.description
-        if oldVals["description"] != newDesc:
-            valSql = Check.isDescription("q", newDesc, msgs)
+        descriptionNew = request.vars.description
+        if valsOld["description"] != descriptionNew:
+            valSql = Check.isDescription("q", descriptionNew, msgs)
             if valSql is None:
                 break
             flds["description"] = valSql
@@ -884,9 +890,9 @@ where query.id = {queryId}
                 exeSlots,
                 theseMsgs,
                 emdrosVersion,
-            ) = mql(vr, newMql)
+            ) = mql(vr, mqlNew)
             if exeGood and not limitExceeded:
-                Query.store(vr, queryId, exeSlots, is_shared)
+                Query.store(vr, query_id, exeSlots, is_shared)
                 fldx["executed_on"] = request.utcnow
                 fldx["eversion"] = emdrosVersion
                 nResultSlots = countSlots(exeSlots)
@@ -894,12 +900,12 @@ where query.id = {queryId}
                 fldx["resultmonads"] = nResultSlots
                 msgs.append(("good", "Query executed"))
             else:
-                Query.store(vr, queryId, [], is_shared)
+                Query.store(vr, query_id, [], is_shared)
             msgs.extend(theseMsgs)
         if len(flds):
             fieldRep = ", ".join(f" {f} = '{flds[f]}'" for f in flds if f != "status")
             sql = f"""
-update query set{fieldRep} where id = {queryId}
+update query set{fieldRep} where id = {query_id}
 ;
 """
             db.executesql(sql)
@@ -907,14 +913,14 @@ update query set{fieldRep} where id = {queryId}
         if len(fldx):
             fieldRep = ", ".join(f" {f} = '{fldx[f]}'" for f in fldx if f != "status")
             sql = f"""
-update query_exe set{fieldRep} where query_id = {queryId} and version = '{vr}'
+update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
 ;
 """
             db.executesql(sql)
             Caching.clear(cache, f"^items_q_{vr}_")
         queryRecord = Query.getInfo(
             auth.user is not None,
-            queryId,
+            query_id,
             vr,
             msgs,
             withIds=False,
@@ -922,20 +928,20 @@ update query_exe set{fieldRep} where query_id = {queryId} and version = '{vr}'
             po=True,
         )
 
-    oldEmdrosVersions = dict((x, 1) for x in EMDROS_VERSIONS[0:-1])
+    emdrosVersionsOld = dict((x, 1) for x in EMDROS_VERSIONS[0:-1])
     return dict(
         data=json.dumps(
             dict(
                 msgs=msgs,
                 good=good and exeGood,
                 q=queryRecord,
-                oldEmdrosVersions=oldEmdrosVersions,
+                emdrosVersionsOld=emdrosVersionsOld,
             )
         )
     )
 
 
-def item_access_read(iidRep=getRequestVal("material", "", "iid")):
+def authReadItem(iidRep=getRequestVal("material", "", "iid")):
     mr = getRequestVal("material", "", "mr")
     qw = getRequestVal("material", "", "qw")
     if mr == "m":
@@ -946,13 +952,13 @@ def item_access_read(iidRep=getRequestVal("material", "", "iid")):
         return (True, "")
     if qw == "q":
         if iidRep is not None:
-            (iid, kw) = iDecode(qw, iidRep)
+            (iid, keywords) = iDecode(qw, iidRep)
             if iid > 0:
-                return query_auth_read(iid)
+                return authReadQuery(iid)
     return (None, f"Not a valid id {iidRep}")
 
 
-def query_auth_read(iid):
+def authReadQuery(iid):
     authorized = None
     if iid == 0:
         authorized = auth.user is not None
@@ -977,7 +983,7 @@ select * from query where id = {iid}
     return (authorized, msg)
 
 
-def word_auth_read(vr, iid):
+def authReadWord(vr, iid):
     authorized = None
     if not iid or vr not in PASSAGE_DBS:
         authorized = False
@@ -1002,7 +1008,7 @@ select * from lexicon where id = '{iid}'
     return (authorized, msg)
 
 
-def query_auth_write(iid):
+def authWriteQuery(iid):
     authorized = None
     if iid == 0:
         authorized = auth.user is not None
@@ -1028,13 +1034,13 @@ select * from query where id = {iid}
 
 
 @auth.requires_login()
-def auth_write(label):
+def authWrite(label):
     authorized = auth.user is not None
     msg = f"You have no access to create/modify a {label}"
     return (authorized, msg)
 
 
-def auth_read(label):
+def authRead(label):
     authorized = True
     msg = f"You have no access to create/modify a {label}"
     return (authorized, msg)

@@ -1,7 +1,7 @@
 /* eslint-env jquery */
 /* globals Config, P, State */
 
-import { close_dialog, escHT } from "./helpers.js"
+import { closeDialog, escHT } from "./helpers.js"
 import { ColorPicker2 } from "./colorpicker.js"
 
 export class MMessage {
@@ -30,13 +30,13 @@ export class MContent {
   }
 
   add(response) {
-    $(`#material_${P.vs.tp()}`).html(response.children(this.name_content).html())
+    $(`#material_${P.viewState.tp()}`).html(response.children(this.name_content).html())
   }
 
   show() {
     const { nextTp } = Config
 
-    const this_tp = P.vs.tp()
+    const this_tp = P.viewState.tp()
     for (const tp in nextTp) {
       const this_material = $(`#material_${tp}`)
       if (this_tp == tp) {
@@ -99,33 +99,33 @@ export class MSettings {
     $(".mhradio").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
-      const old_tp = P.vs.tp()
-      let new_tp = elem.attr("id").substring(1)
-      if (old_tp == "txtp") {
-        if (old_tp == new_tp) {
+      const tpOld = P.viewState.tp()
+      let tpNew = elem.attr("id").substring(1)
+      if (tpOld == "txtp") {
+        if (tpOld == tpNew) {
           return
         }
-      } else if (old_tp == new_tp) {
-        new_tp = nextTp[old_tp]
-        if (new_tp == "txtp") {
-          new_tp = nextTp[new_tp]
+      } else if (tpOld == tpNew) {
+        tpNew = nextTp[tpOld]
+        if (tpNew == "txtp") {
+          tpNew = nextTp[tpNew]
         }
       }
-      P.vs.mstatesv({ tp: new_tp })
-      P.vs.addHist()
+      P.viewState.mstatesv({ tp: tpNew })
+      P.viewState.addHist()
       this.apply()
-      const mr = P.vs.mr()
-      const qw = P.vs.qw()
+      const mr = P.viewState.mr()
+      const qw = P.viewState.qw()
       if (mr == "r") {
         let extra = undefined
         if (qw == "q") {
           const { q } = State
-          const ufname = escHT(q.ufname || "")
-          const ulname = escHT(q.ulname || "")
-          extra = `${ufname}_${ulname}`
+          const first_name = escHT(q.first_name || "")
+          const last_name = escHT(q.last_name || "")
+          extra = `${first_name}_${last_name}`
         }
         for (const v of versions) {
-          P.set_csv(v, mr, qw, P.vs.iid(), extra)
+          P.set_csv(v, mr, qw, P.viewState.iid(), extra)
         }
       }
     })
@@ -133,14 +133,14 @@ export class MSettings {
     $(".mtradio").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
-      const old_tr = P.vs.tr()
-      let new_tr = elem.attr("id").substring(1)
-      if (old_tr == new_tr) {
-        new_tr = nextTr[old_tr]
+      const trOld = P.viewState.tr()
+      let trNew = elem.attr("id").substring(1)
+      if (trOld == trNew) {
+        trNew = nextTr[trOld]
       }
 
-      P.vs.mstatesv({ tr: new_tr })
-      P.vs.addHist()
+      P.viewState.mstatesv({ tr: trNew })
+      P.viewState.addHist()
       this.apply()
     })
 
@@ -171,29 +171,29 @@ export class MSettings {
 
     const hlradio = $(".mhradio")
     const plradio = $(".mtradio")
-    const new_tp = P.vs.tp()
-    const new_tr = P.vs.tr()
-    const newc = $(`#m${new_tp}`)
-    const newp = $(`#m${new_tr}`)
+    const tpNew = P.viewState.tp()
+    const trNew = P.viewState.tr()
+    const tpNewCtl = $(`#m${tpNew}`)
+    const trNewCtl = $(`#m${trNew}`)
     hlradio.removeClass("ison")
     plradio.removeClass("ison")
-    if (new_tp != "txtp" && new_tp != "txtd") {
+    if (tpNew != "txtp" && tpNew != "txtd") {
       for (let i = 1; i <= tabViews; i++) {
         const mc = $(`#mtxt${i}`)
-        if (`txt${i}` == new_tp) {
+        if (`txt${i}` == tpNew) {
           mc.show()
         } else {
           mc.hide()
         }
       }
     }
-    newc.show()
-    newp.show()
-    newc.addClass("ison")
-    newp.addClass("ison")
+    tpNewCtl.show()
+    trNewCtl.show()
+    tpNewCtl.addClass("ison")
+    trNewCtl.addClass("ison")
     this.content.show()
     this.legend.hide()
-    close_dialog(this.legend)
+    closeDialog(this.legend)
     this.legendc.hide()
     P.material.adapt()
   }
@@ -205,7 +205,7 @@ export class MSettings {
 
 class HebrewSettings {
   constructor() {
-    for (const fld in P.vs.ddata()) {
+    for (const fld in P.viewState.ddata()) {
       this[fld] = new HebrewSetting(fld)
     }
   }
@@ -213,11 +213,11 @@ class HebrewSettings {
   apply() {
     const { versions } = Config
 
-    for (const fld in P.vs.ddata()) {
+    for (const fld in P.viewState.ddata()) {
       this[fld].apply()
     }
     for (const v of versions) {
-      P.set_csv(v, P.vs.mr(), P.vs.qw(), P.vs.iid())
+      P.set_csv(v, P.viewState.mr(), P.viewState.qw(), P.viewState.iid())
     }
   }
 }
@@ -232,23 +232,23 @@ class HebrewSetting {
       const elem = $(e.delegateTarget)
       const vals = {}
       vals[fld] = elem.prop("checked") ? "v" : "x"
-      P.vs.dstatesv(vals)
-      P.vs.addHist()
+      P.viewState.dstatesv(vals)
+      P.viewState.addHist()
       this.applysetting()
       for (const v of versions) {
-        P.set_csv(v, P.vs.mr(), P.vs.qw(), P.vs.iid())
+        P.set_csv(v, P.viewState.mr(), P.viewState.qw(), P.viewState.iid())
       }
     })
   }
 
   apply() {
-    const val = P.vs.ddata()[this.name]
+    const val = P.viewState.ddata()[this.name]
     $(this.hid).prop("checked", val == "v")
     this.applysetting()
   }
 
   applysetting() {
-    if (P.vs.ddata()[this.name] == "v") {
+    if (P.viewState.ddata()[this.name] == "v") {
       $(`.${this.name}`).each((i, el) => {
         const elem = $(el)
         elem.show()
@@ -278,8 +278,8 @@ export class LSettings {
       hlradio.click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
-        P.vs.hstatesv(this.qw, { active: elem.attr("id").substring(1) })
-        P.vs.addHist()
+        P.viewState.hstatesv(this.qw, { active: elem.attr("id").substring(1) })
+        P.viewState.addHist()
         P.highlight2({ code: "3", qw: this.qw })
       })
     }
@@ -287,7 +287,7 @@ export class LSettings {
       const pradio = $(`.${qw}pradio`)
       pradio.click(e => {
         e.preventDefault()
-        P.vs.hstatesv(this.qw, { pub: P.vs.pub(this.qw) == "x" ? "v" : "x" })
+        P.viewState.hstatesv(this.qw, { is_published: P.viewState.is_published(this.qw) == "x" ? "v" : "x" })
         side_fetched[`m${this.qw}`] = false
         sidebar[`m${this.qw}`].content.apply()
       })
@@ -296,7 +296,7 @@ export class LSettings {
 
   apply() {
     const { qw } = this
-    if (P.vs.get(qw) == "v") {
+    if (P.viewState.get(qw) == "v") {
       if (qw != "n") {
         for (const iid in P.picker1list[qw]) {
           P.picker1list[qw][iid].apply(false)
@@ -306,7 +306,7 @@ export class LSettings {
     }
     if (qw == "q" || qw == "n") {
       const pradio = $(`.${qw}pradio`)
-      if (P.vs.pub(qw) == "v") {
+      if (P.viewState.is_published(qw) == "v") {
         pradio.addClass("ison")
       } else {
         pradio.removeClass("ison")

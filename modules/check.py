@@ -4,12 +4,12 @@ from constants import TPS
 from helpers import iDecode
 
 
-class Check:
+class CHECK:
     def __init__(self, request, db):
         self.request = request
         self.db = db
 
-    def isUnique(self, tp, lid, val, myId, msgs):
+    def isUnique(self, tp, obj_id, val, myId, msgs):
         db = self.db
 
         result = False
@@ -30,13 +30,13 @@ select id from {table} where name = '{val}'
             except Exception:
                 msgs.append(("error", f"cannot check the unicity of {val} as {label}!"))
                 break
-            if len(ids) and (lid == 0 or ids[0][0] != int(lid)):
+            if len(ids) and (obj_id == 0 or ids[0][0] != int(obj_id)):
                 msgs.append(("error", f"the {label} name is already taken!"))
                 break
             result = True
         return result
 
-    def isName(self, tp, lid, myId, val, msgs):
+    def isName(self, tp, obj_id, myId, val, msgs):
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -55,7 +55,7 @@ select id from {table} where name = '{val}'
                 )
                 break
             val = val.replace("'", "''")
-            if not self.isUnique(tp, lid, val, myId, msgs):
+            if not self.isUnique(tp, obj_id, val, myId, msgs):
                 break
             result = val
         return result
@@ -170,7 +170,7 @@ select id from {table} where name = '{val}'
             msgs.append(("error", f"No {label} id given"))
             return None
         if tp in {"w", "q", "n"}:
-            (val, kw) = iDecode(tp, valrep)
+            (val, keywords) = iDecode(tp, valrep)
         else:
             val = valrep
             if len(valrep) > 10 or not valrep.isdigit():

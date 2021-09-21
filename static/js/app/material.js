@@ -1,7 +1,7 @@
 /* eslint-env jquery */
 /* globals Config, P */
 
-import { defcolor, close_dialog } from "./helpers.js"
+import { colorDefault, closeDialog } from "./helpers.js"
 import { Notes } from "./notesm.js"
 import { LSelect, MSelect, PSelect } from "./select.js"
 import { MMessage, MContent, MSettings } from "./materiallib.js"
@@ -28,22 +28,22 @@ export class Material {
   }
 
   apply() {
-    /* apply viewsettings to current material
+    /* apply ViewSettings to current material
      */
     const { bookLangs, bookTrans } = Config
-    P.version = P.vs.version()
-    P.mr = P.vs.mr()
-    P.qw = P.vs.qw()
-    P.iid = P.vs.iid()
+    P.version = P.viewState.version()
+    P.mr = P.viewState.mr()
+    P.qw = P.viewState.qw()
+    P.iid = P.viewState.iid()
     if (
       P.mr != P.prev["mr"] ||
       P.qw != P.prev["qw"] ||
       P.version != P.prev["version"] ||
       (P.mr == "m" &&
-        (P.vs.book() != P.prev["book"] ||
-          P.vs.chapter() != P.prev["chapter"] ||
-          P.vs.verse() != P.prev["verse"])) ||
-      (P.mr == "r" && (P.iid != P.prev["iid"] || P.vs.page() != P.prev["page"]))
+        (P.viewState.book() != P.prev["book"] ||
+          P.viewState.chapter() != P.prev["chapter"] ||
+          P.viewState.verse() != P.prev["verse"])) ||
+      (P.mr == "r" && (P.iid != P.prev["iid"] || P.viewState.page() != P.prev["page"]))
     ) {
       P.reset_material_status()
       const p_mr = P.prev["mr"]
@@ -52,8 +52,8 @@ export class Material {
       if (p_mr == "r" && P.mr == "m") {
         const vals = {}
         if (p_qw != "n") {
-          vals[p_iid] = P.vs.colormap(p_qw)[p_iid] || defcolor(p_qw == "q", p_iid)
-          P.vs.cstatesv(p_qw, vals)
+          vals[p_iid] = P.viewState.colormap(p_qw)[p_iid] || colorDefault(p_qw == "q", p_iid)
+          P.viewState.cstatesv(p_qw, vals)
         }
       }
     }
@@ -61,15 +61,15 @@ export class Material {
     this.mselect.apply()
     this.pselect.apply()
     this.msettings.apply()
-    const book = P.vs.book()
-    const chapter = P.vs.chapter()
-    const page = P.vs.page()
-    $("#thelang").html(bookLangs[P.vs.lang()][1])
-    $("#thebook").html(book != "x" ? bookTrans[P.vs.lang()][book] : "book")
+    const book = P.viewState.book()
+    const chapter = P.viewState.chapter()
+    const page = P.viewState.page()
+    $("#thelang").html(bookLangs[P.viewState.lang()][1])
+    $("#thebook").html(book != "x" ? bookTrans[P.viewState.lang()][book] : "book")
     $("#thechapter").html(chapter > 0 ? chapter : "chapter")
     $("#thepage").html(page > 0 ? `${page}` : "")
-    for (const x in P.vs.mstate()) {
-      P.prev[x] = P.vs.mstate()[x]
+    for (const x in P.viewState.mstate()) {
+      P.prev[x] = P.viewState.mstate()[x]
     }
   }
 
@@ -80,18 +80,18 @@ export class Material {
     const { material_fetched, material_kind } = P
 
     let vars =
-      `?version=${P.version}&mr=${P.mr}&tp=${P.vs.tp()}&tr=${P.vs.tr()}` +
-      `&qw=${P.qw}&lang=${P.vs.lang()}`
+      `?version=${P.version}&mr=${P.mr}&tp=${P.viewState.tp()}&tr=${P.viewState.tr()}` +
+      `&qw=${P.qw}&lang=${P.viewState.lang()}`
     let do_fetch = false
     if (P.mr == "m") {
-      vars += `&book=${P.vs.book()}&chapter=${P.vs.chapter()}`
-      do_fetch = P.vs.book() != "x" && P.vs.chapter() > 0
+      vars += `&book=${P.viewState.book()}&chapter=${P.viewState.chapter()}`
+      do_fetch = P.viewState.book() != "x" && P.viewState.chapter() > 0
     } else {
-      vars += `&iid=${P.iid}&page=${P.vs.page()}`
+      vars += `&iid=${P.iid}&page=${P.viewState.page()}`
       do_fetch = P.qw == "q" ? P.iid >= 0 : P.iid != "-1"
     }
-    const tp = P.vs.tp()
-    const tr = P.vs.tr()
+    const tp = P.viewState.tp()
+    const tr = P.viewState.tr()
     if (
       do_fetch &&
       (!material_fetched[tp] || !(tp in material_kind) || material_kind[tp] != tr)
@@ -123,8 +123,8 @@ export class Material {
     /* go to the selected verse
      */
     $(".vhl").removeClass("vhl")
-    const xxx = P.mr == "r" ? "div[tvid]" : `div[tvid="${P.vs.verse()}"]`
-    const verseTarget = $(`#material_${P.vs.tp()}>${xxx}`).filter(":first")
+    const xxx = P.mr == "r" ? "div[tvid]" : `div[tvid="${P.viewState.verse()}"]`
+    const verseTarget = $(`#material_${P.viewState.tp()}>${xxx}`).filter(":first")
     if (verseTarget != undefined && verseTarget[0] != undefined) {
       verseTarget[0].scrollIntoView()
       $("#navbar")[0].scrollIntoView()
@@ -137,8 +137,8 @@ export class Material {
     const { material_fetched, material_kind } = P
 
     let mf = 0
-    const tp = P.vs.tp()
-    const tr = P.vs.tr()
+    const tp = P.viewState.tp()
+    const tr = P.viewState.tr()
     for (const x in material_fetched) {
       if (material_fetched[x]) {
         mf += 1
@@ -152,23 +152,23 @@ export class Material {
        */
       mf += 1
     }
-    const newcontent = $(`#material_${tp}`)
-    const textcontent = $(".txtp,.txt1,.txt2,.txt3")
-    const ttextcontent = $(".t1_txt,.lv2")
-    if (P.vs.tr() == "hb") {
-      textcontent.removeClass("pho")
-      textcontent.removeClass("phox")
-      ttextcontent.removeClass("pho")
-      textcontent.addClass("heb")
-      textcontent.addClass("hebx")
-      ttextcontent.addClass("heb")
-    } else if (P.vs.tr() == "ph") {
-      textcontent.removeClass("heb")
-      textcontent.removeClass("hebx")
-      ttextcontent.removeClass("heb")
-      textcontent.addClass("pho")
-      textcontent.addClass("phox")
-      ttextcontent.addClass("pho")
+    const contentNew = $(`#material_${tp}`)
+    const textContent = $(".txtp,.txt1,.txt2,.txt3")
+    const tTextContent = $(".t1_txt,.lv2")
+    if (P.viewState.tr() == "hb") {
+      textContent.removeClass("pho")
+      textContent.removeClass("phox")
+      tTextContent.removeClass("pho")
+      textContent.addClass("heb")
+      textContent.addClass("hebx")
+      tTextContent.addClass("heb")
+    } else if (P.viewState.tr() == "ph") {
+      textContent.removeClass("heb")
+      textContent.removeClass("hebx")
+      tTextContent.removeClass("heb")
+      textContent.addClass("pho")
+      textContent.addClass("phox")
+      tTextContent.addClass("pho")
     }
     /* because some processes like highlighting and assignment of verse number clicks
      * must be suppressed on first time or on subsequent times
@@ -181,36 +181,36 @@ export class Material {
       $("a.cref").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
-        P.vs.mstatesv({
+        P.viewState.mstatesv({
           book: elem.attr("book"),
           chapter: elem.attr("chapter"),
           verse: elem.attr("verse"),
           mr: "m",
         })
-        P.vs.addHist()
+        P.viewState.addHist()
         P.go()
       })
     } else {
-      this.add_word_actions(newcontent, mf)
+      this.add_word_actions(contentNew, mf)
     }
-    this.add_vrefs(newcontent, mf)
-    if (P.vs.tp() == "txtd") {
+    this.add_vrefs(contentNew, mf)
+    if (P.viewState.tp() == "txtd") {
       this.msettings.hebrewsettings.apply()
-    } else if (P.vs.tp() == "txt1") {
-      this.add_cmt(newcontent)
+    } else if (P.viewState.tp() == "txt1") {
+      this.add_cmt(contentNew)
     }
   }
 
-  add_cmt(newcontent) {
+  add_cmt(contentNew) {
     /* add actions for the tab1 view
      */
-    this.notes = new Notes(newcontent)
+    this.notes = new Notes(contentNew)
   }
 
-  add_vrefs(newcontent, mf) {
+  add_vrefs(contentNew, mf) {
     const { dataUrl } = Config
 
-    const vrefs = newcontent.find(".vradio")
+    const vrefs = contentNew.find(".vradio")
     vrefs.each((i, el) => {
       const elem = $(el)
       elem.attr("title", "interlinear data")
@@ -221,7 +221,7 @@ export class Material {
       const bk = elem.attr("b")
       const ch = elem.attr("c")
       const vs = elem.attr("v")
-      const base_tp = P.vs.tp()
+      const base_tp = P.viewState.tp()
       const dat = $(`#${base_tp}_txtd_${bk}_${ch}_${vs}`)
       const txt = $(`#${base_tp}_${bk}_${ch}_${vs}`)
       const legend = $("#datalegend")
@@ -230,7 +230,7 @@ export class Material {
         elem.removeClass("ison")
         elem.attr("title", "interlinear data")
         legend.hide()
-        close_dialog(legend)
+        closeDialog(legend)
         legendc.hide()
         dat.hide()
         txt.show()
@@ -264,29 +264,29 @@ export class Material {
     })
   }
 
-  add_word_actions(newcontent, mf) {
+  add_word_actions(contentNew, mf) {
     /* Make words clickable, so that they show up in the sidebar
      */
-    newcontent.find("span[l]").click(e => {
+    contentNew.find("span[l]").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const iid = elem.attr("l")
       const qw = "w"
       const all = $(`#${qw}${iid}`)
-      if (P.vs.iscolor(qw, iid)) {
-        P.vs.cstatex(qw, iid)
+      if (P.viewState.iscolor(qw, iid)) {
+        P.viewState.cstatex(qw, iid)
         all.hide()
       } else {
         const vals = {}
-        vals[iid] = defcolor(false, iid)
-        P.vs.cstatesv(qw, vals)
+        vals[iid] = colorDefault(false, iid)
+        P.viewState.cstatesv(qw, vals)
         all.show()
       }
-      const active = P.vs.active(qw)
+      const active = P.viewState.active(qw)
       if (active != "hlcustom" && active != "hlmany") {
-        P.vs.hstatesv(qw, { active: "hlcustom" })
+        P.viewState.hstatesv(qw, { active: "hlcustom" })
       }
-      if (P.vs.get("w") == "v") {
+      if (P.viewState.get("w") == "v") {
         if (iid in P.picker1list["w"]) {
           /* should not happen but it happens when changing data versions
            */
@@ -294,7 +294,7 @@ export class Material {
         }
       }
       P.highlight2({ code: "4", qw })
-      P.vs.addHist()
+      P.viewState.addHist()
     })
     if (mf > 1) {
       /* Initially, material gets highlighted once the sidebars have been loaded.

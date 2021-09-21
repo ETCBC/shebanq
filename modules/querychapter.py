@@ -51,13 +51,13 @@ select id, first_m, last_m from chapter
 ;
 """
         chapterList = PASSAGE_DBS[vr].executesql(chapterSQL)
-        for (cid, firstSlot, lastSlot) in chapterList:
-            for m in range(firstSlot, lastSlot + 1):
+        for (cid, first_m, last_m) in chapterList:
+            for m in range(first_m, last_m + 1):
                 chapterFromSlot[m] = cid
-                slotsFromChapter[cid] = (firstSlot, lastSlot)
+                slotsFromChapter[cid] = (first_m, last_m)
         resultSQL = f"""
 select
-    query_exe.query_id as query_id, first_m, last_m, query_exe.is_published as qpub
+    query_exe.query_id as query_id, first_m, last_m, query_exe.is_published
 from monads
 inner join query_exe on
     monads.query_exe_id = query_exe.id and query_exe.version = '{vr}' and
@@ -71,26 +71,26 @@ inner join query on
 
         debug("o-o-o processing information about queries ...")
         resultsByQ = {}
-        for (queryId, firstSlot, lastSlot, qpub) in results:
-            resultsByQ.setdefault(queryId, []).append((firstSlot, lastSlot))
-            pubStatus.setdefault(queryId, {})[vr] = qpub == "T"
+        for (query_id, first_m, last_m, is_published) in results:
+            resultsByQ.setdefault(query_id, []).append((first_m, last_m))
+            pubStatus.setdefault(query_id, {})[vr] = is_published == "T"
         debug(f"0-0-0 found {len(resultsByQ)} shared queries")
 
-        for (queryId, slots) in resultsByQ.items():
+        for (query_id, slots) in resultsByQ.items():
             chs = {}
-            for (firstSlot, lastSlot) in slots:
-                for m in range(firstSlot, lastSlot + 1):
+            for (first_m, last_m) in slots:
+                for m in range(first_m, last_m + 1):
                     thisCh = chapterFromSlot[m]
                     (chapterFirstSlot, chapterLastSlot) = slotsFromChapter[thisCh]
                     chs.setdefault(thisCh, []).append(
                         (
-                            max((firstSlot, chapterFirstSlot)),
-                            min((lastSlot, chapterLastSlot)),
+                            max((first_m, chapterFirstSlot)),
+                            min((last_m, chapterLastSlot)),
                         )
                     )
-            chaptersFromQuery[queryId] = list(chs)
+            chaptersFromQuery[query_id] = list(chs)
             for (ch, slots) in chs.items():
-                queriesFromChapter.setdefault(ch, {})[queryId] = slots
+                queriesFromChapter.setdefault(ch, {})[query_id] = slots
 
         exe = time.time() - startTime
         debug(
@@ -98,25 +98,25 @@ inner join query on
         )
         return (queriesFromChapter, chaptersFromQuery)
 
-    def updatePubStatus(self, vr, queryId, isPublished):
+    def updatePubStatus(self, vr, query_id, is_published):
         Caching = self.Caching
 
-        debug(f"o-o-o updating pubStatus for query {queryId} in version {vr} ...")
+        debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} ...")
         pubStatus = Caching.get(
             f"pubStatus_{vr}_",
             lambda: {},
             None,
         )
-        pubStatus.setdefault(queryId, {})[vr] = isPublished
-        debug(f"o-o-o updating pubStatus for query {queryId} in version {vr} done")
+        pubStatus.setdefault(query_id, {})[vr] = is_published
+        debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
 
-    def updateQCindex(self, vr, queryId):
+    def updateQCindex(self, vr, query_id):
         Caching = self.Caching
         db = self.db
 
         debug(
             (
-                f"o-o-o updating chapter-query index for query {queryId}"
+                f"o-o-o updating chapter-query index for query {query_id}"
                 f" in version {vr} ..."
             )
         )
@@ -140,18 +140,18 @@ inner join query on
             lambda: {},
             None,
         )
-        # remove queryId from both indexes: chaptersFromQuery and queriesFromChapter
-        if queryId in chaptersFromQuery:
-            theseChapters = chaptersFromQuery[queryId]
+        # remove query_id from both indexes: chaptersFromQuery and queriesFromChapter
+        if query_id in chaptersFromQuery:
+            theseChapters = chaptersFromQuery[query_id]
             for ch in theseChapters:
                 if ch in queriesFromChapter:
-                    if queryId in queriesFromChapter[ch]:
-                        del queriesFromChapter[ch][queryId]
+                    if query_id in queriesFromChapter[ch]:
+                        del queriesFromChapter[ch][query_id]
                     if not queriesFromChapter[ch]:
                         del queriesFromChapter[ch]
-            del chaptersFromQuery[queryId]
+            del chaptersFromQuery[query_id]
 
-        # add queryId again to both indexes (but now with updated results)
+        # add query_id again to both indexes (but now with updated results)
         resultSQL = f"""
 select
     first_m, last_m
@@ -161,30 +161,30 @@ inner join query_exe on
     query_exe.executed_on >= query_exe.modified_on
 inner join query on
     query.id = query_exe.query_id and query.is_shared = 'T'
-where query_exe.query_id = {queryId}
+where query_exe.query_id = {query_id}
 ;
 """
-        for (firstSlot, lastSlot) in db.executesql(resultSQL):
+        for (first_m, last_m) in db.executesql(resultSQL):
             chs = {}
             prevCh = None
-            for m in range(firstSlot, lastSlot + 1):
+            for m in range(first_m, last_m + 1):
                 thisCh = chapterFromSlot[m]
                 if prevCh != thisCh:
                     (chapterFirstSlot, chapterLastSlot) = slotsFromChapter[thisCh]
                     prevCh = thisCh
                 chs.setdefault(thisCh, []).append(
                     (
-                        max((firstSlot, chapterFirstSlot)),
-                        min((lastSlot, chapterLastSlot)),
+                        max((first_m, chapterFirstSlot)),
+                        min((last_m, chapterLastSlot)),
                     )
                 )
             if chs:
-                chaptersFromQuery[queryId] = list(chs)
+                chaptersFromQuery[query_id] = list(chs)
                 for (ch, slots) in chs.items():
-                    queriesFromChapter.setdefault(ch, {})[queryId] = slots
+                    queriesFromChapter.setdefault(ch, {})[query_id] = slots
         debug(
             (
-                f"o-o-o updating chapter-query index for query {queryId}"
+                f"o-o-o updating chapter-query index for query {query_id}"
                 f" in version {vr} done"
             )
         )

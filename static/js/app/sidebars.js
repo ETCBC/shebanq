@@ -5,7 +5,7 @@ import {
   toggle_detail,
   escHT,
   specialLinks,
-  close_dialog,
+  closeDialog,
   put_markdown,
 } from "./helpers.js"
 import { Msg } from "./msg.js"
@@ -73,15 +73,15 @@ class Sidebar {
     }
     this.show.click(e => {
       e.preventDefault()
-      P.vs.hstatesv(this.qw, { get: "v" })
-      P.vs.addHist()
+      P.viewState.hstatesv(this.qw, { get: "v" })
+      P.viewState.addHist()
       this.apply()
     })
 
     this.hide.click(e => {
       e.preventDefault()
-      P.vs.hstatesv(this.qw, { get: "x" })
-      P.vs.addHist()
+      P.viewState.hstatesv(this.qw, { get: "x" })
+      P.viewState.addHist()
       this.apply()
     })
   }
@@ -102,7 +102,7 @@ class Sidebar {
       thebar.show()
       theset.show()
       if (this.mr == "m") {
-        if (P.vs.get(this.qw) == "x") {
+        if (P.viewState.get(this.qw) == "x") {
           thelist.hide()
           theset.hide()
           hide.hide()
@@ -150,7 +150,7 @@ class SContent {
   set_vselect(v) {
     $(`#version_s_${v}`).click(e => {
       e.preventDefault()
-      P.vs.mstatesv({ version: v })
+      P.viewState.mstatesv({ version: v })
       P.go()
     })
   }
@@ -170,7 +170,7 @@ class SContent {
       }
 
       const vr = P.version
-      const iid = P.vs.iid()
+      const iid = P.viewState.iid()
 
       $(".moredetail").click(e => {
         e.preventDefault()
@@ -182,16 +182,16 @@ class SContent {
 
       this.msgo = new Msg(`dbmsg_${qw}`)
 
-      let ufname, ulname
+      let first_name, last_name
 
       if (qw == "q") {
         const { q } = State
         this.info = q
-        $("#theqid").html(q.id)
-        ufname = escHT(q.ufname || "")
-        ulname = escHT(q.ulname || "")
-        const qname = escHT(q.name || "")
-        $("#itemtag").val(`${ufname} ${ulname}: ${qname}`)
+        $("#thequeryid").html(q.id)
+        first_name = escHT(q.first_name || "")
+        last_name = escHT(q.last_name || "")
+        const query_name = escHT(q.name || "")
+        $("#itemtag").val(`${first_name} ${last_name}: ${query_name}`)
         this.msgov = new Msg("dbmsg_qv")
         $("#is_pub_c").show()
         $("#is_pub_ro").hide()
@@ -213,16 +213,16 @@ class SContent {
         const { n } = State
         this.info = n
         if ("versions" in n) {
-          ufname = escHT(n.ufname)
-          ulname = escHT(n.ulname)
-          const kw = escHT(n.kw)
-          $("#itemtag").val(`${ufname} ${ulname}: ${kw}`)
+          first_name = escHT(n.first_name)
+          last_name = escHT(n.last_name)
+          const keywords = escHT(n.keywords)
+          $("#itemtag").val(`${first_name} ${last_name}: ${keywords}`)
           $("#gobackn").attr("href", `${notesUrl}?goto=${n.id}`)
         }
       }
       if ("versions" in this.info) {
         for (const v in this.info.versions) {
-          const extra = qw == "w" ? "" : `${ufname}_${ulname}`
+          const extra = qw == "w" ? "" : `${first_name}_${last_name}`
           this.set_vselect(v)
           P.set_csv(v, mr, qw, iid, extra)
         }
@@ -237,7 +237,7 @@ class SContent {
 
     let thistitle
     if (this.mr == "m") {
-      thistitle = `[${P.vs.version()}] ${P.vs.book()} ${P.vs.chapter()}:${P.vs.verse()}`
+      thistitle = `[${P.viewState.version()}] ${P.viewState.book()} ${P.viewState.chapter()}:${P.viewState.verse()}`
     } else {
       thistitle = $("#itemtag").val()
       $("#theitem").html(`${thistitle} `)
@@ -248,7 +248,7 @@ class SContent {
     document.title = thistitle
 
     if (this.qw == "q") {
-      const { mql_small_height, mql_small_width, mql_big_width, mql_big_width_dia } = P
+      const { mqlSmallHeight, mqlSmallWidth, mqlBigWidth, mqlBigWidthDia } = P
       if (this.mr == "m") {
         /* in the sidebar list of queries:
          * the mql query body can be popped up as a dialog for viewing it
@@ -257,7 +257,7 @@ class SContent {
         $(".fullc").click(e => {
           e.preventDefault()
           const elem = $(e.delegateTarget)
-          const { window_height } = P
+          const { windowHeight } = P
           const thisiid = elem.attr("iid")
           const mqlq = $(`#area_${thisiid}`)
           const dia = $(`#bigq_${thisiid}`).dialog({
@@ -266,17 +266,17 @@ class SContent {
             close: () => {
               dia.dialog("destroy")
               const mqlq = $(`#area_${thisiid}`)
-              mqlq.css("height", mql_small_height)
-              mqlq.css("width", mql_small_width)
+              mqlq.css("height", mqlSmallHeight)
+              mqlq.css("width", mqlSmallWidth)
             },
             modal: false,
             title: "mql query body",
             position: { my: "left top", at: "left top", of: window },
-            width: mql_big_width_dia,
-            height: window_height,
+            width: mqlBigWidthDia,
+            height: windowHeight,
           })
-          mqlq.css("height", P.standard_height)
-          mqlq.css("width", mql_big_width)
+          mqlq.css("height", P.standardHeight)
+          mqlq.css("width", mqlBigWidth)
         })
       } else {
         /* in the sidebar item view of a single query:
@@ -297,7 +297,7 @@ class SContent {
         const mqlq = $("#mqlq")
         const pube = $("#is_pub_c")
         const pubr = $("#is_pub_ro")
-        const is_pub =
+        const is_published =
           "versions" in q && vr in q.versions && q.versions[vr].is_published
 
         const d_md = specialLinks(descm.html())
@@ -306,7 +306,7 @@ class SContent {
 
         fullc.click(e => {
           e.preventDefault()
-          const { window_height, half_standard_height } = P
+          const { windowHeight, half_standard_height } = P
           fullc.hide()
           const dia = $("#bigger")
             .closest("div")
@@ -315,20 +315,20 @@ class SContent {
               closeOnEscape: true,
               close: () => {
                 dia.dialog("destroy")
-                mqlq.css("height", mql_small_height)
+                mqlq.css("height", mqlSmallHeight)
                 descm.removeClass("desc_dia")
-                descm.addClass("desc")
-                descm.css("height", mql_small_height)
+                descm.addClass("description")
+                descm.css("height", mqlSmallHeight)
                 fullc.show()
               },
               modal: false,
               title: "description and mql query body",
               position: { my: "left top", at: "left top", of: window },
-              width: mql_big_width_dia,
-              height: window_height,
+              width: mqlBigWidthDia,
+              height: windowHeight,
             })
           mqlq.css("height", half_standard_height)
-          descm.removeClass("desc")
+          descm.removeClass("description")
           descm.addClass("desc_dia")
           descm.css("height", half_standard_height)
         })
@@ -341,7 +341,7 @@ class SContent {
             elem,
             val,
             vr,
-            elem.attr("qid"),
+            elem.attr("query_id"),
             "is_published",
             val ? "T" : ""
           )
@@ -350,14 +350,22 @@ class SContent {
         $("#is_shared_c").click(e => {
           const elem = $(e.delegateTarget)
           const val = elem.prop("checked")
-          this.sendval(q, elem, val, vr, elem.attr("qid"), "is_shared", val ? "T" : "")
+          this.sendval(
+            q,
+            elem,
+            val,
+            vr,
+            elem.attr("query_id"),
+            "is_shared",
+            val ? "T" : ""
+          )
         })
 
         nameq.hide()
         descq.hide()
         descm.show()
         editq.show()
-        if (is_pub) {
+        if (is_published) {
           execq.hide()
         } else {
           execq.show()
@@ -370,12 +378,12 @@ class SContent {
 
         editq.click(e => {
           e.preventDefault()
-          const is_pub = q.versions[vr].is_published
+          const { is_published } = q.versions[vr]
           this.saved_name = nameq.val()
           this.saved_desc = descq.val()
           this.saved_mql = mqlq.val()
           P.set_edit_width()
-          if (!is_pub) {
+          if (!is_published) {
             nameq.show()
           }
           descq.show()
@@ -386,7 +394,7 @@ class SContent {
           doneq.show()
           pubr.show()
           pube.hide()
-          mqlq.prop("readonly", is_pub)
+          mqlq.prop("readonly", is_published)
           mqlq.css("height", "20em")
         })
 
@@ -425,7 +433,7 @@ class SContent {
           mqlq.css("height", "10em")
           const data = {
             version: P.version,
-            qid: $("#qid").val(),
+            query_id: $("#query_id").val(),
             name: $("#nameq").val(),
             description: $("#descq").val(),
             mql: $("#mqlq").val(),
@@ -438,7 +446,7 @@ class SContent {
           e.preventDefault()
           const data = {
             version: P.version,
-            qid: $("#qid").val(),
+            query_id: $("#query_id").val(),
             name: $("#nameq").val(),
             description: $("#descq").val(),
             mql: $("#mqlq").val(),
@@ -454,7 +462,7 @@ class SContent {
           msg.msg(["special", "executing query ..."])
           const data = {
             version: P.version,
-            qid: $("#qid").val(),
+            query_id: $("#query_id").val(),
             name: $("#nameq").val(),
             description: $("#descq").val(),
             mql: $("#mqlq").val(),
@@ -478,16 +486,16 @@ class SContent {
   }
 
   sendval(q, checkbx, newval, vr, iid, fname, val) {
-    const { fieldUrl } = Config
+    const { queryMetaFieldUrl } = Config
 
     const senddata = {}
     senddata.version = vr
-    senddata.qid = iid
+    senddata.query_id = iid
     senddata.fname = fname
     senddata.val = val
 
     $.post(
-      fieldUrl,
+      queryMetaFieldUrl,
       senddata,
       data => {
         const { good, mod_dates, mod_cls, extra, msgs } = data
@@ -535,12 +543,12 @@ class SContent {
   }
 
   sendvals(senddata) {
-    const { fieldsUrl } = Config
+    const { queryMetaFieldsUrl } = Config
 
     const { execute, version: vr } = senddata
 
     $.post(
-      fieldsUrl,
+      queryMetaFieldsUrl,
       senddata,
       data => {
         const { good, q, msgs } = data
@@ -553,7 +561,7 @@ class SContent {
         }
 
         if (good) {
-          const { oldEmdrosVersions } = data
+          const { emdrosVersionsOld } = data
           const qx = q.versions[vr]
           $("#nameqm").html(escHT(q.name || ""))
           $("#nameq").val(q.name)
@@ -566,11 +574,11 @@ class SContent {
           const ev = $("#eversion")
           const evtd = ev.closest("td")
           ev.html(qx.eversion)
-          if (qx.eversion in oldEmdrosVersions) {
-            evtd.addClass("oldexeversion")
+          if (qx.eversion in emdrosVersionsOld) {
+            evtd.addClass("exeversionold")
             evtd.attr("title", "this is not the newest version")
           } else {
-            evtd.removeClass("oldexeversion")
+            evtd.removeClass("exeversionold")
             evtd.attr("title", "this is the newest version")
           }
           $("#executed_on").html(qx.executed_on)
@@ -584,7 +592,7 @@ class SContent {
         if (execute) {
           P.reset_material_status()
           P.material.adapt()
-          const show_chart = close_dialog($(`#select_contents_chart_${vr}_q_${q.id}`))
+          const show_chart = closeDialog($(`#select_contents_chart_${vr}_q_${q.id}`))
           if (show_chart) {
             P.sidebars.sidebar["rq"].cselect[vr].apply()
           }
@@ -596,7 +604,7 @@ class SContent {
   }
 
   apply() {
-    if (P.mr == this.mr && (this.mr == "r" || P.vs.get(this.qw) == "v")) {
+    if (P.mr == this.mr && (this.mr == "r" || P.viewState.get(this.qw) == "v")) {
       this.fetch()
     }
   }
@@ -618,11 +626,11 @@ class SContent {
     let extra = ""
 
     if (mr == "m") {
-      vars += `&book=${P.vs.book()}&chapter=${P.vs.chapter()}`
+      vars += `&book=${P.viewState.book()}&chapter=${P.viewState.chapter()}`
       if (qw == "q" || qw == "n") {
-        vars += `&${qw}pub=${P.vs.pub(qw)}`
+        vars += `&${qw}pub=${P.viewState.is_published(qw)}`
       }
-      do_fetch = P.vs.book() != "x" && P.vs.chapter() > 0
+      do_fetch = P.viewState.book() != "x" && P.viewState.chapter() > 0
       extra = "m"
     } else {
       vars += `&iid=${iid}`
@@ -700,23 +708,23 @@ class SContent {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const { qw } = this
-      P.vs.mstatesv({ mr: this.other_mr, qw, iid: elem.attr("iid"), page: 1 })
-      P.vs.addHist()
+      P.viewState.mstatesv({ mr: this.other_mr, qw, iid: elem.attr("iid"), page: 1 })
+      P.viewState.addHist()
       P.go()
     })
 
     if (qw == "w") {
-      if (!P.vs.iscolor(qw, iid)) {
+      if (!P.viewState.iscolor(qw, iid)) {
         all.hide()
       }
     } else if (qw == "q") {
-      if (muting_q.isSet(`q${iid}`)) {
+      if (muting_q.isSet(`${iid}`)) {
         itop.hide()
       } else {
         itop.show()
       }
     } else if (qw == "n") {
-      if (muting_n.isSet(`n${iid}`)) {
+      if (muting_n.isSet(`${iid}`)) {
         itop.hide()
       } else {
         itop.show()

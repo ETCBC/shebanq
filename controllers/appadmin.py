@@ -311,7 +311,7 @@ def select():
             if is_imap:
                 fields = [
                     db[table][name]
-                    for name in ("id", "uid", "created", "to", "sender", "subject")
+                    for name in ("id", "user_id", "created", "to", "sender", "subject")
                 ]
             if orderby:
                 rows = db(query, ignore_common_filters=True).select(

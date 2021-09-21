@@ -7,17 +7,17 @@ import { LStorage } from "./page.js"
 import { Msg } from "./msg.js"
 
 let ftree, msgflt, rdata
-const subtractn = 80
+const subtractForNotesPage = 80
 /* the canvas holding the material gets a height equal to
  * the window height minus this amount
  */
 
 class View {
   constructor() {
-    const { nsview } = L
+    const { viewStoredNotes } = L
     this.prevstate = false
-    if (!nsview.isSet("simple")) {
-      nsview.set("simple", true)
+    if (!viewStoredNotes.isSet("simple")) {
+      viewStoredNotes.set("simple", true)
     }
     this.nvradio = $(".nvradio")
     this.csimple = $("#c_view_simple")
@@ -25,21 +25,21 @@ class View {
 
     this.csimple.click(e => {
       e.preventDefault()
-      nsview.set("simple", true)
+      viewStoredNotes.set("simple", true)
       this.adjust_view()
     })
 
     this.cadvanced.click(e => {
       e.preventDefault()
-      nsview.set("simple", false)
+      viewStoredNotes.set("simple", false)
       this.adjust_view()
     })
     this.adjust_view()
   }
 
   adjust_view() {
-    const { nsview } = L
-    const simple = nsview.get("simple")
+    const { viewStoredNotes } = L
+    const simple = viewStoredNotes.get("simple")
     this.nvradio.removeClass("ison")
     ;(simple ? this.csimple : this.cadvanced).addClass("ison")
     if (this.prevstate != simple) {
@@ -55,12 +55,12 @@ class View {
 
 class Level {
   constructor() {
-    const { nsview } = L
+    const { viewStoredNotes } = L
     this.levels = { u: 1, n: 2 }
 
     $(".nlradio").removeClass("ison")
-    if (!nsview.isSet("level")) {
-      nsview.set("level", "u")
+    if (!viewStoredNotes.isSet("level")) {
+      viewStoredNotes.set("level", "u")
     }
     $("#level_u").click(e => {
       e.preventDefault()
@@ -83,12 +83,12 @@ class Level {
   }
 
   expand_level(level) {
-    const { nsview } = L
+    const { viewStoredNotes } = L
     const { levels } = this
 
     $(".nlradio").removeClass("ison")
     $(`#level_${level}`).addClass("ison")
-    nsview.set("level", level)
+    viewStoredNotes.set("level", level)
     if (level in levels) {
       const numlevel = levels[level]
       ftree.ftw.visit(n => {
@@ -99,22 +99,22 @@ class Level {
   }
 
   initlevel() {
-    const { nsview } = L
-    this.expand_level(nsview.get("level"))
+    const { viewStoredNotes } = L
+    this.expand_level(viewStoredNotes.get("level"))
   }
 }
 
 class Filter {
   constructor() {
-    const { nsview } = L
+    const { viewStoredNotes } = L
     this.patc = $("#filter_contents")
 
     $("#filter_clear").hide()
     $("#filter_contents").val(
-      nsview.isSet("filter_pat") ? nsview.get("filter_pat") : ""
+      viewStoredNotes.isSet("filter_pat") ? viewStoredNotes.get("filter_pat") : ""
     )
-    if (nsview.isSet("filter_mode")) {
-      this.pnsearch(nsview.get("filter_mode"))
+    if (viewStoredNotes.isSet("filter_mode")) {
+      this.pnsearch(viewStoredNotes.get("filter_mode"))
       $("#filter_clear").show()
     }
 
@@ -137,12 +137,12 @@ class Filter {
   }
 
   clear() {
-    const { nsview } = L
+    const { viewStoredNotes } = L
     ftree.ftw.clearFilter()
     msgflt.clear()
     msgflt.msg(["good", "no filter applied"])
     $(".nfradio").removeClass("ison")
-    nsview.remove("filter_mode")
+    viewStoredNotes.remove("filter_mode")
     $("#filter_clear").hide()
     $("#allmatches").html("")
     $("#branchmatches").html("")
@@ -152,9 +152,9 @@ class Filter {
   }
 
   pnsearch(kind) {
-    const { nsview } = L
+    const { viewStoredNotes } = L
     const pat = this.patc.val()
-    nsview.set("filter_pat", pat)
+    viewStoredNotes.set("filter_pat", pat)
     let allMatches = 0
     let branchMatches = 0
     let noteMatches = 0
@@ -172,7 +172,7 @@ class Filter {
       msgflt.msg(["special", "filter applied"])
     }
     $(`#filter_control_${kind}`).addClass("ison")
-    nsview.set("filter_mode", kind)
+    viewStoredNoteviewStoredNotes.set("filter_mode", kind)
 
     ftree.level.expand_all()
     if (kind == "a") {
@@ -251,7 +251,7 @@ class Tree {
         tree.level = new Level()
         tree.filter = new Filter()
         tree.level.initlevel()
-        tree.gotonote($("#nkid").val())
+        tree.gotonote($("#key_id").val())
       },
       expand: () => {
         const { level } = tree
@@ -270,12 +270,12 @@ class Tree {
       },
     })
 
-    const standard_height = window.innerHeight - subtractn
+    const standardHeight = window.innerHeight - subtractForNotesPage
     const canvas_left = $(".left-sidebar")
     const canvas_right = $(".right-sidebar")
-    canvas_left.css("height", `${standard_height}px`)
-    $("#notes").css("height", `${standard_height}px`)
-    canvas_right.css("height", `${standard_height}px`)
+    canvas_left.css("height", `${standardHeight}px`)
+    $("#notes").css("height", `${standardHeight}px`)
+    canvas_right.css("height", `${standardHeight}px`)
 
     const detailcontrols = `<a
         class="showc fa fa-chevron-right"
@@ -339,13 +339,13 @@ class Tree {
   dress_notes() {
     const { nUrl } = Config
     $("#notes a.md").addClass("fa fa-level-down")
-    $("#notes a[nkid]").each((i, el) => {
+    $("#notes a[key_id]").each((i, el) => {
       const elem = $(el)
       const vr = elem.attr("v")
       const extra = vr == undefined ? "" : `&version=${vr}`
       elem.attr(
         "href",
-        `${nUrl}?iid=${elem.attr("nkid")}${extra}&page=1&mr=r&qw=n&tp=txt1&nget=v`
+        `${nUrl}?iid=${elem.attr("key_id")}${extra}&page=1&mr=r&qw=n&tp=txt1&nget=v`
       )
     })
     $("#notes a.md").click(e => {
@@ -362,13 +362,13 @@ class Tree {
     })
   }
 
-  gotonote(nkid) {
-    if (nkid != undefined && nkid != "0") {
-      const nnode = this.ftw.getNodeByKey(`n${nkid}`)
+  gotonote(key_id) {
+    if (key_id != undefined && key_id != "0") {
+      const nnode = this.ftw.getNodeByKey(`n${key_id}`)
       if (nnode != null) {
         nnode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")
-        $(`a[nkid="${nkid}"]`).closest("span").addClass("treehl")
+        $(`a[key_id="${key_id}"]`).closest("span").addClass("treehl")
         $(nnode.li)[0].scrollIntoView()
       }
     }

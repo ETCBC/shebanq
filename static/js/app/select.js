@@ -1,7 +1,7 @@
 /* eslint-env jquery */
 /* globals Config, P */
 
-import { close_dialog, defcolor } from "./helpers.js"
+import { closeDialog, colorDefault } from "./helpers.js"
 
 const docName = "0_home"
 
@@ -22,7 +22,7 @@ export class MSelect {
   }
 
   apply() {
-    /* apply material viewsettings to current material
+    /* apply material ViewSettings to current material
      */
     const { versions, featureHost, bolUrl, pblUrl } = Config
 
@@ -41,8 +41,8 @@ export class MSelect {
       this.book.apply()
       this.select.apply()
       $(this.hid).show()
-      const book = P.vs.book()
-      const chapter = P.vs.chapter()
+      const book = P.viewState.book()
+      const chapter = P.viewState.chapter()
       if (book != "x" && chapter > 0) {
         bol.attr("href", `${bolUrl}/ETCBC4/${book}/${chapter}`)
         bol.show()
@@ -62,14 +62,14 @@ export class MSelect {
   set_vselect(v) {
     const { sidebars } = P
 
-      $(`#version_${v}`).click(e => {
-        e.preventDefault()
-        sidebars.side_fetched["mw"] = false
-        sidebars.side_fetched["mq"] = false
-        sidebars.side_fetched["mn"] = false
-        P.vs.mstatesv({ version: v })
-        P.go()
-      })
+    $(`#version_${v}`).click(e => {
+      e.preventDefault()
+      sidebars.side_fetched["mw"] = false
+      sidebars.side_fetched["mq"] = false
+      sidebars.side_fetched["mn"] = false
+      P.viewState.mstatesv({ version: v })
+      P.go()
+    })
   }
 }
 
@@ -132,7 +132,7 @@ export class LSelect {
      */
     const { bookLangs } = Config
 
-    const thelang = P.vs.lang()
+    const thelang = P.viewState.lang()
     const nitems = bookLangs.length
     this.lastitem = nitems
     let ht = ""
@@ -166,9 +166,9 @@ export class LSelect {
       if (!isloaded) {
         const vals = {}
         vals["lang"] = elem.attr("item")
-        P.vs.mstatesv(vals)
+        P.viewState.mstatesv(vals)
         this.update_vlabels()
-        P.vs.addHist()
+        P.viewState.addHist()
         P.material.apply()
       }
     })
@@ -179,7 +179,7 @@ export class LSelect {
 
     $("span[book]").each((i, el) => {
       const elem = $(el)
-      elem.html(bookTrans[P.vs.lang()][elem.attr("book")])
+      elem.html(bookTrans[P.viewState.lang()][elem.attr("book")])
     })
   }
 
@@ -223,8 +223,8 @@ class SelectBook {
      */
     const { bookTrans, bookOrder } = Config
 
-    const thebook = P.vs.book()
-    const lang = P.vs.lang()
+    const thebook = P.viewState.book()
+    const lang = P.viewState.lang()
     const thisbooksorder = bookOrder[P.version]
     const nitems = thisbooksorder.length
 
@@ -256,8 +256,8 @@ class SelectBook {
         vals["book"] = elem.attr("item")
         vals["chapter"] = "1"
         vals["verse"] = "1"
-        P.vs.mstatesv(vals)
-        P.vs.addHist()
+        P.viewState.mstatesv(vals)
+        P.viewState.addHist()
         P.go()
       }
     })
@@ -294,8 +294,8 @@ class SelectItems {
       const vals = {}
       vals[this.key] = elem.attr("contents")
       vals["verse"] = "1"
-      P.vs.mstatesv(vals)
-      P.vs.addHist()
+      P.viewState.mstatesv(vals)
+      P.viewState.addHist()
       this.go()
     })
     this.next.click(e => {
@@ -304,8 +304,8 @@ class SelectItems {
       const vals = {}
       vals[this.key] = elem.attr("contents")
       vals["verse"] = "1"
-      P.vs.mstatesv(vals)
-      P.vs.addHist()
+      P.viewState.mstatesv(vals)
+      P.viewState.addHist()
       this.go()
     })
     $(this.control).click(e => {
@@ -323,7 +323,7 @@ class SelectItems {
   }
 
   present() {
-    close_dialog($(this.other_hid))
+    closeDialog($(this.other_hid))
     $(this.hid).dialog({
       autoOpen: false,
       dialogClass: "items",
@@ -344,8 +344,8 @@ class SelectItems {
     let nitems
 
     if (this.key == "chapter") {
-      const thebook = P.vs.book()
-      theitem = P.vs.chapter()
+      const thebook = P.viewState.book()
+      theitem = P.viewState.chapter()
       nitems = thebook != "x" ? books[P.version][thebook] : 0
       this.lastitem = nitems
       itemlist = new Array(nitems)
@@ -355,7 +355,7 @@ class SelectItems {
     } else {
       /* 'page'
        */
-      theitem = P.vs.page()
+      theitem = P.viewState.page()
       nitems = $("#rp_pages").val()
       this.lastitem = nitems
       itemlist = []
@@ -392,8 +392,8 @@ class SelectItems {
         const vals = {}
         vals[this.key] = elem.attr("item")
         vals["verse"] = "1"
-        P.vs.mstatesv(vals)
-        P.vs.addHist()
+        P.viewState.mstatesv(vals)
+        P.viewState.addHist()
         this.go()
       }
     })
@@ -409,7 +409,9 @@ class SelectItems {
         this.add_item(elem)
       })
       $(this.control).show()
-      const thisitem = parseInt(this.key == "page" ? P.vs.page() : P.vs.chapter())
+      const thisitem = parseInt(
+        this.key == "page" ? P.viewState.page() : P.viewState.chapter()
+      )
       if (thisitem == undefined || thisitem == 1) {
         this.prev.hide()
       } else {
@@ -485,8 +487,8 @@ export class CSelect {
       vals["mr"] = "r"
       vals["version"] = this.vr
       vals["qw"] = this.qw
-      P.vs.mstatesv(vals)
-      P.vs.addHist()
+      P.viewState.mstatesv(vals)
+      P.viewState.addHist()
       P.go()
     })
     $("#theitemc").html(`Back to ${$("#theitem").html()} (version ${this.vr})`)
@@ -498,7 +500,7 @@ export class CSelect {
 
   present(iid) {
     const { shbStyle } = Config
-    const { chart_width } = P
+    const { chartWidth } = P
 
     $(`${this.select}_${iid}`).dialog({
       autoOpen: false,
@@ -510,7 +512,7 @@ export class CSelect {
       },
       modal: false,
       title: `chart for ${shbStyle[this.qw]["tag"]} (version ${this.vr})`,
-      width: chart_width,
+      width: chartWidth,
       position: { my: "left top", at: "left top", of: window },
     })
   }
@@ -605,17 +607,17 @@ export class CSelect {
       vals["chapter"] = elem.attr("ch")
       vals["mr"] = "m"
       vals["version"] = this.vr
-      P.vs.mstatesv(vals)
-      P.vs.hstatesv("q", { sel_one: "white", active: "hlcustom" })
-      P.vs.hstatesv("w", { sel_one: "black", active: "hlcustom" })
-      P.vs.cstatexx("q")
-      P.vs.cstatexx("w")
+      P.viewState.mstatesv(vals)
+      P.viewState.hstatesv("q", { sel_one: "white", active: "hlcustom" })
+      P.viewState.hstatesv("w", { sel_one: "black", active: "hlcustom" })
+      P.viewState.cstatexx("q")
+      P.viewState.cstatexx("w")
       if (this.qw != "n") {
         vals = {}
-        vals[iid] = P.vs.colormap(this.qw)[iid] || defcolor(this.qw == "q", iid)
-        P.vs.cstatesv(this.qw, vals)
+        vals[iid] = P.viewState.colormap(this.qw)[iid] || colorDefault(this.qw == "q", iid)
+        P.viewState.cstatesv(this.qw, vals)
       }
-      P.vs.addHist()
+      P.viewState.addHist()
       P.go()
     })
   }

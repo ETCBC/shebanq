@@ -11,9 +11,9 @@ class Verse:
         self,
         PASSAGE_DBS,
         vr,
-        bookName,
-        chapterNum,
-        verseNum,
+        book_name,
+        chapter_num,
+        verse_num,
         xml=None,
         wordData=None,
         tp=None,
@@ -27,9 +27,9 @@ class Verse:
         self.tr = tr
         self.mr = mr
         self.lang = lang
-        self.bookName = bookName
-        self.chapterNum = chapterNum
-        self.verseNum = verseNum
+        self.book_name = book_name
+        self.chapter_num = chapter_num
+        self.verse_num = verse_num
         if xml is None:
             xml = ""
         if wordData is None:
@@ -40,9 +40,9 @@ inner join word_verse on word_number = word_verse.anchor
 inner join verse on verse.id = word_verse.verse_id
 inner join chapter on verse.chapter_id = chapter.id
 inner join book on chapter.book_id = book.id
-where book.name = '{bookName}'
-and chapter.chapter_num = {chapterNum}
-and verse.verse_num = {verseNum}
+where book.name = '{book_name}'
+and chapter.chapter_num = {chapter_num}
+and verse.verse_num = {verse_num}
 order by word_number
 ;
 """
@@ -69,10 +69,10 @@ order by word_number
 
     def label(self):
         return (
-            BOOK_TRANS[self.lang][self.bookName].replace("_", " "),
-            self.bookName,
-            self.chapterNum,
-            self.verseNum,
+            BOOK_TRANS[self.lang][self.book_name].replace("_", " "),
+            self.book_name,
+            self.chapter_num,
+            self.verse_num,
         )
 
     def getWords(self):
@@ -80,14 +80,16 @@ order by word_number
             root = ET.fromstring(f"<verse>{self.xml}</verse>".encode("utf-8"))
             i = 0
             for child in root:
-                slotId = int(child.attrib["m"])
-                lexId = child.attrib["l"]
+                slotid = int(child.attrib["m"])
+                lexicon_id = child.attrib["l"]
                 text = "" if child.text is None else child.text
                 thisWordData = self.wordData[i]
                 phonoText = thisWordData["word_phono"]
                 phonoSep = thisWordData["word_phono_sep"]
                 trailer = child.get("t", "")
-                self.words.append((slotId, lexId, text, trailer, phonoText, phonoSep))
+                self.words.append(
+                    (slotid, lexicon_id, text, trailer, phonoText, phonoSep)
+                )
                 i += 1
         return self.words
 
@@ -195,7 +197,7 @@ order by word_number
         bigtab = "&lt;" * tab10s
         result = [
             f"""
-<tr canr="{clauseAtomNumber}">
+<tr clause_atom="{clauseAtomNumber}">
     <td colspan="3" class="t1_txt">
 """
         ]

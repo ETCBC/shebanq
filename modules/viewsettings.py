@@ -28,7 +28,7 @@ from viewdefs import (
 )
 
 
-class Viewsettings:
+class VIEWSETTINGS:
     def __init__(self, Chunk, URL, VERSIONS):
         self.Chunk = Chunk
         self.URL = URL
@@ -99,16 +99,16 @@ class Viewsettings:
 
         books = {}
         booksOrder = {}
-        bookId = {}
+        bookIds = {}
         bookName = {}
 
         self.books = books
         self.booksOrder = booksOrder
-        self.bookId = bookId
+        self.bookIds = bookIds
         self.bookName = bookName
 
         for v in self.VERSIONS:
-            (books[v], booksOrder[v], bookId[v], bookName[v]) = Chunk.getBooks(v)
+            (books[v], booksOrder[v], bookIds[v], bookName[v]) = Chunk.getBooks(v)
 
     def theversion(self):
         return self.state["material"][""]["version"]
@@ -127,7 +127,7 @@ colorsCls: {json.dumps(makeColors())},
 colorsDefault: {json.dumps(COLORS_DEFAULT)},
 dncols: {DNCOLS},
 dnrows: {DNROWS},
-viewinit: {json.dumps(self.state)},
+viewInit: {json.dumps(self.state)},
 shbStyle: {json.dumps(SHB_STYLE)},
 pref: str(self.pref),
 tpLabels: {json.dumps(TP_LABELS)},
@@ -154,8 +154,6 @@ wordUrl: "{URL("hebrew", "word", "", host=True)}",
 wordsUrl: "{URL("hebrew", "words", extension="")}",
 noteUrl: "{URL("hebrew", "note", "", host=True)}",
 notesUrl: "{URL("hebrew", "notes", "", host=True)}",
-fieldUrl: "{URL("hebrew", "field", extension="json")}",
-fieldsUrl: "{URL("hebrew", "fields", extension="json")}",
 verseNotesUrl: "{URL("hebrew", "versenotes", extension="json")}",
 pageViewUrl: "{URL("hebrew", "text", host=True)}",
 viewUrl: "{URL("hebrew", "text", host=True)}",
@@ -170,6 +168,8 @@ uploadUrl: "{URL("hebrew", "noteupload", extension="json")}",
 pqUrl: "{URL("hebrew", "querytree", extension="json")}",
 queriesrUrl: "{URL("hebrew", "queriesr", extension="json")}",
 qUrl: "{URL("hebrew", "text", extension="")}",
-recordUrl: "{URL("hebrew", "record", extension="json")}",
+queryMetaUrl: "{URL("hebrew", "querymeta", extension="json")}",
+queryMetaFieldUrl: "{URL("hebrew", "querymetafield", extension="json")}",
+queryMetaFieldsUrl: "{URL("hebrew", "querymetafields", extension="json")}",
 }}
 """

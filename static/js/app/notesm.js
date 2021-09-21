@@ -5,7 +5,7 @@ import { escHT, specialLinks, markdownEscape } from "./helpers.js"
 import { Msg } from "./msg.js"
 
 export class Notes {
-  constructor(newcontent) {
+  constructor(contentNew) {
     this.show = false
     this.verselist = {}
     this.version = P.version
@@ -15,7 +15,7 @@ export class Notes {
     this.loggedIn = false
     this.mainCtrl = $("a.nt_main_ctl")
 
-    newcontent.find(".vradio").each((i, el) => {
+    contentNew.find(".vradio").each((i, el) => {
       const elem = $(el)
       const bk = elem.attr("b")
       const ch = elem.attr("c")
@@ -38,7 +38,7 @@ export class Notes {
     })
     this.mainCtrl.click(e => {
       e.preventDefault()
-      P.vs.hstatesv("n", { get: P.vs.get("n") == "v" ? "x" : "v" })
+      P.viewState.hstatesv("n", { get: P.viewState.get("n") == "v" ? "x" : "v" })
       this.apply()
     })
     this.rev_c.click(e => {
@@ -62,7 +62,7 @@ export class Notes {
   apply() {
     const { verselist } = this
 
-    if (P.vs.get("n") == "v") {
+    if (P.viewState.get("n") == "v") {
       this.mainCtrl.addClass("nt_loaded")
       for (const notev of Object.values(verselist)) {
         notev.show_notes(false)
@@ -152,7 +152,7 @@ class Notev {
         this.process(users, notes, keyIndex, changed, loggedIn)
         if (adjust_verse) {
           if (P.mr == "m") {
-            P.vs.mstatesv({ verse })
+            P.viewState.mstatesv({ verse })
             P.material.goto_verse()
           }
         }
@@ -170,10 +170,10 @@ class Notev {
         sidebar["mn"].content.apply()
       }
     }
-    this.orig_users = users
-    this.orig_notes = notes
+    this.usersOld = users
+    this.notesOld = notes
     this.origKeyIndex = keyIndex
-    this.orig_edit = []
+    this.editOld = []
     this.loggedIn = loggedIn
     this.gen_html(true)
     this.dirty = false
@@ -231,23 +231,23 @@ class Notev {
     P.decorate_crossrefs(dest)
   }
 
-  gen_html_ca(canr) {
+  gen_html_ca(clause_atom) {
     const { noteStatusCls, noteStatusSym } = Config
     const { muting_n } = L
     const vr = this.version
-    const notes = this.orig_notes[canr]
+    const notes = this.notesOld[clause_atom]
     const keyIndex = this.origKeyIndex
     let html = ""
     this.nnotes += notes.length
     for (let n = 0; n < notes.length; n++) {
       const nline = notes[n]
-      const { uid, nid, pub, shared, ro } = nline
-      const kwtrim = $.trim(nline.kw)
-      const kws = kwtrim.split(/\s+/)
+      const { user_id, note_id, is_published, is_shared, ro } = nline
+      const keywordsTrim = $.trim(nline.keywords)
+      const keywordList = keywordsTrim.split(/\s+/)
       let mute = false
-      for (const kw of kws) {
-        const nkid = keyIndex[`${uid} ${kw}`]
-        if (muting_n.isSet(`n${nkid}`)) {
+      for (const keywords of keywordList) {
+        const key_id = keyIndex[`${user_id} ${keywords}`]
+        if (muting_n.isSet(`n${key_id}`)) {
           mute = true
           break
         }
@@ -256,36 +256,36 @@ class Notev {
         this.mnotes += 1
         continue
       }
-      const user = this.orig_users[uid]
-      const pubc = pub ? "ison" : ""
-      const sharedc = shared ? "ison" : ""
-      const statc = noteStatusCls[nline.stat]
-      const statsym = noteStatusSym[nline.stat]
+      const user = this.usersOld[user_id]
+      const pubc = is_published ? "ison" : ""
+      const sharedc = is_shared ? "ison" : ""
+      const statc = noteStatusCls[nline.status]
+      const statsym = noteStatusSym[nline.status]
       const edit_att = ro ? "" : ' edit="1"'
       const edit_class = ro ? "" : " edit"
-      html += `<tr class="nt_cmt nt_info ${statc}${edit_class}" nid="${nid}"
-          ncanr="${canr}"${edit_att}">`
+      html += `<tr class="nt_cmt nt_info ${statc}${edit_class}" note_id="${note_id}"
+          clause_atom="${clause_atom}"${edit_att}">`
       if (ro) {
         html += `<td class="nt_stat">
-            <span class="fa fa-${statsym} fa-fw" code="${nline.stat}"></span>
+            <span class="fa fa-${statsym} fa-fw" code="${nline.status}"></span>
           </td>`
-        html += `<td class="nt_kw">${escHT(nline.kw)}</td>`
-        const ntxt = specialLinks(markdown.toHTML(markdownEscape(nline.ntxt)))
-        html += `<td class="nt_cmt">${ntxt}</td>`
-        html += `<td class="nt_user" colspan="3" uid="${uid}">${escHT(user)}</td>`
+        html += `<td class="keywords">${escHT(nline.keywords)}</td>`
+        const ntext = specialLinks(markdown.toHTML(markdownEscape(nline.ntext)))
+        html += `<td class="nt_cmt">${ntext}</td>`
+        html += `<td class="nt_user" colspan="3" user_id="${user_id}">${escHT(user)}</td>`
         html += '<td class="nt_pub">'
         html += `<span class="ctli pradio fa fa-share-alt fa-fw ${sharedc}"
           title="shared?"></span>`
         html += `<span class="ctli pradio fa fa-quote-right fa-fw ${pubc}"
           title="published?"></span>`
       } else {
-        this.orig_edit.push({ canr, note: nline })
+        this.editOld.push({ clause_atom, note: nline })
         html += `<td class="nt_stat">
           <a href="#" title="set status" class="fa fa-${statsym} fa-fw"
-          code="${nline.stat}"></a></td>`
-        html += `<td class="nt_kw"><textarea>${nline.kw}</textarea></td>`
-        html += `<td class="nt_cmt"><textarea>${nline.ntxt}</textarea></td>`
-        html += `<td class="nt_user" colspan="3" uid="{uid}">${escHT(user)}</td>`
+          code="${nline.status}"></a></td>`
+        html += `<td class="keywords"><textarea>${nline.keywords}</textarea></td>`
+        html += `<td class="nt_cmt"><textarea>${nline.ntext}</textarea></td>`
+        html += `<td class="nt_user" colspan="3" user_id="{user_id}">${escHT(user)}</td>`
         html += '<td class="nt_pub">'
         html += `<a class="ctli pradio fa fa-share-alt fa-fw ${sharedc}"
           href="#" title="shared?"></a>`
@@ -301,11 +301,11 @@ class Notev {
   gen_html(replace) {
     this.mnotes = 0
     if (replace) {
-      this.dest.find("tr[ncanr]").remove()
+      this.dest.find("tr[clause_atom]").remove()
     }
-    for (const canr in this.orig_notes) {
-      const target = this.dest.find(`tr[canr="${canr}"]`)
-      const html = this.gen_html_ca(canr)
+    for (const clause_atom in this.notesOld) {
+      const target = this.dest.find(`tr[clause_atom="${clause_atom}"]`)
+      const html = this.gen_html_ca(clause_atom)
       target.after(html)
     }
     if (this.nnotes == 0) {
@@ -334,7 +334,7 @@ class Notev {
           this.msgn.msg(m)
         }
         if (good) {
-          this.dest.find("tr[ncanr]").remove()
+          this.dest.find("tr[clause_atom]").remove()
           this.process(users, notes, keyIndex, changed, loggedIn)
         }
       },
@@ -344,34 +344,34 @@ class Notev {
 
   is_dirty() {
     let dirty = false
-    const { orig_edit } = this
-    if (orig_edit == undefined) {
+    const { editOld } = this
+    if (editOld == undefined) {
       this.dirty = false
       return
     }
-    for (let n = 0; n < orig_edit.length; n++) {
-      const { canr, note: o_note } = orig_edit[n]
-      const { nid } = o_note
+    for (let n = 0; n < editOld.length; n++) {
+      const { clause_atom, note: noteOld } = editOld[n]
+      const { note_id } = noteOld
       const n_note =
-        nid == 0
-          ? this.dest.find(`tr[nid="0"][ncanr="${canr}"]`)
-          : this.dest.find(`tr[nid="${nid}"]`)
-      const o_stat = o_note.stat
-      const n_stat = n_note.find("td.nt_stat a").attr("code")
-      const o_kw = $.trim(o_note.kw)
-      const n_kw = $.trim(n_note.find("td.nt_kw textarea").val())
-      const o_ntxt = o_note.ntxt
-      const n_ntxt = $.trim(n_note.find("td.nt_cmt textarea").val())
-      const o_shared = o_note.shared
-      const n_shared = n_note.find("td.nt_pub a").first().hasClass("ison")
-      const o_pub = o_note.pub
-      const n_pub = n_note.find("td.nt_pub a").last().hasClass("ison")
+        note_id == 0
+          ? this.dest.find(`tr[note_id="0"][clause_atom="${clause_atom}"]`)
+          : this.dest.find(`tr[note_id="${note_id}"]`)
+      const statusOld = noteOld.status
+      const statusNew = n_note.find("td.nt_stat a").attr("code")
+      const keywordsOld = $.trim(noteOld.keywords)
+      const keywordsNew = $.trim(n_note.find("td.keywords textarea").val())
+      const ntextOld = noteOld.ntext
+      const ntextNew = $.trim(n_note.find("td.nt_cmt textarea").val())
+      const is_sharedOld = noteOld.is_shared
+      const isSharedNew = n_note.find("td.nt_pub a").first().hasClass("ison")
+      const isPublishedOld = noteOld.is_published
+      const isPublishedNew = n_note.find("td.nt_pub a").last().hasClass("ison")
       if (
-        o_stat != n_stat ||
-        o_kw != n_kw ||
-        o_ntxt != n_ntxt ||
-        o_shared != n_shared ||
-        o_pub != n_pub
+        statusOld != statusNew ||
+        keywordsOld != keywordsNew ||
+        ntextOld != ntextNew ||
+        is_sharedOld != isSharedNew ||
+        isPublishedOld != isPublishedNew
       ) {
         dirty = true
         break
@@ -390,7 +390,7 @@ class Notev {
   }
   save() {
     this.edt = false
-    const { version, book, chapter, verse, edt, orig_edit } = this
+    const { version, book, chapter, verse, edt, editOld } = this
     const data = {
       version,
       book,
@@ -400,42 +400,42 @@ class Notev {
       edit: edt,
     }
     const notelines = []
-    if (orig_edit == undefined) {
+    if (editOld == undefined) {
       return
     }
-    for (let n = 0; n < orig_edit.length; n++) {
-      const { canr, note: o_note } = orig_edit[n]
-      const { nid, uid } = o_note
+    for (let n = 0; n < editOld.length; n++) {
+      const { clause_atom, note: noteOld } = editOld[n]
+      const { note_id, user_id } = noteOld
       const n_note =
-        nid == 0
-          ? this.dest.find(`tr[nid="0"][ncanr="${canr}"]`)
-          : this.dest.find(`tr[nid="${nid}"]`)
-      const o_stat = o_note.stat
-      const n_stat = n_note.find("td.nt_stat a").attr("code")
-      const o_kw = $.trim(o_note.kw)
-      const n_kw = $.trim(n_note.find("td.nt_kw textarea").val())
-      const o_ntxt = o_note.ntxt
-      const n_ntxt = $.trim(n_note.find("td.nt_cmt textarea").val())
-      const o_shared = o_note.shared
-      const n_shared = n_note.find("td.nt_pub a").first().hasClass("ison")
-      const o_pub = o_note.pub
-      const n_pub = n_note.find("td.nt_pub a").last().hasClass("ison")
+        note_id == 0
+          ? this.dest.find(`tr[note_id="0"][clause_atom="${clause_atom}"]`)
+          : this.dest.find(`tr[note_id="${note_id}"]`)
+      const statusOld = noteOld.status
+      const statusNew = n_note.find("td.nt_stat a").attr("code")
+      const keywordsOld = $.trim(noteOld.keywords)
+      const keywordsNew = $.trim(n_note.find("td.keywords textarea").val())
+      const ntextOld = noteOld.ntext
+      const ntextNew = $.trim(n_note.find("td.nt_cmt textarea").val())
+      const is_sharedOld = noteOld.is_shared
+      const isSharedNew = n_note.find("td.nt_pub a").first().hasClass("ison")
+      const isPublishedOld = noteOld.is_published
+      const isPublishedNew = n_note.find("td.nt_pub a").last().hasClass("ison")
       if (
-        o_stat != n_stat ||
-        o_kw != n_kw ||
-        o_ntxt != n_ntxt ||
-        o_shared != n_shared ||
-        o_pub != n_pub
+        statusOld != statusNew ||
+        keywordsOld != keywordsNew ||
+        ntextOld != ntextNew ||
+        is_sharedOld != isSharedNew ||
+        isPublishedOld != isPublishedNew
       ) {
         notelines.push({
-          nid,
-          canr,
-          stat: n_stat,
-          kw: n_kw,
-          ntxt: n_ntxt,
-          uid,
-          shared: n_shared,
-          pub: n_pub,
+          note_id,
+          clause_atom,
+          status: statusNew,
+          keywords: keywordsNew,
+          ntext: ntextNew,
+          user_id,
+          is_shared: isSharedNew,
+          is_published: isPublishedNew,
         })
       }
     }
@@ -494,7 +494,7 @@ class Notev {
         }
       }
       if (P.mr == "m") {
-        P.vs.mstatesv({ verse: this.verse })
+        P.viewState.mstatesv({ verse: this.verse })
         P.material.goto_verse()
       }
     }

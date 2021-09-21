@@ -26,15 +26,15 @@ class NOTE:
         self.NOTE_DB = NOTE_DB
         self.VERSIONS = VERSIONS
 
-    def getItems(self, vr, book, chapter, pub):
+    def getItems(self, vr, book, chapter, is_published):
         NOTE_DB = self.NOTE_DB
 
         bk = book["name"]
         ch = chapter["chapter_num"]
-        if pub == "x":
-            pubv = ""
+        if is_published == "x":
+            isPubVersion = ""
         else:
-            pubv = " and is_published = 'T'"
+            isPubVersion = " and is_published = 'T'"
         sql = f"""
 select
     note.created_by,
@@ -45,46 +45,46 @@ select
     note.is_published
 from note
 inner join shebanq_web.auth_user on shebanq_web.auth_user.id = created_by
-where version = '{vr}' and book = '{bk}' and chapter = {ch} {pubv}
+where version = '{vr}' and book = '{bk}' and chapter = {ch} {isPubVersion}
 order by note.verse
 ;
 """
         records = NOTE_DB.executesql(sql)
         user = {}
-        npub = collections.Counter()
-        nnotes = collections.Counter()
-        nverses = {}
-        for (uid, ufname, ulname, kw, v, pub) in records:
-            if uid not in user:
-                user[uid] = (ufname, ulname)
-            for k in set(kw.strip().split()):
-                if pub == "T":
-                    npub[(uid, k)] += 1
-                nnotes[(uid, k)] += 1
-                nverses.setdefault((uid, k), set()).add(v)
+        nPublished = collections.Counter()
+        nNotes = collections.Counter()
+        nVerses = {}
+        for (user_id, first_name, last_name, keywords, v, is_published) in records:
+            if user_id not in user:
+                user[user_id] = (first_name, last_name)
+            for keyword in set(keywords.strip().split()):
+                if is_published == "T":
+                    nPublished[(user_id, keyword)] += 1
+                nNotes[(user_id, keyword)] += 1
+                nVerses.setdefault((user_id, keyword), set()).add(v)
         r = []
-        for (uid, k) in nnotes:
-            (ufname, ulname) = user[uid]
-            thisNPub = npub[(uid, k)]
-            thisNNotes = nnotes[(uid, k)]
-            thisNVerses = len(nverses[(uid, k)])
+        for (user_id, keyword) in nNotes:
+            (first_name, last_name) = user[user_id]
+            thisNPub = nPublished[(user_id, keyword)]
+            thisNNotes = nNotes[(user_id, keyword)]
+            thisNVerses = len(nVerses[(user_id, keyword)])
             r.append(
                 {
                     "item": dict(
-                        id=iEncode("n", uid, k),
-                        ufname=ufname,
-                        ulname=ulname,
-                        kw=k,
+                        id=iEncode("n", user_id, keyword),
+                        first_name=first_name,
+                        last_name=last_name,
+                        keywords=keyword,
                         is_published=thisNPub > 0,
-                        nnotes=thisNNotes,
-                        nverses=thisNVerses,
+                        nNotes=thisNNotes,
+                        nVerses=thisNVerses,
                     ),
                     "slots": json.dumps([]),
                 }
             )
         return r
 
-    def load(self, vr, iid, kw):
+    def load(self, vr, iid, keywords):
         auth = self.auth
         Caching = self.Caching
         Chunk = self.Chunk
@@ -93,12 +93,13 @@ order by note.verse
         clauseAtomFirst = Caching.get(
             f"clause_atom_f_{vr}_", lambda: Chunk.getClauseAtomFirstSlot(vr), None
         )
-        kwSql = kw.replace("'", "''")
+        keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
         extra = "" if myId is None else f""" or created_by = {myId} """
         sql = f"""
 select book, clause_atom from note
-where keywords like '% {kwSql} %' and version = '{vr}' and (is_shared = 'T' {extra})
+where keywords like '% {keywordsSql} %'
+and version = '{vr}' and (is_shared = 'T' {extra})
 ;
 """
         clauseAtoms = NOTE_DB.executesql(sql)
@@ -108,36 +109,41 @@ where keywords like '% {kwSql} %' and version = '{vr}' and (is_shared = 'T' {ext
     def getInfo(self, iidRep, vr, msgs):
         db = self.db
 
-        (iid, kw) = iDecode("n", iidRep)
+        (iid, keywords) = iDecode("n", iidRep)
         if iid is None:
             return {}
         nRecord = dict(
-            id=iidRep, uid=iid, ufname="N?", ulname="N?", kw=kw, versions={}
+            id=iidRep,
+            user_id=iid,
+            first_name="N?",
+            last_name="N?",
+            keywords=keywords,
+            versions={},
         )
-        nRecord["versions"] = self.countNotes(iid, kw)
+        nRecord["versions"] = self.countNotes(iid, keywords)
         sql = f"""
     select first_name, last_name from auth_user where id = '{iid}'
     ;
     """
         uinfo = db.executesql(sql)
         if uinfo is not None and len(uinfo) > 0:
-            nRecord["ufname"] = uinfo[0][0]
-            nRecord["ulname"] = uinfo[0][1]
+            nRecord["first_name"] = uinfo[0][0]
+            nRecord["last_name"] = uinfo[0][1]
         return nRecord
 
-    def countNotes(self, uid, kw):
+    def countNotes(self, user_id, keywords):
         auth = self.auth
         NOTE_DB = self.notedb
 
-        kwSql = kw.replace("'", "''")
+        keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
-        extra = f""" or created_by = {uid} """ if myId == uid else ""
+        extra = f""" or created_by = {user_id} """ if myId == user_id else ""
         sql = f"""
 select
     version,
     count(id) as amount
 from note
-where keywords like '% {kwSql} %' and (is_shared = 'T' {extra})
+where keywords like '% {keywordsSql} %' and (is_shared = 'T' {extra})
 group by version
 ;"""
         records = NOTE_DB.executesql(sql)
@@ -152,55 +158,57 @@ group by version
         Caching = self.Caching
         NOTE_DB = self.NOTE_DB
 
-        (good, oldNotes, updNotes, newNotes, delNotes) = self.filter(
+        (good, notesOld, notesUpd, notesNew, notesDel) = self.filter(
             myId, notes, clauseAtoms, msgs
         )
 
         updated = 0
-        for nid in updNotes:
-            (shared, pub, stat, kw, ntxt) = updNotes[nid]
-            (oldShared, oldPub, oldStatus, oldKw, oldTxt) = oldNotes[nid]
+        for note_id in notesUpd:
+            (is_shared, is_published, status, keywords, ntext) = notesUpd[note_id]
+            (isSharedOld, isPubOld, statusOld, keywordsOld, ntextOld) = notesOld[
+                note_id
+            ]
             extrafields = []
-            if shared and not oldShared:
+            if is_shared and not isSharedOld:
                 extrafields.append(f",\n\tshared_on = '{now}'")
-            if not shared and oldShared:
+            if not is_shared and isSharedOld:
                 extrafields.append(",\n\tshared_on = null")
-            if pub and not oldPub:
+            if is_published and not isPubOld:
                 extrafields.append(f",\n\tpublished_on = '{now}'")
-            if not pub and oldPub:
+            if not is_published and isPubOld:
                 extrafields.append(",\n\tpublished_on = null")
-            shared = "'T'" if shared else "null"
-            pub = "'T'" if pub else "null"
-            stat = "o" if stat not in {"o", "*", "+", "?", "-", "!"} else stat
+            is_shared = "'T'" if is_shared else "null"
+            is_published = "'T'" if is_published else "null"
+            status = "o" if status not in {"o", "*", "+", "?", "-", "!"} else status
             updateSql = f"""
 update note
     set modified_on = '{now}',
-    is_shared = {shared},
-    is_published = {pub},
-    status = '{stat}',
-    keywords = '{kw.replace("'", "''")}',
-    ntext = '{ntxt.replace("'", "''")}'{"".join(extrafields)}
-where id = {nid}
+    is_shared = {is_shared},
+    is_published = {is_published},
+    status = '{status}',
+    keywords = '{keywords.replace("'", "''")}',
+    ntext = '{ntext.replace("'", "''")}'{"".join(extrafields)}
+where id = {note_id}
 ;
 """
             NOTE_DB.executesql(updateSql)
             updated += 1
-        if len(delNotes) > 0:
+        if len(notesDel) > 0:
             deleteSql = f"""
-delete from note where id in ({",".join(str(x) for x in delNotes)})
+delete from note where id in ({",".join(str(x) for x in notesDel)})
 ;
 """
             NOTE_DB.executesql(deleteSql)
 
-        for canr in newNotes:
-            (shared, pub, stat, kw, ntxt) = newNotes[canr]
-            sh = "'T'" if shared else "null"
-            sht = f"'{now}'" if shared else "null"
-            pb = "'T'" if pub else "null"
-            pbt = "'{now}'" if pub else "null"
-            fl = "o" if stat not in {"o", "*", "+", "?", "-", "!"} else stat
-            kwr = kw.replace("'", "''")
-            ntr = ntxt.replace("'", "''")
+        for clause_atom in notesNew:
+            (is_shared, is_published, status, keywords, ntext) = notesNew[clause_atom]
+            sh = "'T'" if is_shared else "null"
+            sht = f"'{now}'" if is_shared else "null"
+            pb = "'T'" if is_published else "null"
+            pbt = "'{now}'" if is_published else "null"
+            fl = "o" if status not in {"o", "*", "+", "?", "-", "!"} else status
+            keywordsSql = keywords.replace("'", "''")
+            ntr = ntext.replace("'", "''")
             insertSql = f"""
 insert into note
 (version, book, chapter, verse, clause_atom,
@@ -208,36 +216,36 @@ created_by, created_on, modified_on,
 is_shared, shared_on, is_published, published_on,
 status, keywords, ntext)
 values
-('{vr}', '{bk}', {ch}, {vs}, {canr},
+('{vr}', '{bk}', {ch}, {vs}, {clause_atom},
  {myId}, '{now}', '{now}', {sh}, {sht}, {pb}, {pbt},
- '{fl}', '{kwr}', '{ntr}')
+ '{fl}', '{keywordsSql}', '{ntr}')
 ;
 """
             NOTE_DB.executesql(insertSql)
 
         changed = False
-        if len(delNotes) > 0:
-            msgs.append(("special", f"Deleted notes: {len(delNotes)}"))
+        if len(notesDel) > 0:
+            msgs.append(("special", f"Deleted notes: {len(notesDel)}"))
         if updated > 0:
             msgs.append(("special", f"Updated notes: {updated}"))
-        if len(newNotes) > 0:
-            msgs.append(("special", f"Added notes: {len(newNotes)}"))
-        if len(delNotes) + len(newNotes) + updated == 0:
+        if len(notesNew) > 0:
+            msgs.append(("special", f"Added notes: {len(notesNew)}"))
+        if len(notesDel) + len(notesNew) + updated == 0:
             msgs.append(("warning", "No changes"))
         else:
             changed = True
             Caching.clear(f"^items_n_{vr}_{bk}_{ch}_")
-            if len(newNotes):
-                for kw in {newNotes[canr][3] for canr in newNotes}:
+            if len(notesNew):
+                for keywords in {notesNew[clause_atom][3] for clause_atom in notesNew}:
                     Caching.clear(
-                        f"^verses_{vr}_n_{iEncode('n', myId, kw=kw)}_",
+                        f"^verses_{vr}_n_{iEncode('n', myId, keywords=keywords)}_",
                     )
-            if len(delNotes):
-                for nid in delNotes:
-                    if nid in oldNotes:
-                        kw = oldNotes[nid][3]
+            if len(notesDel):
+                for note_id in notesDel:
+                    if note_id in notesOld:
+                        keywords = notesOld[note_id][3]
                         Caching.clear(
-                            f"^verses_{vr}_n_{iEncode('n', myId, kw=kw)}_",
+                            f"^verses_{vr}_n_{iEncode('n', myId, keywords=keywords)}_",
                         )
         return changed
 
@@ -245,129 +253,143 @@ values
         NOTE_DB = self.NOTE_DB
 
         good = True
-        otherNotes = set()
-        missingNotes = set()
-        extraNotes = set()
-        sameNotes = set()
+        notesOther = set()
+        notesMissing = set()
+        notesExtra = set()
+        notesSame = set()
         clauseErrors = set()
-        emptynew = 0
-        oldNotes = {}
-        updNotes = {}
-        newNotes = {}
-        delNotes = set()
+        emptyNew = 0
+        notesOld = {}
+        notesUpd = {}
+        notesNew = {}
+        notesDel = set()
         for fields in notes:
-            nid = int(fields["nid"])
-            uid = int(fields["uid"])
-            canr = int(fields["canr"])
-            if uid != myId:
-                otherNotes.add(nid)
+            note_id = int(fields["note_id"])
+            user_id = int(fields["user_id"])
+            clause_atom = int(fields["clause_atom"])
+            if user_id != myId:
+                notesOther.add(note_id)
                 good = False
                 continue
-            if canr not in clauseAtoms:
-                clauseErrors.add(nid)
+            if clause_atom not in clauseAtoms:
+                clauseErrors.add(note_id)
                 good = False
                 continue
-            kw = "".join(" " + k + " " for k in fields["kw"].strip().split())
-            ntxt = fields["ntxt"].strip()
-            if kw == "" and ntxt == "":
-                if nid == 0:
-                    emptynew += 1
+            keywords = "".join(
+                " " + keyword + " " for keyword in fields["keywords"].strip().split()
+            )
+            ntext = fields["ntext"].strip()
+            if keywords == "" and ntext == "":
+                if note_id == 0:
+                    emptyNew += 1
                 else:
-                    delNotes.add(nid)
+                    notesDel.add(note_id)
                 continue
-            if nid != 0:
-                updNotes[nid] = (
-                    fields["shared"],
-                    fields["pub"],
-                    fields["stat"],
-                    kw,
-                    ntxt,
+            if note_id != 0:
+                notesUpd[note_id] = (
+                    fields["is_shared"],
+                    fields["is_published"],
+                    fields["status"],
+                    keywords,
+                    ntext,
                 )
             else:
-                newNotes[fields["canr"]] = (
-                    fields["shared"],
-                    fields["pub"],
-                    fields["stat"],
-                    kw,
-                    ntxt,
+                notesNew[fields["clause_atom"]] = (
+                    fields["is_shared"],
+                    fields["is_published"],
+                    fields["status"],
+                    keywords,
+                    ntext,
                 )
-        if len(updNotes) > 0 or len(delNotes) > 0:
-            ids = ",".join(str(x) for x in (set(updNotes.keys()) | delNotes))
-            oldSql = f"""
+        if len(notesUpd) > 0 or len(notesDel) > 0:
+            ids = ",".join(str(x) for x in (set(notesUpd.keys()) | notesDel))
+            sqlOld = f"""
 select id, created_by, is_shared, is_published, status, keywords, ntext
 from note where id in ({ids})
 ;
 """
-            cresult = NOTE_DB.executesql(oldSql)
+            cresult = NOTE_DB.executesql(sqlOld)
             if cresult is not None:
-                for (nid, uid, oldShared, oldPub, oldStatus, oldKw, oldTxt) in cresult:
+                for (
+                    note_id,
+                    user_id,
+                    isSharedOld,
+                    isPubOld,
+                    statusOld,
+                    keywordsOld,
+                    ntextOld,
+                ) in cresult:
                     remove = False
-                    if uid != myId:
-                        otherNotes.add(nid)
+                    if user_id != myId:
+                        notesOther.add(note_id)
                         remove = True
-                    elif nid not in updNotes and nid not in delNotes:
-                        extraNotes.add(nid)
+                    elif note_id not in notesUpd and note_id not in notesDel:
+                        notesExtra.add(note_id)
                         remove = True
-                    elif nid in updNotes:
-                        (shared, pub, stat, kw, ntxt) = updNotes[nid]
-                        if not shared:
-                            shared = None
-                        if not pub:
-                            pub = None
+                    elif note_id in notesUpd:
+                        (is_shared, is_published, status, keywords, ntext) = notesUpd[
+                            note_id
+                        ]
+                        if not is_shared:
+                            is_shared = None
+                        if not is_published:
+                            is_published = None
                         if (
-                            oldStatus == stat
-                            and oldKw == kw
-                            and oldTxt == ntxt
-                            and oldShared == shared
-                            and oldPub == pub
+                            statusOld == status
+                            and keywordsOld == keywords
+                            and ntextOld == ntext
+                            and isSharedOld == is_shared
+                            and isPubOld == is_published
                         ):
-                            sameNotes.add(nid)
-                            if nid not in delNotes:
+                            notesSame.add(note_id)
+                            if note_id not in notesDel:
                                 remove = True
                     if remove:
-                        if nid in updNotes:
-                            del updNotes[nid]
-                        if nid in delNotes:
-                            delNotes.remove(nid)
+                        if note_id in notesUpd:
+                            del notesUpd[note_id]
+                        if note_id in notesDel:
+                            notesDel.remove(note_id)
                     else:
-                        oldNotes[nid] = (oldShared, oldPub, oldStatus, oldKw, oldTxt)
+                        notesOld[note_id] = (
+                            isSharedOld,
+                            isPubOld,
+                            statusOld,
+                            keywordsOld,
+                            ntextOld,
+                        )
         removable = set()
-        for nid in updNotes:
-            if nid not in oldNotes:
-                if nid not in otherNotes:
-                    missingNotes.add(nid)
-                    removable.add(nid)
-        for nid in removable:
-            del updNotes[nid]
+        for note_id in notesUpd:
+            if note_id not in notesOld:
+                if note_id not in notesOther:
+                    notesMissing.add(note_id)
+                    removable.add(note_id)
+        for note_id in removable:
+            del notesUpd[note_id]
         removable = set()
-        for nid in delNotes:
-            if nid not in oldNotes:
-                if nid not in otherNotes:
-                    missingNotes.add(nid)
-                    removable.add(nid)
-        for nid in removable:
-            delNotes.remove(nid)
-        if len(otherNotes) > 0:
-            msgs.append(
-                ("error", f"Notes of other users skipped: {len(otherNotes)}")
-            )
-        if len(missingNotes) > 0:
-            msgs.append(("error", f"Non-existing notes: {len(missingNotes)}"))
-        if len(extraNotes) > 0:
-            msgs.append(("error", f"Notes not shown: {len(extraNotes)}"))
+        for note_id in notesDel:
+            if note_id not in notesOld:
+                if note_id not in notesOther:
+                    notesMissing.add(note_id)
+                    removable.add(note_id)
+        for note_id in removable:
+            notesDel.remove(note_id)
+        if len(notesOther) > 0:
+            msgs.append(("error", f"Notes of other users skipped: {len(notesOther)}"))
+        if len(notesMissing) > 0:
+            msgs.append(("error", f"Non-existing notes: {len(notesMissing)}"))
+        if len(notesExtra) > 0:
+            msgs.append(("error", f"Notes not shown: {len(notesExtra)}"))
         if len(clauseErrors) > 0:
             msgs.append(
                 ("error", f"Notes referring to wrong clause: {len(clauseErrors)}")
             )
-        if len(sameNotes) > 0:
+        if len(notesSame) > 0:
             pass
-            # msgs.append(('info', f'Unchanged notes: {len(sameNotes)}'))
-        if emptynew > 0:
+        if emptyNew > 0:
             pass
-            # msgs.append(('info', f'Skipped empty new notes: {emptynew}'))
-        return (good, oldNotes, updNotes, newNotes, delNotes)
+        return (good, notesOld, notesUpd, notesNew, notesDel)
 
-    def upload(self, uid, filetext, now, msgs):
+    def upload(self, user_id, filetext, now, msgs):
         Caching = self.Caching
         Chunk = self.Chunk
         NOTE_DB = self.NOTE_DB
@@ -441,7 +463,7 @@ insert into note
                 book,
                 chapter,
                 verse,
-                clauseAtom,
+                clause_atom,
                 is_shared,
                 is_published,
                 status,
@@ -472,10 +494,10 @@ insert into note
                 nerrors += 1
                 errors.setdefault("unrecognized verse", []).append(f"{i + 1}:{verse}")
                 continue
-            if not clauseAtom.isdigit() or int(clauseAtom) > 100000:
+            if not clause_atom.isdigit() or int(clause_atom) > 100000:
                 nerrors += 1
                 errors.setdefault("unrecognized clause_atom", []).append(
-                    f"{i + 1}:{clauseAtom}"
+                    f"{i + 1}:{clause_atom}"
                 )
                 continue
             if is_shared not in {"T", ""}:
@@ -522,9 +544,9 @@ insert into note
             allVersions.add(version)
             thisChunk.append(
                 (
-                    f"('{version}','{book}',{chapter},{verse},{clauseAtom},"
+                    f"('{version}','{book}',{chapter},{verse},{clause_atom},"
                     f"'{is_shared}','{is_published}',"
-                    f"'{status}','{keywords}','{ntext}',{uid},"
+                    f"'{status}','{keywords}','{ntext}',{user_id},"
                     f"'{created_on}','{modified_on}',{shared_on},{published_on},'b')"
                 )
             )
@@ -551,7 +573,7 @@ insert into note
             # and with these keywords and these versions
             delSql = f"""delete from note
 where bulk = 'b'
-and created_by = {uid}
+and created_by = {user_id}
 and {whereVersion}
 and {whereKeywords};"""
             NOTE_DB.executesql(delSql)
@@ -580,9 +602,9 @@ and {whereKeywords};"""
         noteSql = f"""
 select
     note.id,
-    note.created_by as uid,
-    shebanq_web.auth_user.first_name as ufname,
-    shebanq_web.auth_user.last_name as ulname,
+    note.created_by as user_id,
+    shebanq_web.auth_user.first_name,
+    shebanq_web.auth_user.last_name,
     note.clause_atom,
     note.is_shared,
     note.is_published,
@@ -617,13 +639,13 @@ order by
             for clauseAtom in clauseAtoms:
                 notesProto[clauseAtom][myId] = [
                     dict(
-                        uid=myId,
-                        nid=0,
-                        shared=True,
-                        pub=False,
-                        stat="o",
-                        kw="",
-                        ntxt="",
+                        user_id=myId,
+                        note_id=0,
+                        is_shared=True,
+                        is_published=False,
+                        status="o",
+                        keywords="",
+                        ntext="",
                     )
                 ]
                 clauseAtomUsers[clauseAtom][myId] = None
@@ -640,49 +662,57 @@ order by
             msgs.append(("warning", "No notes"))
         else:
             for (
-                nid,
-                uid,
-                ufname,
-                ulname,
-                clauseAtom,
-                shared,
-                pub,
-                pubOn,
+                note_id,
+                user_id,
+                first_name,
+                last_name,
+                clause_atom,
+                is_shared,
+                is_published,
+                published_on,
                 status,
                 keywords,
                 ntext,
             ) in records:
-                if (myId is None or (uid != myId) or not edit) and uid not in users:
-                    users[uid] = f"{ufname} {ulname}"
-                if uid not in clauseAtomUsers[clauseAtom]:
-                    clauseAtomUsers[clauseAtom][uid] = None
-                pub = pub == "T"
-                shared = pub or shared == "T"
+                if (
+                    myId is None or (user_id != myId) or not edit
+                ) and user_id not in users:
+                    users[user_id] = f"{first_name} {last_name}"
+                if user_id not in clauseAtomUsers[clause_atom]:
+                    clauseAtomUsers[clause_atom][user_id] = None
+                is_published = is_published == "T"
+                is_shared = is_published or is_shared == "T"
                 ro = (
                     myId is None
-                    or uid != myId
+                    or user_id != myId
                     or not edit
-                    or (pub and pubOn is not None and (pubOn <= now - PUBLISH_FREEZE))
+                    or (
+                        is_published
+                        and published_on is not None
+                        and (published_on <= now - PUBLISH_FREEZE)
+                    )
                 )
-                kws = keywords.strip().split()
-                for k in kws:
-                    keyIndex[f"{uid} {k}"] = iEncode("n", uid, kw=k)
-                notesProto.setdefault(clauseAtom, {}).setdefault(uid, []).append(
+                keywordList = keywords.strip().split()
+                for keyword in keywordList:
+                    keyIndex[f"{user_id} {keyword}"] = iEncode(
+                        "n", user_id, keywords=keyword
+                    )
+                notesProto.setdefault(clause_atom, {}).setdefault(user_id, []).append(
                     dict(
-                        uid=uid,
-                        nid=nid,
+                        user_id=user_id,
+                        note_id=note_id,
                         ro=ro,
-                        shared=shared,
-                        pub=pub,
-                        stat=status,
-                        kw=keywords,
-                        ntxt=ntext,
+                        is_shared=is_shared,
+                        is_published=is_published,
+                        status=status,
+                        keywords=keywords,
+                        ntext=ntext,
                     )
                 )
         notes = {}
         for clauseAtom in notesProto:
-            for uid in clauseAtomUsers[clauseAtom]:
-                notes.setdefault(clauseAtom, []).extend(notesProto[clauseAtom][uid])
+            for user_id in clauseAtomUsers[clauseAtom]:
+                notes.setdefault(clauseAtom, []).extend(notesProto[clauseAtom][user_id])
 
         return json.dumps(
             dict(

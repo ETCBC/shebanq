@@ -1,4 +1,4 @@
-from viewsettings import colorPicker
+from viewdefs import colorPicker
 from helpers import debug
 
 
@@ -10,16 +10,16 @@ class SIDE:
         self.Query = Query
         self.Note = Note
 
-    def get(self, vr, qw, bk, ch, pub):
+    def get(self, vr, qw, bk, ch, is_published):
         Caching = self.Caching
 
         return Caching.get(
-            f"items_{qw}_{vr}_{bk}_{ch}_{pub}_",
-            lambda: self.get_c(vr, qw, bk, ch, pub),
+            f"items_{qw}_{vr}_{bk}_{ch}_{is_published}_",
+            lambda: self.get_c(vr, qw, bk, ch, is_published),
             None,
         )
 
-    def get_c(self, vr, qw, bk, ch, pub):
+    def get_c(self, vr, qw, bk, ch, is_published):
         Material = self.Material
         Word = self.Word
         Query = self.Query
@@ -34,14 +34,14 @@ class SIDE:
             )
         else:
             if qw == "q":
-                debug(f"original function PUB={pub}")
-                slotSets = Query.getItems(vr, chapter, pub == "v")
+                debug(f"original function PUB={is_published}")
+                slotSets = Query.getItems(vr, chapter, is_published == "v")
                 sideItems = Query.group(vr, slotSets)
             elif qw == "w":
                 slotSets = Word.getItems(vr, chapter)
                 sideItems = Word.group(vr, slotSets)
             elif qw == "n":
-                sideItems = Note.getItems(vr, book, chapter, pub)
+                sideItems = Note.getItems(vr, book, chapter, is_published)
             else:
                 sideItems = []
             result = dict(

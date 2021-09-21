@@ -60,7 +60,7 @@ verses_{vr}_{mqwn}_{bk/iid}_{ch/page}_{tp}_   verses on a material page, either 
                                               or a results page of a query execution
                                               or a page with notes by a user with a keyword
 verse_{vr}_{bk}_{ch}_{vs}_                    a single verse in data representation
-items_{qw}_{vr}_{bk}_{ch}_{pub}_              the items (queries or words)
+items_{qw}_{vr}_{bk}_{ch}_{is_published}_     the items (queries or words)
                                               in a sidebar list of a page that shows a chapter
 chart_{vr}_{qw}_{iid}_                        the chart data for a query or word
 words_page_{vr}_{lan}_{letter}_               the data for a word index page

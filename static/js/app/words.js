@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 /* globals Config, ConfigW */
 
-import { set_heightw } from "./page.js"
+import { setHeightW } from "./page.js"
 
 const RequestInfo = {
   parameter(name) {
@@ -54,7 +54,7 @@ class View {
     }
 
     $(`#version_${version}`).addClass("ison")
-    set_heightw()
+    setHeightW()
     $("[wii]").hide()
     $("[gi]").click(e => {
       e.preventDefault()

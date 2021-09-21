@@ -15,7 +15,7 @@ def csv(data):
             ]
             result.append(
                 (",".join(trow)).replace("\n", " ").replace("\r", " ")
-            )  # no newlines in fields, it is impractical
+            )
     return "\n".join(result)
 
 
@@ -26,15 +26,16 @@ class CSVDATA:
         self.auth = auth
         self.PASSAGE_DBS = PASSAGE_DBS
 
-    def data(self, vr, qw, iid, kw, hebrewFields):
+    def data(self, vr, qw, iid, keywords, hebrewFields):
         Word = self.Word
         Query = self.Query
         auth = self.auth
         PASSAGE_DBS = self.PASSAGE_DBS
 
+        headRow = ["book", "chapter", "verse"] + [hf[1] for hf in hebrewFields]
+
         if qw == "n":
-            headRow = ["book", "chapter", "verse"] + [hf[1] for hf in hebrewFields]
-            kwSql = kw.replace("'", "''")
+            keywordsSql = keywords.replace("'", "''")
             myId = auth.user.id if auth.user is not None else None
             extra = "" if myId is None else f""" or created_by = {myId} """
 
@@ -47,14 +48,13 @@ from shebanq_note.note
 inner join book on shebanq_note.note.book = book.name
 inner join clause_atom on clause_atom.ca_num = shebanq_note.note.clause_atom
     and clause_atom.book_id = book.id
-where shebanq_note.note.keywords like '% {kwSql} %'
+where shebanq_note.note.keywords like '% {keywordsSql} %'
     and shebanq_note.note.version = '{vr}'
     and (shebanq_note.note.is_shared = 'T' {extra})
 ;
 """
             dataRows = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
         else:
-            headRow = ["book", "chapter", "verse"] + [hf[1] for hf in hebrewFields]
             (nSlots, slotSets) = (
                 Query.load(vr, iid) if qw == "q" else Word.load(vr, iid)
             )

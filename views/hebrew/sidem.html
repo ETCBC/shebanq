@@ -13,34 +13,34 @@ if sideItems:
         compp = ''
         lclass = ''
         if qw == 'q' or qw == 'n':
-            fname = iinfo['ufname']
-            lname = iinfo['ulname']
-            is_pub = iinfo['is_published']
+            fname = iinfo['first_name']
+            lname = iinfo['last_name']
+            is_published = iinfo['is_published']
             uname = f'{fname} {lname}'
             uname1 = f'{fname[0]} {lname}'
             uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
             clinktext = uname_short
-            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_pub else ''
+            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_published else ''
         pass
         if qw == 'q':
-            qname = iinfo['name']
-            desc = iinfo['description']
+            query_name = iinfo['name']
+            description = iinfo['description']
             mql = iinfo['mql']
-            qname_short = qname if len(qname) < qlimit else qname[0:qlimit]+'..'
-            title = f'{qname} by {fname} {lname}'
-            dlinktext = qname_short
+            query_nameShort = query_name if len(query_name) < qlimit else query_name[0:qlimit]+'..'
+            title = f'{query_name} by {fname} {lname}'
+            dlinktext = query_nameShort
             lclass = XML(' class="detail" ')
             authCls = 'qauth'
-            dclass = 'qname'
+            dclass = 'query_name'
             eclass = 'qdesc'
         elif qw == 'n':
-            kw = iinfo['kw']
-            kw_short = kw if len(kw) < klimit else kw[0:klimit]+'..'
+            keywords = iinfo['keywords']
+            kw_short = keywords if len(keywords) < klimit else keywords[0:klimit]+'..'
             nnotes = iinfo['nnotes']
             nverses = iinfo['nverses']
             nlabel = 'note' if nnotes == 1 else 'notes'
             vlabel = 'verse' if nverses == 1 else 'verses'
-            title = f'{kw} by {fname} {lname}'
+            title = f'{keywords} by {fname} {lname}'
             dlinktext = kw_short
             authCls = 'nauth'
             sclass = 'nstat'
@@ -71,9 +71,9 @@ if sideItems:
         <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
         {{if qw == 'q':}}
             <p><a id="bigqf_{{=iid}}" iid="{{=iid}}" href="#" class="ctl fullc fa fa-arrows-alt"></a>
-            <span class="{{=dclass}}">{{=qname}}</span> by <span class="{{=authCls}}">{{=uname}}</span><br/>
+            <span class="{{=dclass}}">{{=query_name}}</span> by <span class="{{=authCls}}">{{=uname}}</span><br/>
             <div id="bigq_{{=iid}}" class="bigq">
-                <input type="hidden" id="dv_{{=qw}}{{=iid}}" value="{{=desc}}"></p>
+                <input type="hidden" id="dv_{{=qw}}{{=iid}}" value="{{=description}}"></p>
                 <div id="dm_{{=qw}}{{=iid}}" class="descm"></div>
                 <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
             </div>
@@ -81,7 +81,7 @@ if sideItems:
             <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=authCls}}>{{=entryid_heb}}</span></p>
         {{elif qw == 'n':}}
             <p>notes by: <span class="{{=authCls}}">{{=uname}}</span></p>
-            <p>with keyword <span class="{{=dclass}}">{{=kw}}</span></p>
+            <p>with keyword <span class="{{=dclass}}">{{=keywords}}</span></p>
             <p>In this chapter: <span class="{{=sclass}}">{{=nnotes}}</span> {{=nlabel}}
             in <span class="{{=sclass}}">{{=nverses}}</span> {{=vlabel}}</p>
         {{pass}}

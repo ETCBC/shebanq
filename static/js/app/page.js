@@ -1,12 +1,12 @@
 /* eslint-env jquery */
 /* globals Config, P, L */
 
-import { defcolor } from "./helpers.js"
+import { colorDefault } from "./helpers.js"
 import { Material } from "./material.js"
 import { Sidebars } from "./sidebars.js"
 import { LSettings } from "./materiallib.js"
 
-export const set_heightw = () => {
+export const setHeightW = () => {
   /* the heights of the sidebars are set, depending on the height of the window
    */
   const subtractw = 80
@@ -17,8 +17,8 @@ export const set_heightw = () => {
 
 export class LStorage {
   constructor() {
-    const vws = $.initNamespaceStorage("nsview")
-    this.nsview = vws.localStorage
+    const vws = $.initNamespaceStorage("viewStoredNotes")
+    this.viewStoredNotes = vws.localStorage
     const nsq = $.initNamespaceStorage("muting_q")
     this.muting_q = nsq.localStorage
     const nsn = $.initNamespaceStorage("muting_n")
@@ -33,33 +33,33 @@ export class LStorage {
 export class Page {
   /* the one and only page object
    */
-  constructor(vs) {
+  constructor(viewState) {
 
-    this.mql_small_height = "10em"
+    this.mqlSmallHeight = "10em"
     /* height of mql query body in sidebar
      */
-    this.mql_small_width = "97%"
+    this.mqlSmallWidth = "97%"
     /* height of mql query body in sidebar and in dialog
      */
-    this.mql_big_width_dia = "60%"
+    this.mqlBigWidthDia = "60%"
     /* width of query info in dialog mode
      */
-    this.mql_big_width = "100%"
+    this.mqlBigWidth = "100%"
     /* width of mql query body in sidebar and in dialog
      */
-    this.edit_side_width = "55%"
+    this.editSideWidth = "55%"
     /* the desired width of the sidebar when editing a query body
      */
-    this.edit_main_width = "40%"
+    this.editMainWidth = "40%"
     /* the desired width of the main area when editing a query body
      */
-    this.chart_width = "400px"
+    this.chartWidth = "400px"
     /* dialog width for charts
      */
-    this.vs = vs
+    this.viewState = viewState
     /* the viewstate
      */
-    History.Adapter.bind(window, "statechange", this.vs.goback.bind(this.vs))
+    History.Adapter.bind(window, "statechange", this.viewState.goback.bind(this.viewState))
     this.picker2 = {}
     this.picker1 = { q: {}, w: {} }
     /* will collect the two ColorPicker1 objects, indexed as q w
@@ -70,53 +70,53 @@ export class Page {
      */
   }
 
-  set_height() {
+  setHeight() {
     /* the heights of the sidebars are set, depending on the height of the window
      */
     const subtractm = 150
     const { tabViews } = Config
-    const window_height = window.innerHeight
-    this.window_height = window_height
-    const standard_height = window_height - subtractm
-    this.standard_height = standard_height
-    this.half_standard_height = `${0.4 * standard_height}px`
+    const windowHeight = window.innerHeight
+    this.windowHeight = windowHeight
+    const standardHeight = windowHeight - subtractm
+    this.standardHeight = standardHeight
+    this.half_standard_height = `${0.4 * standardHeight}px`
 
-    $("#material_txtp").css("height", `${standard_height}px`)
+    $("#material_txtp").css("height", `${standardHeight}px`)
     for (let i = 1; i <= tabViews; i++) {
-      $(`#material_txt${i}`).css("height", `${standard_height}px`)
+      $(`#material_txt${i}`).css("height", `${standardHeight}px`)
     }
-    $("#side_material_mq").css("max-height", `${0.6 * standard_height}px`)
-    $("#side_material_mw").css("max-height", `${0.35 * standard_height}px`)
-    $("#words").css("height", `${standard_height}px`)
-    $("#letters").css("height", `${standard_height}px`)
+    $("#side_material_mq").css("max-height", `${0.6 * standardHeight}px`)
+    $("#side_material_mw").css("max-height", `${0.35 * standardHeight}px`)
+    $("#words").css("height", `${standardHeight}px`)
+    $("#letters").css("height", `${standardHeight}px`)
   }
 
-  get_width() {
+  getWidth() {
     /* save the orginal widths of sidebar and main area
      */
-    this.orig_side_width = $(".span3").css("width")
-    this.orig_main_width = $(".span9").css("width")
+    this.sideWidthOld = $(".span3").css("width")
+    this.mainWidthOld = $(".span9").css("width")
   }
 
   reset_main_width() {
     /* restore the orginal widths of sidebar and main area
      */
-    const { orig_main_width, orig_side_width } = this
-    if (orig_side_width != $(".span3").css("width")) {
-      $(".span3").css("width", orig_side_width)
-      $(".span3").css("max-width", orig_side_width)
-      $(".span9").css("width", orig_main_width)
-      $(".span9").css("max-width", orig_main_width)
+    const { mainWidthOld, sideWidthOld } = this
+    if (sideWidthOld != $(".span3").css("width")) {
+      $(".span3").css("width", sideWidthOld)
+      $(".span3").css("max-width", sideWidthOld)
+      $(".span9").css("width", mainWidthOld)
+      $(".span9").css("max-width", mainWidthOld)
     }
   }
 
   set_edit_width() {
     /* switch to increased sidebar width
      */
-    this.get_width()
-    const { edit_main_width, edit_side_width } = this
-    $(".span3").css("width", edit_side_width)
-    $(".span9").css("width", edit_main_width)
+    this.getWidth()
+    const { editMainWidth, editSideWidth } = this
+    $(".span3").css("width", editSideWidth)
+    $(".span9").css("width", editMainWidth)
   }
 
   reset_material_status() {
@@ -140,8 +140,8 @@ export class Page {
       vals["chapter"] = elem.attr("c")
       vals["verse"] = elem.attr("v")
       vals["mr"] = "m"
-      this.vs.mstatesv(vals)
-      this.vs.addHist()
+      this.viewState.mstatesv(vals)
+      this.viewState.addHist()
       this.go()
     })
     crossrefs.addClass("crossref")
@@ -153,7 +153,7 @@ export class Page {
     if (mr == "r") {
       const tasks = { t: "txtp", d: "txtd" }
       if (qw != "n") {
-        tasks["b"] = P.vs.tp()
+        tasks["b"] = P.viewState.tp()
       }
 
       for (const task in tasks) {
@@ -169,7 +169,7 @@ export class Page {
             csvctl.attr("extra", extraGiven)
             extra = extraGiven
           }
-          csvctl.attr("href", P.vs.csvUrl(vr, mr, qw, iid, tp, extra))
+          csvctl.attr("href", P.viewState.csvUrl(vr, mr, qw, iid, tp, extra))
           csvctl.attr(
             "title",
             `${vr}_${shbStyle[qw]["t"]}_${iid}_${extra}_${tpLab}.csv${tit} (${tpLab})`
@@ -185,12 +185,12 @@ export class Page {
   init() {
     /* dress up the skeleton, initialize state variables
      */
-    const { vs, picker2 } = this
+    const { viewState, picker2 } = this
 
     this.material = new Material()
     this.sidebars = new Sidebars()
-    this.set_height()
-    this.get_width()
+    this.setHeight()
+    this.getWidth()
     const listsettings = {}
     this.listsettings = listsettings
 
@@ -202,7 +202,7 @@ export class Page {
     }
     const prev = {}
     this.prev = prev
-    for (const x in vs.mstate()) {
+    for (const x in viewState.mstate()) {
       prev[x] = null
     }
     this.reset_material_status()
@@ -248,13 +248,13 @@ export class Page {
 
     const { qw, iid, code } = origin
     const { muting_q } = L
-    const { vs, listsettings } = this
-    const active = P.vs.active(qw)
+    const { viewState, listsettings } = this
+    const active = P.viewState.active(qw)
     if (active == "hlreset") {
-      /* all viewsettings for either queries or words are restored to 'factory' settings
+      /* all ViewSettings for either queries or words are restored to 'factory' settings
        */
-      vs.cstatexx(qw)
-      vs.hstatesv(qw, { active: "hlcustom", sel_one: defcolor(qw, null) })
+      viewState.cstatexx(qw)
+      viewState.hstatesv(qw, { active: "hlcustom", sel_one: colorDefault(qw, null) })
       listsettings[qw].apply()
       return
     }
@@ -262,7 +262,7 @@ export class Page {
     const activeo = $(`#${qw}${active}`)
     hlradio.removeClass("ison")
     activeo.addClass("ison")
-    const colorMap = vs.colormap(qw)
+    const colorMap = viewState.colormap(qw)
 
     const paintings = {}
 
@@ -278,7 +278,7 @@ export class Page {
        * coming from the associated ColorPicker1
        * This is simple coloring, using a single color.
        */
-      const paint = colorMap[iid] || defcolor(qw == "q", iid)
+      const paint = colorMap[iid] || colorDefault(qw == "q", iid)
       if (qw == "q") {
         $($.parseJSON($("#theslots").val())).each((i, m) => {
           paintings[m] = paint
@@ -294,7 +294,7 @@ export class Page {
      * This is complex coloring, using multiple colors.
      * First we determine which slots need to be highlighted.
      */
-    const selectColor = P.vs.sel_one(qw)
+    const selectColor = P.viewState.sel_one(qw)
     const custitems = {}
     const plainitems = {}
 
@@ -312,7 +312,7 @@ export class Page {
         const iid = elem.attr("iid")
         if (!muting_q.isSet(`${iid}`)) {
           const slots = $.parseJSON($(`#${qw}${iid}`).attr("slots"))
-          if (P.vs.iscolor(qw, iid)) {
+          if (P.viewState.iscolor(qw, iid)) {
             custitems[iid] = slots
           } else {
             plainitems[iid] = slots
@@ -325,13 +325,13 @@ export class Page {
       $(`#side_list_${qw} li`).each((i, el) => {
         const elem = $(el)
         const iid = elem.attr("iid")
-        if (P.vs.iscolor(qw, iid)) {
+        if (P.viewState.iscolor(qw, iid)) {
           custitems[iid] = 1
         } else {
           plainitems[iid] = 1
         }
         const all = $(`#${qw}${iid}`)
-        if (active == "hlmany" || P.vs.iscolor(qw, iid)) {
+        if (active == "hlmany" || P.viewState.iscolor(qw, iid)) {
           all.show()
         } else {
           all.hide()
@@ -341,7 +341,7 @@ export class Page {
     const chunks = [custitems, plainitems]
 
     const clselect = iid => {
-      /* assigns a color to an individual slot, based on the viewsettings
+      /* assigns a color to an individual slot, based on the ViewSettings
        */
       let paint = ""
       if (active == "hloff") {
@@ -353,7 +353,7 @@ export class Page {
         paint = selectColor
       } else if (active == "hlmany") {
         /* viewsetting says: color every applicable item with the same color */
-        paint = colorMap[iid] || defcolor(qw == "q", iid)
+        paint = colorMap[iid] || colorDefault(qw == "q", iid)
       } else if (active == "hlcustom") {
         /* viewsetting says:
          * color every item with customized color (if customized)
@@ -388,7 +388,7 @@ export class Page {
         }
       }
     } else if (qw == "w") {
-      /* Words: gather the lexeme_ids to be painted and the colors needed for it
+      /* Words: gather the lexicon_ids to be painted and the colors needed for it
        */
       for (let c = 0; c < 2; c++) {
         const chunk = chunks[c]
@@ -422,7 +422,7 @@ export class Page {
     const { shbStyle, colors } = Config
 
     const stl = shbStyle[qw]["prop"]
-    const container = `#material_${P.vs.tp()}`
+    const container = `#material_${P.viewState.tp()}`
     const att = qw == "q" ? "m" : "l"
     for (const item in paintings) {
       const color = paintings[item]

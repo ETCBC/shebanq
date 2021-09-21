@@ -26,13 +26,13 @@ class CHART:
         Word = self.Word
         Note = self.Note
 
-        (iid, kw) = iDecode(qw, iidRep)
+        (iid, keywords) = iDecode(qw, iidRep)
         (nSlots, slotSets) = (
             Query.load(vr, iid)
             if qw == "q"
             else Word.load(vr, iid)
             if qw == "w"
-            else Note.load(vr, iid, kw)
+            else Note.load(vr, iid, keywords)
         )
         result = self.compose(vr, slotSets)
         result.update(qw=qw)
@@ -69,18 +69,18 @@ select chapter_num, first_m, last_m from chapter
         curBlkSize = 0
         curBkIndex = 0
         curChpIndex = 0
-        (curBk, curBkF, curBkL) = bookSlots[curBkIndex]
-        (curChp, curChpF, curChpL) = chapterSlots[curChpIndex]
+        (curBk, curBkFirst_m, curBkLast_m) = bookSlots[curBkIndex]
+        (curChp, curChpFirst_m, curChpLast_m) = chapterSlots[curChpIndex]
         blocks = []
         blockMapping = {}
 
         def getCurposInfo(n):
-            (curChp, curChpF, curChpL) = chapterSlots[curChpIndex]
-            chapterLen = curChpL - curChpF + 1
-            fraction = float(n - curChpF) / chapterLen
+            (curChp, curChpFirst_m, curChpLast_m) = chapterSlots[curChpIndex]
+            chapterLen = curChpLast_m - curChpFirst_m + 1
+            fraction = float(n - curChpFirst_m) / chapterLen
             rep = (
                 f"{curChp}.Z"
-                if n == curChpL
+                if n == curChpLast_m
                 else f"{curChp}.z"
                 if round(10 * fraction) == 10
                 else "{curChp + fraction:0.1f}"
@@ -89,7 +89,7 @@ select chapter_num, first_m, last_m from chapter
 
         while True:
             m += 1
-            if m > curBkL:
+            if m > curBkLast_m:
                 size = round((float(curBlkSize) / BLOCK_SIZE) * 100)
                 blocks.append((curBk, curBlkF, getCurposInfo(m - 1), size))
                 curBlkSize = 0
@@ -97,22 +97,22 @@ select chapter_num, first_m, last_m from chapter
                 if curBkIndex >= len(bookSlots):
                     break
                 else:
-                    (curBk, curBkF, curBkL) = bookSlots[curBkIndex]
+                    (curBk, curBkFirst_m, curBkLast_m) = bookSlots[curBkIndex]
                     curChpIndex += 1
-                    (curChp, curChpF, curChpL) = chapterSlots[curChpIndex]
+                    (curChp, curChpFirst_m, curChpLast_m) = chapterSlots[curChpIndex]
                     curBlkF = getCurposInfo(m)
             if curBlkSize == BLOCK_SIZE:
                 blocks.append((curBk, curBlkF, getCurposInfo(m - 1), 100))
                 curBlkSize = 0
-            if m > curChpL:
+            if m > curChpLast_m:
                 curChpIndex += 1
                 if curChpIndex >= len(chapterSlots):
                     break
                 else:
-                    (curChp, curChpF, curChpL) = chapterSlots[curChpIndex]
-            if m < curBkF:
+                    (curChp, curChpFirst_m, curChpLast_m) = chapterSlots[curChpIndex]
+            if m < curBkFirst_m:
                 continue
-            if m < curChpF:
+            if m < curChpFirst_m:
                 continue
             if curBlkSize == 0:
                 curBlkF = getCurposInfo(m)
@@ -131,7 +131,7 @@ select chapter_num, first_m, last_m from chapter
         chart = {}
         chartOrder = []
         if len(slots):
-            (books, booksOrder, bookId, bookName) = Chunk.getBooks(vr)
+            (books, booksOrder, bookIds, bookName) = Chunk.getBooks(vr)
             (blocks, blockMapping) = self.getBlocks(vr)
             results = {}
 

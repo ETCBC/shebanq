@@ -4,8 +4,8 @@
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in nr and nr['id'] and nr['id'] != '0':}}
 <table>
-    <tr><td><span class="nlabel">author</span></td><td><spanclass="nauth">{{=nr['ufname']}} {{=nr['ulname']}}</span></td></tr>
-    <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['kw']}}</span></td></tr>
+    <tr><td><span class="nlabel">author</span></td><td><spanclass="nauth">{{=nr['first_name']}} {{=nr['last_name']}}</span></td></tr>
+    <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['keywords']}}</span></td></tr>
 </table>
 {{for v in VERSION_ORDER:
     nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))

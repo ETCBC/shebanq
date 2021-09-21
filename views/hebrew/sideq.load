@@ -10,7 +10,7 @@ statusmap = dict(
     <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{else:}}
 {{if writable:}}
-<input type="hidden" id="qid" value="{{=qr['id']}}"/>
+<input type="hidden" id="query_id" value="{{=qr['id']}}"/>
 {{pass}}
 <input type="hidden" id="itemtag" value=""/>
 <div id="bigger">
@@ -19,9 +19,9 @@ statusmap = dict(
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
         <p>
-            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=f'{qr['ufname']} {qr['ulname']}'}}</span></a>
-            <a target="_blank" href="{{=qr['owebsite']}}"><span>{{=qr['oname']}}</span></a>
-            <a target="_blank" href="{{=qr['pwebsite']}}"><span>{{=qr['pname']}}</span></a>
+            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=f'{qr['first_name']} {qr['last_name']}'}}</span></a>
+            <a target="_blank" href="{{=qr['org_website']}}"><span>{{=qr['org_name']}}</span></a>
+            <a target="_blank" href="{{=qr['project_website']}}"><span>{{=qr['project_name']}}</span></a>
         </p>
     </div>
     <div id="descm" class="old descm">{{=XML(qr['description_md'])}}</div>
@@ -31,7 +31,7 @@ statusmap = dict(
             <tr><td style="padding-left: 0px;"><a class="ctlexpand moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
             <span class="flabel">shared</span></td><td>{{
             if writable: }}
-                <input qid="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
+                <input query_id="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
             {{else:}}
                 <span class="fa fa-{{='check' if qr['is_shared'] else 'close'}}"></span>
             {{pass}}</td><td class="dtval"><span id="shared_on">{{=qr['shared_on']}}</span></td></tr>
@@ -46,11 +46,11 @@ statusmap = dict(
     qstatus = qrinfo['status']
     qresults = qrinfo['results']
     thisclass = 'this' if v == vr else 'other'
-    is_pub = qrinfo['is_published']
+    is_published = qrinfo['is_published']
     id_q = XML('id="statq" ') if v == vr else ''
     id_m = XML('id="statm" ') if v == vr else ''
     arrow = 'down' if v == vr else 'right'
-    pclass = 'published' if is_pub else 'unpublished'
+    pclass = 'published' if is_published else 'unpublished'
 }}
     <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
         <p><a class="ctlexpand moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
@@ -96,9 +96,9 @@ statusmap = dict(
                 <td><span class="flabel">published</span></td>
                 <td>{{
                     if writable:
-                    }}<input qid="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_pub else ''}}/>{{pass}}<span
+                    }}<input query_id="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_published else ''}}/>{{pass}}<span
                         {{=XML('id="is_pub_ro"') if writable else ''}}
-                        class="fa fa-{{='check' if is_pub else 'close'}}"
+                        class="fa fa-{{='check' if is_published else 'close'}}"
                       ></span>
                 </td>
                 <td class="dtval"><span {{=XML('id="published_on"')}}>{{=qrinfo['published_on']}}</span></td>
@@ -122,8 +122,8 @@ statusmap = dict(
             <tr class="detail">
                 <td><span class="flabel">engine</span></td>
                 <td>&nbsp;</td>
-                <td class="dtval {{='oldexeversion' if qrinfo['eversion'] in oldEmdrosVersions else ''}}"
-                    title="this is {{='not ' if qrinfo['eversion'] in oldEmdrosVersions else ''}}the newest version"
+                <td class="dtval {{='exeversionold' if qrinfo['eversion'] in emdrosVersionsOld else ''}}"
+                    title="this is {{='not ' if qrinfo['eversion'] in emdrosVersionsOld else ''}}the newest version"
                 ><span {{=XML('id="eversion"')}}>{{=qrinfo['eversion']}}</span></td>
             </tr>
         </table>

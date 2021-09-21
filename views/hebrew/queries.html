@@ -2,7 +2,7 @@
 {{ right_sidebar_enabled = True }}
 {{extend 'layout.html'}}
 
-<input type="hidden" id="qid" value="{{=queryId}}"/>
+<input type="hidden" id="query_id" value="{{=query_id}}"/>
 <div id="queries"></div>
 
 {{ block left_sidebar }}
@@ -53,7 +53,7 @@
 <p><a class="ctl qlradio" href="#" id="level_q">queries</a> (<span id='count_q'></span>)</p>
 <p><a class="ctl qlradio" href="#" id="level_">manual</a></p>
 
-<script type="text/javascript">{{=XML(viewsettings.writeConfig())}}</script>
+<script type="text/javascript">{{=XML(ViewSettings.writeConfig())}}</script>
 <script src="{{=URL('static','js/jquery.fancytree-all.min.js')}}"></script>
 <script src="{{=URL('static', 'js/app/queries.js')}}" type="module"></script>
 
@@ -67,16 +67,16 @@
     <div class="formquery" id="form_o">
         <h4><span id="title_o">New</span> organization</h4>
         <table>
-            <tr id="nameline_o"><td><span class="flabel">Name</span></td><td><input type="text" id="name_o"/></td></tr>
-            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_o"/><a target="_blank" href="" id="fo_v" oid=""></a></td></tr>
+            <tr id="nameline_org"><td><span class="flabel">Name</span></td><td><input type="text" id="name_o"/></td></tr>
+            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_org"/><a target="_blank" href="" id="org_of_query_view" org_id=""></a></td></tr>
         </table>
     </div>
 
     <div class="formquery" id="form_p">
         <h4><span id="title_p">New</span> project</h4>
         <table>
-            <tr id="nameline_p"><td><span class="flabel">Name</span></td><td><input type="text" id="name_p"/></td></tr>
-            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_p"/><a target="_blank" href="" id="fp_v" oid=""></a></td></tr>
+            <tr id="nameline_project"><td><span class="flabel">Name</span></td><td><input type="text" id="name_p"/></td></tr>
+            <tr><td><span class="flabel">Website</span></td><td><input type="text" id="website_project"/><a target="_blank" href="" id="project_of_query_view" org_id=""></a></td></tr>
         </table>
     </div>
 
@@ -86,20 +86,20 @@
             <tr><td class="flabel">Name</td><td><input type="text" id="name_q"/></td></tr>
             <tr>
                 <td class="flabel">Organization</td><td><span class="fa fa-check-circle fa-lg s_x" title="select existing organization from the tree"></span>
-                    <a target="_blank" href="" id="fo_q" oid=""></a></td>
-                <td><a id="new_ctl_o" title="new organization" href="#" class="ctl fa fa-plus fa-lg"
-                    ></a><a id="newx_ctl_o" title="use existing organization" href="#" class="ctl fa fa-times fa-lg"></a></td>
+                    <a target="_blank" href="" id="org_of_query" org_id=""></a></td>
+                <td><a id="org_new_ctl" title="new organization" href="#" class="ctl fa fa-plus fa-lg"
+                    ></a><a id="org_exist_ctl" title="use existing organization" href="#" class="ctl fa fa-times fa-lg"></a></td>
             </tr>
-            <tr class="detail_o"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_o"/></td></tr>
-            <tr class="detail_o"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_o"/></td></tr>
+            <tr class="org_detail"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_o"/></td></tr>
+            <tr class="org_detail"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_o"/></td></tr>
             <tr>
                 <td class="flabel">Project</td></td><td><span class="fa fa-check-circle fa-lg s_x" title="select existing project from the tree"></span>
-                    <a target="_blank" href="" id="fp_q" pid=""></a></td>
-                <td><a id="new_ctl_p" title="new project" href="#" class="ctl fa fa-plus fa-lg"
-                    ></a><a id="newx_ctl_p" title="use existing project" href="#" class="ctl fa fa-times fa-lg"></a></td>
+                    <a target="_blank" href="" id="project_of_query" pid=""></a></td>
+                <td><a id="project_new_ctl" title="new project" href="#" class="ctl fa fa-plus fa-lg"
+                    ></a><a id="project_exist_ctl" title="use existing project" href="#" class="ctl fa fa-times fa-lg"></a></td>
             </tr>
-            <tr class="detail_p"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_p"/></td></tr>
-            <tr class="detail_p"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_p"/></td></tr>
+            <tr class="project_detail"><td><span class="flabel">Name</span></td><td><input type="text" id="nameq_p"/></td></tr>
+            <tr class="project_detail"><td><span class="flabel">Website</span></td><td><input type="text" id="websiteq_p"/></td></tr>
         </table>
     </div>
 </div>
@@ -111,21 +111,21 @@
        <a href="#" id="cancel_o" class="ctl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
        <a href="#" id="save_o" class="ctl fa fa-save fa-lg" title="save changes"></a>
        <a href="#" id="done_o" class="ctl fa fa-check fa-lg" title="save changes and close"></a>
-       <input type="hidden" id="id_o" name="lid" value="0"/>
+       <input type="hidden" id="id_o" name="obj_id" value="0"/>
     </span>
 
     <span class="ctlquery" id="ctl_p">
        <a href="#" id="cancel_p" class="ctl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
        <a href="#" id="save_p" class="ctl fa fa-save fa-lg" title="save changes"></a>
        <a href="#" id="done_p" class="ctl fa fa-check fa-lg" title="save changes and close"></a>
-       <input type="hidden" id="id_p" name="lid" value="0"/>
+       <input type="hidden" id="id_p" name="obj_id" value="0"/>
     </span>
 
     <span class="ctlquery" id="ctl_q">
        <a href="#" id="cancel_q" class="ctl fa fa-close fa-lg" title="close WITHOUT saving changes"></a>
        <a href="#" id="save_q" class="ctl fa fa-save fa-lg" title="save changes"></a>
        <a href="#" id="done_q" class="ctl fa fa-check fa-lg" title="save changes and close"></a>
-       <input type="hidden" id="id_q" name="lid" value="0"/>
+       <input type="hidden" id="id_q" name="obj_id" value="0"/>
     </span>
 
     <span>

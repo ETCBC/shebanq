@@ -28,9 +28,9 @@ on chapter.book_id = book.id group by name order by book.id
             )
             booksOrder = [x[1] for x in booksData]
             books = dict((x[1], x[2]) for x in booksData)
-            bookId = dict((x[1], x[0]) for x in booksData)
+            bookIds = dict((x[1], x[0]) for x in booksData)
             bookName = dict((x[0], x[1]) for x in booksData)
-            result = (books, booksOrder, bookId, bookName)
+            result = (books, booksOrder, bookIds, bookName)
         else:
             result = ({}, [], {}, {})
         return result
@@ -133,7 +133,7 @@ order by word_number
     def getClauseAtomFirstSlot_c(self, vr):
         PASSAGE_DBS = self.PASSAGE_DBS
 
-        (books, booksOrder, bookId, bookName) = self.getBooks(vr)
+        (books, booksOrder, bookIds, bookName) = self.getBooks(vr)
         sql = """
 select book_id, ca_num, first_m
 from clause_atom
@@ -141,9 +141,9 @@ from clause_atom
 """
         caData = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
         caFirst = {}
-        for (bid, can, fm) in caData:
-            bnm = bookName[bid]
-            caFirst.setdefault(bnm, {})[can] = fm
+        for (book_id, ca_num, first_m) in caData:
+            book_name = bookName[book_id]
+            caFirst.setdefault(book_name, {})[ca_num] = first_m
         return caFirst
 
     def getClauseAtoms(self, vr, bk, ch, vs):
@@ -185,6 +185,6 @@ order by
             else []
         )
 
-        for (can,) in caData:
-            clauseAtoms.append(can)
+        for (ca_num,) in caData:
+            clauseAtoms.append(ca_num)
         return clauseAtoms

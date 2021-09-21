@@ -85,9 +85,9 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
                 slots=json.dumps([]),
             )
         elif mr == "r":
-            (iid, kw) = (None, None)
+            (iid, keywords) = (None, None)
             if iidRep is not None:
-                (iid, kw) = iDecode(qw, iidRep)
+                (iid, keywords) = iDecode(qw, iidRep)
             if iid is None:
                 kind = "query" if qw == "q" else "word" if qw == "w" else "note set"
                 msg = f"No {kind} selected"
@@ -109,7 +109,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
                     if qw == "q"
                     else Word.load(vr, iid)
                     if qw == "w"
-                    else Note.load(vr, iid, kw)
+                    else Note.load(vr, iid, keywords)
                 )
                 (nresults, npages, verses, slots) = self.getPagination(
                     vr, page, slotSets

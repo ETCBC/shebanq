@@ -12,7 +12,7 @@ export const escHT = text => {
 
 const mEscape = ns => ns.replace(/_/g, "\\_")
 
-export const markdownEscape = ntxt => ntxt.replace(/\[[^\]\n\t]+\]\([^)]*\)/g, mEscape)
+export const markdownEscape = ntext => ntext.replace(/\[[^\]\n\t]+\]\([^)]*\)/g, mEscape)
 
 export const put_markdown = wdg => {
   const did = wdg.attr("did")
@@ -90,7 +90,7 @@ export const specialLinks = d_mdGiven => {
   return d_md
 }
 
-export const defcolor = (qw, iid) => {
+export const colorDefault = (qw, iid) => {
   /* compute the default color
    *
    * The data for the computation comes from the server
@@ -117,7 +117,7 @@ export const defcolor = (qw, iid) => {
   return result
 }
 
-export const close_dialog = dia => {
+export const closeDialog = dia => {
   const was_open = Boolean(
     dia && dia.length && dia.dialog("instance") && dia.dialog("isOpen")
   )

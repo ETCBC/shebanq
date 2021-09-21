@@ -51,12 +51,12 @@ for t in tables:
 {{      for c in r:
             if c != None:
                 nc += 1
-                (word, id, wordid, gloss) = c
+                (word, id, word_id, gloss) = c
 }}
         <td class="d">
             <a gi="{{=id}}" class="dgl" href="#">{{=gloss or '??'}}</a>
             <a wi="{{=id}}" class="d" href="{{=URL('hebrew', 'word', vars=dict(mr='r', qw='w', id=id))}}">{{=word}}</a>
-            <a wii="{{=id}}" class="d" href="{{=URL('hebrew', 'word', vars=dict(mr='r', qw='w', id=id))}}">{{=wordid}}</a>
+            <a wii="{{=id}}" class="d" href="{{=URL('hebrew', 'word', vars=dict(mr='r', qw='w', id=id))}}">{{=word_id}}</a>
         </td>
             {{pass}}
         {{pass}}
@@ -94,7 +94,7 @@ for t in tables:
 </div>
 {{ end }}
 
-<script type="text/javascript">{{=XML(viewsettings.writeConfig())}}</script>
+<script type="text/javascript">{{=XML(ViewSettings.writeConfig())}}</script>
 <script type="text/javascript">
 var ConfigW = {
   version: "{{=version}}",

@@ -26,10 +26,10 @@ class NOTETREE:
         myId = None
         if auth.user:
             myId = auth.user.id
-        linfo = collections.defaultdict(lambda: {})
+        objInfo = collections.defaultdict(lambda: {})
 
-        def titleBadge(lid, ltype, tot):
-            name = linfo[ltype][lid] if ltype is not None else "Shared Notes"
+        def titleBadge(obj_id, objType, tot):
+            name = objInfo[objType][obj_id] if objType is not None else "Shared Notes"
             badge = ""
             if tot != 0:
                 badge = f'<span class="total special"> {tot}</span>'
@@ -51,7 +51,7 @@ select
     note.version,
     note.keywords,
     concat(auth_user.first_name, ' ', auth_user.last_name) as uname,
-    auth_user.id as uid
+    auth_user.id as user_id
 from note
 inner join shebanq_web.auth_user on note.created_by = shebanq_web.auth_user.id
 {condition}
@@ -63,61 +63,61 @@ shebanq_web.auth_user.first_name, note.keywords
 
         projectNote = NOTE_DB.executesql(projectNoteSql)
         projectNotes = collections.OrderedDict()
-        for (amount, nvr, kws, uname, uid) in projectNote:
-            for kw in set(kws.strip().split()):
-                keyId = iEncode("n", uid, kw=kw)
-                if keyId not in projectNotes:
-                    projectNotes[keyId] = {
-                        "": (uname, uid, kw),
+        for (amount, nvr, keywordList, uname, user_id) in projectNote:
+            for keywords in set(keywordList.strip().split()):
+                key_id = iEncode("n", user_id, keywords=keywords)
+                if key_id not in projectNotes:
+                    projectNotes[key_id] = {
+                        "": (uname, user_id, keywords),
                         "v": [0 for v in VERSION_ORDER],
                     }
-                projectNotes[keyId]["v"][VERSION_INDEX[nvr]] = amount
+                projectNotes[key_id]["v"][VERSION_INDEX[nvr]] = amount
 
         tree = collections.OrderedDict()
         countSet = collections.defaultdict(lambda: set())
         countUser = collections.defaultdict(lambda: 0)
         count = 0
-        for keyId in projectNotes:
-            projectNoteInfo = projectNotes[keyId]
-            (uname, uid, noteName) = projectNoteInfo[""]
-            countSet["u"].add(uid)
-            countSet["n"].add(keyId)
-            linfo["u"][uid] = uname
-            tree.setdefault(uid, []).append(keyId)
+        for key_id in projectNotes:
+            projectNoteInfo = projectNotes[key_id]
+            (uname, user_id, noteName) = projectNoteInfo[""]
+            countSet["u"].add(user_id)
+            countSet["n"].add(key_id)
+            objInfo["u"][user_id] = uname
+            tree.setdefault(user_id, []).append(key_id)
             count += 1
-            countUser[uid] += 1
+            countUser[user_id] += 1
 
-        linfo["u"][0] = ""
-        linfo["n"] = projectNotes
+        objInfo["u"][0] = ""
+        objInfo["n"] = projectNotes
 
         categoryCount = dict((x[0], len(x[1])) for x in countSet.items())
-        categoryCount["uid"] = myId
+        categoryCount["user_id"] = myId
         title = titleBadge(None, None, count)
         dest = [dict(title=str(title), folder=True, children=[], data=categoryCount)]
         curDest = dest[-1]["children"]
         curSource = tree
-        for uid in curSource:
-            userTotal = countUser[uid]
-            userTitle = titleBadge(uid, "u", userTotal)
+        for user_id in curSource:
+            userTotal = countUser[user_id]
+            userTitle = titleBadge(user_id, "u", userTotal)
             curDest.append(dict(title=str(userTitle), folder=True, children=[]))
             curUserDest = curDest[-1]["children"]
-            curUserSource = curSource[uid]
-            for keyId in curUserSource:
-                projectNoteInfo = linfo["n"][keyId]
-                (uname, uid, noteName) = projectNoteInfo[""]
+            curUserSource = curSource[user_id]
+            for key_id in curUserSource:
+                projectNoteInfo = objInfo["n"][key_id]
+                (uname, user_id, noteName) = projectNoteInfo[""]
                 noteVersions = projectNoteInfo["v"]
                 versionRep = " ".join(
-                    formatVersion("n", keyId, v, noteVersions[VERSION_INDEX[v]])
+                    formatVersion("n", key_id, v, noteVersions[VERSION_INDEX[v]])
                     for v in VERSION_ORDER
                 )
                 curUserDest.append(
                     dict(
                         title=(
                             f"""{versionRep} <a
-class="n nt_kw" n="1" nkid="{keyId}" href="#">"""
+class="n keywords" n="1" key_id="{key_id}" href="#">"""
                             '{hEsc(noteName)}</a> <a class="md" href="#"></a>'
                         ),
-                        key=f"n{keyId}",
+                        key=f"n{key_id}",
                         folder=False,
                     ),
                 )

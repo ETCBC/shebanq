@@ -26,12 +26,12 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
             else []
         )
 
-    def load(self, vr, lexeme_id):
+    def load(self, vr, lexicon_id):
         PASSAGE_DBS = self.PASSAGE_DBS
         slots = (
             PASSAGE_DBS[vr].executesql(
                 f"""
-select anchor from word_verse where lexicon_id = '{lexeme_id}' order by anchor
+select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
 ;
 """
             )
@@ -108,26 +108,26 @@ select id, entry_heb, entryid_heb, lan, gloss from lexicon
             words[lan][letter].append((e, wid, eid, gloss))
         return (letters, words)
 
-    def page(self, viewsettings, vr, lan=None, letter=None):
+    def page(self, ViewSettings, vr, lan=None, letter=None):
         Caching = self.Caching
 
         return Caching.get(
             f"words_page_{vr}_{lan}_{letter}_",
-            lambda: self.page_c(viewsettings, vr, lan=lan, letter=letter),
+            lambda: self.page_c(ViewSettings, vr, lan=lan, letter=letter),
             None,
         )
 
-    def page_c(self, viewsettings, vr, lan=None, letter=None):
+    def page_c(self, ViewSettings, vr, lan=None, letter=None):
         Caching = self.Caching
 
         (letters, words) = Caching.get(
             f"words_data_{vr}_", lambda: self.get_data(vr), None
         )
-        version = viewsettings.versionstate()
+        version = ViewSettings.versionstate()
 
         return dict(
             version=version,
-            viewsettings=viewsettings,
+            ViewSettings=ViewSettings,
             lan=lan,
             letter=letter,
             letters=letters,

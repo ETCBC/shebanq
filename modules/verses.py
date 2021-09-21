@@ -29,7 +29,7 @@ class Verses:
         if self.mr == "r" and (verseIds is None or len(verseIds) == 0):
             return
         verseIdsStr = (
-            ",".join((str(verseId) for verseId in verseIds))
+            ",".join((str(verse_id) for verse_id in verseIds))
             if verseIds is not None
             else None
         )
@@ -100,7 +100,7 @@ order by word_number
             )
 
         for verse in verseInfo:
-            verseId = int(verse[0])
+            verse_id = int(verse[0])
             xml = verse[4] if tp == "txtp" else ""
             self.verses.append(
                 Verse(
@@ -110,7 +110,7 @@ order by word_number
                     verse[2],
                     verse[3],
                     xml=xml,
-                    wordData=wordData[verseId],
+                    wordData=wordData[verse_id],
                     tp=tp,
                     tr=tr,
                     mr=mr,

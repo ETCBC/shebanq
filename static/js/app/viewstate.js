@@ -30,7 +30,7 @@ export class ViewState {
     const { itemUrl } = Config
 
     let vars = `?version=${vr}&mr=${mr}&qw=${qw}&iid=${iid}&tp=${tp}&extra=${extra}`
-    const data = P.vs.ddata()
+    const data = P.viewState.ddata()
     for (const name in data) {
       vars += `&${name}=${data[name]}`
     }
@@ -151,7 +151,7 @@ export class ViewState {
   sel_one(qw) {
     return this.data["highlights"][qw]["sel_one"]
   }
-  pub(qw) {
+  is_published(qw) {
     return this.data["highlights"][qw]["pub"]
   }
   colormap(qw) {

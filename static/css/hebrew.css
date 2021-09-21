@@ -366,7 +366,7 @@ table.item_w td,table.item_q td {
     margin: 0pt;
 }
 
-td#theqid {
+td#thequeryid {
     font-size: x-small;
     color: #999999;
 }
@@ -638,7 +638,7 @@ textarea.mql {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 }
-textarea.desc {
+textarea.description {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
     font-size: small;
     background-color: #fefbfe;
@@ -682,7 +682,7 @@ span.ir {
 .tr {
     text-align: right;
 }
-.qname,.nkw {
+.query_name,.keywords {
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
 }
 .qauth {
@@ -799,13 +799,13 @@ td.nt_cmt textarea {
     border-radius: 0px;
     resize: vertical;
 }
-span.nt_kw,a.nt_kw {
+span.keywords,a.keywords {
     color: #008800;
     font-size: small;
     font-weight: bold;
     font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
 }
-td.nt_kw {
+td.keywords {
     width: 60px;
     color: #008800;
     font-size: small;
@@ -814,7 +814,7 @@ td.nt_kw {
     text-align: left;
     padding: 0 0 0 0;
 }
-td.nt_kw textarea {
+td.keywords textarea {
     color: inherit;
     background-color: inherit;
     font-size: inherit;
@@ -1561,7 +1561,7 @@ div.msg_error {
 .s_x.fa {
     color: #0055a0
 }
-.oldexeversion {
+.exeversionold {
     background-color: #ffff00;
 }
 .flabel {

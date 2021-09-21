@@ -22,10 +22,10 @@ def hebKey(x):
     return x.replace("שׁ", "ששׁ").replace("שׂ", "ששׂ")
 
 
-def iEncode(qw, idpart, kw=None, sep="|"):
+def iEncode(qw, idpart, keywords=None, sep="|"):
     if qw == "n":
         return (
-            b64encode((f"{idpart}|{kw}").encode("utf8"))
+            b64encode((f"{idpart}|{keywords}").encode("utf8"))
             .decode("utf8")
             .replace("\n", "")
             .replace("=", "_")
@@ -39,25 +39,25 @@ def iEncode(qw, idpart, kw=None, sep="|"):
 
 def iDecode(qw, iidRep, sep="|", rsep=None):
     idpart = iidRep
-    kw = ""
+    keywords = ""
     if qw == "n":
         try:
-            (idpart, kw) = (
+            (idpart, keywords) = (
                 b64decode(iidRep.replace("_", "=").encode("utf8"))
                 .decode("utf8")
                 .split(sep, 1)
             )
         except Exception:
-            (idpart, kw) = (None, None)
+            (idpart, keywords) = (None, None)
     if qw == "w":
-        (idpart, kw) = (iidRep, "")
+        (idpart, keywords) = (iidRep, "")
     if qw == "q":
-        (idpart, kw) = (int(iidRep) if iidRep.isdigit() else 0, "")
+        (idpart, keywords) = (int(iidRep) if iidRep.isdigit() else 0, "")
     if rsep is None:
-        result = (idpart, kw)
+        result = (idpart, keywords)
     else:
         if qw == "n":
-            result = rsep.join((str(idpart), kw))
+            result = rsep.join((str(idpart), keywords))
         else:
             result = str(idpart)
     return result
@@ -82,8 +82,9 @@ def toAscii(x):
     return x.encode("ascii", "replace")
 
 
-def formatVersion(qw, lid, vr, st):
+def formatVersion(qw, obj_id, vr, st):
     if qw == "q":
+        keyName = "query_id"
         if st == 1:
             icon = "quote-right"
             cls = "special"
@@ -100,11 +101,14 @@ def formatVersion(qw, lid, vr, st):
             icon = "clock-o"
             cls = "error"
         return f"""<a href="#" class="ctl br{qw} {cls} fa fa-{icon}"
-{qw}id="{lid}" v="{vr}"></a>"""
+{keyName}="{obj_id}" v="{vr}"></a>"""
 
     else:
-        strep = st if st else "-"
-        return f'<a href="#" class="ctl br{qw}" nkid="{lid}" v="{vr}">{strep}</a>'
+        keyName = "key_id"
+        stRep = st if st else "-"
+        return (
+            f'<a href="#" class="ctl br{qw}" {keyName}="{obj_id}" v="{vr}">{stRep}</a>'
+        )
 
 
 def pagelist(page, pages, spread):

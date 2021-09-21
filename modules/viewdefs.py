@@ -344,12 +344,12 @@ for group in SPECS:
 def makeColors():
     colorProtoCls = [tuple(spec.split(",")) for spec in colorSpecCls.strip().split()]
     colorsCls = []
-    prevL = 0
+    lPrev = 0
     for (l, z) in colorProtoCls:
-        newL = int(l) + 1
-        for i in range(prevL, newL):
+        lNew = int(l) + 1
+        for i in range(lPrev, lNew):
             colorsCls.append(z)
-        prevL = newL
+        lPrev = lNew
     return colorsCls
 
 
@@ -399,11 +399,14 @@ def getFields(tp, qw=qw):
         return hebrewFields
     else:
         hebrewFields = (
+            (
                 ("clause_atom", "ca_nr"),
                 ("shebanq_note.note.keywords", "keyw"),
                 ("shebanq_note.note.status", "status"),
                 ("shebanq_note.note.ntext", "note"),
-            ) if tp == "txtp" else (
+            )
+            if tp == "txtp"
+            else (
                 ("clause_atom", "ca_nr"),
                 ("clause_atom.text", "ca_txt"),
                 ("shebanq_note.note.keywords", "keyw"),
@@ -411,13 +414,21 @@ def getFields(tp, qw=qw):
                 ("shebanq_note.note.ntext", "note"),
                 ("shebanq_note.note.created_on", "created_on"),
                 ("shebanq_note.note.modified_on", "modified_on"),
-                ('if(shebanq_note.note.is_shared = "T", "T", "F") as shared', "shared"),
                 (
-                    'if(shebanq_note.note.is_published = "T", "T", "F") as published',
-                    "published",
+                    (
+                        'if(shebanq_note.note.is_shared = "T", "T", "F") '
+                        'as shared'
+                    ), "is_shared"),
+                (
+                    (
+                        'if(shebanq_note.note.is_published = "T", "T", "F") '
+                        'as is_published'
+                    ),
+                    "is_published",
                 ),
                 ('ifnull(shebanq_note.note.published_on, "") as pub', "published_on"),
             )
+        )
         return hebrewFields
 
 

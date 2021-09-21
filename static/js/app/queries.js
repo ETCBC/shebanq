@@ -7,14 +7,14 @@ import { escHT } from "./helpers.js"
 import { Msg } from "./msg.js"
 import { LStorage } from "./page.js"
 
-const vs = $.initNamespaceStorage("qsview")
-const qsview = vs.localStorage
+const vs = $.initNamespaceStorage("viewStoredQueries")
+const viewStoredQueries = vs.localStorage
 let ftree, msgflt, msgopq, rdata
-const subtractq = 80
+const subtractForQueriesPage = 80
 /* the canvas holding the material gets a height equal to
  * the window height minus this amount
  */
-const control_height = 100
+const controlHeight = 100
 /* height for messages and controls
  */
 
@@ -64,7 +64,7 @@ class Recent {
     let html = ""
     for (let n = 0; n < queries.length; n++) {
       const { id, text, title, version } = queries[n]
-      html += `<a class="q" qid="${id}"
+      html += `<a class="q" query_id="${id}"
           v="${version}" href="#"
           title="${title}">${text}</a><br/>
       `
@@ -73,12 +73,12 @@ class Recent {
   }
 
   dress_queriesr() {
-    $("#recentqi a[qid]").each((i, el) => {
+    $("#recentqi a[query_id]").each((i, el) => {
       const elem = $(el)
       elem.click(e => {
         e.preventDefault()
         ftree.filter.clear()
-        ftree.gotoquery(elem.attr("qid"))
+        ftree.gotoQuery(elem.attr("query_id"))
       })
     })
   }
@@ -87,8 +87,8 @@ class Recent {
 class View {
   constructor() {
     this.prevstate = false
-    if (!qsview.isSet("simple")) {
-      qsview.set("simple", true)
+    if (!viewStoredQueries.isSet("simple")) {
+      viewStoredQueries.set("simple", true)
     }
     this.qvradio = $(".qvradio")
     this.csimple = $("#c_view_simple")
@@ -96,19 +96,19 @@ class View {
 
     this.csimple.click(e => {
       e.preventDefault()
-      qsview.set("simple", true)
+      viewStoredQueries.set("simple", true)
       this.adjust_view()
     })
     this.cadvanced.click(e => {
       e.preventDefault()
-      qsview.set("simple", false)
+      viewStoredQueries.set("simple", false)
       this.adjust_view()
     })
     this.adjust_view()
   }
 
   adjust_view() {
-    const simple = qsview.get("simple")
+    const simple = viewStoredQueries.get("simple")
     this.qvradio.removeClass("ison")
     ;(simple ? this.csimple : this.cadvanced).addClass("ison")
     if (this.prevstate != simple) {
@@ -127,8 +127,8 @@ class Level {
     this.levels = { o: 1, p: 2, u: 3, q: 4 }
 
     $(".qlradio").removeClass("ison")
-    if (!qsview.isSet("level")) {
-      qsview.set("level", "o")
+    if (!viewStoredQueries.isSet("level")) {
+      viewStoredQueries.set("level", "o")
     }
     $("#level_o").click(e => {
       e.preventDefault()
@@ -163,7 +163,7 @@ class Level {
 
     $(".qlradio").removeClass("ison")
     $(`#level_${level}`).addClass("ison")
-    qsview.set("level", level)
+    viewStoredQueries.set("level", level)
     if (level in levels) {
       const numlevel = levels[level]
       ftree.ftw.visit(n => {
@@ -174,7 +174,7 @@ class Level {
   }
 
   initlevel() {
-    this.expand_level(qsview.get("level"))
+    this.expand_level(viewStoredQueries.get("level"))
   }
 }
 
@@ -195,10 +195,10 @@ class Filter {
 
     $("#filter_clear").hide()
     $("#filter_contents").val(
-      qsview.isSet("filter_pat") ? qsview.get("filter_pat") : ""
+      viewStoredQueries.isSet("filter_pat") ? viewStoredQueries.get("filter_pat") : ""
     )
-    if (qsview.isSet("filter_mode")) {
-      this.pqsearch(qsview.get("filter_mode"))
+    if (viewStoredQueries.isSet("filter_mode")) {
+      this.pqsearch(viewStoredQueries.get("filter_mode"))
       $("#filter_clear").show()
     }
 
@@ -234,7 +234,7 @@ class Filter {
     msgflt.clear()
     msgflt.msg(["good", "no filter applied"])
     $(".qfradio").removeClass("ison")
-    qsview.remove("filter_mode")
+    viewStoredQueries.remove("filter_mode")
     $("#filter_clear").hide()
     $("#allmatches").html("")
     $("#branchmatches").html("")
@@ -250,7 +250,7 @@ class Filter {
   pqsearch(kind) {
     const { in_my, in_private, patc } = this
     const pat = patc.val()
-    qsview.set("filter_pat", pat)
+    viewStoredQueries.set("filter_pat", pat)
     let allMatches = 0
     let branchMatches = 0
     let queryMatches = 0
@@ -278,7 +278,7 @@ class Filter {
       msgflt.msg(["special", "filter applied"])
     }
     $(`#filter_control_${kind}`).addClass("ison")
-    qsview.set("filter_mode", kind)
+    viewStoredQueries.set("filter_mode", kind)
 
     ftree.level.expand_all()
     if (kind == "a") {
@@ -381,13 +381,13 @@ class Tree {
         tree.level = new Level()
         tree.filter = new Filter()
         tree.level.initlevel()
-        if (rdata.uid) {
-          tree.editinit()
+        if (rdata.user_id) {
+          tree.editInit()
         } else {
-          tree.viewinit()
+          tree.viewInit()
         }
-        tree.bothinit()
-        tree.gotoquery($("#qid").val())
+        tree.bothInit()
+        tree.gotoQuery($("#query_id").val())
         $("#reload_tree").hide()
       },
       expand: () => {
@@ -405,13 +405,13 @@ class Tree {
       },
     })
 
-    const standard_height = window.innerHeight - subtractq
+    const standardHeight = window.innerHeight - subtractForQueriesPage
     const canvas_left = $(".left-sidebar")
     const canvas_right = $(".right-sidebar")
-    canvas_left.css("height", `${standard_height}px`)
-    $("#queries").css("height", `${standard_height}px`)
-    $("#opqctl").css("height", `${control_height}px`)
-    canvas_right.css("height", `${standard_height}px`)
+    canvas_left.css("height", `${standardHeight}px`)
+    $("#queries").css("height", `${standardHeight}px`)
+    $("#opqctl").css("height", `${controlHeight}px`)
+    canvas_right.css("height", `${standardHeight}px`)
   }
 
   store_select(node) {
@@ -441,11 +441,11 @@ class Tree {
   dress_queries() {
     const { qUrl } = Config
     $("#queries a.md").addClass("fa fa-level-down")
-    $("#queries a[qid]").each((i, el) => {
+    $("#queries a[query_id]").each((i, el) => {
       const elem = $(el)
       const vr = elem.attr("v")
       const extra = vr == undefined ? "" : `&version=${vr}`
-      elem.attr("href", `${qUrl}?iid=${elem.attr("qid")}${extra}&page=1&mr=r&qw=q`)
+      elem.attr("href", `${qUrl}?iid=${elem.attr("query_id")}${extra}&page=1&mr=r&qw=q`)
     })
     $("#queries a.md").click(e => {
       e.preventDefault()
@@ -453,34 +453,34 @@ class Tree {
       const uname = elem.closest("ul").closest("li").find("span[n]").html()
       const tit = elem.prev()
       const lnk = tit.attr("href")
-      const qname = tit.html()
+      const query_name = tit.html()
       window.prompt(
         "Press <Cmd-C> and then <Enter> to copy link on clipboard",
-        `[${uname}: ${qname}](${lnk})`
+        `[${uname}: ${query_name}](${lnk})`
       )
     })
   }
 
   record(tp, o, update, view) {
-    const { recordUrl, qUrl } = Config
+    const { queryMetaUrl, qUrl } = Config
 
-    const lid = $(`#id_${tp}`).val()
-    if (!update && lid == "0" && tp != "q") {
+    const obj_id = $(`#id_${tp}`).val()
+    if (!update && obj_id == "0" && tp != "q") {
       return
     }
     const senddata = {
       tp,
       upd: update,
-      lid,
+      obj_id,
       name: $(`#name_${tp}`).val(),
     }
     if (tp == "q") {
-      senddata["oid"] = $("#fo_q").attr("oid")
-      senddata["oname"] = $("#nameq_o").val()
-      senddata["owebsite"] = $("#websiteq_o").val()
-      senddata["pid"] = $("#fp_q").attr("pid")
-      senddata["pname"] = $("#nameq_p").val()
-      senddata["pwebsite"] = $("#websiteq_p").val()
+      senddata["org_id"] = $("#org_of_query").attr("org_id")
+      senddata["org_name"] = $("#nameq_o").val()
+      senddata["org_website"] = $("#websiteq_o").val()
+      senddata["project_id"] = $("#project_of_query").attr("project_id")
+      senddata["project_name"] = $("#nameq_p").val()
+      senddata["project_website"] = $("#websiteq_p").val()
       senddata["do_new_o"] = this.do_new["o"]
       senddata["do_new_p"] = this.do_new["p"]
     } else {
@@ -488,17 +488,17 @@ class Tree {
     }
 
     $.post(
-      recordUrl,
+      queryMetaUrl,
       senddata,
       json => {
         const {
           msgs,
           good,
-          ogood,
-          pgood,
+          orgGood,
+          projectGood,
           record: rec,
-          orecord: orec,
-          precord: prec,
+          orgRecord,
+          projectRecord,
         } = json
         msgopq.clear()
         for (const m of msgs) {
@@ -506,14 +506,14 @@ class Tree {
         }
         if (update && tp == "q") {
           if (good) {
-            this.selectid("o", rec.oid, null)
-            this.selectid("p", rec.pid, o)
+            this.selectId("o", rec.org_id, null)
+            this.selectId("p", rec.project_id, o)
           } else {
-            if (ogood) {
-              this.selectid("o", orec.id, null)
+            if (orgGood) {
+              this.selectId("o", orgRecord.id, null)
             }
-            if (pgood) {
-              this.selectid("p", prec.id, o)
+            if (projectGood) {
+              this.selectId("p", projectRecord.id, o)
             }
           }
         }
@@ -522,90 +522,99 @@ class Tree {
           name.prop("readonly", view)
           name.val(rec.name)
           if (tp == "q") {
-            const oname = rec.oname == undefined ? "" : escHT(rec.oname)
-            const pname = rec.pname == undefined ? "" : escHT(rec.pname)
-            $(`#fo_${tp}`).attr("href", rec.owebsite)
-            $(`#fo_${tp}`).html(escHT(oname))
-            $(`#fp_${tp}`).attr("href", rec.pwebsite)
-            $(`#fp_${tp}`).html(escHT(pname))
-            $(`#fo_${tp}`).attr("oid", rec.oid)
-            $(`#fp_${tp}`).attr("pid", rec.pid)
+            const org_name = rec.org_name == undefined ? "" : escHT(rec.org_name)
+            const project_name =
+              rec.project_name == undefined ? "" : escHT(rec.project_name)
+            $("org_of_query").attr("href", rec.org_website)
+            $("org_of_query").html(escHT(org_name))
+            $("project_of_query").attr("href", rec.project_website)
+            $("project_of_query").html(escHT(project_name))
+            $("org_of_query").attr("org_id", rec.org_id)
+            $("project_of_query").attr("project_id", rec.project_id)
           } else {
-            $(`#website_${tp}`).val(rec.website)
-            $(`#f${tp}_v`).attr("href", rec.owebsite)
-            $(`#f${tp}_v`).html(escHT(rec.name))
+            const kind = tp == "o" ? "org" : "project"
+            $(`#website_${kind}`).val(rec.website)
+            $(`#${kind}_of_query_view`).attr("href", rec.website)
+            $(`#${kind}_of_query_view`).html(escHT(rec.name))
           }
-        } else if (update && senddata.lid != "0") {
+        } else if (update && senddata.obj_id != "0") {
           if (tp == "q") {
             if (good) {
-              const oname = rec.oname == undefined ? "" : escHT(rec.oname)
-              const pname = rec.pname == undefined ? "" : escHT(rec.pname)
-              this.hide_new_q(rec.id, "o")
-              this.hide_new_q(rec.id, "p")
-              $(`#fo_${tp}`).attr("href", rec.owebsite)
-              $(`#fo_${tp}`).html(escHT(oname))
-              $(`#fp_${tp}`).attr("href", rec.pwebsite)
-              $(`#fp_${tp}`).html(escHT(pname))
-              $(`#fo_${tp}`).attr("oid", rec.oid)
-              $(`#fp_${tp}`).attr("pid", rec.pid)
+              const org_name = rec.org_name == undefined ? "" : escHT(rec.org_name)
+              const project_name =
+                rec.project_name == undefined ? "" : escHT(rec.project_name)
+              this.hideQueryNew(rec.id, "o")
+              this.hideQueryNew(rec.id, "p")
+              $("org_of_query").attr("href", rec.org_website)
+              $("org_of_query").html(escHT(org_name))
+              $("project_of_query").attr("href", rec.project_website)
+              $("project_of_query").html(escHT(project_name))
+              $("org_of_query").attr("org_id", rec.org_id)
+              $("project_of_query").attr("project_id", rec.project_id)
               $("#title_q").html("Modify")
             } else {
-              if (ogood) {
-                const oname = orec.name == undefined ? "" : escHT(orec.name)
-                this.hide_new_q(orec.id, "o")
-                $(`#fo_${tp}`).attr("href", orec.website)
-                $(`#fo_${tp}`).html(escHT(oname))
-                $(`#fo_${tp}`).attr("oid", orec.id)
+              if (orgGood) {
+                const org_name =
+                  orgRecord.name == undefined ? "" : escHT(orgRecord.name)
+                this.hideQueryNew(orgRecord.id, "o")
+                $("org_of_query").attr("href", orgRecord.website)
+                $("org_of_query").html(escHT(org_name))
+                $("org_of_query").attr("org_id", orgRecord.id)
               }
-              if (pgood) {
-                const pname = prec.name == undefined ? "" : escHT(prec.name)
-                this.hide_new_q(prec.id, "p")
-                $(`#fp_${tp}`).attr("href", prec.website)
-                $(`#fp_${tp}`).html(escHT(pname))
-                $(`#fp_${tp}`).attr("pid", prec.id)
+              if (projectGood) {
+                const project_name =
+                  projectRecord.name == undefined ? "" : escHT(projectRecord.name)
+                this.hideQueryNew(projectRecord.id, "p")
+                $("project_of_query").attr("href", projectRecord.website)
+                $("project_of_query").html(escHT(project_name))
+                $("project_of_query").attr("project_id", projectRecord.id)
               }
             }
           } else {
-            $(`#website_${tp}`).val(rec.website)
-            $(`#f${tp}_v`).attr("href", rec.owebsite)
-            $(`#f${tp}_v`).html(escHT(rec.name))
+            const kind = tp == "o" ? "org" : "project"
+            $(`#website_${kind}`).val(rec.website)
+            $(`#${kind}_of_query_view`).attr("href", rec.website)
+            $(`#${kind}_of_query_view`).html(escHT(rec.name))
           }
           const elm = tp == "q" ? "a" : "span"
           const moditem = this.moditem.find(`${elm}[n=1]`)
           if (moditem != undefined) {
             moditem.html(escHT(rec.name))
           }
-        } else if (update && senddata.lid == "0") {
+        } else if (update && senddata.obj_id == "0") {
           if (good) {
             $(`#id_${tp}`).val(rec.id)
           }
           if (tp == "q") {
             if (good) {
-              const oname = rec.oname == undefined ? "" : escHT(rec.oname)
-              const pname = rec.pname == undefined ? "" : escHT(rec.pname)
-              this.hide_new_q(rec.id, "o")
-              this.hide_new_q(rec.id, "p")
-              $(`#fo_${tp}`).attr("href", rec.owebsite)
-              $(`#fo_${tp}`).html(escHT(oname))
-              $(`#fp_${tp}`).attr("href", rec.pwebsite)
-              $(`#fp_${tp}`).html(escHT(pname))
-              $(`#fo_${tp}`).attr("oid", rec.oid)
-              $(`#fp_${tp}`).attr("pid", rec.pid)
+              const org_name = rec.org_name == undefined ? "" : escHT(rec.org_name)
+              const project_name =
+                rec.project_name == undefined ? "" : escHT(rec.project_name)
+              this.hideQueryNew(rec.id, "o")
+              this.hideQueryNew(rec.id, "p")
+              $("org_of_query").attr("href", rec.org_website)
+              $("org_of_query").html(escHT(org_name))
+              $("project_of_query").attr("href", rec.project_website)
+              $("project_of_query").html(escHT(project_name))
+              $("org_of_query").attr("org_id", rec.org_id)
+              $("project_of_query").attr("project_id", rec.project_id)
               $("#title_q").html("Modify")
             } else {
-              if (ogood) {
-                const oname = orec.name == undefined ? "" : escHT(orec.name)
-                this.hide_new_q(orec.id, "o")
-                $(`#fo_${tp}`).attr("href", orec.website)
-                $(`#fo_${tp}`).html(escHT(oname))
-                $(`#fo_${tp}`).attr("oid", orec.id)
+              if (orgGood) {
+                const org_name =
+                  orgRecord.name == undefined ? "" : escHT(orgRecord.name)
+                this.hideQueryNew(orgRecord.id, "o")
+                $("org_of_query").attr("href", orgRecord.website)
+                $("org_of_query").html(escHT(org_name))
+                $("org_of_query").attr("org_id", orgRecord.id)
               }
-              if (pgood) {
-                const pname = prec.name == undefined ? "" : escHT(prec.name)
-                this.hide_new_q(prec.id, "p")
-                $(`#fp_${tp}`).attr("href", prec.website)
-                $(`#fp_${tp}`).html(escHT(pname))
-                $(`#fp_${tp}`).attr("pid", prec.id)
+              if (projectGood) {
+                const project_name =
+                  projectRecord.name == undefined ? "" : escHT(projectRecord.name)
+                this.hideQueryNew(projectRecord.id, "p")
+                $("project_of_query").attr("href", projectRecord.website)
+                $("project_of_query").html(escHT(project_name))
+                $("project_of_query").attr("project_id", projectRecord.id)
               }
             }
           }
@@ -613,12 +622,12 @@ class Tree {
         const orig = $(".treehl")
         const origp = orig.closest("ul").closest("li").closest("ul").closest("li")
         const origo = origp.closest("ul").closest("li")
-        const origoid = origo.find("a[lid]").attr("lid")
-        const origpid = origp.find("a[lid]").attr("lid")
+        const origoid = origo.find("a[obj_id]").attr("obj_id")
+        const origpid = origp.find("a[obj_id]").attr("obj_id")
         if (
           update &&
           good &&
-          (senddata.lid == "0" || origoid != rec.oid || origpid != rec.pid)
+          (senddata.obj_id == "0" || origoid != rec.org_id || origpid != rec.project_id)
         ) {
           $("#reload_tree").show()
         } else {
@@ -638,77 +647,78 @@ class Tree {
     )
   }
 
-  do_edit_controls_q() {
-    const ctlo = $("#new_ctl_o")
-    const ctlp = $("#new_ctl_p")
-    const ctlxo = $("#newx_ctl_o")
-    const ctlxp = $("#newx_ctl_p")
-    const detailo = $(".detail_o")
-    const detailp = $(".detail_p")
-    const existo = $("#fo_q")
-    const existp = $("#fp_q")
-    detailo.hide()
-    detailp.hide()
-    ctlxo.hide()
-    ctlxp.hide()
-    ctlo.click(e => {
+  doEditControlsQuery() {
+    const orgNewCtl = $("#org_new_ctl")
+    const projectNewCtl = $("#project_new_ctl")
+    const orgExistCtl = $("#org_exist_ctl")
+    const projectExistCtl = $("#project_exist_ctl")
+    const orgDetail = $(".org_detail")
+    const projectDetail = $(".project_detail")
+    const orgOfQuery = $("#org_of_query")
+    const projectOfQuery = $("#project_of_query")
+    orgDetail.hide()
+    projectDetail.hide()
+    orgExistCtl.hide()
+    projectExistCtl.hide()
+    orgNewCtl.click(e => {
       e.preventDefault()
-      detailo.show()
-      ctlxo.show()
-      ctlo.hide()
-      existo.hide()
+      orgDetail.show()
+      orgExistCtl.show()
+      orgNewCtl.hide()
+      orgOfQuery.hide()
       this.do_new["o"] = true
     })
-    ctlxo.click(e => {
+    orgExistCtl.click(e => {
       e.preventDefault()
-      detailo.hide()
-      ctlxo.hide()
-      ctlo.show()
-      existo.show()
+      orgDetail.hide()
+      orgExistCtl.hide()
+      orgNewCtl.show()
+      orgOfQuery.show()
       this.do_new["o"] = false
     })
-    ctlp.click(e => {
+    projectNewCtl.click(e => {
       e.preventDefault()
-      detailp.show()
-      ctlxp.show()
-      ctlp.hide()
-      existp.hide()
+      projectDetail.show()
+      projectExistCtl.show()
+      projectNewCtl.hide()
+      projectOfQuery.hide()
       this.do_new["p"] = true
       this.select_clear("p", true)
     })
-    ctlxp.click(e => {
+    projectExistCtl.click(e => {
       e.preventDefault()
-      detailp.hide()
-      ctlxp.hide()
-      ctlp.show()
-      existp.show()
+      projectDetail.hide()
+      projectExistCtl.hide()
+      projectNewCtl.show()
+      projectOfQuery.show()
     })
   }
 
-  hide_new_q(lid, tp) {
-    $(`#new_ctl_${tp}`).show()
-    $(`#newx_ctl_${tp}`).hide()
-    $(`.detail_${tp}`).hide()
-    $(`#f${tp}_q`).show()
+  hideQueryNew(obj_id, tp) {
+    const kind = tp == "o" ? "org" : "project"
+    $(`#${kind}_new_ctl`).show()
+    $(`#${kind}_exist_ctl`).hide()
+    $(`.${kind}_detail`).hide()
+    $(`#${kind}_of_query`).show()
     this.do_new[tp] = false
   }
 
-  do_view_controls_q() {
-    const ctlo = $("#new_ctl_o")
-    const ctlp = $("#new_ctl_p")
-    const ctlxo = $("#newx_ctl_o")
-    const ctlxp = $("#newx_ctl_p")
-    const detailo = $(".detail_o")
-    const detailp = $(".detail_p")
-    detailo.hide()
-    detailp.hide()
-    ctlo.hide()
-    ctlxo.hide()
-    ctlp.hide()
-    ctlxp.hide()
+  doViewControlsQuery() {
+    const orgNewCtl = $("#org_new_ctl")
+    const projectNewCtl = $("#project_new_ctl")
+    const orgExistCtl = $("#org_exist_ctl")
+    const projectExistCtl = $("#project_exist_ctl")
+    const orgDetail = $(".org_detail")
+    const projectDetail = $(".project_detail")
+    orgDetail.hide()
+    projectDetail.hide()
+    orgNewCtl.hide()
+    orgExistCtl.hide()
+    projectNewCtl.hide()
+    projectExistCtl.hide()
   }
 
-  do_create(tp, obj) {
+  doCreate(tp, obj) {
     msgopq.clear()
     $(".formquery").hide()
     $(".ctlquery").hide()
@@ -718,11 +728,12 @@ class Tree {
     if (tp == "q") {
       this.do_new["o"] = false
       this.do_new["p"] = false
-      $("#fo_q").attr("oid", 0)
-      $("#fp_q").attr("pid", 0)
-      this.do_edit_controls_q()
+      $("#org_of_query").attr("org_id", 0)
+      $("#project_of_query").attr("project_id", 0)
+      this.doEditControlsQuery()
     } else {
-      $(`#website_${tp}`).val("")
+      const kind = tp == "o" ? "org" : "project"
+      $(`#website_${kind}`).val("")
       if (tp == "p") {
         o = obj.closest("li")
       }
@@ -736,7 +747,7 @@ class Tree {
     $(".old").hide()
   }
 
-  do_update(tp, obj, lid) {
+  do_update(tp, obj, obj_id) {
     let o = null
     if (tp == "q") {
       this.do_new["o"] = false
@@ -748,7 +759,7 @@ class Tree {
         .closest("li")
         .closest("ul")
         .closest("li")
-      this.do_edit_controls_q()
+      this.doEditControlsQuery()
     } else if (tp == "p") {
       o = obj.closest("ul").closest("li")
     }
@@ -758,7 +769,7 @@ class Tree {
     $(".formquery").hide()
     $(".ctlquery").hide()
     $(`#title_${tp}`).html("Modify")
-    $(`#id_${tp}`).val(lid)
+    $(`#id_${tp}`).val(obj_id)
     this.record(tp, o, false, false)
     $("#opqforms").show()
     $("#opqctl").show()
@@ -767,7 +778,7 @@ class Tree {
     $(".old").show()
   }
 
-  do_view(tp, obj, lid) {
+  do_view(tp, obj, obj_id) {
     let o = null
     if (tp == "q") {
       o = obj
@@ -777,7 +788,7 @@ class Tree {
         .closest("li")
         .closest("ul")
         .closest("li")
-      this.do_view_controls_q()
+      this.doViewControlsQuery()
     } else if (tp == "p") {
       o = obj.closest("ul").closest("li")
     }
@@ -786,17 +797,18 @@ class Tree {
     $(".formquery").hide()
     $(".ctlquery").hide()
     $(`#title_${tp}`).html("View")
-    $(`#id_${tp}`).val(lid)
+    $(`#id_${tp}`).val(obj_id)
     this.record(tp, o, false, true)
     $("#opqforms").show()
     $("#opqctl").show()
     $(`#form_${tp}`).show()
     if (tp == "o" || tp == "p") {
-      $(`#nameline_${tp}`).hide()
-      $(`#website_${tp}`).hide()
-      $(`#f${tp}_v`).show()
+      const kind = tp == "o" ? "org" : "project"
+      $(`#nameline_${kind}`).hide()
+      $(`#website_${kind}`).hide()
+      $(`#${kind}_of_query_view`).show()
     }
-    this.select_hide()
+    this.selectHide()
   }
 
   op_selection(tp) {
@@ -804,11 +816,11 @@ class Tree {
       this.select_clear("o", true)
       this.select_clear("p", true)
     } else {
-      this.select_hide()
+      this.selectHide()
     }
   }
 
-  select_hide() {
+  selectHide() {
     for (const tp of ["o", "p"]) {
       this.select_clear(tp, false)
     }
@@ -827,15 +839,15 @@ class Tree {
     }
   }
 
-  selectid(tp, lid, pr) {
-    const jpr = `.s_${tp}[lid=${lid}]`
+  selectId(tp, obj_id, pr) {
+    const jpr = `.s_${tp}[obj_id=${obj_id}]`
     const icon = pr == null ? $(jpr) : pr.find(jpr)
     const i = icon.closest("li")
     const is = i.children("span")
-    this.selectone(tp, icon, is)
+    this.selectOne(tp, icon, is)
   }
 
-  selectone(tp, icon, obj) {
+  selectOne(tp, icon, obj) {
     const sclass = `selecthl${tp}`
     const objs = $(`.${sclass}`)
     const iconsr = $(`.s_${tp}`)
@@ -847,25 +859,25 @@ class Tree {
     icon.addClass("fa-check-circle")
   }
 
-  viewinit() {
+  viewInit() {
     $("#lmsg").show()
     $(".formquery").hide()
     $(".ctlquery").hide()
     $(".treehl").removeClass("treehl")
-    this.select_hide()
+    this.selectHide()
   }
 
-  bothinit() {
+  bothInit() {
     const canvas_left = $(".left-sidebar")
-    const canvas_middle = $(".span6")
+    const canvasMiddle = $(".span6")
     const canvas_right = $(".right-sidebar")
     canvas_left.css("width", "23%")
-    canvas_middle.css("width", "40%")
+    canvasMiddle.css("width", "40%")
     canvas_right.css("width", "30%")
     const view = $(".v_o, .v_p, .v_q")
     view.addClass("fa fa-info")
 
-    const viewtp = tp => {
+    const viewTp = tp => {
       const objs = $(`.v_${tp}`)
       objs.click(e => {
         e.preventDefault()
@@ -873,37 +885,37 @@ class Tree {
         $(".treehl").removeClass("treehl")
         this.op_selection(tp)
         elem.closest("span").addClass("treehl")
-        const lid = $(this).attr("lid")
-        this.do_view(tp, $(this), lid)
+        const obj_id = $(this).attr("obj_id")
+        this.do_view(tp, $(this), obj_id)
         return false
       })
     }
 
-    const select_init = tp => {
+    const selectInit = tp => {
       const objs = $(`.s_${tp}`)
       objs.click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         if (tp == "o") {
           const o = elem.closest("li")
-          const oid = o.find("a[lid]").attr("lid")
-          const oname = o.find("span[n=1]").html()
-          $("#fo_q").html(oname)
-          $("#fo_q").attr("oid", oid)
-          this.selectid("o", oid, null)
+          const org_id = o.find("a[obj_id]").attr("obj_id")
+          const org_name = o.find("span[n=1]").html()
+          $("#org_of_query").html(org_name)
+          $("#org_of_query").attr("org_id", org_id)
+          this.selectId("o", org_id, null)
         } else if (tp == "p") {
           const o = elem.closest("ul").closest("li")
-          const oid = o.find("a[lid]").attr("lid")
-          const oname = o.find("span[n=1]").html()
+          const org_id = o.find("a[obj_id]").attr("obj_id")
+          const org_name = o.find("span[n=1]").html()
           const p = elem.closest("li")
-          const pid = p.find("a[lid]").attr("lid")
-          const pname = p.find("span[n=1]").html()
-          $("#fo_q").html(oname)
-          $("#fp_q").html(pname)
-          $("#fo_q").attr("oid", oid)
-          $("#fp_q").attr("pid", pid)
-          this.selectid("o", oid, null)
-          this.selectid("p", pid, o)
+          const project_id = p.find("a[obj_id]").attr("obj_id")
+          const project_name = p.find("span[n=1]").html()
+          $("#org_of_query").html(org_name)
+          $("#project_of_query").html(project_name)
+          $("#org_of_query").attr("org_id", org_id)
+          $("#project_of_query").attr("project_id", project_id)
+          this.selectId("o", org_id, null)
+          this.selectId("p", project_id, o)
         }
         return false
       })
@@ -911,15 +923,15 @@ class Tree {
     for (const t in this.tps) {
       $(`#form_${t}`).hide()
       $(`#ctl_${t}`).hide()
-      viewtp(t)
+      viewTp(t)
       if (t == "q") {
-        select_init("o")
-        select_init("p")
+        selectInit("o")
+        selectInit("p")
       }
     }
   }
 
-  editinit() {
+  editInit() {
     $(".treehl").removeClass("treehl")
     $("#lmsg").hide()
     const select = $(".s_o,.s_p")
@@ -928,7 +940,7 @@ class Tree {
     const create = $(".n_q")
     create.addClass("fa fa-plus")
 
-    const createtp = tp => {
+    const createTp = tp => {
       const objs = $(`.n_${tp}`)
       objs.click(e => {
         e.preventDefault()
@@ -939,14 +951,14 @@ class Tree {
           $("#id_q").val(0)
         }
         elem.closest("span").addClass("treehl")
-        this.do_create(tp, elem)
+        this.doCreate(tp, elem)
         return false
       })
     }
     const update = $(".r_o, .r_p, .r_q")
     update.addClass("fa fa-pencil")
 
-    const updatetp = tp => {
+    const updateTp = tp => {
       const objs = $(`.r_${tp}`)
       objs.click(e => {
         e.preventDefault()
@@ -954,15 +966,15 @@ class Tree {
         $(".treehl").removeClass("treehl")
         this.op_selection(tp)
         elem.closest("span").addClass("treehl")
-        const lid = elem.attr("lid")
+        const obj_id = elem.attr("obj_id")
         if (tp == "q") {
-          $("#id_q").val(lid)
+          $("#id_q").val(obj_id)
         }
-        this.do_update(tp, elem, lid)
+        this.do_update(tp, elem, obj_id)
         return false
       })
     }
-    const formtp = tp => {
+    const formTp = tp => {
       $(`#save_${tp}`).click(e => {
         e.preventDefault()
         this.op_selection(tp)
@@ -971,7 +983,7 @@ class Tree {
       $(`#cancel_${tp}`).click(e => {
         e.preventDefault()
         $(".treehl").removeClass("treehl")
-        this.select_hide()
+        this.selectHide()
         $(`#form_${tp}`).hide()
         $(`#ctl_${tp}`).hide()
       })
@@ -979,7 +991,7 @@ class Tree {
         e.preventDefault()
         this.op_selection(tp)
         this.record(tp, null, true, false)
-        this.select_hide()
+        this.selectHide()
         $(`#form_${tp}`).hide()
         $(`#ctl_${tp}`).hide()
       })
@@ -991,19 +1003,19 @@ class Tree {
     for (const t in this.tps) {
       $(`#form_${t}`).hide()
       $(`#ctl_${t}`).hide()
-      createtp(t)
-      updatetp(t)
-      formtp(t)
+      createTp(t)
+      updateTp(t)
+      formTp(t)
     }
   }
 
-  gotoquery(queryId) {
-    if (queryId != undefined && queryId != "0") {
-      const qnode = this.ftw.getNodeByKey(`q${queryId}`)
+  gotoQuery(query_id) {
+    if (query_id != undefined && query_id != "0") {
+      const qnode = this.ftw.getNodeByKey(`${query_id}`)
       if (qnode != undefined) {
         qnode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")
-        $(`a[qid=${queryId}]`).closest("span").addClass("treehl")
+        $(`a[query_id=${query_id}]`).closest("span").addClass("treehl")
         $(qnode.li)[0].scrollIntoView({
           behavior: "smooth",
         })

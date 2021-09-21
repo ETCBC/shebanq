@@ -6,5 +6,5 @@
 {{ block left_sidebar }}
 {{ include 'hebrew/text_sidebar.html' }}
 {{ end }}
-<script type="text/javascript">{{=XML(viewsettings.writeConfig())}}</script>
+<script type="text/javascript">{{=XML(ViewSettings.writeConfig())}}</script>
 <script src="{{=URL('static', 'js/app/main.js')}}" type="module"></script>

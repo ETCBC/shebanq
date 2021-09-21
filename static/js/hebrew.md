@@ -19,10 +19,10 @@ An m-page has different sidebars than an r-page.
 The skeleton has the following parts:
 
 *   Sidebar with
-    *   m-w: viewsettings plus a list of word items
-    *   m-q: viewsettings plus a list of query items
-    *   r-w: viewsettings plus the metadata of an individual word
-    *   r-q: viewsettings plus the metadata of an individual query
+    *   m-w: ViewSettings plus a list of word items
+    *   m-q: ViewSettings plus a list of query items
+    *   r-w: ViewSettings plus the metadata of an individual word
+    *   r-q: ViewSettings plus the metadata of an individual query
 
 *   Main part with
     *   heading
@@ -31,7 +31,7 @@ The skeleton has the following parts:
     *   material (either the verses of a passage or the verses of the resultpage of a query or word)
     *   share link
 
-There is a viewstate, an object that maintains the viewsettings that can be modified by the user.
+There is a viewstate, an object that maintains the ViewSettings that can be modified by the user.
 The viewstate object is a member of the page object.
 Viewstate is divided in groups, each group is serialized to a cookie.
 Viewstate is initialized from the querystring and/or the cookies.
