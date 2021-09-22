@@ -14,14 +14,14 @@ const mEscape = ns => ns.replace(/_/g, "\\_")
 
 export const markdownEscape = ntext => ntext.replace(/\[[^\]\n\t]+\]\([^)]*\)/g, mEscape)
 
-export const put_markdown = wdg => {
+export const putMarkdown = wdg => {
   const did = wdg.attr("did")
   const src = $(`#dv_${did}`)
   const mdw = $(`#dm_${did}`)
   mdw.html(specialLinks(markdown.toHTML(src.val())))
 }
 
-export const toggle_detail = (wdg, detail, extra) => {
+export const toggleDetail = (wdg, detail, extra) => {
   const thedetail = detail == undefined ? wdg.closest("div").find(".detail") : detail
   thedetail.toggle()
   if (extra != undefined) {
@@ -39,55 +39,55 @@ export const toggle_detail = (wdg, detail, extra) => {
   wdg.addClass(othercl)
 }
 
-export const specialLinks = d_mdGiven => {
-  const { featureHost, host } = Config
+export const specialLinks = mdIn => {
+  const { featureHost, pageShareUrl } = Config
 
-  let d_md = d_mdGiven
-  d_md = d_md.replace(
+  let mdOut = mdIn
+  mdOut = mdOut.replace(
     /<a [^>]*href=['"]image[\n\t ]+([^)\n\t '"]+)['"][^>]*>(.*?)(<\/a>)/g,
     '<br/><img src="$1"/><br/>$2<br/>'
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g,
     '$1b="$2" c="$3" v="$4" href="#" class="fa fw" $5>&#xf100;$6&#xf101;$7'
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /(<a [^>]*)href=['"]([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)['"]([^>]*)>(.*?)(<\/a>)/g,
     '$1b="$2" c="$3" v="1" href="#" class="fa fw" $4>&#xf100;$5&#xf101;$6'
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /(href=['"])shebanq:([^)\n\t '"]+)(['"])/g,
-    `$1${host}$2$3 class="fa fw fa-bookmark" `
+    `$1${pageShareUrl}$2$3 class="fa fw fa-bookmark" `
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /(href=['"])feature:([^)\n\t '"]+)(['"])/g,
     `$1${featureHost}/$2$3 target="_blank" class="fa fw fa-file-text" `
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /\[([^\]\n\t]+)\]\(image[\n\t ]+([^)\n\t '"]+)\)/g,
     '<br/><img src="$2"/><br/>$1<br/>'
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^:)\n\t '"]+):([^)\n\t '"]+)\)/g,
     '<a b="$2" c="$3" v="$4" href="#" class="fa fw">&#xf100;$1&#xf101;</a>'
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /\[([^\]\n\t]+)\]\(([^)\n\t '"]+)[\n\t ]+([^)\n\t '"]+)\)/g,
     '<a b="$2" c="$3" v="1" href="#" class="fa fw">&#xf100;$1&#xf101;</a>'
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /\[([^\]\n\t]+)\]\(shebanq:([^)\n\t '"]+)\)/g,
-    `<a href="${host}$2" class="fa fw">&#xf02e;$1</a>`
+    `<a href="${pageShareUrl}$2" class="fa fw">&#xf02e;$1</a>`
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /\[([^\]\n\t]+)\]\(feature:([^)\n\t '"]+)\)/g,
     `<a target="_blank" href="${featureHost}/$2" class="fa fw">$1&#xf15c;</a>`
   )
-  d_md = d_md.replace(
+  mdOut = mdOut.replace(
     /\[([^\]\n\t]+)\]\(([^)\n\t '"]+)\)/g,
     '<a target="_blank" href="$2" class="fa fw">$1&#xf08e;</a>'
   )
-  return d_md
+  return mdOut
 }
 
 export const colorDefault = (qw, iid) => {
@@ -97,11 +97,11 @@ export const colorDefault = (qw, iid) => {
    * and is stored in the javascript global variable Config
    * colorsDefault, dncols, dnrows
    */
-  const { shbStyle, colorsDefault, dncols, dnrows } = Config
+  const { itemStyle, colorsDefault, dncols, dnrows } = Config
 
   let result
-  if (qw in shbStyle) {
-    result = shbStyle[qw]["default"]
+  if (qw in itemStyle) {
+    result = itemStyle[qw]["default"]
   } else if (qw) {
     const mod = iid % colorsDefault.length
     result = colorsDefault[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
@@ -118,13 +118,13 @@ export const colorDefault = (qw, iid) => {
 }
 
 export const closeDialog = dia => {
-  const was_open = Boolean(
+  const wasOpen = Boolean(
     dia && dia.length && dia.dialog("instance") && dia.dialog("isOpen")
   )
-  if (was_open) {
+  if (wasOpen) {
     dia.dialog("close")
   }
-  return was_open
+  return wasOpen
 }
 
 

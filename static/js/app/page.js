@@ -1,39 +1,24 @@
 /* eslint-env jquery */
-/* globals Config, P, L */
+/* globals Config, VS, LS */
 
 import { colorDefault } from "./helpers.js"
 import { Material } from "./material.js"
 import { Sidebars } from "./sidebars.js"
-import { LSettings } from "./materiallib.js"
+import { SideSettings } from "./sidesettings.js"
 
 export const setHeightW = () => {
   /* the heights of the sidebars are set, depending on the height of the window
    */
-  const subtractw = 80
-  const standard_heightw = window.innerHeight - subtractw
-  $("#words").css("height", `${standard_heightw}px`)
-  $("#letters").css("height", `${standard_heightw}px`)
-}
-
-export class LStorage {
-  constructor() {
-    const vws = $.initNamespaceStorage("viewStoredNotes")
-    this.viewStoredNotes = vws.localStorage
-    const nsq = $.initNamespaceStorage("muting_q")
-    this.muting_q = nsq.localStorage
-    const nsn = $.initNamespaceStorage("muting_n")
-    this.muting_n = nsn.localStorage
-    /* on the Queries page the user can "mute" queries. Which queries are muted,
-     * is stored as key value pairs in this local storage bucket.
-     * When shebanq shows relevant queries next to a page, muting is taken into account.
-     */
-  }
+  const subtractForWordsPage = 80
+  const standardHeight = window.innerHeight - subtractForWordsPage
+  $("#words").css("height", `${standardHeight}px`)
+  $("#letters").css("height", `${standardHeight}px`)
 }
 
 export class Page {
   /* the one and only page object
    */
-  constructor(viewState) {
+  constructor() {
 
     this.mqlSmallHeight = "10em"
     /* height of mql query body in sidebar
@@ -56,15 +41,11 @@ export class Page {
     this.chartWidth = "400px"
     /* dialog width for charts
      */
-    this.viewState = viewState
-    /* the viewstate
-     */
-    History.Adapter.bind(window, "statechange", this.viewState.goback.bind(this.viewState))
     this.picker2 = {}
     this.picker1 = { q: {}, w: {} }
     /* will collect the two ColorPicker1 objects, indexed as q w
      */
-    this.picker1list = { q: {}, w: {} }
+    this.picker1List = { q: {}, w: {} }
     /* will collect the two lists of ColorPicker1 objects,
      * index as q w and then by iid
      */
@@ -73,13 +54,13 @@ export class Page {
   setHeight() {
     /* the heights of the sidebars are set, depending on the height of the window
      */
-    const subtractm = 150
+    const subtractForMainColumn = 150
     const { tabViews } = Config
     const windowHeight = window.innerHeight
     this.windowHeight = windowHeight
-    const standardHeight = windowHeight - subtractm
+    const standardHeight = windowHeight - subtractForMainColumn
     this.standardHeight = standardHeight
-    this.half_standard_height = `${0.4 * standardHeight}px`
+    this.halfStandardHeight = `${0.4 * standardHeight}px`
 
     $("#material_txtp").css("height", `${standardHeight}px`)
     for (let i = 1; i <= tabViews; i++) {
@@ -98,7 +79,7 @@ export class Page {
     this.mainWidthOld = $(".span9").css("width")
   }
 
-  reset_main_width() {
+  resetMainWidth() {
     /* restore the orginal widths of sidebar and main area
      */
     const { mainWidthOld, sideWidthOld } = this
@@ -110,7 +91,7 @@ export class Page {
     }
   }
 
-  set_edit_width() {
+  setEditWidth() {
     /* switch to increased sidebar width
      */
     this.getWidth()
@@ -119,18 +100,18 @@ export class Page {
     $(".span9").css("width", editMainWidth)
   }
 
-  reset_material_status() {
+  materialStatusReset() {
     const { tabViews } = Config
 
-    this.material_fetched = { txtp: false }
-    this.material_kind = { txtp: "" }
+    this.materialFetched = { txtp: false }
+    this.materialKind = { txtp: "" }
     for (let i = 1; i <= tabViews; i++) {
-      this.material_fetched[`txt${i}`] = false
-      this.material_kind[`txt${i}`] = ""
+      this.materialFetched[`txt${i}`] = false
+      this.materialKind[`txt${i}`] = ""
     }
   }
 
-  decorate_crossrefs(dest) {
+  decorateCrossrefs(dest) {
     const crossrefs = dest.find("a[b]")
     crossrefs.click(e => {
       e.preventDefault()
@@ -140,43 +121,43 @@ export class Page {
       vals["chapter"] = elem.attr("c")
       vals["verse"] = elem.attr("v")
       vals["mr"] = "m"
-      this.viewState.mstatesv(vals)
+      this.viewState.setMaterial(vals)
       this.viewState.addHist()
       this.go()
     })
     crossrefs.addClass("crossref")
   }
 
-  set_csv(vr, mr, qw, iid, extraGiven) {
-    const { tpLabels, shbStyle } = Config
+  setCsv(vr, mr, qw, iid, extraGiven) {
+    const { tpLabels, itemStyle } = Config
 
     if (mr == "r") {
       const tasks = { t: "txtp", d: "txtd" }
       if (qw != "n") {
-        tasks["b"] = P.viewState.tp()
+        tasks["b"] = VS.tp()
       }
 
       for (const task in tasks) {
         const tp = tasks[task]
         const tpLab = tpLabels[tp]
-        const csvctl = $(`#csv${task}_lnk_${vr}_${qw}`)
+        const csvCtl = $(`#csv${task}_lnk_${vr}_${qw}`)
         if (task != "b" || (tp != "txtp" && tp != "txtd")) {
-          const tit = csvctl.attr("ftitle")
+          const tit = csvCtl.attr("ftitle")
           let extra
           if (extraGiven == undefined) {
-            extra = csvctl.attr("extra")
+            extra = csvCtl.attr("extra")
           } else {
-            csvctl.attr("extra", extraGiven)
+            csvCtl.attr("extra", extraGiven)
             extra = extraGiven
           }
-          csvctl.attr("href", P.viewState.csvUrl(vr, mr, qw, iid, tp, extra))
-          csvctl.attr(
+          csvCtl.attr("href", VS.csvUrl(vr, mr, qw, iid, tp, extra))
+          csvCtl.attr(
             "title",
-            `${vr}_${shbStyle[qw]["t"]}_${iid}_${extra}_${tpLab}.csv${tit} (${tpLab})`
+            `${vr}_${itemStyle[qw]["t"]}_${iid}_${extra}_${tpLab}.csv${tit} (${tpLab})`
           )
-          csvctl.show()
+          csvCtl.show()
         } else {
-          csvctl.hide()
+          csvCtl.hide()
         }
       }
     }
@@ -191,21 +172,21 @@ export class Page {
     this.sidebars = new Sidebars()
     this.setHeight()
     this.getWidth()
-    const listsettings = {}
-    this.listsettings = listsettings
+    const sideSettings = {}
+    this.sideSettings = sideSettings
 
     for (const qw of ["q", "w", "n"]) {
-      listsettings[qw] = new LSettings(qw)
+      sideSettings[qw] = new SideSettings(qw)
       if (qw != "n") {
-        picker2[qw] = listsettings[qw].picker2
+        picker2[qw] = sideSettings[qw].picker2
       }
     }
     const prev = {}
     this.prev = prev
-    for (const x in viewState.mstate()) {
+    for (const x in viewState.getMaterial()) {
       prev[x] = null
     }
-    this.reset_material_status()
+    this.materialStatusReset()
   }
 
   apply() {
@@ -217,7 +198,7 @@ export class Page {
   go() {
     /* go to another page view, check whether initial content has to be loaded
      */
-    this.reset_main_width()
+    this.resetMainWidth()
     this.apply()
   }
   go_material() {
@@ -244,25 +225,25 @@ export class Page {
         The only reduction is that word highlighting is completely orthogonal
         to query result highlighting.
     */
-    const { shbStyle } = Config
+    const { itemStyle } = Config
 
     const { qw, iid, code } = origin
-    const { muting_q } = L
-    const { viewState, listsettings } = this
-    const active = P.viewState.active(qw)
+    const { lsQueriesMuted } = LS
+    const { viewState, sideSettings } = this
+    const active = VS.active(qw)
     if (active == "hlreset") {
       /* all ViewSettings for either queries or words are restored to 'factory' settings
        */
-      viewState.cstatexx(qw)
-      viewState.hstatesv(qw, { active: "hlcustom", sel_one: colorDefault(qw, null) })
-      listsettings[qw].apply()
+      viewState.delColorsAll(qw)
+      viewState.setHighlight(qw, { active: "hlcustom", sel_one: colorDefault(qw, null) })
+      sideSettings[qw].apply()
       return
     }
-    const hlradio = $(`.${qw}hradio`)
-    const activeo = $(`#${qw}${active}`)
-    hlradio.removeClass("ison")
-    activeo.addClass("ison")
-    const colorMap = viewState.colormap(qw)
+    const highlightRadio = $(`.${qw}hradio`)
+    const activeOption = $(`#${qw}${active}`)
+    highlightRadio.removeClass("ison")
+    activeOption.addClass("ison")
+    const colorMap = viewState.colorMap(qw)
 
     const paintings = {}
 
@@ -294,9 +275,9 @@ export class Page {
      * This is complex coloring, using multiple colors.
      * First we determine which slots need to be highlighted.
      */
-    const selectColor = P.viewState.sel_one(qw)
-    const custitems = {}
-    const plainitems = {}
+    const selectColor = VS.sel_one(qw)
+    const customItems = {}
+    const plainItems = {}
 
     if (qw == "q") {
       /* Queries: highlight customised items with priority over uncustomised items
@@ -310,12 +291,12 @@ export class Page {
       $(`#side_list_${qw} li`).each((i, el) => {
         const elem = $(el)
         const iid = elem.attr("iid")
-        if (!muting_q.isSet(`${iid}`)) {
+        if (!lsQueriesMuted.isSet(`${iid}`)) {
           const slots = $.parseJSON($(`#${qw}${iid}`).attr("slots"))
-          if (P.viewState.iscolor(qw, iid)) {
-            custitems[iid] = slots
+          if (VS.isColor(qw, iid)) {
+            customItems[iid] = slots
           } else {
-            plainitems[iid] = slots
+            plainItems[iid] = slots
           }
         }
       })
@@ -325,27 +306,27 @@ export class Page {
       $(`#side_list_${qw} li`).each((i, el) => {
         const elem = $(el)
         const iid = elem.attr("iid")
-        if (P.viewState.iscolor(qw, iid)) {
-          custitems[iid] = 1
+        if (VS.isColor(qw, iid)) {
+          customItems[iid] = 1
         } else {
-          plainitems[iid] = 1
+          plainItems[iid] = 1
         }
         const all = $(`#${qw}${iid}`)
-        if (active == "hlmany" || P.viewState.iscolor(qw, iid)) {
+        if (active == "hlmany" || VS.isColor(qw, iid)) {
           all.show()
         } else {
           all.hide()
         }
       })
     }
-    const chunks = [custitems, plainitems]
+    const chunks = [customItems, plainItems]
 
-    const clselect = iid => {
+    const colorSelect = iid => {
       /* assigns a color to an individual slot, based on the ViewSettings
        */
       let paint = ""
       if (active == "hloff") {
-        paint = shbStyle[qw]["off"]
+        paint = itemStyle[qw]["off"]
       } /*
                 viewsetting says: do not color any item */ else if (
         active == "hlone"
@@ -377,7 +358,7 @@ export class Page {
       for (let c = 0; c < 2; c++) {
         const chunk = chunks[c]
         for (const iid in chunk) {
-          const color = clselect(iid)
+          const color = colorSelect(iid)
           const slots = chunk[iid]
           for (const m in slots) {
             const slot = slots[m]
@@ -393,12 +374,12 @@ export class Page {
       for (let c = 0; c < 2; c++) {
         const chunk = chunks[c]
         for (const iid in chunk) {
-          let color = shbStyle[qw]["off"]
+          let color = itemStyle[qw]["off"]
           if (c == 0) {
             /* do not color the plain items when dealing with words
              * (as opposed to queries)
              */
-            color = clselect(iid)
+            color = colorSelect(iid)
           }
           paintings[iid] = color
         }
@@ -408,9 +389,9 @@ export class Page {
      * so wipe previous coloring
      */
     const slots = $("#material span[m]")
-    const stl = shbStyle[qw]["prop"]
-    const clr_off = shbStyle[qw]["off"]
-    slots.css(stl, clr_off)
+    const stl = itemStyle[qw]["prop"]
+    const colorOff = itemStyle[qw]["off"]
+    slots.css(stl, colorOff)
 
     /* finally, the computed colors are applied */
     this.paint(qw, paintings)
@@ -419,10 +400,10 @@ export class Page {
   paint(qw, paintings) {
     /* Execute a series of computed paint instructions
      */
-    const { shbStyle, colors } = Config
+    const { itemStyle, colors } = Config
 
-    const stl = shbStyle[qw]["prop"]
-    const container = `#material_${P.viewState.tp()}`
+    const stl = itemStyle[qw]["prop"]
+    const container = `#material_${VS.tp()}`
     const att = qw == "q" ? "m" : "l"
     for (const item in paintings) {
       const color = paintings[item]

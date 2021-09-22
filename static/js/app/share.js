@@ -1,9 +1,9 @@
 /* eslint-env jquery */
 /* eslint-disable camelcase */
 
-/* globals Config, P */
+/* globals Config, PG, VS */
 
-import { escHT, toggle_detail } from "./helpers.js"
+import { escHT, toggleDetail } from "./helpers.js"
 
 const deselectText = () => {
   if (document.selection) {
@@ -12,23 +12,23 @@ const deselectText = () => {
     window.getSelection().removeAllRanges()
   }
 }
-const selectText = containerid => {
+const selectText = containerId => {
   deselectText()
   if (document.selection) {
     const range = document.body.createTextRange()
-    range.moveToElementText(document.getElementById(containerid))
+    range.moveToElementText(document.getElementById(containerId))
     range.select()
   } else if (window.getSelection) {
     const range = document.createRange()
-    range.selectNode(document.getElementById(containerid))
+    range.selectNode(document.getElementById(containerId))
     window.getSelection().addRange(range)
   }
 }
 
 $(() => {
-  const { queryUrl, wordUrl, noteUrl, pageViewUrl } = Config
+  const { queryShareUrl, wordShareUrl, noteShareUrl, pageShareUrl } = Config
 
-  const qmsg = {
+  const queryMessage = {
     good:
       "The results of this query have been obtained after the query body has been last modified",
     warning: "This query has never been executed in SHEBANQ",
@@ -36,7 +36,7 @@ $(() => {
       "The body of this query has been changed after its current results have been obtained.",
   }
 
-  const tbar = `
+  const drawerHTML = `
 <div id="socialdrawer">
     <p id="citeh">Cite</p>
     <table align="center">
@@ -144,7 +144,7 @@ $(() => {
 `
   /* Add the share tool bar.
    */
-  $("body").append(tbar)
+  $("body").append(drawerHTML)
   const st = $("#socialdrawer")
   st.css({
     opacity: ".7",
@@ -193,59 +193,59 @@ $(() => {
   })
   $("#clip_pv_cn").click(e => {
     e.preventDefault()
-    const shebanqUrl_raw = `${pageViewUrl}${P.viewState.getvars()}&pref=alt`
-    const slink = $("#self_link")
-    slink.show()
-    slink.attr("href", shebanqUrl_raw)
+    const pageUrlRaw = `${pageShareUrl}${VS.getVars()}&pref=alt`
+    const selfLink = $("#self_link")
+    selfLink.show()
+    selfLink.attr("href", pageUrlRaw)
     selectText("material")
   })
   $("#xc_qx").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
-    toggle_detail(elem, $("#x_qx"))
+    toggleDetail(elem, $("#x_qx"))
   })
   $("#xc_q").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
-    toggle_detail(elem, $("#x_q"))
+    toggleDetail(elem, $("#x_q"))
   })
   $("#xc_w").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
-    toggle_detail(elem, $("#x_w"))
+    toggleDetail(elem, $("#x_w"))
   })
   $("#xc_n").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
-    toggle_detail(elem, $("#x_n"))
+    toggleDetail(elem, $("#x_n"))
   })
   $("#xc_pv").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
-    toggle_detail(elem, $("#x_pv"))
+    toggleDetail(elem, $("#x_pv"))
   })
   st.click(e => {
     e.preventDefault()
-    const shebanqUrl_raw = `${pageViewUrl}${P.viewState.getvars()}&pref=alt`
-    let shebanqUrl_note
-    let shebanqUrl_rawc
-    const shebanqUrl_note_pref = "shebanq:"
+    const pageUrlRaw = `${pageShareUrl}${VS.getVars()}&pref=alt`
+    let noteUrl
+    let chapterUrlRaw
+    const notePrefix = "shebanq:"
 
-    const { version: vr, mr, qw, viewState, iid } = P
+    const { version: vr, mr, qw, viewState, iid } = PG
     const tp = viewState.tp()
     const tr = viewState.tr()
     const w = viewState.get("w")
     const q = viewState.get("q")
     const n = viewState.get("n")
-    const thebook = $("#thebook").html()
-    const thechapter = $("#thechapter").html()
+    const theBook = $("#thebook").html()
+    const theChapter = $("#thechapter").html()
     const book = viewState.book()
     const chapter = viewState.chapter()
     const verse = viewState.verse()
     const page = viewState.page()
-    const shebanqUrl_show_vars = `"&version=${vr}&mr=${mr}&qw=${qw}&tp=${tp}&tr=${tr}`
-    const shebanqUrl_side_vars = `&wget=${w}&qget=${q}&nget=${n}`
-    const sv = `${shebanqUrl_show_vars}${shebanqUrl_side_vars}`
+    const pageUrlVars = `"&version=${vr}&mr=${mr}&qw=${qw}&tp=${tp}&tr=${tr}`
+    const sidebarUrlVars = `&wget=${w}&qget=${q}&nget=${n}`
+    const vars = `${pageUrlVars}${sidebarUrlVars}`
 
     $("#citeh").hide()
     $("#diagpub").html("")
@@ -254,22 +254,22 @@ $(() => {
       ".clip_qx.clr,.clip_q.clr,.clip_w.clr,.clip_n.clr,.clip_pv.clr,#diagpub,#diagstatus"
     ).removeClass("error warning good special")
 
-    let pvtitle
+    let itemTitle
 
     if (mr == "m") {
-      pvtitle = `bhsa${vr} ${thebook} ${thechapter}:${verse}`
-      shebanqUrl_note = `${shebanqUrl_note_pref}?book=${book}&chapter=${chapter}&verse=${verse}${sv}`
-      shebanqUrl_rawc = `${pageViewUrl}?book=${book}&chapter=${chapter}&verse=${verse}${sv}`
+      itemTitle = `bhsa${vr} ${theBook} ${theChapter}:${verse}`
+      noteUrl = `${notePrefix}?book=${book}&chapter=${chapter}&verse=${verse}${vars}`
+      chapterUrlRaw = `${pageShareUrl}?book=${book}&chapter=${chapter}&verse=${verse}${vars}`
 
       $(".clip_qx").hide()
       $(".clip_q").hide()
       $(".clip_w").hide()
       $(".clip_n").hide()
-    } else if (P.mr == "r") {
-      shebanqUrl_note = `${shebanqUrl_note_pref}?id=${iid}&page=${page}${shebanqUrl_show_vars}`
-      shebanqUrl_rawc = `${pageViewUrl}?id=${iid}&page=${page}${shebanqUrl_show_vars}`
+    } else if (PG.mr == "r") {
+      noteUrl = `${notePrefix}?id=${iid}&page=${page}${pageUrlVars}`
+      chapterUrlRaw = `${pageShareUrl}?id=${iid}&page=${page}${pageUrlVars}`
 
-      const iinfo = P.sidebars.sidebar[`r${qw}`].content.info
+      const iinfo = PG.sidebars.sidebar[`r${qw}`].content.info
       if (qw == "q") {
         const {
           first_name,
@@ -279,8 +279,8 @@ $(() => {
           is_published,
           versions,
         } = iinfo
-        pvtitle = `${first_name} ${last_name}: ${name}`
-        const qstatus = versions[vr].status
+        itemTitle = `${first_name} ${last_name}: ${name}`
+        const queryStatus = versions[vr].status
         if (is_shared) {
           if (!is_published) {
             $(".clip_qx.clr").addClass("warning")
@@ -295,9 +295,9 @@ $(() => {
               "This query has been published. If that happened more than a week ago, it can be safely cited. It will not be changed anymore."
             )
           }
-          $(".clip_q.clr").addClass(qstatus)
-          $("#diagstatus").addClass(qstatus)
-          $("#diagstatus").html(qmsg[qstatus])
+          $(".clip_q.clr").addClass(queryStatus)
+          $("#diagstatus").addClass(queryStatus)
+          $("#diagstatus").html(queryMessage[queryStatus])
         } else {
           $(".clip_qx.clr").addClass("error")
           $(".clip_q.clr").addClass("error")
@@ -307,11 +307,11 @@ $(() => {
             "This query is not accessible to others because it is not shared."
           )
         }
-        const quoteUrl = `${queryUrl}?id=${iid}`
-        const quotevUrl = `${queryUrl}?version=${vr}&id=${iid}`
-        $("#clip_qx_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
-        $("#clip_qx_ht").attr("lnk", quotevUrl)
-        $("#clip_q_md").attr("lnk", `[${pvtitle}](${quoteUrl})`)
+        const quoteUrl = `${queryShareUrl}?id=${iid}`
+        const versionUrl = `${queryShareUrl}?version=${vr}&id=${iid}`
+        $("#clip_qx_md").attr("lnk", `[${itemTitle}](${versionUrl})`)
+        $("#clip_qx_ht").attr("lnk", versionUrl)
+        $("#clip_q_md").attr("lnk", `[${itemTitle}](${quoteUrl})`)
         $("#clip_q_ht").attr("lnk", quoteUrl)
         $(".clip_qx").show()
         $(".clip_q").show()
@@ -320,10 +320,10 @@ $(() => {
       } else if (qw == "w") {
         const versionInfo = iinfo.versions[vr]
         const { entryid, entryid_heb } = versionInfo
-        pvtitle = `${entryid_heb} (${entryid})`
-        const quotevUrl = `${wordUrl}?version=${vr}&id=${iid}`
-        $("#clip_w_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
-        $("#clip_w_ht").attr("lnk", quotevUrl)
+        itemTitle = `${entryid_heb} (${entryid})`
+        const versionUrl = `${wordShareUrl}?version=${vr}&id=${iid}`
+        $("#clip_w_md").attr("lnk", `[${itemTitle}](${versionUrl})`)
+        $("#clip_w_ht").attr("lnk", versionUrl)
         $(".clip_w.clr").addClass("special")
         $(".clip_qx").hide()
         $(".clip_q").hide()
@@ -333,11 +333,11 @@ $(() => {
         const { first_name, last_name, keywords } = iinfo
         const first_nameX = escHT(first_name)
         const last_nameX = escHT(last_name)
-        const kwx = escHT(keywords)
-        pvtitle = `${first_nameX} ${last_nameX} - ${kwx}`
-        const quotevUrl = `${noteUrl}?version=${vr}&id=${iid}&tp=txt1&nget=v`
-        $("#clip_n_md").attr("lnk", `[${pvtitle}](${quotevUrl})`)
-        $("#clip_n_ht").attr("lnk", quotevUrl)
+        const keywordsX = escHT(keywords)
+        itemTitle = `${first_nameX} ${last_nameX} - ${keywordsX}`
+        const versionUrl = `${noteShareUrl}?version=${vr}&id=${iid}&tp=txt1&nget=v`
+        $("#clip_n_md").attr("lnk", `[${itemTitle}](${versionUrl})`)
+        $("#clip_n_ht").attr("lnk", versionUrl)
         $(".clip_n.clr").addClass("special")
         $(".clip_qx").hide()
         $(".clip_q").hide()
@@ -345,12 +345,12 @@ $(() => {
         $(".clip_n").show()
       }
     }
-    $("#clip_pv_md").attr("lnk", `[${pvtitle}](${shebanqUrl_raw})`)
-    $("#clip_pv_ht").attr("lnk", shebanqUrl_raw)
-    $("#clip_pv_htc").attr("lnk", shebanqUrl_rawc)
-    $("#clip_pv_nl").attr("lnk", shebanqUrl_note)
-    $("#clip_pv_cn").attr("lnk", shebanqUrl_raw)
-    $("#clip_pv_cn").attr("tit", pvtitle)
+    $("#clip_pv_md").attr("lnk", `[${itemTitle}](${pageUrlRaw})`)
+    $("#clip_pv_ht").attr("lnk", pageUrlRaw)
+    $("#clip_pv_htc").attr("lnk", chapterUrlRaw)
+    $("#clip_pv_nl").attr("lnk", noteUrl)
+    $("#clip_pv_cn").attr("lnk", pageUrlRaw)
+    $("#clip_pv_cn").attr("tit", itemTitle)
     st.animate({ height: "260px", width: "570px", opacity: 0.95 }, 300)
   })
 

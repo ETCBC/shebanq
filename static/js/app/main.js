@@ -1,7 +1,8 @@
 /* eslint-env jquery */
 /* globals Config */
 
-import { Page, LStorage } from "./page.js"
+import { LStorage } from "./localstorage.js"
+import { Page } from "./page.js"
 import { ViewState } from "./viewstate.js"
 
 $.cookie.raw = false
@@ -14,17 +15,20 @@ const setup = () => {
    * inserts the Config global var
    */
   const { viewInit, pref } = Config
-  window.L = new LStorage
-  window.P = new Page(new ViewState(viewInit, pref))
+  window.LS = new LStorage()
+  const VS = new ViewState(viewInit, pref)
+  window.VS = VS
+  window.PG = new Page()
+  History.Adapter.bind(window, "statechange", VS.goback.bind(VS))
 }
 
 const dynamics = () => {
   /* top level, called when the page has loaded
    * inserts the Config global var
-   * P is the handle to manipulate the whole page
+   * PG is the handle to manipulate the whole page
    */
-  window.P.init()
-  window.P.go()
+  window.PG.init()
+  window.PG.go()
 }
 
 $(() => {

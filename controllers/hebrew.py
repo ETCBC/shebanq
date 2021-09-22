@@ -20,7 +20,7 @@ from viewdefs import (
     TR_INFO,
     TR_LABELS,
     TAB_VIEWS,
-    SHB_STYLE,
+    ITEM_STYLE,
 )
 
 from boiler import LEGEND
@@ -60,16 +60,6 @@ CsvData = CSVDATA(auth, Word, Query, PASSAGE_DBS)
 Query.dep(QueryChapter)
 
 track_changes(True)
-
-
-def books():
-    session.forget(response)
-    jsinit = f"""
-var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};
-var bookTrans = {json.dumps(BOOK_TRANS)};
-var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
-"""
-    return dict(jsinit=jsinit)
 
 
 def text():
@@ -117,6 +107,16 @@ def material():
         )
     page = getRequestVal("material", "", "page")
     return Material.get(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang)
+
+
+def books():
+    session.forget(response)
+    jsinit = f"""
+var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};
+var bookTrans = {json.dumps(BOOK_TRANS)};
+var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
+"""
+    return dict(jsinit=jsinit)
 
 
 def verse():
@@ -168,7 +168,7 @@ def versenotes():
     )
 
 
-def sidem():
+def sidematerial():
     session.forget(response)
     vr = getRequestVal("material", "", "version")
     qw = getRequestVal("material", "", "qw")
@@ -177,6 +177,172 @@ def sidem():
     is_published = getRequestVal("highlights", qw, "pub") if qw != "w" else ""
     debug(f"cached function PUB={is_published}")
     return Side.get(vr, qw, bk, ch, is_published)
+
+
+def sidewordlist():
+    session.forget(response)
+    if not request.ajax:
+        redirect(URL("hebrew", "word", extension="", vars=request.vars))
+    msgs = []
+    vr = getRequestVal("material", "", "version")
+    iidRep = getRequestVal("material", "", "iid")
+    (iid, keywords) = iDecode("w", iidRep)
+    (authorized, msg) = authReadWord(vr, iid)
+    if not authorized:
+        msgs.append(("error", msg))
+        return dict(
+            wr=dict(),
+            w=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    wordRecord = Word.getInfo(iid, vr, msgs)
+    return dict(
+        vr=vr,
+        wr=wordRecord,
+        w=json.dumps(wordRecord),
+        msgs=json.dumps(msgs),
+    )
+
+
+def sidequerylist():
+    session.forget(response)
+    if not request.ajax:
+        redirect(URL("hebrew", "query", extension="", vars=request.vars))
+    msgs = []
+    iidRep = getRequestVal("material", "", "iid")
+    vr = getRequestVal("material", "", "version")
+    (iid, keywords) = iDecode("q", iidRep)
+    (authorized, msg) = authReadQuery(iid)
+    if iid == 0 or not authorized:
+        msgs.append(("error", msg))
+        return dict(
+            writable=False,
+            iidRep=iidRep,
+            vr=vr,
+            qr=dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
+        )
+    queryRecord = Query.getInfo(
+        auth.user is not None,
+        iid,
+        vr,
+        msgs,
+        withIds=True,
+        singleVersion=False,
+        po=True,
+    )
+    if queryRecord is None:
+        return dict(
+            writable=True,
+            iidRep=iidRep,
+            vr=vr,
+            qr=dict(),
+            q=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
+        )
+
+    (authorized, msg) = authWriteQuery(iid=iid)
+
+    return dict(
+        writable=authorized,
+        iidRep=iidRep,
+        vr=vr,
+        qr=queryRecord,
+        q=json.dumps(queryRecord),
+        msgs=json.dumps(msgs),
+        emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
+    )
+
+
+def sidenotelist():
+    session.forget(response)
+    if not request.ajax:
+        redirect(URL("hebrew", "note", extension="", vars=request.vars))
+    msgs = []
+    vr = getRequestVal("material", "", "version")
+    iidRep = getRequestVal("material", "", "iid")
+    (iid, keywords) = iDecode("n", iidRep)
+    if not iid:
+        msg = f"Not a valid id {iid}"
+        msgs.append(("error", msg))
+        return dict(
+            nr=dict(),
+            n=json.dumps(dict()),
+            msgs=json.dumps(msgs),
+        )
+    noteRecord = Note.getInfo(iidRep, vr, msgs)
+    return dict(
+        vr=vr,
+        nr=noteRecord,
+        n=json.dumps(noteRecord),
+        msgs=json.dumps(msgs),
+    )
+
+
+def sideword():
+    session.forget(response)
+    iidRep = getRequestVal("material", "", "iid")
+    vr = getRequestVal("material", "", "version")
+    (authorized, msg) = authReadItem(iidRep=iidRep)
+    if authorized:
+        msg = "fetching word"
+    return dict(
+        load=LOAD(
+            "hebrew",
+            "sidewordlist",
+            extension="load",
+            vars=dict(mr="r", qw="w", version=vr, iid=iidRep),
+            ajax=False,
+            ajax_trap=True,
+            target="wordbody",
+            content=msg,
+        )
+    )
+
+
+def sidequery():
+    session.forget(response)
+    iidRep = getRequestVal("material", "", "iid")
+    vr = getRequestVal("material", "", "version")
+    (authorized, msg) = authReadItem(iidRep=iidRep)
+    if authorized:
+        msg = "fetching query"
+    return dict(
+        load=LOAD(
+            "hebrew",
+            "sidequerylist",
+            extension="load",
+            vars=dict(mr="r", qw="q", version=vr, iid=iidRep),
+            ajax=False,
+            ajax_trap=True,
+            target="querybody",
+            content=msg,
+        )
+    )
+
+
+def sidenote():
+    session.forget(response)
+    iidRep = getRequestVal("material", "", "iid")
+    vr = getRequestVal("material", "", "version")
+    msg = f"Not a valid id {iidRep}"
+    if iidRep:
+        msg = "fetching note set"
+    return dict(
+        load=LOAD(
+            "hebrew",
+            "sidenotelist",
+            extension="load",
+            vars=dict(mr="r", qw="n", version=vr, iid=iidRep),
+            ajax=False,
+            ajax_trap=True,
+            target="notebody",
+            content=msg,
+        )
+    )
 
 
 def word():
@@ -234,7 +400,7 @@ def item():
         extra = extra[0:64]
     (iid, keywords) = iDecode(qw, iidRep)
     iidRep2 = iDecode(qw, iidRep, rsep=" ")
-    fileName = f"{vr}_{SHB_STYLE[qw]['t']}{iidRep2}_{TP_LABELS[tp]}{extra}.csv"
+    fileName = f"{vr}_{ITEM_STYLE[qw]['t']}{iidRep2}_{TP_LABELS[tp]}{extra}.csv"
     (authorized, msg) = authReadItem(iidRep=iidRep)
 
     if not authorized:
@@ -256,172 +422,6 @@ def chart():  # controller to produce a chart of query results or lexeme occurre
         result.update(qw=qw)
         return result
     return Chart.get(vr, qw, iidRep)
-
-
-def sidewm():
-    session.forget(response)
-    iidRep = getRequestVal("material", "", "iid")
-    vr = getRequestVal("material", "", "version")
-    (authorized, msg) = authReadItem(iidRep=iidRep)
-    if authorized:
-        msg = "fetching word"
-    return dict(
-        load=LOAD(
-            "hebrew",
-            "sidew",
-            extension="load",
-            vars=dict(mr="r", qw="w", version=vr, iid=iidRep),
-            ajax=False,
-            ajax_trap=True,
-            target="wordbody",
-            content=msg,
-        )
-    )
-
-
-def sideqm():
-    session.forget(response)
-    iidRep = getRequestVal("material", "", "iid")
-    vr = getRequestVal("material", "", "version")
-    (authorized, msg) = authReadItem(iidRep=iidRep)
-    if authorized:
-        msg = "fetching query"
-    return dict(
-        load=LOAD(
-            "hebrew",
-            "sideq",
-            extension="load",
-            vars=dict(mr="r", qw="q", version=vr, iid=iidRep),
-            ajax=False,
-            ajax_trap=True,
-            target="querybody",
-            content=msg,
-        )
-    )
-
-
-def sidenm():
-    session.forget(response)
-    iidRep = getRequestVal("material", "", "iid")
-    vr = getRequestVal("material", "", "version")
-    msg = f"Not a valid id {iidRep}"
-    if iidRep:
-        msg = "fetching note set"
-    return dict(
-        load=LOAD(
-            "hebrew",
-            "siden",
-            extension="load",
-            vars=dict(mr="r", qw="n", version=vr, iid=iidRep),
-            ajax=False,
-            ajax_trap=True,
-            target="notebody",
-            content=msg,
-        )
-    )
-
-
-def sidew():
-    session.forget(response)
-    if not request.ajax:
-        redirect(URL("hebrew", "word", extension="", vars=request.vars))
-    msgs = []
-    vr = getRequestVal("material", "", "version")
-    iidRep = getRequestVal("material", "", "iid")
-    (iid, keywords) = iDecode("w", iidRep)
-    (authorized, msg) = authReadWord(vr, iid)
-    if not authorized:
-        msgs.append(("error", msg))
-        return dict(
-            wr=dict(),
-            w=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-        )
-    wordRecord = Word.getInfo(iid, vr, msgs)
-    return dict(
-        vr=vr,
-        wr=wordRecord,
-        w=json.dumps(wordRecord),
-        msgs=json.dumps(msgs),
-    )
-
-
-def sideq():
-    session.forget(response)
-    if not request.ajax:
-        redirect(URL("hebrew", "query", extension="", vars=request.vars))
-    msgs = []
-    iidRep = getRequestVal("material", "", "iid")
-    vr = getRequestVal("material", "", "version")
-    (iid, keywords) = iDecode("q", iidRep)
-    (authorized, msg) = authReadQuery(iid)
-    if iid == 0 or not authorized:
-        msgs.append(("error", msg))
-        return dict(
-            writable=False,
-            iidRep=iidRep,
-            vr=vr,
-            qr=dict(),
-            q=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
-        )
-    queryRecord = Query.getInfo(
-        auth.user is not None,
-        iid,
-        vr,
-        msgs,
-        withIds=True,
-        singleVersion=False,
-        po=True,
-    )
-    if queryRecord is None:
-        return dict(
-            writable=True,
-            iidRep=iidRep,
-            vr=vr,
-            qr=dict(),
-            q=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
-        )
-
-    (authorized, msg) = authWriteQuery(iid=iid)
-
-    return dict(
-        writable=authorized,
-        iidRep=iidRep,
-        vr=vr,
-        qr=queryRecord,
-        q=json.dumps(queryRecord),
-        msgs=json.dumps(msgs),
-        emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
-    )
-
-
-def siden():
-    session.forget(response)
-    if not request.ajax:
-        redirect(URL("hebrew", "note", extension="", vars=request.vars))
-    msgs = []
-    vr = getRequestVal("material", "", "version")
-    iidRep = getRequestVal("material", "", "iid")
-    (iid, keywords) = iDecode("n", iidRep)
-    if not iid:
-        msg = f"Not a valid id {iid}"
-        msgs.append(("error", msg))
-        return dict(
-            nr=dict(),
-            n=json.dumps(dict()),
-            msgs=json.dumps(msgs),
-        )
-    noteRecord = Note.getInfo(iidRep, vr, msgs)
-    return dict(
-        vr=vr,
-        nr=noteRecord,
-        n=json.dumps(noteRecord),
-        msgs=json.dumps(msgs),
-    )
 
 
 def words():
@@ -448,6 +448,16 @@ def queries():
     )
 
 
+def queriesr():
+    session.forget(response)
+    return Query.recent()
+
+
+def querytree():
+    session.forget(response)
+    return QueryTree.get(request.utcnow)
+
+
 def notes():
     session.forget(response)
     msgs = []
@@ -461,18 +471,9 @@ def notes():
     )
 
 
-def authUpload(no_controller=True):
-    myId = None
-    mayUpload = False
-    if auth.user:
-        myId = auth.user.id
-    if myId:
-        sql = f"""
-select uid from uploaders where uid = {myId}
-    """
-        records = db.executesql(sql)
-        mayUpload = records is not None and len(records) == 1 and records[0][0] == myId
-    return (mayUpload, myId)
+def notetree():
+    session.forget(response)
+    return NoteTree.get(request.utcnow)
 
 
 @auth.requires_login()
@@ -488,31 +489,6 @@ def noteupload():
         good = False
         msgs.append(["error", "you are not allowed to upload notes as csv files"])
     return dict(data=json.dumps(dict(msgs=msgs, good=good)))
-
-
-# the query was:
-#
-#  select id, entry_heb, entryid_heb, lan, gloss from lexicon order by lan, entryid_heb
-#
-# normal sorting is not good enough: the pointed shin and sin turn out after the tav
-# I will sort with key entryid_heb where every pointed shin/sin
-# is preceded by an unpointed one.
-# The unpointed one does turn up in the right place.
-
-
-def notetree():
-    session.forget(response)
-    return NoteTree.get(request.utcnow)
-
-
-def queriesr():
-    session.forget(response)
-    return Query.recent()
-
-
-def querytree():
-    session.forget(response)
-    return QueryTree.get(request.utcnow)
 
 
 def querymeta():
@@ -772,7 +748,7 @@ def querymetafield():
     msgs = []
     good = False
     modDates = {}
-    modCls = ""
+    modCls = {}
     extra = {}
     for x in [1]:
         query_id = Check.isId("query_id", "q", "query", msgs)
@@ -1031,6 +1007,20 @@ select * from query where id = {iid}
         else f"You have no access to create/modify item with id {iid}"
     )
     return (authorized, msg)
+
+
+def authUpload(no_controller=True):
+    myId = None
+    mayUpload = False
+    if auth.user:
+        myId = auth.user.id
+    if myId:
+        sql = f"""
+select uid from uploaders where uid = {myId}
+    """
+        records = db.executesql(sql)
+        mayUpload = records is not None and len(records) == 1 and records[0][0] == myId
+    return (mayUpload, myId)
 
 
 @auth.requires_login()

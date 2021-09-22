@@ -12,9 +12,9 @@ statusmap = dict(
 {{if writable:}}
 <input type="hidden" id="query_id" value="{{=qr['id']}}"/>
 {{pass}}
-<input type="hidden" id="itemtag" value=""/>
+<input type="hidden" id="querytag" value=""/>
 <div id="bigger">
-    <h5><a title="to query list" href="{{=XML(URL('hebrew', 'queries', extension=''))+f'?goto={iidRep}'}}"><span id="nameqm">{{=qr['name']}}</span></a>
+    <h5><a class="ctl" id="gobackq" title="to query list" href="#"><span id="nameqm">{{=qr['name']}}</span></a>
     <span class="ir"><a class="ctl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
     <input type="text" id="nameq" value="{{=qr['name']}}"/>
     <div>
@@ -135,7 +135,7 @@ statusmap = dict(
 <script type="text/javascript">
 var State = {
     msgs: {{=XML(msgs)}},
-    q: {{=XML(q)}},
+    query: {{=XML(q)}},
 }
 </script>
 

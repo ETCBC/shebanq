@@ -32,25 +32,25 @@ class View {
     this.init()
   }
 
-  set_vselect(v, gotoword) {
-    const { wordsUrl } = Config
+  selectVersion(v, gotoWord) {
+    const { wordsPageUrl } = Config
     const { lan, letter } = ConfigW
 
     $(`#version_${v}`).click(e => {
       e.preventDefault()
       this.version = v
-      window.location.href = `${wordsUrl}?version=${v}&lan=${lan}&letter=${letter}&goto=${gotoword}`
+      window.location.href = `${wordsPageUrl}?version=${v}&lan=${lan}&letter=${letter}&goto=${gotoWord}`
     })
   }
 
   init() {
     $(".mvradio").removeClass("ison")
-    const gotoword = RequestInfo.parameter("goto")
+    const gotoWord = RequestInfo.parameter("goto")
     const { versions } = Config
     const { version } = this
 
     for (const v of versions) {
-      this.set_vselect(v, gotoword)
+      this.selectVersion(v, gotoWord)
     }
 
     $(`#version_${version}`).addClass("ison")
@@ -64,11 +64,11 @@ class View {
       $(`[wii="${i}"]`).toggle()
     })
     $("[gi]").closest("td").removeClass("selecthlw")
-    const wtarget = $(`[gi=${gotoword}]`).closest("td")
-    if (wtarget != undefined) {
-      wtarget.addClass("selecthlw")
-      if (wtarget[0] != undefined) {
-        wtarget[0].scrollIntoView()
+    const wordDest = $(`[gi=${gotoWord}]`).closest("td")
+    if (wordDest != undefined) {
+      wordDest.addClass("selecthlw")
+      if (wordDest[0] != undefined) {
+        wordDest[0].scrollIntoView()
       }
     }
   }

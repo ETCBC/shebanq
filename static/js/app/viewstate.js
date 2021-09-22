@@ -1,21 +1,21 @@
 /* eslint-env jquery */
-/* globals Config, P */
+/* globals Config, PG */
 
 export class ViewState {
   constructor(init, pref) {
     this.data = init
     this.pref = pref
-    this.from_push = false
+    this.fromPush = false
 
     this.addHist()
   }
 
-  getvars() {
+  getVars() {
     const { data } = this
     let vars = ""
     let sep = "?"
     for (const group in data) {
-      const extra = group == "colormap" ? "c_" : ""
+      const extra = group == "colorMap" ? "c_" : ""
       for (const qw in data[group]) {
         for (const name in data[group][qw]) {
           vars += `${sep}${extra}${qw}${name}=${data[group][qw][name]}`
@@ -27,86 +27,81 @@ export class ViewState {
   }
 
   csvUrl(vr, mr, qw, iid, tp, extra) {
-    const { itemUrl } = Config
+    const { itemCsvUrl } = Config
 
     let vars = `?version=${vr}&mr=${mr}&qw=${qw}&iid=${iid}&tp=${tp}&extra=${extra}`
-    const data = P.viewState.ddata()
+    const data = this.getHebrew()
     for (const name in data) {
       vars += `&${name}=${data[name]}`
     }
-    return `${itemUrl}${vars}`
+    return `${itemCsvUrl}${vars}`
   }
 
   goback() {
     const state = History.getState()
-    if (!this.from_push && state && state.data) {
-      this.apply(state)
+    if (!this.fromPush && state && state.data) {
+      if (state.data != undefined) {
+        this.data = state.data
+      }
+      PG.go()
     }
   }
 
   addHist() {
-    const { shbStyle, viewUrl } = Config
+    const { itemStyle, pageUrl } = Config
 
     let title
     if (this.mr() == "m") {
       title = `[${this.version()}] ${this.book()} ${this.chapter()}:${this.verse()}`
     } else {
-      title = `${shbStyle[this.qw()]["Tag"]} ${this.iid()} p${this.page()}`
+      title = `${itemStyle[this.qw()]["Tag"]} ${this.iid()} p${this.page()}`
     }
-    this.from_push = true
-    History.pushState(this.data, title, viewUrl)
-    this.from_push = false
+    this.fromPush = true
+    History.pushState(this.data, title, pageUrl)
+    this.fromPush = false
   }
 
-  apply(state) {
-    if (state.data != undefined) {
-      this.data = state.data
-    }
-    P.go()
-  }
-
-  delsv(group, qw, name) {
+  del(group, qw, name) {
     delete this.data[group][qw][name]
     $.cookie(this.pref + group + qw, this.data[group][qw])
   }
 
-  setsv(group, qw, values) {
+  set(group, qw, values) {
     for (const mb in values) {
       this.data[group][qw][mb] = values[mb]
     }
     $.cookie(this.pref + group + qw, this.data[group][qw])
   }
 
-  resetsv(group, qw) {
+  reset(group, qw) {
     for (const mb in this.data[group][qw]) {
       delete this.data[group][qw][mb]
     }
     $.cookie(this.pref + group + qw, this.data[group][qw])
   }
 
-  mstatesv(values) {
-    this.setsv("material", "", values)
+  setMaterial(values) {
+    this.set("material", "", values)
   }
-  dstatesv(values) {
-    this.setsv("hebrewdata", "", values)
+  setHebrew(values) {
+    this.set("hebrewdata", "", values)
   }
-  hstatesv(qw, values) {
-    this.setsv("highlights", qw, values)
+  setHighlight(qw, values) {
+    this.set("highlights", qw, values)
   }
-  cstatesv(qw, values) {
-    this.setsv("colormap", qw, values)
+  setColor(qw, values) {
+    this.set("colorMap", qw, values)
   }
-  cstatex(qw, name) {
-    this.delsv("colormap", qw, name)
+  delColor(qw, name) {
+    this.del("colorMap", qw, name)
   }
-  cstatexx(qw) {
-    this.resetsv("colormap", qw)
+  delColorsAll(qw) {
+    this.reset("colorMap", qw)
   }
-
-  mstate() {
+  getMaterial() {
     return this.data["material"][""]
   }
-  ddata() {
+  getHebrew() {
     return this.data["hebrewdata"][""]
   }
   mr() {
@@ -154,13 +149,13 @@ export class ViewState {
   is_published(qw) {
     return this.data["highlights"][qw]["pub"]
   }
-  colormap(qw) {
-    return this.data["colormap"][qw]
+  colorMap(qw) {
+    return this.data["colorMap"][qw]
   }
   color(qw, id) {
-    return this.data["colormap"][qw][id]
+    return this.data["colorMap"][qw][id]
   }
-  iscolor(qw, cl) {
-    return cl in this.data["colormap"][qw]
+  isColor(qw, cl) {
+    return cl in this.data["colorMap"][qw]
   }
 }

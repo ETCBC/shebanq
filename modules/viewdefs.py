@@ -168,7 +168,7 @@ for item in HEBREW_DATA_SPEC:
     fields = [x.split("=") for x in fieldSpec.split(",")]
     hebrewDataLines.append((line, tuple(fields)))
 
-SHB_STYLE = dict(
+ITEM_STYLE = dict(
     q=dict(
         prop="background-color",
         default="grey",

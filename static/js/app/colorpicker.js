@@ -1,5 +1,5 @@
 /* eslint-env jquery */
-/* globals Config, P */
+/* globals Config, PG, VS */
 
 import { closeDialog, colorDefault } from "./helpers.js"
 
@@ -9,21 +9,21 @@ export class ColorPicker1 {
    * These pickers show up in lists of items (in mq and mw sidebars) and
    * near individual items (in rq and rw sidebars).
    * They also have a checkbox, stating whether the color counts as customized.
-   * Customized colors are held in a global colormap,
+   * Customized colors are held in a global colorMap,
    * which is saved in a cookie upon every picking action.
    *
    * All actions are processed by the highlight2 (!) method
    * of the associated Settings object.
    */
   constructor(qw, iid, isItem, doHighlight) {
-    const { shbStyle, colors } = Config
+    const { itemStyle, colors } = Config
 
     const pointer = isItem ? "me" : iid
     this.code = isItem ? "1a" : "1"
     this.qw = qw
     this.iid = iid
     this.picker = $(`#picker_${qw}${pointer}`)
-    this.stl = shbStyle[qw]["prop"]
+    this.stl = itemStyle[qw]["prop"]
     this.sel = $(`#sel_${qw}${pointer}`)
     this.selw = $(`#sel_${qw}${pointer}>a`)
     this.select = $(`#select_${qw}${pointer}`)
@@ -44,20 +44,20 @@ export class ColorPicker1 {
       /* process a click on the selectbox of the picker
        */
       const { qw, iid, picker } = this
-      const wasCustom = P.viewState.iscolor(qw, iid)
+      const wasCustom = VS.isColor(qw, iid)
       closeDialog(picker)
       if (wasCustom) {
-        P.viewState.cstatex(qw, iid)
+        VS.delColor(qw, iid)
       } else {
         const vals = {}
         vals[iid] = colorDefault(qw == "q", iid)
-        P.viewState.cstatesv(qw, vals)
-        const active = P.viewState.active(qw)
+        VS.setColor(qw, vals)
+        const active = VS.active(qw)
         if (active != "hlcustom" && active != "hlmany") {
-          P.viewState.hstatesv(qw, { active: "hlcustom" })
+          VS.setHighlight(qw, { active: "hlcustom" })
         }
       }
-      P.viewState.addHist()
+      VS.addHist()
       this.apply(true)
     })
 
@@ -72,9 +72,9 @@ export class ColorPicker1 {
       const { qw, iid } = this
       const vals = {}
       vals[iid] = elem.html()
-      P.viewState.cstatesv(qw, vals)
-      P.viewState.hstatesv(qw, { active: "hlcustom" })
-      P.viewState.addHist()
+      VS.setColor(qw, vals)
+      VS.setHighlight(qw, { active: "hlcustom" })
+      VS.addHist()
       this.apply(true)
     })
 
@@ -99,18 +99,18 @@ export class ColorPicker1 {
     const { colors } = Config
 
     const { qw, iid, stl, sel, select, selw } = this
-    const color = P.viewState.color(qw, iid) || colorDefault(qw == "q", iid)
+    const color = VS.color(qw, iid) || colorDefault(qw == "q", iid)
     const target = qw == "q" ? sel : selw
     if (color) {
       target.css(stl, colors[color][qw])
       /* apply state to the selected cell
        */
     }
-    select.prop("checked", P.viewState.iscolor(qw, iid))
+    select.prop("checked", VS.isColor(qw, iid))
     /* apply state to the checkbox
      */
     if (doHighlight) {
-      P.highlight2(this)
+      PG.highlight2(this)
     }
   }
 }
@@ -133,12 +133,12 @@ export class ColorPicker2 {
    * of the associated Settings object.
    */
   constructor(qw, doHighlight) {
-    const { shbStyle, colors } = Config
+    const { itemStyle, colors } = Config
 
     this.code = "2"
     this.qw = qw
     this.picker = $(`#picker_${qw}one`)
-    this.stl = shbStyle[this.qw]["prop"]
+    this.stl = itemStyle[this.qw]["prop"]
     this.sel = $(`#sel_${qw}one`)
     this.selw = $(`#sel_${qw}one>a`)
 
@@ -162,13 +162,13 @@ export class ColorPicker2 {
       const { picker } = this
       closeDialog(picker)
       const { qw } = this
-      const curActive = P.viewState.active(qw)
+      const curActive = VS.active(qw)
       if (curActive != "hlone" && curActive != "hlcustom") {
-        P.viewState.hstatesv(qw, { active: "hlcustom", sel_one: elem.html() })
+        VS.setHighlight(qw, { active: "hlcustom", sel_one: elem.html() })
       } else {
-        P.viewState.hstatesv(qw, { sel_one: elem.html() })
+        VS.setHighlight(qw, { sel_one: elem.html() })
       }
-      P.viewState.addHist()
+      VS.addHist()
       this.apply(true)
     })
 
@@ -189,13 +189,13 @@ export class ColorPicker2 {
     const { colors } = Config
 
     const { qw, stl, sel, selw } = this
-    const color = P.viewState.sel_one(qw) || colorDefault(qw, null)
+    const color = VS.sel_one(qw) || colorDefault(qw, null)
     const target = qw == "q" ? sel : selw
     target.css(stl, colors[color][qw])
     /* apply state to the selected cell
      */
     if (doHighlight) {
-      P.highlight2(this)
+      PG.highlight2(this)
     }
   }
 }

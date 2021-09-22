@@ -1,15 +1,14 @@
 /* eslint-env jquery */
 /* eslint-disable no-new */
 
-/* globals Config, L */
+/* globals Config, LS */
 
+import { LStorage } from "./localstorage.js"
 import { escHT } from "./helpers.js"
-import { Msg } from "./msg.js"
-import { LStorage } from "./page.js"
+import { Diagnostics } from "./diagnostics.js"
+import { QueryRecent } from "./queryrecent.js"
 
-const vs = $.initNamespaceStorage("viewStoredQueries")
-const viewStoredQueries = vs.localStorage
-let ftree, msgflt, msgopq, rdata
+let treeObj, diagnostics, diagnosticsTree, rootData
 const subtractForQueriesPage = 80
 /* the canvas holding the material gets a height equal to
  * the window height minus this amount
@@ -18,209 +17,148 @@ const controlHeight = 100
 /* height for messages and controls
  */
 
-class Recent {
-  constructor() {
-    this.loaded = false
-    this.queries = []
-    this.msgqr = new Msg("msg_qr")
-    this.refreshctl = $("#reload_recentq")
-
-    this.msgqr.clear()
-    this.refreshctl.click(e => {
-      e.preventDefault()
-      this.fetch()
-    })
-    this.apply()
-  }
-
-  apply() {
-    this.fetch()
-  }
-
-  fetch() {
-    const { queriesrUrl } = Config
-
-    this.msgqr.msg(["info", "fetching recent queries ..."])
-    $.post(queriesrUrl, {}, json => {
-      this.loaded = true
-      this.msgqr.clear()
-      const { msgs, good, queries } = json
-      for (const m of msgs) {
-        this.msgqr.msg(m)
-      }
-      if (good) {
-        this.queries = queries
-        this.process()
-      }
-    })
-  }
-  process() {
-    this.gen_html()
-    this.dress_queriesr()
-  }
-  gen_html() {
-    const target = $("#recentqi")
-    const { queries } = this
-    let html = ""
-    for (let n = 0; n < queries.length; n++) {
-      const { id, text, title, version } = queries[n]
-      html += `<a class="q" query_id="${id}"
-          v="${version}" href="#"
-          title="${title}">${text}</a><br/>
-      `
-    }
-    target.html(html)
-  }
-
-  dress_queriesr() {
-    $("#recentqi a[query_id]").each((i, el) => {
-      const elem = $(el)
-      elem.click(e => {
-        e.preventDefault()
-        ftree.filter.clear()
-        ftree.gotoQuery(elem.attr("query_id"))
-      })
-    })
-  }
-}
-
 class View {
   constructor() {
-    this.prevstate = false
-    if (!viewStoredQueries.isSet("simple")) {
-      viewStoredQueries.set("simple", true)
+    const { lsQueries } = LS
+    this.statePrev = false
+    if (!lsQueries.isSet("simple")) {
+      lsQueries.set("simple", true)
     }
-    this.qvradio = $(".qvradio")
-    this.csimple = $("#c_view_simple")
-    this.cadvanced = $("#c_view_advanced")
+    this.simpleOrAdvancedRadio = $(".qvradio")
+    this.simpleCtl = $("#c_view_simple")
+    this.advancedCtl = $("#c_view_advanced")
 
-    this.csimple.click(e => {
+    this.simpleCtl.click(e => {
       e.preventDefault()
-      viewStoredQueries.set("simple", true)
-      this.adjust_view()
+      lsQueries.set("simple", true)
+      this.adjustView()
     })
-    this.cadvanced.click(e => {
+    this.advancedCtl.click(e => {
       e.preventDefault()
-      viewStoredQueries.set("simple", false)
-      this.adjust_view()
+      lsQueries.set("simple", false)
+      this.adjustView()
     })
-    this.adjust_view()
+    this.adjustView()
   }
 
-  adjust_view() {
-    const simple = viewStoredQueries.get("simple")
-    this.qvradio.removeClass("ison")
-    ;(simple ? this.csimple : this.cadvanced).addClass("ison")
-    if (this.prevstate != simple) {
+  adjustView() {
+    const { lsQueries } = LS
+    const simple = lsQueries.get("simple")
+    this.simpleOrAdvancedRadio.removeClass("ison")
+    ;(simple ? this.simpleCtl : this.advancedCtl).addClass("ison")
+    if (this.statePrev != simple) {
       if (simple) {
         $(".brq").hide()
       } else {
         $(".brq").show()
       }
-      this.prevstate = simple
+      this.statePrev = simple
     }
   }
 }
 
 class Level {
   constructor() {
+    const { lsQueries } = LS
     this.levels = { o: 1, p: 2, u: 3, q: 4 }
 
     $(".qlradio").removeClass("ison")
-    if (!viewStoredQueries.isSet("level")) {
-      viewStoredQueries.set("level", "o")
+    if (!lsQueries.isSet("level")) {
+      lsQueries.set("level", "o")
     }
     $("#level_o").click(e => {
       e.preventDefault()
-      this.expand_level("o")
+      this.expandLevel("o")
     })
     $("#level_p").click(e => {
       e.preventDefault()
-      this.expand_level("p")
+      this.expandLevel("p")
     })
     $("#level_u").click(e => {
       e.preventDefault()
-      this.expand_level("u")
+      this.expandLevel("u")
     })
     $("#level_q").click(e => {
       e.preventDefault()
-      this.expand_level("q")
+      this.expandLevel("q")
     })
     $("#level_").click(e => {
       e.preventDefault()
-      this.expand_level("")
+      this.expandLevel("")
     })
   }
 
-  expand_all() {
-    ftree.ftw.visit(n => {
+  expandAll() {
+    treeObj.widget.visit(n => {
       n.setExpanded(true, { noAnimation: true, noEvents: false })
     }, true)
   }
 
-  expand_level(level) {
-    const { levels } = this
+  expandLevel(level) {
+    const { lsQueries, levels } = this
 
     $(".qlradio").removeClass("ison")
     $(`#level_${level}`).addClass("ison")
-    viewStoredQueries.set("level", level)
+    lsQueries.set("level", level)
     if (level in levels) {
-      const numlevel = levels[level]
-      ftree.ftw.visit(n => {
-        const nlevel = n.getLevel()
-        n.setExpanded(nlevel <= numlevel, { noAnimation: true, noEvents: false })
+      const nLevel = levels[level]
+      treeObj.widget.visit(node => {
+        const nodelevel = node.getLevel()
+        node.setExpanded(nodelevel <= nLevel, { noAnimation: true, noEvents: false })
       }, true)
     }
   }
 
-  initlevel() {
-    this.expand_level(viewStoredQueries.get("level"))
+  initLevel() {
+    const { lsQueries } = LS
+    this.expandLevel(lsQueries.get("level"))
   }
 }
 
 class Filter {
   constructor() {
-    this.patc = $("#filter_contents")
+    const { lsQueries } = LS
+    this.patternCtl = $("#filter_contents")
 
-    const re_is_my = new RegExp('class="[^"]*qmy', "")
-    const re_is_private = new RegExp('class="[^"]*qpriv', "")
+    const isMyRe = new RegExp('class="[^"]*qmy', "")
+    const isPrivateRe = new RegExp('class="[^"]*qpriv', "")
 
-    this.in_my = pat => node =>
-      re_is_my.test(node.title) &&
-      (pat == "" || node.title.toLowerCase().indexOf(pat.toLowerCase()) >= 0)
+    this.isMy = pattern => node =>
+      isMyRe.test(node.title) &&
+      (pattern == "" || node.title.toLowerCase().indexOf(pattern.toLowerCase()) >= 0)
 
-    this.in_private = pat => node =>
-      re_is_private.test(node.title) &&
-      (pat == "" || node.title.toLowerCase().indexOf(pat.toLowerCase()) >= 0)
+    this.isPrivate = pattern => node =>
+      isPrivateRe.test(node.title) &&
+      (pattern == "" || node.title.toLowerCase().indexOf(pattern.toLowerCase()) >= 0)
 
     $("#filter_clear").hide()
     $("#filter_contents").val(
-      viewStoredQueries.isSet("filter_pat") ? viewStoredQueries.get("filter_pat") : ""
+      lsQueries.isSet("filter_pat") ? lsQueries.get("filter_pat") : ""
     )
-    if (viewStoredQueries.isSet("filter_mode")) {
-      this.pqsearch(viewStoredQueries.get("filter_mode"))
+    if (lsQueries.isSet("filter_mode")) {
+      this.search(lsQueries.get("filter_mode"))
       $("#filter_clear").show()
     }
 
     $("#filter_control_a").click(e => {
       e.preventDefault()
-      this.pqsearch("a")
+      this.search("a")
     })
     $("#filter_control_c").click(e => {
       e.preventDefault()
-      this.pqsearch("c")
+      this.search("c")
     })
     $("#filter_control_q").click(e => {
       e.preventDefault()
-      this.pqsearch("q")
+      this.search("q")
     })
     $("#filter_control_m").click(e => {
       e.preventDefault()
-      this.pqsearch("m")
+      this.search("m")
     })
     $("#filter_control_r").click(e => {
       e.preventDefault()
-      this.pqsearch("r")
+      this.search("r")
     })
 
     $("#filter_clear").click(e => {
@@ -230,33 +168,35 @@ class Filter {
   }
 
   clear() {
-    ftree.ftw.clearFilter()
-    msgflt.clear()
-    msgflt.msg(["good", "no filter applied"])
+    const { lsQueries } = LS
+    treeObj.widget.clearFilter()
+    diagnostics.clear()
+    diagnostics.msg(["good", "no filter applied"])
     $(".qfradio").removeClass("ison")
-    viewStoredQueries.remove("filter_mode")
+    lsQueries.remove("filter_mode")
     $("#filter_clear").hide()
     $("#allmatches").html("")
     $("#branchmatches").html("")
     $("#querymatches").html("")
     $("#mymatches").html("")
     $("#privatematches").html("")
-    $("#count_o").html(rdata.o)
-    $("#count_p").html(rdata.p)
-    $("#count_u").html(rdata.u)
-    $("#count_q").html(rdata.q)
+    $("#count_o").html(rootData.o)
+    $("#count_p").html(rootData.p)
+    $("#count_u").html(rootData.u)
+    $("#count_q").html(rootData.q)
   }
 
-  pqsearch(kind) {
-    const { in_my, in_private, patc } = this
-    const pat = patc.val()
-    viewStoredQueries.set("filter_pat", pat)
+  search(kind) {
+    const { lsQueries } = LS
+    const { isMy, isPrivate, patternCtl } = this
+    const pattern = patternCtl.val()
+    lsQueries.set("filter_pat", pattern)
     let allMatches = 0
     let branchMatches = 0
     let queryMatches = 0
     let myMatches = 0
     let privateMatches = 0
-    if (pat == "") {
+    if (pattern == "") {
       allMatches = -1
       branchMatches = -1
       queryMatches = -1
@@ -265,63 +205,63 @@ class Filter {
     }
     $(".qfradio").removeClass("ison")
     if (kind == "m") {
-      msgflt.clear()
-      msgflt.msg(["warning", "my queries"])
+      diagnostics.clear()
+      diagnostics.msg(["warning", "my queries"])
     } else if (kind == "r") {
-      msgflt.clear()
-      msgflt.msg(["warning", "private queries"])
-    } else if (pat == "") {
+      diagnostics.clear()
+      diagnostics.msg(["warning", "private queries"])
+    } else if (pattern == "") {
       this.clear()
       return
     } else {
-      msgflt.clear()
-      msgflt.msg(["special", "filter applied"])
+      diagnostics.clear()
+      diagnostics.msg(["special", "filter applied"])
     }
     $(`#filter_control_${kind}`).addClass("ison")
-    viewStoredQueries.set("filter_mode", kind)
+    lsQueries.set("filter_mode", kind)
 
-    ftree.level.expand_all()
+    treeObj.level.expandAll()
     if (kind == "a") {
-      allMatches = ftree.ftw.filterNodes(pat, false)
+      allMatches = treeObj.widget.filterNodes(pattern, false)
       $("#allmatches").html(allMatches >= 0 ? `(${allMatches})` : "")
     } else if (kind == "c") {
-      branchMatches = ftree.ftw.filterBranches(pat)
+      branchMatches = treeObj.widget.filterBranches(pattern)
       $("#branchmatches").html(branchMatches >= 0 ? `(${branchMatches})` : "")
     } else if (kind == "q") {
-      queryMatches = ftree.ftw.filterNodes(pat, true)
+      queryMatches = treeObj.widget.filterNodes(pattern, true)
       $("#querymatches").html(queryMatches >= 0 ? `(${queryMatches})` : "")
     } else if (kind == "m") {
-      myMatches = ftree.ftw.filterNodes(in_my(pat), true)
+      myMatches = treeObj.widget.filterNodes(isMy(pattern), true)
       $("#mymatches").html(myMatches >= 0 ? `(${myMatches})` : "")
     } else if (kind == "r") {
-      privateMatches = ftree.ftw.filterNodes(in_private(pat), true)
+      privateMatches = treeObj.widget.filterNodes(isPrivate(pattern), true)
       $("#privatematches").html(privateMatches >= 0 ? `(${privateMatches})` : "")
     }
     $("#filter_clear").show()
     const submatch = "span.fancytree-submatch"
     const match = "span.fancytree-match"
-    const base_o = "#queries>ul>li>ul>li>"
-    const match_o = $(`${base_o}${match}`).length
-    const submatch_o = $(`${base_o}${submatch}`).length
-    const base_p = `${base_o}ul>li>`
-    const match_p = $(`${base_p}${match}`).length
-    const submatch_p = $(`${base_p}${submatch}`).length
-    const base_u = `${base_p}ul>li>`
-    const match_u = $(`${base_u}${match}`).length
-    const submatch_u = $(`${base_u}${submatch}`).length
-    const base_q = `${base_u}ul>li>`
+    const baseOrg = "#queries>ul>li>ul>li>"
+    const matchOrg = $(`${baseOrg}${match}`).length
+    const submatchOrg = $(`${baseOrg}${submatch}`).length
+    const baseProject = `${baseOrg}ul>li>`
+    const matchProject = $(`${baseProject}${match}`).length
+    const submatchProject = $(`${baseProject}${submatch}`).length
+    const baseUser = `${baseProject}ul>li>`
+    const matchUser = $(`${baseUser}${match}`).length
+    const submatchUser = $(`${baseUser}${submatch}`).length
+    const base_q = `${baseUser}ul>li>`
     const match_q = $(`${base_q}${match}`).length
     $("#count_o").html(`
-      <span class="match">${match_o}</span>
-      <span class="brq submatch">${submatch_o}</span>`)
+      <span class="match">${matchOrg}</span>
+      <span class="brq submatch">${submatchOrg}</span>`)
     $("#count_p").html(`
-      <span class="match">${match_p}</span>
-      <span class="brq submatch">${submatch_p}</span>`)
+      <span class="match">${matchProject}</span>
+      <span class="brq submatch">${submatchProject}</span>`)
     $("#count_u").html(`
-      '<span class="match">${match_u}</span>
-      <span class="brq submatch">${submatch_u}</span>`)
+      '<span class="match">${matchUser}</span>
+      <span class="brq submatch">${submatchUser}</span>`)
     $("#count_q").html(`<span class="match">${match_q}</span>`)
-    if (ftree.view.simple) {
+    if (treeObj.view.simple) {
       $(".brq").hide()
     }
   }
@@ -329,14 +269,14 @@ class Filter {
 
 class Tree {
   constructor() {
-    const { pqUrl } = Config
-    const { muting_q: muting } = L
+    const { queryTreeJsonUrl } = Config
+    const { lsQueriesMuted: lsMuted } = LS
 
     this.tps = { o: "organization", p: "project", q: "query" }
 
     const tree = this
 
-    this.do_new = {}
+    this.doNew = {}
 
     $("#queries").fancytree({
       extensions: ["persist", "filter"],
@@ -355,33 +295,33 @@ class Tree {
         types: "expanded selected",
       },
       source: {
-        url: pqUrl,
+        url: queryTreeJsonUrl,
         dataType: "json",
       },
       filter: {
         mode: "hide",
       },
       init: () => {
-        muting.removeAll()
-        tree.ftw = $("#queries").fancytree("getTree")
-        const s = tree.ftw.getSelectedNodes(true)
+        lsMuted.removeAll()
+        tree.widget = $("#queries").fancytree("getTree")
+        const s = tree.widget.getSelectedNodes(true)
         for (const i in s) {
-          tree.store_select_deep(s[i])
+          tree.storeSelectDeep(s[i])
         }
-        tree.ftw.render(true, true)
-        tree.dress_queries()
-        rdata = tree.ftw.rootNode.children[0].data
-        $("#count_o").html(rdata.o)
-        $("#count_p").html(rdata.p)
-        $("#count_u").html(rdata.u)
-        $("#count_q").html(rdata.q)
-        msgopq = new Msg("opqmsgs")
-        msgflt = new Msg("filter_msg")
+        tree.widget.render(true, true)
+        tree.dressQueries()
+        rootData = tree.widget.rootNode.children[0].data
+        $("#count_o").html(rootData.o)
+        $("#count_p").html(rootData.p)
+        $("#count_u").html(rootData.u)
+        $("#count_q").html(rootData.q)
+        diagnosticsTree = new Diagnostics("opqmsgs")
+        diagnostics = new Diagnostics("filter_msg")
         tree.view = new View()
         tree.level = new Level()
         tree.filter = new Filter()
-        tree.level.initlevel()
-        if (rdata.user_id) {
+        tree.level.initLevel()
+        if (rootData.user_id) {
           tree.editInit()
         } else {
           tree.viewInit()
@@ -392,104 +332,107 @@ class Tree {
       },
       expand: () => {
         if (tree.level != undefined) {
-          tree.level.expand_level("")
+          tree.level.expandLevel("")
         }
       },
       collapse: () => {
         if (tree.level != undefined) {
-          tree.level.expand_level("")
+          tree.level.expandLevel("")
         }
       },
       select: (e, data) => {
-        tree.store_select_deep(data.node)
+        tree.storeSelectDeep(data.node)
       },
     })
 
     const standardHeight = window.innerHeight - subtractForQueriesPage
-    const canvas_left = $(".left-sidebar")
-    const canvas_right = $(".right-sidebar")
-    canvas_left.css("height", `${standardHeight}px`)
+    const canvasLeft = $(".left-sidebar")
+    const canvasRight = $(".right-sidebar")
+    canvasLeft.css("height", `${standardHeight}px`)
     $("#queries").css("height", `${standardHeight}px`)
     $("#opqctl").css("height", `${controlHeight}px`)
-    canvas_right.css("height", `${standardHeight}px`)
+    canvasRight.css("height", `${standardHeight}px`)
   }
 
-  store_select(node) {
-    const { muting_q: muting } = L
+  storeSelect(node) {
+    const { lsQueriesMuted: lsMuted } = LS
     const { folder, key: iid, selected } = node
     if (!folder) {
       if (selected) {
-        muting.set(iid, 1)
+        lsMuted.set(iid, 1)
       } else {
-        if (muting.isSet(iid)) {
-          muting.remove(iid)
+        if (lsMuted.isSet(iid)) {
+          lsMuted.remove(iid)
         }
       }
     }
   }
 
-  store_select_deep(node) {
+  storeSelectDeep(node) {
     const { children } = node
-    this.store_select(node)
+    this.storeSelect(node)
     if (children != null) {
       for (const n in children) {
-        this.store_select_deep(children[n])
+        this.storeSelectDeep(children[n])
       }
     }
   }
 
-  dress_queries() {
-    const { qUrl } = Config
+  dressQueries() {
+    const { pageUrl } = Config
     $("#queries a.md").addClass("fa fa-level-down")
     $("#queries a[query_id]").each((i, el) => {
       const elem = $(el)
       const vr = elem.attr("v")
       const extra = vr == undefined ? "" : `&version=${vr}`
-      elem.attr("href", `${qUrl}?iid=${elem.attr("query_id")}${extra}&page=1&mr=r&qw=q`)
+      elem.attr(
+        "href",
+        `${pageUrl}?iid=${elem.attr("query_id")}${extra}&page=1&mr=r&qw=q`
+      )
     })
     $("#queries a.md").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
-      const uname = elem.closest("ul").closest("li").find("span[n]").html()
+      const userName = elem.closest("ul").closest("li").find("span[n]").html()
       const tit = elem.prev()
       const lnk = tit.attr("href")
       const query_name = tit.html()
       window.prompt(
         "Press <Cmd-C> and then <Enter> to copy link on clipboard",
-        `[${uname}: ${query_name}](${lnk})`
+        `[${userName}: ${query_name}](${lnk})`
       )
     })
   }
 
   record(tp, o, update, view) {
-    const { queryMetaUrl, qUrl } = Config
+    const { queryMetaJsonUrl, pageUrl } = Config
 
     const obj_id = $(`#id_${tp}`).val()
     if (!update && obj_id == "0" && tp != "q") {
       return
     }
-    const senddata = {
+    const sendData = {
       tp,
       upd: update,
       obj_id,
       name: $(`#name_${tp}`).val(),
     }
     if (tp == "q") {
-      senddata["org_id"] = $("#org_of_query").attr("org_id")
-      senddata["org_name"] = $("#nameq_o").val()
-      senddata["org_website"] = $("#websiteq_o").val()
-      senddata["project_id"] = $("#project_of_query").attr("project_id")
-      senddata["project_name"] = $("#nameq_p").val()
-      senddata["project_website"] = $("#websiteq_p").val()
-      senddata["do_new_o"] = this.do_new["o"]
-      senddata["do_new_p"] = this.do_new["p"]
+      sendData["org_id"] = $("#org_of_query").attr("org_id")
+      sendData["org_name"] = $("#nameq_o").val()
+      sendData["org_website"] = $("#websiteq_o").val()
+      sendData["project_id"] = $("#project_of_query").attr("project_id")
+      sendData["project_name"] = $("#nameq_p").val()
+      sendData["project_website"] = $("#websiteq_p").val()
+      sendData["do_new_o"] = this.doNew["o"]
+      sendData["do_new_p"] = this.doNew["p"]
     } else {
-      senddata["website"] = $(`#website_${tp}`).val()
+      sendData["website"] = $(`#website_${tp}`).val()
     }
 
     $.post(
-      queryMetaUrl,
-      senddata,
+      queryMetaJsonUrl,
+      sendData,
       json => {
         const {
           msgs,
@@ -500,9 +443,9 @@ class Tree {
           orgRecord,
           projectRecord,
         } = json
-        msgopq.clear()
+        diagnosticsTree.clear()
         for (const m of msgs) {
-          msgopq.msg(m)
+          diagnosticsTree.msg(m)
         }
         if (update && tp == "q") {
           if (good) {
@@ -537,7 +480,7 @@ class Tree {
             $(`#${kind}_of_query_view`).attr("href", rec.website)
             $(`#${kind}_of_query_view`).html(escHT(rec.name))
           }
-        } else if (update && senddata.obj_id != "0") {
+        } else if (update && sendData.obj_id != "0") {
           if (tp == "q") {
             if (good) {
               const org_name = rec.org_name == undefined ? "" : escHT(rec.org_name)
@@ -577,11 +520,11 @@ class Tree {
             $(`#${kind}_of_query_view`).html(escHT(rec.name))
           }
           const elm = tp == "q" ? "a" : "span"
-          const moditem = this.moditem.find(`${elm}[n=1]`)
-          if (moditem != undefined) {
-            moditem.html(escHT(rec.name))
+          const itemMod = this.itemMod.find(`${elm}[n=1]`)
+          if (itemMod != undefined) {
+            itemMod.html(escHT(rec.name))
           }
-        } else if (update && senddata.obj_id == "0") {
+        } else if (update && sendData.obj_id == "0") {
           if (good) {
             $(`#id_${tp}`).val(rec.id)
           }
@@ -620,14 +563,16 @@ class Tree {
           }
         }
         const orig = $(".treehl")
-        const origp = orig.closest("ul").closest("li").closest("ul").closest("li")
-        const origo = origp.closest("ul").closest("li")
-        const origoid = origo.find("a[obj_id]").attr("obj_id")
-        const origpid = origp.find("a[obj_id]").attr("obj_id")
+        const projectOrig = orig.closest("ul").closest("li").closest("ul").closest("li")
+        const orgOrig = projectOrig.closest("ul").closest("li")
+        const orgOrigId = orgOrig.find("a[obj_id]").attr("obj_id")
+        const projectOrigId = projectOrig.find("a[obj_id]").attr("obj_id")
         if (
           update &&
           good &&
-          (senddata.obj_id == "0" || origoid != rec.org_id || origpid != rec.project_id)
+          (sendData.obj_id == "0" ||
+            orgOrigId != rec.org_id ||
+            projectOrigId != rec.project_id)
         ) {
           $("#reload_tree").show()
         } else {
@@ -636,7 +581,7 @@ class Tree {
         if (update && good && tp == "q") {
           $("#continue_q").attr(
             "href",
-            `${qUrl}?iid=${$("#id_q").val()}&page=1&mr=r&qw=q`
+            `${pageUrl}?iid=${$("#id_q").val()}&page=1&mr=r&qw=q`
           )
           $("#continue_q").show()
         } else {
@@ -666,7 +611,7 @@ class Tree {
       orgExistCtl.show()
       orgNewCtl.hide()
       orgOfQuery.hide()
-      this.do_new["o"] = true
+      this.doNew["o"] = true
     })
     orgExistCtl.click(e => {
       e.preventDefault()
@@ -674,7 +619,7 @@ class Tree {
       orgExistCtl.hide()
       orgNewCtl.show()
       orgOfQuery.show()
-      this.do_new["o"] = false
+      this.doNew["o"] = false
     })
     projectNewCtl.click(e => {
       e.preventDefault()
@@ -682,8 +627,8 @@ class Tree {
       projectExistCtl.show()
       projectNewCtl.hide()
       projectOfQuery.hide()
-      this.do_new["p"] = true
-      this.select_clear("p", true)
+      this.doNew["p"] = true
+      this.selectClear("p", true)
     })
     projectExistCtl.click(e => {
       e.preventDefault()
@@ -700,7 +645,7 @@ class Tree {
     $(`#${kind}_exist_ctl`).hide()
     $(`.${kind}_detail`).hide()
     $(`#${kind}_of_query`).show()
-    this.do_new[tp] = false
+    this.doNew[tp] = false
   }
 
   doViewControlsQuery() {
@@ -719,15 +664,15 @@ class Tree {
   }
 
   doCreate(tp, obj) {
-    msgopq.clear()
+    diagnosticsTree.clear()
     $(".formquery").hide()
     $(".ctlquery").hide()
     $(`#title_${tp}`).html("New")
     $(`#name_${tp}`).val("")
-    let o = null
+    let elem = null
     if (tp == "q") {
-      this.do_new["o"] = false
-      this.do_new["p"] = false
+      this.doNew["o"] = false
+      this.doNew["p"] = false
       $("#org_of_query").attr("org_id", 0)
       $("#project_of_query").attr("project_id", 0)
       this.doEditControlsQuery()
@@ -735,11 +680,11 @@ class Tree {
       const kind = tp == "o" ? "org" : "project"
       $(`#website_${kind}`).val("")
       if (tp == "p") {
-        o = obj.closest("li")
+        elem = obj.closest("li")
       }
     }
     $(`#id_${tp}`).val(0)
-    this.record(tp, o, false, false)
+    this.record(tp, elem, false, false)
     $("#opqforms").show()
     $("#opqctl").show()
     $(`#form_${tp}`).show()
@@ -747,12 +692,12 @@ class Tree {
     $(".old").hide()
   }
 
-  do_update(tp, obj, obj_id) {
-    let o = null
+  doUpdate(tp, obj, obj_id) {
+    let elem = null
     if (tp == "q") {
-      this.do_new["o"] = false
-      this.do_new["p"] = false
-      o = obj
+      this.doNew["o"] = false
+      this.doNew["p"] = false
+      elem = obj
         .closest("ul")
         .closest("li")
         .closest("ul")
@@ -761,16 +706,16 @@ class Tree {
         .closest("li")
       this.doEditControlsQuery()
     } else if (tp == "p") {
-      o = obj.closest("ul").closest("li")
+      elem = obj.closest("ul").closest("li")
     }
-    this.moditem = obj.closest("span")
-    msgopq.clear()
-    msgopq.msg(["info", "loading ..."])
+    this.itemMod = obj.closest("span")
+    diagnosticsTree.clear()
+    diagnosticsTree.msg(["info", "loading ..."])
     $(".formquery").hide()
     $(".ctlquery").hide()
     $(`#title_${tp}`).html("Modify")
     $(`#id_${tp}`).val(obj_id)
-    this.record(tp, o, false, false)
+    this.record(tp, elem, false, false)
     $("#opqforms").show()
     $("#opqctl").show()
     $(`#form_${tp}`).show()
@@ -778,10 +723,10 @@ class Tree {
     $(".old").show()
   }
 
-  do_view(tp, obj, obj_id) {
-    let o = null
+  doView(tp, obj, obj_id) {
+    let elem = null
     if (tp == "q") {
-      o = obj
+      elem = obj
         .closest("ul")
         .closest("li")
         .closest("ul")
@@ -790,15 +735,15 @@ class Tree {
         .closest("li")
       this.doViewControlsQuery()
     } else if (tp == "p") {
-      o = obj.closest("ul").closest("li")
+      elem = obj.closest("ul").closest("li")
     }
-    msgopq.clear()
-    msgopq.msg(["info", "loading ..."])
+    diagnosticsTree.clear()
+    diagnosticsTree.msg(["info", "loading ..."])
     $(".formquery").hide()
     $(".ctlquery").hide()
     $(`#title_${tp}`).html("View")
     $(`#id_${tp}`).val(obj_id)
-    this.record(tp, o, false, true)
+    this.record(tp, elem, false, true)
     $("#opqforms").show()
     $("#opqctl").show()
     $(`#form_${tp}`).show()
@@ -811,10 +756,10 @@ class Tree {
     this.selectHide()
   }
 
-  op_selection(tp) {
+  orgProjectSelect(tp) {
     if (tp == "q") {
-      this.select_clear("o", true)
-      this.select_clear("p", true)
+      this.selectClear("o", true)
+      this.selectClear("p", true)
     } else {
       this.selectHide()
     }
@@ -822,14 +767,14 @@ class Tree {
 
   selectHide() {
     for (const tp of ["o", "p"]) {
-      this.select_clear(tp, false)
+      this.selectClear(tp, false)
     }
   }
 
-  select_clear(tp, show) {
-    const objs = $(`.selecthl${tp}`)
+  selectClear(tp, show) {
+    const objects = $(`.selecthl${tp}`)
     const icons = $(`.s_${tp}`)
-    objs.removeClass(`selecthl${tp}`)
+    objects.removeClass(`selecthl${tp}`)
     icons.removeClass("fa-check-circle")
     icons.addClass("fa-circle-o")
     if (show) {
@@ -839,20 +784,20 @@ class Tree {
     }
   }
 
-  selectId(tp, obj_id, pr) {
-    const jpr = `.s_${tp}[obj_id=${obj_id}]`
-    const icon = pr == null ? $(jpr) : pr.find(jpr)
+  selectId(tp, obj_id, above) {
+    const parentJquery = `.s_${tp}[obj_id=${obj_id}]`
+    const icon = above == null ? $(parentJquery) : above.find(parentJquery)
     const i = icon.closest("li")
     const is = i.children("span")
     this.selectOne(tp, icon, is)
   }
 
   selectOne(tp, icon, obj) {
-    const sclass = `selecthl${tp}`
-    const objs = $(`.${sclass}`)
+    const selectCls = `selecthl${tp}`
+    const selectedObjects = $(`.${selectCls}`)
     const iconsr = $(`.s_${tp}`)
-    objs.removeClass(sclass)
-    obj.addClass(sclass)
+    selectedObjects.removeClass(selectCls)
+    obj.addClass(selectCls)
     iconsr.removeClass("fa-check-circle")
     iconsr.addClass("fa-circle-o")
     icon.removeClass("fa-circle-o")
@@ -868,54 +813,54 @@ class Tree {
   }
 
   bothInit() {
-    const canvas_left = $(".left-sidebar")
+    const canvasLeft = $(".left-sidebar")
     const canvasMiddle = $(".span6")
-    const canvas_right = $(".right-sidebar")
-    canvas_left.css("width", "23%")
+    const canvasRight = $(".right-sidebar")
+    canvasLeft.css("width", "23%")
     canvasMiddle.css("width", "40%")
-    canvas_right.css("width", "30%")
+    canvasRight.css("width", "30%")
     const view = $(".v_o, .v_p, .v_q")
     view.addClass("fa fa-info")
 
     const viewTp = tp => {
-      const objs = $(`.v_${tp}`)
-      objs.click(e => {
+      const objects = $(`.v_${tp}`)
+      objects.click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
-        this.op_selection(tp)
+        this.orgProjectSelect(tp)
         elem.closest("span").addClass("treehl")
         const obj_id = $(this).attr("obj_id")
-        this.do_view(tp, $(this), obj_id)
+        this.doView(tp, $(this), obj_id)
         return false
       })
     }
 
     const selectInit = tp => {
-      const objs = $(`.s_${tp}`)
-      objs.click(e => {
+      const objects = $(`.s_${tp}`)
+      objects.click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         if (tp == "o") {
-          const o = elem.closest("li")
-          const org_id = o.find("a[obj_id]").attr("obj_id")
-          const org_name = o.find("span[n=1]").html()
+          const org = elem.closest("li")
+          const org_id = org.find("a[obj_id]").attr("obj_id")
+          const org_name = org.find("span[n=1]").html()
           $("#org_of_query").html(org_name)
           $("#org_of_query").attr("org_id", org_id)
           this.selectId("o", org_id, null)
         } else if (tp == "p") {
-          const o = elem.closest("ul").closest("li")
-          const org_id = o.find("a[obj_id]").attr("obj_id")
-          const org_name = o.find("span[n=1]").html()
-          const p = elem.closest("li")
-          const project_id = p.find("a[obj_id]").attr("obj_id")
-          const project_name = p.find("span[n=1]").html()
+          const org = elem.closest("ul").closest("li")
+          const org_id = org.find("a[obj_id]").attr("obj_id")
+          const org_name = org.find("span[n=1]").html()
+          const project = elem.closest("li")
+          const project_id = project.find("a[obj_id]").attr("obj_id")
+          const project_name = project.find("span[n=1]").html()
           $("#org_of_query").html(org_name)
           $("#project_of_query").html(project_name)
           $("#org_of_query").attr("org_id", org_id)
           $("#project_of_query").attr("project_id", project_id)
           this.selectId("o", org_id, null)
-          this.selectId("p", project_id, o)
+          this.selectId("p", project_id, org)
         }
         return false
       })
@@ -941,12 +886,12 @@ class Tree {
     create.addClass("fa fa-plus")
 
     const createTp = tp => {
-      const objs = $(`.n_${tp}`)
-      objs.click(e => {
+      const objects = $(`.n_${tp}`)
+      objects.click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
-        this.op_selection(tp)
+        this.orgProjectSelect(tp)
         if (tp == "q") {
           $("#id_q").val(0)
         }
@@ -959,25 +904,25 @@ class Tree {
     update.addClass("fa fa-pencil")
 
     const updateTp = tp => {
-      const objs = $(`.r_${tp}`)
-      objs.click(e => {
+      const objects = $(`.r_${tp}`)
+      objects.click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
-        this.op_selection(tp)
+        this.orgProjectSelect(tp)
         elem.closest("span").addClass("treehl")
         const obj_id = elem.attr("obj_id")
         if (tp == "q") {
           $("#id_q").val(obj_id)
         }
-        this.do_update(tp, elem, obj_id)
+        this.doUpdate(tp, elem, obj_id)
         return false
       })
     }
     const formTp = tp => {
       $(`#save_${tp}`).click(e => {
         e.preventDefault()
-        this.op_selection(tp)
+        this.orgProjectSelect(tp)
         this.record(tp, null, true, false)
       })
       $(`#cancel_${tp}`).click(e => {
@@ -989,7 +934,7 @@ class Tree {
       })
       $(`#done_${tp}`).click(e => {
         e.preventDefault()
-        this.op_selection(tp)
+        this.orgProjectSelect(tp)
         this.record(tp, null, true, false)
         this.selectHide()
         $(`#form_${tp}`).hide()
@@ -1011,12 +956,12 @@ class Tree {
 
   gotoQuery(query_id) {
     if (query_id != undefined && query_id != "0") {
-      const qnode = this.ftw.getNodeByKey(`${query_id}`)
-      if (qnode != undefined) {
-        qnode.makeVisible({ noAnimation: true })
+      const queryNode = this.widget.getNodeByKey(`${query_id}`)
+      if (queryNode != undefined) {
+        queryNode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")
         $(`a[query_id=${query_id}]`).closest("span").addClass("treehl")
-        $(qnode.li)[0].scrollIntoView({
+        $(queryNode.li)[0].scrollIntoView({
           behavior: "smooth",
         })
         $("#queries").scrollTop -= 20
@@ -1026,7 +971,7 @@ class Tree {
 }
 
 $(() => {
-  window.L = new LStorage()
-  new Recent()
-  ftree = new Tree()
+  window.LS = new LStorage()
+  treeObj = new Tree()
+  new QueryRecent(treeObj)
 })

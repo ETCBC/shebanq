@@ -1,5 +1,5 @@
 <a class="ctl" id="gobackn" href="#"><span id="namenn">to notes overview </span></a>
-<input type="hidden" id="itemtag" value=""/>
+<input type="hidden" id="notetag" value=""/>
 <div id="dbmsg_n"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in nr and nr['id'] and nr['id'] != '0':}}
@@ -28,7 +28,7 @@
 <script type="text/javascript">
 var State = {
     msgs: {{=XML(msgs)}},
-    n: {{=XML(n)}},
+    note: {{=XML(n)}},
 }
 </script>
 

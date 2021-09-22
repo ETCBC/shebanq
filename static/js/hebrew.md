@@ -113,7 +113,7 @@ B: the queries tree itself
 C: an individual query, possibly in edit mode, or an individual word
 D: material column: the verses of a chapter, or a page with occurrences of a word, or a page with query results
 
-Then the hebrew.js and the queries.js can be integrated, redundant code can be erased, ajax messages can be done more consistently.
+Then the hebrew.js and the querytree.js can be integrated, redundant code can be erased, ajax messages can be done more consistently.
 
 II. replace all usage of cookies by local storage.
 

@@ -1,5 +1,5 @@
 <a class="ctl" id="gobackw" href="#"><span id="namewm">to lexicon</span></a>
-<input type="hidden" id="itemtag" value=""/>
+<input type="hidden" id="wordtag" value=""/>
 <div id="dbmsg_w"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in wr:}}
@@ -35,7 +35,7 @@
 <script type="text/javascript">
 var State = {
     msgs: {{=XML(msgs)}},
-    w: {{=XML(w)}},
+    word: {{=XML(w)}},
 }
 </script>
 
