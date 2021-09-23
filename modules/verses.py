@@ -81,7 +81,7 @@ inner join verse on verse.id = word_verse.verse_id
 order by word_number
 ;
 """,
-                asDict=True,
+                as_dict=True,
             )
             if passageDb
             else []

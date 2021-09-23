@@ -1,0 +1,192 @@
+/* MATERIAL TITLE */
+
+#material_heading {
+    direction: ltr;
+}
+#theitem,#theitemc {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+}
+#theitemc {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: medium;
+}
+#thebook,#thechapter,#thepage {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+    display: inline;
+    vertical-align: text-bottom;
+}
+#material_message p {
+    text-align: left;
+}
+/* MATERIAL SELECT */
+
+.source {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: large;
+}
+
+#to_passage {
+    display: inline;
+}
+#select_version {
+    padding-right: 3em;
+}
+#select_book {
+    width: 10em;
+    height: 2em;
+    display: inline;
+    vertical-align: text-bottom;
+    margin-bottom: -4pt;
+}
+#select_iid, #select_book,#select_chapter,#select_book ul,#select_chapter ul, #select_book ul li #select_chapter ul li {
+    display: inline;
+    vertical-align: text-bottom;
+}
+#select_version,#select_passage,#select_pages,#select_contents_book,#select_contents_chapter,#select_contents_page,#select_contents_book ul,#select_contents_chapter ul,#select_contents_page ul,#select_contents_book ul li,#select_contents_chapter ul li,#select_contents_page ul li {
+    display: inline;
+    vertical-align: text-bottom;
+    unicode-bidi: embed;
+    direction: ltr;
+}
+#select_lang {
+    display: inline;
+    vertical-align: text-bottom;
+    unicode-bidi: embed;
+    direction: ltr;
+}
+#select_contents_lang {
+    display: block;
+    vertical-align: text-bottom;
+    unicode-bidi: embed;
+    direction: ltr;
+    text-align: left;
+}
+#select_contents_lang table tr td {
+    background-color: #ffffee;
+}
+#select_contents_lang table tr td a.itemnav {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: small;
+    color: #448844;
+    background-color: #ffffee;
+}
+#select_contents_lang table tr td.active {
+    font-weight: bold;
+    color: #229922;
+    background-color: #ffffaa;
+}
+#select_contents_lang table tr td.active a.itemnav {
+    font-weight: bold;
+}
+table.books {
+    width: 100%;
+}
+td.book {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: small;
+    color: #448844;
+    background-color: #ffffee;
+    border: 1px solid #448844;
+}
+th.booklang {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: bold;
+    font-size: small;
+    color: #448844;
+    background-color: #ffffee;
+    border: 1px solid #448844;
+}
+.versehighlight {
+    background-color: #ffffe0;
+}
+#select_control_lang {
+    background-color: #ffffee;
+}
+
+#thelang {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: small;
+    display: inline;
+    vertical-align: text-bottom;
+    color: #448844;
+}
+/* MATERIAL VIEW */
+
+#viewlink,#page_title,#material_settings,#material_select {
+    display: inline;
+    vertical-align: text-bottom;
+}
+
+/* MATERIAL PAGINATION */
+
+.pagination {
+    text-align: center;
+}
+.pagination ul li {
+    padding: 0pt;
+}
+#select_contents_book .pagination ul li a {
+    width: 95px;
+}
+.itemnav {
+    border-radius: 6pt;
+    border: 1pt solid #dde6dd;
+    background-color: #eef1ee;
+    padding: 0pt;
+    font-size: small;
+    margin: 0pt;
+}
+.active .itemnav {
+    font-weight: bold;
+}
+/* MATERIAL */
+
+/* -webkit-overflow-scrolling: touch 
+   this is needed for good scrolling on ios devices. Without it, scrolling is either not smooth, or not possible at all on
+   mobile safari
+*/
+#material_txtp,#material_txt1,#material_txt2,#material_txt3,#queries,#recentq,#notes,#opqforms,#opqctl,#words,#letters {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* WORDS */
+
+span[m] {
+    border-radius: 0.3rem;
+}
+
+/* Verse references */
+
+span.verserefblock, span.verserefinline {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    text-align: right;
+    unicode-bidi: embed;
+    direction: ltr;
+}
+span.verserefblock {
+    display: block;
+}
+span.versereftab {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    text-align: right;
+    float: left;
+    unicode-bidi: embed;
+    direction: ltr;
+}
+a.crossref,.nt_cmt a {
+    color: #000088;
+    background-color: #ffffff;
+}
+

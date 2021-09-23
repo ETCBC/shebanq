@@ -12,8 +12,8 @@ export class Message {
     $(this.hid).html(response.children(this.hid).html())
   }
 
-  msg(m) {
-    $(this.hid).html(m)
+  msg(text) {
+    $(this.hid).html(text)
   }
 }
 

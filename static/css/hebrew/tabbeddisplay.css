@@ -1,0 +1,149 @@
+/* HEBREW TABBED */
+
+.txtp,.txt1,.txt2,.txt3 {
+    color: #000000;
+}
+
+/* TAB1 */
+
+table.t1_table {
+    width: 100%;
+    direction: ltr;
+}
+td.t1_txt {
+}
+.t1_phf1 {
+    vertical-align: sub;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #0088dd;
+    margin-right: 1em;
+    margin-left: 0.5em;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+.t1_phfn {
+    vertical-align: super;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #aa6644;
+    margin-left: -1.5em;
+    margin-right: 0.5em;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+td.t1_tb1 {
+    width: 25px;
+    font-family: Menlo, Courier New, Courier, monospace;
+    letter-spacing: -1pt;
+    text-align: right;
+    font-size: small;
+    font-weight: bold;
+    color: #0000ff;
+    background-color: #ddddff;
+    text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+td.t1_tb10 {
+    width: 15px;
+    font-family: Menlo, Courier New, Courier, monospace;
+    letter-spacing: 2pt;
+    text-align: right;
+    font-size: large;
+    font-weight: bold;
+    color: #0000ff;
+    background-color: #ddddff;
+    text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+td.t1_txttp {
+    width: 35px;
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-size: small;
+    font-weight: bold;
+    color: #33aa44;
+    text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+td.t1_ctp {
+    width: 50px;
+    color: #aa6644;
+    font-size: small;
+    font-family: Menlo, Courier New, Courier, monospace;
+    text-align: right;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+/* TAB2 */
+dl.lv2 {
+    display: inline;
+}
+dt.lv2 {
+    font-size: small;
+    float: right;
+    clear: right;
+    width: 125px;
+    text-align: right;
+    margin-right: 0px;
+    direction: ltr;
+}
+dt.lv2:after {
+    content: " ";
+}
+dd.lv2 {
+    margin-right: 130px;
+}
+.phf2 {
+    vertical-align: super;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #0088dd;
+}
+.ctxt2 {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #0000bb;
+}
+.ccode2 {
+    color: #886644;
+    font-size: small;
+    font-family: Menlo, Courier New, Courier, monospace;
+}
+.ctp2 {
+    color: #dd8800;
+    font-size: small;
+    font-weight: bold;
+    font-family: Verdana, Arial, sans-serif;
+}
+.tb2 {
+    font-size: small;
+    color: #0000bb;
+}
+/* TAB3 */
+dl.lv3 {
+    display: inline;
+}
+dt.lv3 {
+    font-size: small;
+    float: right;
+    clear: right;
+    width: 125px;
+    text-align: right;
+    margin-right: 0px;
+}
+dt.lv3:after {
+    content: " ";
+}
+dd.lv3 {
+    font-size: x-large;
+    line-height: 1.7;
+    margin-right: 130px;
+}
+.tb3 {
+    font-size: small;
+    color: #0000bb;
+}
+

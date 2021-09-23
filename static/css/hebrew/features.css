@@ -1,0 +1,324 @@
+/* Hebrew data display */
+
+/* Borders in feature display */
+
+td.rr {
+    border-right: 4pt solid #aaaaaa;
+}
+td.r {
+    border-right: 4pt solid #ff0000;
+}
+td.ll {
+    border-left: 4pt solid #aaaaaa;
+}
+td.l {
+    border-left: 4pt solid #ff0000;
+}
+
+/* Hebrew Features */
+
+.heb {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    line-height: 1.7;
+    text-align: right;
+}
+div.heb,td.heb,p.heb {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+}
+div.pho,td.pho,p.pho {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+.hebx {
+    margin-left: 0em;
+    margin-right: 0.5em;
+}
+.pho {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: large;
+    line-height: 1.8;
+    text-align: left;
+}
+.phox {
+    margin-left: 0.5em;
+    margin-right: 0em;
+}
+div.txt1,div.txt2,div.txt3 {
+    border-bottom: 1px solid #bbbbbb;
+    padding-bottom: 0.2em;
+    padding-top: 0.2em;
+}
+.txtd {
+    text-align: right;
+}
+.txtd_base {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+}
+table.il {
+    display: inline-table;
+    empty-cells: show;
+    margin-top: 1pt;
+    margin-bottom: 1pt;
+    margin-left: 0pt;
+    margin-right: 0pt;
+    padding-left: 0pt;
+    padding-right: 0pt;
+    padding-top: 0pt;
+    padding-bottom: 0pt;
+    border-radius: 3pt;
+    border-collapse: separate;
+    border-spacing: 1pt 0pt;
+    border-top: 2pt solid #aaaaaa;
+    border-bottom: 2pt solid #aaaaaa;
+}
+table.c {
+    width: 10em;
+}
+tr.il {
+    padding-left: 0pt;
+    padding-right: 0pt;
+    margin-left: 0pt;
+    margin-right: 0pt;
+}
+td.il {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0pt;
+    margin-right: 0pt;
+}
+td.c {
+    text-align: center;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0pt;
+    margin-right: 0pt;
+}
+td.ht, td.l_ht {
+    text-align: right;
+    direction: rtl;
+    height: 30pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.pt, td.l_pt {
+    text-align: left;
+    direction: ltr;
+    height: 20pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.hl, td.l_hl {
+    text-align: right;
+    direction: rtl;
+    height: 30pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.tt, td.l_tt {
+    text-align: left;
+    direction: ltr;
+    height: 12pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.tl, td.l_tl {
+    text-align: left;
+    direction: ltr;
+    height: 12pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.gl, td.l_gl {
+    text-align: center;
+    direction: ltr;
+    height: 24pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.wd1, td.wd2, td.wd3, td.wd4, td.l_wd1, td.l_wd2, td.l_wd3, td.l_wd4 {
+    text-align: right;
+    direction: ltr;
+    height: 12pt;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+td.sp, td.l_sp {
+    text-align: right;
+    direction: ltr;
+    height: 12pt;
+    background-color: #ffffff;
+    border-left: 1pt solid #aaaaaa;
+    border-right: 1pt solid #aaaaaa;
+}
+td.sy, td.l_sy {
+    background-color: #ffaaff;
+    border-left: 4pt solid #ffaaff;
+    border-right: 4pt solid #ffaaff;
+}
+td.ph, td.l_ph {
+    text-align: right;
+    direction: ltr;
+    height: 12pt;
+    background-color: #aaffff;
+    border-left: 4pt solid #aaffff;
+    border-right: 4pt solid #aaffff;
+}
+td.cl, td.l_cl {
+    text-align: right;
+    direction: ltr;
+    height: 12pt;
+    background-color: #00ffff;
+    border-left: 4pt solid #00ffff;
+    border-right: 4pt solid #00ffff;
+}
+td.sn, td.l_sn {
+    text-align: right;
+    direction: ltr;
+    height: 12pt;
+    background-color: #88ffaa;
+    border-left: 4pt solid #88ffaa;
+    border-right: 4pt solid #88ffaa;
+}
+span.ht_ht, span.l_ht_ht {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    color: #000000;
+    line-height: 1.5;
+}
+span.ht_hk, span.l_ht_hk {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    color: #cc0000;
+    line-height: 1.5;
+}
+span.i_ht {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: large;
+    color: #000000;
+    line-height: 1.2;
+    float: right;
+}
+span.pt, span.l_pt {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: large;
+    color: #00b040;
+    line-height: 1.2;
+}
+span.hl_hlv, span.l_hl_hlv {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    color: #000000;
+    line-height: 1.5;
+}
+span.hl_hlc, span.l_hl_hlc {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: x-large;
+    color: #000000;
+    line-height: 1.5;
+}
+.i_hl {
+    font-family: Ezra SIL, SBL Hebrew, Verdana, sans-serif;
+    font-size: large;
+    color: #000000;
+    line-height: 1.2;
+    float: right;
+}
+span.tt, span.l_tt {
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-size: small;
+    color: #000000;
+}
+span.tl, span.l_tl, #g_entry, #entry, , #root {
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-size: small;
+    color: #000000;
+}
+.i_tl {
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-size: medium;
+    font-weight: bold;
+    color: #0000ff;
+}
+.i_gl, span.gl, span.l_gl {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #dd0000;
+}
+span.n {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small;
+    color: #888888;
+}
+span.a {
+    font-style: italic;
+}
+span.wd1_lang, span.l_wd1_lang, .i_lan {
+    font-size: small;
+    color: #0000ff;
+}
+span.wd1_pos, span.l_wd1_pos, .i_pos {
+    font-weight: bold;
+    color: #0000ff;
+}
+span.wd1_pdp, span.l_wd1_pdp, .i_pdp {
+    font-weight: bold;
+    color: #00aaaa;
+}
+span.wd1_subpos, span.l_wd1_subpos, .i_subpos, .i_nametype {
+    color: #0000ff;
+}
+span.wd2_gender, span.l_wd2_gender {
+    font-weight: bold;
+    color: #aa00aa;
+}
+span.wd2_gnumber, span.l_wd2_gnumber {
+    font-weight: bold;
+    color: #008888;
+}
+span.wd2_person, span.l_wd2_person {
+    font-weight: bold;
+    color: #aaaa00;
+}
+span.wd3_nme, span.wd3_prs, span.wd3_uvf, span.l_wd3_nme, span.l_wd3_prs, span.l_wd3_uvf  {
+    color: #22aa00;
+}
+span.wd3_pfm, span.wd3_vbe, span.wd3_vbs, span.l_wd3_pfm, span.l_wd3_vbe, span.l_wd3_vbs  {
+    color: #0044aa;
+}
+span.wd4_statfl, span.wd4_statrl, span.wd4_statfo, span.wd4_statro, span.l_wd4_statfl, span.l_wd4_statrl, span.l_wd4_statfo, span.l_wd4_statro {
+    font-family: Menlo, Courier New, Courier, monospace;
+    font-weight: bold;
+}
+span.wd4_statfl, span.wd4_statrl, span.l_wd4_statfl, span.l_wd4_statrl {
+    font-style: italic;
+}
+span.wd4_statfl, span.wd4_statfo, span.l_wd4_statfl, span.l_wd4_statfo {
+    color: #5500dd;
+}
+span.wd4_statrl, span.wd4_statro, span.l_wd4_statrl, span.l_wd4_statro {
+    color: #dd0055;
+}
+span.wd2_stem, span.l_wd2_stem {
+    font-weight: bold;
+}
+span.ph_typ, span.l_ph_typ {
+    font-weight: bold;
+}
+span.ph_det, span.l_ph_det {
+    font-size: small;
+}
+span.cl_typ, span.l_cl_typ {
+    font-weight: bold;
+}
+span.cl_par, span.l_cl_par {
+    font-style: normal;
+    font-weight: bold;
+    font-size: small;
+    color: #aa0000;
+}
+

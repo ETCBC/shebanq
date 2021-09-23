@@ -23,20 +23,20 @@ from viewdefs import (
     COLORS,
     COLORS_DEFAULT,
     ITEM_STYLE,
-    getRequestVal,
+    getVal,
     makeColors,
 )
 
 
 class VIEWSETTINGS:
-    def __init__(self, Chunk, URL, VERSIONS):
-        self.Chunk = Chunk
+    def __init__(self, Pieces, URL, VERSIONS):
+        self.Pieces = Pieces
         self.URL = URL
 
         self.state = collections.defaultdict(
             lambda: collections.defaultdict(lambda: {})
         )
-        self.pref = getRequestVal("rest", "", "pref")
+        self.pref = getVal("rest", "", "pref")
 
         self.VERSIONS = {v: info for (v, info) in VERSIONS.items()}
 
@@ -70,7 +70,7 @@ class VIEWSETTINGS:
                             continue
                         fid = f[3:]
                         if len(fid) <= 32 and fid.replace("_", "").isalnum():
-                            validationState = getRequestVal(
+                            validationState = getVal(
                                 group, qw, fid, default=False
                             )
                             if validationState is not None:
@@ -82,7 +82,7 @@ class VIEWSETTINGS:
                         validationState = VALIDATION[group][qw][f](
                             init, fromCookie.get(f, None)
                         )
-                        vstater = getRequestVal(group, qw, f, default=False)
+                        vstater = getVal(group, qw, f, default=False)
                         if vstater is not None:
                             validationState = vstater
                         fromCookie[f] = validationState
@@ -108,12 +108,9 @@ class VIEWSETTINGS:
         self.bookName = bookName
 
         for v in self.VERSIONS:
-            (books[v], booksOrder[v], bookIds[v], bookName[v]) = Chunk.getBooks(v)
+            (books[v], booksOrder[v], bookIds[v], bookName[v]) = Pieces.getBooks(v)
 
-    def theversion(self):
-        return self.state["material"][""]["version"]
-
-    def versionstate(self):
+    def theVersion(self):
         return self.state["material"][""]["version"]
 
     def writeConfig(self):
@@ -128,7 +125,7 @@ books: {json.dumps(self.books)},
 bookTrans: {json.dumps(BOOK_TRANS)},
 colorsDefault: {json.dumps(COLORS_DEFAULT)},
 colorsCls: {json.dumps(makeColors())},
-colorsV: {json.dumps(COLORS)},
+colors: {json.dumps(COLORS)},
 dncols: {DNCOLS},
 dnrows: {DNROWS},
 featureHost: "https://etcbc.github.io/bhsa/features",
@@ -137,7 +134,7 @@ nextTr: {json.dumps(NEXT_TR)},
 noteStatusCls: {json.dumps(NOTE_STATUS_CLS)},
 noteStatusNxt: {json.dumps(NOTE_STATUS_NXT)},
 noteStatusSym: {json.dumps(NOTE_STATUS_SYM)},
-pref: str(self.pref),
+pref: "{self.pref}",
 itemStyle: {json.dumps(ITEM_STYLE)},
 tabInfo: {json.dumps(TAB_INFO)},
 tabViews: {TAB_VIEWS},
@@ -159,16 +156,19 @@ verseFeaturesUrl: "{URL("hebrew", "verse")}",
 
 wordsPageUrl: "{URL("hebrew", "words")}",
 queriesPageUrl: "{URL("hebrew", "queries")}",
-queryTreeJsonUrl: "{URL("hebrew", "querytree.json")}",
-queriesRecentJsonUrl: "{URL("hebrew", "queriesr.json")}",
 notesPageUrl: "{URL("hebrew", "notes")}",
+
+queryTreeJsonUrl: "{URL("hebrew", "querytree.json")}",
 noteTreeJsonUrl: "{URL("hebrew", "notetree.json")}",
 
-queryMetaUrl: "{URL("hebrew", "querymeta")}",
-queryMetaFieldsJsonUrl: "{URL("hebrew", "querymetafields.json")}",
-queryMetaFieldJsonUrl: "{URL("hebrew", "querymetafield.json")}",
+queriesRecentJsonUrl: "{URL("hebrew", "queriesr.json")}",
+queryUpdateJsonUrl: "{URL("hebrew", "queryupdate.json")}",
+querySharingJsonUrl: "{URL("hebrew", "querysharing.json")}",
+
 notesVerseJsonUrl: "{URL("hebrew", "versenotes.json")}",
 noteUploadJsonUrl: "{URL("hebrew", "noteupload.json")}",
+
+itemRecordJsonUrl: "{URL("hebrew", "itemrecord")}",
 
 chartUrl: "{URL("hebrew", "chart")}",
 itemCsvUrl: "{URL("hebrew", "item.csv")}",

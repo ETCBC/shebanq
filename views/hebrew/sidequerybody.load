@@ -29,14 +29,14 @@ statusmap = dict(
     <div version="" class="version this">
         <table>
             <tr><td style="padding-left: 0px;"><a class="ctlexpand moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
-            <span class="flabel">shared</span></td><td>{{
+            <span class="fieldlabel">shared</span></td><td>{{
             if writable: }}
                 <input query_id="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
             {{else:}}
                 <span class="fa fa-{{='check' if qr['is_shared'] else 'close'}}"></span>
             {{pass}}</td><td class="dtval"><span id="shared_on">{{=qr['shared_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">created</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['created_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="flabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['modified_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="fieldlabel">created</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['created_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="fieldlabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['modified_on']}}</span></td></tr>
         </table>
     </div>
     <div id="dbmsg_q"></div>
@@ -89,11 +89,11 @@ statusmap = dict(
         <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctl ir fa fa-trash fa-lg"></span></a></p>
         <table>
             <tr>
-                <td><span class="flabel">status</span></td>
+                <td><span class="fieldlabel">status</span></td>
                 <td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td>
             </tr>
             <tr>
-                <td><span class="flabel">published</span></td>
+                <td><span class="fieldlabel">published</span></td>
                 <td>{{
                     if writable:
                     }}<input query_id="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_published else ''}}/>{{pass}}<span
@@ -104,23 +104,23 @@ statusmap = dict(
                 <td class="dtval"><span {{=XML('id="published_on"')}}>{{=qrinfo['published_on']}}</span></td>
             </tr>
             <tr>
-                <td><span class="flabel">results</span></td>
+                <td><span class="fieldlabel">results</span></td>
                 <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresults"')}}>{{=qresults}}</span></td>
             </tr>
             <tr class="detail">
-                <td><span class="flabel">words</span></td>
+                <td><span class="fieldlabel">words</span></td>
                 <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultslots"')}}>{{=qrinfo['resultmonads']}}</span></td>
             </tr>
             <tr class="detail">
-                <td><span class="flabel">modified</span></td>
+                <td><span class="fieldlabel">modified</span></td>
                 <td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"')}}>{{=qrinfo['xmodified_on']}}</span></td>
             </tr>
             <tr class="detail">
-                <td><span class="flabel">executed</span></td>
+                <td><span class="fieldlabel">executed</span></td>
                 <td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"')}}>{{=qrinfo['executed_on']}}</span></td>
             </tr>
             <tr class="detail">
-                <td><span class="flabel">engine</span></td>
+                <td><span class="fieldlabel">engine</span></td>
                 <td>&nbsp;</td>
                 <td class="dtval {{='exeversionold' if qrinfo['eversion'] in emdrosVersionsOld else ''}}"
                     title="this is {{='not ' if qrinfo['eversion'] in emdrosVersionsOld else ''}}the newest version"

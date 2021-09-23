@@ -14,11 +14,11 @@ export class ViewState {
     const { data } = this
     let vars = ""
     let sep = "?"
-    for (const group in data) {
-      const extra = group == "colorMap" ? "c_" : ""
-      for (const qw in data[group]) {
-        for (const name in data[group][qw]) {
-          vars += `${sep}${extra}${qw}${name}=${data[group][qw][name]}`
+    for (const [group, subData] of Object.entries(data)) {
+      const extra = group == "colormap" ? "c_" : ""
+      for (const [qw, keyValues] of Object.entries(subData)) {
+        for (const [key, value] of Object.entries(keyValues)) {
+          vars += `${sep}${extra}${qw}${key}=${value}`
           sep = "&"
         }
       }
@@ -31,8 +31,8 @@ export class ViewState {
 
     let vars = `?version=${vr}&mr=${mr}&qw=${qw}&iid=${iid}&tp=${tp}&extra=${extra}`
     const data = this.getHebrew()
-    for (const name in data) {
-      vars += `&${name}=${data[name]}`
+    for (const [key, value] of Object.entries(data)) {
+      vars += `&${key}=${value}`
     }
     return `${itemCsvUrl}${vars}`
   }
@@ -67,8 +67,8 @@ export class ViewState {
   }
 
   set(group, qw, values) {
-    for (const mb in values) {
-      this.data[group][qw][mb] = values[mb]
+    for (const [mb, value] of Object.entries(values)) {
+      this.data[group][qw][mb] = value
     }
     $.cookie(this.pref + group + qw, this.data[group][qw])
   }
@@ -90,13 +90,13 @@ export class ViewState {
     this.set("highlights", qw, values)
   }
   setColor(qw, values) {
-    this.set("colorMap", qw, values)
+    this.set("colormap", qw, values)
   }
   delColor(qw, name) {
-    this.del("colorMap", qw, name)
+    this.del("colormap", qw, name)
   }
   delColorsAll(qw) {
-    this.reset("colorMap", qw)
+    this.reset("colormap", qw)
   }
   getMaterial() {
     return this.data["material"][""]
@@ -150,12 +150,12 @@ export class ViewState {
     return this.data["highlights"][qw]["pub"]
   }
   colorMap(qw) {
-    return this.data["colorMap"][qw]
+    return this.data["colormap"][qw]
   }
   color(qw, id) {
-    return this.data["colorMap"][qw][id]
+    return this.data["colormap"][qw][id]
   }
   isColor(qw, cl) {
-    return cl in this.data["colorMap"][qw]
+    return cl in this.data["colormap"][qw]
   }
 }

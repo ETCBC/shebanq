@@ -8,10 +8,13 @@ EMDROS_VERSIONS = [
     'emdros 3.7.3',
 ]
 # copied manually from /opt/emdros/include/emdros/version-emdros.h
+
 CONFIG = dict(shebanqUser='shebanq')
+
 configPath = '/opt/emdros/cfg/mql.cfg'
 with open(configPath) as p:
     CONFIG['shebanqPassword'] = p.read().rstrip('\n')
+
 configPath = '/opt/emdros/cfg/host.cfg'
 with open(configPath) as p:
     CONFIG['shebanqHost'] = p.read().rstrip('\n')

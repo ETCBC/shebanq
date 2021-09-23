@@ -121,8 +121,8 @@ export class Page {
       vals["chapter"] = elem.attr("c")
       vals["verse"] = elem.attr("v")
       vals["mr"] = "m"
-      this.viewState.setMaterial(vals)
-      this.viewState.addHist()
+      VS.setMaterial(vals)
+      VS.addHist()
       this.go()
     })
     crossrefs.addClass("crossref")
@@ -137,8 +137,7 @@ export class Page {
         tasks["b"] = VS.tp()
       }
 
-      for (const task in tasks) {
-        const tp = tasks[task]
+      for (const [task, tp] of Object.entries(tasks)) {
         const tpLab = tpLabels[tp]
         const csvCtl = $(`#csv${task}_lnk_${vr}_${qw}`)
         if (task != "b" || (tp != "txtp" && tp != "txtd")) {
@@ -166,7 +165,7 @@ export class Page {
   init() {
     /* dress up the skeleton, initialize state variables
      */
-    const { viewState, picker2 } = this
+    const { picker2 } = this
 
     this.material = new Material()
     this.sidebars = new Sidebars()
@@ -183,14 +182,14 @@ export class Page {
     }
     const prev = {}
     this.prev = prev
-    for (const x in viewState.getMaterial()) {
+    for (const x in VS.getMaterial()) {
       prev[x] = null
     }
     this.materialStatusReset()
   }
 
   apply() {
-    /* apply the viewstate: hide and show material as prescribed by the viewstate
+    /* apply the settings: hide and show material as prescribed by the settings
      */
     this.material.apply()
     this.sidebars.apply()
@@ -229,13 +228,13 @@ export class Page {
 
     const { qw, iid, code } = origin
     const { lsQueriesMuted } = LS
-    const { viewState, sideSettings } = this
+    const { sideSettings } = this
     const active = VS.active(qw)
     if (active == "hlreset") {
       /* all ViewSettings for either queries or words are restored to 'factory' settings
        */
-      viewState.delColorsAll(qw)
-      viewState.setHighlight(qw, { active: "hlcustom", sel_one: colorDefault(qw, null) })
+      VS.delColorsAll(qw)
+      VS.setHighlight(qw, { active: "hlcustom", sel_one: colorDefault(qw, null) })
       sideSettings[qw].apply()
       return
     }
@@ -243,7 +242,7 @@ export class Page {
     const activeOption = $(`#${qw}${active}`)
     highlightRadio.removeClass("ison")
     activeOption.addClass("ison")
-    const colorMap = viewState.colorMap(qw)
+    const colorMap = VS.colorMap(qw)
 
     const paintings = {}
 
@@ -261,8 +260,8 @@ export class Page {
        */
       const paint = colorMap[iid] || colorDefault(qw == "q", iid)
       if (qw == "q") {
-        $($.parseJSON($("#theslots").val())).each((i, m) => {
-          paintings[m] = paint
+        $($.parseJSON($("#theslots").val())).each((i, slot) => {
+          paintings[slot] = paint
         })
       } else if (qw == "w") {
         paintings[iid] = paint
@@ -360,8 +359,7 @@ export class Page {
         for (const iid in chunk) {
           const color = colorSelect(iid)
           const slots = chunk[iid]
-          for (const m in slots) {
-            const slot = slots[m]
+          for (const slot of slots) {
             if (!(slot in paintings)) {
               paintings[slot] = color
             }
@@ -405,9 +403,8 @@ export class Page {
     const stl = itemStyle[qw]["prop"]
     const container = `#material_${VS.tp()}`
     const att = qw == "q" ? "m" : "l"
-    for (const item in paintings) {
-      const color = paintings[item]
-      $(`${container} span[${att}="${item}"]`).css(stl, colors[color][qw])
+    for (const [paint, color] of Object.entries(paintings)) {
+      $(`${container} span[${att}="${paint}"]`).css(stl, colors[color][qw])
     }
   }
 }

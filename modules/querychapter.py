@@ -6,6 +6,8 @@ from helpers import debug
 class QUERYCHAPTER:
     def __init__(self, Caching, db, PASSAGE_DBS):
         self.Caching = Caching
+        self.db = db
+        self.PASSAGE_DBS = PASSAGE_DBS
 
     def makeQCindex(self, vr):
         Caching = self.Caching

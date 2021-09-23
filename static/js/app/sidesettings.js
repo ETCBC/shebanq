@@ -39,8 +39,8 @@ export class SideSettings {
     const { qw } = this
     if (VS.get(qw) == "v") {
       if (qw != "n") {
-        for (const iid in PG.picker1List[qw]) {
-          PG.picker1List[qw][iid].apply(false)
+        for (const picker of PG.picker1List[qw]) {
+          picker.apply(false)
         }
         PG.picker2[qw].apply(true)
       }

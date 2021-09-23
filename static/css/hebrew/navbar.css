@@ -1,0 +1,132 @@
+/* Page layout */
+
+.page-header {
+    margin: 20pt 0 10pt 0;
+}
+.mastheader {
+    display: none;
+}
+.logos {
+    text-align: center;
+    margin-bottom: -100pt;
+    margin-top: 12pt;
+}
+.lbar {
+    height: 60px;
+}
+
+/* begin custom navbar */
+
+.navbar-inverse .navbar-inner {
+    background-image: none;
+    border: 2px solid #eeeeee;
+}
+
+.navbar-inner {
+    background-color: #cccccc;
+    border: 2px solid #eeeeee;
+    border-radius: 4px 4px 4px 4px;
+    min-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.dropdown-menu {
+    background-clip: padding-box;
+    background-color: #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    float: left;
+    left: 0;
+    list-style: none outside none;
+    margin: 2px 0 0;
+    min-width: 160px;
+    padding: 5px 0;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}
+
+.btn-group.open .btn.dropdown-toggle {
+  background-color: #cccccc;
+}
+
+.btn-group.open .btn.dropdown-toggle {
+  background-color: #cccccc;
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  color: #ffff00;
+  background-color: #777777;
+}
+
+.navbar .nav > li > a {
+    color: #000000;
+    float: none;
+    padding: 10px 15px;
+    text-decoration: none;
+    text-shadow: 0 0px 0 #444444;
+}
+
+.navbar .brand {
+  display: block;
+  float: left;
+  padding: 10px 20px 10px;
+  margin-left: -20px;
+  font-size: 20px;
+  font-weight: 200;
+  color: #000000;
+  text-shadow: 0 0px 0 #444444;
+}
+
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  color: #ffff00;
+  text-decoration: none;
+  background-color: #777777;
+}
+
+.navbar-text {
+  margin-bottom: 0;
+  line-height: 40px;
+  color: #000000;
+}
+
+.dropdown-menu li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 20px;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.navbar-link {
+  color: #000000;
+}
+
+.navbar-link:hover {
+  color: #ffff00;
+}
+
+/* end custom navbar */
+
+.navbar-inverse .navbar-prod {
+    color: #000000;
+    background-color: #cccccc;
+}
+
+.navbar-inverse .navbar-devel {
+    color: #000000;
+    background-color: #ffff00;
+}
+.navbar-inverse .navbar-local {
+    color: #000000;
+    background-color: #00ffff;
+}
+

@@ -1,0 +1,82 @@
+/* GENERIC */
+
+ul.text {
+    list-style-type: disc;
+}
+
+ol.text {
+    list-style-type: decimal;
+}
+
+.left_ {
+    float: left;
+}
+.right_ {
+    float: right;
+}
+label.radio {
+    margin-left: 0.5em;
+}
+.error {
+    background-color: #ffaaaa;
+}
+.warning {
+    background-color: #ffddaa;
+}
+.good {
+    background-color: #aaffaa;
+}
+.info {
+    background-color: #eeeeee;
+}
+.special {
+    background-color: #aaddff;
+}
+.note {
+    background-color: #ffff22;
+}
+.total {
+    font-weight: bold;
+}
+p.error, p.warning, p.good, p.info, p.special, p.note {
+    margin: 0 0 0px;
+}
+span.match {
+    font-weight: bold;
+    color: #0000aa;
+}
+span.submatch {
+    font-weight: normal;
+    color: #999999;
+}
+a.q,a.n {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+}
+a.qmy {
+    font-weight: bold;
+}
+a.qpriv {
+    font-style: italic;
+}
+.copyright {
+    font-size: small;
+}
+.citexpl {
+    font-size: small;
+}
+div.msg_ok {
+    background-color: #aaffaa;
+    font-weight: bold;
+    font-size: large;
+}
+div.msg_error {
+    background-color: #ffaaaa;
+    font-weight: bold;
+    font-size: large;
+}
+
+/* Dialogs */
+.pnll .ui-dialog-titlebar-close {
+  display: none;
+}
+

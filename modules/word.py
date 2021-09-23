@@ -10,6 +10,25 @@ class WORD:
         self.PASSAGE_DBS = PASSAGE_DBS
         self.VERSIONS = VERSIONS
 
+    def authRead(self, vr, lexicon_id):
+        PASSAGE_DBS = self.PASSAGE_DBS
+
+        authorized = None
+        if not lexicon_id or vr not in PASSAGE_DBS:
+            authorized = False
+        else:
+            wordRecord = self.getPlainInfo(vr, lexicon_id)
+            if wordRecord:
+                authorized = True
+        msg = (
+            f"No word with id {lexicon_id}"
+            if authorized is None
+            else f"No data version {vr}"
+            if vr not in PASSAGE_DBS
+            else ""
+        )
+        return (authorized, msg)
+
     def getItems(self, vr, chapter):
         PASSAGE_DBS = self.PASSAGE_DBS
 
@@ -26,7 +45,7 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
             else []
         )
 
-    def load(self, vr, lexicon_id):
+    def read(self, vr, lexicon_id):
         PASSAGE_DBS = self.PASSAGE_DBS
         slots = (
             PASSAGE_DBS[vr].executesql(
@@ -56,12 +75,26 @@ select * from lexicon where id in ({wordIdsRep})
 ;
 """
             wordRecords = sorted(
-                PASSAGE_DBS[vr].executesql(wordSql, asDict=True),
+                PASSAGE_DBS[vr].executesql(wordSql, as_dict=True),
                 key=lambda x: hebKey(x["entryid_heb"]),
             )
             for w in wordRecords:
                 r.append({"item": w, "slots": json.dumps(wordIds[w["id"]])})
         return r
+
+    def getPlainInfo(self, vr, lexicon_id):
+        PASSAGE_DBS = self.PASSAGE_DBS
+        if vr not in PASSAGE_DBS:
+            return {}
+
+        records = PASSAGE_DBS[vr].executesql(
+            f"""
+select * from lexicon where id = '{lexicon_id}'
+;
+""",
+            as_dict=True,
+        )
+        return records[0] if records else {}
 
     def getInfo(self, iid, vr, msgs):
         PASSAGE_DBS = self.PASSAGE_DBS
@@ -73,7 +106,7 @@ select * from lexicon where id = '{iid}'
 """
         wordRecord = dict(id=iid, versions={})
         for v in VERSIONS:
-            records = PASSAGE_DBS[v].executesql(sql, asDict=True)
+            records = PASSAGE_DBS[v].executesql(sql, as_dict=True)
             if records is None:
                 msgs.append(
                     ("error", f"Cannot lookup word with id {iid} in version {v}")
@@ -84,7 +117,7 @@ select * from lexicon where id = '{iid}'
                 wordRecord["versions"][v] = records[0]
         return wordRecord
 
-    def get_data(self, vr):
+    def getData(self, vr):
         PASSAGE_DBS = self.PASSAGE_DBS
 
         if vr not in PASSAGE_DBS:
@@ -121,9 +154,9 @@ select id, entry_heb, entryid_heb, lan, gloss from lexicon
         Caching = self.Caching
 
         (letters, words) = Caching.get(
-            f"words_data_{vr}_", lambda: self.get_data(vr), None
+            f"words_data_{vr}_", lambda: self.getData(vr), None
         )
-        version = ViewSettings.versionstate()
+        version = ViewSettings.theVersion()
 
         return dict(
             version=version,

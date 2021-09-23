@@ -46,7 +46,7 @@ and verse.verse_num = {verse_num}
 order by word_number
 ;
 """
-            wordRecords = passageDb.executesql(wsql, asDict=True) if passageDb else []
+            wordRecords = passageDb.executesql(wsql, as_dict=True) if passageDb else []
             wordData = []
             for record in wordRecords:
                 wordData.append(

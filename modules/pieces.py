@@ -3,7 +3,7 @@ import json
 from verse import Verse
 
 
-class CHUNK:
+class Pieces:
     def __init__(self, Caching, PASSAGE_DBS):
         self.Caching = Caching
         self.PASSAGE_DBS = PASSAGE_DBS

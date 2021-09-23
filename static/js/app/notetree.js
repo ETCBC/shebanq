@@ -238,8 +238,8 @@ class Tree {
         lsMuted.removeAll()
         tree.widget = $("#notes").fancytree("getTree")
         const s = tree.widget.getSelectedNodes(true)
-        for (const i in s) {
-          tree.storeSelectDeep(s[i])
+        for (const node of s) {
+          tree.storeSelectDeep(node)
         }
         tree.widget.render(true, true)
         tree.dressNotes()
@@ -330,8 +330,8 @@ class Tree {
     const { children } = node
     this.storeSelect(node)
     if (children != null) {
-      for (const n in children) {
-        this.storeSelectDeep(children[n])
+      for (const child of children) {
+        this.storeSelectDeep(child)
       }
     }
   }
@@ -430,8 +430,8 @@ class Upload {
       processData: false, // tell jQuery not to process the data
       contentType: false, // tell jQuery not to set contentType
     }).done(data => {
-      for (const m of data.msgs) {
-        msgs.msg(m)
+      for (const mg of data.msgs) {
+        msgs.msg(mg)
       }
     }, "json")
     return false

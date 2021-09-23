@@ -100,7 +100,7 @@ export class Material {
       doFetch &&
       (!materialFetched[tp] || !(tp in materialKind) || materialKind[tp] != tr)
     ) {
-      this.message.msg("fetching data ...")
+      this.message.msg("fetching data ... ")
       PG.sidebars.afterMaterialFetch()
       $.get(
         `${pageMaterialUrl}${vars}`,
@@ -126,13 +126,13 @@ export class Material {
   gotoVerse() {
     /* go to the selected verse
      */
-    $(".vhl").removeClass("vhl")
+    $(".versehighlight").removeClass("versehighlight")
     const xxx = PG.mr == "r" ? "div[tvid]" : `div[tvid="${VS.verse()}"]`
     const verseTarget = $(`#material_${VS.tp()}>${xxx}`).filter(":first")
     if (verseTarget != undefined && verseTarget[0] != undefined) {
       verseTarget[0].scrollIntoView()
       $("#navbar")[0].scrollIntoView()
-      verseTarget.addClass("vhl")
+      verseTarget.addClass("versehighlight")
     }
   }
   process() {
@@ -143,8 +143,8 @@ export class Material {
     let mf = 0
     const tp = VS.tp()
     const tr = VS.tr()
-    for (const x in materialFetched) {
-      if (materialFetched[x]) {
+    for (const isFetched of Object.values(materialFetched)) {
+      if (isFetched) {
         mf += 1
       }
     }

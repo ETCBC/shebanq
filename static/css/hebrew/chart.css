@@ -1,0 +1,42 @@
+/* CHART */
+
+table.chart, table.chp {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-size: small;
+}
+table.chp tr {
+    height: 0.6em;
+}
+td.bnm {
+    font-size: small;
+    height: 0.8em;
+    line-height: 0.7em;
+    text-align: right;
+    vertical-align: middle;
+}
+td.chp {
+    vertical-align: middle;
+}
+table.chp td {
+    border: 1pt solid #dde6dd;
+    width: 8px;
+    height: 6px;
+    line-height: 6px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+table.chp td a.s1 {color: white;}
+table.chp td a.s5 {color: white;}
+td.z0 {background-color: #ffffff;}
+td.z1 {background-color: #00ff00;}
+td.z2 {background-color: #ffff00;}
+td.z3 {background-color: #ffcc66;}
+td.z4 {background-color: #ff0000;}
+td.z5 {background-color: #ff00ff;}
+td.z6 {background-color: #8800ee;}
+td.z7 {background-color: #000000;}
+

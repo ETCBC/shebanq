@@ -31,8 +31,8 @@ export class QueryRecent {
       this.loaded = true
       this.diagnostics.clear()
       const { msgs, good, queries } = json
-      for (const m of msgs) {
-        this.diagnostics.msg(m)
+      for (const mg of msgs) {
+        this.diagnostics.msg(mg)
       }
       if (good) {
         this.queries = queries
@@ -48,8 +48,8 @@ export class QueryRecent {
     const dest = $("#recentqi")
     const { queries } = this
     let html = ""
-    for (let n = 0; n < queries.length; n++) {
-      const { id, text, title, version } = queries[n]
+    for (const query of queries) {
+      const { id, text, title, version } = query
       html += `<a class="q" query_id="${id}"
           v="${version}" href="#"
           title="${title}">${text}</a><br/>

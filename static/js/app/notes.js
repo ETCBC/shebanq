@@ -12,7 +12,7 @@ export class Notes {
     this.saveCtls = $("span.nt_main_sav")
     this.saveCtl = this.saveCtls.find('a[tp="s"]')
     this.revertCtl = this.saveCtls.find('a[tp="r"]')
-    this.loggedIn = false
+    this.authenticated = false
     this.mainCtrl = $("a.nt_main_ctl")
 
     contentNew.find(".vradio").each((i, el) => {
@@ -66,9 +66,9 @@ export class Notes {
       this.mainCtrl.addClass("nt_loaded")
       for (const noteVerse of Object.values(verseList)) {
         noteVerse.showNotes(false)
-        this.loggedIn = noteVerse.loggedIn
+        this.authenticated = noteVerse.authenticated
       }
-      if (this.loggedIn) {
+      if (this.authenticated) {
         this.saveCtls.show()
       }
     } else {
@@ -144,12 +144,12 @@ class NoteVerse {
     $.post(notesVerseJsonUrl, sendData, data => {
       this.loaded = true
       diagnostics.clear()
-      for (const m of data.msgs) {
-        diagnostics.msg(m)
+      for (const mg of data.msgs) {
+        diagnostics.msg(mg)
       }
-      const { good, users, notes, keyIndex, changed, loggedIn } = data
+      const { good, users, notes, keyIndex, changed, authenticated } = data
       if (good) {
-        this.process(users, notes, keyIndex, changed, loggedIn)
+        this.process(users, notes, keyIndex, changed, authenticated)
         if (adjustVerse) {
           if (PG.mr == "m") {
             VS.setMaterial({ verse })
@@ -160,7 +160,7 @@ class NoteVerse {
     })
   }
 
-  process(users, notes, keyIndex, changed, loggedIn) {
+  process(users, notes, keyIndex, changed, authenticated) {
     const {
       sidebars: { sideFetched, sidebar },
     } = PG
@@ -174,7 +174,7 @@ class NoteVerse {
     this.notesOld = notes
     this.origKeyIndex = keyIndex
     this.editOld = []
-    this.loggedIn = loggedIn
+    this.authenticated = authenticated
     this.genHtml(true)
     this.dirty = false
     this.applyDirty()
@@ -183,7 +183,7 @@ class NoteVerse {
 
   decorate() {
     const { noteStatusCls, noteStatusSym, noteStatusNxt } = Config
-    const { dest, loggedIn, saveCtls, editing, saveCtl, editCtl } = this
+    const { dest, authenticated, saveCtls, editing, saveCtl, editCtl } = this
     dest
       .find("td.nt_stat")
       .find("a")
@@ -194,11 +194,11 @@ class NoteVerse {
         const nextcode = noteStatusNxt[statcode]
         const nextsym = noteStatusSym[nextcode]
         const row = elem.closest("tr")
-        for (const c in noteStatusCls) {
-          row.removeClass(noteStatusCls[c])
+        for (const cls of Object.values(noteStatusCls)) {
+          row.removeClass(cls)
         }
-        for (const c in noteStatusSym) {
-          elem.removeClass(`fa-${noteStatusSym[c]}`)
+        for (const cls of Object.values(noteStatusSym)) {
+          elem.removeClass(`fa-${cls}`)
         }
         row.addClass(noteStatusCls[nextcode])
         elem.attr("code", nextcode)
@@ -217,7 +217,7 @@ class NoteVerse {
         }
       })
     dest.find("tr.nt_cmt").show()
-    if (loggedIn) {
+    if (authenticated) {
       $("span.nt_main_sav").show()
       saveCtls.show()
       if (editing) {
@@ -239,10 +239,9 @@ class NoteVerse {
     const keyIndex = this.origKeyIndex
     let html = ""
     this.nnotes += notes.length
-    for (let n = 0; n < notes.length; n++) {
-      const nline = notes[n]
-      const { user_id, note_id, is_published, is_shared, ro } = nline
-      const keywordsTrim = $.trim(nline.keywords)
+    for (const note of notes) {
+      const { user_id, note_id, is_published, is_shared, ro } = note
+      const keywordsTrim = $.trim(note.keywords)
       const keywordList = keywordsTrim.split(/\s+/)
       let mute = false
       for (const keywords of keywordList) {
@@ -259,18 +258,18 @@ class NoteVerse {
       const user = this.usersOld[user_id]
       const pubc = is_published ? "ison" : ""
       const sharedc = is_shared ? "ison" : ""
-      const statc = noteStatusCls[nline.status]
-      const statsym = noteStatusSym[nline.status]
+      const statc = noteStatusCls[note.status]
+      const statsym = noteStatusSym[note.status]
       const editAtt = ro ? "" : ' edit="1"'
       const editCls = ro ? "" : " edit"
       html += `<tr class="nt_cmt nt_info ${statc}${editCls}" note_id="${note_id}"
           clause_atom="${clause_atom}"${editAtt}">`
       if (ro) {
         html += `<td class="nt_stat">
-            <span class="fa fa-${statsym} fa-fw" code="${nline.status}"></span>
+            <span class="fa fa-${statsym} fa-fw" code="${note.status}"></span>
           </td>`
-        html += `<td class="keywords">${escHT(nline.keywords)}</td>`
-        const ntext = specialLinks(markdown.toHTML(markdownEscape(nline.ntext)))
+        html += `<td class="keywords">${escHT(note.keywords)}</td>`
+        const ntext = specialLinks(markdown.toHTML(markdownEscape(note.ntext)))
         html += `<td class="nt_cmt">${ntext}</td>`
         html += `<td class="nt_user" colspan="3" user_id="${user_id}">${escHT(
           user
@@ -281,12 +280,12 @@ class NoteVerse {
         html += `<span class="ctli pradio fa fa-quote-right fa-fw ${pubc}"
           title="published?"></span>`
       } else {
-        this.editOld.push({ clause_atom, note: nline })
+        this.editOld.push({ clause_atom, note })
         html += `<td class="nt_stat">
           <a href="#" title="set status" class="fa fa-${statsym} fa-fw"
-          code="${nline.status}"></a></td>`
-        html += `<td class="keywords"><textarea>${nline.keywords}</textarea></td>`
-        html += `<td class="nt_cmt"><textarea>${nline.ntext}</textarea></td>`
+          code="${note.status}"></a></td>`
+        html += `<td class="keywords"><textarea>${note.keywords}</textarea></td>`
+        html += `<td class="nt_cmt"><textarea>${note.ntext}</textarea></td>`
         html += `<td class="nt_user" colspan="3" user_id="{user_id}">${escHT(
           user
         )}</td>`
@@ -332,14 +331,14 @@ class NoteVerse {
       notesVerseJsonUrl,
       sendData,
       data => {
-        const { good, users, notes, keyIndex, changed, loggedIn } = data
+        const { good, users, notes, keyIndex, changed, authenticated } = data
         this.diagnostics.clear()
-        for (const m of data.msgs) {
-          this.diagnostics.msg(m)
+        for (const mg of data.msgs) {
+          this.diagnostics.msg(mg)
         }
         if (good) {
           this.dest.find("tr[clause_atom]").remove()
-          this.process(users, notes, keyIndex, changed, loggedIn)
+          this.process(users, notes, keyIndex, changed, authenticated)
         }
       },
       "json"
@@ -353,8 +352,8 @@ class NoteVerse {
       this.dirty = false
       return
     }
-    for (let n = 0; n < editOld.length; n++) {
-      const { clause_atom, note: noteOld } = editOld[n]
+    for (const entry of editOld) {
+      const { clause_atom, note: noteOld } = entry
       const { note_id } = noteOld
       const noteNew =
         note_id == 0
@@ -407,8 +406,8 @@ class NoteVerse {
     if (editOld == undefined) {
       return
     }
-    for (let n = 0; n < editOld.length; n++) {
-      const { clause_atom, note: noteOld } = editOld[n]
+    for (const entry of editOld) {
+      const { clause_atom, note: noteOld } = entry
       const { note_id, user_id } = noteOld
       const noteNew =
         note_id == 0
@@ -487,7 +486,7 @@ class NoteVerse {
       this.fetch(adjustVerse)
     } else {
       this.dest.find("tr.nt_cmt").show()
-      if (this.loggedIn) {
+      if (this.authenticated) {
         this.saveCtls.show()
         if (this.editing) {
           this.saveCtl.show()

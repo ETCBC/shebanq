@@ -6,13 +6,13 @@ BLOCK_SIZE = 500
 
 
 class CHART:
-    def __init__(self, Chunk, Word, Query, Note):
-        self.Chunk = Chunk
+    def __init__(self, Pieces, Word, Query, Note):
+        self.Pieces = Pieces
         self.Word = Word
         self.Query = Query
         self.Note = Note
 
-    def get(self, vr, qw, iidRep):
+    def get(self, vr, qw, iidRep, msg):
         Caching = self.Caching
 
         return Caching.get(
@@ -28,11 +28,11 @@ class CHART:
 
         (iid, keywords) = iDecode(qw, iidRep)
         (nSlots, slotSets) = (
-            Query.load(vr, iid)
+            Query.read(vr, iid)
             if qw == "q"
-            else Word.load(vr, iid)
+            else Word.read(vr, iid)
             if qw == "w"
-            else Note.load(vr, iid, keywords)
+            else Note.read(vr, iid, keywords)
         )
         result = self.compose(vr, slotSets)
         result.update(qw=qw)
@@ -125,13 +125,13 @@ select chapter_num, first_m, last_m from chapter
         # return a dict keyed by book, with values lists of blocks
         # (chapter num, start point, end point, number of results, size)
 
-        Chunk = self.Chunk
+        Pieces = self.Pieces
 
         slots = flatten(slotSets)
         chart = {}
         chartOrder = []
         if len(slots):
-            (books, booksOrder, bookIds, bookName) = Chunk.getBooks(vr)
+            (books, booksOrder, bookIds, bookName) = Pieces.getBooks(vr)
             (blocks, blockMapping) = self.getBlocks(vr)
             results = {}
 

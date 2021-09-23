@@ -4,8 +4,8 @@
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in nr and nr['id'] and nr['id'] != '0':}}
 <table>
-    <tr><td><span class="nlabel">author</span></td><td><spanclass="nauth">{{=nr['first_name']}} {{=nr['last_name']}}</span></td></tr>
-    <tr><td><span class="nlabel">keyword</span></td><td><span class="t1_kw">{{=nr['keywords']}}</span></td></tr>
+    <tr><td><span class="notelabel">author</span></td><td><spanclass="nauth">{{=nr['first_name']}} {{=nr['last_name']}}</span></td></tr>
+    <tr><td><span class="notelabel">keyword</span></td><td><span class="t1_kw">{{=nr['keywords']}}</span></td></tr>
 </table>
 {{for v in VERSION_ORDER:
     nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))
@@ -20,7 +20,7 @@
     <a id="select_control_chart_{{=v}}_n" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="nlabel">notes</span></td><td class="nstat">{{=nrinfo['n'] or 0}}</td></tr>
+        <tr class="detail"><td><span class="notelabel">notes</span></td><td class="nstat">{{=nrinfo['n'] or 0}}</td></tr>
     </table>
 </div>
 {{pass}}

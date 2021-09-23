@@ -231,18 +231,18 @@ $(() => {
     let chapterUrlRaw
     const notePrefix = "shebanq:"
 
-    const { version: vr, mr, qw, viewState, iid } = PG
-    const tp = viewState.tp()
-    const tr = viewState.tr()
-    const w = viewState.get("w")
-    const q = viewState.get("q")
-    const n = viewState.get("n")
+    const { version: vr, mr, qw, iid } = PG
+    const tp = VS.tp()
+    const tr = VS.tr()
+    const w = VS.get("w")
+    const q = VS.get("q")
+    const n = VS.get("n")
     const theBook = $("#thebook").html()
     const theChapter = $("#thechapter").html()
-    const book = viewState.book()
-    const chapter = viewState.chapter()
-    const verse = viewState.verse()
-    const page = viewState.page()
+    const book = VS.book()
+    const chapter = VS.chapter()
+    const verse = VS.verse()
+    const page = VS.page()
     const pageUrlVars = `"&version=${vr}&mr=${mr}&qw=${qw}&tp=${tp}&tr=${tr}`
     const sidebarUrlVars = `&wget=${w}&qget=${q}&nget=${n}`
     const vars = `${pageUrlVars}${sidebarUrlVars}`

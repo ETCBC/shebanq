@@ -104,6 +104,8 @@ export class Chart {
      */
     const { itemStyle, colorsCls } = Config
 
+    const msg = $("#r_msg").val()
+
     let nBooks = 0
     let bookList = $(`#r_chartorder${this.qw}`).val()
     let bookData = $(`#r_chart${this.qw}`).val()
@@ -116,13 +118,16 @@ export class Chart {
       bookData = {}
     }
     let html = ""
+    if (msg) {
+      html += `<p>${msg}</p>`
+    }
     html += `
       <p>
         <a id="theitemc"
           title="back to ${itemStyle[this.qw]["tag"]} (version ${this.vr})"
           href="#">back</a>
-        </p>
-        <table class="chart">`
+      </p>
+      <table class="chart">`
 
     const nColorsC = colorsCls.length
     for (const book of bookList) {
@@ -133,12 +138,11 @@ export class Chart {
           <td class="chp"><table class="chp">
         <tr>`
       let col = 0
-      for (let i = 0; i < blocks.length; i++) {
+      for (const blockInfo of blocks) {
         if (col == chartCols) {
           html += "</tr><tr>"
           col = 0
         }
-        const blockInfo = blocks[i]
         const chapterNum = blockInfo[0]
         const chapterRange = `${blockInfo[1]}-${blockInfo[2]}`
         const blockResults = blockInfo[3]

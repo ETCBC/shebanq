@@ -305,8 +305,8 @@ class Tree {
         lsMuted.removeAll()
         tree.widget = $("#queries").fancytree("getTree")
         const s = tree.widget.getSelectedNodes(true)
-        for (const i in s) {
-          tree.storeSelectDeep(s[i])
+        for (const node of s) {
+          tree.storeSelectDeep(node)
         }
         tree.widget.render(true, true)
         tree.dressQueries()
@@ -372,8 +372,8 @@ class Tree {
     const { children } = node
     this.storeSelect(node)
     if (children != null) {
-      for (const n in children) {
-        this.storeSelectDeep(children[n])
+      for (const child of children) {
+        this.storeSelectDeep(child)
       }
     }
   }
@@ -405,7 +405,7 @@ class Tree {
   }
 
   record(tp, o, update, view) {
-    const { queryMetaJsonUrl, pageUrl } = Config
+    const { itemRecordJsonUrl, pageUrl } = Config
 
     const obj_id = $(`#id_${tp}`).val()
     if (!update && obj_id == "0" && tp != "q") {
@@ -431,7 +431,7 @@ class Tree {
     }
 
     $.post(
-      queryMetaJsonUrl,
+      itemRecordJsonUrl,
       sendData,
       json => {
         const {
@@ -444,8 +444,8 @@ class Tree {
           projectRecord,
         } = json
         diagnosticsTree.clear()
-        for (const m of msgs) {
-          diagnosticsTree.msg(m)
+        for (const mg of msgs) {
+          diagnosticsTree.msg(mg)
         }
         if (update && tp == "q") {
           if (good) {

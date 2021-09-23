@@ -113,7 +113,7 @@ auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = False
 # If the user tried to access the register page but is already logged in,
 # redirect to profile.
-auth.settings.loggedUrl = URL("user", args="profile")
+auth.settings.logged_url = URL("user", args="profile")
 
 use_janrain(auth, filename="private/janrain.key")
 

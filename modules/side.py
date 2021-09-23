@@ -1,5 +1,4 @@
 from viewdefs import colorPicker
-from helpers import debug
 
 
 class SIDE:
@@ -34,7 +33,6 @@ class SIDE:
             )
         else:
             if qw == "q":
-                debug(f"original function PUB={is_published}")
                 slotSets = Query.getItems(vr, chapter, is_published == "v")
                 sideItems = Query.group(vr, slotSets)
             elif qw == "w":

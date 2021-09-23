@@ -33,8 +33,8 @@ export class SideContent {
     }
   }
 
-  msg(m) {
-    $(this.hid).html(m)
+  msg(mg) {
+    $(this.hid).html(mg)
   }
 
   selectVersion(v) {
@@ -127,8 +127,8 @@ export class SideContent {
       }
       if (qw) {
         const { msgs } = State
-        for (const m of msgs) {
-          this.diagnostics.msg(m)
+        for (const mg of msgs) {
+          this.diagnostics.msg(mg)
         }
       }
       thisTitle = $(`#${itemTag}`).val()
@@ -379,7 +379,7 @@ export class SideContent {
   }
 
   sendVal(query, box, valNew, vr, iid, fieldName, val) {
-    const { queryMetaFieldJsonUrl } = Config
+    const { querySharingJsonUrl } = Config
 
     const sendData = {}
     sendData.version = vr
@@ -388,7 +388,7 @@ export class SideContent {
     sendData.val = val
 
     $.post(
-      queryMetaFieldJsonUrl,
+      querySharingJsonUrl,
       sendData,
       data => {
         const { good, modDates, modCls, extra, msgs } = data
@@ -407,8 +407,7 @@ export class SideContent {
           box.prop("checked", !valNew)
         }
 
-        for (const field in extra) {
-          const instruction = extra[field]
+        for (const [field, instruction] of Object.entries(extra)) {
           const prop = instruction[0]
           const val = instruction[1]
 
@@ -427,8 +426,8 @@ export class SideContent {
         const theseDiagnostics =
           fieldName == "is_shared" ? this.diagnostics : this.diagnosticsVersion
         theseDiagnostics.clear()
-        for (const m of msgs) {
-          theseDiagnostics.msg(m)
+        for (const mg of msgs) {
+          theseDiagnostics.msg(mg)
         }
       },
       "json"
@@ -436,12 +435,12 @@ export class SideContent {
   }
 
   sendVals(sendData) {
-    const { queryMetaFieldsJsonUrl } = Config
+    const { queryUpdateJsonUrl } = Config
 
     const { execute, version: vr } = sendData
 
     $.post(
-      queryMetaFieldsJsonUrl,
+      queryUpdateJsonUrl,
       sendData,
       data => {
         const { good, query, msgs } = data
@@ -449,8 +448,8 @@ export class SideContent {
         const msg = this.diagnosticsVersion
         msg.clear()
 
-        for (const m of msgs) {
-          msg.msg(m)
+        for (const mg of msgs) {
+          msg.msg(mg)
         }
 
         if (good) {

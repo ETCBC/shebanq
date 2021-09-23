@@ -136,18 +136,18 @@ export class SelectLanguage {
     let html = ""
     html += '<table class="pagination">'
     const langs = Object.keys(bookLangs).sort()
-    for (const item of langs) {
-      const langInfo = bookLangs[item]
+    for (const lng of langs) {
+      const langInfo = bookLangs[lng]
       const nameEN = langInfo[0]
       const nameOwn = langInfo[1]
-      const activeCls = theLang == item ? ' class="active"' : ""
+      const activeCls = theLang == lng ? ' class="active"' : ""
       html += `
       <tr>
         <td${activeCls}>
-          <a class="itemnav" href="#" item="${item}">${nameOwn}
+          <a class="itemnav" href="#" item="${lng}">${nameOwn}
         </td>
         <td${activeCls}>
-          <a class="itemnav" href="#" item="${item}">${nameEN}</td>
+          <a class="itemnav" href="#" item="${lng}">${nameEN}</td>
       </tr>`
     }
     html += "</table>"
@@ -222,7 +222,7 @@ class SelectBook {
     const { bookTrans, bookOrder } = Config
 
     const theBook = VS.book()
-    const lang = VS.lang()
+    const lng = VS.lang()
     const theseBooksOrder = bookOrder[PG.version]
     const nItems = theseBooksOrder.length
 
@@ -230,12 +230,12 @@ class SelectBook {
 
     let html = ""
     html += '<div class="pagination"><ul>'
-    for (const item of theseBooksOrder) {
-      const itemRep = bookTrans[lang][item]
-      const bookCls = theBook == item ? ' class="active"' : ""
+    for (const book of theseBooksOrder) {
+      const itemRep = bookTrans[lng][book]
+      const bookCls = theBook == book ? ' class="active"' : ""
       html += `
         <li${bookCls}>
-          <a class="itemnav" href="#" item="${item}">${itemRep}</a>
+          <a class="itemnav" href="#" item="${book}">${itemRep}</a>
         </li>`
     }
     html += "</ul></div>"
@@ -366,11 +366,11 @@ class SelectItems {
     if (nItems != undefined) {
       if (nItems != 0) {
         html = '<div class="pagination"><ul>'
-        for (const item of itemList) {
-          const itemCls = theItem == item ? ' class="active"' : ""
+        for (const itm of itemList) {
+          const itemCls = theItem == itm ? ' class="active"' : ""
           html += `
           <li${itemCls}>
-            <a class="itemnav" href="#" item="${item}">${item}</a>
+            <a class="itemnav" href="#" item="${itm}">${itm}</a>
           </li>`
         }
         html += "</ul></div>"

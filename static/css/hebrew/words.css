@@ -1,0 +1,67 @@
+/* Words page */
+
+.dict {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    text-align: right;
+    font-size: large;
+}
+td.d {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    text-align: right;
+    width: 140px;
+    margin-bottom: 0pt;
+    margin-top: 0pt;
+}
+td.dd {
+    text-align: right;
+}
+a.d {
+    color: #000000;
+    text-align: right;
+}
+p.d {
+    text-align: right;
+    width: 1.2em;
+}
+p.dd {
+    font-weight: bold;
+    text-align: right;
+}
+.dletterh {
+    text-align: right;
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+    font-size: xx-large;
+    margin-bottom: 0pt;
+    margin-top: 0pt;
+}
+.dletter {
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-size: large;
+}
+.d {
+    font-weight: normal;
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+}
+p.d {
+    font-weight: normal;
+    color: #000000;
+    background-color: #ffffff;
+}
+p.d.ison {
+    font-weight: bold;
+    color: #0000ff;
+    background-color: #ffff00;
+}
+.dlanh {
+    text-align: right;
+    font-family: "Ezra SIL", "SBL Hebrew", sans-serif;
+    font-weight: bold;
+}
+.dgl {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: x-small;
+    color: #dd0000;
+}
+

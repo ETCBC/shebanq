@@ -1,10 +1,10 @@
 {{ left_sidebar_enabled = True }}
 {{ extend 'layout.html' }}
 
-{{ include 'hebrew/text_body.html' }}
+{{ include 'hebrew/textbody.html' }}
 
 {{ block left_sidebar }}
-{{ include 'hebrew/text_sidebar.html' }}
+{{ include 'hebrew/textsidebar.html' }}
 {{ end }}
 <script type="text/javascript">{{=XML(ViewSettings.writeConfig())}}</script>
 <script src="{{=URL('static', 'js/app/main.js')}}" type="module"></script>

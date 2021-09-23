@@ -56,7 +56,7 @@ where shebanq_note.note.keywords like '% {keywordsSql} %'
             dataRows = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
         else:
             (nSlots, slotSets) = (
-                Query.load(vr, iid) if qw == "q" else Word.load(vr, iid)
+                Query.read(vr, iid) if qw == "q" else Word.read(vr, iid)
             )
             slots = flatten(slotSets)
             dataRows = []

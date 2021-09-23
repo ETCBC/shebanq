@@ -17,17 +17,17 @@
     <a id="select_control_chart_{{=v}}_w" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="wlabel">vocalized</span></td><td class="dd i_hl">{{=wrinfo['g_entry_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">consonantal</span></td><td class="dd i_hl">{{=wrinfo['entry_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">disambiguated</span></td><td class="dd i_hl">{{=wrinfo['entryid_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">vocalized</span></td><td>{{=wrinfo['g_entry']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">consonantal</span></td><td>{{=wrinfo['entry']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">disambiguated</span></td><td class="i_tl">{{=wrinfo['entryid']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">part-of-speech</span></td><td class="i_pos">{{=wrinfo['pos']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">lexical set</span></td><td class="i_subpos">{{=wrinfo['subpos']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">proper noun category</span></td><td class="i_nametype">{{=wrinfo['nametype']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">language</span></td><td class="i_lan">{{=wrinfo['lan']}}</td></tr>
-        <tr class="detail"><td><span class="wlabel">gloss</span></td><td class="i_gl">{{=wrinfo['gloss']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td class="dd i_hl">{{=wrinfo['g_entry_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td class="dd i_hl">{{=wrinfo['entry_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="dd i_hl">{{=wrinfo['entryid_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td>{{=wrinfo['g_entry']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td>{{=wrinfo['entry']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="i_tl">{{=wrinfo['entryid']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">part-of-speech</span></td><td class="i_pos">{{=wrinfo['pos']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">lexical set</span></td><td class="i_subpos">{{=wrinfo['subpos']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">proper noun category</span></td><td class="i_nametype">{{=wrinfo['nametype']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">language</span></td><td class="i_lan">{{=wrinfo['lan']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">gloss</span></td><td class="i_gl">{{=wrinfo['gloss']}}</td></tr>
     </table>
 </div>
 {{pass}}

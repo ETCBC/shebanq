@@ -8,8 +8,11 @@ RESULT_PAGE_SIZE = 20
 
 
 class MATERIAL:
-    def __init__(self, Caching, PASSAGE_DBS):
+    def __init__(self, Caching, Word, Query, Note, PASSAGE_DBS):
         self.Caching = Caching
+        self.Word = Word
+        self.Query = Query
+        self.Note = Note
         self.PASSAGE_DBS = PASSAGE_DBS
 
     def getPassage(self, vr, bk, ch):
@@ -31,7 +34,7 @@ class MATERIAL:
 select * from book where name = '{bookname}'
 ;
 """,
-            asDict=True,
+            as_dict=True,
         )
         book = bookrecords[0] if bookrecords else {}
         if book and "id" in book:
@@ -40,7 +43,7 @@ select * from book where name = '{bookname}'
 select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]}
 ;
 """,
-                asDict=True,
+                as_dict=True,
             )
             chapter = chapterrecords[0] if chapterrecords else {}
         else:
@@ -105,11 +108,11 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
                 )
             else:
                 (nSlots, slotSets) = (
-                    Query.load(vr, iid)
+                    Query.read(vr, iid)
                     if qw == "q"
-                    else Word.load(vr, iid)
+                    else Word.read(vr, iid)
                     if qw == "w"
-                    else Note.load(vr, iid, keywords)
+                    else Note.read(vr, iid, keywords)
                 )
                 (nresults, npages, verses, slots) = self.getPagination(
                     vr, page, slotSets

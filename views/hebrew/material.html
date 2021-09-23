@@ -64,11 +64,11 @@ occlb = 'occurrences' if hits != 1 else 'occurrence'
         }}
             <div class="{{=tp}}" tvid="{{=v}}">
             {{if material.mr == 'm':
-                verseClass = 'vrefi' if tp == 'txtp' or tp == 'txtd' else 'vreft'
+                verseClass = 'verserefinline' if tp == 'txtp' or tp == 'txtd' else 'versereftab'
             }}
                 <span class="{{=verseClass}}">&nbsp;{{=XML(verse_control)}}
             {{else:
-                verseClass = 'vref' if tp == 'txtp' or tp == 'txtd' else 'vreft'
+                verseClass = 'verserefblock' if tp == 'txtp' or tp == 'txtd' else 'versereftab'
             }}
                 <span class="{{=verseClass}}"><a href="#" book="{{=b}}" chapter="{{=c}}" verse="{{=v}}" class="cref"><span book="{{=b}}">{{=pb}}</span> {{=c}}:</a> {{=XML(verse_control)}}
             {{pass}}{{

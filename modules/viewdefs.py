@@ -215,7 +215,7 @@ SPECS = dict(
             f"""int:1-1000000 enum:m,r enum:q,w,n enum:txtp,{txtTbs},txtd """
             f"""enum:{trLabs} enum:{BK_NAMES}"""
         ),
-        {"": """4 Genesis 1 1 None 1 x m txtp hb en"""},
+        {"": """2021 Genesis 1 1 None 1 m x txtp hb en"""},
     ),
     hebrewdata=(
         """
@@ -390,9 +390,9 @@ def getFields(tp, qw=qw):
         if tp == "txtd":
             hebrewFields = []
             for (line, fields) in hebrewDataLines:
-                if getRequestVal("hebrewdata", "", line) == "v":
+                if getVal("hebrewdata", "", line) == "v":
                     for (f, name, prettyName) in fields:
-                        if getRequestVal("hebrewdata", "", f) == "v":
+                        if getVal("hebrewdata", "", f) == "v":
                             hebrewFields.append((name, prettyName))
         else:
             hebrewFields = HEBREW_FIELDS[tp]
@@ -432,7 +432,7 @@ def getFields(tp, qw=qw):
         return hebrewFields
 
 
-def getRequestVal(group, qw, f, default=True):
+def getVal(group, qw, f, default=True):
     rvar = ("c_" if group == "colormap" else "") + qw + f
     if rvar == "iid":
         x = current.request.vars.get("id", current.request.vars.get("iid", None))
