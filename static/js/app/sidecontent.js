@@ -38,7 +38,7 @@ export class SideContent {
   }
 
   selectVersion(v) {
-    $(`#version_s_${v}`).click(e => {
+    $(`#version_s_${v}`).off("click").click(e => {
       e.preventDefault()
       VS.setMaterial({ version: v })
       PG.go()
@@ -66,7 +66,7 @@ export class SideContent {
       const vr = PG.version
       const iid = VS.iid()
 
-      $(".moredetail").click(e => {
+      $(".moredetail").off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         toggleDetail(elem)
@@ -147,7 +147,7 @@ export class SideContent {
          * the mql query body can be popped up as a dialog for viewing it
          * in a larger canvas
          */
-        $(".fullc").click(e => {
+        $(".fullc").off("click").click(e => {
           e.preventDefault()
           const elem = $(e.delegateTarget)
           const { windowHeight } = PG
@@ -185,19 +185,19 @@ export class SideContent {
         const cancelQueryCtl = $("#cancq")
         const doneQueryCtl = $("#doneq")
         const nameQueryBox = $("#nameq")
-        const descriptionWidget = $("#descm")
+        const descriptionMarkdown = $("#descm")
         const descriptionQueryBox = $("#descq")
-        const mqlArea = $("#mqlArea")
+        const mqlArea = $("#mqlq")
         const publishCtl = $("#is_pub_c")
         const publishInfo = $("#is_pub_ro")
         const is_published =
           "versions" in query && vr in query.versions && query.versions[vr].is_published
 
-        const markdown = specialLinks(descriptionWidget.html())
-        descriptionWidget.html(markdown)
-        PG.decorateCrossrefs(descriptionWidget)
+        const markdown = specialLinks(descriptionMarkdown.html())
+        descriptionMarkdown.html(markdown)
+        PG.decorateCrossrefs(descriptionMarkdown)
 
-        fullCtl.click(e => {
+        fullCtl.off("click").click(e => {
           e.preventDefault()
           const { windowHeight, halfStandardHeight } = PG
           fullCtl.hide()
@@ -209,9 +209,9 @@ export class SideContent {
               close: () => {
                 dia.dialog("destroy")
                 mqlArea.css("height", mqlSmallHeight)
-                descriptionWidget.removeClass("desc_dia")
-                descriptionWidget.addClass("description")
-                descriptionWidget.css("height", mqlSmallHeight)
+                descriptionMarkdown.removeClass("desc_dia")
+                descriptionMarkdown.addClass("description")
+                descriptionMarkdown.css("height", mqlSmallHeight)
                 fullCtl.show()
               },
               modal: false,
@@ -221,12 +221,12 @@ export class SideContent {
               height: windowHeight,
             })
           mqlArea.css("height", halfStandardHeight)
-          descriptionWidget.removeClass("description")
-          descriptionWidget.addClass("desc_dia")
-          descriptionWidget.css("height", halfStandardHeight)
+          descriptionMarkdown.removeClass("description")
+          descriptionMarkdown.addClass("desc_dia")
+          descriptionMarkdown.css("height", halfStandardHeight)
         })
 
-        $("#is_pub_c").click(e => {
+        $("#is_pub_c").off("click").click(e => {
           const elem = $(e.delegateTarget)
           const val = elem.prop("checked")
           this.sendVal(
@@ -240,7 +240,7 @@ export class SideContent {
           )
         })
 
-        $("#is_shared_c").click(e => {
+        $("#is_shared_c").off("click").click(e => {
           const elem = $(e.delegateTarget)
           const val = elem.prop("checked")
           this.sendVal(
@@ -256,7 +256,7 @@ export class SideContent {
 
         nameQueryBox.hide()
         descriptionQueryBox.hide()
-        descriptionWidget.show()
+        descriptionMarkdown.show()
         editQueryCtl.show()
         if (is_published) {
           execQueryCtl.hide()
@@ -269,8 +269,9 @@ export class SideContent {
         publishCtl.show()
         publishInfo.hide()
 
-        editQueryCtl.click(e => {
+        editQueryCtl.off("click").click(e => {
           e.preventDefault()
+          const { halfStandardHeight } = PG
           const { is_published } = query.versions[vr]
           this.nameSaved = nameQueryBox.val()
           this.descriptionSaved = descriptionQueryBox.val()
@@ -280,18 +281,19 @@ export class SideContent {
             nameQueryBox.show()
           }
           descriptionQueryBox.show()
-          descriptionWidget.hide()
+          descriptionQueryBox.css("height", halfStandardHeight)
+          descriptionMarkdown.hide()
           editQueryCtl.hide()
           saveQueryCtl.show()
           cancelQueryCtl.show()
           doneQueryCtl.show()
           publishInfo.show()
           publishCtl.hide()
-          mqlArea.prop("readonly", is_published)
+          mqlArea.prop("readonly", !!is_published)
           mqlArea.css("height", "20em")
         })
 
-        cancelQueryCtl.click(e => {
+        cancelQueryCtl.off("click").click(e => {
           e.preventDefault()
           nameQueryBox.val(this.nameSaved)
           descriptionQueryBox.val(this.descriptionSaved)
@@ -299,7 +301,7 @@ export class SideContent {
           PG.resetMainWidth()
           nameQueryBox.hide()
           descriptionQueryBox.hide()
-          descriptionWidget.show()
+          descriptionMarkdown.show()
           editQueryCtl.show()
           saveQueryCtl.hide()
           cancelQueryCtl.hide()
@@ -310,12 +312,12 @@ export class SideContent {
           mqlArea.css("height", "10em")
         })
 
-        doneQueryCtl.click(e => {
+        doneQueryCtl.off("click").click(e => {
           e.preventDefault()
           PG.resetMainWidth()
           nameQueryBox.hide()
           descriptionQueryBox.hide()
-          descriptionWidget.show()
+          descriptionMarkdown.show()
           editQueryCtl.show()
           saveQueryCtl.hide()
           cancelQueryCtl.hide()
@@ -335,7 +337,7 @@ export class SideContent {
           this.sendVals(data)
         })
 
-        saveQueryCtl.click(e => {
+        saveQueryCtl.off("click").click(e => {
           e.preventDefault()
           const data = {
             version: PG.version,
@@ -347,7 +349,7 @@ export class SideContent {
           }
           this.sendVals(data)
         })
-        execQueryCtl.click(e => {
+        execQueryCtl.off("click").click(e => {
           e.preventDefault()
           execQueryCtl.addClass("fa-spin")
           const msg = this.diagnosticsVersion
@@ -458,9 +460,9 @@ export class SideContent {
           $("#nameqm").html(escHT(query.name || ""))
           $("#nameq").val(query.name)
           const markdown = specialLinks(query.description_md)
-          const descriptionWidget = $("#descm")
-          descriptionWidget.html(markdown)
-          PG.decorateCrossrefs(descriptionWidget)
+          const descriptionMarkdown = $("#descm")
+          descriptionMarkdown.html(markdown)
+          PG.decorateCrossrefs(descriptionMarkdown)
           $("#descq").val(query.description)
           $("#mqlq").val(qx.mql)
           const emdrosVersionElem = $("#eversion")
@@ -591,13 +593,13 @@ export class SideContent {
 
     descriptionElem.hide()
 
-    moreCtl.click(e => {
+    moreCtl.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       toggleDetail(elem, descriptionElem, qw == "q" ? putMarkdown : undefined)
     })
 
-    itemElem.click(e => {
+    itemElem.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const { qw } = this

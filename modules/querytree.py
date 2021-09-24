@@ -32,14 +32,14 @@ class QUERYTREE:
                 nums.append(f'<span class="good fa fa-gears"> {good}</span>')
             badge = ""
             if len(nums) == 0:
+                if tot == num:
+                    badge = f'<span class="total">{tot}</span>'
+                else:
+                    badge = f'{num} of <span class="total">{tot}</span>'
+            else:
                 nRep = ", ".join(nums)
                 if tot == num:
-                    badge = f'<span class="total">{nRep}</span>'
-                else:
                     badge = f'{nRep} of <span class="total">{tot}</span>'
-            else:
-                if tot == num:
-                    badge = f'{nRep} of <span class="total">{num}</span>'
                 else:
                     badge = f'{nRep} of {num} of all <span class="total">{tot}</span>'
             rename = ""

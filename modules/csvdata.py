@@ -26,7 +26,7 @@ class CSVDATA:
         self.auth = auth
         self.PASSAGE_DBS = PASSAGE_DBS
 
-    def data(self, vr, qw, iid, keywords, hebrewFields):
+    def get(self, vr, qw, iid, keywords, hebrewFields):
         Word = self.Word
         Query = self.Query
         auth = self.auth
@@ -37,7 +37,7 @@ class CSVDATA:
         if qw == "n":
             keywordsSql = keywords.replace("'", "''")
             myId = auth.user.id if auth.user is not None else None
-            extra = "" if myId is None else f""" or created_by = {myId} """
+            extra = "" if myId is None else f" or created_by = {myId} "
 
             hflist = ", ".join(hf[0] for hf in hebrewFields)
             sql = f"""

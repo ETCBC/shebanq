@@ -14,9 +14,9 @@
 
 <p>Recent
 <a href="#" id="reload_recentq" class="ctl fa fa-refresh" title="refresh recent query list"></a>
-{{feedurl = URL('feed', 'atom', host=True, extension='')}}
-<a href="{{=feedurl}}" target="_blank" class="ctl fa fa-rss" title="rss-atom feed for shared queries"></a>
-<a href="http://cloud.feedly.com/#subscription%2Ffeed%2F{{=feedurl.replace('/', '%2F').replace(':', '%3A')}}"
+{{feedUrl = URL('feed', 'atom', host=True, extension='')}}
+<a href="{{=feedUrl}}" target="_blank" class="ctl fa fa-rss" title="rss-atom feed for shared queries"></a>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2F{{=feedUrl.replace('/', '%2F').replace(':', '%3A')}}"
    title="follow queries in feedly"
    target="blank"><img id="feedlyFollow" src="{{=URL('static', 'images/feedly-follow-logo-green_2x.png')}}"
    alt="follow queries in feedly" width="28" height="28"></a>

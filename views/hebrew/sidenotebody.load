@@ -2,25 +2,25 @@
 <input type="hidden" id="notetag" value=""/>
 <div id="dbmsg_n"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_n" class="ctl ir fa fa-trash fa-lg"></span></a></p>
-{{if 'id' in nr and nr['id'] and nr['id'] != '0':}}
+{{if 'id' in noteRecord and noteRecord['id'] and noteRecord['id'] != '0':}}
 <table>
-    <tr><td><span class="notelabel">author</span></td><td><spanclass="nauth">{{=nr['first_name']}} {{=nr['last_name']}}</span></td></tr>
-    <tr><td><span class="notelabel">keyword</span></td><td><span class="t1_kw">{{=nr['keywords']}}</span></td></tr>
+    <tr><td><span class="notelabel">author</span></td><td><span class="nauth">{{=noteRecord['first_name']}} {{=noteRecord['last_name']}}</span></td></tr>
+    <tr><td><span class="notelabel">keyword</span></td><td><span class="t1_kw">{{=noteRecord['keywords']}}</span></td></tr>
 </table>
 {{for v in VERSION_ORDER:
-    nrinfo = nr['versions'].get(v, collections.defaultdict(lambda: ''))
-    thisclass = 'this' if v == vr else 'other'
+    noteInfo = noteRecord['versions'].get(v, collections.defaultdict(lambda: ''))
+    thisCls = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'
 }}
-<div version="{{=v}}" class="version {{=thisclass}}">
+<div version="{{=v}}" class="version {{=thisCls}}">
     <p><a class="ctlexpand moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
-    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisCls}}">{{=v}}</span></a>
     <a id="csvt_lnk_{{=v}}_n" href="#" class="ctl fa fa-list fa-lg" ftitle=" :download all notes of this set as a csv file"></a>
     <a id="csvd_lnk_{{=v}}_n" href="#" class="ctl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all notes of this set with clause info as a csv file"></a>
     <a id="select_control_chart_{{=v}}_n" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="notelabel">notes</span></td><td class="nstat">{{=nrinfo['n'] or 0}}</td></tr>
+        <tr class="detail"><td><span class="notelabel">notes</span></td><td class="nstat">{{=noteInfo['n'] or 0}}</td></tr>
     </table>
 </div>
 {{pass}}
@@ -28,7 +28,7 @@
 <script type="text/javascript">
 var State = {
     msgs: {{=XML(msgs)}},
-    note: {{=XML(n)}},
+    note: {{=XML(note)}},
 }
 </script>
 

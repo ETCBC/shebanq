@@ -31,7 +31,7 @@ export class MaterialSettings {
     highlightedText.show()
     highlightedTextTab1.show()
 
-    this.legendc.click(e => {
+    this.legendc.off("click").click(e => {
       e.preventDefault()
       $("#datalegend")
         .find("a[fname]")
@@ -50,7 +50,7 @@ export class MaterialSettings {
       })
     })
 
-    $(".mhradio").click(e => {
+    $(".mhradio").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const tpOld = VS.tp()
@@ -84,7 +84,7 @@ export class MaterialSettings {
       }
     })
 
-    $(".mtradio").click(e => {
+    $(".mtradio").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const trOld = VS.tr()

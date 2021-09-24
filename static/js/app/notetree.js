@@ -23,13 +23,13 @@ class View {
     this.simpleCtl = $("#c_view_simple")
     this.advancedCtl = $("#c_view_advanced")
 
-    this.simpleCtl.click(e => {
+    this.simpleCtl.off("click").click(e => {
       e.preventDefault()
       lsNotes.set("simple", true)
       this.adjustView()
     })
 
-    this.advancedCtl.click(e => {
+    this.advancedCtl.off("click").click(e => {
       e.preventDefault()
       lsNotes.set("simple", false)
       this.adjustView()
@@ -62,15 +62,15 @@ class Level {
     if (!lsNotes.isSet("level")) {
       lsNotes.set("level", "u")
     }
-    $("#level_u").click(e => {
+    $("#level_u").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("u")
     })
-    $("#level_n").click(e => {
+    $("#level_n").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("n")
     })
-    $("#level_").click(e => {
+    $("#level_").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("")
     })
@@ -118,19 +118,19 @@ class Filter {
       $("#filter_clear").show()
     }
 
-    $("#filter_control_a").click(e => {
+    $("#filter_control_a").off("click").click(e => {
       e.preventDefault()
       this.search("a")
     })
-    $("#filter_control_c").click(e => {
+    $("#filter_control_c").off("click").click(e => {
       e.preventDefault()
       this.search("c")
     })
-    $("#filter_control_n").click(e => {
+    $("#filter_control_n").off("click").click(e => {
       e.preventDefault()
       this.search("q")
     })
-    $("#filter_clear").click(e => {
+    $("#filter_clear").off("click").click(e => {
       e.preventDefault()
       this.clear()
     })
@@ -294,7 +294,7 @@ class Tree {
     $("dd.cps").hide()
     $(".hidec").hide()
     $(".showc").show()
-    $(".hidec").click(e => {
+    $(".hidec").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const refElem = elem.closest("dt")
@@ -302,7 +302,7 @@ class Tree {
       refElem.find(".hidec").hide()
       refElem.find(".showc").show()
     })
-    $(".showc").click(e => {
+    $(".showc").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const refElem = elem.closest("dt")
@@ -348,7 +348,7 @@ class Tree {
         `${pageUrl}?iid=${elem.attr("key_id")}${extra}&page=1&mr=r&qw=n&tp=txt1&nget=v`
       )
     })
-    $("#notes a.md").click(e => {
+    $("#notes a.md").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const userName = elem.closest("ul").closest("li").find("span[n]").html()
@@ -410,7 +410,7 @@ class Upload {
         }
       }
     })
-    ctl.click(e => {
+    ctl.off("click").click(e => {
       e.preventDefault()
       this.submit()
       ctl.hide()

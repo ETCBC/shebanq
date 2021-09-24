@@ -10,80 +10,80 @@ if sideItems:
     for si in sideItems:
         iinfo = si['item']
         iid = iinfo['id']
-        compp = ''
-        lclass = ''
+        publishedMark = ''
+        liCls = ''
         if qw == 'q' or qw == 'n':
-            fname = iinfo['first_name']
-            lname = iinfo['last_name']
+            firstName = iinfo['first_name']
+            lastName = iinfo['last_name']
             is_published = iinfo['is_published']
-            uname = f'{fname} {lname}'
-            uname1 = f'{fname[0]} {lname}'
-            uname_short = uname1 if len(uname) < ulimit else uname1[0:ulimit]+'..'
-            clinktext = uname_short
-            compp = SPAN(_class='fa fa-quote-right fa-fw') if is_published else ''
+            fullName = f'{firstName} {lastName}'
+            initName = f'{firstName[0]} {lastName}'
+            shortName = initName if len(fullName) < ulimit else initName[0:ulimit]+'..'
+            comp1Text = shortName
+            publishedMark = SPAN(_class='fa fa-quote-right fa-fw') if is_published else ''
         pass
         if qw == 'q':
             query_name = iinfo['name']
             description = iinfo['description']
             mql = iinfo['mql']
             query_nameShort = query_name if len(query_name) < qlimit else query_name[0:qlimit]+'..'
-            title = f'{query_name} by {fname} {lname}'
-            dlinktext = query_nameShort
-            lclass = XML(' class="detail" ')
+            title = f'{query_name} by {firstName} {lastName}'
+            comp2Text = query_nameShort
+            liCls = XML(' class="detail" ')
             authCls = 'qauth'
-            dclass = 'query_name'
-            eclass = 'qdesc'
+            comp2Cls = 'query_name'
+            descriptionCls = 'qdesc'
         elif qw == 'n':
             keywords = iinfo['keywords']
-            kw_short = keywords if len(keywords) < klimit else keywords[0:klimit]+'..'
-            nnotes = iinfo['nnotes']
-            nverses = iinfo['nverses']
-            nlabel = 'note' if nnotes == 1 else 'notes'
-            vlabel = 'verse' if nverses == 1 else 'verses'
-            title = f'{keywords} by {fname} {lname}'
-            dlinktext = kw_short
+            kwShort = keywords if len(keywords) < klimit else keywords[0:klimit]+'..'
+            nNotes = iinfo['nNotes']
+            nVerses = iinfo['nVerses']
+            noteLabel = 'note' if nNotes == 1 else 'notes'
+            verseLabel = 'verse' if nVerses == 1 else 'verses'
+            title = f'{keywords} by {firstName} {lastName}'
+            comp2Text = kwShort
             authCls = 'nauth'
-            sclass = 'nstat'
-            dclass = 't1_kw'
-            eclass = 'ndesc'
+            statisticsCls = 'nstat'
+            comp2Cls = 't1_kw'
+            descriptionCls = 'ndesc'
         elif qw == 'w':
-            wentry = iinfo['entryid']
-            wgloss = iinfo['gloss']
+            entryid = iinfo['entryid']
+            gloss = iinfo['gloss']
             pos = iinfo['pos']
-            entryHeb = iinfo['g_entry_heb']
+            g_entry_heb = iinfo['g_entry_heb']
             entry_heb = iinfo['entry_heb']
             entryid_heb = iinfo['entryid_heb']
-            title = wentry
-            clinktext = entryHeb if entryHeb else entry_heb
-            dlinktext = wgloss or '?'
+            title = entryid
+            comp1Text = g_entry_heb if g_entry_heb else entry_heb
+            comp2Text = gloss or '?'
             authCls = 'i_hl'
-            dclass = 'i_gl'
-            eclass = 'wdesc'
+            comp2Cls = 'i_gl'
+            descriptionCls = 'wdesc'
         pass
-        compc = A(clinktext, _href='#', _class=authCls, _iid=iid, _id=f'item_{qw}{iid}')
-        compd = SPAN(dlinktext, _class=dclass)
+        comp1 = A(comp1Text, _href='#', _class=authCls, _iid=iid, _id=f'item_{qw}{iid}')
+        comp2 = SPAN(comp2Text, _class=comp2Cls)
     }}
-    <li {{=lclass}} id="{{=f'{qw}{iid}'}}" iid="{{=iid}}" title="{{=title}}" slots="{{=si['slots']}}">
+    <li {{=liCls}} id="{{=f'{qw}{iid}'}}" iid="{{=iid}}" title="{{=title}}" slots="{{=si['slots']}}">
         <div>{{=XML(colorPicker(qw,iid, '')) if qw != 'n' else ''}}
             <a href='#' title="more/less info" class="ctlexpand fa fa-chevron-right fa-fw" id="m_{{=qw}}{{=iid}}" did="{{=qw}}{{=iid}}"></a>
-            {{if qw == 'q' or qw == 'n':}}{{=compp}} {{=compc}} {{=compd}}{{else:}}{{=compd}} {{=compc}}{{pass}}
+            {{if qw == 'q' or qw == 'n':}}{{=publishedMark}} {{=comp1}} {{=comp2}}{{else:}}{{=comp2}} {{=comp1}}{{pass}}
         </div>
-        <div id="d_{{=qw}}{{=iid}}" class="{{=eclass}}">
+        <div id="d_{{=qw}}{{=iid}}" class="{{=descriptionCls}}">
         {{if qw == 'q':}}
             <p><a id="bigqf_{{=iid}}" iid="{{=iid}}" href="#" class="ctl fullc fa fa-arrows-alt"></a>
-            <span class="{{=dclass}}">{{=query_name}}</span> by <span class="{{=authCls}}">{{=uname}}</span><br/>
+            <span class="{{=comp2Cls}}">{{=query_name}}</span> by <span class="{{=authCls}}">{{=fullName}}</span><br/>
             <div id="bigq_{{=iid}}" class="bigq">
                 <input type="hidden" id="dv_{{=qw}}{{=iid}}" value="{{=description}}"></p>
                 <div id="dm_{{=qw}}{{=iid}}" class="descm"></div>
                 <textarea id="area_{{=iid}}" class="mql small" readonly>{{=XML(mql)}}</textarea>
             </div>
         {{elif qw == 'w':}}
-            <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=wentry}}</span>&nbsp;<span class={{=authCls}}>{{=entryid_heb}}</span></p>
+            <p class="tr"><span class="wd1_pos">{{=pos}}</span>&nbsp;<span>{{=entryid}}</span>&nbsp;<span class={{=authCls}}>{{=entryid_heb}}</span></p>
         {{elif qw == 'n':}}
-            <p>notes by: <span class="{{=authCls}}">{{=uname}}</span></p>
-            <p>with keyword <span class="{{=dclass}}">{{=keywords}}</span></p>
-            <p>In this chapter: <span class="{{=sclass}}">{{=nnotes}}</span> {{=nlabel}}
-            in <span class="{{=sclass}}">{{=nverses}}</span> {{=vlabel}}</p>
+            <p>notes by: <span class="{{=authCls}}">{{=fullName}}</span></p>
+            <p>with keyword <span class="{{=comp2Cls}}">{{=keywords}}</span></p>
+            <p>In this chapter: <span class="{{=statisticsCls}}">{{=nNotes}}</span> {{=noteLabel}}
+            in <span class="{{=statisticsCls}}">{{=nVerses}}</span> {{=verseLabel}}</p>
         {{pass}}
         </div>
     </li>

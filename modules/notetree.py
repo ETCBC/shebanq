@@ -114,8 +114,8 @@ shebanq_web.auth_user.first_name, note.keywords
                     dict(
                         title=(
                             f"""{versionRep} <a
-class="n keywords" n="1" key_id="{key_id}" href="#">"""
-                            '{hEsc(noteName)}</a> <a class="md" href="#"></a>'
+class="n keywords" n="1" key_id="{key_id}" href="#"
+>{hEsc(noteName)}</a> <a class="md" href="#"></a>"""
                         ),
                         key=f"n{key_id}",
                         folder=False,

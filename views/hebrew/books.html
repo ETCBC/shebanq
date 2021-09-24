@@ -21,8 +21,8 @@ jQuery(function(){
         html += `<th class="booklang" title="${lang}=${nameEN}">${nameMd}</th>\n`
         for (const b in bookLatin) {
             const book = bookLatin[b]
-            const book_t = bookTrans[lang][book].replace(/_/g, ' ')
-            html += `<td class="book">${book_t}</td>\n`
+            const bookT = bookTrans[lang][book].replace(/_/g, ' ')
+            html += `<td class="book">${bookT}</td>\n`
             if (book == 'Reges_II' || book == 'Maleachi') {
                 html += `<th class="booklang" title="${lang}=${nameEN}">${nameMd}</th>\n`
             }
@@ -33,4 +33,3 @@ jQuery(function(){
     $('#books').html(html)
 })
 </script>
-

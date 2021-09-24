@@ -19,7 +19,7 @@ export class Chart {
   }
 
   init() {
-    $(this.control).click(e => {
+    $(this.control).off("click").click(e => {
       e.preventDefault()
       this.apply()
     })
@@ -58,7 +58,7 @@ export class Chart {
       const elem = $(el)
       this.addItem(elem, iid)
     })
-    $("#theitemc").click(e => {
+    $("#theitemc").off("click").click(e => {
       e.preventDefault()
       const vals = {}
       vals["iid"] = iid
@@ -182,7 +182,7 @@ export class Chart {
   }
 
   addItem(item, iid) {
-    item.click(e => {
+    item.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       let vals = {}

@@ -3,55 +3,51 @@
 
 {{ block head }}
 {{
-other_lan = 'arc' if lan == 'hbo' else 'hbo'
-this_language = 'Hebrew' if lan == 'hbo' else 'Aramaic'
-other_language = 'Hebrew' if other_lan == 'hbo' else 'Aramaic'
-gletter = chr(int(letter))
+otherLangIso = 'arc' if lan == 'hbo' else 'hbo'
+headLetter = chr(int(letter))
 rows = 12
 cols = 5
-tsize = rows * cols
-wsize = len(words)
-ntables = int(wsize / tsize) + (1 if wsize % tsize != 0 else 0)
-class_arc = 'ison' if lan == 'arc' else ''
-class_hbo = 'ison' if lan == 'hbo' else ''
-wordlb = 'words' if wsize != 1 else 'word'
+tableSize = rows * cols
+nWords = len(words)
+nTables = int(nWords / tableSize) + (1 if nWords % tableSize != 0 else 0)
+arcCls = 'ison' if lan == 'arc' else ''
+hboCls = 'ison' if lan == 'hbo' else ''
+wordLabel = 'words' if nWords != 1 else 'word'
 }}
 {{ end }}
 
 <div id="words">
 {{
-tables = [[[None for c in range(cols)] for r in range(rows)] for t in range(ntables)] 
-curtable = 0
-currow = 0
-curcol = 0
-nw = 0
-for w in words:
-    if currow == rows:
-        currow = 0
-        curcol += 1
+tables = [[[None for c in range(cols)] for r in range(rows)] for t in range(nTables)] 
+curTable = 0
+curRow = 0
+curCol = 0
+for wordRecord in words:
+    if curRow == rows:
+        curRow = 0
+        curCol += 1
     pass
-    if curcol == cols:
-        curcol = 0
-        curtable +=1
+    if curCol == cols:
+        curCol = 0
+        curTable +=1
     pass
-    tables[curtable][currow][curcol] = w
-    currow += 1
-    nw += 1
+    tables[curTable][curRow][curCol] = wordRecord
+    curRow += 1
 pass
 
-nc = 0
-for t in tables:
-    if nc >= wsize: break
+nCells = 0
+for table in tables:
+    if nCells >= nWords: break
 }}
 <table class="dict">
-{{  for r in t:
-        if nc >= wsize: break
+{{  for row in table:
+        if nCells >= nWords: break
 }}
     <tr>
-{{      for c in r:
-            if c != None:
-                nc += 1
-                (word, id, word_id, gloss) = c
+{{      for wordRecord in row:
+            if wordRecord != None:
+                nCells += 1
+                (word, id, word_id, gloss) = wordRecord
 }}
         <td class="d">
             <a gi="{{=id}}" class="dgl" href="#">{{=gloss or '??'}}</a>
@@ -71,24 +67,24 @@ for t in tables:
 <div id="letters">
 <table><tr>
 <td>
-<p class="dd {{=class_arc}}">Aramaic</p>
-{{ for let in letters[other_lan]:
-    lclass = ' ison' if letter == let  and lan == 'arc' else ''
+<p class="dd {{=arcCls}}">Aramaic</p>
+{{ for let in letters[otherLangIso]:
+    letterCls = ' ison' if letter == let  and lan == 'arc' else ''
 }}
-    <p class="ctld d{{=lclass}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='arc', letter=let)))}}</p>
+    <p class="ctld d{{=letterCls}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='arc', letter=let)))}}</p>
 {{pass}}
 </td>
 <td>
-<p class="dd {{=class_hbo}}">Hebrew</p>
+<p class="dd {{=hboCls}}">Hebrew</p>
 {{ for let in letters[lan]:
-    lclass = ' ison' if letter == let  and lan == 'hbo' else ''
+    letterCls = ' ison' if letter == let  and lan == 'hbo' else ''
 }}
-    <p class="ctld d{{=lclass}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='hbo', letter=let)))}}</p>
+    <p class="ctld d{{=letterCls}}">{{=A(chr(let), _class='dletter', _href=URL('hebrew', 'words', vars=dict(lan='hbo', letter=let)))}}</p>
 {{pass}}
 </td>
 <td>
-    <h1 class="dletterh">{{=gletter}}</h1>
-    <p>{{='{wsize} {wordlb}'}}</p>
+    <h1 class="dletterh">{{=headLetter}}</h1>
+    <p>{{='{nWords} {wordLabel}'}}</p>
 </td>
 </tr></table>
 </div>

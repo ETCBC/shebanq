@@ -114,12 +114,11 @@ order by word_number
         if len(material.wordData) == 0:
             msgs.append(("error", f"{bk} {ch}:{vs} does not exist"))
             good = False
-        result = dict(
+        return dict(
             good=good,
             msgs=msgs,
             material=material,
         )
-        return result
 
     def getClauseAtomFirstSlot(self, vr):
         Caching = self.Caching

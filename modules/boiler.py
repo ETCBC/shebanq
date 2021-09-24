@@ -287,7 +287,7 @@ TEXT_TPL = """<table class="il c">
         <td class="il tt"><span m="{word_number}" class="tt">{word_tran}</span></td>
     </tr>
     <tr class="il tl">
-        <td class="il tl"><span l="{lexicon_id}" class="tl tl_tlv"
+        <td class="il tl"><span l="{lexicon_id}" class="il tl_tlv"
         >{word_glex}</span>&nbsp;&nbsp;<span l="{lexicon_id}" class="il tl_tlc"
         >{word_lex}</span></td>
     </tr>

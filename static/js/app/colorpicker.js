@@ -28,7 +28,7 @@ export class ColorPicker1 {
     this.selw = $(`#sel_${qw}${pointer}>a`)
     this.select = $(`#select_${qw}${pointer}`)
 
-    this.sel.click(e => {
+    this.sel.off("click").click(e => {
       e.preventDefault()
       this.picker.dialog({
         dialogClass: "picker_dialog",
@@ -40,7 +40,7 @@ export class ColorPicker1 {
       })
     })
 
-    this.select.click(() => {
+    this.select.off("click").click(() => {
       /* process a click on the selectbox of the picker
        */
       const { qw, iid, picker } = this
@@ -61,7 +61,7 @@ export class ColorPicker1 {
       this.apply(true)
     })
 
-    $(`.c${qw}.${qw}${pointer}>a`).click(e => {
+    $(`.c${qw}.${qw}${pointer}>a`).off("click").click(e => {
       /* process a click on a colored cell of the picker
        */
       e.preventDefault()
@@ -142,7 +142,7 @@ export class ColorPicker2 {
     this.sel = $(`#sel_${qw}one`)
     this.selw = $(`#sel_${qw}one>a`)
 
-    this.sel.click(e => {
+    this.sel.off("click").click(e => {
       e.preventDefault()
       this.picker.dialog({
         dialogClass: "picker_dialog",
@@ -154,7 +154,7 @@ export class ColorPicker2 {
       })
     })
 
-    $(`.c${qw}.${qw}one>a`).click(e => {
+    $(`.c${qw}.${qw}one>a`).off("click").click(e => {
       /* process a click on a colored cell of the picker
        */
       e.preventDefault()

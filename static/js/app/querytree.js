@@ -28,12 +28,12 @@ class View {
     this.simpleCtl = $("#c_view_simple")
     this.advancedCtl = $("#c_view_advanced")
 
-    this.simpleCtl.click(e => {
+    this.simpleCtl.off("click").click(e => {
       e.preventDefault()
       lsQueries.set("simple", true)
       this.adjustView()
     })
-    this.advancedCtl.click(e => {
+    this.advancedCtl.off("click").click(e => {
       e.preventDefault()
       lsQueries.set("simple", false)
       this.adjustView()
@@ -66,23 +66,23 @@ class Level {
     if (!lsQueries.isSet("level")) {
       lsQueries.set("level", "o")
     }
-    $("#level_o").click(e => {
+    $("#level_o").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("o")
     })
-    $("#level_p").click(e => {
+    $("#level_p").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("p")
     })
-    $("#level_u").click(e => {
+    $("#level_u").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("u")
     })
-    $("#level_q").click(e => {
+    $("#level_q").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("q")
     })
-    $("#level_").click(e => {
+    $("#level_").off("click").click(e => {
       e.preventDefault()
       this.expandLevel("")
     })
@@ -95,7 +95,8 @@ class Level {
   }
 
   expandLevel(level) {
-    const { lsQueries, levels } = this
+    const { lsQueries } = LS
+    const { levels } = this
 
     $(".qlradio").removeClass("ison")
     $(`#level_${level}`).addClass("ison")
@@ -140,28 +141,28 @@ class Filter {
       $("#filter_clear").show()
     }
 
-    $("#filter_control_a").click(e => {
+    $("#filter_control_a").off("click").click(e => {
       e.preventDefault()
       this.search("a")
     })
-    $("#filter_control_c").click(e => {
+    $("#filter_control_c").off("click").click(e => {
       e.preventDefault()
       this.search("c")
     })
-    $("#filter_control_q").click(e => {
+    $("#filter_control_q").off("click").click(e => {
       e.preventDefault()
       this.search("q")
     })
-    $("#filter_control_m").click(e => {
+    $("#filter_control_m").off("click").click(e => {
       e.preventDefault()
       this.search("m")
     })
-    $("#filter_control_r").click(e => {
+    $("#filter_control_r").off("click").click(e => {
       e.preventDefault()
       this.search("r")
     })
 
-    $("#filter_clear").click(e => {
+    $("#filter_clear").off("click").click(e => {
       e.preventDefault()
       this.clear()
     })
@@ -390,7 +391,7 @@ class Tree {
         `${pageUrl}?iid=${elem.attr("query_id")}${extra}&page=1&mr=r&qw=q`
       )
     })
-    $("#queries a.md").click(e => {
+    $("#queries a.md").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const userName = elem.closest("ul").closest("li").find("span[n]").html()
@@ -605,7 +606,7 @@ class Tree {
     projectDetail.hide()
     orgExistCtl.hide()
     projectExistCtl.hide()
-    orgNewCtl.click(e => {
+    orgNewCtl.off("click").click(e => {
       e.preventDefault()
       orgDetail.show()
       orgExistCtl.show()
@@ -613,7 +614,7 @@ class Tree {
       orgOfQuery.hide()
       this.doNew["o"] = true
     })
-    orgExistCtl.click(e => {
+    orgExistCtl.off("click").click(e => {
       e.preventDefault()
       orgDetail.hide()
       orgExistCtl.hide()
@@ -621,7 +622,7 @@ class Tree {
       orgOfQuery.show()
       this.doNew["o"] = false
     })
-    projectNewCtl.click(e => {
+    projectNewCtl.off("click").click(e => {
       e.preventDefault()
       projectDetail.show()
       projectExistCtl.show()
@@ -630,7 +631,7 @@ class Tree {
       this.doNew["p"] = true
       this.selectClear("p", true)
     })
-    projectExistCtl.click(e => {
+    projectExistCtl.off("click").click(e => {
       e.preventDefault()
       projectDetail.hide()
       projectExistCtl.hide()
@@ -824,7 +825,7 @@ class Tree {
 
     const viewTp = tp => {
       const objects = $(`.v_${tp}`)
-      objects.click(e => {
+      objects.off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
@@ -838,7 +839,7 @@ class Tree {
 
     const selectInit = tp => {
       const objects = $(`.s_${tp}`)
-      objects.click(e => {
+      objects.off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         if (tp == "o") {
@@ -887,7 +888,7 @@ class Tree {
 
     const createTp = tp => {
       const objects = $(`.n_${tp}`)
-      objects.click(e => {
+      objects.off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
@@ -905,7 +906,7 @@ class Tree {
 
     const updateTp = tp => {
       const objects = $(`.r_${tp}`)
-      objects.click(e => {
+      objects.off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         $(".treehl").removeClass("treehl")
@@ -920,19 +921,19 @@ class Tree {
       })
     }
     const formTp = tp => {
-      $(`#save_${tp}`).click(e => {
+      $(`#save_${tp}`).off("click").click(e => {
         e.preventDefault()
         this.orgProjectSelect(tp)
         this.record(tp, null, true, false)
       })
-      $(`#cancel_${tp}`).click(e => {
+      $(`#cancel_${tp}`).off("click").click(e => {
         e.preventDefault()
         $(".treehl").removeClass("treehl")
         this.selectHide()
         $(`#form_${tp}`).hide()
         $(`#ctl_${tp}`).hide()
       })
-      $(`#done_${tp}`).click(e => {
+      $(`#done_${tp}`).off("click").click(e => {
         e.preventDefault()
         this.orgProjectSelect(tp)
         this.record(tp, null, true, false)
@@ -940,7 +941,7 @@ class Tree {
         $(`#form_${tp}`).hide()
         $(`#ctl_${tp}`).hide()
       })
-      $("#reload_tree").click(e => {
+      $("#reload_tree").off("click").click(e => {
         e.preventDefault()
         window.location.reload(true)
       })

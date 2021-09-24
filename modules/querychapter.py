@@ -76,7 +76,7 @@ inner join query on
         for (query_id, first_m, last_m, is_published) in results:
             resultsByQ.setdefault(query_id, []).append((first_m, last_m))
             pubStatus.setdefault(query_id, {})[vr] = is_published == "T"
-        debug(f"0-0-0 found {len(resultsByQ)} shared queries")
+        debug(f"o-o-o found {len(resultsByQ)} shared queries")
 
         for (query_id, slots) in resultsByQ.items():
             chs = {}

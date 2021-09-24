@@ -60,7 +60,7 @@ export class SelectPassage {
   selectVersion(v) {
     const { sidebars } = PG
 
-    $(`#version_${v}`).click(e => {
+    $(`#version_${v}`).off("click").click(e => {
       e.preventDefault()
       sidebars.sideFetched["mw"] = false
       sidebars.sideFetched["mq"] = false
@@ -108,7 +108,7 @@ export class SelectLanguage {
     this.name = "select_contents_lang"
     this.hid = `#${this.name}`
     this.control = "#select_control_lang"
-    $(this.control).click(e => {
+    $(this.control).off("click").click(e => {
       e.preventDefault()
       $(this.hid).dialog("open")
     })
@@ -156,7 +156,7 @@ export class SelectLanguage {
   }
 
   addItem(item) {
-    item.click(e => {
+    item.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const above = elem.closest("li")
@@ -199,7 +199,7 @@ class SelectBook {
     this.name = "select_contents_book"
     this.hid = `#${this.name}`
     this.control = "#select_control_book"
-    $(this.control).click(e => {
+    $(this.control).off("click").click(e => {
       e.preventDefault()
       $(this.hid).dialog("open")
     })
@@ -244,7 +244,7 @@ class SelectBook {
   }
 
   addItem(item) {
-    item.click(e => {
+    item.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const above = elem.closest("li")
@@ -286,7 +286,7 @@ class SelectItems {
     this.prev = $(`#prev_${this.key}`)
     this.next = $(`#next_${this.key}`)
 
-    this.prev.click(e => {
+    this.prev.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const vals = {}
@@ -296,7 +296,7 @@ class SelectItems {
       VS.addHist()
       this.go()
     })
-    this.next.click(e => {
+    this.next.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const vals = {}
@@ -306,7 +306,7 @@ class SelectItems {
       VS.addHist()
       this.go()
     })
-    $(this.control).click(e => {
+    $(this.control).off("click").click(e => {
       e.preventDefault()
       $(this.hid).dialog("open")
     })
@@ -381,7 +381,7 @@ class SelectItems {
   }
 
   addItem(item) {
-    item.click(e => {
+    item.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const above = elem.closest("li")

@@ -69,7 +69,7 @@ select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
             wordIds[x[1]].append(x[0])
         r = []
         if len(wordIds):
-            wordIdsRep = ",".join("'{x}'" for x in wordIds)
+            wordIdsRep = ",".join(f"'{x}'" for x in wordIds)
             wordSql = f"""
 select * from lexicon where id in ({wordIdsRep})
 ;

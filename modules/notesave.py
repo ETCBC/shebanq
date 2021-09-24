@@ -57,7 +57,7 @@ delete from note where id in ({",".join(str(x) for x in notesDel)})
             sh = "'T'" if is_shared else "null"
             sht = f"'{now}'" if is_shared else "null"
             pb = "'T'" if is_published else "null"
-            pbt = "'{now}'" if is_published else "null"
+            pbt = f"'{now}'" if is_published else "null"
             fl = "o" if status not in {"o", "*", "+", "?", "-", "!"} else status
             keywordsSql = keywords.replace("'", "''")
             ntr = ntext.replace("'", "''")

@@ -43,7 +43,7 @@ export class Sidebars {
  */
 
 class Sidebar {
-  /* the individual sidebar, parametrized with qr and mw
+  /* the individual sidebar, parametrized with mr and qw
    * to specify one of the four kinds
    */
   constructor(mr, qw) {
@@ -63,14 +63,14 @@ class Sidebar {
         this.addVersion(v)
       }
     }
-    this.show.click(e => {
+    this.show.off("click").click(e => {
       e.preventDefault()
       VS.setHighlight(this.qw, { get: "v" })
       VS.addHist()
       this.apply()
     })
 
-    this.hide.click(e => {
+    this.hide.off("click").click(e => {
       e.preventDefault()
       VS.setHighlight(this.qw, { get: "x" })
       VS.addHist()

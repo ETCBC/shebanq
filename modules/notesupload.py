@@ -21,7 +21,7 @@ class NOTESUPLOAD:
         if myId:
             sql = f"""
 select uid from uploaders where uid = {myId}
-    """
+"""
             records = db.executesql(sql)
             authorized = (
                 records is not None and len(records) == 1 and records[0][0] == myId
@@ -52,7 +52,7 @@ select uid from uploaders where uid = {myId}
             status
             keywords
             ntext
-        """.strip().split()
+""".strip().split()
         )
         good = True
         fieldnames = normFields.split("\t")

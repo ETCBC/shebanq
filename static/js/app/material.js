@@ -182,7 +182,7 @@ export class Material {
       if (PG.qw != "n") {
         PG.picker1[PG.qw].adapt(PG.iid, true)
       }
-      $("a.cref").click(e => {
+      $("a.cref").off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         VS.setMaterial({
@@ -219,7 +219,7 @@ export class Material {
       const elem = $(el)
       elem.attr("title", "interlinear data")
     })
-    verseRefs.click(e => {
+    verseRefs.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const bk = elem.attr("b")
@@ -271,7 +271,7 @@ export class Material {
   addWordActions(contentNew, mf) {
     /* Make words clickable, so that they show up in the sidebar
      */
-    contentNew.find("span[l]").click(e => {
+    contentNew.find("span[l]").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const iid = elem.attr("l")

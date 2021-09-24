@@ -6,7 +6,7 @@ export class Diagnostics {
     this.trashCtl = $(`#trash_${destination}`)
     this.onClear = onClear
 
-    this.trashCtl.click(e => {
+    this.trashCtl.off("click").click(e => {
       e.preventDefault()
       this.clear()
     })

@@ -30,7 +30,7 @@ class HebrewSetting {
 
     this.name = fld
     this.hid = `#${this.name}`
-    $(this.hid).click(e => {
+    $(this.hid).off("click").click(e => {
       const elem = $(e.delegateTarget)
       const vals = {}
       vals[fld] = elem.prop("checked") ? "v" : "x"

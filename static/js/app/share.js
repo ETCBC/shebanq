@@ -183,7 +183,7 @@ $(() => {
   // hover
   $(
     "#clip_qx_md,#clip_qx_ht,#clip_q_md,#clip_q_ht,#clip_w_md,#clip_w_ht,#clip_n_md,#clip_n_ht,#clip_pv_md,#clip_pv_ht,#clip_pv_htc,#clip_pv_nl"
-  ).click(e => {
+  ).off("click").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
     window.prompt(
@@ -191,7 +191,7 @@ $(() => {
       elem.attr("lnk")
     )
   })
-  $("#clip_pv_cn").click(e => {
+  $("#clip_pv_cn").off("click").click(e => {
     e.preventDefault()
     const pageUrlRaw = `${pageShareUrl}${VS.getVars()}&pref=alt`
     const selfLink = $("#self_link")
@@ -199,32 +199,32 @@ $(() => {
     selfLink.attr("href", pageUrlRaw)
     selectText("material")
   })
-  $("#xc_qx").click(e => {
+  $("#xc_qx").off("click").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
     toggleDetail(elem, $("#x_qx"))
   })
-  $("#xc_q").click(e => {
+  $("#xc_q").off("click").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
     toggleDetail(elem, $("#x_q"))
   })
-  $("#xc_w").click(e => {
+  $("#xc_w").off("click").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
     toggleDetail(elem, $("#x_w"))
   })
-  $("#xc_n").click(e => {
+  $("#xc_n").off("click").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
     toggleDetail(elem, $("#x_n"))
   })
-  $("#xc_pv").click(e => {
+  $("#xc_pv").off("click").click(e => {
     e.preventDefault()
     const elem = $(e.delegateTarget)
     toggleDetail(elem, $("#x_pv"))
   })
-  st.click(e => {
+  st.off("click").click(e => {
     e.preventDefault()
     const pageUrlRaw = `${pageShareUrl}${VS.getVars()}&pref=alt`
     let noteUrl

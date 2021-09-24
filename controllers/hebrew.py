@@ -3,11 +3,13 @@
 from gluon.custom_import import track_changes
 
 import json
+import collections # noqa F401
+# needed for views
 
 from constants import TPS
 
 from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
-from helpers import iDecode, DEBUG, countSlots
+from helpers import iDecode, countSlots
 from viewdefs import (
     colorPicker,
     getFields,
@@ -56,12 +58,12 @@ Note = NOTE(Caching, Pieces, auth, db, NOTE_DB)
 NoteSave = NOTESAVE(Caching, NOTE_DB)
 NotesUpload = NOTESUPLOAD(Caching, Pieces, auth, db, NOTE_DB, VERSIONS)
 NoteTree = NOTETREE(auth, NOTE_DB, VERSION_ORDER, VERSION_INDEX)
-Material = MATERIAL(Caching, Word, Query, Note, PASSAGE_DBS)
 QueryChapter = QUERYCHAPTER(Caching, db, PASSAGE_DBS)
+Material = MATERIAL(Caching, Word, Query, QueryChapter, Note, PASSAGE_DBS)
 Record = RECORD(Check, Query, auth, db)
 Side = SIDE(Caching, Material, Word, Query, Note)
-Chart = CHART(Pieces, Word, Query, Note)
-CsvData = CSVDATA(auth, Word, Query, PASSAGE_DBS)
+Chart = CHART(Caching, Pieces, Word, Query, Note, PASSAGE_DBS)
+CsvData = CSVDATA(Word, Query, auth, PASSAGE_DBS)
 
 QuerySave.dep(QueryChapter)
 
@@ -71,22 +73,7 @@ track_changes(True)
 def text():
     session.forget(response)
 
-    # we build an index of queries by chapter in which they have results
-    # The index building takes multiple seconds, an the result is stored
-    # in the cache.
-    # But if we are debugging we reduce upfront index building
-
     ViewSettings = VIEWSETTINGS(Pieces, URL, VERSIONS)
-
-    if DEBUG:
-        # prevent index building for all data versions
-        vr = ViewSettings.theVersion()
-        if vr:
-            QueryChapter.makeQCindex(vr)
-    else:
-        # upfront index building for all data versions
-        for vr in VERSIONS:
-            QueryChapter.makeQCindex(vr)
 
     return dict(
         ViewSettings=ViewSettings,
@@ -151,15 +138,15 @@ def sidewordbody():
     if not authorized:
         msgs.append(("error", msg))
         return dict(
-            wr=dict(),
-            w=json.dumps(dict()),
+            wordRecord=dict(),
+            word=json.dumps(dict()),
             msgs=json.dumps(msgs),
         )
     wordRecord = Word.getInfo(iid, vr, msgs)
     return dict(
         vr=vr,
-        wr=wordRecord,
-        w=json.dumps(wordRecord),
+        wordRecord=wordRecord,
+        word=json.dumps(wordRecord),
         msgs=json.dumps(msgs),
     )
 
@@ -181,8 +168,8 @@ def sidequerybody():
             writable=False,
             iidRep=iidRep,
             vr=vr,
-            qr=dict(),
-            q=json.dumps(dict()),
+            queryRecord=dict(),
+            query=json.dumps(dict()),
             msgs=json.dumps(msgs),
             emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
         )
@@ -200,8 +187,8 @@ def sidequerybody():
             writable=True,
             iidRep=iidRep,
             vr=vr,
-            qr=dict(),
-            q=json.dumps(dict()),
+            queryRecord=dict(),
+            query=json.dumps(dict()),
             msgs=json.dumps(msgs),
             emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
         )
@@ -212,8 +199,8 @@ def sidequerybody():
         writable=authorized,
         iidRep=iidRep,
         vr=vr,
-        qr=queryRecord,
-        q=json.dumps(queryRecord),
+        queryRecord=queryRecord,
+        query=json.dumps(queryRecord),
         msgs=json.dumps(msgs),
         emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
     )
@@ -231,15 +218,15 @@ def sidenotebody():
         msg = f"Not a valid note id: {iid}"
         msgs.append(("error", msg))
         return dict(
-            nr=dict(),
-            n=json.dumps(dict()),
+            noteRecord=dict(),
+            note=json.dumps(dict()),
             msgs=json.dumps(msgs),
         )
     noteRecord = Note.getInfo(iidRep, vr, msgs)
     return dict(
         vr=vr,
-        nr=noteRecord,
-        n=json.dumps(noteRecord),
+        noteRecord=noteRecord,
+        note=json.dumps(noteRecord),
         msgs=json.dumps(msgs),
     )
 
@@ -392,7 +379,7 @@ def notes():
 
 def queriesr():
     session.forget(response)
-    return Query.recent()
+    return QueryRecent.recent()
 
 
 def querytree():
@@ -488,7 +475,7 @@ def item():
         return dict(fileName=fileName, data=msg)
 
     hebrewFields = getFields(tp, qw=qw)
-    data = CsvData(vr, iid, keywords, hebrewFields)
+    data = CsvData.get(vr, qw, iid, keywords, hebrewFields)
     return dict(fileName=fileName, data=data)
 
 
@@ -679,11 +666,11 @@ def querysharing():
         query_id = Check.isId("query_id", "q", "query", msgs)
         if query_id is None:
             break
-        fname = request.vars.fname
+        fieldName = request.vars.fname
         val = request.vars.val
         vr = request.vars.version
-        if fname is None or fname not in {"is_shared", "is_published"}:
-            msgs.append("error", "Illegal field name {}")
+        if fieldName is None or fieldName not in {"is_shared", "is_published"}:
+            msgs.append("error", "Illegal field name {fieldName}")
             break
         (authorized, msg) = Query.authWrite(query_id)
         if not authorized:
@@ -691,7 +678,7 @@ def querysharing():
             break
         now = request.utcnow
         (good, modDates, modCls, extra) = QuerySave.putSharing(
-            vr, query_id, fname, val, now, msgs
+            vr, query_id, fieldName, val, now, msgs
         )
     return dict(
         data=json.dumps(
@@ -722,7 +709,7 @@ def queryupdate():
             msgs.append(("error", msg))
             break
 
-        Query.verifyVersion(vr, query_id)
+        QuerySave.verifyVersion(vr, query_id)
         recordOld = Query.getBasicInfo(vr, query_id)
 
         if recordOld is None or len(recordOld) == 0:
@@ -808,7 +795,7 @@ def queryupdate():
             dict(
                 msgs=msgs,
                 good=good and exeGood,
-                q=queryRecord,
+                query=queryRecord,
                 emdrosVersionsOld=emdrosVersionsOld,
             )
         )

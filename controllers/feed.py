@@ -6,18 +6,18 @@ from urls import Urls
 
 from check import CHECK
 from caching import CACHING
-from query import QUERY
+from queryrecent import QUERYRECENT
 
-Check = CHECK(request)
+Check = CHECK(request, db)
 Caching = CACHING(cache)
-Query = QUERY(Check, Caching, auth, db, PASSAGE_DBS, VERSIONS)
+QueryRecent = QUERYRECENT(db)
 
 U = Urls(URL)
 
 
 def atom():
     session.forget(response)
-    queries = Query.feed()
+    queries = QueryRecent.feed()
     icon = URL("static", "images/shebanq_logo_xxsmall.png", host=True)
     cover = URL("static", "images/shebanq_cover.png", host=True)
     base = URL("xxx", "yyy", host=True, extension="")[0:-8]
@@ -85,7 +85,7 @@ def atom():
         )
         # we add a standard cover image if the description does not contain any image
         standardImage = (
-            f"""<p><img src="{cover}"/></p>""" if """<img """ not in descHtml else ""
+            f"""<p><img src="{cover}"/></p>""" if "<img " not in descHtml else ""
         )
         href = hEsc(
             URL(

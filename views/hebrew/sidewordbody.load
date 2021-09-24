@@ -2,32 +2,32 @@
 <input type="hidden" id="wordtag" value=""/>
 <div id="dbmsg_w"></div>
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctl ir fa fa-trash fa-lg"></span></a></p>
-{{if 'id' in wr:}}
+{{if 'id' in wordRecord:}}
 {{for v in VERSION_ORDER:
-    wrinfo = wr['versions'].get(v, collections.defaultdict(lambda: ''))
-    thisclass = 'this' if v == vr else 'other'
+    wordInfo = wordRecord['versions'].get(v, collections.defaultdict(lambda: ''))
+    thisCls = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'
 }}
-<div version="{{=v}}" class="version {{=thisclass}}">
+<div version="{{=v}}" class="version {{=thisCls}}">
     <p><a class="ctlexpand moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
-    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+    <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisCls}}">{{=v}}</span></a>
     <a id="csvt_lnk_{{=v}}_w" href="#" class="ctl fa fa-list fa-lg" ftitle=" :download all occurrences of this word as a csv file"></a>
     <a id="csvb_lnk_{{=v}}_w" href="#" class="ctl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all occurrences of this word with extra data as a csv file. The current view determines which features are added."></a>
     <a id="csvd_lnk_{{=v}}_w" href="#" class="ctl fa fa-table fa-lg" ftitle=" :download all occurrences of this word with extra data as a csv file. The legend determines which features are added."></a>
     <a id="select_control_chart_{{=v}}_w" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td class="dd i_hl">{{=wrinfo['g_entry_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td class="dd i_hl">{{=wrinfo['entry_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="dd i_hl">{{=wrinfo['entryid_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td>{{=wrinfo['g_entry']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td>{{=wrinfo['entry']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="i_tl">{{=wrinfo['entryid']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">part-of-speech</span></td><td class="i_pos">{{=wrinfo['pos']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">lexical set</span></td><td class="i_subpos">{{=wrinfo['subpos']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">proper noun category</span></td><td class="i_nametype">{{=wrinfo['nametype']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">language</span></td><td class="i_lan">{{=wrinfo['lan']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">gloss</span></td><td class="i_gl">{{=wrinfo['gloss']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td class="dd i_hl">{{=wordInfo['g_entry_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td class="dd i_hl">{{=wordInfo['entry_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="dd i_hl">{{=wordInfo['entryid_heb']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td>{{=wordInfo['g_entry']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td>{{=wordInfo['entry']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="i_tl">{{=wordInfo['entryid']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">part-of-speech</span></td><td class="i_pos">{{=wordInfo['pos']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">lexical set</span></td><td class="i_subpos">{{=wordInfo['subpos']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">proper noun category</span></td><td class="i_nametype">{{=wordInfo['nametype']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">language</span></td><td class="i_lan">{{=wordInfo['lan']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">gloss</span></td><td class="i_gl">{{=wordInfo['gloss']}}</td></tr>
     </table>
 </div>
 {{pass}}
@@ -35,7 +35,7 @@
 <script type="text/javascript">
 var State = {
     msgs: {{=XML(msgs)}},
-    word: {{=XML(w)}},
+    word: {{=XML(word)}},
 }
 </script>
 

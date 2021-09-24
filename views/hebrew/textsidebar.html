@@ -28,7 +28,7 @@ for (qw, tags) in (('w', 'words'), ('q', 'queries'), ('n', 'notes')):
     <div id="side_settings_m{{=qw}}" class="pnl">
         <table class="hlsettings">
             <tr>
-                {{if qw != 'w':}}<td><a href="#" id="hlpub" class="ctl {{=qw}}pradio fa fa-quote-right" title="show only published {{=tags}}"></a></td>{{pass}}
+              {{if qw != 'w':}}<td><a href="#" id="hlpub{{=qw}}" class="ctl {{=qw}}pradio fa fa-quote-right" title="show only published {{=tags}}"></a></td>{{pass}}
                 {{if qw != 'n':}}
                 <td><a href="#" id="{{=qw}}hlreset" class="ctl {{=qw}}hradio fa fa-close" title="reset highlight customization"></a></td>
                 <td><a href="#" id="{{=qw}}hlmany" class="ctl {{=qw}}hradio fa fa-hand-o-up" title="show all highlights"></a></td>

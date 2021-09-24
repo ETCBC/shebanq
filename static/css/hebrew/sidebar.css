@@ -22,12 +22,12 @@ td#thequeryid {
 
 /* VIEW SETTINGS */
 
-.qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.qpradio.ison,.npradio.ison,.pradio.ison,.fa.ctl.ison,.fa.ctlexpand.ison,.fa.ctli.ison,.fa.ctld.ison,.fa.ctll.ison {
+.qhradio.ison,.whradio.ison,.mhradio.ison,.mtradio.ison,.qvradio.ison,.nvradio.ison,.qfradio.ison,.nfradio.ison,.qlradio.ison,.nlradio.ison,.qpradio.ison,.npradio.ison,.fa.ctl.ison,.fa.ctlexpand.ison,.fa.ctli.ison,.fa.ctld.ison,.fa.ctll.ison {
     font-weight: normal;
     background-color: #888888;
     color: #ffff00;
 }
-.qhradio,.whradio,.mhradio,.mtradio,.qvradio,.nvradio,.qfradio,.nfradio,.qlradio,.nlradio,.qpradio,.npradio,.pradio {
+.qhradio,.whradio,.mhradio,.mtradio,.qvradio,.nvradio,.qfradio,.nfradio,.qlradio,.nlradio,.qpradio,.npradio {
     font-weight: normal;
     background-color: #fafffa;
     color: #aaaaaa;

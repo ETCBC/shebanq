@@ -1,20 +1,5 @@
 /* Hebrew data display */
 
-/* Borders in feature display */
-
-td.rr {
-    border-right: 4pt solid #aaaaaa;
-}
-td.r {
-    border-right: 4pt solid #ff0000;
-}
-td.ll {
-    border-left: 4pt solid #aaaaaa;
-}
-td.l {
-    border-left: 4pt solid #ff0000;
-}
-
 /* Hebrew Features */
 
 .heb {
@@ -320,5 +305,23 @@ span.cl_par, span.l_cl_par {
     font-weight: bold;
     font-size: small;
     color: #aa0000;
+}
+
+/* Borders in feature display
+ * NB: these definitions should come AFTER the formatting of the hebrew features,
+ * otherwise they become overridden
+ */
+
+td.rr {
+    border-right: 4pt solid #aaaaaa;
+}
+td.r {
+    border-right: 4pt solid #ff0000;
+}
+td.ll {
+    border-left: 4pt solid #aaaaaa;
+}
+td.l {
+    border-left: 4pt solid #ff0000;
 }
 

@@ -36,7 +36,7 @@ class View {
     const { wordsPageUrl } = Config
     const { lan, letter } = ConfigW
 
-    $(`#version_${v}`).click(e => {
+    $(`#version_${v}`).off("click").click(e => {
       e.preventDefault()
       this.version = v
       window.location.href = `${wordsPageUrl}?version=${v}&lan=${lan}&letter=${letter}&goto=${gotoWord}`
@@ -56,7 +56,7 @@ class View {
     $(`#version_${version}`).addClass("ison")
     setHeightW()
     $("[wii]").hide()
-    $("[gi]").click(e => {
+    $("[gi]").off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const i = elem.attr("gi")

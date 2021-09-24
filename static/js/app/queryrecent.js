@@ -12,7 +12,7 @@ export class QueryRecent {
     this.refreshCtl = $("#reload_recentq")
 
     this.diagnostics.clear()
-    this.refreshCtl.click(e => {
+    this.refreshCtl.off("click").click(e => {
       e.preventDefault()
       this.fetch()
     })
@@ -62,7 +62,7 @@ export class QueryRecent {
     const { treeObj } = this
     $("#recentqi a[query_id]").each((i, el) => {
       const elem = $(el)
-      elem.click(e => {
+      elem.off("click").click(e => {
         e.preventDefault()
         treeObj.filter.clear()
         treeObj.gotoQuery(elem.attr("query_id"))

@@ -16,7 +16,7 @@ export class SideSettings {
     if (qw != "n") {
       this.picker2 = new ColorPicker2(this.qw, false)
       const highlightRadio = $(`.${qw}hradio`)
-      highlightRadio.click(e => {
+      highlightRadio.off("click").click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
         VS.setHighlight(this.qw, { active: elem.attr("id").substring(1) })
@@ -26,9 +26,9 @@ export class SideSettings {
     }
     if (qw == "q" || qw == "n") {
       const publishedCtl = $(`.${qw}pradio`)
-      publishedCtl.click(e => {
+      publishedCtl.off("click").click(e => {
         e.preventDefault()
-        VS.setHighlight(this.qw, { is_published: VS.is_published(this.qw) == "x" ? "v" : "x" })
+        VS.setHighlight(this.qw, { pub: VS.is_published(this.qw) == "x" ? "v" : "x" })
         sideFetched[`m${this.qw}`] = false
         sidebar[`m${this.qw}`].content.apply()
       })
@@ -39,7 +39,7 @@ export class SideSettings {
     const { qw } = this
     if (VS.get(qw) == "v") {
       if (qw != "n") {
-        for (const picker of PG.picker1List[qw]) {
+        for (const picker of Object.values(PG.picker1List[qw])) {
           picker.apply(false)
         }
         PG.picker2[qw].apply(true)

@@ -113,7 +113,7 @@ export class Page {
 
   decorateCrossrefs(dest) {
     const crossrefs = dest.find("a[b]")
-    crossrefs.click(e => {
+    crossrefs.off("click").click(e => {
       e.preventDefault()
       const elem = $(e.delegateTarget)
       const vals = {}
@@ -191,8 +191,9 @@ export class Page {
   apply() {
     /* apply the settings: hide and show material as prescribed by the settings
      */
-    this.material.apply()
-    this.sidebars.apply()
+    const { material, sidebars } = this
+    material.apply()
+    sidebars.apply()
   }
   go() {
     /* go to another page view, check whether initial content has to be loaded

@@ -89,7 +89,7 @@ order by note.verse
         )
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
-        extra = "" if myId is None else f""" or created_by = {myId} """
+        extra = "" if myId is None else f" or created_by = {myId} "
         sql = f"""
 select book, clause_atom from note
 where keywords like '% {keywordsSql} %'
@@ -127,11 +127,11 @@ select first_name, last_name from auth_user where id = '{iid}'
 
     def countNotes(self, user_id, keywords):
         auth = self.auth
-        NOTE_DB = self.notedb
+        NOTE_DB = self.NOTE_DB
 
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
-        extra = f""" or created_by = {user_id} """ if myId == user_id else ""
+        extra = f" or created_by = {user_id} " if myId == user_id else ""
         sql = f"""
 select
     version,
@@ -153,9 +153,9 @@ group by version
     ):
         NOTE_DB = self.NOTE_DB
 
-        condition = """note.is_shared = 'T' or note.is_published = 'T' """
+        condition = "note.is_shared = 'T' or note.is_published = 'T' "
         if myId is not None:
-            condition += f""" or note.created_by = {myId} """
+            condition += f" or note.created_by = {myId} "
 
         noteSql = f"""
 select

@@ -13,7 +13,7 @@ export class Notes {
     this.saveCtl = this.saveCtls.find('a[tp="s"]')
     this.revertCtl = this.saveCtls.find('a[tp="r"]')
     this.authenticated = false
-    this.mainCtrl = $("a.nt_main_ctl")
+    this.mainCtl = $("a.nt_main_ctl")
 
     contentNew.find(".vradio").each((i, el) => {
       const elem = $(el)
@@ -36,18 +36,18 @@ export class Notes {
         noteVerse.clearDiagnostics()
       }
     })
-    this.mainCtrl.click(e => {
+    this.mainCtl.off("click").click(e => {
       e.preventDefault()
       VS.setHighlight("n", { get: VS.get("n") == "v" ? "x" : "v" })
       this.apply()
     })
-    this.revertCtl.click(e => {
+    this.revertCtl.off("click").click(e => {
       e.preventDefault()
       for (const noteVerse of Object.values(verseList)) {
         noteVerse.revert()
       }
     })
-    this.saveCtl.click(e => {
+    this.saveCtl.off("click").click(e => {
       e.preventDefault()
       for (const noteVerse of Object.values(verseList)) {
         noteVerse.save()
@@ -63,7 +63,7 @@ export class Notes {
     const { verseList } = this
 
     if (VS.get("n") == "v") {
-      this.mainCtrl.addClass("nt_loaded")
+      this.mainCtl.addClass("nt_loaded")
       for (const noteVerse of Object.values(verseList)) {
         noteVerse.showNotes(false)
         this.authenticated = noteVerse.authenticated
@@ -72,7 +72,7 @@ export class Notes {
         this.saveCtls.show()
       }
     } else {
-      this.mainCtrl.removeClass("nt_loaded")
+      this.mainCtl.removeClass("nt_loaded")
       this.saveCtls.hide()
       for (const noteVerse of Object.values(verseList)) {
         noteVerse.hideNotes()
@@ -84,7 +84,7 @@ export class Notes {
 class NoteVerse {
   constructor(vr, bk, ch, vs, ctl, dest) {
     this.loaded = false
-    this.nnotes = 0
+    this.nNotes = 0
     this.mnotes = 0
     this.show = false
     this.editing = false
@@ -98,7 +98,7 @@ class NoteVerse {
 
     const { book, chapter, verse } = this
     this.diagnostics = new Diagnostics(`nt_msg_${book}_${chapter}_${verse}`)
-    this.noteCtrl = ctl.find("a.nt_ctl")
+    this.noteCtl = ctl.find("a.nt_ctl")
     this.saveCtls = ctl.find("span.nt_sav")
 
     const { saveCtls } = this
@@ -106,21 +106,21 @@ class NoteVerse {
     this.editCtl = saveCtls.find('a[tp="e"]')
     this.revertCtl = saveCtls.find('a[tp="r"]')
 
-    const { saveCtl, editCtl, revertCtl, noteCtrl } = this
+    const { saveCtl, editCtl, revertCtl, noteCtl } = this
 
-    saveCtl.click(e => {
+    saveCtl.off("click").click(e => {
       e.preventDefault()
       this.save()
     })
-    editCtl.click(e => {
+    editCtl.off("click").click(e => {
       e.preventDefault()
       this.edit()
     })
-    revertCtl.click(e => {
+    revertCtl.off("click").click(e => {
       e.preventDefault()
       this.revert()
     })
-    noteCtrl.click(e => {
+    noteCtl.off("click").click(e => {
       e.preventDefault()
       this.isDirty()
       if (this.show) {
@@ -187,6 +187,7 @@ class NoteVerse {
     dest
       .find("td.nt_stat")
       .find("a")
+      .off("click")
       .click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
@@ -207,6 +208,7 @@ class NoteVerse {
     dest
       .find("td.nt_pub")
       .find("a")
+      .off("click")
       .click(e => {
         e.preventDefault()
         const elem = $(e.delegateTarget)
@@ -238,7 +240,7 @@ class NoteVerse {
     const notes = this.notesOld[clause_atom]
     const keyIndex = this.origKeyIndex
     let html = ""
-    this.nnotes += notes.length
+    this.nNotes += notes.length
     for (const note of notes) {
       const { user_id, note_id, is_published, is_shared, ro } = note
       const keywordsTrim = $.trim(note.keywords)
@@ -263,7 +265,7 @@ class NoteVerse {
       const editAtt = ro ? "" : ' edit="1"'
       const editCls = ro ? "" : " edit"
       html += `<tr class="nt_cmt nt_info ${statc}${editCls}" note_id="${note_id}"
-          clause_atom="${clause_atom}"${editAtt}">`
+          note_clause_atom="${clause_atom}"${editAtt}">`
       if (ro) {
         html += `<td class="nt_stat">
             <span class="fa fa-${statsym} fa-fw" code="${note.status}"></span>
@@ -304,22 +306,22 @@ class NoteVerse {
   genHtml(replace) {
     this.mnotes = 0
     if (replace) {
-      this.dest.find("tr[clause_atom]").remove()
+      this.dest.find("tr[note_clause_atom]").remove()
     }
     for (const clause_atom in this.notesOld) {
-      const target = this.dest.find(`tr[clause_atom="${clause_atom}"]`)
+      const thisDest = this.dest.find(`tr[clause_atom="${clause_atom}"]`)
       const html = this.genHtmlClauseAtom(clause_atom)
-      target.after(html)
+      thisDest.after(html)
     }
-    if (this.nnotes == 0) {
-      this.noteCtrl.addClass("nt_empty")
+    if (this.nNotes == 0) {
+      this.noteCtl.addClass("nt_empty")
     } else {
-      this.noteCtrl.removeClass("nt_empty")
+      this.noteCtl.removeClass("nt_empty")
     }
     if (this.mnotes == 0) {
-      this.noteCtrl.removeClass("nt_muted")
+      this.noteCtl.removeClass("nt_muted")
     } else {
-      this.noteCtrl.addClass("nt_muted")
+      this.noteCtl.addClass("nt_muted")
       this.diagnostics.msg(["special", `muted notes: ${this.mnotes}`])
     }
   }
@@ -337,7 +339,7 @@ class NoteVerse {
           this.diagnostics.msg(mg)
         }
         if (good) {
-          this.dest.find("tr[clause_atom]").remove()
+          this.dest.find("tr[note_clause_atom]").remove()
           this.process(users, notes, keyIndex, changed, authenticated)
         }
       },
@@ -357,7 +359,7 @@ class NoteVerse {
       const { note_id } = noteOld
       const noteNew =
         note_id == 0
-          ? this.dest.find(`tr[note_id="0"][clause_atom="${clause_atom}"]`)
+          ? this.dest.find(`tr[note_id="0"][note_clause_atom="${clause_atom}"]`)
           : this.dest.find(`tr[note_id="${note_id}"]`)
       const statusOld = noteOld.status
       const statusNew = noteNew.find("td.nt_stat a").attr("code")
@@ -386,9 +388,9 @@ class NoteVerse {
 
   applyDirty() {
     if (this.dirty) {
-      this.noteCtrl.addClass("dirty")
-    } else if (this.noteCtrl.hasClass("dirty")) {
-      this.noteCtrl.removeClass("dirty")
+      this.noteCtl.addClass("dirty")
+    } else if (this.noteCtl.hasClass("dirty")) {
+      this.noteCtl.removeClass("dirty")
     }
   }
   save() {
@@ -411,7 +413,7 @@ class NoteVerse {
       const { note_id, user_id } = noteOld
       const noteNew =
         note_id == 0
-          ? this.dest.find(`tr[note_id="0"][clause_atom="${clause_atom}"]`)
+          ? this.dest.find(`tr[note_id="0"][note_clause_atom="${clause_atom}"]`)
           : this.dest.find(`tr[note_id="${note_id}"]`)
       const statusOld = noteOld.status
       const statusNew = noteNew.find("td.nt_stat a").attr("code")
@@ -472,28 +474,40 @@ class NoteVerse {
 
   hideNotes() {
     this.show = false
-    this.noteCtrl.removeClass("nt_loaded")
+    this.noteCtl.removeClass("nt_loaded")
     this.saveCtls.hide()
     this.dest.find("tr.nt_cmt").hide()
     this.diagnostics.hide()
   }
 
   showNotes(adjustVerse) {
+    const {
+      loaded,
+      authenticated,
+      editCtl,
+      noteCtl,
+      saveCtl,
+      saveCtls,
+      diagnostics,
+      dest,
+      editing,
+    } = this
+
     this.show = true
-    this.noteCtrl.addClass("nt_loaded")
-    this.diagnostics.show()
-    if (!this.loaded) {
+    noteCtl.addClass("nt_loaded")
+    diagnostics.show()
+    if (!loaded) {
       this.fetch(adjustVerse)
     } else {
-      this.dest.find("tr.nt_cmt").show()
-      if (this.authenticated) {
-        this.saveCtls.show()
-        if (this.editing) {
-          this.saveCtl.show()
-          this.editCtl.hide()
+      dest.find("tr.nt_cmt").show()
+      if (authenticated) {
+        saveCtls.show()
+        if (editing) {
+          saveCtl.show()
+          editCtl.hide()
         } else {
-          this.saveCtl.hide()
-          this.editCtl.show()
+          saveCtl.hide()
+          editCtl.show()
         }
       }
       if (PG.mr == "m") {

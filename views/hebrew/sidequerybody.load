@@ -1,60 +1,60 @@
 {{
-statusmap = dict(
+statusMap = dict(
     good='results up to date',
     error='results outdated',
     warning='never executed',
 )
 }}
-{{if 'id' not in qr:}}
+{{if 'id' not in queryRecord:}}
     <div id="dbmsg_q"></div>
     <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{else:}}
 {{if writable:}}
-<input type="hidden" id="query_id" value="{{=qr['id']}}"/>
+<input type="hidden" id="query_id" value="{{=queryRecord['id']}}"/>
 {{pass}}
 <input type="hidden" id="querytag" value=""/>
 <div id="bigger">
-    <h5><a class="ctl" id="gobackq" title="to query list" href="#"><span id="nameqm">{{=qr['name']}}</span></a>
+    <h5><a class="ctl" id="gobackq" title="to query list" href="#"><span id="nameqm">{{=queryRecord['name']}}</span></a>
     <span class="ir"><a class="ctl fullc fa fa-arrows-alt fa-lg" href="#" title="show in separate big box"></a></span></h5>
-    <input type="text" id="nameq" value="{{=qr['name']}}"/>
+    <input type="text" id="nameq" value="{{=queryRecord['name']}}"/>
     <div>
         <p>
-            <a target="_blank" href="mailto:{{=qr['uemail']}}"><span>{{=f'{qr['first_name']} {qr['last_name']}'}}</span></a>
-            <a target="_blank" href="{{=qr['org_website']}}"><span>{{=qr['org_name']}}</span></a>
-            <a target="_blank" href="{{=qr['project_website']}}"><span>{{=qr['project_name']}}</span></a>
+            <a target="_blank" href="mailto:{{=queryRecord['uemail']}}"><span>{{=f"{queryRecord['first_name']} {queryRecord['last_name']}"}}</span></a>
+            <a target="_blank" href="{{=queryRecord['org_website']}}"><span>{{=queryRecord['org_name']}}</span></a>
+            <a target="_blank" href="{{=queryRecord['project_website']}}"><span>{{=queryRecord['project_name']}}</span></a>
         </p>
     </div>
-    <div id="descm" class="old descm">{{=XML(qr['description_md'])}}</div>
-    <textarea id="descq" class="desc">{{=qr['description']}}</textarea>
+    <div id="descm" class="old descm">{{=XML(queryRecord['description_md'])}}</div>
+    <textarea id="descq" class="desc">{{=queryRecord['description']}}</textarea>
     <div version="" class="version this">
         <table>
             <tr><td style="padding-left: 0px;"><a class="ctlexpand moredetail fa fa-chevron-right" href="#" title="more/less details"></a>
             <span class="fieldlabel">shared</span></td><td>{{
             if writable: }}
-                <input query_id="{{=qr['id']}}" id="is_shared_c" type="checkbox" {{='checked' if qr['is_shared'] else ''}}/>
+                <input query_id="{{=queryRecord['id']}}" id="is_shared_c" type="checkbox" {{='checked' if queryRecord['is_shared'] else ''}}/>
             {{else:}}
-                <span class="fa fa-{{='check' if qr['is_shared'] else 'close'}}"></span>
-            {{pass}}</td><td class="dtval"><span id="shared_on">{{=qr['shared_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="fieldlabel">created</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['created_on']}}</span></td></tr>
-            <tr class="detail"><td><span class="fieldlabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span>{{=qr['modified_on']}}</span></td></tr>
+                <span class="fa fa-{{='check' if queryRecord['is_shared'] else 'close'}}"></span>
+            {{pass}}</td><td class="dtval"><span id="shared_on">{{=queryRecord['shared_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="fieldlabel">created</span></td><td>&nbsp;</td><td class="dtval"><span>{{=queryRecord['created_on']}}</span></td></tr>
+            <tr class="detail"><td><span class="fieldlabel">modified</span></td><td>&nbsp;</td><td class="dtval"><span>{{=queryRecord['modified_on']}}</span></td></tr>
         </table>
     </div>
     <div id="dbmsg_q"></div>
     <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{for v in VERSION_ORDER:
-    qrinfo = qr['versions'][v]
-    qstatus = qrinfo['status']
-    qresults = qrinfo['results']
-    thisclass = 'this' if v == vr else 'other'
-    is_published = qrinfo['is_published']
-    id_q = XML('id="statq" ') if v == vr else ''
-    id_m = XML('id="statm" ') if v == vr else ''
+    queryInfo = queryRecord['versions'][v]
+    status = queryInfo['status']
+    results = queryInfo['results']
+    thisCls = 'this' if v == vr else 'other'
+    is_published = queryInfo['is_published']
+    statusId = XML('id="statq" ') if v == vr else ''
+    statusMapId = XML('id="statm" ') if v == vr else ''
     arrow = 'down' if v == vr else 'right'
-    pclass = 'published' if is_published else 'unpublished'
+    publishedCls = 'published' if is_published else 'unpublished'
 }}
-    <div version="{{=v}}" class="version {{=thisclass}} {{=pclass}}">
+    <div version="{{=v}}" class="version {{=thisCls}} {{=publishedCls}}">
         <p><a class="ctlexpand moredetail fa fa-chevron-{{=arrow}}" href="#" title="more/less details"></a>
-        <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisclass}}">{{=v}}</span></a>
+        <a id="version_s_{{=v}}" href="#" title="switch to this version"><span class="sversion {{=thisCls}}">{{=v}}</span></a>
     {{if v == vr:}}
         <a id="csvt_lnk_{{=v}}_q" href="#" class="ctl fa fa-list fa-lg" ftitle=" :download all words of this query as a csv file"></a>
         <a id="csvb_lnk_{{=v}}_q" href="#" class="ctl fa fa-list fa-lg fa-flip-horizontal" ftitle=" :download all words of this query with extra data as a csv file. The current view determines which features are added."></a>
@@ -79,52 +79,52 @@ statusmap = dict(
             {{pass}}
         {{pass}}
     {{else:}}
-        <span class="qexer">{{='' if qresults == None else qresults}}</span>
-        <span class="{{=qstatus}}">{{=statusmap[qstatus]}}</span>
+        <span class="qexer">{{='' if results == None else results}}</span>
+        <span class="{{=status}}">{{=statusMap[status]}}</span>
     {{pass}}
         </p>
-        <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(qrinfo['mql'])}}</textarea>
+        <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(queryInfo['mql'])}}</textarea>
     {{if v == vr:}}
         <div id="dbmsg_qv"></div>
         <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctl ir fa fa-trash fa-lg"></span></a></p>
         <table>
             <tr>
                 <td><span class="fieldlabel">status</span></td>
-                <td>&nbsp;</td><td {{=id_q}} class="{{=qstatus}}"><span {{=id_m}}>{{=statusmap[qstatus]}}</span></td>
+                <td>&nbsp;</td><td {{=statusId}} class="{{=status}}"><span {{=statusMapId}}>{{=statusMap[status]}}</span></td>
             </tr>
             <tr>
                 <td><span class="fieldlabel">published</span></td>
                 <td>{{
                     if writable:
-                    }}<input query_id="{{=qr['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_published else ''}}/>{{pass}}<span
+                    }}<input query_id="{{=queryRecord['id']}}" id="is_pub_c" type="checkbox" {{='checked' if is_published else ''}}/>{{pass}}<span
                         {{=XML('id="is_pub_ro"') if writable else ''}}
                         class="fa fa-{{='check' if is_published else 'close'}}"
                       ></span>
                 </td>
-                <td class="dtval"><span {{=XML('id="published_on"')}}>{{=qrinfo['published_on']}}</span></td>
+                <td class="dtval"><span {{=XML('id="published_on"')}}>{{=queryInfo['published_on']}}</span></td>
             </tr>
             <tr>
                 <td><span class="fieldlabel">results</span></td>
-                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresults"')}}>{{=qresults}}</span></td>
+                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="results"')}}>{{=results}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">words</span></td>
-                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultslots"')}}>{{=qrinfo['resultmonads']}}</span></td>
+                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultslots"')}}>{{=queryInfo['resultmonads']}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">modified</span></td>
-                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"')}}>{{=qrinfo['xmodified_on']}}</span></td>
+                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"')}}>{{=queryInfo['xmodified_on']}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">executed</span></td>
-                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"')}}>{{=qrinfo['executed_on']}}</span></td>
+                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"')}}>{{=queryInfo['executed_on']}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">engine</span></td>
                 <td>&nbsp;</td>
-                <td class="dtval {{='exeversionold' if qrinfo['eversion'] in emdrosVersionsOld else ''}}"
-                    title="this is {{='not ' if qrinfo['eversion'] in emdrosVersionsOld else ''}}the newest version"
-                ><span {{=XML('id="eversion"')}}>{{=qrinfo['eversion']}}</span></td>
+                <td class="dtval {{='exeversionold' if queryInfo['eversion'] in emdrosVersionsOld else ''}}"
+                    title="this is {{='not ' if queryInfo['eversion'] in emdrosVersionsOld else ''}}the newest version"
+                ><span {{=XML('id="eversion"')}}>{{=queryInfo['eversion']}}</span></td>
             </tr>
         </table>
     {{pass}}
@@ -135,7 +135,7 @@ statusmap = dict(
 <script type="text/javascript">
 var State = {
     msgs: {{=XML(msgs)}},
-    query: {{=XML(q)}},
+    query: {{=XML(query)}},
 }
 </script>
 

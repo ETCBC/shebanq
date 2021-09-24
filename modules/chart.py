@@ -6,13 +6,15 @@ BLOCK_SIZE = 500
 
 
 class CHART:
-    def __init__(self, Pieces, Word, Query, Note):
+    def __init__(self, Caching, Pieces, Word, Query, Note, PASSAGE_DBS):
+        self.Caching = Caching
         self.Pieces = Pieces
         self.Word = Word
         self.Query = Query
         self.Note = Note
+        self.PASSAGE_DBS = PASSAGE_DBS
 
-    def get(self, vr, qw, iidRep, msg):
+    def get(self, vr, qw, iidRep):
         Caching = self.Caching
 
         return Caching.get(
@@ -83,7 +85,7 @@ select chapter_num, first_m, last_m from chapter
                 if n == curChpLast_m
                 else f"{curChp}.z"
                 if round(10 * fraction) == 10
-                else "{curChp + fraction:0.1f}"
+                else f"{curChp + fraction:0.1f}"
             )
             return (curChp, rep)
 

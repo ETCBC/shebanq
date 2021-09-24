@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 from base64 import b64decode, b64encode
 
@@ -7,7 +8,8 @@ DEBUG = True
 
 def debug(msg):
     if DEBUG:
-        print(msg)
+        sys.stderr.write(f"{msg}\n")
+        sys.stderr.flush()
 
 
 def isodt(dt=None):
