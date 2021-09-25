@@ -8,13 +8,49 @@ RESULT_PAGE_SIZE = 20
 
 
 class MATERIAL:
-    def __init__(self, Caching, Word, Query, QueryChapter, Note, PASSAGE_DBS):
+    def __init__(
+        self, Check, Caching, Record, Word, Query, QueryChapter, Note, PASSAGE_DBS
+    ):
+        self.Check = Check
         self.Caching = Caching
+        self.Record = Record
         self.Word = Word
         self.Query = Query
         self.QueryChapter = QueryChapter
         self.Note = Note
         self.PASSAGE_DBS = PASSAGE_DBS
+
+    def page(self):
+        Check = self.Check
+        Record = self.Record
+
+        mr = Check.field("material", "", "mr")
+        qw = Check.field("material", "", "qw")
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        tp = Check.field("material", "", "tp")
+        tr = Check.field("material", "", "tr")
+        lang = Check.field("material", "", "lang")
+        iidRep = Check.field("material", "", "iid")
+        page = Check.field("material", "", "page")
+
+        (authorized, msg) = Record.authRead(mr, qw, iidRep)
+        if not authorized:
+            return dict(
+                version=vr,
+                mr=mr,
+                qw=qw,
+                msg=msg,
+                hits=0,
+                results=0,
+                pages=0,
+                page=0,
+                pagelist=json.dumps([]),
+                material=None,
+                slots=json.dumps([]),
+            )
+        return self.get(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang)
 
     def getPassage(self, vr, bk, ch):
         Caching = self.Caching

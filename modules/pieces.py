@@ -1,12 +1,27 @@
 import json
 
+from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
 from verse import Verse
 
 
 class Pieces:
-    def __init__(self, Caching, PASSAGE_DBS):
+    def __init__(self, Check, Caching, auth, PASSAGE_DBS):
+        self.Check = Check
         self.Caching = Caching
+        self.auth = auth
         self.PASSAGE_DBS = PASSAGE_DBS
+
+    def dep(self, Note, NoteSave):
+        self.Note = Note
+        self.NoteSave = NoteSave
+
+    def getBookTitles(self):
+        jsinit = f"""
+var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};
+var bookTrans = {json.dumps(BOOK_TRANS)};
+var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
+"""
+        return dict(jsinit=jsinit)
 
     def getBooks(self, vr):
         Caching = self.Caching
@@ -35,17 +50,23 @@ on chapter.book_id = book.id group by name order by book.id
             result = ({}, [], {}, {})
         return result
 
-    def getVerseSimple(self, vr, bk, ch, vs):
+    def getVerseJson(self, vr, bk, ch, vs):
         Caching = self.Caching
 
         return Caching.get(
             f"versej_{vr}_{bk}_{ch}_{vs}_",
-            lambda: self.getVerseSimple_c(vr, bk, ch, vs),
+            lambda: self.getVerseJson_c(vr, bk, ch, vs),
             None,
         )
 
-    def getVerseSimple_c(self, vr, bk, ch, vs):
+    def getVerseJson_c(self):
+        Check = self.Check
         PASSAGE_DBS = self.PASSAGE_DBS
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
 
         passageDb = PASSAGE_DBS[vr] if vr in PASSAGE_DBS else None
         msgs = []
@@ -86,16 +107,26 @@ order by word_number
                 )
         return json.dumps(dict(good=good, msgs=msgs, data=data), ensure_ascii=False)
 
-    def getVerse(self, vr, bk, ch, vs, tr, msgs):
+    def getVerse(self):
+        Check = self.Check
         Caching = self.Caching
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
+        tr = Check.field("material", "", "tr")
+
+        if vs is None:
+            return dict(good=False, msgs=[])
 
         return Caching.get(
             f"verse_{vr}_{bk}_{ch}_{vs}_{tr}_",
-            lambda: self.getVerse_c(vr, bk, ch, vs, tr, msgs),
+            lambda: self.getVerse_c(vr, bk, ch, vs, tr),
             None,
         )
 
-    def getVerse_c(self, vr, bk, ch, vs, tr, msgs):
+    def getVerse_c(self, vr, bk, ch, vs, tr):
         PASSAGE_DBS = self.PASSAGE_DBS
 
         material = Verse(
@@ -111,13 +142,53 @@ order by word_number
             mr=None,
         )
         good = True
+        msgs = []
         if len(material.wordData) == 0:
-            msgs.append(("error", f"{bk} {ch}:{vs} does not exist"))
+            msgs = [("error", f"{bk} {ch}:{vs} does not exist")]
             good = False
         return dict(
             good=good,
             msgs=msgs,
             material=material,
+        )
+
+    def getVerseNotes(self, requestVars, now):
+        Check = self.Check
+        Note = self.Note
+        NoteSave = self.NoteSave
+        auth = self.auth
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
+        edit = Check.isBool("edit")
+        save = Check.isBool("save")
+
+        myId = None
+        if auth.user:
+            myId = auth.user.id
+        authenticated = myId is not None
+
+        clauseAtoms = self.getClauseAtoms(vr, bk, ch, vs)
+        changed = False
+
+        msgs = []
+
+        if save:
+            if myId is None:
+                msgs.append(("error", "You have to be logged in when you save notes"))
+            else:
+                notes = (
+                    json.loads(requestVars.notes)
+                    if requestVars and requestVars.notes
+                    else []
+                )
+                changed = NoteSave.put(
+                    myId, vr, bk, ch, vs, now, notes, clauseAtoms, msgs
+                )
+        return Note.inVerse(
+            vr, bk, ch, vs, myId, clauseAtoms, changed, now, msgs, authenticated, edit
         )
 
     def getClauseAtomFirstSlot(self, vr):

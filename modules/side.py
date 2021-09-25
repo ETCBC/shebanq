@@ -2,12 +2,23 @@ from viewdefs import colorPicker
 
 
 class SIDE:
-    def __init__(self, Caching, Material, Word, Query, Note):
+    def __init__(self, Check, Caching, Material, Word, Query, Note):
+        self.Check = Check
         self.Caching = Caching
         self.Material = Material
         self.Word = Word
         self.Query = Query
         self.Note = Note
+
+    def page(self):
+        Check = self.Check
+
+        vr = Check.field("material", "", "version")
+        qw = Check.field("material", "", "qw")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        is_published = Check.field("highlights", qw, "pub") if qw != "w" else ""
+        return self.get(vr, qw, bk, ch, is_published)
 
     def get(self, vr, qw, bk, ch, is_published):
         Caching = self.Caching

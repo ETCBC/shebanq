@@ -2,14 +2,12 @@ import collections
 import json
 import urllib
 
-from gluon import current
-
 from blang import BIBLANG, BOOK_LANGS, BOOK_NAMES, BOOK_TRANS
 from viewdefs import (
     SETTINGS,
     VALIDATION,
-    DNCOLS,
-    DNROWS,
+    N_DEFAULT_CLR_COLS,
+    N_DEFAULT_CLR_ROWS,
     NEXT_TP,
     NEXT_TR,
     NOTE_STATUS_CLS,
@@ -23,20 +21,20 @@ from viewdefs import (
     COLORS,
     COLORS_DEFAULT,
     ITEM_STYLE,
-    getVal,
     makeColors,
 )
 
 
 class VIEWSETTINGS:
-    def __init__(self, Pieces, URL, VERSIONS):
+    def __init__(self, Check, Pieces, request, response, URL, VERSIONS):
+        self.Check = Check
         self.Pieces = Pieces
         self.URL = URL
 
         self.state = collections.defaultdict(
             lambda: collections.defaultdict(lambda: {})
         )
-        self.pref = getVal("rest", "", "pref")
+        self.pref = Check.field("rest", "", "pref")
 
         self.VERSIONS = {v: info for (v, info) in VERSIONS.items()}
 
@@ -45,12 +43,12 @@ class VIEWSETTINGS:
             for qw in SETTINGS[group]:
                 self.state[group][qw] = {}
                 fromCookie = {}
-                if (self.pref + group + qw) in current.request.cookies:
+                if (self.pref + group + qw) in request.cookies:
                     if self.pref == "my":
                         try:
                             fromCookie = json.loads(
                                 urllib.parse.unquote(
-                                    current.request.cookies[
+                                    request.cookies[
                                         self.pref + group + qw
                                     ].value
                                 )
@@ -65,12 +63,12 @@ class VIEWSETTINGS:
                             )
                             if validationState is not None:
                                 self.state[group][qw][fid] = validationState
-                    for f in current.request.vars:
+                    for f in request.vars:
                         if not f.startswith(f"c_{qw}"):
                             continue
                         fid = f[3:]
                         if len(fid) <= 32 and fid.replace("_", "").isalnum():
-                            validationState = getVal(
+                            validationState = Check.field(
                                 group, qw, fid, default=False
                             )
                             if validationState is not None:
@@ -82,20 +80,20 @@ class VIEWSETTINGS:
                         validationState = VALIDATION[group][qw][f](
                             init, fromCookie.get(f, None)
                         )
-                        vstater = getVal(group, qw, f, default=False)
+                        vstater = Check.field(group, qw, f, default=False)
                         if vstater is not None:
                             validationState = vstater
                         fromCookie[f] = validationState
                         self.state[group][qw][f] = validationState
 
                 if group != "rest":
-                    current.response.cookies[
+                    response.cookies[
                         self.pref + group + qw
                     ] = urllib.parse.quote(json.dumps(fromCookie))
-                    current.response.cookies[self.pref + group + qw]["expires"] = (
+                    response.cookies[self.pref + group + qw]["expires"] = (
                         30 * 24 * 3600
                     )
-                    current.response.cookies[self.pref + group + qw]["path"] = "/"
+                    response.cookies[self.pref + group + qw]["path"] = "/"
 
         books = {}
         booksOrder = {}
@@ -126,8 +124,8 @@ bookTrans: {json.dumps(BOOK_TRANS)},
 colorsDefault: {json.dumps(COLORS_DEFAULT)},
 colorsCls: {json.dumps(makeColors())},
 colors: {json.dumps(COLORS)},
-dncols: {DNCOLS},
-dnrows: {DNROWS},
+nDefaultClrCols: {N_DEFAULT_CLR_COLS},
+nDefaultClrRows: {N_DEFAULT_CLR_ROWS},
 featureHost: "https://etcbc.github.io/bhsa/features",
 nextTp: {json.dumps(NEXT_TP)},
 nextTr: {json.dumps(NEXT_TR)},

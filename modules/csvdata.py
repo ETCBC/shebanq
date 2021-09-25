@@ -1,4 +1,6 @@
-from helpers import flatten
+from helpers import flatten, iDecode
+
+from viewdefs import TP_LABELS, ITEM_STYLE
 
 
 def csv(data):
@@ -13,24 +15,52 @@ def csv(data):
                 f'''"{x.replace('"', '""')}"''' if '"' in x or "," in x else x
                 for x in prow
             ]
-            result.append(
-                (",".join(trow)).replace("\n", " ").replace("\r", " ")
-            )
+            result.append((",".join(trow)).replace("\n", " ").replace("\r", " "))
     return "\n".join(result)
 
 
 class CSVDATA:
-    def __init__(self, Word, Query, auth, PASSAGE_DBS):
+    def __init__(self, Check, Record, Word, Query, auth, PASSAGE_DBS):
+        self.Check = Check
+        self.Record = Record
         self.Word = Word
         self.Query = Query
         self.auth = auth
         self.PASSAGE_DBS = PASSAGE_DBS
 
-    def get(self, vr, qw, iid, keywords, hebrewFields):
+    def page(self):
+        Check = self.Check
+        Record = self.Record
+
+        vr = Check.field("material", "", "version")
+        iidRep = Check.field("material", "", "iid")
+        mr = Check.field("material", "", "mr")
+        qw = Check.field("material", "", "qw")
+        tp = Check.field("material", "", "tp")
+        extra = Check.field("rest", "", "extra")
+
+        (iid, keywords) = iDecode(qw, iidRep)
+        iidRep2 = iDecode(qw, iidRep, rsep=" ")
+        fileName = f"{vr}_{ITEM_STYLE[qw]['t']}{iidRep2}_{TP_LABELS[tp]}{extra}.csv"
+        (authorized, msg) = Record.authRead(mr, qw, iidRep)
+
+        if not authorized:
+            return dict(fileName=fileName, data=msg)
+
+        hebrewFields = Check.fields(tp, qw=qw)
+        data = self.get(vr, mr, qw, iid, keywords, tp, extra, hebrewFields, fileName)
+        return dict(fileName=fileName, data=data)
+
+    def get(self, vr, mr, qw, iid, keywords, tp, extra, hebrewFields, fileName):
         Word = self.Word
         Query = self.Query
         auth = self.auth
         PASSAGE_DBS = self.PASSAGE_DBS
+
+        if extra:
+            extra = "_" + extra
+        if len(extra) > 64:
+            extra = extra[0:64]
 
         headRow = ["book", "chapter", "verse"] + [hf[1] for hf in hebrewFields]
 

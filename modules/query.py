@@ -4,7 +4,9 @@ import json
 from markdown import markdown
 
 from constants import NULLDT
-from helpers import normRanges
+from helpers import normRanges, iDecode
+
+from dbconfig import EMDROS_VERSIONS
 
 
 def dateTimeStr(fields):
@@ -40,6 +42,9 @@ class QUERY:
         self.db = db
         self.VERSIONS = VERSIONS
 
+    def dep(self, QuerySave):
+        self.QuerySave = QuerySave
+
     def authRead(self, query_id):
         auth = self.auth
 
@@ -59,24 +64,92 @@ class QUERY:
         )
         return (authorized, msg)
 
-    def authWrite(self, query_id):
+    def page(self, ViewSettings):
+        Check = self.Check
+
+        query_id = Check.isId("goto", "q", "query", [])
+        if query_id is not None:
+            (authorized, msg) = self.authRead(query_id)
+            if not authorized:
+                query_id = 0
+        return dict(
+            ViewSettings=ViewSettings,
+            query_id=query_id,
+        )
+
+    def body(self):
+        Check = self.Check
+        QuerySave = self.QuerySave
         auth = self.auth
 
-        authorized = None
-        if query_id == 0:
-            authorized = auth.user is not None
-        else:
-            record = self.getPlainInfo(query_id)
-            if record:
-                authorized = (
-                    auth.user is not None and record["created_by"] == auth.user.id
-                )
-        msg = (
-            f"No item with id {query_id}"
-            if authorized is None
-            else f"You have no access to create/modify query with id {query_id}"
+        vr = Check.field("material", "", "version")
+        iidRep = Check.field("material", "", "iid")
+
+        (iid, keywords) = iDecode("q", iidRep)
+        (authorized, msg) = self.authRead(iid)
+        msgs = []
+        if authorized and iid == 0:
+            msg = f"Not a valid query id: {iidRep}"
+        if not authorized or iid == 0:
+            msgs.append(("error", msg))
+            return dict(
+                writable=False,
+                iidRep=iidRep,
+                vr=vr,
+                queryRecord=dict(),
+                query=json.dumps(dict()),
+                msgs=json.dumps(msgs),
+                emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
+            )
+        queryRecord = self.getInfo(
+            auth.user is not None,
+            iid,
+            vr,
+            msgs,
+            withIds=True,
+            singleVersion=False,
+            po=True,
         )
-        return (authorized, msg)
+        if queryRecord is None:
+            return dict(
+                writable=True,
+                iidRep=iidRep,
+                vr=vr,
+                queryRecord=dict(),
+                query=json.dumps(dict()),
+                msgs=json.dumps(msgs),
+                emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
+            )
+
+        (authorized, msg) = QuerySave.authWrite(iid)
+
+        return dict(
+            writable=authorized,
+            iidRep=iidRep,
+            vr=vr,
+            queryRecord=queryRecord,
+            query=json.dumps(queryRecord),
+            msgs=json.dumps(msgs),
+            emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
+        )
+
+    def bodyJson(self):
+        Check = self.Check
+
+        vr = Check.field("material", "", "version")
+        iidRep = Check.field("material", "", "iid")
+
+        (iid, keywords) = iDecode("q", iidRep)
+        (authorized, msg) = self.authRead(iid)
+        if not authorized:
+            result = dict(good=False, msg=[msg], data={})
+        else:
+            msgs = []
+            queryRecord = self.getInfo(
+                False, iid, vr, msgs, withIds=False, singleVersion=False, po=True
+            )
+            result = dict(good=queryRecord is not None, msg=msgs, data=queryRecord)
+        return dict(data=json.dumps(result))
 
     def getItems(self, vr, chapter, onlyPub):
         Caching = self.Caching

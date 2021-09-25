@@ -1,6 +1,7 @@
 from urllib.parse import urlparse, urlunparse
 
 from constants import TPS
+from viewdefs import SETTINGS, VALIDATION, HEBREW_DATA_LINES, HEBREW_FIELDS
 from helpers import iDecode
 
 
@@ -8,6 +9,75 @@ class CHECK:
     def __init__(self, request, db):
         self.request = request
         self.db = db
+
+    def field(self, group, qw, var, default=True):
+        request = self.request
+
+        requestVar = ("c_" if group == "colormap" else "") + qw + var
+        if requestVar == "iid":
+            x = request.vars.get("id", request.vars.get("iid", None))
+        else:
+            x = request.vars.get(requestVar, None)
+            if requestVar == "extra":
+                x = str(x)
+        if type(x) is list:
+            x = x[0]
+            # this occurs when the same variable occurs multiple times
+            # in the request/querystring
+        theVar = "0" if group == "colormap" else var
+        defaultValue = SETTINGS[group][qw][theVar] if default else None
+        return VALIDATION[group][qw][theVar](defaultValue, x)
+
+    def fields(self, tp, qw=None):
+        if qw is None or qw != "n":
+            if tp == "txtd":
+                hebrewFields = []
+                for (line, fields) in HEBREW_DATA_LINES:
+                    if self.field("hebrewdata", "", line) == "v":
+                        for (f, name, prettyName) in fields:
+                            if self.field("hebrewdata", "", f) == "v":
+                                hebrewFields.append((name, prettyName))
+            else:
+                hebrewFields = HEBREW_FIELDS[tp]
+            return hebrewFields
+        else:
+            hebrewFields = (
+                (
+                    ("clause_atom", "ca_nr"),
+                    ("shebanq_note.note.keywords", "keyw"),
+                    ("shebanq_note.note.status", "status"),
+                    ("shebanq_note.note.ntext", "note"),
+                )
+                if tp == "txtp"
+                else (
+                    ("clause_atom", "ca_nr"),
+                    ("clause_atom.text", "ca_txt"),
+                    ("shebanq_note.note.keywords", "keyw"),
+                    ("shebanq_note.note.status", "status"),
+                    ("shebanq_note.note.ntext", "note"),
+                    ("shebanq_note.note.created_on", "created_on"),
+                    ("shebanq_note.note.modified_on", "modified_on"),
+                    (
+                        (
+                            'if(shebanq_note.note.is_shared = "T", "T", "F") '
+                            "as shared"
+                        ),
+                        "is_shared",
+                    ),
+                    (
+                        (
+                            'if(shebanq_note.note.is_published = "T", "T", "F") '
+                            "as is_published"
+                        ),
+                        "is_published",
+                    ),
+                    (
+                        'ifnull(shebanq_note.note.published_on, "") as pub',
+                        "published_on",
+                    ),
+                )
+            )
+            return hebrewFields
 
     def isUnique(self, tp, obj_id, val, myId, msgs):
         db = self.db

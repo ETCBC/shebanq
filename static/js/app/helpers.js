@@ -12,7 +12,8 @@ export const escHT = text => {
 
 const mEscape = ns => ns.replace(/_/g, "\\_")
 
-export const markdownEscape = ntext => ntext.replace(/\[[^\]\n\t]+\]\([^)]*\)/g, mEscape)
+export const markdownEscape = ntext =>
+  ntext.replace(/\[[^\]\n\t]+\]\([^)]*\)/g, mEscape)
 
 export const putMarkdown = wdg => {
   const did = wdg.attr("did")
@@ -95,16 +96,19 @@ export const colorDefault = (qw, iid) => {
    *
    * The data for the computation comes from the server
    * and is stored in the javascript global variable Config
-   * colorsDefault, dncols, dnrows
+   * colorsDefault, nDefaultClrCols, nDefaultClrRows
    */
-  const { itemStyle, colorsDefault, dncols, dnrows } = Config
+  const { itemStyle, colorsDefault, nDefaultClrCols, nDefaultClrRows } = Config
 
   let result
   if (qw in itemStyle) {
     result = itemStyle[qw]["default"]
   } else if (qw) {
     const mod = iid % colorsDefault.length
-    result = colorsDefault[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
+    result =
+      colorsDefault[
+        nDefaultClrCols * (mod % nDefaultClrRows) + Math.floor(mod / nDefaultClrRows)
+      ]
   } else {
     const iidstr = iid == null ? "" : iid
     let sumiid = 0
@@ -112,7 +116,10 @@ export const colorDefault = (qw, iid) => {
       sumiid += iidstr.charCodeAt(i)
     }
     const mod = sumiid % colorsDefault.length
-    result = colorsDefault[dncols * (mod % dnrows) + Math.floor(mod / dnrows)]
+    result =
+      colorsDefault[
+        nDefaultClrCols * (mod % nDefaultClrRows) + Math.floor(mod / nDefaultClrRows)
+      ]
   }
   return result
 }
@@ -126,5 +133,3 @@ export const closeDialog = dia => {
   }
   return wasOpen
 }
-
-

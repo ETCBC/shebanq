@@ -6,13 +6,35 @@ BLOCK_SIZE = 500
 
 
 class CHART:
-    def __init__(self, Caching, Pieces, Word, Query, Note, PASSAGE_DBS):
+    def __init__(self, Check, Caching, Pieces, Record, Word, Query, Note, PASSAGE_DBS):
+        self.Check = Check
         self.Caching = Caching
         self.Pieces = Pieces
+        self.Record = Record
         self.Word = Word
         self.Query = Query
         self.Note = Note
         self.PASSAGE_DBS = PASSAGE_DBS
+
+    def page(self):
+        Check = self.Check
+        Record = self.Record
+
+        vr = Check.field("material", "", "version")
+        mr = Check.field("material", "", "mr")
+        qw = Check.field("material", "", "qw")
+        iidRep = Check.field("material", "", "iid")
+
+        (authorized, msg) = Record.authRead(mr, qw, iidRep)
+        if not authorized:
+            # produce empty chart
+            result = self.compose(vr, [])
+        else:
+            result = self.get(vr, qw, iidRep)
+
+        result.update(qw=qw)
+        result.update(msg=msg)
+        return result
 
     def get(self, vr, qw, iidRep):
         Caching = self.Caching

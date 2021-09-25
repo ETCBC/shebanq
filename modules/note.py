@@ -6,19 +6,54 @@ from helpers import iEncode, iDecode, normRanges
 
 
 class NOTE:
-    def __init__(
-        self,
-        Caching,
-        Pieces,
-        auth,
-        db,
-        NOTE_DB,
-    ):
+    def __init__(self, Check, Caching, Pieces, auth, db, NOTE_DB):
+        self.Check = Check
         self.Caching = Caching
         self.Pieces = Pieces
         self.auth = auth
         self.db = db
         self.NOTE_DB = NOTE_DB
+
+    def dep(self, NotesUpload):
+        self.NotesUpload = NotesUpload
+
+    def page(self, ViewSettings):
+        Check = self.Check
+        NotesUpload = self.NotesUpload
+
+        key_id = Check.isId("goto", "n", "note", [])
+
+        (authorized, myId, msg) = NotesUpload.authUpload()
+        return dict(
+            ViewSettings=ViewSettings,
+            key_id=key_id,
+            mayUpload=authorized,
+            user_id=myId,
+        )
+
+    def body(self):
+        Check = self.Check
+
+        vr = Check.field("material", "", "version")
+        iidRep = Check.field("material", "", "iid")
+
+        (iid, keywords) = iDecode("n", iidRep)
+        msgs = []
+        if not iid:
+            msg = f"Not a valid note id: {iid}"
+            msgs.append(("error", msg))
+            return dict(
+                noteRecord=dict(),
+                note=json.dumps(dict()),
+                msgs=json.dumps(msgs),
+            )
+        noteRecord = self.getInfo(iidRep, vr, msgs)
+        return dict(
+            vr=vr,
+            noteRecord=noteRecord,
+            note=json.dumps(noteRecord),
+            msgs=json.dumps(msgs),
+        )
 
     def getItems(self, vr, book, chapter, is_published):
         NOTE_DB = self.NOTE_DB

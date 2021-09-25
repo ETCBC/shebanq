@@ -1,15 +1,13 @@
 import collections
 
-from gluon import current
-
 from blang import BK_NAMES
 from helpers import debug
 
 
-NROWS = 4
-NCOLS = 4
-DNROWS = 3
-DNCOLS = 4
+N_COLOR_ROWS = 4
+N_COLOR_COLS = 4
+N_DEFAULT_CLR_ROWS = 3
+N_DEFAULT_CLR_COLS = 4
 
 colorSpec = """
     red,#ff0000,#ff0000,1 salmon,#ff6688,#ee7799,1 orange,#ffcc66,#eebb55,1
@@ -36,15 +34,15 @@ COLORS_DEFAULT = [x[0] for x in colorProto if x[3] == "1"]
 COLOR_NAMES = [x[0] for x in colorProto]
 COLORS = dict((x[0], dict(q=x[1], w=x[2])) for x in colorProto)
 
-if NROWS * NCOLS != len(COLOR_NAMES):
+if N_COLOR_ROWS * N_COLOR_COLS != len(COLOR_NAMES):
     debug(
         "View settings: mismatch in number of colors: "
-        f"{NROWS} * {NCOLS} != {len(COLOR_NAMES)}"
+        f"{N_COLOR_ROWS} * {N_COLOR_COLS} != {len(COLOR_NAMES)}"
     )
-if DNROWS * DNCOLS != len(COLORS_DEFAULT):
+if N_DEFAULT_CLR_ROWS * N_DEFAULT_CLR_COLS != len(COLORS_DEFAULT):
     debug(
         "View settings: mismatch in number of default colors: "
-        f"{DNROWS} * {DNCOLS} != {len(COLORS_DEFAULT)}"
+        f"{N_DEFAULT_CLR_ROWS} * {N_DEFAULT_CLR_COLS} != {len(COLORS_DEFAULT)}"
     )
 
 
@@ -162,11 +160,12 @@ HEBREW_DATA_SPEC = """
     cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_par=clause_atom_pargr=par,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
     sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
 """.strip().split()
-hebrewDataLines = []
+
+HEBREW_DATA_LINES = []
 for item in HEBREW_DATA_SPEC:
     (line, fieldSpec) = item.split(":")
     fields = [x.split("=") for x in fieldSpec.split(",")]
-    hebrewDataLines.append((line, tuple(fields)))
+    HEBREW_DATA_LINES.append((line, tuple(fields)))
 
 ITEM_STYLE = dict(
     q=dict(
@@ -358,12 +357,14 @@ def colorCell(qw, iid, c):
 
 
 def colorRow(qw, iid, r):
-    cells = "\n".join(colorCell(qw, iid, c) for c in range(r * NCOLS, (r + 1) * NCOLS))
+    cells = "\n".join(
+        colorCell(qw, iid, c) for c in range(r * N_COLOR_COLS, (r + 1) * N_COLOR_COLS)
+    )
     return f"\t<tr>\n{cells}\n\t</tr>"
 
 
 def colorTable(qw, iid):
-    cs = "\n".join(colorRow(qw, iid, r) for r in range(NROWS))
+    cs = "\n".join(colorRow(qw, iid, r) for r in range(N_COLOR_ROWS))
     return f'<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'
 
 
@@ -383,67 +384,3 @@ def selectColor(qw, iid, typ):
 
 def colorPicker(qw, iid, typ):
     return f"{selectColor(qw, iid, typ)}{colorTable(qw, iid)}\n"
-
-
-def getFields(tp, qw=qw):
-    if qw is None or qw != "n":
-        if tp == "txtd":
-            hebrewFields = []
-            for (line, fields) in hebrewDataLines:
-                if getVal("hebrewdata", "", line) == "v":
-                    for (f, name, prettyName) in fields:
-                        if getVal("hebrewdata", "", f) == "v":
-                            hebrewFields.append((name, prettyName))
-        else:
-            hebrewFields = HEBREW_FIELDS[tp]
-        return hebrewFields
-    else:
-        hebrewFields = (
-            (
-                ("clause_atom", "ca_nr"),
-                ("shebanq_note.note.keywords", "keyw"),
-                ("shebanq_note.note.status", "status"),
-                ("shebanq_note.note.ntext", "note"),
-            )
-            if tp == "txtp"
-            else (
-                ("clause_atom", "ca_nr"),
-                ("clause_atom.text", "ca_txt"),
-                ("shebanq_note.note.keywords", "keyw"),
-                ("shebanq_note.note.status", "status"),
-                ("shebanq_note.note.ntext", "note"),
-                ("shebanq_note.note.created_on", "created_on"),
-                ("shebanq_note.note.modified_on", "modified_on"),
-                (
-                    (
-                        'if(shebanq_note.note.is_shared = "T", "T", "F") '
-                        'as shared'
-                    ), "is_shared"),
-                (
-                    (
-                        'if(shebanq_note.note.is_published = "T", "T", "F") '
-                        'as is_published'
-                    ),
-                    "is_published",
-                ),
-                ('ifnull(shebanq_note.note.published_on, "") as pub', "published_on"),
-            )
-        )
-        return hebrewFields
-
-
-def getVal(group, qw, f, default=True):
-    rvar = ("c_" if group == "colormap" else "") + qw + f
-    if rvar == "iid":
-        x = current.request.vars.get("id", current.request.vars.get("iid", None))
-    else:
-        x = current.request.vars.get(rvar, None)
-        if rvar == "extra":
-            x = str(x)
-    if type(x) is list:
-        x = x[0]
-        # this occurs when the same variable occurs multiple times
-        # in the request/querystring
-    fref = "0" if group == "colormap" else f
-    d = SETTINGS[group][qw][fref] if default else None
-    return VALIDATION[group][qw][fref](d, x)

@@ -1,11 +1,12 @@
 import collections
 import json
 
-from helpers import collapseToRanges, hebKey
+from helpers import collapseToRanges, hebKey, iDecode
 
 
 class WORD:
-    def __init__(self, Caching, PASSAGE_DBS, VERSIONS):
+    def __init__(self, Check, Caching, PASSAGE_DBS, VERSIONS):
+        self.Check = Check
         self.Caching = Caching
         self.PASSAGE_DBS = PASSAGE_DBS
         self.VERSIONS = VERSIONS
@@ -28,6 +29,63 @@ class WORD:
             else ""
         )
         return (authorized, msg)
+
+    def page(self, ViewSettings):
+        Check = self.Check
+        Caching = self.Caching
+
+        vr = Check.field("material", "", "version", default=False)
+        if not vr:
+            vr = ViewSettings.theVersion()
+        lan = Check.field("rest", "", "lan")
+        letter = Check.field("rest", "", "letter")
+
+        return Caching.get(
+            f"words_page_{vr}_{lan}_{letter}_",
+            lambda: self.page_c(ViewSettings, vr, lan=lan, letter=letter),
+            None,
+        )
+
+    def page_c(self, ViewSettings, vr, lan=None, letter=None):
+        Caching = self.Caching
+
+        (letters, words) = Caching.get(
+            f"words_data_{vr}_", lambda: self.getData(vr), None
+        )
+        version = ViewSettings.theVersion()
+
+        return dict(
+            version=version,
+            ViewSettings=ViewSettings,
+            lan=lan,
+            letter=letter,
+            letters=letters,
+            words=words.get(lan, {}).get(letter, []),
+        )
+
+    def body(self):
+        Check = self.Check
+
+        vr = Check.field("material", "", "version")
+        iidRep = Check.field("material", "", "iid")
+
+        (iid, keywords) = iDecode("w", iidRep)
+        (authorized, msg) = self.authRead(vr, iid)
+        msgs = []
+        if not authorized:
+            msgs.append(("error", msg))
+            return dict(
+                wordRecord=dict(),
+                word=json.dumps(dict()),
+                msgs=json.dumps(msgs),
+            )
+        wordRecord = self.getInfo(iid, vr, msgs)
+        return dict(
+            vr=vr,
+            wordRecord=wordRecord,
+            word=json.dumps(wordRecord),
+            msgs=json.dumps(msgs),
+        )
 
     def getItems(self, vr, chapter):
         PASSAGE_DBS = self.PASSAGE_DBS
@@ -140,29 +198,3 @@ select id, entry_heb, entryid_heb, lan, gloss from lexicon
                 words[lan][letter] = []
             words[lan][letter].append((e, wid, eid, gloss))
         return (letters, words)
-
-    def page(self, ViewSettings, vr, lan=None, letter=None):
-        Caching = self.Caching
-
-        return Caching.get(
-            f"words_page_{vr}_{lan}_{letter}_",
-            lambda: self.page_c(ViewSettings, vr, lan=lan, letter=letter),
-            None,
-        )
-
-    def page_c(self, ViewSettings, vr, lan=None, letter=None):
-        Caching = self.Caching
-
-        (letters, words) = Caching.get(
-            f"words_data_{vr}_", lambda: self.getData(vr), None
-        )
-        version = ViewSettings.theVersion()
-
-        return dict(
-            version=version,
-            ViewSettings=ViewSettings,
-            lan=lan,
-            letter=letter,
-            letters=letters,
-            words=words.get(lan, {}).get(letter, []),
-        )

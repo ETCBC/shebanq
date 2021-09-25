@@ -1,3 +1,5 @@
+import json
+
 from viewdefs import NOTE_STATUS_CLS
 
 
@@ -29,11 +31,18 @@ select uid from uploaders where uid = {myId}
         msg = "" if authorized else "you are not allowed to upload notes as csv files"
         return (authorized, myId, msg)
 
-    def upload(self, user_id, filetext, now, msgs):
+    def upload(self, fileText, now):
+        good = True
+        (authorized, myId, msg) = self.authUpload()
+        if not authorized:
+            return dict(data=json.dumps(dict(msgs=[("error", msg)], good=False)))
+
         Caching = self.Caching
         Pieces = self.Pieces
         NOTE_DB = self.NOTE_DB
         VERSIONS = self.VERSIONS
+
+        msgs = []
 
         myVersions = set()
         bookInfo = {}
@@ -75,7 +84,7 @@ insert into note
 """
         thisChunk = []
         thisI = 0
-        for (i, linenl) in enumerate(filetext.value.decode("utf8").split("\n")):
+        for (i, linenl) in enumerate(fileText.value.decode("utf8").split("\n")):
             line = linenl.rstrip()
             if line == "":
                 continue
@@ -186,7 +195,7 @@ insert into note
                 (
                     f"('{version}','{book}',{chapter},{verse},{clause_atom},"
                     f"'{is_shared}','{is_published}',"
-                    f"'{status}','{keywords}','{ntext}',{user_id},"
+                    f"'{status}','{keywords}','{ntext}',{myId},"
                     f"'{created_on}','{modified_on}',{shared_on},{published_on},'b')"
                 )
             )
@@ -199,7 +208,7 @@ insert into note
             chunks.append(thisChunk)
 
         # with open('/tmp/xxx.txt', 'w') as fh:
-        #    for line in filetext.value:
+        #    for line in fileText.value:
         #        fh.write(line)
         if errors or nerrors:
             good = False
@@ -213,7 +222,7 @@ insert into note
             # and with these keywords and these versions
             delSql = f"""delete from note
 where bulk = 'b'
-and created_by = {user_id}
+and created_by = {myId}
 and {whereVersion}
 and {whereKeywords};"""
             NOTE_DB.executesql(delSql)
@@ -224,8 +233,10 @@ and {whereKeywords};"""
             Caching.clear(r"^items_n_")
             for vr in myVersions:
                 Caching.clear(f"^verses_{vr}_n_")
+
         for msg in sorted(errors):
             istr = ",".join(str(i) for i in errors[msg])
             msgs.append(["error", f"{msg}: {istr}"])
         msgs.append(["good" if good else "error", "Done"])
-        return True
+
+        return dict(data=json.dumps(dict(msgs=msgs, good=good)))
