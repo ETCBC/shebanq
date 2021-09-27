@@ -26,16 +26,16 @@
         </div>
         <div id="material_settings">
             &nbsp;&nbsp;&nbsp;&nbsp;
-{{for tr in TR_INFO:}}
-            <span><a href="#" id="m{{=tr}}" class="ctl mtradio">{{=TR_LABELS[tr]}}</a></span>
+{{for tr in trInfo:}}
+            <span><a href="#" id="m{{=tr}}" class="ctl mtradio">{{=trLabels[tr]}}</a></span>
 {{pass}}
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span><a href="#" id="mtxtp" class="ctl mhradio">text</a></span>
-{{for t in range(1, TAB_VIEWS+1):
-  lb = TP_LABELS[f'txt{t}']
+{{for t in range(1, nTabViews + 1):
+  lb = tabLabels[f'txt{t}']
 }}
             <span><a href="#" id="mtxt{{=t}}" class="ctl mhradio"
-            >{{=f'{lb} ({t}/{TAB_VIEWS})'}}</a></span>
+            >{{=f'{lb} ({t}/{nTabViews})'}}</a></span>
 {{pass}}
             <span><a id="datalegend_control" class="ctl" href="#">legend</a></span>
             <span id="datalegend" class="txtd2">{{=XML(legend)}}</span>
@@ -43,7 +43,7 @@
     </div>
     <div id="material_message"></div>
     <div id="material_txtp"></div>
-{{for t in range(1, TAB_VIEWS+1):}}
+{{for t in range(1, nTabViews + 1):}}
     <div id="material_txt{{=t}}"></div>
 {{pass}}
 </div>

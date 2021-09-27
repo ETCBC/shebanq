@@ -1,4 +1,7 @@
 import json
+
+from gluon import current
+
 from helpers import hEsc
 
 
@@ -6,8 +9,8 @@ RECENT_LIMIT = 50
 
 
 class QUERYRECENT:
-    def __init__(self, db):
-        self.db = db
+    def __init__(self):
+        pass
 
     def recent(self):
         # The next query contains a clever idea from
@@ -30,7 +33,7 @@ class QUERYRECENT:
         # but that qe2 is up-to-date and more recent.
         # And we need to add a where to express that qe1 is up to date.
 
-        db = self.db
+        db = current.db
 
         projectQueryXSql = f"""
 select
@@ -71,7 +74,7 @@ limit {RECENT_LIMIT};
         return dict(data=json.dumps(dict(queries=pqueries, msgs=[], good=True)))
 
     def feed(self):
-        db = self.db
+        db = current.db
 
         sql = """
     select

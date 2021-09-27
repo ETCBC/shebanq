@@ -41,10 +41,12 @@
 MACHINE_PROD="clarin31.dans.knaw.nl"
 MACHINE_TEST="tclarin31.dans.knaw.nl"
 
+TOPLEVEL="/home/dirkr"
 INCOMING="/home/dirkr/shebanq-install"
 UNPACK="$INCOMING/unpack"
 
 APP_DIR="/opt/web-apps"
+WEB2PY_DIR="$APP_DIR/web2py"
 SHEBANQ_DIR="$APP_DIR/shebanq"
 EMDROS_DIR="/opt/emdros"
 CFG_DIR="$EMDROS_DIR/cfg"
@@ -289,6 +291,7 @@ if [ "$doall" == "v" ] || [ "$doshebanq" == "v" ]; then
         echo "0-0-0    SHEBANQ clone    0-0-0"
         git clone "https://github.com/etcbc/shebanq"
     fi
+    cp $SHEBANQ_DIR/scripts/home/*.sh $TOPLEVEL
 fi
 
 skipwsgi="x"
@@ -328,21 +331,21 @@ if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then
         cp "$INCOMING/parameters_443.py" web2py
         cp "$INCOMING/routes.py" web2py
 
-        cd "$APP_DIR/web2py"
+        cd "$WEB2PY_DIR"
         echo "Compiling python code in admin"
         python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
 
         echo "Removing welcome app"
-        rm -rf "$APP_DIR/web2py/applications/welcome"
-        rm -rf "$APP_DIR/web2py/applications/examples"
-        rm -rf "$APP_DIR/web2py/welcome.w2p"
+        rm -rf "$WEB2PY_DIR/applications/welcome"
+        rm -rf "$WEB2PY_DIR/applications/examples"
+        rm -rf "$WEB2PY_DIR/welcome.w2p"
 
         setsebool -P httpd_tmp_exec on
     fi
 
     if [ "$skipshebanq" != "v" ]; then
         echo "0-0-0        HOOKUP shebanq        0-0-0"
-        cd "$APP_DIR/web2py/applications"
+        cd "$WEB2PY_DIR/applications"
         if [ -e shebanq ]; then
             rm -rf shebanq
         fi
@@ -359,7 +362,7 @@ if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then
 
     if [ "$skipextradirs" != "v" ]; then
         echo "0-0-0        MAKE writable dirs        0-0-0"
-        cd "$APP_DIR/web2py/applications"
+        cd "$WEB2PY_DIR/applications"
         for app in `ls`
         do
             if [ "$app" == "__init__.py" ] || [ "$app" == "__pycache__" ]; then

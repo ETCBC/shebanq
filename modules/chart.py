@@ -1,23 +1,22 @@
 import json
 
+from gluon import current
+
 from helpers import flatten, iDecode
 
 BLOCK_SIZE = 500
 
 
 class CHART:
-    def __init__(self, Check, Caching, Pieces, Record, Word, Query, Note, PASSAGE_DBS):
-        self.Check = Check
-        self.Caching = Caching
+    def __init__(self, Pieces, Record, Word, Query, Note):
         self.Pieces = Pieces
         self.Record = Record
         self.Word = Word
         self.Query = Query
         self.Note = Note
-        self.PASSAGE_DBS = PASSAGE_DBS
 
     def page(self):
-        Check = self.Check
+        Check = current.Check
         Record = self.Record
 
         vr = Check.field("material", "", "version")
@@ -37,7 +36,7 @@ class CHART:
         return result
 
     def get(self, vr, qw, iidRep):
-        Caching = self.Caching
+        Caching = current.Caching
 
         return Caching.get(
             f"chart_{vr}_{qw}_{iidRep}_",
@@ -63,7 +62,7 @@ class CHART:
         return result
 
     def getBlocks(self, vr):
-        Caching = self.Caching
+        Caching = current.Caching
         return Caching.get(f"blocks_{vr}_", lambda: self.getBlocks_c(vr), None)
 
     def getBlocks_c(self, vr):
@@ -72,7 +71,7 @@ class CHART:
         for each block: book and chapter number of first word.
         Possibly there are gaps between books.
         """
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if vr not in PASSAGE_DBS:
             return ([], {})

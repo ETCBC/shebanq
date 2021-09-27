@@ -1,23 +1,23 @@
 import time
 
+from gluon import current
+
 from helpers import debug
 
 
 class QUERYCHAPTER:
-    def __init__(self, Caching, db, PASSAGE_DBS):
-        self.Caching = Caching
-        self.db = db
-        self.PASSAGE_DBS = PASSAGE_DBS
+    def __init__(self):
+        pass
 
     def makeQCindex(self, vr):
-        Caching = self.Caching
+        Caching = current.Caching
 
         Caching.get(f"qcindex_{vr}_", lambda: self.makeQCindex_c(vr), None)
 
     def makeQCindex_c(self, vr):
-        Caching = self.Caching
-        db = self.db
-        PASSAGE_DBS = self.PASSAGE_DBS
+        Caching = current.Caching
+        db = current.db
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         debug(f"o-o-o making chapter-query index for version {vr} ...")
         startTime = time.time()
@@ -101,7 +101,7 @@ inner join query on
         return (queriesFromChapter, chaptersFromQuery)
 
     def updatePubStatus(self, vr, query_id, is_published):
-        Caching = self.Caching
+        Caching = current.Caching
 
         debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} ...")
         pubStatus = Caching.get(
@@ -113,8 +113,8 @@ inner join query on
         debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
 
     def updateQCindex(self, vr, query_id):
-        Caching = self.Caching
-        db = self.db
+        Caching = current.Caching
+        db = current.db
 
         debug(
             (

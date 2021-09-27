@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from dbconfig import CONFIG
+from gluon import current
 from gluon.tools import Auth, Crud, Service, PluginManager
 from gluon.contrib.login_methods.rpx_account import use_janrain
 
@@ -67,6 +68,10 @@ VERSION_ORDER = oddVersions + sorted(v for v in VERSIONS if v not in oddVersionS
 VERSION_ORDER = tuple(v for v in VERSION_ORDER)
 VERSION_INDEX = dict((x[1], x[0]) for x in enumerate(VERSION_ORDER))
 
+current.VERSIONS = VERSIONS
+current.VERSION_ORDER = VERSION_ORDER
+current.VERSION_INDEX = VERSION_INDEX
+
 connUser = f"{dc_u}:{dc_p}@{dc_h}"
 connStrWeb = f"mysql://{connUser}/shebanq_web"
 connStrNote = f"mysql://{connUser}/shebanq_note"
@@ -77,14 +82,17 @@ db = DAL(
     migrate_enabled=False,  # if session table already exists
     # migrate=False, # if session table does not yet exist
 )
+current.db = db
 
 PASSAGE_DBS = {}
+current.PASSAGE_DBS = PASSAGE_DBS
 
 NOTE_DB = DAL(
     connStrNote,
     migrate_enabled=False,  # if session table already exists
     # migrate=False, # if session table does not yet exist
 )
+current.NOTE_DB = NOTE_DB
 
 for vr in VERSION_ORDER:
     PASSAGE_DBS[vr] = DAL(
@@ -97,6 +105,8 @@ session.connect(request, response, db=db)
 response.generic_patterns = ["*"] if request.is_local else []
 
 auth = Auth(db, secure=True)  # secure=True should enforce https for auth
+current.auth = auth
+
 crud, service, plugins = Crud(db), Service(), PluginManager()
 auth.define_tables(username=False, signature=False)
 

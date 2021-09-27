@@ -1,6 +1,6 @@
-from helpers import flatten, iDecode
+from gluon import current
 
-from viewdefs import TP_LABELS, ITEM_STYLE
+from helpers import flatten, iDecode
 
 
 def csv(data):
@@ -20,16 +20,14 @@ def csv(data):
 
 
 class CSVDATA:
-    def __init__(self, Check, Record, Word, Query, auth, PASSAGE_DBS):
-        self.Check = Check
+    def __init__(self, Record, Word, Query):
         self.Record = Record
         self.Word = Word
         self.Query = Query
-        self.auth = auth
-        self.PASSAGE_DBS = PASSAGE_DBS
 
     def page(self):
-        Check = self.Check
+        ViewDefs = current.ViewDefs
+        Check = current.Check
         Record = self.Record
 
         vr = Check.field("material", "", "version")
@@ -41,7 +39,9 @@ class CSVDATA:
 
         (iid, keywords) = iDecode(qw, iidRep)
         iidRep2 = iDecode(qw, iidRep, rsep=" ")
-        fileName = f"{vr}_{ITEM_STYLE[qw]['t']}{iidRep2}_{TP_LABELS[tp]}{extra}.csv"
+        itemStyle = ViewDefs["itemStyle"]
+        tabLabels = ViewDefs["tabLabels"]
+        fileName = f"{vr}_{itemStyle[qw]['t']}{iidRep2}_{tabLabels[tp]}{extra}.csv"
         (authorized, msg) = Record.authRead(mr, qw, iidRep)
 
         if not authorized:
@@ -54,8 +54,8 @@ class CSVDATA:
     def get(self, vr, mr, qw, iid, keywords, tp, extra, hebrewFields, fileName):
         Word = self.Word
         Query = self.Query
-        auth = self.auth
-        PASSAGE_DBS = self.PASSAGE_DBS
+        auth = current.auth
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if extra:
             extra = "_" + extra

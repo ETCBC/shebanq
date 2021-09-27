@@ -1,20 +1,18 @@
 import json
 
+from gluon import current
+
 from constants import TPS
 from helpers import iDecode
 
 
 class RECORD:
-    def __init__(self, Check, Query, QuerySave, auth, db, LOAD):
-        self.Check = Check
+    def __init__(self, Query, QuerySave):
         self.Query = Query
         self.QuerySave = QuerySave
-        self.auth = auth
-        self.db = db
-        self.LOAD = LOAD
 
     def authWriteGeneric(self, label):
-        auth = self.auth
+        auth = current.auth
 
         authorized = auth.user is not None
         errorMessage = f"You have no access to create/modify a {label}"
@@ -45,8 +43,8 @@ class RECORD:
         return (None, f"Not a valid id: {iidRep}")
 
     def body(self):
-        Check = self.Check
-        LOAD = self.LOAD
+        Check = current.Check
+        LOAD = current.LOAD
 
         iidRep = Check.field("material", "", "iid")
         vr = Check.field("material", "", "version")
@@ -71,11 +69,11 @@ class RECORD:
             )
         )
 
-    def getItem(self, requestVars, now):
-        Check = self.Check
+    def getItem(self, requestVars):
+        Check = current.Check
         Query = self.Query
         QuerySave = self.QuerySave
-        auth = self.auth
+        auth = current.auth
 
         msgs = []
         orgRecord = {}
@@ -89,6 +87,7 @@ class RECORD:
         fields = None
 
         myId = auth.user.id if auth.user is not None else None
+
         for x in [1]:
             tp = requestVars.tp
             if tp not in TPS:
@@ -157,7 +156,6 @@ class RECORD:
                             myId,
                             subfields,
                             [requestVars.org_name, requestVars.org_website],
-                            now,
                             msgs,
                         )
                         if orgGood:
@@ -176,7 +174,6 @@ class RECORD:
                             myId,
                             subfields,
                             [requestVars.project_name, requestVars.project_website],
-                            now,
                             msgs,
                         )
                         if projectGood:
@@ -196,7 +193,7 @@ class RECORD:
                     fieldValues = [requestVars[field] for field in fields]
 
                 (good, obj_idNew) = self.update(
-                    tp, obj_id, myId, fields, fieldValues, now, msgs
+                    tp, obj_id, myId, fields, fieldValues, msgs
                 )
                 if not good:
                     break
@@ -222,7 +219,7 @@ class RECORD:
 
     def make(self, tp, label, table, fields, obj_id, good, msgs):
         Query = self.Query
-        db = self.db
+        db = current.db
 
         record = {}
 
@@ -251,9 +248,9 @@ select {",".join(fields)} from {table} where id = {obj_id}
 
         return record
 
-    def update(self, tp, obj_id, myId, fields, fieldValues, now, msgs):
-        Check = self.Check
-        db = self.db
+    def update(self, tp, obj_id, myId, fields, fieldValues, msgs):
+        Check = current.Check
+        db = current.db
 
         fieldsUpd = {}
         good = False
@@ -263,6 +260,8 @@ select {",".join(fields)} from {table} where id = {obj_id}
             field = fields[i]
             value = fieldValues[i]
             useValues[field] = value
+
+        now = current.request.utcnow
 
         for x in [1]:
             valSql = Check.isName(

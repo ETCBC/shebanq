@@ -1,5 +1,7 @@
 import json
 
+from gluon import current
+
 from constants import NULLDT, PUBLISH_FREEZE, PUBLISH_FREEZE_MSG
 from dbconfig import EMDROS_VERSIONS
 from query import queryStatus
@@ -8,20 +10,15 @@ from mql import mql
 
 
 class QUERYSAVE:
-    def __init__(self, Check, Caching, Query, auth, db, VERSIONS):
-        self.Check = Check
-        self.Caching = Caching
+    def __init__(self, Query):
         self.Query = Query
-        self.auth = auth
-        self.db = db
-        self.VERSIONS = VERSIONS
 
-    def dep(self, QueryChapter):
+    def alsoDependentOn(self, QueryChapter):
         self.QueryChapter = QueryChapter
 
     def authWrite(self, query_id):
         Query = self.Query
-        auth = self.auth
+        auth = current.auth
 
         authorized = None
         if query_id == 0:
@@ -40,10 +37,10 @@ class QUERYSAVE:
         return (authorized, msg)
 
     def putSlots(self, vr, query_id, rows, is_shared):
-        Caching = self.Caching
+        Caching = current.Caching
         Query = self.Query
         QueryChapter = self.QueryChapter
-        db = self.db
+        db = current.db
 
         query_exe_id = Query.getExe(vr, query_id)
         if query_exe_id is None:
@@ -86,8 +83,8 @@ insert into monads (query_exe_id, first_m, last_m) values
 
         QueryChapter.updateQCindex(vr, query_id)
 
-    def sharing(self, requestVars, now):
-        Check = self.Check
+    def sharing(self, requestVars):
+        Check = current.Check
 
         msgs = []
         good = False
@@ -108,9 +105,8 @@ insert into monads (query_exe_id, first_m, last_m) values
             if not authorized:
                 msgs.append(("error", msg))
                 break
-            now = (now,)
             (good, modDates, modCls, extra) = self.putSharing(
-                vr, query_id, fieldName, val, now, msgs
+                vr, query_id, fieldName, val, msgs
             )
         return dict(
             data=json.dumps(
@@ -120,10 +116,11 @@ insert into monads (query_exe_id, first_m, last_m) values
             )
         )
 
-    def putSharing(self, vr, query_id, fname, val, now, msgs):
-        auth = self.auth
-        db = self.db
-        Check = self.Check
+    def putSharing(self, vr, query_id, fname, val, msgs):
+        auth = current.auth
+        db = current.db
+        Check = current.Check
+        now = current.request.utcnow
 
         good = False
         myId = None
@@ -195,7 +192,7 @@ select is_shared from query where id = {query_id}
                     is_shared = pv is not None and len(pv) == 1 and pv[0][0] == "T"
                     if not is_shared:
                         (modDateFld, modDate) = self.putShared(
-                            myId, query_id, "T", now, msgs
+                            myId, query_id, "T", msgs
                         )
                         modDates[modDateFld] = modDate
                         extra["is_shared"] = ("checked", True)
@@ -229,20 +226,20 @@ select published_on from query_exe where query_id = {query_id} and version = '{v
         if good:
             if fname == "is_shared":
                 (modDateFld, modDate) = self.putShared(
-                    myId, query_id, valsql, now, msgs
+                    myId, query_id, valsql, msgs
                 )
             else:
                 (modDateFld, modDate) = self.putPublished(
-                    myId, vr, query_id, valsql, now, msgs
+                    myId, vr, query_id, valsql, msgs
                 )
             modDates[modDateFld] = modDate
         return (good, modDates, modCls, extra)
 
-    def putShared(self, myId, query_id, valsql, now, msgs):
-        Caching = self.Caching
+    def putShared(self, myId, query_id, valsql, msgs):
+        Caching = current.Caching
         QueryChapter = self.QueryChapter
-        db = self.db
-        VERSIONS = self.VERSIONS
+        db = current.db
+        VERSIONS = current.VERSIONS
 
         modDate = None
         modDateFld = "shared_on"
@@ -250,6 +247,7 @@ select published_on from query_exe where query_id = {query_id} and version = '{v
         fname = "is_shared"
         Caching.clear(r"^items_q_")
         fieldval = f" {fname} = '{valsql}'"
+        now = current.request.utcnow
         modDate = now.replace(microsecond=0) if valsql == "T" else None
         modDateSql = "null" if modDate is None else str(modDate)
         fieldval += f", {modDateFld} = {modDateSql} "
@@ -265,10 +263,10 @@ update {table} set{fieldval} where id = {query_id}
         msgs.append(("good", thismsg))
         return (modDateFld, str(modDate) if modDate else NULLDT)
 
-    def putPublished(self, myId, vr, query_id, valsql, now, msgs):
-        Caching = self.Caching
+    def putPublished(self, myId, vr, query_id, valsql, msgs):
+        Caching = current.Caching
         QueryChapter = self.QueryChapter
-        db = self.db
+        db = current.db
 
         modDate = None
         modDateFld = "published_on"
@@ -277,6 +275,7 @@ update {table} set{fieldval} where id = {query_id}
         Caching.clear(f"^items_q_{vr}_")
         self.verifyVersion(vr, query_id)
         fieldval = f" {fname} = '{valsql}'"
+        now = current.request.utcnow
         modDate = now.replace(microsecond=0) if valsql == "T" else None
         modDateSql = "null" if modDate is None else str(modDate)
         fieldval += f", {modDateFld} = {modDateSql} "
@@ -292,8 +291,8 @@ update {table} set{fieldval} where query_id = {query_id} and version = '{vr}'
         return (modDateFld, str(modDate) if modDate else NULLDT)
 
     def putMeta(self, vr, query_id, fields, fieldsExe):
-        Caching = self.Caching
-        db = self.db
+        Caching = current.Caching
+        db = current.db
 
         if len(fields):
             fieldRep = ", ".join(
@@ -316,10 +315,10 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
             db.executesql(sql)
             Caching.clear(f"^items_q_{vr}_")
 
-    def putRecord(self, requestVars, now):
-        Check = self.Check
+    def putRecord(self, requestVars):
+        Check = current.Check
         Query = self.Query
-        auth = self.auth
+        auth = current.auth
 
         vr = requestVars.version
         nameNew = requestVars.name
@@ -328,6 +327,8 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
         execute = requestVars.execute
 
         myId = auth.user.id if auth.user is not None else None
+
+        now = current.request.utcnow
 
         msgs = []
         good = False
@@ -437,7 +438,7 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
         )
 
     def verifyVersion(self, vr, query_id):
-        db = self.db
+        db = current.db
 
         existVersion = db.executesql(
             f"""

@@ -1,17 +1,16 @@
 import json
 
+from gluon import current
+
 from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
 from verse import Verse
 
 
-class Pieces:
-    def __init__(self, Check, Caching, auth, PASSAGE_DBS):
-        self.Check = Check
-        self.Caching = Caching
-        self.auth = auth
-        self.PASSAGE_DBS = PASSAGE_DBS
+class PIECES:
+    def __init__(self):
+        pass
 
-    def dep(self, Note, NoteSave):
+    def alsoDependentOn(self, Note, NoteSave):
         self.Note = Note
         self.NoteSave = NoteSave
 
@@ -24,13 +23,13 @@ var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
         return dict(jsinit=jsinit)
 
     def getBooks(self, vr):
-        Caching = self.Caching
+        Caching = current.Caching
 
         return Caching.get(f"books_{vr}_", lambda: self.getBooks_c(vr), None)
 
     def getBooks_c(self, vr):
         # get book information: number of chapters per book
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if vr in PASSAGE_DBS:
             booksData = PASSAGE_DBS[vr].executesql(
@@ -51,7 +50,7 @@ on chapter.book_id = book.id group by name order by book.id
         return result
 
     def getVerseJson(self, vr, bk, ch, vs):
-        Caching = self.Caching
+        Caching = current.Caching
 
         return Caching.get(
             f"versej_{vr}_{bk}_{ch}_{vs}_",
@@ -60,8 +59,8 @@ on chapter.book_id = book.id group by name order by book.id
         )
 
     def getVerseJson_c(self):
-        Check = self.Check
-        PASSAGE_DBS = self.PASSAGE_DBS
+        Check = current.Check
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         vr = Check.field("material", "", "version")
         bk = Check.field("material", "", "book")
@@ -108,8 +107,8 @@ order by word_number
         return json.dumps(dict(good=good, msgs=msgs, data=data), ensure_ascii=False)
 
     def getVerse(self):
-        Check = self.Check
-        Caching = self.Caching
+        Check = current.Check
+        Caching = current.Caching
 
         vr = Check.field("material", "", "version")
         bk = Check.field("material", "", "book")
@@ -127,7 +126,7 @@ order by word_number
         )
 
     def getVerse_c(self, vr, bk, ch, vs, tr):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         material = Verse(
             PASSAGE_DBS,
@@ -152,11 +151,11 @@ order by word_number
             material=material,
         )
 
-    def getVerseNotes(self, requestVars, now):
-        Check = self.Check
+    def getVerseNotes(self, requestVars):
+        Check = current.Check
         Note = self.Note
         NoteSave = self.NoteSave
-        auth = self.auth
+        auth = current.auth
 
         vr = Check.field("material", "", "version")
         bk = Check.field("material", "", "book")
@@ -185,14 +184,14 @@ order by word_number
                     else []
                 )
                 changed = NoteSave.put(
-                    myId, vr, bk, ch, vs, now, notes, clauseAtoms, msgs
+                    myId, vr, bk, ch, vs, notes, clauseAtoms, msgs
                 )
         return Note.inVerse(
-            vr, bk, ch, vs, myId, clauseAtoms, changed, now, msgs, authenticated, edit
+            vr, bk, ch, vs, myId, clauseAtoms, changed, msgs, authenticated, edit
         )
 
     def getClauseAtomFirstSlot(self, vr):
-        Caching = self.Caching
+        Caching = current.Caching
 
         return Caching.get(
             f"clause_atom_f_{vr}_",
@@ -201,7 +200,7 @@ order by word_number
         )
 
     def getClauseAtomFirstSlot_c(self, vr):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         (books, booksOrder, bookIds, bookName) = self.getBooks(vr)
         sql = """
@@ -217,7 +216,7 @@ from clause_atom
         return caFirst
 
     def getClauseAtoms(self, vr, bk, ch, vs):
-        Caching = self.Caching
+        Caching = current.Caching
         return Caching.get(
             f"clause_atoms_{vr}_{bk}_{ch}_{vs}_",
             lambda: self.getClauseAtoms_c(vr, bk, ch, vs),
@@ -226,7 +225,7 @@ from clause_atom
 
     def getClauseAtoms_c(self, vr, bk, ch, vs):
         # get clauseatoms for each verse
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         clauseAtoms = []
         caData = (

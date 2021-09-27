@@ -1,11 +1,13 @@
 import re
 
+from gluon import current
+
 from helpers import hEsc
 
 
 class Urls:
-    def __init__(self, URL):
-        self.URL = URL
+    def __init__(self):
+        URL = current.URL
 
         imagePat = re.compile(
             """<a [^>]*href=['"]image[\n\t ]+([^)\n\t '"]+)['"][^>]*>(.*?)</a>"""

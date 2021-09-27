@@ -1,20 +1,23 @@
+from gluon import current
+
 from helpers import iEncode
 
 
 class NOTESAVE:
-    def __init__(self, Caching, NOTE_DB):
-        self.Caching = Caching
-        self.NOTE_DB = NOTE_DB
+    def __init__(self):
+        pass
 
-    def put(self, myId, vr, bk, ch, vs, now, notes, clauseAtoms, msgs):
-        Caching = self.Caching
-        NOTE_DB = self.NOTE_DB
+    def put(self, myId, vr, bk, ch, vs, notes, clauseAtoms, msgs):
+        Caching = current.Caching
+        NOTE_DB = current.NOTE_DB
 
         (good, notesOld, notesUpd, notesNew, notesDel) = self.filter(
             myId, notes, clauseAtoms, msgs
         )
 
         updated = 0
+        now = current.request.utcnow
+
         for note_id in notesUpd:
             (is_shared, is_published, status, keywords, ntext) = notesUpd[note_id]
             (isSharedOld, isPubOld, statusOld, keywordsOld, ntextOld) = notesOld[
@@ -45,6 +48,7 @@ where id = {note_id}
 """
             NOTE_DB.executesql(updateSql)
             updated += 1
+
         if len(notesDel) > 0:
             deleteSql = f"""
 delete from note where id in ({",".join(str(x) for x in notesDel)})
@@ -102,7 +106,7 @@ values
         return changed
 
     def filter(self, myId, notes, clauseAtoms, msgs):
-        NOTE_DB = self.NOTE_DB
+        NOTE_DB = current.NOTE_DB
 
         good = True
         notesOther = set()

@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 
 from markdown import markdown
+
 from helpers import hEsc, sanitize, isodt
 from urls import Urls
-
-from check import CHECK
-from caching import CACHING
-from queryrecent import QUERYRECENT
-
-Check = CHECK(request, db)
-Caching = CACHING(cache)
-QueryRecent = QUERYRECENT(db)
 
 U = Urls(URL)
 

@@ -1,22 +1,21 @@
 import collections
 import json
 
+from gluon import current
+
 from constants import PUBLISH_FREEZE
 from helpers import hEsc, iEncode, formatVersion
 
 
 class QUERYTREE:
-    def __init__(self, auth, db, VERSION_ORDER, VERSION_INDEX):
-        self.auth = auth
-        self.db = db
-        self.VERSION_ORDER = VERSION_ORDER
-        self.VERSION_INDEX = VERSION_INDEX
+    def __init__(self):
+        pass
 
-    def get(self, now):
-        auth = self.auth
-        db = self.db
-        VERSION_ORDER = self.VERSION_ORDER
-        VERSION_INDEX = self.VERSION_INDEX
+    def get(self):
+        auth = current.auth
+        db = current.db
+        VERSION_ORDER = current.VERSION_ORDER
+        VERSION_INDEX = current.VERSION_INDEX
 
         myId = None
         if auth.user:
@@ -138,6 +137,9 @@ query.name
                 "good": False,
                 "v": [4 for v in VERSION_ORDER],
             }
+
+        now = current.request.utcnow
+
         for (
             query_id,
             vr,

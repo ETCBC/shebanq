@@ -1,13 +1,16 @@
+from gluon import current
+
+
 CACHING_ENABLED = True
 CACHING_RAM_ONLY = True
 
 
 class CACHING:
-    def __init__(self, cache):
-        self.cache = cache
+    def __init__(self):
+        pass
 
     def get(self, cacheKey, func, expire):
-        cache = self.cache
+        cache = current.cache
 
         if CACHING_ENABLED and cache is not None:
             if CACHING_RAM_ONLY:
@@ -23,9 +26,12 @@ class CACHING:
         return result
 
     def clear(self, cacheKeys):
-        cache = self.cache
+        cache = current.cache
 
         if CACHING_ENABLED and cache is not None:
             cache.ram.clear(regex=cacheKeys)
             if not CACHING_RAM_ONLY:
                 cache.disk.clear(regex=cacheKeys)
+
+
+current.Caching = CACHING()

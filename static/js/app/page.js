@@ -129,7 +129,7 @@ export class Page {
   }
 
   setCsv(vr, mr, qw, iid, extraGiven) {
-    const { tpLabels, itemStyle } = Config
+    const { tabLabels, itemStyle } = Config
 
     if (mr == "r") {
       const tasks = { t: "txtp", d: "txtd" }
@@ -138,7 +138,7 @@ export class Page {
       }
 
       for (const [task, tp] of Object.entries(tasks)) {
-        const tpLab = tpLabels[tp]
+        const tpLab = tabLabels[tp]
         const csvCtl = $(`#csv${task}_lnk_${vr}_${qw}`)
         if (task != "b" || (tp != "txtp" && tp != "txtd")) {
           const tit = csvCtl.attr("ftitle")

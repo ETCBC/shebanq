@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#from gluon.custom_import import track_changes; track_changes(True)
+# from gluon.custom_import import track_changes; track_changes(True)
 
 EXPIRE = 3600*24*30
 
-#def myerror(): return 1/0
+# def myerror(): return 1/0
+
 
 def index():
     session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the BHSA database")
     return dict()
+
 
 def user():
     """
@@ -32,6 +34,7 @@ def user():
     response.title = T("User Profile")
     return dict(form=auth())
 
+
 @cache.action()
 def download():
     """
@@ -48,7 +51,7 @@ def call():
     decorate with @services.jsonrpc the functions to expose
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
-    return service()
+    return service() # noqa F821
 
 
 @auth.requires_signature()
@@ -66,5 +69,4 @@ def data():
     or with the signed load operator
       LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
     """
-    return dict(form=crud())
-
+    return dict(form=crud()) # noqa F821

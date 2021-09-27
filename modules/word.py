@@ -1,18 +1,17 @@
 import collections
 import json
 
+from gluon import current
+
 from helpers import collapseToRanges, hebKey, iDecode
 
 
 class WORD:
-    def __init__(self, Check, Caching, PASSAGE_DBS, VERSIONS):
-        self.Check = Check
-        self.Caching = Caching
-        self.PASSAGE_DBS = PASSAGE_DBS
-        self.VERSIONS = VERSIONS
+    def __init__(self, ViewSettings):
+        self.ViewSettings = ViewSettings
 
     def authRead(self, vr, lexicon_id):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         authorized = None
         if not lexicon_id or vr not in PASSAGE_DBS:
@@ -30,9 +29,12 @@ class WORD:
         )
         return (authorized, msg)
 
-    def page(self, ViewSettings):
-        Check = self.Check
-        Caching = self.Caching
+    def page(self):
+        Check = current.Check
+        Caching = current.Caching
+        ViewSettings = self.ViewSettings
+
+        pageConfig = ViewSettings.writeConfig()
 
         vr = Check.field("material", "", "version", default=False)
         if not vr:
@@ -42,21 +44,20 @@ class WORD:
 
         return Caching.get(
             f"words_page_{vr}_{lan}_{letter}_",
-            lambda: self.page_c(ViewSettings, vr, lan=lan, letter=letter),
+            lambda: self.page_c(pageConfig, vr, lan=lan, letter=letter),
             None,
         )
 
-    def page_c(self, ViewSettings, vr, lan=None, letter=None):
-        Caching = self.Caching
+    def page_c(self, pageConfig, vr, lan=None, letter=None):
+        Caching = current.Caching
 
         (letters, words) = Caching.get(
             f"words_data_{vr}_", lambda: self.getData(vr), None
         )
-        version = ViewSettings.theVersion()
 
         return dict(
-            version=version,
-            ViewSettings=ViewSettings,
+            version=vr,
+            pageConfig=pageConfig,
             lan=lan,
             letter=letter,
             letters=letters,
@@ -64,7 +65,7 @@ class WORD:
         )
 
     def body(self):
-        Check = self.Check
+        Check = current.Check
 
         vr = Check.field("material", "", "version")
         iidRep = Check.field("material", "", "iid")
@@ -88,7 +89,7 @@ class WORD:
         )
 
     def getItems(self, vr, chapter):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         return (
             PASSAGE_DBS[vr].executesql(
@@ -104,7 +105,7 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
         )
 
     def read(self, vr, lexicon_id):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
         slots = (
             PASSAGE_DBS[vr].executesql(
                 f"""
@@ -118,7 +119,7 @@ select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
         return collapseToRanges(slots)
 
     def group(self, vr, occurrences):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if vr not in PASSAGE_DBS:
             return []
@@ -141,7 +142,7 @@ select * from lexicon where id in ({wordIdsRep})
         return r
 
     def getPlainInfo(self, vr, lexicon_id):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
         if vr not in PASSAGE_DBS:
             return {}
 
@@ -155,8 +156,8 @@ select * from lexicon where id = '{lexicon_id}'
         return records[0] if records else {}
 
     def getInfo(self, iid, vr, msgs):
-        PASSAGE_DBS = self.PASSAGE_DBS
-        VERSIONS = self.VERSIONS
+        PASSAGE_DBS = current.PASSAGE_DBS
+        VERSIONS = current.VERSIONS
 
         sql = f"""
 select * from lexicon where id = '{iid}'
@@ -176,7 +177,7 @@ select * from lexicon where id = '{iid}'
         return wordRecord
 
     def getData(self, vr):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if vr not in PASSAGE_DBS:
             return ({}, {})

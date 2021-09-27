@@ -3,6 +3,8 @@ import json
 
 from markdown import markdown
 
+from gluon import current
+
 from constants import NULLDT
 from helpers import normRanges, iDecode
 
@@ -35,18 +37,14 @@ def queryStatus(queryExeRecord):
 
 
 class QUERY:
-    def __init__(self, Check, Caching, auth, db, VERSIONS):
-        self.Check = Check
-        self.Caching = Caching
-        self.auth = auth
-        self.db = db
-        self.VERSIONS = VERSIONS
+    def __init__(self, ViewSettings):
+        self.ViewSettings = ViewSettings
 
-    def dep(self, QuerySave):
+    def alsoDependentOn(self, QuerySave):
         self.QuerySave = QuerySave
 
     def authRead(self, query_id):
-        auth = self.auth
+        auth = current.auth
 
         authorized = None
         if query_id == 0:
@@ -64,8 +62,11 @@ class QUERY:
         )
         return (authorized, msg)
 
-    def page(self, ViewSettings):
-        Check = self.Check
+    def page(self):
+        Check = current.Check
+        ViewSettings = self.ViewSettings
+
+        pageConfig = ViewSettings.writeConfig()
 
         query_id = Check.isId("goto", "q", "query", [])
         if query_id is not None:
@@ -73,14 +74,14 @@ class QUERY:
             if not authorized:
                 query_id = 0
         return dict(
-            ViewSettings=ViewSettings,
+            pageConfig=pageConfig,
             query_id=query_id,
         )
 
     def body(self):
-        Check = self.Check
+        Check = current.Check
         QuerySave = self.QuerySave
-        auth = self.auth
+        auth = current.auth
 
         vr = Check.field("material", "", "version")
         iidRep = Check.field("material", "", "iid")
@@ -134,7 +135,7 @@ class QUERY:
         )
 
     def bodyJson(self):
-        Check = self.Check
+        Check = current.Check
 
         vr = Check.field("material", "", "version")
         iidRep = Check.field("material", "", "iid")
@@ -152,7 +153,7 @@ class QUERY:
         return dict(data=json.dumps(result))
 
     def getItems(self, vr, chapter, onlyPub):
-        Caching = self.Caching
+        Caching = current.Caching
 
         pubStatus = Caching.get(
             f"pubStatus_{vr}_",
@@ -178,7 +179,7 @@ class QUERY:
         return result
 
     def read(self, vr, query_id):
-        db = self.db
+        db = current.db
 
         query_exe_id = self.getExe(vr, query_id)
         if query_exe_id is None:
@@ -212,7 +213,7 @@ select first_m, last_m from monads where query_exe_id = {query_exe_id} order by 
         return r
 
     def getExe(self, vr, query_id):
-        db = self.db
+        db = current.db
 
         recordsExe = db.executesql(
             f"""
@@ -225,7 +226,7 @@ select id from query_exe where query_id = {query_id} and version = '{vr}'
         return recordsExe[0][0]
 
     def getPlainInfo(self, query_id):
-        db = self.db
+        db = current.db
 
         records = db.executesql(
             f"""
@@ -237,7 +238,7 @@ select * from query where id = {query_id}
         return records[0] if records else {}
 
     def getBasicInfo(self, vr, query_id):
-        db = self.db
+        db = current.db
 
         return db.executesql(
             f"""
@@ -256,7 +257,7 @@ where query.id = {query_id}
         )
 
     def getTreeInfo(self, query_id):
-        db = self.db
+        db = current.db
 
         return db.executesql(
             f"""
@@ -288,7 +289,7 @@ where query.id = {query_id}
         withIds=True,
         po=False,
     ):
-        db = self.db
+        db = current.db
 
         sqli = (
             """,
@@ -430,7 +431,7 @@ where query_id = {query_id}
             return record
 
     def getFields(self, vr, record, recordsExe, singleVersion=False):
-        VERSIONS = self.VERSIONS
+        VERSIONS = current.VERSIONS
 
         dateTimeStr(record)
         if not singleVersion:

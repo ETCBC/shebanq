@@ -1,5 +1,7 @@
 import json
 
+from gluon import current
+
 from verses import Verses
 from helpers import iDecode, pagelist
 
@@ -8,20 +10,15 @@ RESULT_PAGE_SIZE = 20
 
 
 class MATERIAL:
-    def __init__(
-        self, Check, Caching, Record, Word, Query, QueryChapter, Note, PASSAGE_DBS
-    ):
-        self.Check = Check
-        self.Caching = Caching
+    def __init__(self, Record, Word, Query, QueryChapter, Note):
         self.Record = Record
         self.Word = Word
         self.Query = Query
         self.QueryChapter = QueryChapter
         self.Note = Note
-        self.PASSAGE_DBS = PASSAGE_DBS
 
     def page(self):
-        Check = self.Check
+        Check = current.Check
         Record = self.Record
 
         mr = Check.field("material", "", "mr")
@@ -53,7 +50,7 @@ class MATERIAL:
         return self.get(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang)
 
     def getPassage(self, vr, bk, ch):
-        Caching = self.Caching
+        Caching = current.Caching
 
         return Caching.get(
             f"passage_{vr}_{bk}_{ch}",
@@ -62,7 +59,7 @@ class MATERIAL:
         )
 
     def getPassage_c(self, vr, bookname, chapternum):
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if bookname is None or chapternum is None or vr not in PASSAGE_DBS:
             return ({}, {})
@@ -88,7 +85,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
         return (book, chapter)
 
     def get(self, vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang):
-        Caching = self.Caching
+        Caching = current.Caching
         QueryChapter = self.QueryChapter
 
         # We build an index of queries by chapter in which they have results.
@@ -111,7 +108,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
         Word = self.Word
         Query = self.Query
         Note = self.Note
-        PASSAGE_DBS = self.PASSAGE_DBS
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         if mr == "m":
             (book, chapter) = self.getPassage(vr, bk, ch)
@@ -180,8 +177,8 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
         return result
 
     def getPagination(self, vr, p, slotSets):
-        Caching = self.Caching
-        PASSAGE_DBS = self.PASSAGE_DBS
+        Caching = current.Caching
+        PASSAGE_DBS = current.PASSAGE_DBS
 
         verseBoundaries = (
             Caching.get(

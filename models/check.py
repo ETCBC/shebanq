@@ -1,17 +1,18 @@
 from urllib.parse import urlparse, urlunparse
 
+from gluon import current
+
 from constants import TPS
-from viewdefs import SETTINGS, VALIDATION, HEBREW_DATA_LINES, HEBREW_FIELDS
 from helpers import iDecode
 
 
 class CHECK:
-    def __init__(self, request, db):
-        self.request = request
-        self.db = db
+    def __init__(self):
+        pass
 
     def field(self, group, qw, var, default=True):
-        request = self.request
+        ViewDefs = current.ViewDefs
+        request = current.request
 
         requestVar = ("c_" if group == "colormap" else "") + qw + var
         if requestVar == "iid":
@@ -25,20 +26,22 @@ class CHECK:
             # this occurs when the same variable occurs multiple times
             # in the request/querystring
         theVar = "0" if group == "colormap" else var
-        defaultValue = SETTINGS[group][qw][theVar] if default else None
-        return VALIDATION[group][qw][theVar](defaultValue, x)
+        defaultValue = ViewDefs["settings"][group][qw][theVar] if default else None
+        return ViewDefs["validation"][group][qw][theVar](defaultValue, x)
 
     def fields(self, tp, qw=None):
+        ViewDefs = current.ViewDefs
+
         if qw is None or qw != "n":
             if tp == "txtd":
                 hebrewFields = []
-                for (line, fields) in HEBREW_DATA_LINES:
+                for (line, fields) in ViewDefs["featureLines"]:
                     if self.field("hebrewdata", "", line) == "v":
                         for (f, name, prettyName) in fields:
                             if self.field("hebrewdata", "", f) == "v":
                                 hebrewFields.append((name, prettyName))
             else:
-                hebrewFields = HEBREW_FIELDS[tp]
+                hebrewFields = ViewDefs["featureFields"][tp]
             return hebrewFields
         else:
             hebrewFields = (
@@ -80,7 +83,7 @@ class CHECK:
             return hebrewFields
 
     def isUnique(self, tp, obj_id, val, myId, msgs):
-        db = self.db
+        db = current.db
 
         result = False
         (label, table) = TPS[tp]
@@ -206,7 +209,7 @@ select id from {table} where name = '{val}'
         return result
 
     def isInt(self, var, label, msgs):
-        request = self.request
+        request = current.request
 
         val = request.vars[var]
         if val is None:
@@ -218,7 +221,7 @@ select id from {table} where name = '{val}'
         return int(val)
 
     def isBool(self, var):
-        request = self.request
+        request = current.request
 
         val = request.vars[var]
         if (
@@ -232,7 +235,7 @@ select id from {table} where name = '{val}'
         return True
 
     def isId(self, var, tp, label, msgs, valrep=None):
-        request = self.request
+        request = current.request
 
         if valrep is None:
             valrep = request.vars[var]
@@ -252,7 +255,7 @@ select id from {table} where name = '{val}'
         return val
 
     def isRel(self, tp, val, msgs):
-        db = self.db
+        db = current.db
 
         (label, table) = TPS[tp]
         result = None
@@ -279,3 +282,6 @@ select count(*) as occurs from {table} where id = {val}
                 break
             result = val
         return result
+
+
+current.Check = CHECK()

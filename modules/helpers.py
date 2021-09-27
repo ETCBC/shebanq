@@ -8,8 +8,8 @@ DEBUG = True
 
 def debug(msg):
     if DEBUG:
-        sys.stderr.write(f"{msg}\n")
-        sys.stderr.flush()
+        sys.stdout.write(f"{msg}\n")
+        sys.stdout.flush()
 
 
 def isodt(dt=None):

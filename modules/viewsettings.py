@@ -2,53 +2,61 @@ import collections
 import json
 import urllib
 
+from gluon import current
+
 from blang import BIBLANG, BOOK_LANGS, BOOK_NAMES, BOOK_TRANS
-from viewdefs import (
-    SETTINGS,
-    VALIDATION,
-    N_DEFAULT_CLR_COLS,
-    N_DEFAULT_CLR_ROWS,
-    NEXT_TP,
-    NEXT_TR,
-    NOTE_STATUS_CLS,
-    NOTE_STATUS_SYM,
-    NOTE_STATUS_NXT,
-    TAB_INFO,
-    TAB_VIEWS,
-    TP_LABELS,
-    TR_INFO,
-    TR_LABELS,
-    COLORS,
-    COLORS_DEFAULT,
-    ITEM_STYLE,
-    makeColors,
-)
+from boiler import LEGEND
 
 
 class VIEWSETTINGS:
-    def __init__(self, Check, Pieces, request, response, URL, VERSIONS):
-        self.Check = Check
+    def __init__(self, Pieces):
         self.Pieces = Pieces
-        self.URL = URL
+        Check = current.Check
 
         self.state = collections.defaultdict(
             lambda: collections.defaultdict(lambda: {})
         )
         self.pref = Check.field("rest", "", "pref")
 
-        self.VERSIONS = {v: info for (v, info) in VERSIONS.items()}
+    def page(self):
+        ViewDefs = current.ViewDefs
 
-        for group in SETTINGS:
+        pageConfig = self.writeConfig()
+
+        return dict(
+            pageConfig=pageConfig,
+            colorPicker=self.colorPicker,
+            legend=LEGEND,
+            tabLabels=ViewDefs["tabLabels"],
+            trLabels=ViewDefs["trLabels"],
+            nTabViews=ViewDefs["nTabViews"],
+            trInfo=ViewDefs["trInfo"],
+        )
+
+    def initState(self):
+        ViewDefs = current.ViewDefs
+        Check = current.Check
+        Pieces = self.Pieces
+        VERSIONS = current.VERSIONS
+
+        settings = ViewDefs["settings"]
+        validation = ViewDefs["validation"]
+
+        requestVars = current.request.vars
+        requestCookies = current.request.cookies
+        responseCookies = current.response.cookies
+
+        for (group, groupSettings) in settings.items():
             self.state[group] = {}
-            for qw in SETTINGS[group]:
+            for qw in groupSettings:
                 self.state[group][qw] = {}
                 fromCookie = {}
-                if (self.pref + group + qw) in request.cookies:
+                if (self.pref + group + qw) in requestCookies:
                     if self.pref == "my":
                         try:
                             fromCookie = json.loads(
                                 urllib.parse.unquote(
-                                    request.cookies[
+                                    requestCookies[
                                         self.pref + group + qw
                                     ].value
                                 )
@@ -58,12 +66,12 @@ class VIEWSETTINGS:
                 if group == "colormap":
                     for fid in fromCookie:
                         if len(fid) <= 32 and fid.replace("_", "").isalnum():
-                            validationState = VALIDATION[group][qw]["0"](
+                            validationState = validation[group][qw]["0"](
                                 None, fromCookie[fid]
                             )
                             if validationState is not None:
                                 self.state[group][qw][fid] = validationState
-                    for f in request.vars:
+                    for f in requestVars:
                         if not f.startswith(f"c_{qw}"):
                             continue
                         fid = f[3:]
@@ -75,9 +83,9 @@ class VIEWSETTINGS:
                                 fromCookie[fid] = validationState
                                 self.state[group][qw][fid] = validationState
                 elif group != "rest":
-                    for f in SETTINGS[group][qw]:
-                        init = SETTINGS[group][qw][f]
-                        validationState = VALIDATION[group][qw][f](
+                    for f in settings[group][qw]:
+                        init = settings[group][qw][f]
+                        validationState = validation[group][qw][f](
                             init, fromCookie.get(f, None)
                         )
                         vstater = Check.field(group, qw, f, default=False)
@@ -87,13 +95,13 @@ class VIEWSETTINGS:
                         self.state[group][qw][f] = validationState
 
                 if group != "rest":
-                    response.cookies[
+                    responseCookies[
                         self.pref + group + qw
                     ] = urllib.parse.quote(json.dumps(fromCookie))
-                    response.cookies[self.pref + group + qw]["expires"] = (
+                    responseCookies[self.pref + group + qw]["expires"] = (
                         30 * 24 * 3600
                     )
-                    response.cookies[self.pref + group + qw]["path"] = "/"
+                    responseCookies[self.pref + group + qw]["path"] = "/"
 
         books = {}
         booksOrder = {}
@@ -105,14 +113,16 @@ class VIEWSETTINGS:
         self.bookIds = bookIds
         self.bookName = bookName
 
-        for v in self.VERSIONS:
+        for v in VERSIONS:
             (books[v], booksOrder[v], bookIds[v], bookName[v]) = Pieces.getBooks(v)
 
     def theVersion(self):
         return self.state["material"][""]["version"]
 
     def writeConfig(self):
-        URL = self.URL
+        ViewDefs = current.ViewDefs
+        URL = current.URL
+        VERSIONS = current.VERSIONS
 
         return f"""
 var Config = {{
@@ -121,25 +131,25 @@ bookLatin: {json.dumps(BOOK_NAMES[BIBLANG]["la"])},
 bookOrder: {json.dumps(self.booksOrder)},
 books: {json.dumps(self.books)},
 bookTrans: {json.dumps(BOOK_TRANS)},
-colorsDefault: {json.dumps(COLORS_DEFAULT)},
-colorsCls: {json.dumps(makeColors())},
-colors: {json.dumps(COLORS)},
-nDefaultClrCols: {N_DEFAULT_CLR_COLS},
-nDefaultClrRows: {N_DEFAULT_CLR_ROWS},
+colorsDefault: {json.dumps(ViewDefs["colorsDefault"])},
+colorsCls: {json.dumps(_makeColors())},
+colors: {json.dumps(ViewDefs["colors"])},
+nDefaultClrCols: {ViewDefs["nDefaultClrCols"]},
+nDefaultClrRows: {ViewDefs["nDefaultClrRows"]},
 featureHost: "https://etcbc.github.io/bhsa/features",
-nextTp: {json.dumps(NEXT_TP)},
-nextTr: {json.dumps(NEXT_TR)},
-noteStatusCls: {json.dumps(NOTE_STATUS_CLS)},
-noteStatusNxt: {json.dumps(NOTE_STATUS_NXT)},
-noteStatusSym: {json.dumps(NOTE_STATUS_SYM)},
+nextTp: {json.dumps(ViewDefs["nextTp"])},
+nextTr: {json.dumps(ViewDefs["nextTr"])},
+noteStatusCls: {json.dumps(ViewDefs["noteStatusCls"])},
+noteStatusNxt: {json.dumps(ViewDefs["noteStatusNxt"])},
+noteStatusSym: {json.dumps(ViewDefs["noteStatusSym"])},
 pref: "{self.pref}",
-itemStyle: {json.dumps(ITEM_STYLE)},
-tabInfo: {json.dumps(TAB_INFO)},
-tabViews: {TAB_VIEWS},
-tpLabels: {json.dumps(TP_LABELS)},
-trInfo: {json.dumps(TR_INFO)},
-trLabels: {json.dumps(TR_LABELS)},
-versions: {json.dumps(list(self.VERSIONS))},
+itemStyle: {json.dumps(ViewDefs["itemStyle"])},
+nTabViews: {ViewDefs["nTabViews"]},
+tabInfo: {json.dumps(ViewDefs["tabInfo"])},
+tabLabels: {json.dumps(ViewDefs["tabLabels"])},
+trInfo: {json.dumps(ViewDefs["trInfo"])},
+trLabels: {json.dumps(ViewDefs["trLabels"])},
+versions: {json.dumps(list(VERSIONS))},
 viewInit: {json.dumps(self.state)},
 
 pageShareUrl: "{URL("hebrew", "text", host=True)}",
@@ -175,3 +185,64 @@ bolUrl: "http://bibleol.3bmoodle.dk/text/show_text",
 pblUrl: "https://parabible.com",
 }}
 """
+
+    def colorPicker(self, qw, iid, typ):
+        return f"{_selectColor(qw, iid, typ)}{_colorTable(qw, iid)}\n"
+
+
+def _selectColor(qw, iid, typ):
+    content = "&nbsp;" if qw == "q" else "w"
+    selCtl = (
+        ""
+        if typ
+        else f"""<span class="pickedc"
+><input type="checkbox" id="select_{qw}{iid}" name="select_{qw}{iid}"
+/></span>&nbsp;"""
+    )
+    sel = f"""<span class="picked colorselect_{qw}" id="sel_{qw}{iid}"
+><a href="#">{content}</a></span>"""
+    return selCtl + sel
+
+
+def _makeColors():
+    ViewDefs = current.ViewDefs
+    colorSpecCls = ViewDefs["colorSpecCls"]
+
+    colorProtoCls = [
+        tuple(spec.split(",")) for spec in colorSpecCls.strip().split()
+    ]
+    colorsCls = []
+    lPrev = 0
+    for (l, z) in colorProtoCls:
+        lNew = int(l) + 1
+        for i in range(lPrev, lNew):
+            colorsCls.append(z)
+        lPrev = lNew
+    return colorsCls
+
+
+def _colorTable(qw, iid):
+    ViewDefs = current.ViewDefs
+    nColorRows = ViewDefs["nColorRows"]
+
+    cs = "\n".join(_colorRow(qw, iid, r) for r in range(nColorRows))
+    return f'<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'
+
+
+def _colorRow(qw, iid, r):
+    ViewDefs = current.ViewDefs
+    nColorCols = ViewDefs["nColorCols"]
+
+    cells = "\n".join(
+        _colorCell(qw, iid, c)
+        for c in range(r * nColorCols, (r + 1) * nColorCols)
+    )
+    return f"\t<tr>\n{cells}\n\t</tr>"
+
+
+def _colorCell(qw, iid, c):
+    ViewDefs = current.ViewDefs
+    colorNames = ViewDefs["colorNames"]
+    return (
+        f"""\t\t<td class="c{qw} {qw}{iid}"><a href="#">{colorNames[c]}</a></td>"""
+    )

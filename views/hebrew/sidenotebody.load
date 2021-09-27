@@ -8,7 +8,7 @@
     <tr><td><span class="notelabel">keyword</span></td><td><span class="t1_kw">{{=noteRecord['keywords']}}</span></td></tr>
 </table>
 {{for v in VERSION_ORDER:
-    noteInfo = noteRecord['versions'].get(v, collections.defaultdict(lambda: ''))
+    noteInfo = noteRecord['versions'].get(v, {})
     thisCls = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'
 }}
@@ -20,7 +20,7 @@
     <a id="select_control_chart_{{=v}}_n" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="notelabel">notes</span></td><td class="nstat">{{=noteInfo['n'] or 0}}</td></tr>
+        <tr class="detail"><td><span class="notelabel">notes</span></td><td class="nstat">{{=noteInfo.get('n', '') or 0}}</td></tr>
     </table>
 </div>
 {{pass}}

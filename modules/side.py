@@ -1,17 +1,16 @@
-from viewdefs import colorPicker
+from gluon import current
 
 
 class SIDE:
-    def __init__(self, Check, Caching, Material, Word, Query, Note):
-        self.Check = Check
-        self.Caching = Caching
+    def __init__(self, ViewSettings, Material, Word, Query, Note):
+        self.ViewSettings = ViewSettings
         self.Material = Material
         self.Word = Word
         self.Query = Query
         self.Note = Note
 
     def page(self):
-        Check = self.Check
+        Check = current.Check
 
         vr = Check.field("material", "", "version")
         qw = Check.field("material", "", "qw")
@@ -21,7 +20,7 @@ class SIDE:
         return self.get(vr, qw, bk, ch, is_published)
 
     def get(self, vr, qw, bk, ch, is_published):
-        Caching = self.Caching
+        Caching = current.Caching
 
         return Caching.get(
             f"items_{qw}_{vr}_{bk}_{ch}_{is_published}_",
@@ -30,6 +29,7 @@ class SIDE:
         )
 
     def get_c(self, vr, qw, bk, ch, is_published):
+        ViewSettings = self.ViewSettings
         Material = self.Material
         Word = self.Word
         Query = self.Query
@@ -38,7 +38,7 @@ class SIDE:
         (book, chapter) = Material.getPassage(vr, bk, ch)
         if not chapter:
             result = dict(
-                colorPicker=colorPicker,
+                colorPicker=ViewSettings.colorPicker,
                 sideItems=[],
                 qw=qw,
             )
@@ -54,7 +54,7 @@ class SIDE:
             else:
                 sideItems = []
             result = dict(
-                colorPicker=colorPicker,
+                colorPicker=ViewSettings.colorPicker,
                 sideItems=sideItems,
                 qw=qw,
             )

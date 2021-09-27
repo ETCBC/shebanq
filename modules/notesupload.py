@@ -1,20 +1,15 @@
 import json
 
-from viewdefs import NOTE_STATUS_CLS
+from gluon import current
 
 
 class NOTESUPLOAD:
-    def __init__(self, Caching, Pieces, auth, db, NOTE_DB, VERSIONS):
-        self.Caching = Caching
+    def __init__(self, Pieces):
         self.Pieces = Pieces
-        self.auth = auth
-        self.db = db
-        self.NOTE_DB = NOTE_DB
-        self.VERSIONS = VERSIONS
 
     def authUpload(self):
-        auth = self.auth
-        db = self.db
+        auth = current.auth
+        db = current.db
 
         myId = None
         authorized = False
@@ -31,24 +26,28 @@ select uid from uploaders where uid = {myId}
         msg = "" if authorized else "you are not allowed to upload notes as csv files"
         return (authorized, myId, msg)
 
-    def upload(self, fileText, now):
+    def upload(self, fileText):
+        ViewDefs = current.ViewDefs
+
         good = True
-        (authorized, myId, msg) = self.authUpload()
+        (authorized, myId, msg) = current.authUpload()
         if not authorized:
             return dict(data=json.dumps(dict(msgs=[("error", msg)], good=False)))
 
-        Caching = self.Caching
+        Caching = current.Caching
         Pieces = self.Pieces
-        NOTE_DB = self.NOTE_DB
-        VERSIONS = self.VERSIONS
+        NOTE_DB = current.NOTE_DB
+        VERSIONS = current.VERSIONS
 
         msgs = []
 
         myVersions = set()
         bookInfo = {}
+
         for vr in VERSIONS:
             myVersions.add(vr)
             bookInfo[vr] = Pieces.getBooks(vr)[0]
+
         normFields = "\t".join(
             """
             version
@@ -69,7 +68,7 @@ select uid from uploaders where uid = {myId}
         errors = {}
         allKeywords = set()
         allVersions = set()
-        now = now
+        now = current.request.utcnow
         created_on = now
         modified_on = now
 
@@ -161,7 +160,7 @@ insert into note
                     f"{i + 1}:{is_published}"
                 )
                 continue
-            if status not in NOTE_STATUS_CLS:
+            if status not in ViewDefs["noteStatusCls"]:
                 nerrors += 1
                 errors.setdefault("unrecognized status", []).append(f"{i + 1}:{status}")
                 continue

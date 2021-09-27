@@ -16,13 +16,16 @@
 #   tclarin31.dans.knaw.nl (SELINUX, staging)
 
 # MYSQL_PDIR: directory with config files for talking with mysql
-# SH_ADIR   : directory where the web app shebanq resides (and also web2py itself)
+# APP_DIR   : directory where the web app shebanq resides (and also web2py itself)
 # INCOMING  : directory where installation files arrive
 # UNPACK    : directory where installation files are unpacked
 
+TOPLEVEL="/home/dirkr"
 INCOMING="/home/dirkr/shebanq-install"
 MYSQL_PDIR="/opt/emdros/cfg"
-SH_ADIR="/opt/web-apps"
+APP_DIR="/opt/web-apps"
+WEB2PY_DIR="$APP_DIR/web2py"
+SHEBANQ_DIR="$APP_DIR/shebanq"
 UNPACK="/data/shebanq/unpack"
 
 if [ "$HOSTNAME" == "clarin31.dans.knaw.nl" ]; then
@@ -44,7 +47,7 @@ sudo -n /usr/bin/systemctl stop httpd.service
 
 if [ "$1" == "-w" ]; then
     echo "- Upgrading web2py ..."
-    cd $SH_ADIR
+    cd $APP_DIR
     if [ -e sav ]; then
         rm -rf sav
     fi
@@ -61,6 +64,7 @@ if [ "$1" == "-w" ]; then
     #git commit -m "before upgrade"
     git reset --hard
     git pull origin master
+    cp $SHEBANQ_DIR/scripts/home/*.sh $TOPLEVEL
     echo "--- done"
     cp handlers/wsgihandler.py .
     chown dirkr:shebanq wsgihandler.py
@@ -75,9 +79,9 @@ fi
 
 # end upgrade web2py
 
-cd $SH_ADIR/shebanq
+cd $SHEBANQ_DIR
 git pull origin master
-cd $SH_ADIR/web2py
+cd $WEB2PY_DIR
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
 
@@ -89,12 +93,12 @@ python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
 
 cd applications/admin
 python -m compileall models modules
-cd $SH_ADIR/shebanq
+cd $SHEBANQ_DIR
 python -m compileall models modules
-chown dirkr:shebanq $SH_ADIR/web2py/welcome.w2p
+chown dirkr:shebanq $WEB2PY_DIR/welcome.w2p
 sleep 1
 
-cd $SH_ADIR/shebanq
+cd $SHEBANQ_DIR
 mkdir -p "$UNPACK"
 
 if [ "$1" == "-de" ]; then
@@ -127,7 +131,7 @@ if [ "$1" == "-d" -o "$1" == "-de" ]; then
 fi
 
 # Here we clean the logging.conf script as promised above.
-cd $SH_ADIR/web2py
+cd $WEB2PY_DIR
 if [ -e logging.conf ]; then
     rm logging.conf
 fi

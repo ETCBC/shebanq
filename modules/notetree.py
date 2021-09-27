@@ -1,27 +1,20 @@
 import collections
 import json
 
+from gluon import current
+
 from helpers import hEsc, iEncode, formatVersion
 
 
 class NOTETREE:
-    def __init__(
-        self,
-        auth,
-        NOTE_DB,
-        VERSION_ORDER,
-        VERSION_INDEX,
-    ):
-        self.auth = auth
-        self.NOTE_DB = NOTE_DB
-        self.VERSION_ORDER = VERSION_ORDER
-        self.VERSION_INDEX = VERSION_INDEX
+    def __init__(self):
+        pass
 
-    def get(self, now):
-        auth = self.auth
-        NOTE_DB = self.NOTE_DB
-        VERSION_ORDER = self.VERSION_ORDER
-        VERSION_INDEX = self.VERSION_INDEX
+    def get(self):
+        auth = current.auth
+        NOTE_DB = current.NOTE_DB
+        VERSION_ORDER = current.VERSION_ORDER
+        VERSION_INDEX = current.VERSION_INDEX
 
         myId = None
         if auth.user:

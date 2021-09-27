@@ -1,38 +1,39 @@
 import collections
 import json
 
+from gluon import current
+
 from constants import PUBLISH_FREEZE
 from helpers import iEncode, iDecode, normRanges
 
 
 class NOTE:
-    def __init__(self, Check, Caching, Pieces, auth, db, NOTE_DB):
-        self.Check = Check
-        self.Caching = Caching
+    def __init__(self, ViewSettings, Pieces):
+        self.ViewSettings = ViewSettings
         self.Pieces = Pieces
-        self.auth = auth
-        self.db = db
-        self.NOTE_DB = NOTE_DB
 
-    def dep(self, NotesUpload):
+    def alsoDependentOn(self, NotesUpload):
         self.NotesUpload = NotesUpload
 
-    def page(self, ViewSettings):
-        Check = self.Check
+    def page(self):
+        Check = current.Check
+        ViewSettings = self.ViewSettings
         NotesUpload = self.NotesUpload
+
+        pageConfig = ViewSettings.writeConfig()
 
         key_id = Check.isId("goto", "n", "note", [])
 
         (authorized, myId, msg) = NotesUpload.authUpload()
         return dict(
-            ViewSettings=ViewSettings,
+            pageConfig=pageConfig,
             key_id=key_id,
             mayUpload=authorized,
             user_id=myId,
         )
 
     def body(self):
-        Check = self.Check
+        Check = current.Check
 
         vr = Check.field("material", "", "version")
         iidRep = Check.field("material", "", "iid")
@@ -56,7 +57,7 @@ class NOTE:
         )
 
     def getItems(self, vr, book, chapter, is_published):
-        NOTE_DB = self.NOTE_DB
+        NOTE_DB = current.NOTE_DB
 
         bk = book["name"]
         ch = chapter["chapter_num"]
@@ -114,10 +115,10 @@ order by note.verse
         return r
 
     def read(self, vr, iid, keywords):
-        auth = self.auth
-        Caching = self.Caching
+        auth = current.auth
+        Caching = current.Caching
         Pieces = self.Pieces
-        NOTE_DB = self.NOTE_DB
+        NOTE_DB = current.NOTE_DB
 
         clauseAtomFirst = Caching.get(
             f"clause_atom_f_{vr}_", lambda: Pieces.getClauseAtomFirstSlot(vr), None
@@ -136,7 +137,7 @@ and version = '{vr}' and (is_shared = 'T' {extra})
         return normRanges(None, fromset=slots)
 
     def getInfo(self, iidRep, vr, msgs):
-        db = self.db
+        db = current.db
 
         (iid, keywords) = iDecode("n", iidRep)
         if iid is None:
@@ -161,8 +162,8 @@ select first_name, last_name from auth_user where id = '{iid}'
         return nRecord
 
     def countNotes(self, user_id, keywords):
-        auth = self.auth
-        NOTE_DB = self.NOTE_DB
+        auth = current.auth
+        NOTE_DB = current.NOTE_DB
 
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
@@ -184,9 +185,9 @@ group by version
         return versionInfo
 
     def inVerse(
-        self, vr, bk, ch, vs, myId, clauseAtoms, changed, now, msgs, authenticated, edit
+        self, vr, bk, ch, vs, myId, clauseAtoms, changed, msgs, authenticated, edit
     ):
-        NOTE_DB = self.NOTE_DB
+        NOTE_DB = current.NOTE_DB
 
         condition = "note.is_shared = 'T' or note.is_published = 'T' "
         if myId is not None:
@@ -254,6 +255,8 @@ order by
         elif len(records) == 0:
             msgs.append(("warning", "No notes"))
         else:
+            now = current.request.utcnow
+
             for (
                 note_id,
                 user_id,
