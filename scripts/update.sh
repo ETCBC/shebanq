@@ -27,13 +27,16 @@ WEB2PY_DIR="$APP_DIR/web2py"
 SHEBANQ_DIR="$APP_DIR/shebanq"
 UNPACK="/data/shebanq/unpack"
 
+# put the next setting to "x" if your production machine does not already have data
+PRODUCTION_HAS_DATA="v"
+
 if [ "$HOSTNAME" == "clarin31.dans.knaw.nl" ]; then
     echo "Updating PRODUCTION machine ..."
-    PRODUCTION=1
+    PRODUCTION="v"
     MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
 elif [ "$HOSTNAME" == "tclarin31.dans.knaw.nl" ]; then
     echo "Updating STAGING machine ..."
-    PRODUCTION=0
+    PRODUCTION="x"
     MQL_OPTS="-u shebanq_admin"
 else
     echo "Update not supported on machine $HOSTNAME"
@@ -41,6 +44,9 @@ else
 fi
 
 sudo -n /usr/bin/systemctl stop httpd.service
+if [ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]; then
+    sudo -n /usr/bin/systemctl stop mariadb.service
+fi
 
 echo "Updating shebanq ..."
 cd $SHEBANQ_DIR
@@ -111,4 +117,7 @@ fi
 
 sleep 2
 
+if [ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]; then
+    sudo -n /usr/bin/systemctl start mariadb.service
+fi
 sudo -n /usr/bin/systemctl start httpd.service
