@@ -117,8 +117,8 @@
     <!-- Navbar ================================================== -->
     <div class="navbar navbar-inverse">
     <div class="flash">{{=response.flash or ''}}</div>
-    <div class="navbar-inner {{='navbar-prod' if on_prod else 'navbar-devel' if on_devel else 'navbar-local'}}">
-      <div class="container-fluid  {{='navbar-prod' if on_prod else 'navbar-devel' if on_devel else 'navbar-local'}}">
+    <div class="navbar-inner {{='navbar-prod' if onProd else 'navbar-test' if onTest else 'navbar-local' if onLocal else 'navbar-other'}}">
+      <div class="container-fluid  {{='navbar-prod' if onProd else 'navbar-test' if onTest else 'navbar-local' if onLocal else 'navbar-other'}}">
         {{is_mobile=False and request.user_agent().is_mobile}}
         <!-- the next tag is necessary for bootstrap menus, do not remove -->
         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="{{='display:none;' if not is_mobile else ''}}">

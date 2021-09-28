@@ -2,12 +2,11 @@ import sys
 from datetime import datetime
 from base64 import b64decode, b64encode
 
-
-DEBUG = True
+from gluon import current
 
 
 def debug(msg):
-    if DEBUG:
+    if current.DEBUG:
         sys.stdout.write(f"{msg}\n")
         sys.stdout.flush()
 

@@ -18,6 +18,17 @@ from chart import CHART
 from csvdata import CSVDATA
 
 
+# it is essential that this is performed at the start
+# of each Hebrew reuqest
+# The first time it computes a query-chapter index.
+# All subsequent times, it takes the index from cache.
+# If a page would succeed before building this index,
+# it might get a sidebar with insufficient material,
+# and the insufficient material alrerady cached.
+
+QueryChapter = QUERYCHAPTER()
+QueryChapter.makeQCindexes()
+
 # controllers for the (toplevel) menu items
 
 
@@ -95,10 +106,9 @@ def material():
     Books = BOOKS()
     Word = WORD()
     Query = QUERY()
-    QueryChapter = QUERYCHAPTER()
     Note = NOTE(Books)
     RecordQuery = RECORDQUERY(Query)
-    Material = MATERIAL(RecordQuery, Word, Query, QueryChapter, Note)
+    Material = MATERIAL(RecordQuery, Word, Query, Note)
     return Material.page()
 
 
@@ -107,10 +117,9 @@ def sidematerial():
     Books = BOOKS()
     Word = WORD()
     Query = QUERY()
-    QueryChapter = QUERYCHAPTER()
     Note = NOTE(Books)
     RecordQuery = RECORDQUERY(Query)
-    Material = MATERIAL(RecordQuery, Word, Query, QueryChapter, Note)
+    Material = MATERIAL(RecordQuery, Word, Query, Note)
     Side = SIDE(Material, Word, Query, Note)
     return Side.page()
 

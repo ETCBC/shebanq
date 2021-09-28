@@ -9,6 +9,12 @@ class QUERYCHAPTER:
     def __init__(self):
         pass
 
+    def makeQCindexes(self):
+        VERSIONS = current.VERSIONS
+
+        for vr in ("2017", "2021") if current.DEBUG else VERSIONS:
+            self.makeQCindex(vr)
+
     def makeQCindex(self, vr):
         Caching = current.Caching
 

@@ -121,12 +121,16 @@
     background-color: #cccccc;
 }
 
-.navbar-inverse .navbar-devel {
+.navbar-inverse .navbar-test {
     color: #000000;
     background-color: #ffff00;
 }
 .navbar-inverse .navbar-local {
     color: #000000;
     background-color: #00ffff;
+}
+.navbar-inverse .navbar-other {
+    color: #000000;
+    background-color: #ffddcc;
 }
 

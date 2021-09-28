@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+from gluon import current
 
 response.logo = A(
     IMG(_src=URL("static", "images/shebanq_logo_small.png")),
@@ -17,22 +17,22 @@ response.logo2 = A(
     _style="margin-bottom: -2em;",
 )
 
-served_on = request.env.SERVER_NAME
-on_system = False
-on_local = False
-on_prod = False
-on_devel = False
+servedOn = request.env.SERVER_NAME
+onLocal = False
+onProd = False
+onTest = False
+onOther = False
 
-if served_on is None:
-    on_system = True
-elif served_on.endswith("local"):
-    on_local = True
-elif served_on == "shebanq.ancient-data.org":
-    on_prod = True
-elif served_on == "test.shebanq.ancient-data.org":
-    on_devel = True
+if servedOn is None or servedOn.endswith("local"):
+    onLocal = True
+elif servedOn == "shebanq.ancient-data.org":
+    onProd = True
+elif servedOn == "test.shebanq.ancient-data.org":
+    onTest = True
 else:
-    on_devel = True
+    onOther = True
+
+current.DEBUG = onLocal
 
 # response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace("_", " ").capitalize()
@@ -62,7 +62,7 @@ response.google_analytics_id = None
 #########################################################################
 
 response.menu = [
-    ("" if on_prod else served_on, False, None, []),
+    ("" if onProd else servedOn, False, None, []),
     (T("Text"), False, URL("hebrew", "text", vars=dict(mr="m")), []),
     (T("Words"), False, URL("hebrew", "words"), []),
     (T("Queries"), False, URL("hebrew", "queries"), []),

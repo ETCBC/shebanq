@@ -10,11 +10,10 @@ RESULT_PAGE_SIZE = 20
 
 
 class MATERIAL:
-    def __init__(self, Record, Word, Query, QueryChapter, Note):
+    def __init__(self, Record, Word, Query, Note):
         self.Record = Record
         self.Word = Word
         self.Query = Query
-        self.QueryChapter = QueryChapter
         self.Note = Note
 
     def page(self):
@@ -86,14 +85,10 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
 
     def get(self, vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang):
         Caching = current.Caching
-        QueryChapter = self.QueryChapter
 
         # We build an index of queries by chapter in which they have results.
         # The index building takes may take multiple seconds per data version.
         # But the result is stored in the cache.
-
-        if vr:
-            QueryChapter.makeQCindex(vr)
 
         mrrep = "m" if mr == "m" else qw
         book = bk if mr == "m" else iidRep
