@@ -39,8 +39,8 @@ class CSVDATA:
 
         (iid, keywords) = iDecode(qw, iidRep)
         iidRep2 = iDecode(qw, iidRep, rsep=" ")
-        itemStyle = ViewDefs["itemStyle"]
-        tabLabels = ViewDefs["tabLabels"]
+        itemStyle = ViewDefs.itemStyle
+        tabLabels = ViewDefs.tabLabels
         fileName = f"{vr}_{itemStyle[qw]['t']}{iidRep2}_{tabLabels[tp]}{extra}.csv"
         (authorized, msg) = Record.authRead(mr, qw, iidRep)
 

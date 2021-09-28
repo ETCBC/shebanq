@@ -6,9 +6,8 @@ from blang import BK_NAMES
 from helpers import debug
 
 
-class _VIEWDEFS:
+class Make:
     def __init__(self):
-        debug("VIEWDEFS init start")
         nColorRows = 4
         nColorCols = 4
         nDefaultClrRows = 3
@@ -324,7 +323,6 @@ v v v
         self.specs = specs
 
         self.setupValidation()
-        debug("VIEWDEFS init end")
 
     def setupValidation(self):
         specs = self.specs
@@ -391,22 +389,10 @@ v v v
             vals = set(colors.keys()) if v == "color" else set(v.split(","))
             return lambda d, x: x if x is not None and x in vals else d
 
-
-def VIEWDEFS():
-    Caching = current.Caching
-
-    return Caching.get(
-        "viewsettings_",
-        lambda: VIEWDEFS_c(),
-        None,
-    )
-
-
-def VIEWDEFS_c():
-    _ViewDefs = _VIEWDEFS()
-    return {
-        key: getattr(_ViewDefs, key)
-        for key in """
+    def export(self):
+        return {
+            key: getattr(self, key)
+            for key in """
 nColorRows
 nColorCols
 nDefaultClrRows
@@ -432,4 +418,71 @@ specs
 settings
 validation
 """.strip().split()
-    }
+        }
+
+
+class VIEWDEFS:
+    def __init__(self):
+        Caching = current.Caching
+
+        def make():
+            makeObj = Make()
+            return makeObj.export()
+
+        keyValues = Caching.get("viewsettings_", make, None)
+
+        for (key, value) in keyValues.items():
+            setattr(self, key, value)
+
+    def colorPicker(self, qw, iid, typ):
+        return f"{self.selectColor(qw, iid, typ)}{self.colorTable(qw, iid)}\n"
+
+    def makeColors(self):
+        colorSpecCls = self.colorSpecCls
+
+        colorProtoCls = [
+            tuple(spec.split(",")) for spec in colorSpecCls.strip().split()
+        ]
+        colorsCls = []
+        lPrev = 0
+        for (l, z) in colorProtoCls:
+            lNew = int(l) + 1
+            for i in range(lPrev, lNew):
+                colorsCls.append(z)
+            lPrev = lNew
+        return colorsCls
+
+    def colorTable(self, qw, iid):
+        nColorRows = self.nColorRows
+
+        cs = "\n".join(self.colorRow(qw, iid, r) for r in range(nColorRows))
+        return f'<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'
+
+    def colorRow(self, qw, iid, r):
+        nColorCols = self.nColorCols
+
+        cells = "\n".join(
+            self.colorCell(qw, iid, c)
+            for c in range(r * nColorCols, (r + 1) * nColorCols)
+        )
+        return f"\t<tr>\n{cells}\n\t</tr>"
+
+    def colorCell(self, qw, iid, c):
+        colorNames = self.colorNames
+
+        return (
+            f"""\t\t<td class="c{qw} {qw}{iid}"><a href="#">{colorNames[c]}</a></td>"""
+        )
+
+    def selectColor(self, qw, iid, typ):
+        content = "&nbsp;" if qw == "q" else "w"
+        selCtl = (
+            ""
+            if typ
+            else f"""<span class="pickedc"
+    ><input type="checkbox" id="select_{qw}{iid}" name="select_{qw}{iid}"
+    /></span>&nbsp;"""
+        )
+        sel = f"""<span class="picked colorselect_{qw}" id="sel_{qw}{iid}"
+    ><a href="#">{content}</a></span>"""
+        return selCtl + sel

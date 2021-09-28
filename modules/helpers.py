@@ -143,7 +143,7 @@ def flatten(msets):
 
 def collapseToRanges(slots):
     covered = set()
-    for (start,) in slots:
+    for start in slots:
         covered.add(start)
     return normRanges(None, fromset=covered)
 

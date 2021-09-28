@@ -2,7 +2,7 @@ import json
 
 from gluon import current
 
-from verses import Verses
+from versescontent import VersesContent
 from helpers import iDecode, pagelist
 
 
@@ -97,7 +97,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
 
         mrrep = "m" if mr == "m" else qw
         book = bk if mr == "m" else iidRep
-        chapter = (ch if mr == "m" else page,)
+        chapter = (ch if mr == "m" else page)
         return Caching.get(
             f"verses_{vr}_{mrrep}_{book}_{chapter}_{tp}_{tr}_{lang}_",
             lambda: self.get_c(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang),
@@ -113,7 +113,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
         if mr == "m":
             (book, chapter) = self.getPassage(vr, bk, ch)
             material = (
-                Verses(
+                VersesContent(
                     PASSAGE_DBS, vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang
                 )
                 if chapter
@@ -159,7 +159,9 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
                 (nresults, npages, verses, slots) = self.getPagination(
                     vr, page, slotSets
                 )
-                material = Verses(PASSAGE_DBS, vr, mr, verses, tp=tp, tr=tr, lang=lang)
+                material = VersesContent(
+                    PASSAGE_DBS, vr, mr, verses, tp=tp, tr=tr, lang=lang
+                )
                 result = dict(
                     mr=mr,
                     qw=qw,

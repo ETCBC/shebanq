@@ -1,3 +1,3 @@
 [flake8]
 max-line-length = 88
-builtins = auth,cache,db,DAL,CONTINUOUS,GQLDB,IS_NOT_EMPTY,IS_SLUG,LOAD,NOTE_DB,PASSAGE_DBS,redirect,request,response,session,SQLDB,SQLFORM,VERSION_ORDER,VERSION_INDEX,VERSIONS,Caching,Check,Pieces,ViewSettings,Word,Query,QuerySave,QueryTree,QueryRecent,Note,NoteSave,NotesUpload,NoteTree,QueryChapter,Record,Material,Side,Chart,CsvData,A,B,DIV,FORM,HTTP,IMG,INPUT,LI,P,PRE,SPAN,T,TABLE,TAG,TD,TR,UL,URL
+builtins = auth,cache,db,DAL,CONTINUOUS,GQLDB,IS_NOT_EMPTY,IS_SLUG,LOAD,NOTE_DB,PASSAGE_DBS,redirect,request,response,session,SQLDB,SQLFORM,VERSION_ORDER,VERSION_INDEX,VERSIONS,Caching,Check,A,B,DIV,FORM,HTTP,IMG,INPUT,LI,P,PRE,SPAN,T,TABLE,TAG,TD,TR,UL,URL

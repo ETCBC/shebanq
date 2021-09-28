@@ -11,6 +11,8 @@ import {
   specialLinks,
   closeDialog,
   putMarkdown,
+  idPrefixQueries,
+  idPrefixNotes,
 } from "./helpers.js"
 
 import { Diagnostics } from "./diagnostics.js"
@@ -38,11 +40,13 @@ export class SideContent {
   }
 
   selectVersion(v) {
-    $(`#version_s_${v}`).off("click").click(e => {
-      e.preventDefault()
-      VS.setMaterial({ version: v })
-      PG.go()
-    })
+    $(`#version_s_${v}`)
+      .off("click")
+      .click(e => {
+        e.preventDefault()
+        VS.setMaterial({ version: v })
+        PG.go()
+      })
   }
 
   process() {
@@ -66,11 +70,13 @@ export class SideContent {
       const vr = PG.version
       const iid = VS.iid()
 
-      $(".moredetail").off("click").click(e => {
-        e.preventDefault()
-        const elem = $(e.delegateTarget)
-        toggleDetail(elem)
-      })
+      $(".moredetail")
+        .off("click")
+        .click(e => {
+          e.preventDefault()
+          const elem = $(e.delegateTarget)
+          toggleDetail(elem)
+        })
       $(".detail").hide()
       $(`div[version="${vr}"]`).find(".detail").show()
 
@@ -147,30 +153,32 @@ export class SideContent {
          * the mql query body can be popped up as a dialog for viewing it
          * in a larger canvas
          */
-        $(".fullc").off("click").click(e => {
-          e.preventDefault()
-          const elem = $(e.delegateTarget)
-          const { windowHeight } = PG
-          const thisIid = elem.attr("iid")
-          const mqlArea = $(`#area_${thisIid}`)
-          const dia = $(`#bigq_${thisIid}`).dialog({
-            dialogClass: "mql_dialog",
-            closeOnEscape: true,
-            close: () => {
-              dia.dialog("destroy")
-              const mqlArea = $(`#area_${thisIid}`)
-              mqlArea.css("height", mqlSmallHeight)
-              mqlArea.css("width", mqlSmallWidth)
-            },
-            modal: false,
-            title: "mql query body",
-            position: { my: "left top", at: "left top", of: window },
-            width: mqlBigWidthDia,
-            height: windowHeight,
+        $(".fullc")
+          .off("click")
+          .click(e => {
+            e.preventDefault()
+            const elem = $(e.delegateTarget)
+            const { windowHeight } = PG
+            const thisIid = elem.attr("iid")
+            const mqlArea = $(`#area_${thisIid}`)
+            const dia = $(`#bigq_${thisIid}`).dialog({
+              dialogClass: "mql_dialog",
+              closeOnEscape: true,
+              close: () => {
+                dia.dialog("destroy")
+                const mqlArea = $(`#area_${thisIid}`)
+                mqlArea.css("height", mqlSmallHeight)
+                mqlArea.css("width", mqlSmallWidth)
+              },
+              modal: false,
+              title: "mql query body",
+              position: { my: "left top", at: "left top", of: window },
+              width: mqlBigWidthDia,
+              height: windowHeight,
+            })
+            mqlArea.css("height", PG.standardHeight)
+            mqlArea.css("width", mqlBigWidth)
           })
-          mqlArea.css("height", PG.standardHeight)
-          mqlArea.css("width", mqlBigWidth)
-        })
       } else {
         /* in the sidebar item view of a single query:
          * the mql query body can be popped up as a dialog for viewing it
@@ -226,33 +234,37 @@ export class SideContent {
           descriptionMarkdown.css("height", halfStandardHeight)
         })
 
-        $("#is_pub_c").off("click").click(e => {
-          const elem = $(e.delegateTarget)
-          const val = elem.prop("checked")
-          this.sendVal(
-            query.versions[vr],
-            elem,
-            val,
-            vr,
-            elem.attr("query_id"),
-            "is_published",
-            val ? "T" : ""
-          )
-        })
+        $("#is_pub_c")
+          .off("click")
+          .click(e => {
+            const elem = $(e.delegateTarget)
+            const val = elem.prop("checked")
+            this.sendVal(
+              query.versions[vr],
+              elem,
+              val,
+              vr,
+              elem.attr("query_id"),
+              "is_published",
+              val ? "T" : ""
+            )
+          })
 
-        $("#is_shared_c").off("click").click(e => {
-          const elem = $(e.delegateTarget)
-          const val = elem.prop("checked")
-          this.sendVal(
-            query,
-            elem,
-            val,
-            vr,
-            elem.attr("query_id"),
-            "is_shared",
-            val ? "T" : ""
-          )
-        })
+        $("#is_shared_c")
+          .off("click")
+          .click(e => {
+            const elem = $(e.delegateTarget)
+            const val = elem.prop("checked")
+            this.sendVal(
+              query,
+              elem,
+              val,
+              vr,
+              elem.attr("query_id"),
+              "is_shared",
+              val ? "T" : ""
+            )
+          })
 
         nameQueryBox.hide()
         descriptionQueryBox.hide()
@@ -486,9 +498,7 @@ export class SideContent {
         if (execute) {
           PG.materialStatusReset()
           PG.material.adapt()
-          const showChart = closeDialog(
-            $(`#select_contents_chart_${vr}_q_${query.id}`)
-          )
+          const showChart = closeDialog($(`#select_contents_chart_${vr}_q_${query.id}`))
           if (showChart) {
             PG.sidebars.sidebar["rq"].chart[vr].apply()
           }
@@ -613,13 +623,13 @@ export class SideContent {
         topElem.hide()
       }
     } else if (qw == "q") {
-      if (lsQueriesMuted.isSet(`${iid}`)) {
+      if (lsQueriesMuted.isSet(`${idPrefixQueries}${iid}`)) {
         topElem.hide()
       } else {
         topElem.show()
       }
     } else if (qw == "n") {
-      if (lsNotesMuted.isSet(`${iid}`)) {
+      if (lsNotesMuted.isSet(`${idPrefixNotes}${iid}`)) {
         topElem.hide()
       } else {
         topElem.show()

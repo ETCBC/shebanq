@@ -6,7 +6,7 @@ from boiler import FIELDNAMES, TEXT_TPL
 from helpers import hEsc
 
 
-class Verse:
+class VerseContent:
     def __init__(
         self,
         PASSAGE_DBS,

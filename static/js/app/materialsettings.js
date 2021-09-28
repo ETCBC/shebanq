@@ -14,7 +14,7 @@ export class MaterialSettings {
       nextTp,
       nextTr,
       tabInfo,
-      tabViews,
+      nTabViews,
       trInfo,
       trLabels,
       versions,
@@ -98,7 +98,7 @@ export class MaterialSettings {
       this.apply()
     })
 
-    for (let i = 1; i <= tabViews; i++) {
+    for (let i = 1; i <= nTabViews; i++) {
       const mc = $(`#mtxt${i}`)
       mc.attr("title", tabInfo[`txt${i}`])
       if (i == 1) {
@@ -121,7 +121,7 @@ export class MaterialSettings {
   }
 
   apply() {
-    const { tabViews } = Config
+    const { nTabViews } = Config
 
     const textOrPhonoRadio = $(".mhradio")
     const textOrTabbedRadio = $(".mtradio")
@@ -132,7 +132,7 @@ export class MaterialSettings {
     textOrPhonoRadio.removeClass("ison")
     textOrTabbedRadio.removeClass("ison")
     if (tpNew != "txtp" && tpNew != "txtd") {
-      for (let i = 1; i <= tabViews; i++) {
+      for (let i = 1; i <= nTabViews; i++) {
         const mc = $(`#mtxt${i}`)
         if (`txt${i}` == tpNew) {
           mc.show()

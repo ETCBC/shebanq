@@ -129,3 +129,6 @@ use_janrain(auth, filename="private/janrain.key")
 
 auth.messages.logged_in = None
 auth.messages.logged_out = None
+
+current.URL = URL
+current.LOAD = LOAD

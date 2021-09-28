@@ -5,6 +5,7 @@
 
 import { LStorage } from "./localstorage.js"
 import { Diagnostics } from "./diagnostics.js"
+import { idPrefixNotes } from "./helpers.js"
 
 let treeObj, diagnostics, rootData
 const subtractForNotesPage = 80
@@ -222,6 +223,7 @@ class Tree {
       focusOnSelect: false,
       quicksearch: true,
       icons: false,
+      idPrefix: idPrefixNotes,
       persist: {
         cookiePrefix: "ft-n-",
         store: "local",
@@ -314,13 +316,13 @@ class Tree {
 
   storeSelect(node) {
     const { lsNotesMuted: lsMuted } = LS
-    const { folder, key: iid, selected } = node
+    const { folder, key, selected } = node
     if (!folder) {
       if (selected) {
-        lsMuted.set(iid, 1)
+        lsMuted.set(key, 1)
       } else {
-        if (lsMuted.isSet(iid)) {
-          lsMuted.remove(iid)
+        if (lsMuted.isSet(key)) {
+          lsMuted.remove(key)
         }
       }
     }
@@ -364,7 +366,7 @@ class Tree {
 
   gotoNote(key_id) {
     if (key_id != undefined && key_id != "0") {
-      const nnode = this.widget.getNodeByKey(`n${key_id}`)
+      const nnode = this.widget.getNodeByKey(`${idPrefixNotes}${key_id}`)
       if (nnode != null) {
         nnode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")

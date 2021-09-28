@@ -8,8 +8,8 @@ BLOCK_SIZE = 500
 
 
 class CHART:
-    def __init__(self, Pieces, Record, Word, Query, Note):
-        self.Pieces = Pieces
+    def __init__(self, Books, Record, Word, Query, Note):
+        self.Books = Books
         self.Record = Record
         self.Word = Word
         self.Query = Query
@@ -148,13 +148,13 @@ select chapter_num, first_m, last_m from chapter
         # return a dict keyed by book, with values lists of blocks
         # (chapter num, start point, end point, number of results, size)
 
-        Pieces = self.Pieces
+        Books = self.Books
 
         slots = flatten(slotSets)
         chart = {}
         chartOrder = []
         if len(slots):
-            (books, booksOrder, bookIds, bookName) = Pieces.getBooks(vr)
+            (books, booksOrder, bookIds, bookName) = Books.get(vr)
             (blocks, blockMapping) = self.getBlocks(vr)
             results = {}
 

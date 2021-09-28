@@ -8,28 +8,65 @@ from helpers import iEncode, iDecode, normRanges
 
 
 class NOTE:
-    def __init__(self, ViewSettings, Pieces):
-        self.ViewSettings = ViewSettings
-        self.Pieces = Pieces
+    def __init__(self, Books):
+        self.Books = Books
 
-    def alsoDependentOn(self, NotesUpload):
-        self.NotesUpload = NotesUpload
+    def authUpload(self):
+        auth = current.auth
+        db = current.db
 
-    def page(self):
+        myId = None
+        authorized = False
+        if auth.user:
+            myId = auth.user.id
+        if myId:
+            sql = f"""
+select uid from uploaders where uid = {myId}
+"""
+            records = db.executesql(sql)
+            authorized = (
+                records is not None and len(records) == 1 and records[0][0] == myId
+            )
+        msg = "" if authorized else "you are not allowed to upload notes as csv files"
+        return (authorized, myId, msg)
+
+    def page(self, ViewSettings):
         Check = current.Check
-        ViewSettings = self.ViewSettings
-        NotesUpload = self.NotesUpload
 
         pageConfig = ViewSettings.writeConfig()
 
         key_id = Check.isId("goto", "n", "note", [])
 
-        (authorized, myId, msg) = NotesUpload.authUpload()
+        (authorized, myId, msg) = self.authUpload()
         return dict(
             pageConfig=pageConfig,
             key_id=key_id,
             mayUpload=authorized,
             user_id=myId,
+        )
+
+    def getVerseNotes(self):
+        Check = current.Check
+        auth = current.auth
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
+        edit = Check.isBool("edit")
+
+        myId = None
+        if auth.user:
+            myId = auth.user.id
+        authenticated = myId is not None
+
+        clauseAtoms = self.getClauseAtoms(vr, bk, ch, vs)
+        changed = False
+
+        msgs = []
+
+        return self.inVerse(
+            vr, bk, ch, vs, myId, clauseAtoms, changed, msgs, authenticated, edit
         )
 
     def body(self):
@@ -117,11 +154,10 @@ order by note.verse
     def read(self, vr, iid, keywords):
         auth = current.auth
         Caching = current.Caching
-        Pieces = self.Pieces
         NOTE_DB = current.NOTE_DB
 
         clauseAtomFirst = Caching.get(
-            f"clause_atom_f_{vr}_", lambda: Pieces.getClauseAtomFirstSlot(vr), None
+            f"clause_atom_f_{vr}_", lambda: self.getClauseAtomFirstSlot(vr), None
         )
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
@@ -135,6 +171,74 @@ and version = '{vr}' and (is_shared = 'T' {extra})
         clauseAtoms = NOTE_DB.executesql(sql)
         slots = {clauseAtomFirst[x[0]][x[1]] for x in clauseAtoms}
         return normRanges(None, fromset=slots)
+
+    def getClauseAtoms(self, vr, bk, ch, vs):
+        Caching = current.Caching
+        return Caching.get(
+            f"clause_atoms_{vr}_{bk}_{ch}_{vs}_",
+            lambda: self.getClauseAtoms_c(vr, bk, ch, vs),
+            None,
+        )
+
+    def getClauseAtoms_c(self, vr, bk, ch, vs):
+        PASSAGE_DBS = current.PASSAGE_DBS
+
+        clauseAtoms = []
+        caData = (
+            PASSAGE_DBS[vr].executesql(
+                f"""
+select
+   distinct word.clause_atom_number
+from
+    verse
+inner join
+    word_verse on verse.id = word_verse.verse_id
+inner join
+    word on word.word_number = word_verse.anchor
+inner join
+    chapter on chapter.id = verse.chapter_id
+inner join
+    book on book.id = chapter.book_id
+where
+    book.name = '{bk}' and chapter.chapter_num = {ch} and verse.verse_num = {vs}
+order by
+    word.clause_atom_number
+;
+"""
+            )
+            if vr in PASSAGE_DBS
+            else []
+        )
+
+        for row in caData:
+            clauseAtoms.append(row[0])
+        return clauseAtoms
+
+    def getClauseAtomFirstSlot(self, vr):
+        Caching = current.Caching
+
+        return Caching.get(
+            f"clause_atom_f_{vr}_",
+            lambda: self.getClauseAtomFirstSlot_c(vr),
+            None,
+        )
+
+    def getClauseAtomFirstSlot_c(self, vr):
+        Books = self.Books
+        PASSAGE_DBS = current.PASSAGE_DBS
+
+        (books, booksOrder, bookIds, bookName) = Books.get(vr)
+        sql = """
+select book_id, ca_num, first_m
+from clause_atom
+;
+"""
+        caData = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
+        caFirst = {}
+        for (book_id, ca_num, first_m) in caData:
+            book_name = bookName[book_id]
+            caFirst.setdefault(book_name, {})[ca_num] = first_m
+        return caFirst
 
     def getInfo(self, iidRep, vr, msgs):
         db = current.db

@@ -37,11 +37,8 @@ def queryStatus(queryExeRecord):
 
 
 class QUERY:
-    def __init__(self, ViewSettings):
-        self.ViewSettings = ViewSettings
-
-    def alsoDependentOn(self, QuerySave):
-        self.QuerySave = QuerySave
+    def __init__(self):
+        pass
 
     def authRead(self, query_id):
         auth = current.auth
@@ -62,9 +59,27 @@ class QUERY:
         )
         return (authorized, msg)
 
-    def page(self):
+    def authWrite(self, query_id):
+        auth = current.auth
+
+        authorized = None
+        if query_id == 0:
+            authorized = auth.user is not None
+        else:
+            record = self.getPlainInfo(query_id)
+            if record:
+                authorized = (
+                    auth.user is not None and record["created_by"] == auth.user.id
+                )
+        msg = (
+            f"No item with id {query_id}"
+            if authorized is None
+            else f"You have no access to create/modify query with id {query_id}"
+        )
+        return (authorized, msg)
+
+    def page(self, ViewSettings):
         Check = current.Check
-        ViewSettings = self.ViewSettings
 
         pageConfig = ViewSettings.writeConfig()
 
@@ -80,7 +95,6 @@ class QUERY:
 
     def body(self):
         Check = current.Check
-        QuerySave = self.QuerySave
         auth = current.auth
 
         vr = Check.field("material", "", "version")
@@ -122,7 +136,7 @@ class QUERY:
                 emdrosVersionsOld=set(EMDROS_VERSIONS[0:-1]),
             )
 
-        (authorized, msg) = QuerySave.authWrite(iid)
+        (authorized, msg) = self.authWrite(iid)
 
         return dict(
             writable=authorized,

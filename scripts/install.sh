@@ -335,8 +335,7 @@ if [ "$doall" == "v" ] || [ "$doweb2py" == "v" ]; then
         echo "Compiling python code in admin"
         python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
 
-        echo "Removing welcome app"
-        rm -rf "$WEB2PY_DIR/applications/welcome"
+        echo "Removing examples app"
         rm -rf "$WEB2PY_DIR/applications/examples"
         rm -rf "$WEB2PY_DIR/welcome.w2p"
 

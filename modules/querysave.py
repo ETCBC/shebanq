@@ -10,31 +10,9 @@ from mql import mql
 
 
 class QUERYSAVE:
-    def __init__(self, Query):
+    def __init__(self, Query, QueryChapter):
         self.Query = Query
-
-    def alsoDependentOn(self, QueryChapter):
         self.QueryChapter = QueryChapter
-
-    def authWrite(self, query_id):
-        Query = self.Query
-        auth = current.auth
-
-        authorized = None
-        if query_id == 0:
-            authorized = auth.user is not None
-        else:
-            record = Query.getPlainInfo(query_id)
-            if record:
-                authorized = (
-                    auth.user is not None and record["created_by"] == auth.user.id
-                )
-        msg = (
-            f"No item with id {query_id}"
-            if authorized is None
-            else f"You have no access to create/modify query with id {query_id}"
-        )
-        return (authorized, msg)
 
     def putSlots(self, vr, query_id, rows, is_shared):
         Caching = current.Caching
@@ -83,14 +61,18 @@ insert into monads (query_exe_id, first_m, last_m) values
 
         QueryChapter.updateQCindex(vr, query_id)
 
-    def sharing(self, requestVars):
+    def sharing(self):
         Check = current.Check
+        Query = self.Query
 
         msgs = []
         good = False
         modDates = {}
         modCls = {}
         extra = {}
+
+        requestVars = current.request.vars
+
         for x in [1]:
             query_id = Check.isId("query_id", "q", "query", msgs)
             if query_id is None:
@@ -101,7 +83,7 @@ insert into monads (query_exe_id, first_m, last_m) values
             if fieldName is None or fieldName not in {"is_shared", "is_published"}:
                 msgs.append("error", "Illegal field name {fieldName}")
                 break
-            (authorized, msg) = self.authWrite(query_id)
+            (authorized, msg) = Query.authWrite(query_id)
             if not authorized:
                 msgs.append(("error", msg))
                 break
@@ -315,10 +297,12 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
             db.executesql(sql)
             Caching.clear(f"^items_q_{vr}_")
 
-    def putRecord(self, requestVars):
+    def putRecord(self):
         Check = current.Check
         Query = self.Query
         auth = current.auth
+
+        requestVars = current.request.vars
 
         vr = requestVars.version
         nameNew = requestVars.name
@@ -343,7 +327,7 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
             query_id = Check.isId("query_id", "q", "query", msgs)
             if query_id is None:
                 break
-            (authorized, msg) = self.authWrite(query_id)
+            (authorized, msg) = Query.authWrite(query_id)
             if not authorized:
                 msgs.append(("error", msg))
                 break

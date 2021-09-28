@@ -7,8 +7,8 @@ from helpers import collapseToRanges, hebKey, iDecode
 
 
 class WORD:
-    def __init__(self, ViewSettings):
-        self.ViewSettings = ViewSettings
+    def __init__(self):
+        pass
 
     def authRead(self, vr, lexicon_id):
         PASSAGE_DBS = current.PASSAGE_DBS
@@ -29,10 +29,9 @@ class WORD:
         )
         return (authorized, msg)
 
-    def page(self):
+    def page(self, ViewSettings):
         Check = current.Check
         Caching = current.Caching
-        ViewSettings = self.ViewSettings
 
         pageConfig = ViewSettings.writeConfig()
 
@@ -106,7 +105,7 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
 
     def read(self, vr, lexicon_id):
         PASSAGE_DBS = current.PASSAGE_DBS
-        slots = (
+        rows = (
             PASSAGE_DBS[vr].executesql(
                 f"""
 select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
@@ -116,7 +115,7 @@ select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
             if vr in PASSAGE_DBS
             else []
         )
-        return collapseToRanges(slots)
+        return collapseToRanges(row[0] for row in rows)
 
     def group(self, vr, occurrences):
         PASSAGE_DBS = current.PASSAGE_DBS

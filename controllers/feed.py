@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-
 from markdown import markdown
 
 from helpers import hEsc, sanitize, isodt
 from urls import Urls
+from queryrecent import QUERYRECENT
 
-U = Urls(URL)
+U = Urls()
+QueryRecent = QUERYRECENT()
 
 
 def atom():

@@ -1,11 +1,13 @@
+import json
+
 from gluon import current
 
 from helpers import iEncode
 
 
 class NOTESAVE:
-    def __init__(self):
-        pass
+    def __init__(self, Note):
+        self.Note = Note
 
     def put(self, myId, vr, bk, ch, vs, notes, clauseAtoms, msgs):
         Caching = current.Caching
@@ -104,6 +106,43 @@ values
                             f"^verses_{vr}_n_{iEncode('n', myId, keywords=keywords)}_",
                         )
         return changed
+
+    def putVerseNotes(self):
+        Check = current.Check
+        Note = self.Note
+        auth = current.auth
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
+        edit = Check.isBool("edit")
+
+        myId = None
+        if auth.user:
+            myId = auth.user.id
+        authenticated = myId is not None
+
+        clauseAtoms = Note.getClauseAtoms(vr, bk, ch, vs)
+        changed = False
+
+        msgs = []
+
+        if myId is None:
+            msgs.append(("error", "You have to be logged in when you save notes"))
+        else:
+            requestVars = current.request.vars
+            notes = (
+                json.loads(requestVars.notes)
+                if requestVars and requestVars.notes
+                else []
+            )
+            changed = self.put(
+                myId, vr, bk, ch, vs, notes, clauseAtoms, msgs
+            )
+        return Note.inVerse(
+            vr, bk, ch, vs, myId, clauseAtoms, changed, msgs, authenticated, edit
+        )
 
     def filter(self, myId, notes, clauseAtoms, msgs):
         NOTE_DB = current.NOTE_DB

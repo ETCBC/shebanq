@@ -1,119 +1,117 @@
-import collections
+import json
 
-from constants import NOTFILLFIELDS
-from boiler import FIELDNAMES
-from helpers import hEsc
-from verse import Verse
+from gluon import current
+
+from versecontent import VerseContent
 
 
-class Verses:
-    def __init__(
-        self,
-        PASSAGE_DBS,
-        vr,
-        mr,
-        verseIds=None,
-        chapter=None,
-        tp=None,
-        tr=None,
-        lang="en",
-    ):
-        if tr is None:
-            tr = "hb"
-        self.version = vr
+class VERSES:
+    def __init__(self):
+        pass
+
+    def get(self):
+        extension = current.request.extension
+
+        if extension == "json":
+            return self.getJson()
+
+        Check = current.Check
+        Caching = current.Caching
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
+        tr = Check.field("material", "", "tr")
+
+        if vs is None:
+            return dict(good=False, msgs=[])
+
+        return Caching.get(
+            f"verse_{vr}_{bk}_{ch}_{vs}_{tr}_",
+            lambda: self.get_c(vr, bk, ch, vs, tr),
+            None,
+        )
+
+    def get_c(self, vr, bk, ch, vs, tr):
+        PASSAGE_DBS = current.PASSAGE_DBS
+
+        material = VerseContent(
+            PASSAGE_DBS,
+            vr,
+            bk,
+            ch,
+            vs,
+            xml=None,
+            wordData=None,
+            tp="txtd",
+            tr=tr,
+            mr=None,
+        )
+        good = True
+        msgs = []
+        if len(material.wordData) == 0:
+            msgs = [("error", f"{bk} {ch}:{vs} does not exist")]
+            good = False
+        return dict(
+            good=good,
+            msgs=msgs,
+            material=material,
+        )
+
+    def getJson(self, vr, bk, ch, vs):
+        Caching = current.Caching
+
+        return Caching.get(
+            f"versej_{vr}_{bk}_{ch}_{vs}_",
+            lambda: self.getJson_c(vr, bk, ch, vs),
+            None,
+        )
+
+    def getJson_c(self):
+        Check = current.Check
+        PASSAGE_DBS = current.PASSAGE_DBS
+
+        vr = Check.field("material", "", "version")
+        bk = Check.field("material", "", "book")
+        ch = Check.field("material", "", "chapter")
+        vs = Check.field("material", "", "verse")
+
         passageDb = PASSAGE_DBS[vr] if vr in PASSAGE_DBS else None
-        self.mr = mr
-        self.tp = tp
-        self.tr = tr
-        self.verses = []
-        if self.mr == "r" and (verseIds is None or len(verseIds) == 0):
-            return
-        verseIdsStr = (
-            ",".join((str(verse_id) for verse_id in verseIds))
-            if verseIds is not None
-            else None
-        )
-        verseIdField = "verse.id"
-        wordVerseField = "word_verse.verse_id"
-        conditionPre = (
-            f"""
-where {{}} in ({verseIdsStr})
-"""
-            if verseIds is not None
-            else f"""
-where chapter_id = {chapter}
-"""
-            if chapter is not None
-            else ""
-        )
-        condition = conditionPre.format(verseIdField)
-        wcondition = conditionPre.format(wordVerseField)
-
-        verseInfo = (
-            passageDb.executesql(
+        msgs = []
+        good = True
+        data = dict()
+        if passageDb is None:
+            msgs.append(("Error", f"No such version: {vr}"))
+            good = False
+        if good:
+            verseInfo = passageDb.executesql(
                 f"""
-select
-    verse.id,
-    book.name,
-    chapter.chapter_num,
-    verse.verse_num
-    {", verse.xml" if tp == "txtp" else ""}
-from verse
+select verse.id, verse.text from verse
 inner join chapter on verse.chapter_id=chapter.id
 inner join book on chapter.book_id=book.id
-{condition}
-order by verse.id
+where book.name = '{bk}' and chapter.chapter_num = {ch} and verse_num = {vs}
 ;
 """
             )
-            if passageDb
-            else []
-        )
-
-        wordRecords = []
-        wordRecords = (
-            passageDb.executesql(
-                f"""
-select {",".join(FIELDNAMES[tp])}, verse_id, lexicon_id from word
+            if len(verseInfo) == 0:
+                msgs.append(("Error", f"No such verse: {bk} {ch}:{vs}"))
+                good = False
+            else:
+                data = verseInfo[0]
+                vid = data[0]
+                wordInfo = passageDb.executesql(
+                    f"""
+select word.word_phono, word.word_phono_sep
+from word
 inner join word_verse on word_number = word_verse.anchor
 inner join verse on verse.id = word_verse.verse_id
-{wcondition}
+where verse.id = {vid}
 order by word_number
 ;
-""",
-                as_dict=True,
-            )
-            if passageDb
-            else []
-        )
-
-        wordData = collections.defaultdict(lambda: [])
-        for record in wordRecords:
-            wordData[record["verse_id"]].append(
-                dict(
-                    (
-                        x,
-                        hEsc(str(y), not (x.endswith("_border") or x in NOTFILLFIELDS)),
-                    )
-                    for (x, y) in record.items()
+"""
                 )
-            )
-
-        for verse in verseInfo:
-            verse_id = int(verse[0])
-            xml = verse[4] if tp == "txtp" else ""
-            self.verses.append(
-                Verse(
-                    PASSAGE_DBS,
-                    vr,
-                    verse[1],
-                    verse[2],
-                    verse[3],
-                    xml=xml,
-                    wordData=wordData[verse_id],
-                    tp=tp,
-                    tr=tr,
-                    mr=mr,
-                    lang=lang,
+                data = dict(
+                    text=data[1], phonetic="".join(x[0] + x[1] for x in wordInfo)
                 )
-            )
+        return json.dumps(dict(good=good, msgs=msgs, data=data), ensure_ascii=False)

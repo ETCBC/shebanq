@@ -2,7 +2,7 @@
 {{ right_sidebar_enabled = True }}
 {{extend 'layout.html'}}
 
-<input type="hidden" id="query_id" value="{{=query_id}}"/>
+<input type="hidden" id="query_id" value="{{=query_id or 0}}"/>
 <div id="queries"></div>
 
 {{ block left_sidebar }}

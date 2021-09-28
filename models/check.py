@@ -5,6 +5,11 @@ from gluon import current
 from constants import TPS
 from helpers import iDecode
 
+from viewdefs import VIEWDEFS
+
+
+current.ViewDefs = VIEWDEFS()
+
 
 class CHECK:
     def __init__(self):
@@ -26,8 +31,8 @@ class CHECK:
             # this occurs when the same variable occurs multiple times
             # in the request/querystring
         theVar = "0" if group == "colormap" else var
-        defaultValue = ViewDefs["settings"][group][qw][theVar] if default else None
-        return ViewDefs["validation"][group][qw][theVar](defaultValue, x)
+        defaultValue = ViewDefs.settings[group][qw][theVar] if default else None
+        return ViewDefs.validation[group][qw][theVar](defaultValue, x)
 
     def fields(self, tp, qw=None):
         ViewDefs = current.ViewDefs
@@ -35,13 +40,13 @@ class CHECK:
         if qw is None or qw != "n":
             if tp == "txtd":
                 hebrewFields = []
-                for (line, fields) in ViewDefs["featureLines"]:
+                for (line, fields) in ViewDefs.featureLines:
                     if self.field("hebrewdata", "", line) == "v":
                         for (f, name, prettyName) in fields:
                             if self.field("hebrewdata", "", f) == "v":
                                 hebrewFields.append((name, prettyName))
             else:
-                hebrewFields = ViewDefs["featureFields"][tp]
+                hebrewFields = ViewDefs.featureFields[tp]
             return hebrewFields
         else:
             hebrewFields = (

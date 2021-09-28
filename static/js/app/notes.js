@@ -1,7 +1,7 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS, LS, markdown */
 
-import { escHT, specialLinks, markdownEscape } from "./helpers.js"
+import { escHT, specialLinks, markdownEscape, idPrefixNotes } from "./helpers.js"
 import { Diagnostics } from "./diagnostics.js"
 
 export class Notes {
@@ -136,12 +136,12 @@ class NoteVerse {
   }
 
   fetch(adjustVerse) {
-    const { notesVerseJsonUrl } = Config
+    const { getNotesVerseJsonUrl } = Config
 
     const { version, book, chapter, verse, editing, diagnostics } = this
     const sendData = { version, book, chapter, verse, edit: editing }
     diagnostics.msg(["info", "fetching notes ..."])
-    $.post(notesVerseJsonUrl, sendData, data => {
+    $.post(getNotesVerseJsonUrl, sendData, data => {
       this.loaded = true
       diagnostics.clear()
       for (const mg of data.msgs) {
@@ -248,7 +248,7 @@ class NoteVerse {
       let mute = false
       for (const keywords of keywordList) {
         const key_id = keyIndex[`${user_id} ${keywords}`]
-        if (lsNotesMuted.isSet(`n${key_id}`)) {
+        if (lsNotesMuted.isSet(`${idPrefixNotes}${key_id}`)) {
           mute = true
           break
         }
@@ -327,10 +327,10 @@ class NoteVerse {
   }
 
   sendnotes(sendData) {
-    const { notesVerseJsonUrl } = Config
+    const { putNotesVerseJsonUrl } = Config
 
     $.post(
-      notesVerseJsonUrl,
+      putNotesVerseJsonUrl,
       sendData,
       data => {
         const { good, users, notes, keyIndex, changed, authenticated } = data
@@ -401,7 +401,6 @@ class NoteVerse {
       book,
       chapter,
       verse,
-      save: true,
       edit: editing,
     }
     const notelines = []
@@ -465,7 +464,6 @@ class NoteVerse {
       book,
       chapter,
       verse,
-      save: true,
       edit: editing,
     }
     data["notes"] = JSON.stringify([])

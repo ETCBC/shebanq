@@ -4,7 +4,7 @@
 /* globals Config, LS */
 
 import { LStorage } from "./localstorage.js"
-import { escHT } from "./helpers.js"
+import { escHT, idPrefixQueries } from "./helpers.js"
 import { Diagnostics } from "./diagnostics.js"
 import { QueryRecent } from "./queryrecent.js"
 
@@ -289,7 +289,7 @@ class Tree {
       focusOnSelect: false,
       quicksearch: true,
       icons: false,
-      idPrefix: "q_",
+      idPrefix: idPrefixQueries,
       persist: {
         cookiePrefix: "ft-q-",
         store: "local",
@@ -357,13 +357,13 @@ class Tree {
 
   storeSelect(node) {
     const { lsQueriesMuted: lsMuted } = LS
-    const { folder, key: iid, selected } = node
+    const { folder, key, selected } = node
     if (!folder) {
       if (selected) {
-        lsMuted.set(iid, 1)
+        lsMuted.set(key, 1)
       } else {
-        if (lsMuted.isSet(iid)) {
-          lsMuted.remove(iid)
+        if (lsMuted.isSet(key)) {
+          lsMuted.remove(key)
         }
       }
     }
@@ -425,8 +425,8 @@ class Tree {
       sendData["project_id"] = $("#project_of_query").attr("project_id")
       sendData["project_name"] = $("#nameq_p").val()
       sendData["project_website"] = $("#websiteq_p").val()
-      sendData["do_new_o"] = this.doNew["o"]
-      sendData["do_new_p"] = this.doNew["p"]
+      sendData["doNewOrg"] = this.doNew["o"]
+      sendData["doNewProject"] = this.doNew["p"]
     } else {
       sendData["website"] = $(`#website_${tp}`).val()
     }
@@ -956,8 +956,8 @@ class Tree {
   }
 
   gotoQuery(query_id) {
-    if (query_id != undefined && query_id != "0") {
-      const queryNode = this.widget.getNodeByKey(`${query_id}`)
+    if (query_id != null && query_id != "0") {
+      const queryNode = this.widget.getNodeByKey(`${idPrefixQueries}${query_id}`)
       if (queryNode != undefined) {
         queryNode.makeVisible({ noAnimation: true })
         $(".treehl").removeClass("treehl")

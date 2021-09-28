@@ -2,7 +2,15 @@
 /* eslint-disable no-new */
 /* globals Config, ConfigW */
 
-import { setHeightW } from "./page.js"
+const setHeightW = () => {
+  /* the heights of the sidebars are set, depending on the height of the window
+   */
+  const subtractForWordsPage = 80
+  const standardHeight = window.innerHeight - subtractForWordsPage
+  $("#words").css("height", `${standardHeight}px`)
+  $("#letters").css("height", `${standardHeight}px`)
+}
+
 
 const RequestInfo = {
   parameter(name) {

@@ -7,9 +7,8 @@ from helpers import iDecode
 
 
 class RECORD:
-    def __init__(self, Query, QuerySave):
-        self.Query = Query
-        self.QuerySave = QuerySave
+    def __init__(self):
+        pass
 
     def authWriteGeneric(self, label):
         auth = current.auth
@@ -24,7 +23,6 @@ class RECORD:
         return (authorized, errorMessage)
 
     def authRead(self, mr, qw, iidRep):
-        Query = self.Query
 
         if mr == "m":
             return (True, "")
@@ -38,6 +36,7 @@ class RECORD:
             if iidRep is not None:
                 (iid, keywords) = iDecode(qw, iidRep)
                 if iid > 0:
+                    Query = self.Query
                     return Query.authRead(iid)
             return (False, f"Not a valid query id: {iidRep}")
         return (None, f"Not a valid id: {iidRep}")
@@ -69,10 +68,8 @@ class RECORD:
             )
         )
 
-    def getItem(self, requestVars):
+    def getItem(self):
         Check = current.Check
-        Query = self.Query
-        QuerySave = self.QuerySave
         auth = current.auth
 
         msgs = []
@@ -87,6 +84,8 @@ class RECORD:
         fields = None
 
         myId = auth.user.id if auth.user is not None else None
+
+        requestVars = current.request.vars
 
         for x in [1]:
             tp = requestVars.tp
@@ -106,14 +105,16 @@ class RECORD:
                 msgs.append(("error", "for updating you have to be logged in!"))
                 break
             fields = ["name"]
+
             if tp == "q":
+                Query = self.Query
                 fields.append("organization")
                 fields.append("project")
             else:
                 fields.append("website")
             if upd:
                 (authorized, msg) = (
-                    QuerySave.authWrite(obj_id)
+                    Query.authWrite(obj_id)
                     if tp == "q"
                     else self.authWriteGeneric(label)
                 )
@@ -128,7 +129,7 @@ class RECORD:
                 if tp == "q":
                     subfields = ["name", "website"]
                     fieldValues = [requestVars.name]
-                    doNewOrg = requestVars.do_new_o
+                    doNewOrg = requestVars.doNewOrg
                     doNewProject = requestVars.doNewProject
                     if doNewOrg not in {"true", "false"}:
                         msgs.append(
@@ -201,7 +202,7 @@ class RECORD:
             else:
                 good = True
 
-        record = self.make(tp, table, fields, obj_id, good, msgs)
+        record = self.make(tp, label, table, fields, obj_id, good, msgs)
 
         return dict(
             data=json.dumps(
@@ -218,7 +219,6 @@ class RECORD:
         )
 
     def make(self, tp, label, table, fields, obj_id, good, msgs):
-        Query = self.Query
         db = current.db
 
         record = {}
@@ -229,6 +229,7 @@ class RECORD:
                 if obj_id == 0:
                     dbRecord = [0, "", 0, "", "", 0, "", ""]
                 else:
+                    Query = self.Query
                     dbRecord = Query.getTreeInfo(obj_id)
             else:
                 if obj_id == 0:
@@ -340,3 +341,9 @@ select last_insert_id() as x
 
             msgs.append(("good", thisMsg))
         return (good, obj_id)
+
+
+class RECORDQUERY(RECORD):
+    def __init__(self, Query):
+        super().__init__()
+        self.Query = Query

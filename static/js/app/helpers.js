@@ -1,6 +1,9 @@
 /* eslint-env jquery */
 /* globals Config, markdown */
 
+export const idPrefixNotes = "n"
+export const idPrefixQueries = "q"
+
 export const escHT = text => {
   const chr = {
     "&": "&amp;",

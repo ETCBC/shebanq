@@ -1,19 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, VS, LS */
 
-import { colorDefault } from "./helpers.js"
+import { colorDefault, idPrefixQueries } from "./helpers.js"
 import { Material } from "./material.js"
 import { Sidebars } from "./sidebars.js"
 import { SideSettings } from "./sidesettings.js"
-
-export const setHeightW = () => {
-  /* the heights of the sidebars are set, depending on the height of the window
-   */
-  const subtractForWordsPage = 80
-  const standardHeight = window.innerHeight - subtractForWordsPage
-  $("#words").css("height", `${standardHeight}px`)
-  $("#letters").css("height", `${standardHeight}px`)
-}
 
 export class Page {
   /* the one and only page object
@@ -31,6 +22,12 @@ export class Page {
      */
     this.mqlBigWidth = "100%"
     /* width of mql query body in sidebar and in dialog
+     */
+    this.standardSideWidth = "25%"
+    /* the desired standard width of the sidebar
+     */
+    this.standardMainWidth = "70%"
+    /* the desired standard width of the main area
      */
     this.editSideWidth = "55%"
     /* the desired width of the sidebar when editing a query body
@@ -55,7 +52,7 @@ export class Page {
     /* the heights of the sidebars are set, depending on the height of the window
      */
     const subtractForMainColumn = 150
-    const { tabViews } = Config
+    const { nTabViews } = Config
     const windowHeight = window.innerHeight
     this.windowHeight = windowHeight
     const standardHeight = windowHeight - subtractForMainColumn
@@ -63,7 +60,7 @@ export class Page {
     this.halfStandardHeight = `${0.4 * standardHeight}px`
 
     $("#material_txtp").css("height", `${standardHeight}px`)
-    for (let i = 1; i <= tabViews; i++) {
+    for (let i = 1; i <= nTabViews; i++) {
       $(`#material_txt${i}`).css("height", `${standardHeight}px`)
     }
     $("#side_material_mq").css("max-height", `${0.6 * standardHeight}px`)
@@ -72,40 +69,28 @@ export class Page {
     $("#letters").css("height", `${standardHeight}px`)
   }
 
-  getWidth() {
-    /* save the orginal widths of sidebar and main area
-     */
-    this.sideWidthOld = $(".span3").css("width")
-    this.mainWidthOld = $(".span9").css("width")
-  }
-
   resetMainWidth() {
     /* restore the orginal widths of sidebar and main area
      */
-    const { mainWidthOld, sideWidthOld } = this
-    if (sideWidthOld != $(".span3").css("width")) {
-      $(".span3").css("width", sideWidthOld)
-      $(".span3").css("max-width", sideWidthOld)
-      $(".span9").css("width", mainWidthOld)
-      $(".span9").css("max-width", mainWidthOld)
-    }
+    const { standardMainWidth, standardSideWidth } = this
+    $(".span3").css("width", standardSideWidth)
+    $(".span9").css("width", standardMainWidth)
   }
 
   setEditWidth() {
     /* switch to increased sidebar width
      */
-    this.getWidth()
     const { editMainWidth, editSideWidth } = this
     $(".span3").css("width", editSideWidth)
     $(".span9").css("width", editMainWidth)
   }
 
   materialStatusReset() {
-    const { tabViews } = Config
+    const { nTabViews } = Config
 
     this.materialFetched = { txtp: false }
     this.materialKind = { txtp: "" }
-    for (let i = 1; i <= tabViews; i++) {
+    for (let i = 1; i <= nTabViews; i++) {
       this.materialFetched[`txt${i}`] = false
       this.materialKind[`txt${i}`] = ""
     }
@@ -170,7 +155,6 @@ export class Page {
     this.material = new Material()
     this.sidebars = new Sidebars()
     this.setHeight()
-    this.getWidth()
     const sideSettings = {}
     this.sideSettings = sideSettings
 
@@ -198,7 +182,6 @@ export class Page {
   go() {
     /* go to another page view, check whether initial content has to be loaded
      */
-    this.resetMainWidth()
     this.apply()
   }
   go_material() {
@@ -291,7 +274,7 @@ export class Page {
       $(`#side_list_${qw} li`).each((i, el) => {
         const elem = $(el)
         const iid = elem.attr("iid")
-        if (!lsQueriesMuted.isSet(`${iid}`)) {
+        if (!lsQueriesMuted.isSet(`${idPrefixQueries}${iid}`)) {
           const slots = $.parseJSON($(`#${qw}${iid}`).attr("slots"))
           if (VS.isColor(qw, iid)) {
             customItems[iid] = slots

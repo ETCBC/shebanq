@@ -345,9 +345,9 @@ select name, id from project order by name
                         queryGood = projectQueryInfo["good"]
                         queryVersions = projectQueryInfo["v"]
                         queryOwnRep = "r" if queryOwn else "v"
-                        queryMyRep = ("qmy" if queryOwn else "",)
+                        queryMyRep = ("qmy" if queryOwn else "")
                         querySharedRep = "" if queryShared else "qpriv"
-                        queryIdRep = (iEncode("q", query_id),)
+                        queryIdRep = iEncode("q", query_id)
                         rename = f"""<a
 class="{queryOwnRep}_q" obj_id="{queryIdRep}" href="#"></a>"""
                         versionRep = " ".join(

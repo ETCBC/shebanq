@@ -4,7 +4,7 @@
 <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_w" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{if 'id' in wordRecord:}}
 {{for v in VERSION_ORDER:
-    wordInfo = wordRecord['versions'].get(v, collections.defaultdict(lambda: ''))
+    wordInfo = wordRecord['versions'].get(v, {})
     thisCls = 'this' if v == vr else 'other'
     arrow = 'down' if v == vr else 'right'
 }}
@@ -17,17 +17,17 @@
     <a id="select_control_chart_{{=v}}_w" href="#" class="ctl fa fa-bar-chart fa-rotate-90 fa-lg" title="view occurrences in a clickable bar chart"></a>
     </p>
     <table>
-        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td class="dd i_hl">{{=wordInfo['g_entry_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td class="dd i_hl">{{=wordInfo['entry_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="dd i_hl">{{=wordInfo['entryid_heb']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td>{{=wordInfo['g_entry']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td>{{=wordInfo['entry']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="i_tl">{{=wordInfo['entryid']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">part-of-speech</span></td><td class="i_pos">{{=wordInfo['pos']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">lexical set</span></td><td class="i_subpos">{{=wordInfo['subpos']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">proper noun category</span></td><td class="i_nametype">{{=wordInfo['nametype']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">language</span></td><td class="i_lan">{{=wordInfo['lan']}}</td></tr>
-        <tr class="detail"><td><span class="wordlabel">gloss</span></td><td class="i_gl">{{=wordInfo['gloss']}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td class="dd i_hl">{{=wordInfo.get('g_entry_heb', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td class="dd i_hl">{{=wordInfo.get('entry_heb', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="dd i_hl">{{=wordInfo.get('entryid_heb', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">vocalized</span></td><td>{{=wordInfo.get('g_entry', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">consonantal</span></td><td>{{=wordInfo.get('entry', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">disambiguated</span></td><td class="i_tl">{{=wordInfo.get('entryid', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">part-of-speech</span></td><td class="i_pos">{{=wordInfo.get('pos', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">lexical set</span></td><td class="i_subpos">{{=wordInfo.get('subpos', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">proper noun category</span></td><td class="i_nametype">{{=wordInfo.get('nametype', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">language</span></td><td class="i_lan">{{=wordInfo.get('lan', '')}}</td></tr>
+        <tr class="detail"><td><span class="wordlabel">gloss</span></td><td class="i_gl">{{=wordInfo.get('gloss', '')}}</td></tr>
     </table>
 </div>
 {{pass}}

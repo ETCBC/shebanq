@@ -2,8 +2,7 @@ from gluon import current
 
 
 class SIDE:
-    def __init__(self, ViewSettings, Material, Word, Query, Note):
-        self.ViewSettings = ViewSettings
+    def __init__(self, Material, Word, Query, Note):
         self.Material = Material
         self.Word = Word
         self.Query = Query
@@ -29,7 +28,7 @@ class SIDE:
         )
 
     def get_c(self, vr, qw, bk, ch, is_published):
-        ViewSettings = self.ViewSettings
+        ViewDefs = current.ViewDefs
         Material = self.Material
         Word = self.Word
         Query = self.Query
@@ -38,7 +37,7 @@ class SIDE:
         (book, chapter) = Material.getPassage(vr, bk, ch)
         if not chapter:
             result = dict(
-                colorPicker=ViewSettings.colorPicker,
+                colorPicker=ViewDefs.colorPicker,
                 sideItems=[],
                 qw=qw,
             )
@@ -54,7 +53,7 @@ class SIDE:
             else:
                 sideItems = []
             result = dict(
-                colorPicker=ViewSettings.colorPicker,
+                colorPicker=ViewDefs.colorPicker,
                 sideItems=sideItems,
                 qw=qw,
             )

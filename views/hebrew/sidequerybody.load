@@ -42,11 +42,11 @@ statusMap = dict(
     <div id="dbmsg_q"></div>
     <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_q" class="ctl ir fa fa-trash fa-lg"></span></a></p>
 {{for v in VERSION_ORDER:
-    queryInfo = queryRecord['versions'][v]
-    status = queryInfo['status']
-    results = queryInfo['results']
+    queryInfo = queryRecord['versions'].get(v, {})
+    status = queryInfo.get('status', '')
+    results = queryInfo.get('results', '')
     thisCls = 'this' if v == vr else 'other'
-    is_published = queryInfo['is_published']
+    is_published = queryInfo.get('is_published', '')
     statusId = XML('id="statq" ') if v == vr else ''
     statusMapId = XML('id="statm" ') if v == vr else ''
     arrow = 'down' if v == vr else 'right'
@@ -83,7 +83,7 @@ statusMap = dict(
         <span class="{{=status}}">{{=statusMap[status]}}</span>
     {{pass}}
         </p>
-        <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(queryInfo['mql'])}}</textarea>
+        <textarea {{=XML('id="mqlq"') if v == vr else ''}} class="mql detail" readonly>{{=XML(queryInfo.get('mql', ''))}}</textarea>
     {{if v == vr:}}
         <div id="dbmsg_qv"></div>
         <p><a href="#" title="clear diagnostic messages"><span id="trash_dbmsg_qv" class="ctl ir fa fa-trash fa-lg"></span></a></p>
@@ -101,7 +101,7 @@ statusMap = dict(
                         class="fa fa-{{='check' if is_published else 'close'}}"
                       ></span>
                 </td>
-                <td class="dtval"><span {{=XML('id="published_on"')}}>{{=queryInfo['published_on']}}</span></td>
+                <td class="dtval"><span {{=XML('id="published_on"')}}>{{=queryInfo.get('published_on', '')}}</span></td>
             </tr>
             <tr>
                 <td><span class="fieldlabel">results</span></td>
@@ -109,22 +109,22 @@ statusMap = dict(
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">words</span></td>
-                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultslots"')}}>{{=queryInfo['resultmonads']}}</span></td>
+                <td>&nbsp;</td><td class="qexer"><span {{=XML('id="qresultslots"')}}>{{=queryInfo.get('resultmonads', '')}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">modified</span></td>
-                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"')}}>{{=queryInfo['xmodified_on']}}</span></td>
+                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="xmodified_on"')}}>{{=queryInfo.get('xmodified_on', '')}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">executed</span></td>
-                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"')}}>{{=queryInfo['executed_on']}}</span></td>
+                <td>&nbsp;</td><td class="dtval"><span {{=XML('id="executed_on"')}}>{{=queryInfo.get('executed_on', '')}}</span></td>
             </tr>
             <tr class="detail">
                 <td><span class="fieldlabel">engine</span></td>
                 <td>&nbsp;</td>
-                <td class="dtval {{='exeversionold' if queryInfo['eversion'] in emdrosVersionsOld else ''}}"
-                    title="this is {{='not ' if queryInfo['eversion'] in emdrosVersionsOld else ''}}the newest version"
-                ><span {{=XML('id="eversion"')}}>{{=queryInfo['eversion']}}</span></td>
+                <td class="dtval {{='exeversionold' if queryInfo.get('eversion', '') in emdrosVersionsOld else ''}}"
+                    title="this is {{='not ' if queryInfo.get('eversion', '') in emdrosVersionsOld else ''}}the newest version"
+                ><span {{=XML('id="eversion"')}}>{{=queryInfo.get('eversion', '')}}</span></td>
             </tr>
         </table>
     {{pass}}

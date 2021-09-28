@@ -74,28 +74,38 @@ if [ "$1" == "-w" ]; then
         echo "--- restore $fl from sav"
         cp -P sav/$fl web2py/$fl
     done
-    echo "- Done Upgrading web2py ..."
+    echo "- Done Upgrading web2py."
 fi
 
 # end upgrade web2py
 
+echo "Updating shebanq ..."
 cd $SHEBANQ_DIR
+echo "- Pull from github..."
 git pull origin master
+echo "- Done pulling."
 cd $WEB2PY_DIR
+echo "- Compile admin app ..."
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
+echo "- Compile shebanq app ..."
 python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
+echo "- Compile modules of admin app ..."
+cd applications/admin
+python -m compileall modules
+echo "- Compile modules of shebanq app ..."
+cd $SHEBANQ_DIR
+python -m compileall modules
+chown dirkr:shebanq $WEB2PY_DIR/welcome.w2p
+echo "- Done compiling."
 
 # the following script creates a logging.conf in the web2py directory.
 # This file must be removed before the webserver starts up, otherwise httpd wants to write web2py.log, which is generally not allowed
 # and especially not under linux.
 # Failing to remove this file will result in an Internal Server Error by SHEBANQ!
+cd $WEB2PY_DIR
+echo "- Remove sessions ..."
 python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
 
-cd applications/admin
-python -m compileall models modules
-cd $SHEBANQ_DIR
-python -m compileall models modules
-chown dirkr:shebanq $WEB2PY_DIR/welcome.w2p
 sleep 1
 
 cd $SHEBANQ_DIR

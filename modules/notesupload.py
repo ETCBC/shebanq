@@ -4,38 +4,22 @@ from gluon import current
 
 
 class NOTESUPLOAD:
-    def __init__(self, Pieces):
-        self.Pieces = Pieces
+    def __init__(self, Books, Note):
+        self.Books = Books
+        self.Note = Note
 
-    def authUpload(self):
-        auth = current.auth
-        db = current.db
-
-        myId = None
-        authorized = False
-        if auth.user:
-            myId = auth.user.id
-        if myId:
-            sql = f"""
-select uid from uploaders where uid = {myId}
-"""
-            records = db.executesql(sql)
-            authorized = (
-                records is not None and len(records) == 1 and records[0][0] == myId
-            )
-        msg = "" if authorized else "you are not allowed to upload notes as csv files"
-        return (authorized, myId, msg)
-
-    def upload(self, fileText):
+    def upload(self):
+        Books = self.Books
         ViewDefs = current.ViewDefs
+        Note = self.Note
+        fileText = current.request.vars.file
 
         good = True
-        (authorized, myId, msg) = current.authUpload()
+        (authorized, myId, msg) = Note.authUpload()
         if not authorized:
             return dict(data=json.dumps(dict(msgs=[("error", msg)], good=False)))
 
         Caching = current.Caching
-        Pieces = self.Pieces
         NOTE_DB = current.NOTE_DB
         VERSIONS = current.VERSIONS
 
@@ -46,7 +30,7 @@ select uid from uploaders where uid = {myId}
 
         for vr in VERSIONS:
             myVersions.add(vr)
-            bookInfo[vr] = Pieces.getBooks(vr)[0]
+            bookInfo[vr] = Books.get(vr)[0]
 
         normFields = "\t".join(
             """
@@ -160,7 +144,7 @@ insert into note
                     f"{i + 1}:{is_published}"
                 )
                 continue
-            if status not in ViewDefs["noteStatusCls"]:
+            if status not in ViewDefs.noteStatusCls:
                 nerrors += 1
                 errors.setdefault("unrecognized status", []).append(f"{i + 1}:{status}")
                 continue

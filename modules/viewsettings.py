@@ -9,8 +9,9 @@ from boiler import LEGEND
 
 
 class VIEWSETTINGS:
-    def __init__(self, Pieces):
-        self.Pieces = Pieces
+    def __init__(self, Books):
+        self.Books = Books
+
         Check = current.Check
 
         self.state = collections.defaultdict(
@@ -25,22 +26,22 @@ class VIEWSETTINGS:
 
         return dict(
             pageConfig=pageConfig,
-            colorPicker=self.colorPicker,
+            colorPicker=ViewDefs.colorPicker,
             legend=LEGEND,
-            tabLabels=ViewDefs["tabLabels"],
-            trLabels=ViewDefs["trLabels"],
-            nTabViews=ViewDefs["nTabViews"],
-            trInfo=ViewDefs["trInfo"],
+            tabLabels=ViewDefs.tabLabels,
+            trLabels=ViewDefs.trLabels,
+            nTabViews=ViewDefs.nTabViews,
+            trInfo=ViewDefs.trInfo,
         )
 
     def initState(self):
+        Books = self.Books
         ViewDefs = current.ViewDefs
         Check = current.Check
-        Pieces = self.Pieces
         VERSIONS = current.VERSIONS
 
-        settings = ViewDefs["settings"]
-        validation = ViewDefs["validation"]
+        settings = ViewDefs.settings
+        validation = ViewDefs.validation
 
         requestVars = current.request.vars
         requestCookies = current.request.cookies
@@ -114,7 +115,7 @@ class VIEWSETTINGS:
         self.bookName = bookName
 
         for v in VERSIONS:
-            (books[v], booksOrder[v], bookIds[v], bookName[v]) = Pieces.getBooks(v)
+            (books[v], booksOrder[v], bookIds[v], bookName[v]) = Books.get(v)
 
     def theVersion(self):
         return self.state["material"][""]["version"]
@@ -131,24 +132,24 @@ bookLatin: {json.dumps(BOOK_NAMES[BIBLANG]["la"])},
 bookOrder: {json.dumps(self.booksOrder)},
 books: {json.dumps(self.books)},
 bookTrans: {json.dumps(BOOK_TRANS)},
-colorsDefault: {json.dumps(ViewDefs["colorsDefault"])},
-colorsCls: {json.dumps(_makeColors())},
-colors: {json.dumps(ViewDefs["colors"])},
-nDefaultClrCols: {ViewDefs["nDefaultClrCols"]},
-nDefaultClrRows: {ViewDefs["nDefaultClrRows"]},
+colorsDefault: {json.dumps(ViewDefs.colorsDefault)},
+colorsCls: {json.dumps(ViewDefs.makeColors())},
+colors: {json.dumps(ViewDefs.colors)},
+nDefaultClrCols: {ViewDefs.nDefaultClrCols},
+nDefaultClrRows: {ViewDefs.nDefaultClrRows},
 featureHost: "https://etcbc.github.io/bhsa/features",
-nextTp: {json.dumps(ViewDefs["nextTp"])},
-nextTr: {json.dumps(ViewDefs["nextTr"])},
-noteStatusCls: {json.dumps(ViewDefs["noteStatusCls"])},
-noteStatusNxt: {json.dumps(ViewDefs["noteStatusNxt"])},
-noteStatusSym: {json.dumps(ViewDefs["noteStatusSym"])},
+nextTp: {json.dumps(ViewDefs.nextTp)},
+nextTr: {json.dumps(ViewDefs.nextTr)},
+noteStatusCls: {json.dumps(ViewDefs.noteStatusCls)},
+noteStatusNxt: {json.dumps(ViewDefs.noteStatusNxt)},
+noteStatusSym: {json.dumps(ViewDefs.noteStatusSym)},
 pref: "{self.pref}",
-itemStyle: {json.dumps(ViewDefs["itemStyle"])},
-nTabViews: {ViewDefs["nTabViews"]},
-tabInfo: {json.dumps(ViewDefs["tabInfo"])},
-tabLabels: {json.dumps(ViewDefs["tabLabels"])},
-trInfo: {json.dumps(ViewDefs["trInfo"])},
-trLabels: {json.dumps(ViewDefs["trLabels"])},
+itemStyle: {json.dumps(ViewDefs.itemStyle)},
+nTabViews: {ViewDefs.nTabViews},
+tabInfo: {json.dumps(ViewDefs.tabInfo)},
+tabLabels: {json.dumps(ViewDefs.tabLabels)},
+trInfo: {json.dumps(ViewDefs.trInfo)},
+trLabels: {json.dumps(ViewDefs.trLabels)},
 versions: {json.dumps(list(VERSIONS))},
 viewInit: {json.dumps(self.state)},
 
@@ -173,10 +174,11 @@ queriesRecentJsonUrl: "{URL("hebrew", "queriesr.json")}",
 queryUpdateJsonUrl: "{URL("hebrew", "queryupdate.json")}",
 querySharingJsonUrl: "{URL("hebrew", "querysharing.json")}",
 
-notesVerseJsonUrl: "{URL("hebrew", "versenotes.json")}",
+getNotesVerseJsonUrl: "{URL("hebrew", "getversenotes.json")}",
+putNotesVerseJsonUrl: "{URL("hebrew", "putversenotes.json")}",
 noteUploadJsonUrl: "{URL("hebrew", "noteupload.json")}",
 
-itemRecordJsonUrl: "{URL("hebrew", "itemrecord")}",
+itemRecordJsonUrl: "{URL("hebrew", "itemrecord.json")}",
 
 chartUrl: "{URL("hebrew", "chart")}",
 itemCsvUrl: "{URL("hebrew", "item.csv")}",
@@ -185,64 +187,3 @@ bolUrl: "http://bibleol.3bmoodle.dk/text/show_text",
 pblUrl: "https://parabible.com",
 }}
 """
-
-    def colorPicker(self, qw, iid, typ):
-        return f"{_selectColor(qw, iid, typ)}{_colorTable(qw, iid)}\n"
-
-
-def _selectColor(qw, iid, typ):
-    content = "&nbsp;" if qw == "q" else "w"
-    selCtl = (
-        ""
-        if typ
-        else f"""<span class="pickedc"
-><input type="checkbox" id="select_{qw}{iid}" name="select_{qw}{iid}"
-/></span>&nbsp;"""
-    )
-    sel = f"""<span class="picked colorselect_{qw}" id="sel_{qw}{iid}"
-><a href="#">{content}</a></span>"""
-    return selCtl + sel
-
-
-def _makeColors():
-    ViewDefs = current.ViewDefs
-    colorSpecCls = ViewDefs["colorSpecCls"]
-
-    colorProtoCls = [
-        tuple(spec.split(",")) for spec in colorSpecCls.strip().split()
-    ]
-    colorsCls = []
-    lPrev = 0
-    for (l, z) in colorProtoCls:
-        lNew = int(l) + 1
-        for i in range(lPrev, lNew):
-            colorsCls.append(z)
-        lPrev = lNew
-    return colorsCls
-
-
-def _colorTable(qw, iid):
-    ViewDefs = current.ViewDefs
-    nColorRows = ViewDefs["nColorRows"]
-
-    cs = "\n".join(_colorRow(qw, iid, r) for r in range(nColorRows))
-    return f'<table class="picker" id="picker_{qw}{iid}">\n{cs}\n</table>\n'
-
-
-def _colorRow(qw, iid, r):
-    ViewDefs = current.ViewDefs
-    nColorCols = ViewDefs["nColorCols"]
-
-    cells = "\n".join(
-        _colorCell(qw, iid, c)
-        for c in range(r * nColorCols, (r + 1) * nColorCols)
-    )
-    return f"\t<tr>\n{cells}\n\t</tr>"
-
-
-def _colorCell(qw, iid, c):
-    ViewDefs = current.ViewDefs
-    colorNames = ViewDefs["colorNames"]
-    return (
-        f"""\t\t<td class="c{qw} {qw}{iid}"><a href="#">{colorNames[c]}</a></td>"""
-    )
