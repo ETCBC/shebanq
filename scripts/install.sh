@@ -286,8 +286,9 @@ if [ "$doall" == "v" ] || [ "$doshebanq" == "v" ]; then
     if [ "$skipclone" == "v" ]; then
         echo "0-0-0    SHEBANQ pull    0-0-0"
         cd shebanq
-        git reset --hard
-        git pull origin master
+        git fetch origin
+        git checkout master
+        git reset --hard origin/master
         cd "$APP_DIR"
         chown -R apache:apache shebanq
         if [ -e "$WEB2PY_DIR" ]; then

@@ -51,7 +51,9 @@ fi
 echo "Updating shebanq ..."
 cd $SHEBANQ_DIR
 echo "- Pull from github..."
-git pull origin master
+git fetch origin
+git checkout master
+git reset --hard origin/master
 echo "- Done pulling."
 cd $WEB2PY_DIR
 echo "- Compile admin app ..."
