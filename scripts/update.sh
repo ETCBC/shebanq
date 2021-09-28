@@ -4,7 +4,6 @@
 # run it as follows:
 #
 # ./update.sh                            # if only code or docs has changed
-# ./update.sh -w                         # upgrade web2py
 # ./update.sh -d   version               # if there are changes in the passage databases
 # ./update.sh -de  version               # if there are changes in the emdros databases
 #
@@ -42,42 +41,6 @@ else
 fi
 
 sudo -n /usr/bin/systemctl stop httpd.service
-
-# upgrade web2py if -w is given
-
-if [ "$1" == "-w" ]; then
-    echo "- Upgrading web2py ..."
-    cd $APP_DIR
-    if [ -e sav ]; then
-        rm -rf sav
-    fi
-    mkdir sav
-    mkdir sav/applications
-    for fl in parameters*.py routes.py applications/shebanq
-    do
-        echo "--- save $fl to sav"
-        cp -P -f web2py/$fl sav/$fl
-    done
-    pushd web2py
-    echo "--- getting web2py from GitHub ..."
-    #git add --all .
-    #git commit -m "before upgrade"
-    git reset --hard
-    git pull origin master
-    cp $SHEBANQ_DIR/scripts/home/*.sh $TOPLEVEL
-    echo "--- done"
-    cp handlers/wsgihandler.py .
-    chown dirkr:shebanq wsgihandler.py
-    popd
-    for fl in parameters.py routes.py applications/shebanq
-    do
-        echo "--- restore $fl from sav"
-        cp -P sav/$fl web2py/$fl
-    done
-    echo "- Done Upgrading web2py."
-fi
-
-# end upgrade web2py
 
 echo "Updating shebanq ..."
 cd $SHEBANQ_DIR

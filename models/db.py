@@ -77,7 +77,6 @@ connStrWeb = f"mysql://{connUser}/shebanq_web"
 connStrNote = f"mysql://{connUser}/shebanq_note"
 connStrPassage = f"mysql://{connUser}/shebanq_passage"
 
-print(connStrWeb)
 db = DAL(
     connStrWeb,
     migrate_enabled=False,  # if session table already exists
