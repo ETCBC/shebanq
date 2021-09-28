@@ -7,7 +7,7 @@ import { SelectLanguage, SelectPassage, SelectResultPage } from "./select.js"
 import { Message } from "./message.js"
 import { MaterialContent } from "./materialcontent.js"
 import { MaterialSettings } from "./materialsettings.js"
-import { HebrewSettings } from "./hebrewsettings.js"
+import { FeatureSettings } from "./featuresettings.js"
 
 export class Material {
   /* Object corresponding to everything that controls the material in the main part
@@ -22,7 +22,7 @@ export class Material {
     this.message = new Message()
     this.content = new MaterialContent()
     this.materialSettings = new MaterialSettings(this.content)
-    this.hebrewSettings = new HebrewSettings()
+    this.featureSettings = new FeatureSettings()
     this.message.msg("choose a passage or a query or a word")
   }
 
@@ -119,7 +119,7 @@ export class Material {
     } else {
       PG.highlight2({ code: "5", qw: "w" })
       PG.highlight2({ code: "5", qw: "q" })
-      this.hebrewSettings.apply()
+      this.featureSettings.apply()
       this.gotoVerse()
     }
   }
@@ -199,7 +199,7 @@ export class Material {
     }
     this.addVerseRefs(contentNew, mf)
     if (VS.tp() == "txtd") {
-      this.hebrewSettings.apply()
+      this.featureSettings.apply()
     } else if (VS.tp() == "txt1") {
       this.addNoteActions(contentNew)
     }
@@ -250,7 +250,7 @@ export class Material {
             `${verseFeaturesUrl}?version=${PG.version}&book=${bk}&chapter=${ch}&verse=${vs}`,
             () => {
               dataDest.attr("lf", "v")
-              this.hebrewSettings.apply()
+              this.featureSettings.apply()
               if (PG.mr == "r") {
                 if (PG.qw != "n") {
                   PG.picker1[PG.qw].adapt(PG.iid, true)

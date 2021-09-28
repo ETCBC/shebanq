@@ -5,7 +5,7 @@
  *
  */
 
-export class HebrewSettings {
+export class FeatureSettings {
   constructor() {
     for (const fld in VS.getHebrew()) {
       this[fld] = new HebrewSetting(fld)
