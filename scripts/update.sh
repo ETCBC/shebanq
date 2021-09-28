@@ -67,16 +67,6 @@ python3 -m compileall modules
 # chown apache:apache $WEB2PY_DIR/welcome.w2p
 echo "- Done compiling."
 
-# the following script creates a logging.conf in the web2py directory.
-# This file must be removed before the webserver starts up, otherwise httpd wants to write web2py.log, which is generally not allowed
-# and especially not under linux.
-# Failing to remove this file will result in an Internal Server Error by SHEBANQ!
-cd $WEB2PY_DIR
-echo "- Remove sessions ..."
-python3 web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
-
-sleep 1
-
 cd $SHEBANQ_DIR
 mkdir -p "$UNPACK"
 
@@ -120,4 +110,15 @@ sleep 2
 if [ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]; then
     sudo -n /usr/bin/systemctl start mariadb.service
 fi
+
+# the following script creates a logging.conf in the web2py directory.
+# This file must be removed before the webserver starts up, otherwise httpd wants to write web2py.log, which is generally not allowed
+# and especially not under linux.
+# Failing to remove this file will result in an Internal Server Error by SHEBANQ!
+cd $WEB2PY_DIR
+echo "- Remove sessions ..."
+python3 web2py.py -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
+
+sleep 1
+
 sudo -n /usr/bin/systemctl start httpd.service
