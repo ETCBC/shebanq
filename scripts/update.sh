@@ -95,7 +95,7 @@ python -m compileall modules
 echo "- Compile modules of shebanq app ..."
 cd $SHEBANQ_DIR
 python -m compileall modules
-chown dirkr:shebanq $WEB2PY_DIR/welcome.w2p
+chown apache:apache $WEB2PY_DIR/welcome.w2p
 echo "- Done compiling."
 
 # the following script creates a logging.conf in the web2py directory.
