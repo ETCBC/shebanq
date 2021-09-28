@@ -8,9 +8,9 @@ from gluon.contrib.login_methods.rpx_account import use_janrain
 
 request.requires_https()
 
-dc_u = CONFIG["shebanqUser"]
-dc_p = CONFIG["shebanqPassword"]
-dc_h = CONFIG["shebanqHost"]
+shebanqUser = CONFIG["shebanqUser"]
+shebanqPassword = CONFIG["shebanqPassword"]
+shebanqHost = CONFIG["shebanqHost"]
 
 VERSION_ORDER = """2021 c 2017 4b 4""".split()
 
@@ -72,11 +72,12 @@ current.VERSIONS = VERSIONS
 current.VERSION_ORDER = VERSION_ORDER
 current.VERSION_INDEX = VERSION_INDEX
 
-connUser = f"{dc_u}:{dc_p}@{dc_h}"
+connUser = f"{shebanqUser}:{shebanqPassword}@{shebanqHost}"
 connStrWeb = f"mysql://{connUser}/shebanq_web"
 connStrNote = f"mysql://{connUser}/shebanq_note"
 connStrPassage = f"mysql://{connUser}/shebanq_passage"
 
+print(connStrWeb)
 db = DAL(
     connStrWeb,
     migrate_enabled=False,  # if session table already exists

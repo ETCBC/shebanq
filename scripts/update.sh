@@ -86,16 +86,16 @@ git pull origin master
 echo "- Done pulling."
 cd $WEB2PY_DIR
 echo "- Compile admin app ..."
-python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
+python3 -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
 echo "- Compile shebanq app ..."
-python -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
+python3 -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
 echo "- Compile modules of admin app ..."
 cd applications/admin
-python -m compileall modules
+python3 -m compileall modules
 echo "- Compile modules of shebanq app ..."
 cd $SHEBANQ_DIR
-python -m compileall modules
-chown apache:apache $WEB2PY_DIR/welcome.w2p
+python3 -m compileall modules
+# chown apache:apache $WEB2PY_DIR/welcome.w2p
 echo "- Done compiling."
 
 # the following script creates a logging.conf in the web2py directory.
@@ -104,7 +104,7 @@ echo "- Done compiling."
 # Failing to remove this file will result in an Internal Server Error by SHEBANQ!
 cd $WEB2PY_DIR
 echo "- Remove sessions ..."
-python web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
+python3 web2py.py -Q -S shebanq -M -R scripts/sessions2trash.py -A -o -x 600000
 
 sleep 1
 
