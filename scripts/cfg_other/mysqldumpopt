@@ -1,0 +1,9 @@
+[mysql]
+password = 'password_of_mysql_user_shebanq_admin'
+user = shebanq_admin
+host = mysql11.dans.knaw.nl
+
+[mysqldump]
+password = 'password_of_mysql_user_shebanq_admin'
+user = shebanq_admin
+host = mysql11.dans.knaw.nl
