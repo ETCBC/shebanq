@@ -18,6 +18,7 @@ class NOTESAVE:
         )
 
         updated = 0
+        doCommit = False
         now = current.request.utcnow
 
         for note_id in notesUpd:
@@ -50,6 +51,7 @@ where id = {note_id}
 """
             NOTE_DB.executesql(updateSql)
             updated += 1
+            doCommit = True
 
         if len(notesDel) > 0:
             deleteSql = f"""
@@ -57,6 +59,7 @@ delete from note where id in ({",".join(str(x) for x in notesDel)})
 ;
 """
             NOTE_DB.executesql(deleteSql)
+            doCommit = True
 
         for clause_atom in notesNew:
             (is_shared, is_published, status, keywords, ntext) = notesNew[clause_atom]
@@ -80,6 +83,11 @@ values
 ;
 """
             NOTE_DB.executesql(insertSql)
+            doCommit = True
+
+        if doCommit:
+
+            NOTE_DB.commit()
 
         changed = False
         if len(notesDel) > 0:
@@ -105,6 +113,7 @@ values
                         Caching.clear(
                             f"^verses_{vr}_n_{iEncode('n', myId, keywords=keywords)}_",
                         )
+
         return changed
 
     def putVerseNotes(self):

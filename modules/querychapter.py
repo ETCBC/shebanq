@@ -2,7 +2,7 @@ import time
 
 from gluon import current
 
-from helpers import debug
+from helpers import debug, delta
 
 
 class QUERYCHAPTER:
@@ -34,12 +34,12 @@ class QUERYCHAPTER:
             None,
         )
         slotsFromChapter = Caching.get(
-            f"mFromCh_{vr}_",
+            f"slotsFromChapter_{vr}_",
             lambda: {},
             None,
         )
         chapterFromSlot = Caching.get(
-            f"chFromM_{vr}_",
+            f"chapterFromSlot_{vr}_",
             lambda: {},
             None,
         )
@@ -59,51 +59,39 @@ select id, first_m, last_m from chapter
 ;
 """
         chapterList = PASSAGE_DBS[vr].executesql(chapterSQL)
-        for (cid, first_m, last_m) in chapterList:
+        for (chapter_id, first_m, last_m) in chapterList:
             for m in range(first_m, last_m + 1):
-                chapterFromSlot[m] = cid
-                slotsFromChapter[cid] = (first_m, last_m)
-        resultSQL = f"""
+                chapterFromSlot[m] = chapter_id
+                slotsFromChapter[chapter_id] = last_m
+        resultSQL1 = f"""
 select
-    query_exe.query_id as query_id, first_m, last_m, query_exe.is_published
-from monads
+    query_exe.id, query_exe.is_published, query.id
+from query
 inner join query_exe on
-    monads.query_exe_id = query_exe.id and query_exe.version = '{vr}' and
+    query.id = query_exe.query_id
+where
+    query_exe.version = '{vr}'
+and
     query_exe.executed_on >= query_exe.modified_on
-inner join query on
-    query.id = query_exe.query_id and query.is_shared = 'T'
+and
+    query.is_shared = 'T'
 ;
 """
-        results = db.executesql(resultSQL)
-        debug(f"o-o-o found {len(results)} result intervals")
 
-        debug("o-o-o processing information about queries ...")
-        resultsByQ = {}
-        for (query_id, first_m, last_m, is_published) in results:
-            resultsByQ.setdefault(query_id, []).append((first_m, last_m))
+        queryTime = time.time()
+        results1 = db.executesql(resultSQL1)
+        queryTime = time.time() - queryTime
+        debug(f"      found {len(results1)} shared queries in {delta(queryTime)}")
+
+        queryFromExe = {}
+        for (query_exe_id, is_published, query_id) in results1:
+            queryFromExe[query_exe_id] = query_id
             pubStatus.setdefault(query_id, {})[vr] = is_published == "T"
-        debug(f"o-o-o found {len(resultsByQ)} shared queries")
 
-        for (query_id, slots) in resultsByQ.items():
-            chs = {}
-            for (first_m, last_m) in slots:
-                for m in range(first_m, last_m + 1):
-                    thisCh = chapterFromSlot[m]
-                    (chapterFirstSlot, chapterLastSlot) = slotsFromChapter[thisCh]
-                    chs.setdefault(thisCh, []).append(
-                        (
-                            max((first_m, chapterFirstSlot)),
-                            min((last_m, chapterLastSlot)),
-                        )
-                    )
-            chaptersFromQuery[query_id] = list(chs)
-            for (ch, slots) in chs.items():
-                queriesFromChapter.setdefault(ch, {})[query_id] = slots
+        doQueryIndex(db, vr, queryFromExe)
 
         exe = time.time() - startTime
-        debug(
-            f"o-o-o making chapter-query index for version {vr} done in {exe} seconds"
-        )
+        debug(f"o-o-o made chapter-query index for data {vr} in {delta(exe)}")
         return (queriesFromChapter, chaptersFromQuery)
 
     def updatePubStatus(self, vr, query_id, is_published):
@@ -118,26 +106,47 @@ inner join query on
         pubStatus.setdefault(query_id, {})[vr] = is_published
         debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
 
-    def updateQCindex(self, vr, query_id):
+    def updateQCindex(self, vr, query_id, uptodate=True):
+        """
+        We want an up to date mapping from chapters to the shared, up-to-date
+        queries with results in those chapters.
+
+        We call this function when:
+        *   a query has run and a niew set of slots has been stored.
+        *   the sharing status of a query changes
+
+        We do not call this function when:
+        *   the published state of a query has changed (see updatePubStatus)
+        *   when a query body is edited but not run (see below).
+
+        In those cases the following will be taken care of:
+
+        First delete the query from the index.
+        If the query is shared and up to date, we add it back to the index
+        based on its results.
+
+        However, this function might be called at a time that the results
+        of the query have been stored in the database, before the metadata
+        has arrived there.
+        In that case we can not test on the uptodateness, so we assume that the
+        caller has passed uptodate=True.
+        Indeed, when the sharing status has changed, we are able to perform
+        this test, and then there is no need to pass uptodate=True.
+
+
+        What if a query body is edited but not run? It will then become outdated,
+        and should be removed from the index.
+        But that is a rather costly operation, and it is likely that a query is edited
+        many times before it is run again.
+        What we do instead is, that when we fetch queries for the sidebar of a chapter,
+        we skip the ones that are outdated.
+        """
         Caching = current.Caching
         db = current.db
 
-        debug(
-            (
-                f"o-o-o updating chapter-query index for query {query_id}"
-                f" in version {vr} ..."
-            )
-        )
-        slotsFromChapter = Caching.get(
-            f"mFromCh_{vr}_",
-            lambda: {},
-            None,
-        )
-        chapterFromSlot = Caching.get(
-            f"chFromM_{vr}_",
-            lambda: {},
-            None,
-        )
+        debug((f"o-o-o updating chapter-query index for data {vr}"))
+        startTime = time.time()
+
         chaptersFromQuery = Caching.get(
             f"chaptersFromQuery_{vr}_",
             lambda: {},
@@ -151,48 +160,102 @@ inner join query on
         # remove query_id from both indexes: chaptersFromQuery and queriesFromChapter
         if query_id in chaptersFromQuery:
             theseChapters = chaptersFromQuery[query_id]
-            for ch in theseChapters:
-                if ch in queriesFromChapter:
-                    if query_id in queriesFromChapter[ch]:
-                        del queriesFromChapter[ch][query_id]
-                    if not queriesFromChapter[ch]:
-                        del queriesFromChapter[ch]
+            for chapter_id in theseChapters:
+                if chapter_id in queriesFromChapter:
+                    if query_id in queriesFromChapter[chapter_id]:
+                        del queriesFromChapter[chapter_id][query_id]
+                    if not queriesFromChapter[chapter_id]:
+                        del queriesFromChapter[chapter_id]
             del chaptersFromQuery[query_id]
 
         # add query_id again to both indexes (but now with updated results)
-        resultSQL = f"""
-select
-    first_m, last_m
-from monads
-inner join query_exe on
-    monads.query_exe_id = query_exe.id and query_exe.version = '{vr}' and
+        uptodateSQL = (
+            ""
+            if uptodate
+            else """
+and
     query_exe.executed_on >= query_exe.modified_on
-inner join query on
-    query.id = query_exe.query_id and query.is_shared = 'T'
-where query_exe.query_id = {query_id}
+"""
+        )
+        resultSQL1 = f"""
+select
+    query_exe.id, query.id
+from query
+inner join query_exe on
+    query.id = query_exe.query_id
+where
+    query.id = {query_id}
+and
+    query_exe.version = '{vr}'
+and
+    query.is_shared = 'T'
+{uptodateSQL}
 ;
 """
-        for (first_m, last_m) in db.executesql(resultSQL):
-            chs = {}
-            prevCh = None
-            for m in range(first_m, last_m + 1):
-                thisCh = chapterFromSlot[m]
-                if prevCh != thisCh:
-                    (chapterFirstSlot, chapterLastSlot) = slotsFromChapter[thisCh]
-                    prevCh = thisCh
-                chs.setdefault(thisCh, []).append(
-                    (
-                        max((first_m, chapterFirstSlot)),
-                        min((last_m, chapterLastSlot)),
-                    )
-                )
-            if chs:
-                chaptersFromQuery[query_id] = list(chs)
-                for (ch, slots) in chs.items():
-                    queriesFromChapter.setdefault(ch, {})[query_id] = slots
-        debug(
-            (
-                f"o-o-o updating chapter-query index for query {query_id}"
-                f" in version {vr} done"
-            )
-        )
+        queryTime = time.time()
+        results1 = db.executesql(resultSQL1)
+        queryTime = time.time() - queryTime
+        debug(f"      found {len(results1)} shared queries in {delta(queryTime)}")
+
+        queryFromExe = {}
+        for (query_exe_id, query_id) in results1:
+            queryFromExe[query_exe_id] = query_id
+
+        if queryFromExe:
+            doQueryIndex(db, vr, queryFromExe)
+
+        exe = time.time() - startTime
+        debug(f"o-o-o updated chapter-query index for data {vr} in {delta(exe)}")
+
+
+def doQueryIndex(db, vr, queryFromExe):
+    Caching = current.Caching
+
+    slotsFromChapter = Caching.get(f"slotsFromChapter_{vr}_", lambda: {}, None)
+    chapterFromSlot = Caching.get(f"chapterFromSlot_{vr}_", lambda: {}, None)
+    chaptersFromQuery = Caching.get(f"chaptersFromQuery_{vr}_", lambda: {}, None)
+    queriesFromChapter = Caching.get(f"queriesFromChapter_{vr}_", lambda: {}, None)
+
+    resultSQL2 = f"""
+select query_exe_id, first_m, last_m from monads
+where
+query_exe_id in ({",".join(str(idx) for idx in queryFromExe)})
+;
+"""
+    queryTime = time.time()
+    results2 = db.executesql(resultSQL2)
+    queryTime = time.time() - queryTime
+    debug(f"      found {len(results2)} result intervals in {delta(queryTime)}")
+
+    debug("      processing information about queries ...")
+    procTime = time.time()
+
+    resultsByQ = {}
+    for (query_exe_id, first_m, last_m) in results2:
+        query_id = queryFromExe[query_exe_id]
+        resultsByQ.setdefault(query_id, []).append((first_m, last_m))
+    debug(f"      found {len(resultsByQ)} shared queries")
+
+    for (query_id, ranges) in resultsByQ.items():
+        chapters = {}
+        for (first_m, last_m) in ranges:
+            if first_m == last_m:
+                chapter_id = chapterFromSlot[first_m]
+                chapters.setdefault(chapter_id, []).append((first_m, first_m))
+                continue
+
+            m = first_m
+            while m <= last_m:
+                chapter_id = chapterFromSlot[m]
+                chapterLastSlot = slotsFromChapter[chapter_id]
+                endM = min((last_m, chapterLastSlot))
+                chapters.setdefault(chapter_id, []).append((m, endM))
+                m = chapterLastSlot + 1
+
+        if chapters:
+            chaptersFromQuery[query_id] = list(chapters)
+            for (chapter_id, ranges) in chapters.items():
+                queriesFromChapter.setdefault(chapter_id, {})[query_id] = ranges
+
+    procTime = time.time() - procTime
+    debug(f"      processed shared queries into index in {delta(procTime)}")

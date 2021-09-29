@@ -14,7 +14,7 @@ class QUERYSAVE:
         self.Query = Query
         self.QueryChapter = QueryChapter
 
-    def putSlots(self, vr, query_id, rows, is_shared):
+    def putSlots(self, vr, query_id, rows):
         Caching = current.Caching
         Query = self.Query
         QueryChapter = self.QueryChapter
@@ -23,12 +23,16 @@ class QUERYSAVE:
         query_exe_id = Query.getExe(vr, query_id)
         if query_exe_id is None:
             return
+
         db.executesql(
             f"""
 delete from monads where query_exe_id={query_exe_id}
 ;
 """
         )
+
+        db.commit()
+
         # Here we clear stuff that will become invalid
         # because of a (re)execution of a query
         # and the deleting of previous results and the storing of new results.
@@ -45,7 +49,7 @@ insert into monads (query_exe_id, first_m, last_m) values
             r = 0
             while r < nRows:
                 if query != "":
-                    db.executesql(query)
+                    db.executesql(f"{query};")
                     query = ""
                 query += start
                 s = min(r + limitRow, len(rows))
@@ -56,10 +60,12 @@ insert into monads (query_exe_id, first_m, last_m) values
                         query += f",({query_exe_id},{row[0]},{row[1]})"
                 r = s
             if query != "":
-                db.executesql(query)
+                db.executesql(f"{query};")
                 query = ""
 
-        QueryChapter.updateQCindex(vr, query_id)
+        db.commit()
+
+        QueryChapter.updateQCindex(vr, query_id, uptodate=True)
 
     def sharing(self):
         Check = current.Check
@@ -81,7 +87,7 @@ insert into monads (query_exe_id, first_m, last_m) values
             val = requestVars.val
             vr = requestVars.version
             if fieldName is None or fieldName not in {"is_shared", "is_published"}:
-                msgs.append("error", "Illegal field name {fieldName}")
+                msgs.append(("error", f"Illegal field name {fieldName}"))
                 break
             (authorized, msg) = Query.authWrite(query_id)
             if not authorized:
@@ -231,15 +237,19 @@ select published_on from query_exe where query_id = {query_id} and version = '{v
         fieldval = f" {fname} = '{valsql}'"
         now = current.request.utcnow
         modDate = now.replace(microsecond=0) if valsql == "T" else None
-        modDateSql = "null" if modDate is None else str(modDate)
+        modDateSql = "null" if modDate is None else f" '{modDate}'"
         fieldval += f", {modDateFld} = {modDateSql} "
         sql = f"""
 update {table} set{fieldval} where id = {query_id}
 ;
 """
         db.executesql(sql)
+
+        db.commit()
+
         for vr in VERSIONS:
             QueryChapter.updateQCindex(vr, query_id)
+
         thismsg = "modified"
         thismsg = "shared" if valsql == "T" else "UNshared"
         msgs.append(("good", thismsg))
@@ -259,13 +269,15 @@ update {table} set{fieldval} where id = {query_id}
         fieldval = f" {fname} = '{valsql}'"
         now = current.request.utcnow
         modDate = now.replace(microsecond=0) if valsql == "T" else None
-        modDateSql = "null" if modDate is None else str(modDate)
+        modDateSql = "null" if modDate is None else f" '{modDate}'"
         fieldval += f", {modDateFld} = {modDateSql} "
         sql = f"""
 update {table} set{fieldval} where query_id = {query_id} and version = '{vr}'
 ;
 """
         db.executesql(sql)
+        db.commit()
+
         thismsg = "modified"
         thismsg = "published" if valsql == "T" else "UNpublished"
         QueryChapter.updatePubStatus(vr, query_id, valsql == "T")
@@ -275,6 +287,7 @@ update {table} set{fieldval} where query_id = {query_id} and version = '{vr}'
     def putMeta(self, vr, query_id, fields, fieldsExe):
         Caching = current.Caching
         db = current.db
+        doCommit = False
 
         if len(fields):
             fieldRep = ", ".join(
@@ -285,6 +298,7 @@ update query set{fieldRep} where id = {query_id}
 ;
 """
             db.executesql(sql)
+            doCommit = True
             Caching.clear(r"^items_q_")
         if len(fieldsExe):
             fieldRep = ", ".join(
@@ -295,7 +309,12 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
 ;
 """
             db.executesql(sql)
+            doCommit = True
             Caching.clear(f"^items_q_{vr}_")
+
+        if doCommit:
+
+            db.commit()
 
     def putRecord(self):
         Check = current.Check
@@ -321,7 +340,6 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
         queryRecord = {}
 
         is_published = False
-        is_shared = False
 
         for x in [1]:
             query_id = Check.isId("query_id", "q", "query", msgs)
@@ -339,7 +357,6 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
                 msgs.append(("error", f"No query with id {query_id}"))
                 break
             valsOld = recordOld[0]
-            is_shared = valsOld["is_shared"] == "T"
             is_published = valsOld["is_published"] == "T"
 
             if not is_published:
@@ -388,7 +405,7 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
                     emdrosVersion,
                 ) = mql(vr, mqlNew)
                 if exeGood and not limitExceeded:
-                    self.putSlots(vr, query_id, exeSlots, is_shared)
+                    self.putSlots(vr, query_id, exeSlots)
                     fieldsExe["executed_on"] = now
                     fieldsExe["eversion"] = emdrosVersion
                     nResultSlots = countSlots(exeSlots)
@@ -396,7 +413,7 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
                     fieldsExe["resultmonads"] = nResultSlots
                     msgs.append(("good", "Query executed"))
                 else:
-                    self.putSlots(vr, query_id, [], is_shared)
+                    self.putSlots(vr, query_id, [])
                 msgs.extend(theseMsgs)
             self.putMeta(vr, query_id, fields, fieldsExe)
             queryRecord = Query.getInfo(
@@ -437,3 +454,4 @@ insert into query_exe (id, version, query_id) values (null, '{vr}', {query_id})
 ;
 """
             )
+            db.commit()

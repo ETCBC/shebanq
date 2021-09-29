@@ -90,8 +90,10 @@ class WORD:
     def getItems(self, vr, chapter):
         PASSAGE_DBS = current.PASSAGE_DBS
 
-        return (
-            PASSAGE_DBS[vr].executesql(
+        if vr not in PASSAGE_DBS:
+            return []
+
+        occurrences = PASSAGE_DBS[vr].executesql(
                 f"""
 select anchor, lexicon_id
 from word_verse
@@ -99,9 +101,25 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
 ;
 """
             )
-            if vr in PASSAGE_DBS
-            else []
-        )
+        lexemes = collections.defaultdict(lambda: [])
+
+        for (slot, lexicon_id) in occurrences:
+            lexemes[lexicon_id].append(slot)
+
+        r = []
+        if len(lexemes):
+            lexiconIdsRep = ",".join(f"'{lexicon_id}'" for lexicon_id in lexemes)
+            wordSql = f"""
+select * from lexicon where id in ({lexiconIdsRep})
+;
+"""
+            wordRecords = sorted(
+                PASSAGE_DBS[vr].executesql(wordSql, as_dict=True),
+                key=lambda x: hebKey(x["entryid_heb"]),
+            )
+            for w in wordRecords:
+                r.append({"item": w, "slots": json.dumps(lexemes[w["id"]])})
+        return r
 
     def read(self, vr, lexicon_id):
         PASSAGE_DBS = current.PASSAGE_DBS
@@ -116,29 +134,6 @@ select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
             else []
         )
         return collapseToRanges(row[0] for row in rows)
-
-    def group(self, vr, occurrences):
-        PASSAGE_DBS = current.PASSAGE_DBS
-
-        if vr not in PASSAGE_DBS:
-            return []
-        wordIds = collections.defaultdict(lambda: [])
-        for x in occurrences:
-            wordIds[x[1]].append(x[0])
-        r = []
-        if len(wordIds):
-            wordIdsRep = ",".join(f"'{x}'" for x in wordIds)
-            wordSql = f"""
-select * from lexicon where id in ({wordIdsRep})
-;
-"""
-            wordRecords = sorted(
-                PASSAGE_DBS[vr].executesql(wordSql, as_dict=True),
-                key=lambda x: hebKey(x["entryid_heb"]),
-            )
-            for w in wordRecords:
-                r.append({"item": w, "slots": json.dumps(wordIds[w["id"]])})
-        return r
 
     def getPlainInfo(self, vr, lexicon_id):
         PASSAGE_DBS = current.PASSAGE_DBS

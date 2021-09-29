@@ -19,6 +19,10 @@ def isodt(dt=None):
     )
 
 
+def delta(timeInterval):
+    return f"{int(round(timeInterval * 100)) / 100} s"
+
+
 def hebKey(x):
     return x.replace("שׁ", "ששׁ").replace("שׂ", "ששׂ")
 

@@ -203,16 +203,23 @@ insert into note
             )
             # first delete previously bulk uploaded notes by this author
             # and with these keywords and these versions
-            delSql = f"""delete from note
+            delSql = f"""
+delete from note
 where bulk = 'b'
 and created_by = {myId}
 and {whereVersion}
 and {whereKeywords};"""
             NOTE_DB.executesql(delSql)
+
+            NOTE_DB.commit()
+
             for chunk in chunks:
                 chunkRep = ",\n".join(chunk)
                 sql = f"{sqlhead} {chunkRep};"
                 NOTE_DB.executesql(sql)
+
+            NOTE_DB.commit()
+
             Caching.clear(r"^items_n_")
             for vr in myVersions:
                 Caching.clear(f"^verses_{vr}_n_")

@@ -398,7 +398,7 @@ export class SideContent {
     const sendData = {}
     sendData.version = vr
     sendData.query_id = iid
-    sendData.fieldName = fieldName
+    sendData.fname = fieldName
     sendData.val = val
 
     $.post(

@@ -320,7 +320,9 @@ select {",".join(fields)} from {table} where id = {obj_id}
             if obj_id:
                 fieldVals = [f" {f} = '{fieldsUpd[f]}'" for f in fields]
                 sql = (
-                    f"""update {table} set{",".join(fieldVals)} where id = {obj_id};"""
+                    f"""
+update {table} set{",".join(fieldVals)} where id = {obj_id}
+;"""
                 )
                 thisMsg = "updated"
             else:
@@ -330,7 +332,11 @@ insert into {table} ({",".join(fields)}) values ({",".join(fieldVals)})
 ;
 """
                 thisMsg = f"{label} added"
+
             db.executesql(sql)
+
+            db.commit()
+
             if obj_id == 0:
                 obj_id = db.executesql(
                     """

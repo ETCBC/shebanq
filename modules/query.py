@@ -179,38 +179,20 @@ class QUERY:
             lambda: {},
             None,
         )
-        result = []
         chapter_id = chapter.get("id", None)
 
         if chapter_id is None:
-            return result
+            return []
 
-        for (query_id, slots) in queriesFromChapter.get(chapter_id, {}).items():
+        slots = collections.defaultdict(lambda: set())
+        r = []
+
+        for (query_id, ranges) in queriesFromChapter.get(chapter_id, {}).items():
             if onlyPub and not pubStatus.get(query_id, {}).get(vr, False):
                 continue
-            for (first_m, last_m) in slots:
-                result.append((query_id, first_m, last_m))
-        return result
+            for (first_m, last_m) in ranges:
+                slots[query_id] |= set(range(first_m, last_m + 1))
 
-    def read(self, vr, query_id):
-        db = current.db
-
-        query_exe_id = self.getExe(vr, query_id)
-        if query_exe_id is None:
-            return normRanges([])
-        slotSets = db.executesql(
-            f"""
-select first_m, last_m from monads where query_exe_id = {query_exe_id} order by first_m
-;
-"""
-        )
-        return normRanges(slotSets)
-
-    def group(self, vr, slotSets):
-        slots = collections.defaultdict(lambda: set())
-        for (query_id, b, e) in slotSets:
-            slots[query_id] |= set(range(b, e + 1))
-        r = []
         if len(slots):
             msgs = []
             queryrecords = self.getInfo(
@@ -225,6 +207,20 @@ select first_m, last_m from monads where query_exe_id = {query_exe_id} order by 
             for q in queryrecords:
                 r.append({"item": q, "slots": json.dumps(sorted(list(slots[q["id"]])))})
         return r
+
+    def read(self, vr, query_id):
+        db = current.db
+
+        query_exe_id = self.getExe(vr, query_id)
+        if query_exe_id is None:
+            return normRanges([])
+        slotSets = db.executesql(
+            f"""
+select first_m, last_m from monads where query_exe_id = {query_exe_id} order by first_m
+;
+"""
+        )
+        return normRanges(slotSets)
 
     def getExe(self, vr, query_id):
         db = current.db
@@ -303,6 +299,16 @@ where query.id = {query_id}
         withIds=True,
         po=False,
     ):
+        """
+        If called with singleVersion is True,
+        we are grabbibg queries for the side list of a chapter.
+        In this case:
+        *   query_id is an iterable of query ids
+        *   we only want the query exe records of these queries for a single version vr
+        *   we only want query records that are:
+            *   belong to a shared query
+            *   up to date: executed after modified
+        """
         db = current.db
 
         sqli = (
@@ -386,6 +392,8 @@ inner join project on query.project = project.id
         sqlc = (
             f"""
 where query.id in ({",".join(query_id)})
+and query.is_shared = 'T'
+and query_exe.executed_on >= query_exe.modified_on
 """
             if singleVersion
             else f"""

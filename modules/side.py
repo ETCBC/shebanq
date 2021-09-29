@@ -43,11 +43,9 @@ class SIDE:
             )
         else:
             if qw == "q":
-                slotSets = Query.getItems(vr, chapter, is_published == "v")
-                sideItems = Query.group(vr, slotSets)
+                sideItems = Query.getItems(vr, chapter, is_published == "v")
             elif qw == "w":
-                slotSets = Word.getItems(vr, chapter)
-                sideItems = Word.group(vr, slotSets)
+                sideItems = Word.getItems(vr, chapter)
             elif qw == "n":
                 sideItems = Note.getItems(vr, book, chapter, is_published)
             else:
