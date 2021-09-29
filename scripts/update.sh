@@ -30,12 +30,12 @@ UNPACK="/data/shebanq/unpack"
 # put the next setting to "x" if your production machine does not already have data
 PRODUCTION_HAS_DATA="v"
 
-if [ "$HOSTNAME" == "clarin31.dans.knaw.nl" ]; then
+if [[ "$HOSTNAME" == "clarin31.dans.knaw.nl" ]]; then
     echo "Updating PRODUCTION machine ..."
     PRODUCTION="v"
     MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
 elif [ "$HOSTNAME" == "tclarin31.dans.knaw.nl" ]; then
-    echo "Updating STAGING machine ..."
+    echo "Updating TEST machine ..."
     PRODUCTION="x"
     MQL_OPTS="-u shebanq_admin"
 else
@@ -44,7 +44,7 @@ else
 fi
 
 sudo -n /usr/bin/systemctl stop httpd.service
-if [ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]; then
+if [[ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]]; then
     sudo -n /usr/bin/systemctl stop mariadb.service
 fi
 
@@ -72,8 +72,8 @@ echo "- Done compiling."
 cd $SHEBANQ_DIR
 mkdir -p "$UNPACK"
 
-if [ "$1" == "-de" ]; then
-    if [ "$2" == "" ]; then
+if [[ "$1" == "-de" ]]; then
+    if [[ "$2" == "" ]]; then
         echo "No version specified. Abort"
     else
         VERSION="$2"
@@ -87,8 +87,8 @@ if [ "$1" == "-de" ]; then
         mql -n -b m -p `cat $MYSQL_PDIR/mqlimportopt` $MQL_OPTS -e UTF8 < $UNPACK/$DBNAME.mql
     fi
 fi
-if [ "$1" == "-d" -o "$1" == "-de" ]; then
-    if [ "$2" == "" ]; then
+if [[ "$1" == "-d" || "$1" == "-de" ]]; then
+    if [[ "$2" == "" ]]; then
         echo "No version specified. Abort"
     else
         VERSION="$2"
@@ -103,13 +103,13 @@ fi
 
 # Here we clean the logging.conf script as promised above.
 cd $WEB2PY_DIR
-if [ -e logging.conf ]; then
+if [[ -e logging.conf ]]; then
     rm logging.conf
 fi
 
 sleep 2
 
-if [ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]; then
+if [[ "$PRODUCTION" == "x" || "$PRODUCTION_HAS_DATA" == "x" ]]; then
     sudo -n /usr/bin/systemctl start mariadb.service
 fi
 
