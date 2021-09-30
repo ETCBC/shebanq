@@ -9,6 +9,11 @@ BLOCK_SIZE = 500
 
 class CHART:
     def __init__(self, Books, Record, Word, Query, Note):
+        """Test
+
+        Test
+        """
+
         self.Books = Books
         self.Record = Record
         self.Word = Word

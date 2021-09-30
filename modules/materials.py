@@ -103,13 +103,12 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
         Word = self.Word
         Query = self.Query
         Note = self.Note
-        PASSAGE_DBS = current.PASSAGE_DBS
 
         if mr == "m":
             (book, chapter) = self.getPassage(vr, bk, ch)
             material = (
                 VersesContent(
-                    PASSAGE_DBS, vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang
+                    vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang
                 )
                 if chapter
                 else None
@@ -155,7 +154,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
                     vr, page, slotSets
                 )
                 material = VersesContent(
-                    PASSAGE_DBS, vr, mr, verses, tp=tp, tr=tr, lang=lang
+                    vr, mr, verses, tp=tp, tr=tr, lang=lang
                 )
                 result = dict(
                     mr=mr,

@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 
+from gluon import current
+
 from constants import NOTFILLFIELDS
 from blang import BOOK_TRANS
 from boiler import FIELDNAMES, TEXT_TPL
@@ -9,7 +11,6 @@ from helpers import hEsc
 class VerseContent:
     def __init__(
         self,
-        PASSAGE_DBS,
         vr,
         book_name,
         chapter_num,
@@ -21,8 +22,13 @@ class VerseContent:
         mr=None,
         lang="en",
     ):
+        """Handle a single verse.
+
+        It can retrieve word data from the database
+        and render it in various textual formats.
+        """
+
         self.version = vr
-        passageDb = PASSAGE_DBS[vr] if vr in PASSAGE_DBS else None
         self.tp = tp
         self.tr = tr
         self.mr = mr
@@ -30,22 +36,37 @@ class VerseContent:
         self.book_name = book_name
         self.chapter_num = chapter_num
         self.verse_num = verse_num
+        self.xml = xml
+        self.wordData = wordData
+        self.process()
+
+    def process(self):
+        vr = self.version
+        book_name = self.book_name
+        chapter_num = self.chapter_num
+        verse_num = self.verse_num
+        xml = self.xml
+        wordData = self.wordData
+
         if xml is None:
             xml = ""
-        if wordData is None:
+
+        PASSAGE_DBS = current.PASSAGE_DBS
+        passageDb = PASSAGE_DBS.get(vr, None)
+        if wordData is None and passageDb:
             fieldNames = ",".join(FIELDNAMES["txtd"])
             wsql = f"""
-select {fieldNames}, lexicon_id from word
-inner join word_verse on word_number = word_verse.anchor
-inner join verse on verse.id = word_verse.verse_id
-inner join chapter on verse.chapter_id = chapter.id
-inner join book on chapter.book_id = book.id
-where book.name = '{book_name}'
-and chapter.chapter_num = {chapter_num}
-and verse.verse_num = {verse_num}
-order by word_number
-;
-"""
+    select {fieldNames}, lexicon_id from word
+    inner join word_verse on word_number = word_verse.anchor
+    inner join verse on verse.id = word_verse.verse_id
+    inner join chapter on verse.chapter_id = chapter.id
+    inner join book on chapter.book_id = book.id
+    where book.name = '{book_name}'
+    and chapter.chapter_num = {chapter_num}
+    and verse.verse_num = {verse_num}
+    order by word_number
+    ;
+    """
             wordRecords = passageDb.executesql(wsql, as_dict=True) if passageDb else []
             wordData = []
             for record in wordRecords:

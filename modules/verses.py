@@ -34,10 +34,7 @@ class VERSES:
         )
 
     def get_c(self, vr, bk, ch, vs, tr):
-        PASSAGE_DBS = current.PASSAGE_DBS
-
         material = VerseContent(
-            PASSAGE_DBS,
             vr,
             bk,
             ch,

@@ -1,0 +1,122 @@
+site_name: SHEBANQ
+site_description: > 
+  Saving Queries on the BHSA (Hebrew Bible + ETCBC linguistics)
+
+site_url: "https://etcbs.github.io/shebanq/" 
+site_author: Dirk Roorda
+
+repo_name: etcbc/shebanq
+repo_url: 'https://github.com/etcbc/shebanq/'
+
+theme:
+  name: material
+  logo: static/images/shebanq_logo.png
+  favicon: 'favicon.ico'
+  development: false
+  development_label: still in beta
+  production_link: ''
+  client:
+    name: ETCBC
+    url: http://www.etcbc.nl
+    logo: static/images/etcbc_round.png 
+  feature:
+    tabs: true
+
+strict: false
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - codehilite:
+      guess_lang: false
+      linenums: true
+  - def_list
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: etcbc
+      repo: mkdocs-dans
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - markdownextradata
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.insert(0, "../../web2py/web2py")
+            - sys.path.insert(0, "modules")
+          rendering:
+            show_source: false
+  - minify:
+      minify_html: true
+
+extra:
+  # App
+  repoName: shebanq
+  repoUrl: https://github.com/etcbc/shebanq
+  repBase: https://github.com/etcbc/shebanq/blob/master
+  liveBase: https://shebanq.ancient-data.org
+  repo: https://github.com/etcbc/shebanq
+  docSite: https://etcbc.github.io/shebanq
+
+  # DARIAH
+  dans: https://dans.knaw.nl
+  etcbc: http://www.etcbc.nl
+
+  # TECH
+  atom: https://atom.io 
+  bash: https://www.gnu.org/software/bash/
+  black: https://black.readthedocs.io/en/stable/
+  css: https://developer.mozilla.org/en-US/docs/Web/CSS
+  eslint: http://eslint.org
+  flake8: https://github.com/PyCQA/flake8
+  githubBase: https://github.com/
+  html: https://developer.mozilla.org/en-US/docs/Web/HTML
+  javascript: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  jquery: https://api.jquery.com
+  markdownDoc: https://guides.github.com/features/mastering-markdown/
+  mkdocs: https://github.com/mkdocs/mkdocs
+  mkdocsmaterial: https://github.com/squidfunk/mkdocs-material
+  python: https://www.python.org
+  pythondocstrings: https://www.python.org/dev/peps/pep-0257/
+  webApi: https://developer.mozilla.org/en-US/docs/Web/API/document
+  wsgi: https://modwsgi.readthedocs.io/en/develop
+  yaml: http://www.yaml.org
+  zenodo: https://zenodo.org
+
+nav:
+  - About:
+    - Intro: 'intro.md'
+    - News: 'news.md'
+  - Server:
+    - Intro: 'server/intro.md'
+    - Models: 'server/models.md'
+    - Controllers: 'server/controllers.md'
+    - Modules: 'server/modules.md'
+    - Views: 'server/views.md'
+  - Client:
+    - Intro: 'client/intro.md'
+    - CSS: 'client/css.md'
+    - Javascript: 'client/js.md'

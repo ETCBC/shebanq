@@ -23,7 +23,7 @@ onProd = False
 onTest = False
 onOther = False
 
-if servedOn is None or servedOn.endswith("local"):
+if servedOn is None or servedOn.endswith("local") or servedOn.endswith("home"):
     onLocal = True
 elif servedOn == "shebanq.ancient-data.org":
     onProd = True

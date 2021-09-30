@@ -1,5 +1,7 @@
 import collections
 
+from gluon import current
+
 from constants import NOTFILLFIELDS
 from boiler import FIELDNAMES
 from helpers import hEsc
@@ -9,7 +11,6 @@ from versecontent import VerseContent
 class VersesContent:
     def __init__(
         self,
-        PASSAGE_DBS,
         vr,
         mr,
         verseIds=None,
@@ -21,10 +22,28 @@ class VersesContent:
         if tr is None:
             tr = "hb"
         self.version = vr
-        passageDb = PASSAGE_DBS[vr] if vr in PASSAGE_DBS else None
         self.mr = mr
         self.tp = tp
         self.tr = tr
+        self.lang = lang
+        self.chapter = chapter
+        self.verseIds = verseIds
+        self.process()
+
+    def process(self):
+        vr = self.version
+        mr = self.mr
+        tp = self.tp
+        tr = self.tr
+        lang = self.lang
+        chapter = self.chapter
+        verseIds = self.verseIds
+
+        PASSAGE_DBS = current.PASSAGE_DBS
+        passageDb = PASSAGE_DBS.get(vr, None)
+        if passageDb is None:
+            return
+
         self.verses = []
         if self.mr == "r" and (verseIds is None or len(verseIds) == 0):
             return
@@ -104,7 +123,6 @@ order by word_number
             xml = verse[4] if tp == "txtp" else ""
             self.verses.append(
                 VerseContent(
-                    PASSAGE_DBS,
                     vr,
                     verse[1],
                     verse[2],

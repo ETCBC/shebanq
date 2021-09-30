@@ -13,4 +13,5 @@ sessions/*
 uploads/*
 errors/*
 cache/*
+site/*
 _local
