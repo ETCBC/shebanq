@@ -1,39 +1,40 @@
 #!/bin/bash
-# This a the script that you can run on the production server of SHEBANQ to restore the shebanq_web and shebanq_note databases
 
-# run it as follows:
-#
-# ./catchup.sh
+# Script to restore user data of a SHEBANQ server.
+# Run it on that server.
+# The server must have been provisioned.
+# More info: see config.sh
 
-# This script is set up to work at specific servers.
-# Currently it supports 
-#   clarin11.dans.knaw.nl (SELINUX)
-#   PPJV003 (Ubuntu) (default)
+source ${0%/*}/config.sh
 
-# MYSQL_PDIR: directory with config files for talking with mysql
-# SH_ADIR   : directory where the web app shebanq resides (and also web2py itself)
-# INCOMING  : directory where installation files arrive
 
-INCOMING="/home/dirkr"
+USAGE="
+Usage: $(basename $0) [Options]
 
-if [ "$HOSTNAME" == "clarin11.dans.knaw.nl" ]; then
-        ON_CLARIN=1
-        MYSQL_PDIR="/opt/emdros/cfg"
-        SH_ADIR="/opt/web-apps"
-        MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
-        UNPACK="/data/shebanq/unpack"
+Restores databases that collect dynamic website data of SHEBANQ:
+
+*   shebanq_web
+*   shebanq_note
+"
+
+showusage "$usage"
+
+setscenario "$HOSTNAME" "Restoring data on" "$USAGE"
+
+if [[ -f "$UNPACK" ]]; then
+    rm -rf "$UNPACK"
+fi
+if [[ ! -d "$UNPACK" ]]; then
+    mkdir -p "$UNPACK"
 fi
 
-if [ $ON_CLARIN ]; then
-    sudo -n /usr/bin/systemctl stop httpd.service
-fi
+sudo -n /usr/bin/systemctl stop httpd.service
 
-cd $SH_ADIR/shebanq
-mkdir -p $UNPACK
+# order of dropping and creating is important!
 
 echo "unzipping database dumps for shebanq_web and shebanq_note"
-cp $INCOMING/shebanq_web.sql.gz $UNPACK
-cp $INCOMING/shebanq_note.sql.gz $UNPACK
+cp $TARGET/shebanq_web.sql.gz $UNPACK
+cp $TARGET/shebanq_note.sql.gz $UNPACK
 gunzip -f $UNPACK/shebanq_web.sql.gz
 gunzip -f $UNPACK/shebanq_note.sql.gz
 echo "dropping and creating databases shebanq_web and shebanq_note"
@@ -46,7 +47,4 @@ echo "use shebanq_web" | cat - $UNPACK/shebanq_web.sql | mysql --defaults-extra-
 echo "use shebanq_note" | cat - $UNPACK/shebanq_note.sql | mysql --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt
 sleep 2
 
-if [ $ON_CLARIN ]; then
-    sudo -n /usr/bin/systemctl start httpd.service
-fi
-
+sudo -n /usr/bin/systemctl start httpd.service

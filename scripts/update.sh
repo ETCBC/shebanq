@@ -24,6 +24,8 @@ Options:
     Only the indicated dataversion will be imported.
 "
 
+showusage "$usage"
+
 setscenario "$HOSTNAME" "Updating" "$USAGE"
 
 if [[ -f "$UNPACK" ]]; then

@@ -143,9 +143,9 @@ MACHINE_OTHER="other.machine.edu"
 LOCALDB_OTHER="v"
 #
 #
-# Your home directory on the server
+# Your username on the server
 #
-TARGETHOME="/home/dirkr"
+TARGETUSER="dirkr"
 #
 #
 # Where the Apache config files are on the server
@@ -165,6 +165,7 @@ BINARIES="$SCRIPTSOURCE/binaries"
 EMDROS="$BINARIES/emdros-$EMDROSVERSION.tar.gz"
 WEB2PY="$BINARIES/web2py_src.zip"
 
+TARGETHOME="/home/$TARGETUSER"
 TARGET="$TARGETHOME/shebanq-install"
 UNPACK="tmp/shebanq"
 
@@ -180,6 +181,15 @@ EMDROS="$EMDROS.tar.gz"
 WEB2PY="web2py_src.zip"
 
 # Set some variables that depend on the scenario
+
+function showusage {
+    usage="$1"
+    shift
+    if [[ "$1" == "--help" || "$1" == "-h" || "$1" == "-?" ]]; then
+        echo "$usage"
+        exit
+    fi
+}
 
 function setscenario {
     if [[ "$1" == "p" || "$1" == "$MACHINE_PROD" ]]; then

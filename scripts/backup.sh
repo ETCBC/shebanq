@@ -1,42 +1,34 @@
 #!/bin/bash
-# This a the script that you can run on the production server of SHEBANQ to backup the shebanq_web and shebanq_note databases
 
-# run it as follows:
-#
-# ./backup.sh
+# Script to backup user data of a SHEBANQ server.
+# Run it on that server.
+# The server must have been provisioned.
+# More info: see config.sh
 
-# This script is set up to work at specific servers.
-# Currently it supports 
-#   clarin11.dans.knaw.nl (SELINUX)
-#   PPJV003 (Ubuntu) (default)
+source ${0%/*}/config.sh
 
-# MYSQL_PDIR: directory with config files for talking with mysql
-# SH_ADIR   : directory where the web app shebanq resides (and also web2py itself)
-# INCOMING  : directory where installation files arrive
 
-INCOMING="/home/dirkr"
+USAGE="
+Usage: $(basename $0) [Options]
 
-if [ "$HOSTNAME" == "clarin11.dans.knaw.nl" ]; then
-        ON_CLARIN=1
-        MYSQL_PDIR="/opt/emdros/cfg"
-        SH_ADIR="/opt/web-apps"
-        MQL_OPTS="-u shebanq_admin -h mysql11.dans.knaw.nl"
-        UNPACK="/data/shebanq/unpack"
-fi
+Backs up databases that collect dynamic website data of SHEBANQ:
 
-if [ $ON_CLARIN ]; then
-    sudo -n /usr/bin/systemctl stop httpd.service
-fi
+*   shebanq_web
+*   shebanq_note
+"
+
+showusage "$usage"
+
+setscenario "$HOSTNAME" "Backing up" "$USAGE"
+
+sudo -n /usr/bin/systemctl stop httpd.service
 
 echo "creating database dumps for shebanq_web and shebanq_note"
-mysqldump --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt shebanq_web | gzip > $INCOMING/shebanq_web.sql.gz
-chmod go-rwx $INCOMING/shebanq_web.sql.gz
-mysqldump --defaults-extra-file=$MYSQL_PDIR/mysqldumpopt shebanq_note | gzip > $INCOMING/shebanq_note.sql.gz
-chmod go-rwx $INCOMING/shebanq_note.sql.gz
+mysqldump --defaults-extra-file=$CFG_DIR/mysqldumpopt shebanq_web | gzip > $TARGET/shebanq_web.sql.gz
+chmod go-rwx $TARGET/shebanq_web.sql.gz
+mysqldump --defaults-extra-file=$CFG_DIR/mysqldumpopt shebanq_note | gzip > $TARGET/shebanq_note.sql.gz
+chmod go-rwx $TARGET/shebanq_note.sql.gz
 
 sleep 1
 
-if [ $ON_CLARIN ]; then
-    sudo -n /usr/bin/systemctl start httpd.service
-fi
-
+sudo -n /usr/bin/systemctl start httpd.service

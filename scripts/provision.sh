@@ -29,6 +29,8 @@ Backup:
     yyyy-mm-dd: take user data backed up at this date
 "
 
+showusage "$usage"
+
 setscenario "$1" "Provisioning" "$USAGE"
 shift
 
@@ -79,12 +81,12 @@ if [[ "$DBHOST" == "" ]]; then
             uweb="$backupsrcdir/shebanq_web.sql.gz"
             unote="$backupsrcdir/shebanq_note.sql.gz"
             if [[ -f "$uweb" ]]; then
-                scp -r "$uweb" "dirkr@$MACHINE:$TARGET"
+                scp -r "$uweb" "$TARGETUSER@$MACHINE:$TARGET"
             else
                 echo "WARNING: shebanq_web data not found ($uweb)"
             fi
             if [[ -f "$unote" ]]; then
-                scp -r "$unote" "dirkr@$MACHINE:$TARGET"
+                scp -r "$unote" "$TARGETUSER@$MACHINE:$TARGET"
             else
                 echo "WARNING: shebanq_note data not found ($unote)"
             fi
@@ -101,18 +103,14 @@ else
 fi
 
 if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
-    scp -r "$SCRIPTSOURCE/grants.sql" "dirkr@$MACHINE:$TARGET"
-    scp -r "$SCRIPTSOURCE/shebanq.cnf" "dirkr@$MACHINE:$TARGET"
-    scp -r "$SCRIPTSOURCE/parameters_443.py" "dirkr@$MACHINE:$TARGET"
-    scp -r "$SCRIPTSOURCE/routes.py" "dirkr@$MACHINE:$TARGET"
-    scp -r "$SCRIPTSOURCE/wsgi.conf" "dirkr@$MACHINE:$TARGET"
-
-    scp -r "$SCRIPTSOURCE/.bash_profile" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$SCRIPTSOURCE/backup.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$SCRIPTSOURCE/catchup.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$SCRIPTSOURCE/install.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$SCRIPTSOURCE/update.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$SCRIPTSOURCE/updateData.sh" "dirkr@$MACHINE:$TARGETHOME"
+    for script in grants.sql shebanq.cnf parameters_443.py routes.py wsgi.conf
+    do
+        scp -r "$SCRIPTSOURCE/$script" "$TARGETUSER@$MACHINE:$TARGET"
+    done
+    for script in .bash_profile backup.sh catchup.sh config.sh install.sh update.sh
+    do
+        scp -r "$SCRIPTSOURCE/$script" "$TARGETUSER@$MACHINE:$TARGETHOME"
+    done
 
     if [[ -e "$DESTCFG" ]]; then
         rm -rf "$DESTCFG"
@@ -122,8 +120,8 @@ if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
     fi
     cp -r "$SOURCECFG" "$DESTCFG"
     cp -r "$SOURCEAPA" "$DESTAPA"
-    scp -r "$SOURCECFG" "dirkr@$MACHINE:/$TARGET/"
-    scp -r "$SOURCEAPA" "dirkr@$MACHINE:/$TARGET/"
+    scp -r "$SOURCECFG" "$TARGETUSER@$MACHINE:/$TARGET/"
+    scp -r "$SOURCEAPA" "$TARGETUSER@$MACHINE:/$TARGET/"
 fi
 
 if [[ "$DBHOST" == "" ]]; then
@@ -132,8 +130,8 @@ if [[ "$DBHOST" == "" ]]; then
         do
             echo "Uploading version $version ..."
             thissrc="$DATASOURCE/$version"
-            scp -r "$thissrc/shebanq_etcbc$version.mql.bz2" "dirkr@$MACHINE:/$TARGET"
-            scp -r "$thissrc/shebanq_passage$version.sql.gz" "dirkr@$MACHINE:/$TARGET"
+            scp -r "$thissrc/shebanq_etcbc$version.mql.bz2" "$TARGETUSER@$MACHINE:/$TARGET"
+            scp -r "$thissrc/shebanq_passage$version.sql.gz" "$TARGETUSER@$MACHINE:/$TARGET"
         done
 
     fi
@@ -141,10 +139,10 @@ fi
 
 if [[ "$doall" == "v" || "$doemdros" == "v" ]]; then
         echo "Uploading emdros binary version $EMDROSVERSION ..."
-        scp -r "$EMDROS" "dirkr@$MACHINE:/$TARGET"
+        scp -r "$EMDROS" "$TARGETUSER@$MACHINE:/$TARGET"
 fi
 
 if [[ "$doall" == "v" || "$doweb2py" == "v" ]]; then
         echo "Uploading web2py zip ..."
-        scp -r "$WEB2PY" "dirkr@$MACHINE:/$TARGET"
+        scp -r "$WEB2PY" "$TARGETUSER@$MACHINE:/$TARGET"
 fi

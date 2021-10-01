@@ -26,6 +26,8 @@ Options:
     --apache: setup apache (assume certificates are already in place)
 "
 
+showusage "$usage"
+
 setscenario "$HOSTNAME" "Installing" "$USAGE"
 
 if [[ -f "$UNPACK" ]]; then
