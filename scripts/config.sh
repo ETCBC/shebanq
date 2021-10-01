@@ -9,23 +9,49 @@
 #
 # The maintenance scripts are
 #
+# * backup.sh
+#   - Run on the server.
+#   - Stop the web service
+#   - Backup the databases that have dynamic web data
+#       shebanq_web
+#       shebanq_note
+#   - Start the services
+#
+# * save.sh
+#   - Run on your local machine.
+#   - Save backups of dynamic web data from the shebanq server to your
+#     local directory where you hold backups.
+#     in a subfolder yyyy-mm-dd (the date of the backup).
+#     See BACKUPDIR below.
+#
 # * provision.sh
-#   Run on your local machine.
-#   Copy all files needed for installation from your local
-#   machine to the server that (is to) host shebanq.
-#   Also these files will be copied over.
+#   - Run on your local machine.
+#   - Copy all files needed for installation from your local
+#     machine to the shebanq server.
+#   - These files end up in shebanq-install under your home directory
+#   - Also the maintenance scripts files will be copied over
+#     to your home directory on the server.
+#
 # * install.sh
 #   - Run on the server.
 #     Install and configure required software:
 #       MySQL, Python, Emdros, Web2py, shebanq itself
 #   - Fill the databases with data.
 #   - Start the services.
+#
+# * restore.sh
+#   - Run on the server.
+#   - Stop the web service
+#   - Backup the databases that have dynamic web data
+#   - Start the services
+#
 # * update.sh
 #   - Run on the server.
 #   - Stop the services
 #   - Pull shebanq
 #   - Start the services
 #
+
 # CONVENTIONS
 #
 # There are three scenarios, depending on the machine that hosts SHEBANQ:
@@ -107,7 +133,7 @@ DATA_VERSIONS="4 4b 2017 c 2021"
 # The provision script will copy that over to the machine and
 # import it in the new database
 #
-BACKUPDIR=~/Documents/Current/SHEBANQ/maintenance/backupShebanqUserData
+BACKUPDIR=~/local/shebanq/backups
 #
 # Where your local github directory resided, under which 
 # the shebanq repo has been cloned.
@@ -167,6 +193,7 @@ WEB2PY="$BINARIES/web2py_src.zip"
 
 TARGETHOME="/home/$TARGETUSER"
 TARGET="$TARGETHOME/shebanq-install"
+TARGETBUDIR="$TARGETHOME/backups"
 UNPACK="tmp/shebanq"
 
 APP_DIR="/opt/web-apps"
@@ -183,10 +210,8 @@ WEB2PY="web2py_src.zip"
 # Set some variables that depend on the scenario
 
 function showusage {
-    usage="$1"
-    shift
     if [[ "$1" == "--help" || "$1" == "-h" || "$1" == "-?" ]]; then
-        echo "$usage"
+        echo "$2"
         exit
     fi
 }
@@ -217,4 +242,19 @@ function setscenario {
 
     DESTCFG="$SOURCEREPO/_local/cfg"
     DESTAPA="$SOURCEREPO/_local/apache"
+}
+
+function ensuredir {
+    if [[ -f "$1" ]]; then
+        rm -rf "$1"
+    fi
+    if [[ ! -d "$1" ]]; then
+        mkdir -p "$1"
+    fi
+}
+
+function erasedir {
+    if [[ -d "$1" ]]; then
+        rm -rf "$1"
+    fi
 }

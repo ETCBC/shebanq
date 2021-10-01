@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# Script to install SHEBANQ on a server.
-# Run it on that server.
-# The server must have been provisioned.
+# Script to install a shebanq server.
+# Run it on the server.
 # More info: see config.sh
 
 source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: $(basename $0) [Options]
+Usage: ./$(basename $0) [Options]
 
-Without options, it runs the complete installation process.
-By means of options, you can select exactly one step to
-be performed.
+Without options, it runs the complete installation process for a shebanq server.
+By means of options, you can select exactly one step to be performed.
+The server must have been provisioned.
 
 Options:
     --python: the python programming language
@@ -26,16 +25,11 @@ Options:
     --apache: setup apache (assume certificates are already in place)
 "
 
-showusage "$usage"
+showusage "$1" "$USAGE"
 
 setscenario "$HOSTNAME" "Installing" "$USAGE"
 
-if [[ -f "$UNPACK" ]]; then
-    rm -rf "$UNPACK"
-fi
-if [[ ! -d "$UNPACK" ]]; then
-    mkdir -p "$UNPACK"
-fi
+ensuredir "$UNPACK"
 
 doall="v"
 dopython="x"
@@ -250,14 +244,6 @@ skipextradirs="x"
 
 if [[ "$doall" == "v" || "$doweb2py" == "v" ]]; then
     echo "0-0-0    WEB2PY start    0-0-0"
-    current_dir=`pwd`
-
-    if [[ -d /tmp/setup-web2py/ ]]; then
-        mv /tmp/setup-web2py/ /tmp/setup-web2py.old/
-    fi
-
-    mkdir -p /tmp/setup-web2py
-    cd /tmp/setup-web2py
 
     if [[ "$skipwsgi" != "v" ]]; then
         echo "0-0-0        INSTALL mod_wsgi        0-0-0"
@@ -266,11 +252,9 @@ if [[ "$doall" == "v" || "$doweb2py" == "v" ]]; then
 
     if [[ "$skipweb2py" != "v" ]]; then
         echo "0-0-0        INSTALL web2py        0-0-0"
-        if [[ ! -d "$APP_DIR" ]]; then
-            mkdir -p "$APP_DIR"
-            chmod 755 /opt
-            chmod 755 "$APP_DIR"
-        fi
+        ensuredir "$APP_DIR"
+        chmod 755 /opt
+        chmod 755 "$APP_DIR"
 
         cd "$APP_DIR"
         cp "$TARGET/$WEB2PY" .
@@ -344,9 +328,7 @@ if [[ "$doall" == "v" || "$doapache" == "v" ]]; then
     service httpd restart
 fi
 
-if [[ -d "$UNPACK" ]]; then
-    rm -rf "$UNPACK"
-fi
+erasedir "$UNPACK"
 
 # Todo after install
 #

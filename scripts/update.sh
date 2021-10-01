@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# Script to update SHEBANQ on a server.
-# Run it on that server.
-# The server must have been installed.
+# Script to update a shebanq server.
+# Run it on the server.
 # More info: see config.sh
 
 source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: $(basename $0) [Options]
+Usage: ./$(basename $0) [Options]
 
 Without options, it only updates the shebanq software.
+The shebanq server must be fully installed.
 
 By means of options, you can also perform data updates.
 
@@ -24,16 +24,11 @@ Options:
     Only the indicated dataversion will be imported.
 "
 
-showusage "$usage"
+showusage "$1" "$USAGE"
 
 setscenario "$HOSTNAME" "Updating" "$USAGE"
 
-if [[ -f "$UNPACK" ]]; then
-    rm -rf "$UNPACK"
-fi
-if [[ ! -d "$UNPACK" ]]; then
-    mkdir -p "$UNPACK"
-fi
+ensuredir "$UNPACK"
 
 MQL_OPTS="-u shebanq_admin $DBHOST"
 
@@ -130,6 +125,4 @@ sleep 1
 
 sudo -n /usr/bin/systemctl start httpd.service
 
-if [[ -d "$UNPACK" ]]; then
-    rm -rf "$UNPACK"
-fi
+erasedir "$UNPACK"

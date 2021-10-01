@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to provision a machine that hosts SHEBANQ.
+# Script to provision a shebanq server.
 # Run it on your local computer.
 # More info: see config.sh
 
@@ -8,7 +8,11 @@ source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: $(basename $0) scenario [Options] backup
+Usage: ./$(basename $0) scenario [Options]
+
+Provisions a shebanq server with data to install it with.
+It will look on your local machine for the latest backup of the shebanq server,
+which contains the dynamic part of the database.
 
 N.B.: After provisioning the server, before running install.sh
 on the server, make sure you do it in a fresh terminal.
@@ -23,13 +27,10 @@ Options:
     --corpus: only ETCBC data
     --emdros: only Emdros binary
     --web2py: only Web2py binary
-    --user:   only backed-up user data
-
-Backup:
-    yyyy-mm-dd: take user data backed up at this date
+    --backup: only backup data
 "
 
-showusage "$usage"
+showusage "$1" "$USAGE"
 
 setscenario "$1" "Provisioning" "$USAGE"
 shift
@@ -39,7 +40,7 @@ doscripts="x"
 docorpus="x"
 doemdros="x"
 doweb2py="x"
-douser="x"
+dobackup="x"
 
 if [[ "$1" == "--scripts" ]]; then
     doall="x"
@@ -57,48 +58,31 @@ elif [[ "$1" == "--web2py" ]]; then
     doall="x"
     doweb2py="v"
     shift
-elif [[ "$1" == "--user" ]]; then
+elif [[ "$1" == "--backup" ]]; then
     doall="x"
-    douser="v"
+    dobackup="v"
     shift
 fi
 
-backupdate="$1"
+LATESTBACKUP="$BACKUPDIR/latest"
+
 if [[ "$DBHOST" == "" ]]; then
-    if [[ "$backupdate" == "" ]]; then
-        if [[ "$doall" == "v" || "$douser" == "v" ]]; then
-            echo "No backup date specified to retrieve user data from"
+    if [[ "$doall" == "v" || "$dobackup" == "v" ]]; then
+        if [[ ! -d "$LATESTBACKUP" ]]; then
+            echo "No latest server backup found"
             exit
         fi
-    elif [[ "$backupdate" != "" ]]; then
-        shift
-        backupsrcdir="$BACKUPDIR/$backupdate"
-        if [[ ! -d "$backupsrcdir" ]]; then
-            echo "Directory with user data backup does not exist: $backupsrcdir"
-            exit
-        fi
-        if [[ "$doall" == "v" || "$douser" == "v" ]]; then
-            uweb="$backupsrcdir/shebanq_web.sql.gz"
-            unote="$backupsrcdir/shebanq_note.sql.gz"
-            if [[ -f "$uweb" ]]; then
-                scp -r "$uweb" "$TARGETUSER@$MACHINE:$TARGET"
+        uweb="$LATESTBACKUP/shebanq_web.sql.gz"
+        unote="$LATESTBACKUP/shebanq_note.sql.gz"
+        for db in shebanq_web shebanq_note
+        do
+            dbfile="$LATESTBACKUP/${db}.sql.gz"
+            if [[ -f "$dbfile" ]]; then
+                scp -r "$dbfile" "$TARGETUSER@$MACHINE:$TARGET"
             else
-                echo "WARNING: shebanq_web data not found ($uweb)"
+                echo "WARNING: $db data not found ($dbfile)"
             fi
-            if [[ -f "$unote" ]]; then
-                scp -r "$unote" "$TARGETUSER@$MACHINE:$TARGET"
-            else
-                echo "WARNING: shebanq_note data not found ($unote)"
-            fi
-        else
-            echo "user data backup exists but will not be uploaded"
-        fi
-    fi
-else
-    if [[ "$backupdate" != "" ]]; then
-        echo "You passed backup data $backupdate."
-        echo "However, no backups are needed for this machine."
-        exit
+        done
     fi
 fi
 
@@ -107,7 +91,7 @@ if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
     do
         scp -r "$SCRIPTSOURCE/$script" "$TARGETUSER@$MACHINE:$TARGET"
     done
-    for script in .bash_profile backup.sh catchup.sh config.sh install.sh update.sh
+    for script in .bash_profile backup.sh restore.sh config.sh install.sh update.sh
     do
         scp -r "$SCRIPTSOURCE/$script" "$TARGETUSER@$MACHINE:$TARGETHOME"
     done
