@@ -101,19 +101,18 @@ else
 fi
 
 if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
-    scp -r "$SCRIPTSOURCE/install.sh" "dirkr@$MACHINE:$TARGET"
     scp -r "$SCRIPTSOURCE/grants.sql" "dirkr@$MACHINE:$TARGET"
     scp -r "$SCRIPTSOURCE/shebanq.cnf" "dirkr@$MACHINE:$TARGET"
     scp -r "$SCRIPTSOURCE/parameters_443.py" "dirkr@$MACHINE:$TARGET"
     scp -r "$SCRIPTSOURCE/routes.py" "dirkr@$MACHINE:$TARGET"
     scp -r "$SCRIPTSOURCE/wsgi.conf" "dirkr@$MACHINE:$TARGET"
+
+    scp -r "$SCRIPTSOURCE/.bash_profile" "dirkr@$MACHINE:$TARGETHOME"
+    scp -r "$SCRIPTSOURCE/backup.sh" "dirkr@$MACHINE:$TARGETHOME"
+    scp -r "$SCRIPTSOURCE/catchup.sh" "dirkr@$MACHINE:$TARGETHOME"
     scp -r "$SCRIPTSOURCE/install.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$HOMESOURCE/.bash_profile" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$HOMESOURCE/backup.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$HOMESOURCE/catchup.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$HOMESOURCE/install.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$HOMESOURCE/update.sh" "dirkr@$MACHINE:$TARGETHOME"
-    scp -r "$HOMESOURCE/updateData.sh" "dirkr@$MACHINE:$TARGETHOME"
+    scp -r "$SCRIPTSOURCE/update.sh" "dirkr@$MACHINE:$TARGETHOME"
+    scp -r "$SCRIPTSOURCE/updateData.sh" "dirkr@$MACHINE:$TARGETHOME"
 
     if [[ -e "$DESTCFG" ]]; then
         rm -rf "$DESTCFG"
