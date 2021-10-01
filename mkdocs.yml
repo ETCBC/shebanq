@@ -120,3 +120,5 @@ nav:
     - Intro: 'client/intro.md'
     - CSS: 'client/css.md'
     - Javascript: 'client/js.md'
+  - Deploy:
+    - Maintenance: 'deploy/maintenance.md'

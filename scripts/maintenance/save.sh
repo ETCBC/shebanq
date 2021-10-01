@@ -1,29 +1,31 @@
 #!/bin/bash
 
+# READ THIS FIRST: maintenance.md
+
 # Script to save backup from a shebanq server to local machine
 # Run it on your local computer.
-# More info: see config.sh
 
 source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: ./$(basename $0) scenario
+Usage: ./$(basename $0) situation
 
 Saves the latest backup from a shebanq server to a local machine.
 
 N.B. The backup must already have been made on the server itself by means
 of the backup.sh script.
 
-scenario:
-    p: save from the production machine
-    t: save from the test machine
-    o: save from the other machine
+situation:
+    p:   save from the current production machine
+    pn:  save from the current production machine
+    t:   save from the test machine
+    o:   save from the other machine
 "
 
 showusage "$1" "$USAGE"
 
-setscenario "$1" "Saving latest backup from" "$USAGE"
+setsituation "$1" "Saving latest backup from" "$USAGE"
 shift
 
 LATESTSRCDIR="$TARGETBUDIR/latest"

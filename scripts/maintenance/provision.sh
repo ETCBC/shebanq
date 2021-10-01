@@ -1,14 +1,15 @@
 #!/bin/bash
 
+# READ THIS FIRST: maintenance.md
+
 # Script to provision a shebanq server.
 # Run it on your local computer.
-# More info: see config.sh
 
 source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: ./$(basename $0) scenario [Options]
+Usage: ./$(basename $0) situation [Options]
 
 Provisions a shebanq server with data to install it with.
 It will look on your local machine for the latest backup of the shebanq server,
@@ -18,26 +19,31 @@ N.B.: After provisioning the server, before running install.sh
 on the server, make sure you do it in a fresh terminal.
 Because provisioning updates the .bash_profile on the server.
 
-scenario:
-    p: provision the production machine
-    t: provision the test machine
-    o: provision the other machine
+situation:
+    pn: provision the new production machine
+    p:  provision the current production machine
+    t:  provision the test machine
+    o:  provision the other machine
 
 Options:
-    --corpus: only ETCBC data
+    --static: only static data (passage and etcbc databases)
     --emdros: only Emdros binary
     --web2py: only Web2py binary
     --backup: only backup data
+
+CAUTION
+Take care with provisioning the current production machine.
+It might damage the current installation.
 "
 
 showusage "$1" "$USAGE"
 
-setscenario "$1" "Provisioning" "$USAGE"
+setsituation "$1" "Provisioning" "$USAGE"
 shift
 
 doall="v"
 doscripts="x"
-docorpus="x"
+dostatic="x"
 doemdros="x"
 doweb2py="x"
 dobackup="x"
@@ -46,9 +52,9 @@ if [[ "$1" == "--scripts" ]]; then
     doall="x"
     doscripts="v"
     shift
-elif [[ "$1" == "--corpus" ]]; then
+elif [[ "$1" == "--static" ]]; then
     doall="x"
-    docorpus="v"
+    dostatic="v"
     shift
 elif [[ "$1" == "--emdros" ]]; then
     doall="x"
@@ -70,18 +76,19 @@ if [[ "$DBHOST" == "" ]]; then
     if [[ "$doall" == "v" || "$dobackup" == "v" ]]; then
         if [[ ! -d "$LATESTBACKUP" ]]; then
             echo "No latest server backup found"
-            exit
+            echo "We install empty shebanq_web and shebanq_user databases"
+            bubase="$SCRIPTSOURCE"
+        else
+            bubase="$LATESTBACKUP"
         fi
-        uweb="$LATESTBACKUP/shebanq_web.sql.gz"
-        unote="$LATESTBACKUP/shebanq_note.sql.gz"
         for db in shebanq_web shebanq_note
         do
             dbfile="$LATESTBACKUP/${db}.sql.gz"
-            if [[ -f "$dbfile" ]]; then
-                scp -r "$dbfile" "$TARGETUSER@$MACHINE:$TARGET"
-            else
-                echo "WARNING: $db data not found ($dbfile)"
+            if [[ ! -f "$dbfile" ]]; then
+                echo "WARNING: no latest backup found ($dbfile), we use an empty db"
+                dbfile="$SCRIPTSOURCE/${db}.sql.gz"
             fi
+            scp -r "$dbfile" "$TARGETUSER@$MACHINE:$TARGET"
         done
     fi
 fi
@@ -93,7 +100,7 @@ if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
     done
     for script in .bash_profile backup.sh restore.sh config.sh install.sh update.sh
     do
-        scp -r "$SCRIPTSOURCE/$script" "$TARGETUSER@$MACHINE:$TARGETHOME"
+        scp -r "$MAINTENANCE/$script" "$TARGETUSER@$MACHINE:$TARGETHOME"
     done
 
     if [[ -e "$DESTCFG" ]]; then
@@ -109,7 +116,7 @@ if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
 fi
 
 if [[ "$DBHOST" == "" ]]; then
-    if [[ "$doall" == "v" || "$docorpus" == "v" ]]; then
+    if [[ "$doall" == "v" || "$dostatic" == "v" ]]; then
         for version in $DATA_VERSIONS
         do
             echo "Uploading version $version ..."

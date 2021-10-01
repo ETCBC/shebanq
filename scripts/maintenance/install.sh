@@ -1,8 +1,9 @@
 #!/bin/bash
 
+# READ THIS FIRST: maintenance.md
+
 # Script to install a shebanq server.
 # Run it on the server.
-# More info: see config.sh
 
 source ${0%/*}/config.sh
 
@@ -27,7 +28,7 @@ Options:
 
 showusage "$1" "$USAGE"
 
-setscenario "$HOSTNAME" "Installing" "$USAGE"
+setsituation "$HOSTNAME" "Installing" "$USAGE"
 
 ensuredir "$UNPACK"
 
@@ -85,6 +86,7 @@ fi
 
 if [[ "$doall" == "v" || "$dopython" == "v" ]]; then
     echo "0-0-0    INSTALL PYTHON MODULES    0-0-0"
+    yum install python36
     yum install python36-devel
     yum install python3-markdown
 fi

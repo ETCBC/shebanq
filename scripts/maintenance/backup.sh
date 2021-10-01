@@ -1,8 +1,9 @@
 #!/bin/bash
 
+# READ THIS FIRST: maintenance.md
+
 # Script to backup a SHEBANQ server.
 # Run it on the server.
-# More info: see config.sh
 
 source ${0%/*}/config.sh
 
@@ -22,7 +23,7 @@ datetime when the backup has been made.
 
 showusage "$1" "$USAGE"
 
-setscenario "$HOSTNAME" "Backing up" "$USAGE"
+setsituation "$HOSTNAME" "Backing up" "$USAGE"
 
 backupdatetime=`date +"%Y-%m-%dT%H-%M-%S"`
 BUDIR="$TARGETBUDIR/$backupdatetime"

@@ -1,116 +1,27 @@
 #!/bin/bash
 
-# ABOUT
+# BEFORE YOU START !!
 #
-# This is the configuration of the maintenance scripts of SHEBANQ
-# on a server that hosts it. It is not meant for local installations.
-# By the way, SHEBANQ can be installed on a personal computer,
-# but that is not explained here.
+# before running any maintenance script:
 #
-# The maintenance scripts are
-#
-# * backup.sh
-#   - Run on the server.
-#   - Stop the web service
-#   - Backup the databases that have dynamic web data
-#       shebanq_web
-#       shebanq_note
-#   - Start the services
-#
-# * save.sh
-#   - Run on your local machine.
-#   - Save backups of dynamic web data from the shebanq server to your
-#     local directory where you hold backups.
-#     in a subfolder yyyy-mm-dd (the date of the backup).
-#     See BACKUPDIR below.
-#
-# * provision.sh
-#   - Run on your local machine.
-#   - Copy all files needed for installation from your local
-#     machine to the shebanq server.
-#   - These files end up in shebanq-install under your home directory
-#   - Also the maintenance scripts files will be copied over
-#     to your home directory on the server.
-#
-# * install.sh
-#   - Run on the server.
-#     Install and configure required software:
-#       MySQL, Python, Emdros, Web2py, shebanq itself
-#   - Fill the databases with data.
-#   - Start the services.
-#
-# * restore.sh
-#   - Run on the server.
-#   - Stop the web service
-#   - Backup the databases that have dynamic web data
-#   - Start the services
-#
-# * update.sh
-#   - Run on the server.
-#   - Stop the services
-#   - Pull shebanq
-#   - Start the services
-#
-
-# CONVENTIONS
-#
-# There are three scenarios, depending on the machine that hosts SHEBANQ:
-#
-# Production:   shebanq.ancient-data.org
-#                   the one and only offical shebanq website
-#                   publicly accessible
-#                   hosted by DANS on a KNAW server
-# Test:         test.shebanq.ancient-data.orgs
-#                   the one and only offical shebanq test website
-#                   accessible from within the DANS-KNAW network
-#                   hosted by DANS on a KNAW server
-# Other:        url to be configured
-#                   an unoffical shebanq website (we encourage that!)
-#                   access to be configured
-#                   hosting to be configured
-#
-# REQUIREMENTS
-#
-# * You have cloned shebanq to your local computer,
-#   prefarably to ~/github/etcbc/shebanq
-#   You may change the ~/github location below, but you must keep
-#   the organization and repo directory structure.
-#
-# * You need to create a directory _local in ~/github/etcbc/shebanq
-#   with subdirectories
-#
-#   `cfg_prod`, `apache_prod` and/or
-#   `cfg_test`, `apache_test` and/or
-#   `cfg_other`, `apache_tother`
-#
-#   depending on the scenario.
-#   The contents of these directories should mimick
-#   the public directories
-#   `cfg_other` and `cfg_apache`
-#   found under scripts in the cloned shebanq repository.
-# 
-# * You install SHEBANQ on a Security Enhanced Linux Server (SELINUX);
-#   - you can access this machine by means of ssh (and scp)
-#   - you can sudo on this machine
-#
-# * Apache is already installed, /etc/httpd exists
-#   - mod_wsgi is not yet installed
-#   - the relevant certificates are installed in
-#     /etc/pki/tls/certs and /etc/pki/tls/private
-#     and correctly referred to in the apache conf file
-#     in your _local/apache_xxx directory, where
-#     xxx is prod/test/other depending on the scenario
-#
-# AFTER INSTALL
-#
-# Make sure that DNS resolves the server address to the IP address of
-# the newly installed machine.
+# - read maintenance.md
+# - tweak the parameters in the next section
+# - read and understand the script that you want to run
 
 
 # TWEAKING PART #################################################
 #
+# !!!!!!!!
+# CAUTION: make sure you have copied the maintenance directory
+# to the _local directory of your shebanq clone.
+# This directory will not be pushed online.
+#
+# Do not tweak the original files in the scripts/maintenance directory
+# !!!!!!!!
+#
 # Adapt the following settings to your situation before
 # running the maintenance scripts.
+#
 #
 # Version of the EMDROS software that is in use.
 # see also https://emdros.org
@@ -124,6 +35,7 @@ EMDROSVERSION="3.7.3"
 # tweak this parameter
 #
 DATA_VERSIONS="4 4b 2017 c 2021"
+# DATA_VERSIONS="2021"
 #
 #
 # Where backups of the user-generated data of shebanq can be found
@@ -135,14 +47,25 @@ DATA_VERSIONS="4 4b 2017 c 2021"
 #
 BACKUPDIR=~/local/shebanq/backups
 #
+#
 # Where your local github directory resided, under which 
 # the shebanq repo has been cloned.
 # N.B. The clone of shebanq is then $SOURCEGH/etcbc/shebanq
+#
 SOURCEGH=~/github
 #
 #
+# Your username on the server
+#
+TARGETUSER="dirkr"
+#
+#
+# Where the Apache config files are on the server
+APACHE_DIR="/etc/httpd/conf.d"
+#
+#
 # Machine specifications
-# The specification of the machines in the different scenarios
+# The specification of the machines in the different situations
 # If you work with the official SHEBANQ, the PROD and TEST machines
 # are relevant.
 # If you are bravely setting up SHEBANQ somewhere else,
@@ -159,23 +82,16 @@ SOURCEGH=~/github
 #   are not host specific, so that when we access the database from a
 #   new machine, the same grants apply as when we used the old machine
 #   
-MACHINE_PROD="clarin31.dans.knaw.nl"
+MACHINE_PROD="clarin11.dans.knaw.nl"
+MACHINE_PROD_NEW="clarin31.dans.knaw.nl"
 DBHOST_PROD="-h mysql11.dans.knaw.nl"
 
 MACHINE_TEST="tclarin31.dans.knaw.nl"
 DBHOST_TEST=""
 
 MACHINE_OTHER="other.machine.edu"
-LOCALDB_OTHER="v"
-#
-#
-# Your username on the server
-#
-TARGETUSER="dirkr"
-#
-#
-# Where the Apache config files are on the server
-APACHE_DIR="/etc/httpd/conf.d"
+MACHINE_OTHER_NEW="othernew.machine.edu"
+DBHOST_OTHER="v"
 #
 # END TWEAKING PART #################################################
 
@@ -187,6 +103,7 @@ SOURCEREPO="$SOURCEORG/shebanq"
 DATASOURCE="$SOURCEORG/bhsa/shebanq"
 SCRIPTSOURCE="$SOURCEREPO/scripts"
 LOCALDIR="$SOURCEREPO/_local"
+MAINTENANCE="$LOCALDIR/maintenance"
 BINARIES="$SCRIPTSOURCE/binaries"
 EMDROS="$BINARIES/emdros-$EMDROSVERSION.tar.gz"
 WEB2PY="$BINARIES/web2py_src.zip"
@@ -207,7 +124,7 @@ EMDROSUNTAR="emdros-$EMDROSVERSION"
 EMDROS="$EMDROS.tar.gz"
 WEB2PY="web2py_src.zip"
 
-# Set some variables that depend on the scenario
+# Set some variables that depend on the situation
 
 function showusage {
     if [[ "$1" == "--help" || "$1" == "-h" || "$1" == "-?" ]]; then
@@ -216,13 +133,19 @@ function showusage {
     fi
 }
 
-function setscenario {
+function setsituation {
     if [[ "$1" == "p" || "$1" == "$MACHINE_PROD" ]]; then
         MACHINE="$MACHINE_PROD"
         DBHOST="$DBHOST_PROD"
         SOURCECFG="$LOCALDIR/cfg_prod"
         SOURCEAPA="$LOCALDIR/apache_prod"
         echo "$2 PRODUCTION machine $MACHINE ..."
+    elif [[ "$1" == "pn" || "$1" == "$MACHINE_PROD_NEW" ]]; then
+        MACHINE="$MACHINE_PROD_NEW"
+        DBHOST="$DBHOST_PROD"
+        SOURCECFG="$LOCALDIR/cfg_prod"
+        SOURCEAPA="$LOCALDIR/apache_prod"
+        echo "$2 PRODUCTION machine (new) $MACHINE ..."
     elif [[ "$1" == "t" || "$1" == "$MACHINE_TEST" ]]; then
         MACHINE="$MACHINE_TEST"
         DBHOST="$DBHOST_TEST"
@@ -235,6 +158,12 @@ function setscenario {
         SOURCECFG="$LOCALDIR/cfg_other"
         SOURCEAPA="$LOCALDIR/apache_other"
         echo "$2 OTHER machine $MACHINE ..."
+    elif [[ "$1" == "on" || "$1" == "$MACHINE_OTHER_NEW" ]]; then
+        MACHINE="$MACHINE_OTHER_NEW"
+        DBHOST="$DBHOST_OTHER"
+        SOURCECFG="$LOCALDIR/cfg_other"
+        SOURCEAPA="$LOCALDIR/apache_other"
+        echo "$2 OTHER machine (new) $MACHINE ..."
     else
         echo "$3"
         exit

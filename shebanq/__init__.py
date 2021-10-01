@@ -1,3 +1,0 @@
-"""
-.. include:: ../docs/intro.md
-"""

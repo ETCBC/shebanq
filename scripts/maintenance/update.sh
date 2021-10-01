@@ -1,8 +1,9 @@
 #!/bin/bash
 
+# READ THIS FIRST: maintenance.md
+
 # Script to update a shebanq server.
 # Run it on the server.
-# More info: see config.sh
 
 source ${0%/*}/config.sh
 
@@ -26,7 +27,7 @@ Options:
 
 showusage "$1" "$USAGE"
 
-setscenario "$HOSTNAME" "Updating" "$USAGE"
+setsituation "$HOSTNAME" "Updating" "$USAGE"
 
 ensuredir "$UNPACK"
 
@@ -77,22 +78,22 @@ if [[ "$1" == "-d" || "$1" == "-de" ]]; then
         VERSION="$2"
         PASSAGEDB="shebanq_passage$VERSION"
 
-        if [[ "$1" == "-de" ]]; then
-            EMDROSDB="shebanq_etcbc$VERSION"
-            echo "unzipping $EMDROSDB"
-            cp $INCOMING/$EMDROSDB.mql.bz2 $UNPACK
-            bunzip2 -f $UNPACK/$EMDROSDB.mql.bz2
-            echo "dropping $EMDROSDB"
-            mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "drop database if exists $EMDROSDB;"
-            echo "importing $EMDROSDB"
-            mql -n -b m -p `cat $CFG_DIR/mqlimportopt` $MQL_OPTS -e UTF8 < $UNPACK/$EMDROSDB.mql
+        if [[ "$1" != "-de" ]]; then
+            echo "unzipping $PASSAGEDB"
+            cp $TARGET/$PASSAGEDB.sql.gz $UNPACK
+            gunzip -f $UNPACK/$PASSAGEDB.sql.gz
+            echo "loading $PASSAGEDB"
+            mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt < $UNPACK/$PASSAGEDB.sql
         fi
 
-        echo "unzipping $PASSAGEDB"
-        cp $TARGET/$PASSAGEDB.sql.gz $UNPACK
-        gunzip -f $UNPACK/$PASSAGEDB.sql.gz
-        echo "loading $PASSAGEDB"
-        mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt < $UNPACK/$PASSAGEDB.sql
+        EMDROSDB="shebanq_etcbc$VERSION"
+        echo "unzipping $EMDROSDB"
+        cp $INCOMING/$EMDROSDB.mql.bz2 $UNPACK
+        bunzip2 -f $UNPACK/$EMDROSDB.mql.bz2
+        echo "dropping $EMDROSDB"
+        mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "drop database if exists $EMDROSDB;"
+        echo "importing $EMDROSDB"
+        mql -n -b m -p `cat $CFG_DIR/mqlimportopt` $MQL_OPTS -e UTF8 < $UNPACK/$EMDROSDB.mql
     fi
 fi
 

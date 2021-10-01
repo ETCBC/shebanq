@@ -1,8 +1,9 @@
 #!/bin/bash
 
+# READ THIS FIRST: maintenance.md
+
 # Script to restore a shebanq server.
 # Run it on the server.
-# More info: see config.sh
 
 source ${0%/*}/config.sh
 
@@ -20,7 +21,7 @@ You can get a recent backup on the server by means of provision.sh
 
 showusage "$1" "$USAGE"
 
-setscenario "$HOSTNAME" "Restoring data on" "$USAGE"
+setsituation "$HOSTNAME" "Restoring data on" "$USAGE"
 
 ensuredir "$UNPACK"
 
