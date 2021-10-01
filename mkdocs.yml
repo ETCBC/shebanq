@@ -10,7 +10,7 @@ repo_url: 'https://github.com/etcbc/shebanq/'
 
 theme:
   name: material
-  logo: static/images/shebanq_logo.png
+  logo: images/shebanq_logo.png
   favicon: 'favicon.ico'
   development: false
   development_label: still in beta
@@ -18,7 +18,7 @@ theme:
   client:
     name: ETCBC
     url: http://www.etcbc.nl
-    logo: static/images/etcbc_round.png 
+    logo: images/etcbc_round.png 
   feature:
     tabs: true
 
