@@ -1,62 +1,37 @@
-EMDROSVERSION="3.7.3"
-DATA_VERSIONS="4 4b 2017 c 2021"
+#!/bin/bash
 
-SOURCEGH=~/github
-SOURCEORG="$SOURCEGH/etcbc"
-SOURCEREPO="$SOURCEORG/shebanq"
-DATASOURCE="$SOURCEORG/bhsa/shebanq"
-SCRIPTSOURCE="$SOURCEREPO/scripts"
-HOMESOURCE="$SCRIPTSOURCE/home"
-LOCALDIR="$SOURCEREPO/_local"
-BINARIES="$SCRIPTSOURCE/binaries"
-EMDROS="$BINARIES/emdros-$EMDROSVERSION.tar.gz"
-WEB2PY="$BINARIES/web2py_src.zip"
-BACKUPDIR=~/Documents/Current/SHEBANQ/maintenance/backupShebanqUserData
+# Script to provision a machine that hosts SHEBANQ.
+# Run it on your local computer.
+# More info: see config.sh
 
-# change the next value to your home directory on the destination machine
-#
-TARGETHOME='/home/dirkr'
-TARGET="$TARGETHOME/shebanq-install"
+source ${0%/*}/config.sh
 
 
-if [[ "$1" == "p" ]]; then
-    PRODUCTION="v"
-    MACHINE="clarin31.dans.knaw.nl"
-    LOCALDB="x"
-    SOURCECFG="$SOURCEREPO/_local/cfg_prod"
-    SOURCEAPA="$SOURCEREPO/_local/apache_prod"
-    echo "Uploading to PRODUCTION machine $MACHINE ..."
-elif [[ "$1" == "t" ]]; then
-    echo "Uploading to TEST machine $MACHINE ..."
-    PRODUCTION="x"
-    MACHINE="tclarin31.dans.knaw.nl"
-    LOCALDB="v"
-    SOURCECFG="$SOURCEREPO/_local/cfg_test"
-    SOURCEAPA="$SOURCEREPO/_local/apache_test"
-elif [[ "$1" == "o" ]]; then
-    echo "Uploading to OTHER machine $MACHINE ..."
-    PRODUCTION="x"
-    MACHINE="other.machine.edu"
-    LOCALDB="v"
-    SOURCECFG="$SOURCEREPO/scripts/cfg_other"
-    SOURCEAPA="$SOURCEREPO/scripts/apache_other"
-else
-    echo "USAGE: ./upload.sh [pto] [--corpus] [--emdros] [--web2py] [--user] [yyyy-mm-dd]"
-    echo "where p = production"
-    echo "and   t = test"
-    echo "and   o = other"
-    echo "--corpus: only corpus data"
-    echo "--emdros: only emdros binary"
-    echo "--web2py: only web2py zip"
-    echo "--user: only user data"
-    echo "yyyy-mm-dd: take user data backed up at this date"
-    exit
-fi
+USAGE="
+Usage: $(basename $0) scenario [Options] backup
 
-DESTCFG="$SOURCEREPO/_local/cfg"
-DESTAPA="$SOURCEREPO/_local/apache"
+N.B.: After provisioning the server, before running install.sh
+on the server, make sure you do it in a fresh terminal.
+Because provisioning updates the .bash_profile on the server.
 
+scenario:
+    p: provision the production machine
+    t: provision the test machine
+    o: provision the other machine
+
+Options:
+    --corpus: only ETCBC data
+    --emdros: only Emdros binary
+    --web2py: only Web2py binary
+    --user:   only backed-up user data
+
+Backup:
+    yyyy-mm-dd: take user data backed up at this date
+"
+
+setscenario "$1" "Provisioning" "$USAGE"
 shift
+
 doall="v"
 doscripts="x"
 docorpus="x"
@@ -87,7 +62,7 @@ elif [[ "$1" == "--user" ]]; then
 fi
 
 backupdate="$1"
-if [[ "$LOCALDB" == "v" ]]; then
+if [[ "$DBHOST" == "" ]]; then
     if [[ "$backupdate" == "" ]]; then
         if [[ "$doall" == "v" || "$douser" == "v" ]]; then
             echo "No backup date specified to retrieve user data from"
@@ -136,6 +111,7 @@ if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
     scp -r "$HOMESOURCE/.bash_profile" "dirkr@$MACHINE:$TARGETHOME"
     scp -r "$HOMESOURCE/backup.sh" "dirkr@$MACHINE:$TARGETHOME"
     scp -r "$HOMESOURCE/catchup.sh" "dirkr@$MACHINE:$TARGETHOME"
+    scp -r "$HOMESOURCE/install.sh" "dirkr@$MACHINE:$TARGETHOME"
     scp -r "$HOMESOURCE/update.sh" "dirkr@$MACHINE:$TARGETHOME"
     scp -r "$HOMESOURCE/updateData.sh" "dirkr@$MACHINE:$TARGETHOME"
 
@@ -151,7 +127,7 @@ if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
     scp -r "$SOURCEAPA" "dirkr@$MACHINE:/$TARGET/"
 fi
 
-if [[ "$LOCALDB" == "v" ]]; then
+if [[ "$DBHOST" == "" ]]; then
     if [[ "$doall" == "v" || "$docorpus" == "v" ]]; then
         for version in $DATA_VERSIONS
         do

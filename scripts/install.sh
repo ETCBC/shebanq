@@ -1,94 +1,38 @@
 #!/bin/bash
 
-# 2021-09-07 Dirk Roorda
+# Script to install SHEBANQ on a server.
+# Run it on that server.
+# The server must have been provisioned.
+# More info: see config.sh
 
-# script by which shebanq is installed on fresh staging and production selinux servers.
-# It is assumed that the data used by the production machine resides
-# in a database on a separate database server.
-# We assume the grants in the production machine are wildcarded
-# in the sense that
-# * they are not host specific,
-#   so users with the right names on mew machines have the same access
-# * they are not data version specific,
-#   so when new data versions arrive, their corresponding
-#   databases are accessible by the right users
+source ${0%/*}/config.sh
 
-# So, when we install a new production server, we do not:
-# * make new mysql users
-# * grant/revoke access to databases/tables
-# * load data
-#
-# But all these steps will be done on the test server.
 
-# Use update.sh to update data on production and test servers.
+USAGE="
+Usage: $(basename $0) [Options]
 
-# run it as follows:
-#
-# ./install.sh [options]
-#
-# By means of the options you can select one single step to execute.
-# See below.
+Without options, it runs the complete installation process.
+By means of options, you can select exactly one step to
+be performed.
 
-# This script is set up to work at specific servers.
-# Currently it supports one production machine and one staging machine, both SELINUX.
+Options:
+    --python: the python programming language
+    --emdros: the emdros software
+    --mysqlinstall: install mariadb (drop-in replacement of mysql)
+    --mysqlconfig: configure mysql
+    --mysqlload: load data into mysql
+    --shebanq: clone shebanq
+    --web2py: install web2py
+    --apache: setup apache (assume certificates are already in place)
+"
 
-# CFG_DIR   : directory with config files for talking with mysql
-# MQL_DIR   : directory with the mql command
-# APP_DIR   : directory where the web app shebanq resides (and also web2py itself)
-# TARGET  : directory where installation files arrive
-# UNPACK    : directory where installation files are unpacked
-
-EMDROSVERSION="3.7.3"
-
-MACHINE_PROD="clarin31.dans.knaw.nl"
-MACHINE_TEST="tclarin31.dans.knaw.nl"
-MACHINE_OTHER="other.machine.edu"
-
-# put the next setting to "x" if your production machine does not already have data
-LOCALDB_PROD="x"
-LOCALDB_TEST="v"
-LOCALDB_OTHER="v"
-
-TARGETHOME="/home/dirkr"
-TARGET="/home/dirkr/shebanq-install"
-UNPACK="$TARGET/unpack"
-
-APP_DIR="/opt/web-apps"
-WEB2PY_DIR="$APP_DIR/web2py"
-SHEBANQ_DIR="$APP_DIR/shebanq"
-EMDROS_DIR="/opt/emdros"
-CFG_DIR="$EMDROS_DIR/cfg"
-MQL_DIR="$EMDROS_DIR/bin"
-APACHE_DIR="/etc/httpd/conf.d"
-
-EMDROSUNTAR="emdros-$EMDROSVERSION"
-EMDROS="$EMDROS.tar.gz"
-WEB2PY="web2py_src.zip"
-
-DATA_VERSIONS="4 4b 2017 c 2021"
+setscenario "$HOSTNAME" "Installing" "$USAGE"
 
 if [[ -f "$UNPACK" ]]; then
     rm -rf "$UNPACK"
 fi
 if [[ ! -d "$UNPACK" ]]; then
     mkdir -p "$UNPACK"
-fi
-
-if [[ "$HOSTNAME" == "$MACHINE_PROD" ]]; then
-    echo "Installing PRODUCTION machine ..."
-    PRODUCTION="v"
-    LOCALDB=$LOCALBD_PROD
-elif [[ "$HOSTNAME" == "$MACHINE_TEST" ]]; then
-    echo "Installing STAGING machine ..."
-    PRODUCTION="x"
-    LOCALDB=$LOCALBD_TEST
-elif [[ "$HOSTNAME" == "$MACHINE_TEST" ]]; then
-    echo "Installing OTHER machine ..."
-    PRODUCTION="x"
-    LOCALDB=$LOCALBD_OTHER
-else
-    echo "Install not supported on machine $HOSTNAME"
-    exit
 fi
 
 doall="v"
@@ -101,7 +45,7 @@ doshebanq="x"
 doweb2py="x"
 doapache="x"
 
-if [[ "$1" == "--dopython" ]]; then
+if [[ "$1" == "--python" ]]; then
     doall="x"
     dopython="v"
     shift
@@ -134,37 +78,9 @@ elif [[ "$1" == "--apache" ]]; then
     doapache="v"
     shift
 else
-    echo "USAGE: ./install.sh [--python] [--emdros]"
-    echo "--python: only python modules"
-    echo "--emdros: only emdros building"
-    echo "--mysqlinstall: only mysql installation"
-    echo "--mysqlconfig: only mysql configuration"
-    echo "--mysqlload: only mysql data loading"
-    echo "--shebanq: clone shebanq"
-    echo "--web2py: install web2py"
-    echo "--apache: setup apache"
+    echo "$USAGE"
     exit
 fi
-
-# Situation before install
-
-# Apache
-# /etc/httpd exists (there is no mod_wsgi module installed)
-# no relevant certificates in /etc/pki/tls/certs
-# (need ancient-data_org_cert.cer and possibly ancient-data_org_interm.cer)
-#
-# Python
-# * python3 command works, installed version is 3.8.6
-# * python module markdown not yet installed
-# * command mysql does not work
-
-# Todo before install
-# * run ./upload.sh in order to get all installation material on to the target machine
-# NB: one of these files is `.bash_profile`.
-# When you log in on the target machine, and after that do the upload,
-# make sure to do source .bash_profile or log out and log on.
-
-# * Make sure the grants on the PRODUCTION machine give access to the shebanq users
 
 # Install procedure
 
@@ -178,11 +94,11 @@ if [[ "$doall" == "v" || "$dopython" == "v" ]]; then
 fi
 
 # MariaDB
-# * (test only) install mariadb
+# * install mariadb
 # * configure mariadb
 # * (/etc/my.cnf should contain default-character-set=utf8)
-# * create users shebanq and shebanq_admin
-# * grant rights on tables to these users
+# * create users shebanq and shebanq_admin if needed
+# * grant rights on tables to these users if needed
 
 if [[ "$doall" == "v" || "$domysqlinstall" == "v" ]]; then
     echo "0-0-0    INSTALL MARIADB    0-0-0"
@@ -192,6 +108,9 @@ if [[ "$doall" == "v" || "$domysqlinstall" == "v" ]]; then
 
     service mariadb start
 fi
+
+# We do Emdros right now, because some cfg files
+# end up inside the emdros installation
 
 if [[ "$doall" == "v" || "$doemdros" == "v" ]]; then
     echo "0-0-0    INSTALL EMDROS    0-0-0"
@@ -218,7 +137,7 @@ skipgrants="x"
 if [[ "$doall" == "v" || "$domysqlconfig" == "v" ]]; then
     echo "0-0-0    CONFIGURE MYSQL    0-0-0"
 
-    if [[ "$LOCALDB" == "v" ]]; then
+    if [[ "$DBHOST" == "x" ]]; then
         cp shebanq.cnf /etc/my.cnf.d/
         if [[ "$skipusers" != "v" ]]; then
             echo "0-0-0        create users        0-0-0"
@@ -234,11 +153,16 @@ if [[ "$doall" == "v" || "$domysqlconfig" == "v" ]]; then
     setsebool -P httpd_can_network_connect_db 1
 fi
 
+# Import data:
+#   passage databases
+#   emdros databases
+#   user-generated-content databases
+
 skippdb="x"
 skipedb="x"
 skipudb="x"
 
-if [[ "$LOCALDB" == "v" ]]; then
+if [[ "$DBHOST" == "x" ]]; then
     if [[ "$doall" == "v" || "$domysqlload" == "v" ]]; then
         echo "0-0-0    LOAD DATA start    0-0-0"
         for version in $DATA_VERSIONS
@@ -290,6 +214,8 @@ if [[ "$LOCALDB" == "v" ]]; then
     fi
 fi
 
+# clone shebanq
+
 skipclone="x"
 
 if [[ "$doall" == "v" || "$doshebanq" == "v" ]]; then
@@ -312,6 +238,8 @@ if [[ "$doall" == "v" || "$doshebanq" == "v" ]]; then
     fi
     cp $SHEBANQ_DIR/scripts/home/*.sh $TARGETHOME
 fi
+
+# install web2py
 
 skipwsgi="x"
 skipweb2py="x"
@@ -400,6 +328,8 @@ if [[ "$doall" == "v" || "$doweb2py" == "v" ]]; then
     fi
 fi
 
+# configure apache
+
 if [[ "$doall" == "v" || "$doapache" == "v" ]]; then
     echo "0-0-0    APACHE setup    0-0-0"
 
@@ -412,8 +342,11 @@ if [[ "$doall" == "v" || "$doapache" == "v" ]]; then
     service httpd restart
 fi
 
-exit
+if [[ -d "$UNPACK" ]]; then
+    rm -rf "$UNPACK"
+fi
 
 # Todo after install
 #
-# * shebanq.ancient-data.org should resolve to the production machine
+# Let DNS resolve the server name to the IP address of the newly
+# installed server

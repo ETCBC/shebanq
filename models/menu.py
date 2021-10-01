@@ -32,7 +32,7 @@ elif servedOn == "test.shebanq.ancient-data.org":
 else:
     onOther = True
 
-current.DEBUG = onLocal
+current.DEBUG = onLocal or onTest
 
 # response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace("_", " ").capitalize()
