@@ -284,7 +284,7 @@ fi
 
 # install web2py
 
-skipWsgi="v"
+skipWsgi="x"
 skipWeb2py="x"
 skipShebanq="x"
 skipExtradirs="x"
