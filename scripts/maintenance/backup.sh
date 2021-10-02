@@ -9,46 +9,46 @@ source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: ./$(basename $0) [Options]
+Usage: ./$(basename $0)
 
 Backs up databases that collect dynamic website data of SHEBANQ:
 
-*   shebanq_web
-*   shebanq_note
+*   $DYNAMIC_WEB
+*   $DYNAMIC_NOTE
 
 The backsup will be protected against access from others.
 They end up in directory backups/yyyy-mm-ddThh-mm-ss, where the last part is the
 datetime when the backup has been made.
 "
 
-showusage "$1" "$USAGE"
+showUsage "$1" "$USAGE"
 
-setsituation "$HOSTNAME" "Backing up" "$USAGE"
+setSituation "$HOSTNAME" "Backing up" "$USAGE"
 
-backupdatetime=`date +"%Y-%m-%dT%H-%M-%S"`
-BUDIR="$TARGETBUDIR/$backupdatetime"
-LATESTDIR="$TARGETBUDIR/latest"
+backupDatetime=`date +"%Y-%m-%dT%H-%M-%S"`
+backupDir="$SERVER_BACKUP_DIR/$backupDatetime"
+latestDir="$SERVER_BACKUP_DIR/latest"
 
-ensuredir "$BUDIR"
+ensureDir "$backupDir"
 
 sudo -n /usr/bin/systemctl stop httpd.service
 
-echo "creating database dumps for shebanq_web and shebanq_note in $BUDIR"
-for db in shebanq_web shebanq_note
+echo "creating database dumps for $DYNAMIC_WEB and $DYNAMIC_NOTE in $backupDir"
+for db in $DYNAMIC_WEB $DYNAMIC_NOTE
 do
-    bufl="$BUDIR/$db.sql.gz"
-    mysqldump --defaults-extra-file=$CFG_DIR/mysqldumpopt $db | gzip > "$bufl"
+    bufl="$backupDir/$db.sql.gz"
+    mysqldump --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt $db | gzip > "$bufl"
 done
-echo "$backupdatetime" > "$BUDIR/stamp"
-chown -R $TARGETUSER:$TARGETUSER "$BUDIR"
-chmod -R go-rwx "$BUDIR"
+echo "$backupDatetime" > "$backupDir/stamp"
+chown -R $SERVER_USER:$SERVER_USER "$backupDir"
+chmod -R go-rwx "$backupDir"
 
-if [[ -e "$LATESTDIR" ]]; then
-    rm -rf "$LATESTDIR"
+if [[ -e "$latestDir" ]]; then
+    rm -rf "$latestDir"
 fi
-ln -s "$BUDIR" "$LATESTDIR"
-chown -R $TARGETUSER:$TARGETUSER "$LATESTDIR"
-chmod -R go-rwx "$LATESTDIR"
+ln -s "$backupDir" "$latestDir"
+chown -R $SERVER_USER:$SERVER_USER "$latestDir"
+chmod -R go-rwx "$latestDir"
 
 sleep 1
 

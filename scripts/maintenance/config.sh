@@ -8,12 +8,19 @@
 # - tweak the parameters in the next section
 # - read and understand the script that you want to run
 
+# ALL_CAPS variables are used by the other scripts
+# camelCase variables only occur in this file
+
+org="etcbc"
+APP="shebanq"
+REPO="shebanq"
+REPO_URL="https://github.com/$org/$REPO"
 
 # TWEAKING PART #################################################
 #
 # !!!!!!!!
 # CAUTION: make sure you have copied the maintenance directory
-# to the _local directory of your shebanq clone.
+# to the _local directory of your $REPO clone.
 # This directory will not be pushed online.
 #
 # Do not tweak the original files in the scripts/maintenance directory
@@ -23,56 +30,63 @@
 # running the maintenance scripts.
 #
 #
-# Version of the EMDROS software that is in use.
+# Version of the Emdros software that is in use.
 # see also https://emdros.org
 #
-EMDROSVERSION="3.7.3"
+emdrosVersion="3.7.3"
+#
+#
+# Version of the Web2Py software that is in use.
+# see also https://github.com/web2py/web2py
+#
+web2pyVersion="2.21.1-stable"
+#
 #
 #
 # Versions of the ETCBC data that you want to install/update
-# NB: the shebanq software has hardcoded references to these versions.
-# If you only need to install/update a specific version
-# tweak this parameter
+# NB: the $APP software has hardcoded references to these versions.
 #
-DATA_VERSIONS="4 4b 2017 c 2021"
-# DATA_VERSIONS="2021"
+STATIC_VERSIONS="4 4b 2017 c 2021"
 #
 #
-# Where backups of the user-generated data of shebanq can be found
-# When installing the  shebanq on a new machine with a
+# Where backups of the user-generated data of $APP can be found
+# When installing the  $APP on a new server with a
 # new database, you should make a backup of this data and put
 # it here, under a diretory named yyyy-mm-dd
-# The provision script will copy that over to the machine and
-# import it in the new database
+# The provision script will copy that over to the server and
+# import it in the new database.
+# There is a separate setting for backups made
+# on the test server, the new production server, and the new other server.
 #
-BACKUPDIR=~/local/shebanq/backups
+BACKUP_DIR=~/local/$APP/backups
+BACKUP_ALT_DIR=~/local/$APP/backupsAlt
 #
 #
 # Where your local github directory resided, under which 
-# the shebanq repo has been cloned.
-# N.B. The clone of shebanq is then $SOURCEGH/etcbc/shebanq
+# the $REPO has been cloned.
+# N.B. The clone of $REPO is then $githubBase/$org/$REPO
 #
-SOURCEGH=~/github
+githubBase=~/github
 #
 #
 # Your username on the server
 #
-TARGETUSER="dirkr"
+SERVER_USER="dirkr"
 #
 #
 # Where the Apache config files are on the server
 APACHE_DIR="/etc/httpd/conf.d"
 #
 #
-# Machine specifications
-# The specification of the machines in the different situations
-# If you work with the official SHEBANQ, the PROD and TEST machines
+# Server specifications
+# The specification of the server in the different situations
+# If you work with the official SHEBANQ, the PROD and TEST servers
 # are relevant.
 # If you are bravely setting up SHEBANQ somewhere else,
-# use the OTHER machine settings.
+# use the OTHER server settings.
 #
-# MACHINE_xxx is the machine name as internet address
-# DBHOST is the host machine where the mysql database resides
+# serverXxx is the server name as internet address
+# dbHost is the host server where the mysql database resides
 #   Leave it empty if there is a local mysql server
 #   If mysql is served on an other server, we
 #   assume that the data is still in place when we install SHEBANQ
@@ -80,100 +94,111 @@ APACHE_DIR="/etc/httpd/conf.d"
 #   and fill database tables.
 #   We also assumes that the grants of the database server
 #   are not host specific, so that when we access the database from a
-#   new machine, the same grants apply as when we used the old machine
+#   new server, the same grants apply as when we used the old server
 #   
-MACHINE_PROD="clarin11.dans.knaw.nl"
-MACHINE_PROD_NEW="clarin31.dans.knaw.nl"
-DBHOST_PROD="-h mysql11.dans.knaw.nl"
+serverProd="clarin11.dans.knaw.nl"
+serverProdNew="clarin31.dans.knaw.nl"
+dbHostProd="-h mysql11.dans.knaw.nl"
 
-MACHINE_TEST="tclarin31.dans.knaw.nl"
-DBHOST_TEST=""
+serverTest="tclarin31.dans.knaw.nl"
+dbHostTest=""
 
-MACHINE_OTHER="other.machine.edu"
-MACHINE_OTHER_NEW="othernew.machine.edu"
-DBHOST_OTHER="v"
+serverOther="other1.server.edu"
+serverOtherNew="other2.server.edu"
+dbHostOther=""
 #
 # END TWEAKING PART #################################################
 
 
 # All the following settings are by convention
 
-SOURCEORG="$SOURCEGH/etcbc"
-SOURCEREPO="$SOURCEORG/shebanq"
-DATASOURCE="$SOURCEORG/bhsa/shebanq"
-SCRIPTSOURCE="$SOURCEREPO/scripts"
-LOCALDIR="$SOURCEREPO/_local"
-MAINTENANCE="$LOCALDIR/maintenance"
-BINARIES="$SCRIPTSOURCE/binaries"
-EMDROS="$BINARIES/emdros-$EMDROSVERSION.tar.gz"
-WEB2PY="$BINARIES/web2py_src.zip"
+sourceOrg="$githubBase/$org"
+sourceRepo="$sourceOrg/$REPO"
+SCRIPT_SRC_DIR="$sourceRepo/scripts"
+localDir="$sourceRepo/_local"
+LOCAL_SCRIPT_DIR="$localDir/maintenance"
+packageDir="$SCRIPT_SRC_DIR/packages"
 
-TARGETHOME="/home/$TARGETUSER"
-TARGET="$TARGETHOME/shebanq-install"
-TARGETBUDIR="$TARGETHOME/backups"
-UNPACK="tmp/shebanq"
+SERVER_HOME_DIR="/home/$SERVER_USER"
+SERVER_INSTALL_DIR="$SERVER_HOME_DIR/$APP-install"
+SERVER_BACKUP_DIR="$SERVER_HOME_DIR/$APP-backups"
+SERVER_UNPACK_DIR="$SERVER_HOME_DIR/$APP-tmp"
 
-APP_DIR="/opt/web-apps"
-WEB2PY_DIR="$APP_DIR/web2py"
-SHEBANQ_DIR="$APP_DIR/shebanq"
-EMDROS_DIR="/opt/emdros"
-CFG_DIR="$EMDROS_DIR/cfg"
-MQL_DIR="$EMDROS_DIR/bin"
+SERVER_APP_DIR="/opt/web-apps"
+SERVER_SHEBANQ_DIR="$SERVER_APP_DIR/$APP"
+SERVER_WEB2PY_DIR="$SERVER_APP_DIR/web2py"
+SERVER_EMDROS_DIR="/opt/emdros"
+SERVER_CFG_DIR="$SERVER_EMDROS_DIR/cfg"
+SERVER_MQL_DIR="$SERVER_EMDROS_DIR/bin"
 
-EMDROSUNTAR="emdros-$EMDROSVERSION"
-EMDROS="$EMDROS.tar.gz"
-WEB2PY="web2py_src.zip"
+STATIC_SRC_DIR="$sourceOrg/bhsa/$APP"
+STATIC_ETCBC="shebanq_etcbc"
+STATIC_PASSAGE="shebanq_passage"
+
+DYNAMIC_WEB="shebanq_web"
+DYNAMIC_NOTE="shebanq_note"
+
+MYSQL_USER="shebanq"
+MYSQL_ADMIN="shebanq_admin"
+
+WEB2PY_BARE="web2py_src-$web2pyVersion"
+WEB2PY_FILE="$WEB2PY_BARE.zip"
+WEB2PY_PATH="$packageDir/$WEB2PY_FILE"
+
+EMDROS_BARE="emdros-$emdrosVersion"
+EMDROS_FILE="$EMDROS_BARE.tar.gz"
+EMDROS_PATH="$packageDir/$EMDROS_FILE"
 
 # Set some variables that depend on the situation
 
-function showusage {
+function showUsage {
     if [[ "$1" == "--help" || "$1" == "-h" || "$1" == "-?" ]]; then
         echo "$2"
         exit
     fi
 }
 
-function setsituation {
-    if [[ "$1" == "p" || "$1" == "$MACHINE_PROD" ]]; then
-        MACHINE="$MACHINE_PROD"
-        DBHOST="$DBHOST_PROD"
-        SOURCECFG="$LOCALDIR/cfg_prod"
-        SOURCEAPA="$LOCALDIR/apache_prod"
-        echo "$2 PRODUCTION machine $MACHINE ..."
-    elif [[ "$1" == "pn" || "$1" == "$MACHINE_PROD_NEW" ]]; then
-        MACHINE="$MACHINE_PROD_NEW"
-        DBHOST="$DBHOST_PROD"
-        SOURCECFG="$LOCALDIR/cfg_prod"
-        SOURCEAPA="$LOCALDIR/apache_prod"
-        echo "$2 PRODUCTION machine (new) $MACHINE ..."
-    elif [[ "$1" == "t" || "$1" == "$MACHINE_TEST" ]]; then
-        MACHINE="$MACHINE_TEST"
-        DBHOST="$DBHOST_TEST"
-        SOURCECFG="$LOCALDIR/cfg_test"
-        SOURCEAPA="$LOCALDIR/apache_test"
-        echo "$2 TEST machine $MACHINE ..."
-    elif [[ "$1" == "o" || "$1" == "$MACHINE_OTHER" ]]; then
-        MACHINE="$MACHINE_OTHER"
-        DBHOST="$DBHOST_OTHER"
-        SOURCECFG="$LOCALDIR/cfg_other"
-        SOURCEAPA="$LOCALDIR/apache_other"
-        echo "$2 OTHER machine $MACHINE ..."
-    elif [[ "$1" == "on" || "$1" == "$MACHINE_OTHER_NEW" ]]; then
-        MACHINE="$MACHINE_OTHER_NEW"
-        DBHOST="$DBHOST_OTHER"
-        SOURCECFG="$LOCALDIR/cfg_other"
-        SOURCEAPA="$LOCALDIR/apache_other"
-        echo "$2 OTHER machine (new) $MACHINE ..."
+function setSituation {
+    if [[ "$1" == "p" || "$1" == "$serverProd" ]]; then
+        SERVER="$serverProd"
+        DB_HOST="$dbHostProd"
+        LOCAL_CFG_SPECIFIC="$localDir/cfg_prod"
+        LOCAL_APA_SPECIFIC="$localDir/apache_prod"
+        echo "$2 PRODUCTION server $SERVER ..."
+    elif [[ "$1" == "pn" || "$1" == "$serverProdNew" ]]; then
+        SERVER="$serverProdNew"
+        DB_HOST="$dbHostProd"
+        LOCAL_CFG_SPECIFIC="$localDir/cfg_prod"
+        LOCAL_APA_SPECIFIC="$localDir/apache_prod"
+        echo "$2 PRODUCTION server (new) $SERVER ..."
+    elif [[ "$1" == "t" || "$1" == "$serverTest" ]]; then
+        SERVER="$serverTest"
+        DB_HOST="$dbHostTest"
+        LOCAL_CFG_SPECIFIC="$localDir/cfg_test"
+        LOCAL_APA_SPECIFIC="$localDir/apache_test"
+        echo "$2 TEST server $SERVER ..."
+    elif [[ "$1" == "o" || "$1" == "$serverOther" ]]; then
+        SERVER="$serverOther"
+        DB_HOST="$dbHostOther"
+        LOCAL_CFG_SPECIFIC="$localDir/cfg_other"
+        LOCAL_APA_SPECIFIC="$localDir/apache_other"
+        echo "$2 OTHER server $SERVER ..."
+    elif [[ "$1" == "on" || "$1" == "$serverOtherNew" ]]; then
+        SERVER="$serverOtherNew"
+        DB_HOST="$dbHostOther"
+        LOCAL_CFG_SPECIFIC="$localDir/cfg_other"
+        LOCAL_APA_SPECIFIC="$localDir/apache_other"
+        echo "$2 OTHER server (new) $SERVER ..."
     else
         echo "$3"
         exit
     fi
 
-    DESTCFG="$SOURCEREPO/_local/cfg"
-    DESTAPA="$SOURCEREPO/_local/apache"
+    LOCAL_CFG="$sourceRepo/_local/cfg"
+    LOCAL_APA="$sourceRepo/_local/apache"
 }
 
-function ensuredir {
+function ensureDir {
     if [[ -f "$1" ]]; then
         rm -rf "$1"
     fi
@@ -182,8 +207,24 @@ function ensuredir {
     fi
 }
 
-function erasedir {
+function eraseDir {
     if [[ -d "$1" ]]; then
         rm -rf "$1"
     fi
+}
+
+function compileApp {
+    app="$1"
+
+    echo "- Compile $app ..."
+    cmd1="import gluon.compileapp;"
+    cmd2="gluon.compileapp.compile_application('applications/$app')"
+
+    cd $SERVER_WEB2PY_DIR
+    python3 -c "$cmd1 $cmd2"
+
+    echo "- Compile modules of $app ..."
+    cd "$SERVER_WEB2PY_DIR/applications/$app"
+    python3 -m compileall modules
+    echo "- Done compiling $app."
 }

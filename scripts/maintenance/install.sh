@@ -2,16 +2,16 @@
 
 # READ THIS FIRST: maintenance.md
 
-# Script to install a shebanq server.
+# Script to install a server.
 # Run it on the server.
 
 source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: ./$(basename $0) [Options]
+Usage: ./$(basename $0) [Options] [version]
 
-Without options, it runs the complete installation process for a shebanq server.
+Without options, it runs the complete installation process for a $APP server.
 By means of options, you can select exactly one step to be performed.
 The server must have been provisioned.
 
@@ -20,89 +20,121 @@ Options:
     --emdros: the emdros software
     --mysqlinstall: install mariadb (drop-in replacement of mysql)
     --mysqlconfig: configure mysql
-    --mysqlload: load data into mysql
-    --shebanq: clone shebanq
+    --static: load static data into mysql
+    --dynamic: load dynamic data into mysql
+    --$APP: clone $REPO
     --web2py: install web2py
     --apache: setup apache (assume certificates are already in place)
+
+version:
+    a valid SHEBANQ data version, such as 4, 4b, c, 2017, 2021
+    It will restrict the data provisioning to the databases
+    that belong to this version.
+    If left out, all versions will be done.
+    Especially relevant if --static is passed.
+
+CAUTION
+Take care with installing the current production server.
+It might damage the current installation.
 "
 
-showusage "$1" "$USAGE"
+showUsage "$1" "$USAGE"
 
-setsituation "$HOSTNAME" "Installing" "$USAGE"
+setSituation "$HOSTNAME" "Installing" "$USAGE"
 
-ensuredir "$UNPACK"
+ensureDir "$SERVER_UNPACK_DIR"
 
-doall="v"
-dopython="x"
-doemdros="x"
-domysqlinstall="x"
-domysqlconfig="x"
-domysqlload="x"
-doshebanq="x"
-doweb2py="x"
-doapache="x"
+doAll="v"
+doPython="x"
+doEmdros="x"
+doMysqlinstall="x"
+doMysqlconfig="x"
+doStatic="x"
+doDynamic="x"
+doShebanq="x"
+doWeb2py="x"
+doApache="x"
 
 if [[ "$1" == "--python" ]]; then
-    doall="x"
-    dopython="v"
+    doAll="x"
+    doPython="v"
     shift
 elif [[ "$1" == "--emdros" ]]; then
-    doall="x"
-    doemdros="v"
+    doAll="x"
+    doEmdros="v"
     shift
 elif [[ "$1" == "--mysqlinstall" ]]; then
-    doall="x"
-    domysqlinstall="v"
+    doAll="x"
+    doMysqlinstall="v"
     shift
 elif [[ "$1" == "--mysqlconfig" ]]; then
-    doall="x"
-    domysqlconfig="v"
+    doAll="x"
+    doMysqlconfig="v"
     shift
-elif [[ "$1" == "--mysqlload" ]]; then
-    doall="x"
-    domysqlload="v"
+elif [[ "$1" == "--static" ]]; then
+    doAll="x"
+    doStatic="v"
     shift
-elif [[ "$1" == "--shebanq" ]]; then
-    doall="x"
-    doshebanq="v"
+elif [[ "$1" == "--dynamic" ]]; then
+    doAll="x"
+    doDynamic="v"
+    shift
+elif [[ "$1" == "--$APP" ]]; then
+    doAll="x"
+    doShebanq="v"
     shift
 elif [[ "$1" == "--web2py" ]]; then
-    doall="x"
-    doweb2py="v"
+    doAll="x"
+    doWeb2py="v"
     shift
 elif [[ "$1" == "--apache" ]]; then
-    doall="x"
-    doapache="v"
+    doAll="x"
+    doApache="v"
     shift
-else
-    echo "$USAGE"
-    exit
 fi
+
+if [[ "$1" == "" ]]; then
+    versions="$STATIC_VERSIONS"
+else
+    versions="$1"
+    shift
+fi
+
+# stuff to get the emdros stuff working
+
+# needed for the mql command
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+EMDROS_HOME=/opt/emdros
+export EMDROS_HOME
+PATH=$EMDROS_HOME/bin:$PATH
+export PATH
 
 # Install procedure
 
 # Python
 # * install module markdown (probably sudo pip3 install markdown)
 
-if [[ "$doall" == "v" || "$dopython" == "v" ]]; then
-    echo "0-0-0    INSTALL PYTHON MODULES    0-0-0"
-    yum install python36
-    yum install python36-devel
-    yum install python3-markdown
+if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
+    echo "0-0-0    INSTALL PYTHON 0-0-0"
+    yum -q -y install python36
+    yum -q -y install python36-devel
+    yum -q -y install python3-markdown
+    # we need the python command (for emdros compilation)
+    alternatives --set python /usr/bin/python3
 fi
 
 # MariaDB
 # * install mariadb
 # * configure mariadb
 # * (/etc/my.cnf should contain default-character-set=utf8)
-# * create users shebanq and shebanq_admin if needed
+# * create users $MYSQL_USER and $MYSQL_ADMIN if needed
 # * grant rights on tables to these users if needed
 
-if [[ "$doall" == "v" || "$domysqlinstall" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doMysqlinstall" == "v" ]]; then
     echo "0-0-0    INSTALL MARIADB    0-0-0"
-    yum install mariadb.x86_64
-    yum install mariadb-devel.x86_64
-    yum install mariadb-server.x86_64
+    yum -q -y install mariadb.x86_64
+    yum -q -y install mariadb-devel.x86_64
+    yum -q -y install mariadb-server.x86_64
 
     service mariadb start
 fi
@@ -110,38 +142,38 @@ fi
 # We do Emdros right now, because some cfg files
 # end up inside the emdros installation
 
-if [[ "$doall" == "v" || "$doemdros" == "v" ]]; then
-    echo "0-0-0    INSTALL EMDROS    0-0-0"
-    cd "$TARGET"
-    tar xvf "$EMDROS"
-    cd "$EMDROSUNTAR"
+if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
+    echo "0-0-0    INSTALL Emdros    0-0-0"
+    cd "$SERVER_INSTALL_DIR"
+    tar xvf "$EMDROS_FILE"
+    cd "$EMDROS_BARE"
 
-    echo "EMDROS CONFIGURE"
-    ./configure --prefix=$EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug
+    echo "Emdros CONFIGURE"
+    ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug
 
-    echo "EMDROS MAKE"
+    echo "Emdros MAKE"
     make
 
-    echo "EMDROS INSTALL"
+    echo "Emdros INSTALL"
     make install
 
-    cp -r "$TARGET/cfg" "$EMDROS_DIR"
-    chown -R apache:apache "$EMDROS_DIR"
+    cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
+    chown -R apache:apache "$SERVER_EMDROS_DIR"
 fi
 
-skipusers="x"
-skipgrants="x"
+skipUsers="x"
+skipGrants="x"
 
-if [[ "$doall" == "v" || "$domysqlconfig" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doMysqlconfig" == "v" ]]; then
     echo "0-0-0    CONFIGURE MYSQL    0-0-0"
 
-    if [[ "$DBHOST" == "x" ]]; then
+    if [[ "$DB_HOST" == "" ]]; then
         cp shebanq.cnf /etc/my.cnf.d/
-        if [[ "$skipusers" != "v" ]]; then
+        if [[ "$skipUsers" != "v" ]]; then
             echo "0-0-0        create users        0-0-0"
-            mysql -u root < "$CFG_DIR/user.sql"
+            mysql -u root < "$SERVER_CFG_DIR/user.sql"
         fi
-        if [[ "$skipgrants" != "v" ]]; then
+        if [[ "$skipGrants" != "v" ]]; then
             echo "0-0-0        grant privileges        0-0-0"
             mysql -u root < grants.sql
         fi
@@ -151,153 +183,168 @@ if [[ "$doall" == "v" || "$domysqlconfig" == "v" ]]; then
     setsebool -P httpd_can_network_connect_db 1
 fi
 
-# Import data:
+# Import dynamic data:
+#   user-generated-content databases
+
+if [[ "$DB_HOST" == "" ]]; then
+    if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
+        echo "0-0-0    LOAD DYNAMIC DATA start    0-0-0"
+        for db in $DYNAMIC_NOTE $DYNAMIC_WEB
+        do
+            echo "0-0-0        DB $db        0-0-0"
+
+            echo "creating fresh $db"
+            mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e "drop database if exists $db;"
+            mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e "create database $db;"
+
+            echo "unzipping $db"
+            cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
+            gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
+
+            echo "loading $db"
+            echo "use $db" | cat - $SERVER_UNPACK_DIR/$db.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
+
+            rm "$SERVER_UNPACK_DIR/$db.sql"
+        done
+        echo "0-0-0    LOAD DYNAMIC DATA end    0-0-0"
+    fi
+fi
+
+# Import static data:
 #   passage databases
 #   emdros databases
 #   user-generated-content databases
 
-skippdb="x"
-skipedb="x"
-skipudb="x"
+skipPdb="x"
+skipEdb="x"
 
-if [[ "$DBHOST" == "x" ]]; then
-    if [[ "$doall" == "v" || "$domysqlload" == "v" ]]; then
-        echo "0-0-0    LOAD DATA start    0-0-0"
-        for version in $DATA_VERSIONS
+if [[ "$DB_HOST" == "" ]]; then
+    if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
+        echo "0-0-0    LOAD STATIC DATA start    0-0-0"
+
+        mysqlOpt="--defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt"
+
+        for version in $versions
         do
-            if [[ "$skippdb" != "v" ]]; then
-                echo "0-0-0        VERSION $version passage        0-0-0"
-                pdbname="shebanq_passage$version"
-                echo "unzipping $pdbname"
-                cp "$TARGET/$pdbname.sql.gz" "$UNPACK"
-                gunzip -f "$UNPACK/$pdbname.sql.gz"
-                echo "loading $pdbname"
-                mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt < "$UNPACK/$pdbname.sql"
-                rm "$UNPACK/$pdbname.sql"
+            if [[ "$skipPdb" != "v" ]]; then
+                echo "0-0-0        VERSION $version ${STATIC_PASSAGE} 0-0-0"
+                db="$STATIC_PASSAGE$version"
+                echo "unzipping $db"
+                cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
+                gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
+                echo "loading $db"
+                mysql $mysqlOpt < "$SERVER_UNPACK_DIR/$db.sql"
+                rm "$SERVER_UNPACK_DIR/$db.sql"
             fi
 
-            if [[ "$skipedb" != "v" ]]; then
-                echo "0-0-0        VERSION $version emdros        0-0-0"
-                edbname="shebanq_etcbc$version"
-                echo "unzipping $edbname"
-                cp $TARGET/$edbname.mql.bz2 $UNPACK
-                bunzip2 -f $UNPACK/$edbname.mql.bz2
-                echo "dropping $edbname"
-                mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "drop database if exists $edbname;"
-                echo "importing $edbname"
-                $MQL_DIR/mql -n -b m -p `cat $CFG_DIR/mqlimportopt` -u shebanq_admin -e UTF8 < $UNPACK/$edbname.mql
-                rm "$UNPACK/$edbname.mql"
+            if [[ "$skipEdb" != "v" ]]; then
+                echo "0-0-0        VERSION $version ${STATIC_ETCBC} 0-0-0"
+                db="$STATIC_ETCBC$version"
+                echo "unzipping $db"
+                cp $SERVER_INSTALL_DIR/$db.mql.bz2 $SERVER_UNPACK_DIR
+                bunzip2 -f $SERVER_UNPACK_DIR/$db.mql.bz2
+                echo "dropping $db"
+                mysql $mysqlOpt -e "drop database if exists $db;"
+                echo "importing $db"
+                mqlPwd=`cat $SERVER_CFG_DIR/mqlimportopt`
+                mqlOpt="-e UTF8 -n -b m -u $MYSQL_ADMIN"
+                $SERVER_MQL_DIR/mql $mqlOpt -p $mqlPwd < $SERVER_UNPACK_DIR/$db.mql
+                rm "$SERVER_UNPACK_DIR/$db.mql"
             fi
         done
-        if [[ "$skipudb" != "v" ]]; then
-            for udbname in shebanq_note shebanq_web
-            do
-                echo "0-0-0        DB $udbname        0-0-0"
-
-                echo "creating fresh $udbname"
-                mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "drop database if exists $udbname;"
-                mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt -e "create database $udbname;"
-
-                echo "unzipping $udbname"
-                cp "$TARGET/$udbname.sql.gz" "$UNPACK"
-                gunzip -f "$UNPACK/$udbname.sql.gz"
-
-                echo "loading $udbname"
-                echo "use $udbname" | cat - $UNPACK/$udbname.sql | mysql --defaults-extra-file=$CFG_DIR/mysqldumpopt
-
-                rm "$UNPACK/$udbname.sql"
-            done
-        fi
-        echo "0-0-0    LOAD DATA end    0-0-0"
+        echo "0-0-0    LOAD STATIC DATA end    0-0-0"
     fi
 fi
 
-# clone shebanq
+# clone $REPO
 
-skipclone="x"
+skipClone="x"
 
-if [[ "$doall" == "v" || "$doshebanq" == "v" ]]; then
-    cd "$APP_DIR"
-    if [[ "$skipclone" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
+    cd "$SERVER_APP_DIR"
+    if [[ "$skipClone" == "v" ]]; then
         echo "0-0-0    SHEBANQ pull    0-0-0"
-        cd "$SHEBANQ_DIR"
+        cd "$SERVER_SHEBANQ_DIR"
         git fetch origin
         git checkout master
         git reset --hard origin/master
-        cd "$APP_DIR"
-        chown -R apache:apache shebanq
-        if [[ -e "$WEB2PY_DIR" ]]; then
-            cd "$WEB2PY_DIR"
-            python3 -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
+        cd "$SERVER_APP_DIR"
+        chown -R apache:apache $APP
+        if [[ -e "$SERVER_WEB2PY_DIR" ]]; then
+            compileApp $APP
         fi
     else
         echo "0-0-0    SHEBANQ clone    0-0-0"
-        git clone "https://github.com/etcbc/shebanq"
+        if [[ -e "$APP" ]]; then
+            rm -rf "$APP"
+        fi
+        git clone "$REPO_URL"
     fi
-    cp $SHEBANQ_DIR/scripts/home/*.sh $TARGETHOME
 fi
 
 # install web2py
 
-skipwsgi="x"
-skipweb2py="x"
-skipshebanq="x"
-skipextradirs="x"
+skipWsgi="v"
+skipWeb2py="x"
+skipShebanq="x"
+skipExtradirs="x"
 
-if [[ "$doall" == "v" || "$doweb2py" == "v" ]]; then
-    echo "0-0-0    WEB2PY start    0-0-0"
+if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
+    echo "0-0-0    Web2py start    0-0-0"
 
-    if [[ "$skipwsgi" != "v" ]]; then
+    if [[ "$skipWsgi" != "v" ]]; then
         echo "0-0-0        INSTALL mod_wsgi        0-0-0"
-        yum install mod_wsgi
+        yum -q -y install mod_wsgi
     fi
 
-    if [[ "$skipweb2py" != "v" ]]; then
+    if [[ "$skipWeb2py" != "v" ]]; then
         echo "0-0-0        INSTALL web2py        0-0-0"
-        ensuredir "$APP_DIR"
+        ensureDir "$SERVER_APP_DIR"
         chmod 755 /opt
-        chmod 755 "$APP_DIR"
+        chmod 755 "$SERVER_APP_DIR"
 
-        cd "$APP_DIR"
-        cp "$TARGET/$WEB2PY" .
-        unzip $WEB2PY
-        rm $WEB2PY
+        cd "$SERVER_APP_DIR"
+        cp "$SERVER_INSTALL_DIR/$WEB2PY_FILE" web2py.zip
+        if [[ -e web2py ]]; then
+            rm -rf web2py
+        fi
+        unzip web2py.zip
+        rm web2py.zip
         mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
-        cp "$TARGET/parameters_443.py" web2py
-        cp "$TARGET/routes.py" web2py
 
-        cd "$WEB2PY_DIR"
-        echo "Compiling python code in admin"
-        python3 -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/admin')"
+        for pyFile in parameters_443.py routes.py
+        do
+            cp "$SERVER_INSTALL_DIR/$pyFile" web2py
+        done
+
+        compileApp admin
 
         echo "Removing examples app"
-        rm -rf "$WEB2PY_DIR/applications/examples"
+        rm -rf "$SERVER_WEB2PY_DIR/applications/examples"
 
         setsebool -P httpd_tmp_exec on
     fi
 
-    if [[ "$skipshebanq" != "v" ]]; then
-        echo "0-0-0        HOOKUP shebanq        0-0-0"
-        cd "$WEB2PY_DIR/applications"
-        if [[ -e shebanq ]]; then
-            rm -rf shebanq
+    if [[ "$skipShebanq" != "v" ]]; then
+        echo "0-0-0        HOOKUP $APP        0-0-0"
+        cd "$SERVER_WEB2PY_DIR/applications"
+        if [[ -e $APP ]]; then
+            rm -rf $APP
         fi
-        ln -s "$APP_DIR/shebanq" shebanq
+        ln -s $APP "$SERVER_APP_DIR/$APP"
 
-        cd "$APP_DIR"
+        cd "$SERVER_APP_DIR"
         chown -R apache:apache web2py
-        chown -R apache:apache shebanq
+        chown -R apache:apache $APP
 
-        if [[ -e "applications/shebanq" ]]; then
-            echo "Compiling python code in shebanq"
-            cd web2py
-            python3 -c "import gluon.compileapp; gluon.compileapp.compile_application('applications/shebanq')"
+        if [[ -e "applications/$APP" ]]; then
+            compileApp $APP
         fi
     fi
 
-    if [[ "$skipextradirs" != "v" ]]; then
+    if [[ "$skipExtradirs" != "v" ]]; then
         echo "0-0-0        MAKE writable dirs        0-0-0"
-        cd "$WEB2PY_DIR/applications"
+        cd "$SERVER_WEB2PY_DIR/applications"
         for app in `ls`
         do
             if [[ "$app" == "__init__.py" || "$app" == "__pycache__" ]]; then
@@ -318,19 +365,19 @@ fi
 
 # configure apache
 
-if [[ "$doall" == "v" || "$doapache" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
     echo "0-0-0    APACHE setup    0-0-0"
 
     if [[ -e "$APACHE_DIR/welcome.conf" ]]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
     fi
-    cp $TARGET/apache/*.conf "$APACHE_DIR"
-    cp "$TARGET/wsgi.conf" "$APACHE_DIR"
+    cp $SERVER_INSTALL_DIR/apache/*.conf "$APACHE_DIR"
+    cp "$SERVER_INSTALL_DIR/wsgi.conf" "$APACHE_DIR"
 
     service httpd restart
 fi
 
-erasedir "$UNPACK"
+eraseDir "$SERVER_UNPACK_DIR"
 
 # Todo after install
 #

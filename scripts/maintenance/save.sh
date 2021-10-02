@@ -2,7 +2,7 @@
 
 # READ THIS FIRST: maintenance.md
 
-# Script to save backup from a shebanq server to local machine
+# Script to save backup from a server to local server
 # Run it on your local computer.
 
 source ${0%/*}/config.sh
@@ -11,45 +11,50 @@ source ${0%/*}/config.sh
 USAGE="
 Usage: ./$(basename $0) situation
 
-Saves the latest backup from a shebanq server to a local machine.
+Saves the latest backup from a $APP server to a local server.
 
 N.B. The backup must already have been made on the server itself by means
 of the backup.sh script.
 
 situation:
-    p:   save from the current production machine
-    pn:  save from the current production machine
-    t:   save from the test machine
-    o:   save from the other machine
+    p:   save from the current production server
+    pn:  save from the new production server
+    t:   save from the test server
+    o:   save from the current other server
+    on:  save from the new other server
 "
 
-showusage "$1" "$USAGE"
+showUsage "$1" "$USAGE"
 
-setsituation "$1" "Saving latest backup from" "$USAGE"
+setSituation "$1" "Saving latest backup from" "$USAGE"
 shift
 
-LATESTSRCDIR="$TARGETBUDIR/latest"
-LATESTDSTDIR="$BACKUPDIR/latest"
-
-if [[ -e "$LATESTDSTDIR" ]]; then
-    rm -rf "$LATESTDSTDIR"
+latestSrcDir="$SERVER_BACKUP_DIR/latest"
+if [[ "$situation" == "t" || "$situation" == "pn" || "$situation" == "on" ]]; then
+    backupDir="$BACKUP_ALT_DIR"
+else
+    backupDir="$BACKUP_DIR"
 fi
 
-scp -r "$TARGETUSER@$MACHINE:$LATESTSRCDIR" "$BACKUPDIR/"
-cd "$LATESTDSTDIR"
-backupdatetime=`cat stamp`
-echo "Latest back up made at $backupdatetime"
+latestDstDir="$backupDir/latest"
 
-cd "$BACKUPDIR"
-if [[ -e "$backupdatetime" ]]; then
-    rm -rf "$backupdatetime"
+if [[ -e "$latestDstDir" ]]; then
+    rm -rf "$latestDstDir"
 fi
 
-echo "renaming incoming set to $budatetime"
+scp -r "$SERVER_USER@$SERVER:$latestSrcDir" "$backupDir/"
+cd "$latestDstDir"
 
-mv latest "$backupdatetime"
+backupDatetime=`cat stamp`
 
-echo "linking latest to $budatetime"
-ln -s "$backupdatetime" latest
+echo "Renaming incoming set to $backupDatetime"
 
-echo "Saved under $BACKUPDIR"
+cd "$backupDir"
+if [[ -e "$backupDatetime" ]]; then
+    rm -rf "$backupDatetime"
+fi
+
+mv latest "$backupDatetime"
+ln -s "$backupDatetime" latest
+
+echo "Saved under $backupDir"

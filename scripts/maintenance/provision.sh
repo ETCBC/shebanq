@@ -2,138 +2,158 @@
 
 # READ THIS FIRST: maintenance.md
 
-# Script to provision a shebanq server.
+# Script to provision a server.
 # Run it on your local computer.
 
 source ${0%/*}/config.sh
 
 
 USAGE="
-Usage: ./$(basename $0) situation [Options]
+Usage: ./$(basename $0) situation [Options] [version]
 
-Provisions a shebanq server with data to install it with.
-It will look on your local machine for the latest backup of the shebanq server,
+Provisions a $APP server with data to install it with.
+It will look on your local server for the latest backup of the $APP server,
 which contains the dynamic part of the database.
 
-N.B.: After provisioning the server, before running install.sh
-on the server, make sure you do it in a fresh terminal.
-Because provisioning updates the .bash_profile on the server.
-
 situation:
-    pn: provision the new production machine
-    p:  provision the current production machine
-    t:  provision the test machine
-    o:  provision the other machine
+    pn: provision the new production server
+    p:  provision the current production server
+    t:  provision the test server
+    o:  provision the current other server
+    on:  provision the new other server
 
 Options:
-    --static: only static data (passage and etcbc databases)
-    --emdros: only Emdros binary
-    --web2py: only Web2py binary
-    --backup: only backup data
+    --scripts: all the scripts and config data
+    --static:  only static data (passage and etcbc databases)
+    --dynamic: only dynamic data ($DYNAMIC_WEB and $DYNAMIC_NOTE)
+    --emdros:  only Emdros binary
+    --web2py:  only Web2py binary
 
-CAUTION
-Take care with provisioning the current production machine.
-It might damage the current installation.
+version:
+    a valid SHEBANQ data version, such as 4, 4b, c, 2017, 2021
+    It will restrict the data provisioning to the databases
+    that belong to this version.
+    If left out, all versions will be done.
+    Especially relevant if --static is passed.
 "
 
-showusage "$1" "$USAGE"
+showUsage "$1" "$USAGE"
 
-setsituation "$1" "Provisioning" "$USAGE"
+setSituation "$1" "Provisioning" "$USAGE"
 shift
 
-doall="v"
-doscripts="x"
-dostatic="x"
-doemdros="x"
-doweb2py="x"
-dobackup="x"
+doAll="v"
+doScripts="x"
+doStatic="x"
+doDynamic="x"
+doEmdros="x"
+doWeb2py="x"
 
 if [[ "$1" == "--scripts" ]]; then
-    doall="x"
-    doscripts="v"
+    doAll="x"
+    doScripts="v"
     shift
 elif [[ "$1" == "--static" ]]; then
-    doall="x"
-    dostatic="v"
+    doAll="x"
+    doStatic="v"
+    shift
+elif [[ "$1" == "--dynamic" ]]; then
+    doAll="x"
+    doDynamic="v"
     shift
 elif [[ "$1" == "--emdros" ]]; then
-    doall="x"
-    doemdros="v"
+    doAll="x"
+    doEmdros="v"
     shift
 elif [[ "$1" == "--web2py" ]]; then
-    doall="x"
-    doweb2py="v"
-    shift
-elif [[ "$1" == "--backup" ]]; then
-    doall="x"
-    dobackup="v"
+    doAll="x"
+    doWeb2py="v"
     shift
 fi
 
-LATESTBACKUP="$BACKUPDIR/latest"
+if [[ "$1" == "" ]]; then
+    versions="$STATIC_VERSIONS"
+else
+    versions="$1"
+    shift
+fi
 
-if [[ "$DBHOST" == "" ]]; then
-    if [[ "$doall" == "v" || "$dobackup" == "v" ]]; then
-        if [[ ! -d "$LATESTBACKUP" ]]; then
-            echo "No latest server backup found"
-            echo "We install empty shebanq_web and shebanq_user databases"
-            bubase="$SCRIPTSOURCE"
-        else
-            bubase="$LATESTBACKUP"
+ssh "$SERVER_USER@$SERVER" "mkdir -p $SERVER_INSTALL_DIR"
+
+latestBackup="$BACKUP_DIR/latest"
+
+if [[ "$DB_HOST" == "" ]]; then
+    if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
+        echo "o-o-o previous dynamic data if any o-o-o"
+
+        stampFile="$latestBackup/stamp"
+
+        if [[ -f "$stampFile" ]]; then
+            stamp=`cat "$stampFile"`
+            echo "found backup made on $stamp"
         fi
-        for db in shebanq_web shebanq_note
+        for db in $DYNAMIC_WEB $DYNAMIC_NOTE
         do
-            dbfile="$LATESTBACKUP/${db}.sql.gz"
-            if [[ ! -f "$dbfile" ]]; then
-                echo "WARNING: no latest backup found ($dbfile), we use an empty db"
-                dbfile="$SCRIPTSOURCE/${db}.sql.gz"
+            dbFile="$latestBackup/${db}.sql.gz"
+            if [[ ! -f "$dbFile" ]]; then
+                echo "WARNING: no latest backup found for ($dbFile), we use an empty db"
+                dbFile="$SCRIPT_SRC_DIR/${db}.sql.gz"
             fi
-            scp -r "$dbfile" "$TARGETUSER@$MACHINE:$TARGET"
+            scp -r "$dbFile" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
         done
     fi
 fi
 
-if [[ "$doall" == "v" || "$doscripts" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
+    echo "o-o-o scripts o-o-o"
+
     for script in grants.sql shebanq.cnf parameters_443.py routes.py wsgi.conf
     do
-        scp -r "$SCRIPTSOURCE/$script" "$TARGETUSER@$MACHINE:$TARGET"
+        scp -r "$SCRIPT_SRC_DIR/$script" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
     done
-    for script in .bash_profile backup.sh restore.sh config.sh install.sh update.sh
+    for script in backup.sh restore.sh config.sh install.sh update.sh
     do
-        scp -r "$MAINTENANCE/$script" "$TARGETUSER@$MACHINE:$TARGETHOME"
+        scp -r "$LOCAL_SCRIPT_DIR/$script" "$SERVER_USER@$SERVER:$SERVER_HOME_DIR"
     done
 
-    if [[ -e "$DESTCFG" ]]; then
-        rm -rf "$DESTCFG"
+    if [[ -e "$LOCAL_CFG" ]]; then
+        rm -rf "$LOCAL_CFG"
     fi
-    if [[ -e "$DESTAPA" ]]; then
-        rm -rf "$DESTAPA"
+    if [[ -e "$LOCAL_APA" ]]; then
+        rm -rf "$LOCAL_APA"
     fi
-    cp -r "$SOURCECFG" "$DESTCFG"
-    cp -r "$SOURCEAPA" "$DESTAPA"
-    scp -r "$SOURCECFG" "$TARGETUSER@$MACHINE:/$TARGET/"
-    scp -r "$SOURCEAPA" "$TARGETUSER@$MACHINE:/$TARGET/"
+    cp -r "$LOCAL_CFG_SPECIFIC" "$LOCAL_CFG"
+    cp -r "$LOCAL_APA_SPECIFIC" "$LOCAL_APA"
+    for item in "$LOCAL_CFG" "$LOCAL_APA"
+    do
+        scp -r "$item" "$SERVER_USER@$SERVER:/$SERVER_INSTALL_DIR/"
+    done
 fi
 
-if [[ "$DBHOST" == "" ]]; then
-    if [[ "$doall" == "v" || "$dostatic" == "v" ]]; then
-        for version in $DATA_VERSIONS
+if [[ "$DB_HOST" == "" ]]; then
+    if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
+        echo "o-o-o static data o-o-o"
+        for version in $versions
         do
-            echo "Uploading version $version ..."
-            thissrc="$DATASOURCE/$version"
-            scp -r "$thissrc/shebanq_etcbc$version.mql.bz2" "$TARGETUSER@$MACHINE:/$TARGET"
-            scp -r "$thissrc/shebanq_passage$version.sql.gz" "$TARGETUSER@$MACHINE:/$TARGET"
+            echo "    o-o version $version ..."
+            src="$STATIC_SRC_DIR/$version"
+            staticEtcbc="${src}/${STATIC_ETCBC}$version.mql.bz2"
+            staticPassage="${src}/${STATIC_PASSAGE}$version.sql.gz"
+            for item in "$staticEtcbc" "$staticPassage"
+            do
+                scp -r "$item" "$SERVER_USER@$SERVER:/$SERVER_INSTALL_DIR"
+            done
         done
 
     fi
 fi
 
-if [[ "$doall" == "v" || "$doemdros" == "v" ]]; then
-        echo "Uploading emdros binary version $EMDROSVERSION ..."
-        scp -r "$EMDROS" "$TARGETUSER@$MACHINE:/$TARGET"
+if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
+        echo "o-o-o emdros package o-o-o"
+        scp -r "$EMDROS_PATH" "$SERVER_USER@$SERVER:/$SERVER_INSTALL_DIR"
 fi
 
-if [[ "$doall" == "v" || "$doweb2py" == "v" ]]; then
-        echo "Uploading web2py zip ..."
-        scp -r "$WEB2PY" "$TARGETUSER@$MACHINE:/$TARGET"
+if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
+        echo "o-o-o web2py package o-o-o"
+        scp -r "$WEB2PY_PATH" "$SERVER_USER@$SERVER:/$SERVER_INSTALL_DIR"
 fi
