@@ -339,10 +339,14 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         compileApp $APP
     fi
 
+    cd "$SERVER_APP_DIR"
+    chown -R apache:apache web2py
+    chcon -R -t httpd_user_content_t /opt/web-apps/
+
     if [[ "$skipExtradirs" != "v" ]]; then
         echo "o-o-o - make writable dirs"
         cd "$SERVER_WEB2PY_DIR/applications"
-        for app in admin $APP
+        for app in welcome admin $APP
         do
             for dir in databases cache errors sessions private uploads
             do
@@ -352,13 +356,12 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
                 if [[ ! -e ${app}/${dir} ]]; then
                     mkdir ${app}/${dir}
                 fi
+                chown -R apache:apache ${app}/${dir}
                 chcon -R -t tmp_t ${app}/${dir}
             done
         done
     fi
 
-    cd "$SERVER_APP_DIR"
-    chown -R apache:apache web2py
 fi
 
 # configure apache
