@@ -1,4 +1,9 @@
+import sys
+
 from gluon import current
+
+sys.stderr.write("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+sys.stderr.flush()
 
 response.logo = A(
     IMG(_src=URL("static", "images/shebanq_logo_small.png")),

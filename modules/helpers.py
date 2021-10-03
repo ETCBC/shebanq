@@ -7,8 +7,8 @@ from gluon import current
 
 def debug(msg):
     if current.DEBUG:
-        sys.stdout.write(f"{msg}\n")
-        sys.stdout.flush()
+        sys.stderr.write(f"{msg}\n")
+        sys.stderr.flush()
 
 
 def isodt(dt=None):

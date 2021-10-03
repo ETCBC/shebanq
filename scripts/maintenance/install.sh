@@ -113,6 +113,7 @@ export PATH
 
 # Python
 # * install module markdown (probably sudo pip3 install markdown)
+# also: mod_wsgi
 
 if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
     echo "0-0-0    INSTALL PYTHON 0-0-0"
@@ -121,6 +122,7 @@ if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
     yum -q -y install python3-markdown
     # we need the python command (for emdros compilation)
     alternatives --set python /usr/bin/python3
+    yum -q -y install mod_wsgi
 fi
 
 # MariaDB
@@ -144,6 +146,7 @@ fi
 
 if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "0-0-0    INSTALL Emdros    0-0-0"
+
     cd "$SERVER_INSTALL_DIR"
     tar xvf "$EMDROS_FILE"
     cd "$EMDROS_BARE"
@@ -166,6 +169,8 @@ skipGrants="x"
 
 if [[ "$doAll" == "v" || "$doMysqlconfig" == "v" ]]; then
     echo "0-0-0    CONFIGURE MYSQL    0-0-0"
+
+    cd "$SERVER_INSTALL_DIR"
 
     if [[ "$DB_HOST" == "" ]]; then
         cp shebanq.cnf /etc/my.cnf.d/
@@ -258,21 +263,14 @@ fi
 
 # clone $REPO
 
-skipClone="x"
-
 if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
     cd "$SERVER_APP_DIR"
-    if [[ "$skipClone" == "v" ]]; then
+    if [[ -d "$APP" ]]; then
         echo "0-0-0    SHEBANQ pull    0-0-0"
         cd "$SERVER_SHEBANQ_DIR"
         git fetch origin
         git checkout master
         git reset --hard origin/master
-        cd "$SERVER_APP_DIR"
-        chown -R apache:apache $APP
-        if [[ -e "$SERVER_WEB2PY_DIR" ]]; then
-            compileApp $APP
-        fi
     else
         echo "0-0-0    SHEBANQ clone    0-0-0"
         if [[ -e "$APP" ]]; then
@@ -280,66 +278,62 @@ if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
         fi
         git clone "$REPO_URL"
     fi
+
+    cd "$SERVER_APP_DIR"
+    chown -R apache:apache $APP
+    if [[ -e "$SERVER_WEB2PY_DIR" ]]; then
+        compileApp $APP
+    fi
 fi
 
 # install web2py
 
-skipWsgi="x"
-skipWeb2py="x"
-skipShebanq="x"
 skipExtradirs="x"
 
 if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     echo "0-0-0    Web2py start    0-0-0"
 
-    if [[ "$skipWsgi" != "v" ]]; then
-        echo "0-0-0        INSTALL mod_wsgi        0-0-0"
-        yum -q -y install mod_wsgi
+
+    # unpack Web2py
+
+    echo "0-0-0        INSTALL web2py        0-0-0"
+    ensureDir "$SERVER_APP_DIR"
+    chmod 755 /opt
+    chmod 755 "$SERVER_APP_DIR"
+
+    cd "$SERVER_APP_DIR"
+    cp "$SERVER_INSTALL_DIR/$WEB2PY_FILE" web2py.zip
+    if [[ -e web2py ]]; then
+        rm -rf web2py
     fi
+    unzip web2py.zip
+    rm web2py.zip
+    mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
 
-    if [[ "$skipWeb2py" != "v" ]]; then
-        echo "0-0-0        INSTALL web2py        0-0-0"
-        ensureDir "$SERVER_APP_DIR"
-        chmod 755 /opt
-        chmod 755 "$SERVER_APP_DIR"
+    for pyFile in parameters_443.py routes.py
+    do
+        cp "$SERVER_INSTALL_DIR/$pyFile" web2py
+    done
 
-        cd "$SERVER_APP_DIR"
-        cp "$SERVER_INSTALL_DIR/$WEB2PY_FILE" web2py.zip
-        if [[ -e web2py ]]; then
-            rm -rf web2py
-        fi
-        unzip web2py.zip
-        rm web2py.zip
-        mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
+    compileApp admin
 
-        for pyFile in parameters_443.py routes.py
-        do
-            cp "$SERVER_INSTALL_DIR/$pyFile" web2py
-        done
+    echo "Removing examples app"
+    rm -rf "$SERVER_WEB2PY_DIR/applications/examples"
 
-        compileApp admin
+    setsebool -P httpd_tmp_exec on
 
-        echo "Removing examples app"
-        rm -rf "$SERVER_WEB2PY_DIR/applications/examples"
+    # hook up SHEBANQ
 
-        setsebool -P httpd_tmp_exec on
+    echo "0-0-0        HOOKUP $APP        0-0-0"
+    cd "$SERVER_WEB2PY_DIR/applications"
+    if [[ -e $APP ]]; then
+        rm -rf $APP
     fi
+    ln -s "$SERVER_APP_DIR/$APP" "$APP"
+    chown apache:apache "$APP"
 
-    if [[ "$skipShebanq" != "v" ]]; then
-        echo "0-0-0        HOOKUP $APP        0-0-0"
-        cd "$SERVER_WEB2PY_DIR/applications"
-        if [[ -e $APP ]]; then
-            rm -rf $APP
-        fi
-        ln -s $APP "$SERVER_APP_DIR/$APP"
-
-        cd "$SERVER_APP_DIR"
-        chown -R apache:apache web2py
-        chown -R apache:apache $APP
-
-        if [[ -e "applications/$APP" ]]; then
-            compileApp $APP
-        fi
+    if [[ -e "applications/$APP" ]]; then
+        compileApp $APP
     fi
 
     if [[ "$skipExtradirs" != "v" ]]; then
@@ -352,15 +346,19 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
             fi
             for dir in databases cache errors sessions private uploads
             do
-                if [[ -e ${app}/${dir} ]]; then
-                    rm -rf ${app}/${dir}
+                # if [[ -e ${app}/${dir} ]]; then
+                #     rm -rf ${app}/${dir}
+                # fi
+                if [[ ! -e ${app}/${dir} ]]; then
+                    mkdir ${app}/${dir}
                 fi
-                mkdir ${app}/${dir}
-                chown apache:apache ${app}/${dir}
                 chcon -R -t tmp_t ${app}/${dir}
             done
         done
     fi
+
+    cd "$SERVER_APP_DIR"
+    chown -R apache:apache web2py
 fi
 
 # configure apache
