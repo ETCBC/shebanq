@@ -48,7 +48,7 @@ doAll="v"
 doPython="x"
 doEmdros="x"
 doMysqlinstall="x"
-doMysqlconfig="x"
+doMysqlConfig="x"
 doStatic="x"
 doDynamic="x"
 doShebanq="x"
@@ -69,7 +69,7 @@ elif [[ "$1" == "--mysqlinstall" ]]; then
     shift
 elif [[ "$1" == "--mysqlconfig" ]]; then
     doAll="x"
-    doMysqlconfig="v"
+    doMysqlConfig="v"
     shift
 elif [[ "$1" == "--static" ]]; then
     doAll="x"
@@ -116,7 +116,7 @@ export PATH
 # also: mod_wsgi
 
 if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
-    echo "0-0-0    INSTALL PYTHON 0-0-0"
+    echo "o-o-o    INSTALL PYTHON o-o-o"
     yum -q -y install python36
     yum -q -y install python36-devel
     yum -q -y install python3-markdown
@@ -133,7 +133,7 @@ fi
 # * grant rights on tables to these users if needed
 
 if [[ "$doAll" == "v" || "$doMysqlinstall" == "v" ]]; then
-    echo "0-0-0    INSTALL MARIADB    0-0-0"
+    echo "o-o-o    INSTALL MARIADB    o-o-o"
     yum -q -y install mariadb.x86_64
     yum -q -y install mariadb-devel.x86_64
     yum -q -y install mariadb-server.x86_64
@@ -145,19 +145,19 @@ fi
 # end up inside the emdros installation
 
 if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
-    echo "0-0-0    INSTALL Emdros    0-0-0"
+    echo "o-o-o    INSTALL Emdros    o-o-o"
 
     cd "$SERVER_INSTALL_DIR"
     tar xvf "$EMDROS_FILE"
     cd "$EMDROS_BARE"
 
-    echo "Emdros CONFIGURE"
+    echo "o-o-o - Emdros CONFIGURE"
     ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug
 
-    echo "Emdros MAKE"
+    echo "o-o-o - Emdros MAKE"
     make
 
-    echo "Emdros INSTALL"
+    echo "o-o-o - Emdros INSTALL"
     make install
 
     cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
@@ -167,19 +167,19 @@ fi
 skipUsers="x"
 skipGrants="x"
 
-if [[ "$doAll" == "v" || "$doMysqlconfig" == "v" ]]; then
-    echo "0-0-0    CONFIGURE MYSQL    0-0-0"
+if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
+    echo "o-o-o    CONFIGURE MYSQL    o-o-o"
 
     cd "$SERVER_INSTALL_DIR"
 
     if [[ "$DB_HOST" == "" ]]; then
         cp shebanq.cnf /etc/my.cnf.d/
         if [[ "$skipUsers" != "v" ]]; then
-            echo "0-0-0        create users        0-0-0"
+            echo "o-o-o - create users"
             mysql -u root < "$SERVER_CFG_DIR/user.sql"
         fi
         if [[ "$skipGrants" != "v" ]]; then
-            echo "0-0-0        grant privileges        0-0-0"
+            echo "o-o-o - grant privileges"
             mysql -u root < grants.sql
         fi
     fi
@@ -193,25 +193,25 @@ fi
 
 if [[ "$DB_HOST" == "" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
-        echo "0-0-0    LOAD DYNAMIC DATA start    0-0-0"
+        echo "o-o-o    LOAD DYNAMIC DATA start    o-o-o"
         for db in $DYNAMIC_NOTE $DYNAMIC_WEB
         do
-            echo "0-0-0        DB $db        0-0-0"
+            echo "o-o-o - DB $db"
 
-            echo "creating fresh $db"
+            echo "o-o-o - creating fresh $db"
             mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e "drop database if exists $db;"
             mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e "create database $db;"
 
-            echo "unzipping $db"
+            echo "o-o-o - unzipping $db"
             cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
             gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
 
-            echo "loading $db"
+            echo "o-o-o - loading $db"
             echo "use $db" | cat - $SERVER_UNPACK_DIR/$db.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
 
             rm "$SERVER_UNPACK_DIR/$db.sql"
         done
-        echo "0-0-0    LOAD DYNAMIC DATA end    0-0-0"
+        echo "o-o-o    LOAD DYNAMIC DATA end    o-o-o"
     fi
 fi
 
@@ -225,54 +225,58 @@ skipEdb="x"
 
 if [[ "$DB_HOST" == "" ]]; then
     if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
-        echo "0-0-0    LOAD STATIC DATA start    0-0-0"
+        echo "o-o-o    LOAD STATIC DATA start    o-o-o"
 
         mysqlOpt="--defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt"
 
         for version in $versions
         do
             if [[ "$skipPdb" != "v" ]]; then
-                echo "0-0-0        VERSION $version ${STATIC_PASSAGE} 0-0-0"
+                echo "o-o-o - VERSION $version ${STATIC_PASSAGE}"
                 db="$STATIC_PASSAGE$version"
-                echo "unzipping $db"
+                echo "o-o-o - unzipping $db"
                 cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
                 gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
-                echo "loading $db"
+                echo "o-o-o - loading $db"
                 mysql $mysqlOpt < "$SERVER_UNPACK_DIR/$db.sql"
                 rm "$SERVER_UNPACK_DIR/$db.sql"
             fi
 
             if [[ "$skipEdb" != "v" ]]; then
-                echo "0-0-0        VERSION $version ${STATIC_ETCBC} 0-0-0"
+                echo "o-o-o - VERSION $version ${STATIC_ETCBC}"
                 db="$STATIC_ETCBC$version"
-                echo "unzipping $db"
+                echo "o-o-o - unzipping $db"
                 cp $SERVER_INSTALL_DIR/$db.mql.bz2 $SERVER_UNPACK_DIR
                 bunzip2 -f $SERVER_UNPACK_DIR/$db.mql.bz2
-                echo "dropping $db"
+                echo "o-o-o - dropping $db"
                 mysql $mysqlOpt -e "drop database if exists $db;"
-                echo "importing $db"
+                echo "o-o-o - importing $db"
                 mqlPwd=`cat $SERVER_CFG_DIR/mqlimportopt`
                 mqlOpt="-e UTF8 -n -b m -u $MYSQL_ADMIN"
                 $SERVER_MQL_DIR/mql $mqlOpt -p $mqlPwd < $SERVER_UNPACK_DIR/$db.mql
                 rm "$SERVER_UNPACK_DIR/$db.mql"
             fi
         done
-        echo "0-0-0    LOAD STATIC DATA end    0-0-0"
+        echo "o-o-o    LOAD STATIC DATA end    o-o-o"
     fi
 fi
 
 # clone $REPO
 
 if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
+    ensureDir "$SERVER_APP_DIR"
+    chmod 755 /opt
+    chmod 755 "$SERVER_APP_DIR"
     cd "$SERVER_APP_DIR"
-    if [[ -d "$APP" ]]; then
-        echo "0-0-0    SHEBANQ pull    0-0-0"
+
+    if [[ -d "$SERVER_APP_DIR/$APP" ]]; then
+        echo "o-o-o    SHEBANQ pull    o-o-o"
         cd "$SERVER_SHEBANQ_DIR"
         git fetch origin
         git checkout master
         git reset --hard origin/master
     else
-        echo "0-0-0    SHEBANQ clone    0-0-0"
+        echo "o-o-o    SHEBANQ clone    o-o-o"
         if [[ -e "$APP" ]]; then
             rm -rf "$APP"
         fi
@@ -291,12 +295,11 @@ fi
 skipExtradirs="x"
 
 if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
-    echo "0-0-0    Web2py start    0-0-0"
-
+    echo "o-o-o    WEB2PY START    o-o-o"
 
     # unpack Web2py
 
-    echo "0-0-0        INSTALL web2py        0-0-0"
+    echo "o-o-o - install"
     ensureDir "$SERVER_APP_DIR"
     chmod 755 /opt
     chmod 755 "$SERVER_APP_DIR"
@@ -317,14 +320,14 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
 
     compileApp admin
 
-    echo "Removing examples app"
+    echo "o-o-o - Removing examples app"
     rm -rf "$SERVER_WEB2PY_DIR/applications/examples"
 
     setsebool -P httpd_tmp_exec on
 
     # hook up SHEBANQ
 
-    echo "0-0-0        HOOKUP $APP        0-0-0"
+    echo "o-o-o - hookup $APP"
     cd "$SERVER_WEB2PY_DIR/applications"
     if [[ -e $APP ]]; then
         rm -rf $APP
@@ -337,7 +340,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     fi
 
     if [[ "$skipExtradirs" != "v" ]]; then
-        echo "0-0-0        MAKE writable dirs        0-0-0"
+        echo "o-o-o - make writable dirs"
         cd "$SERVER_WEB2PY_DIR/applications"
         for app in admin $APP
         do
@@ -361,7 +364,7 @@ fi
 # configure apache
 
 if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
-    echo "0-0-0    APACHE setup    0-0-0"
+    echo "o-o-o    APACHE setup    o-o-o"
 
     if [[ -e "$APACHE_DIR/welcome.conf" ]]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
