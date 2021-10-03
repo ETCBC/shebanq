@@ -1,6 +1,6 @@
 from gluon import current
 
-from helpers import debug
+# from helpers import debug
 
 response.logo = A(
     IMG(_src=URL("static", "images/shebanq_logo_small.png")),
@@ -34,8 +34,11 @@ elif servedOn == "test.shebanq.ancient-data.org":
 else:
     onOther = True
 
+current.SITUATION = (
+    "prod" if onProd else "test" if onTest else "local" if onLocal else "other"
+)
 current.DEBUG = onLocal or onTest
-debug("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+# debug("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 
 
 # response.title = request.application.replace('_',' ').title()

@@ -12,7 +12,7 @@ class QUERYCHAPTER:
     def makeQCindexes(self):
         VERSIONS = current.VERSIONS
 
-        for vr in ("2017", "2021") if current.DEBUG else VERSIONS:
+        for vr in ("2017", "2021") if current.SITUATION == "local" else VERSIONS:
             self.makeQCindex(vr)
 
     def makeQCindex(self, vr):
@@ -88,7 +88,8 @@ and
             queryFromExe[query_exe_id] = query_id
             pubStatus.setdefault(query_id, {})[vr] = is_published == "T"
 
-        doQueryIndex(db, vr, queryFromExe)
+        if queryFromExe:
+            doQueryIndex(db, vr, queryFromExe)
 
         exe = time.time() - startTime
         debug(f"o-o-o made chapter-query index for data {vr} in {delta(exe)}")
