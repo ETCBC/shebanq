@@ -337,11 +337,12 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
 
     if [[ -e "$APP" ]]; then
         compileApp $APP
+        chown -R apache:apache $APP
     fi
 
     cd "$SERVER_APP_DIR"
     chown -R apache:apache web2py
-    chcon -R -t httpd_user_content_t /opt/web-apps/
+    chcon -R -t httpd_sys_content_t /opt/web-apps/
 
     if [[ "$skipExtradirs" != "v" ]]; then
         echo "o-o-o - make writable dirs"
