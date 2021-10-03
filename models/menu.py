@@ -1,9 +1,6 @@
-import sys
-
 from gluon import current
 
-sys.stderr.write("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-sys.stderr.flush()
+from helpers import debug
 
 response.logo = A(
     IMG(_src=URL("static", "images/shebanq_logo_small.png")),
@@ -38,6 +35,8 @@ else:
     onOther = True
 
 current.DEBUG = onLocal or onTest
+debug("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
 
 # response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace("_", " ").capitalize()

@@ -7,8 +7,7 @@ from gluon import current
 
 def debug(msg):
     if current.DEBUG:
-        sys.stderr.write(f"{msg}\n")
-        sys.stderr.flush()
+        print(msg, file=current.request.wsgi.environ['wsgi.errors'])
 
 
 def isodt(dt=None):

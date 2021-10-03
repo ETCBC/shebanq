@@ -332,18 +332,15 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     ln -s "$SERVER_APP_DIR/$APP" "$APP"
     chown apache:apache "$APP"
 
-    if [[ -e "applications/$APP" ]]; then
+    if [[ -e "$APP" ]]; then
         compileApp $APP
     fi
 
     if [[ "$skipExtradirs" != "v" ]]; then
         echo "0-0-0        MAKE writable dirs        0-0-0"
         cd "$SERVER_WEB2PY_DIR/applications"
-        for app in `ls`
+        for app in admin $APP
         do
-            if [[ "$app" == "__init__.py" || "$app" == "__pycache__" ]]; then
-                continue
-            fi
             for dir in databases cache errors sessions private uploads
             do
                 # if [[ -e ${app}/${dir} ]]; then
