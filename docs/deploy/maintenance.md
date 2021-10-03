@@ -33,13 +33,21 @@ The following tasks must be addressed:
     software updates must be carried out,
     not only of SHEBANQ itself,
     but also of the supporting systems,
-    such as Emdros, Web2Py, Python, and MySQL.
+    such as
+    [Emdros](https://emdros.org),
+    [Web2Py](http://web2py.com),
+    [Python](https://www.python.org),
+    and
+    [MariaDB](https://mariadb.org)
+    (a replacement of
+    [MySQL](https://dev.mysql.com/downloads/mysql/)
+    ).
 
 * **Data updates**
 
     The [ETCBC](http://www.etcbc.nl), as the provider of the
     textual and linguistic data of the Hebrew Bible,
-    produces occasionally data updates through its
+    produces data updates through its
     [BHSA](https://github.com/etcbc/bhsa) repository.
     These data updates have to find their way to the
     servers that host SHEBANQ.
@@ -59,19 +67,17 @@ the long-term support of SHEBANQ.
 
 *   **Automation**
 
-    Maintaining a server reuqires countless nitty-gritty
+    Maintaining a server requires countless nitty-gritty
     steps, which are easily forgotten.
     That is the prime reason to automate all these steps.
-    People that have not developed SHEBANQ should be able to
-    maintain SHEBANQ.
-    It must be straightforward to new people how to
-    maintain SHEBANQ.
+    People that are new to SHEBANQ should be able to
+    maintain SHEBANQ in a straightforward way.
 
 *   **Documentation**
 
     The maintenance of SHEBANQ should be well documented.
     Together with automation it is the best help we can offer
-    to the maintainers if SHEBANQ in the years to come.
+    to the maintainers of SHEBANQ in the years to come.
 
 ## Tools
 
@@ -97,7 +103,8 @@ The remaining assets are available through the
     Read first to the end of this document,
     and take note of the **requirements**.
 
-SELINUX might not be the most obvious choice to host SHEBANQ on,
+[SELINUX](https://en.wikipedia.org/wiki/Security-Enhanced_Linux)
+might not be the most obvious choice to host SHEBANQ on,
 because it is considerably more difficult to work with than Ubuntu.
 
 However, there are a few key advantages you enjoy after the installation:
@@ -112,7 +119,7 @@ However, there are a few key advantages you enjoy after the installation:
     can be updated without the risk of breaking things,
     because the current versions of them are supported for 
     an extra long time.
-    Often, new security updates are backported to older versions,
+    Often, new security updates are back-ported to older versions,
     so that you can avoid upgrading to newer but incompatible versions.
 
 ## Requirements
@@ -153,6 +160,16 @@ git clone https://github.com/etcbc/shebanq
 git clone https://github.com/etcbc/bhsa
 ```
 
+If you have cloned these long ago, you can make them up to date by
+pulling them again:
+
+```
+cd ~/github/etcbc/shebanq
+git pull origin master
+cd ~/github/etcbc/bhsa
+git pull origin master
+```
+
 You can choose to place the `github` directory somewhere else, see below,
 but the structure within the `github` directory must be as prescribed.
 
@@ -175,8 +192,7 @@ local changes.
 Start with copying the maintenance scripts to the `_local` directory:
 
 ```
-cd ~/github
-cd etcbc/shebanq
+cd ~/github/etcbc/shebanq
 cp -R scripts/maintenance _local/maintenance
 ```
 
@@ -198,8 +214,7 @@ on the current working directory.
 If you are going to work with your own shebanq server, do
 
 ```
-cd ~/github
-cd etcbc/shebanq
+cd ~/github/etcbc/shebanq
 cp -R scripts/cfg_other _local/cfg_other
 cp -R scripts/apache_other _local/apache_other
 ```
@@ -208,8 +223,7 @@ If you are going to work with the offical production and test servers
 of SHEBANQ, do
 
 ```
-cd ~/github
-cd etcbc/shebanq
+cd ~/github/etcbc/shebanq
 cp -R scripts/cfg_other _local/cfg_prod
 cp -R scripts/apache_other _local/apache_prod
 cp -R scripts/cfg_other _local/cfg_test
@@ -221,10 +235,8 @@ cp -R scripts/apache_other _local/apache_test
 You need to tweak the contents of your `_local` files to
 reflect your current situation.
 
-All maintenance scripts start with configuration.
-In that way they adapt to the situation they are in.
-Much of situation is described in parameters that are set in
-`config.sh` which is included by all scripts.
+All maintenance scripts start with the same configuration
+by including `config.sh`.
 
 Tweak `config.sh`:
 adapt the `server`*Xxx* variables to your situation.
@@ -235,6 +247,10 @@ you might wish.
 
 Tweak the files in `/cfg_`*xxx*:
 Adapt credentials for the database connections.
+
+!!! caution "multiple files"
+    The connection details occur in multiple files.
+    Have a thorough look at them all.
 
 ## The scripts
 
@@ -315,7 +331,7 @@ There are several situations, depending on the server that hosts SHEBANQ:
     * access managed by you
     * an unoffical shebanq website
       (very welcome, thanks for taking the trouble)
-* **Other (new)** `o`
+* **Other (new)** `on`
     * url: to be configured by you
     * hosted on your new server,
       as a successor to your current server
