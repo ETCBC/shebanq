@@ -114,6 +114,8 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     # remove /opt/web-apps if it is empty
     if ls -1qA "$SERVER_APP_DIR" | grep -q .
     then
+        echo "not removing $SERVER_APP_DIR_YET"
+    else
         rm -rf "$SERVER_APP_DIR"
     fi
 fi
@@ -128,6 +130,8 @@ if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
     # remove /opt/web-apps if it is empty
     if ls -1qA "$SERVER_APP_DIR" | grep -q .
     then
+        echo "not removing $SERVER_APP_DIR_YET"
+    else
         rm -rf "$SERVER_APP_DIR"
     fi
 fi

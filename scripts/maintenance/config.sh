@@ -86,7 +86,12 @@ APACHE_DIR="/etc/httpd/conf.d"
 # use the OTHER server settings.
 #
 # serverXxx is the server name as internet address
-# dbHost is the host server where the mysql database resides
+# 
+# For each Xxx in Other, OtherNew, Test, Prod, ProdNew we define:
+#
+# serverUrlXxx: the url of shebanq when served from this server;
+#
+# dbHostXxx is the host server where the mysql database resides
 #   Leave it empty if there is a local mysql server
 #   If mysql is served on an other server, we
 #   assume that the data is still in place when we install SHEBANQ
@@ -98,13 +103,16 @@ APACHE_DIR="/etc/httpd/conf.d"
 #   
 serverProd="clarin11.dans.knaw.nl"
 serverProdNew="clarin31.dans.knaw.nl"
+serverUrlProd="https://shebanq.ancient-data.org"
 dbHostProd="-h mysql11.dans.knaw.nl"
 
 serverTest="tclarin31.dans.knaw.nl"
+serverUrlTest="https://test.shebanq.ancient-data.org"
 dbHostTest=""
 
 serverOther="other1.server.edu"
 serverOtherNew="other2.server.edu"
+serverUrlOther="https://shebanq.mydomain.org"
 dbHostOther=""
 #
 # END TWEAKING PART #################################################
@@ -147,6 +155,10 @@ EMDROS_BARE="emdros-$emdrosVersion"
 EMDROS_FILE="$EMDROS_BARE.tar.gz"
 EMDROS_PATH="$packageDir/$EMDROS_FILE"
 
+TEST_CONTROLLER="hebrew/text"
+
+TM="time -f '%E' "
+
 # Set some variables that depend on the situation
 
 function showUsage {
@@ -159,30 +171,35 @@ function showUsage {
 function setSituation {
     if [[ "$1" == "p" || "$1" == "$serverProd" ]]; then
         SERVER="$serverProd"
+        SERVER_URL="$serverUrlProd"
         DB_HOST="$dbHostProd"
         LOCAL_CFG_SPECIFIC="$localDir/cfg_prod"
         LOCAL_APA_SPECIFIC="$localDir/apache_prod"
         echo "$2 PRODUCTION server $SERVER ..."
     elif [[ "$1" == "pn" || "$1" == "$serverProdNew" ]]; then
         SERVER="$serverProdNew"
+        SERVER_URL="$serverUrlProd"
         DB_HOST="$dbHostProd"
         LOCAL_CFG_SPECIFIC="$localDir/cfg_prod"
         LOCAL_APA_SPECIFIC="$localDir/apache_prod"
         echo "$2 PRODUCTION server (new) $SERVER ..."
     elif [[ "$1" == "t" || "$1" == "$serverTest" ]]; then
         SERVER="$serverTest"
+        SERVER_URL="$serverUrlTest"
         DB_HOST="$dbHostTest"
         LOCAL_CFG_SPECIFIC="$localDir/cfg_test"
         LOCAL_APA_SPECIFIC="$localDir/apache_test"
         echo "$2 TEST server $SERVER ..."
     elif [[ "$1" == "o" || "$1" == "$serverOther" ]]; then
         SERVER="$serverOther"
+        SERVER_URL="$serverUrlOther"
         DB_HOST="$dbHostOther"
         LOCAL_CFG_SPECIFIC="$localDir/cfg_other"
         LOCAL_APA_SPECIFIC="$localDir/apache_other"
         echo "$2 OTHER server $SERVER ..."
     elif [[ "$1" == "on" || "$1" == "$serverOtherNew" ]]; then
         SERVER="$serverOtherNew"
+        SERVER_URL="$serverUrlOther"
         DB_HOST="$dbHostOther"
         LOCAL_CFG_SPECIFIC="$localDir/cfg_other"
         LOCAL_APA_SPECIFIC="$localDir/apache_other"

@@ -25,8 +25,9 @@ Options:
     --fetch$APP: clone or pull $REPO
     --$APP: install $REPO
     --web2py: install web2py
-    --firstvisit: run controller from shell, outside apache, to warm up cache
+    --testcontroller: run a controller in the web2py shell for testing
     --apache: setup apache (assume certificates are already in place)
+    --firstvisit: run controller from shell, outside apache, to warm up cache
 
 version:
     a valid SHEBANQ data version, such as 4, 4b, c, 2017, 2021
@@ -56,6 +57,7 @@ doDynamic="x"
 doFetchShebanq="x"
 doShebanq="x"
 doWeb2py="x"
+doTestController="x"
 doApache="x"
 doFirstVisit="x"
 
@@ -95,13 +97,17 @@ elif [[ "$1" == "--web2py" ]]; then
     doAll="x"
     doWeb2py="v"
     shift
-elif [[ "$1" == "--firstvisit" ]]; then
+elif [[ "$1" == "--testcontroller" ]]; then
     doAll="x"
-    doFirstVisit="v"
+    doTestController="v"
     shift
 elif [[ "$1" == "--apache" ]]; then
     doAll="x"
     doApache="v"
+    shift
+elif [[ "$1" == "--firstvisit" ]]; then
+    doAll="x"
+    doFirstVisit="v"
     shift
 elif [[ "$1" == --* ]]; then
     echo "Unrecognized switch: $1"
@@ -131,12 +137,12 @@ export PATH
 
 if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
     echo "o-o-o    INSTALL PYTHON o-o-o"
-    yum -q -y install python36
-    yum -q -y install python36-devel
-    yum -q -y install python3-markdown
+    $TM yum -q -y install python36
+    $TM yum -q -y install python36-devel
+    $TM yum -q -y install python3-markdown
     # we need the python command (for emdros compilation)
     alternatives --set python /usr/bin/python3
-    yum -q -y install mod_wsgi
+    $TM yum -q -y install mod_wsgi
 fi
 
 # MariaDB
@@ -144,9 +150,9 @@ fi
 
 if [[ "$doAll" == "v" || "$doMysqlinstall" == "v" ]]; then
     echo "o-o-o    INSTALL MARIADB    o-o-o"
-    yum -q -y install mariadb.x86_64
-    yum -q -y install mariadb-devel.x86_64
-    yum -q -y install mariadb-server.x86_64
+    $TM yum -q -y install mariadb.x86_64
+    $TM yum -q -y install mariadb-devel.x86_64
+    $TM yum -q -y install mariadb-server.x86_64
 
     service mariadb start
 fi
@@ -184,17 +190,17 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "o-o-o    INSTALL Emdros    o-o-o"
 
     cd "$SERVER_INSTALL_DIR"
-    tar xvf "$EMDROS_FILE"
+    tar xvf "$EMDROS_FILE" > /dev/null
     cd "$EMDROS_BARE"
 
     echo "o-o-o - Emdros CONFIGURE"
-    ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug
+    $TM ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug > /dev/null
 
     echo "o-o-o - Emdros MAKE"
-    make
+    $TM make > /dev/null
 
     echo "o-o-o - Emdros INSTALL"
-    make install
+    $TM make install > /dev/null
 
     cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
     chown -R apache:apache "$SERVER_EMDROS_DIR"
@@ -216,10 +222,10 @@ if [[ "$DB_HOST" == "" ]]; then
 
             echo "o-o-o - unzipping $db"
             cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
-            gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
+            $TM gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
 
             echo "o-o-o - loading $db"
-            echo "use $db" | cat - $SERVER_UNPACK_DIR/$db.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
+            $TM echo "use $db" | cat - $SERVER_UNPACK_DIR/$db.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
 
             rm "$SERVER_UNPACK_DIR/$db.sql"
         done
@@ -247,9 +253,9 @@ if [[ "$DB_HOST" == "" ]]; then
                 db="$STATIC_PASSAGE$version"
                 echo "o-o-o - unzipping $db"
                 cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
-                gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
+                $TM gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
                 echo "o-o-o - loading $db"
-                mysql $mysqlOpt < "$SERVER_UNPACK_DIR/$db.sql"
+                $TM mysql $mysqlOpt < "$SERVER_UNPACK_DIR/$db.sql"
                 rm "$SERVER_UNPACK_DIR/$db.sql"
             fi
 
@@ -258,13 +264,13 @@ if [[ "$DB_HOST" == "" ]]; then
                 db="$STATIC_ETCBC$version"
                 echo "o-o-o - unzipping $db"
                 cp $SERVER_INSTALL_DIR/$db.mql.bz2 $SERVER_UNPACK_DIR
-                bunzip2 -f $SERVER_UNPACK_DIR/$db.mql.bz2
+                $TM bunzip2 -f $SERVER_UNPACK_DIR/$db.mql.bz2
                 echo "o-o-o - dropping $db"
                 mysql $mysqlOpt -e "drop database if exists $db;"
                 echo "o-o-o - importing $db"
                 mqlPwd=`cat $SERVER_CFG_DIR/mqlimportopt`
                 mqlOpt="-e UTF8 -n -b m -u $MYSQL_ADMIN"
-                $SERVER_MQL_DIR/mql $mqlOpt -p $mqlPwd < $SERVER_UNPACK_DIR/$db.mql
+                $TM $SERVER_MQL_DIR/mql $mqlOpt -p $mqlPwd < $SERVER_UNPACK_DIR/$db.mql
                 rm "$SERVER_UNPACK_DIR/$db.mql"
             fi
         done
@@ -288,7 +294,7 @@ if [[ "$doAll" == "v" || "$doFetchShebanq" == "v" ]]; then
         if [[ -e "$APP" ]]; then
             rm -rf "$APP"
         fi
-        git clone "$REPO_URL"
+        $TM git clone "$REPO_URL"
     fi
 fi
 
@@ -339,7 +345,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     if [[ -e web2py ]]; then
         rm -rf web2py
     fi
-    unzip web2py.zip
+    $TM unzip web2py.zip > /dev/null
     rm web2py.zip
     mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
 
@@ -397,12 +403,13 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
 
 fi
 
-# first Visit to warm-up caches and to verify that the setup works
+# test controller to spot errors
 
-if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
-    echo "o-o-o    FIRST VISIT    o-o-o"
+if [[ "$doAll" == "v" || "$doTestController" == "v" ]]; then
+    echo "o-o-o    TEST CONTROLLER o-o-o"
 
-    python3 web2py.py -S $APP/hebrew/text -M
+    cd "$SERVER_APP_DIR/web2py"
+    $TM python3 web2py.py -S $APP/hebrew/text -M > /dev/null
     chown -R apache:apache "$SERVER_APP_DIR/$APP"
     chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
 fi
@@ -422,6 +429,14 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
 fi
 
 eraseDir "$SERVER_UNPACK_DIR"
+
+# first Visit to warm-up caches and to verify that the setup works
+
+if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
+    echo "o-o-o    FIRST VISIT    o-o-o"
+
+    $TM curl "$SERVER_URL/$TEST_CONTROLLER" | tail
+fi
 
 # Todo after install
 #
