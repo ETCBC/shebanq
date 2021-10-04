@@ -157,7 +157,7 @@ EMDROS_PATH="$packageDir/$EMDROS_FILE"
 
 TEST_CONTROLLER="hebrew/text"
 
-TM="/usr/bin/time -f 'Elapsed time = %E' "
+TM="/usr/bin/time -f ElapsedTime=%E"
 
 # Set some variables that depend on the situation
 
@@ -236,10 +236,10 @@ function compileApp {
     cmd2="gluon.compileapp.compile_application('applications/$app')"
 
     cd "$SERVER_APP_DIR/web2py"
-    python3 -c "$cmd1 $cmd2"
+    python3 -c "$cmd1 $cmd2" > /dev/null
 
     echo "- Compile modules of $app ..."
     cd "$SERVER_APP_DIR/web2py/applications/$app"
-    python3 -m compileall modules
+    python3 -m compileall modules > /dev/null
     echo "- Done compiling $app."
 }
