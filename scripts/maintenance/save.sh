@@ -6,6 +6,8 @@
 # Run it on your local computer.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
@@ -28,6 +30,12 @@ showUsage "$1" "$USAGE"
 
 setSituation "$1" "Saving latest backup from" "$USAGE"
 shift
+
+if [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
+fi
 
 latestSrcDir="$SERVER_BACKUP_DIR/latest"
 if [[ "$situation" == "t" || "$situation" == "pn" || "$situation" == "on" ]]; then

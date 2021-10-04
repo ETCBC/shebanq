@@ -6,43 +6,59 @@
 # Run it on the server.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
-Usage: ./$(basename $0)
+Usage: ./$(basename $0) [Options]
 
-Only updates the $APP software.
+Updates the $APP software and only that.
 The $APP server must be fully installed.
+It cleans obsolete sessions.
+
+Options:
+    --thorough: empties the cache and makes a first visit
+
+In a normal case, it does a non-disruptive update:
+
+*   it updates the SHEBANQ code
+*   it executes the test controller
+*   it does a graceful httpd restart
+
+When --thorough is passed the sequence is as follows:
+
+*   httpd is stopped completely
+*   SHEBANQ code is updated
+*   the test controller is executed
+*   httpd is started
+*   a first visit is triggered, to warm up the cache
 "
 
 showUsage "$1" "$USAGE"
 
 setSituation "$HOSTNAME" "Updating" "$USAGE"
 
+doThorough="x"
+
+if [[ "$1" == "--thorough" ]]; then
+    doThorough="v"
+elif [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
+fi
+
 # stop Apache
 
-sudo -n /usr/bin/systemctl stop httpd.service
+if [[ "$doThorough" == "v" ]]; then
+    sudo -n /usr/bin/systemctl stop httpd.service
+fi
 
 # pull updates to $REPO code
 
-echo "Updating $APP ..."
-cd $SERVER_APP_DIR/$APP
-echo "- Pull from github..."
-git fetch origin
-git checkout master
-git reset --hard origin/master
-echo "- Done pulling."
-
-# compile all python code
-
-compileApp $APP
-
-# the following step creates a logging.conf in the web2py directory.
-# This file must be removed before the webserver starts up,
-# otherwise httpd wants to write web2py.log,
-# which is generally not allowed and especially not under linux.
-# Failing to remove this file will result in
-# an Internal Server Error by SHEBANQ!
+fetchShebanq
+installShebanq
 
 cd $SERVER_APP_DIR/web2py
 echo "- Remove sessions ..."
@@ -52,8 +68,17 @@ if [[ -e logging.conf ]]; then
     rm logging.conf
 fi
 
-sleep 1
+# test the controller
 
-# start Apache
+testController
 
-sudo -n /usr/bin/systemctl start httpd.service
+# (re) start Apache nad do post-update steps
+
+if [[ "$doThorough" == "v" ]]; then
+    sudo -n /usr/bin/systemctl start httpd.service
+
+    # make a first visit to warm up cache
+    firstVisit
+else
+    sudo -n /usr/bin/systemctl restart httpd.service
+fi

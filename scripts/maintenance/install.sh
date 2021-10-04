@@ -6,6 +6,8 @@
 # Run it on the server.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
@@ -17,11 +19,11 @@ The server must have been provisioned.
 
 Options:
     --python: the python programming language
-    --emdros: the emdros software
     --mysqlinstall: install mariadb (drop-in replacement of mysql)
+    --emdros: the emdros software
     --mysqlconfig: configure mysql
-    --static: load static data into mysql
     --dynamic: load dynamic data into mysql
+    --static: load static data into mysql
     --fetch$APP: clone or pull $REPO
     --$APP: install $REPO
     --web2py: install web2py
@@ -157,7 +159,6 @@ if [[ "$doAll" == "v" || "$doMysqlinstall" == "v" ]]; then
     service mariadb start
 fi
 
-
 # Configure mysql databases, set users and grants
 
 skipUsers="x"
@@ -168,7 +169,7 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
 
     cd "$SERVER_INSTALL_DIR"
 
-    if [[ "$DB_HOST" == "" ]]; then
+    if [[ "$DB_HOST" == "localhost" ]]; then
         cp shebanq.cnf /etc/my.cnf.d/
         if [[ "$skipUsers" != "v" ]]; then
             echo "o-o-o - create users"
@@ -182,6 +183,13 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
 
     setsebool -P httpd_can_network_connect 1
     setsebool -P httpd_can_network_connect_db 1
+
+    mkdir "$SERVER_CFG_DIR"
+    for file in host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
+    do
+        cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
+    done
+    chown -R apache:apache "$SERVER_CFG_DIR"
 fi
 
 # Emdros
@@ -203,15 +211,13 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "o-o-o - Emdros INSTALL"
     echo "There will be some warnings, but that's ok"
     $TM make install > /dev/null
-
-    cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
     chown -R apache:apache "$SERVER_EMDROS_DIR"
 fi
 
 # Import dynamic data:
 #   user-generated-content databases, previously save in a backup
 
-if [[ "$DB_HOST" == "" ]]; then
+if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
         echo "o-o-o    LOAD DYNAMIC DATA start    o-o-o"
         for db in $DYNAMIC_WEB $DYNAMIC_NOTE
@@ -242,7 +248,7 @@ fi
 skipPdb="x"
 skipEdb="x"
 
-if [[ "$DB_HOST" == "" ]]; then
+if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
         echo "o-o-o    LOAD STATIC DATA start    o-o-o"
 
@@ -283,49 +289,13 @@ fi
 # fetch Shebanq
 
 if [[ "$doAll" == "v" || "$doFetchShebanq" == "v" ]]; then
-
-    if [[ -d "$SERVER_INSTALL_DIR/$APP" ]]; then
-        echo "o-o-o    SHEBANQ pull    o-o-o"
-        cd "$SERVER_INSTALL_DIR/$APP"
-        git fetch origin
-        git checkout master
-        git reset --hard origin/master
-    else
-        echo "o-o-o    SHEBANQ clone    o-o-o"
-    cd "$SERVER_INSTALL_DIR"
-        if [[ -e "$APP" ]]; then
-            rm -rf "$APP"
-        fi
-        $TM git clone "$REPO_URL"
-    fi
+    fetchShebanq
 fi
 
 # install Shebanq
 
 if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
-    echo "o-o-o    INSTALL SHEBANQ    o-o-o"
-    ensureDir "$SERVER_APP_DIR"
-    chmod 755 /opt
-    chmod 755 "$SERVER_APP_DIR"
-    cd "$SERVER_APP_DIR"
-
-    if [[ -e "$SERVER_APP_DIR/$APP" ]]; then
-        rm -rf "$SERVER_APP_DIR/$APP"
-    fi
-
-    # copy the SHEBANQ repo from the install dir to the webapps dir
-    # we do not copy the hidden files, such as the big .git directory
-    mkdir "$SERVER_APP_DIR/$APP"
-    cp -R $SERVER_INSTALL_DIR/$APP/* "$SERVER_APP_DIR/$APP"
-
-    # warming up
-    cd "$SERVER_APP_DIR"
-    chown -R apache:apache $APP
-    if [[ -e "$SERVER_APP_DIR/web2py" ]]; then
-        compileApp $APP
-        chown -R apache:apache "$SERVER_APP_DIR/$APP"
-        chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
-    fi
+    installShebanq
 fi
 
 # install web2py
@@ -408,12 +378,7 @@ fi
 # test controller to spot errors
 
 if [[ "$doAll" == "v" || "$doTestController" == "v" ]]; then
-    echo "o-o-o    TEST CONTROLLER o-o-o"
-
-    cd "$SERVER_APP_DIR/web2py"
-    $TM python3 web2py.py -S $APP/hebrew/text -M > /dev/null
-    chown -R apache:apache "$SERVER_APP_DIR/$APP"
-    chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
+    testController
 fi
 
 # configure apache
@@ -424,7 +389,7 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
     if [[ -e "$APACHE_DIR/welcome.conf" ]]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
     fi
-    cp $SERVER_INSTALL_DIR/apache/*.conf "$APACHE_DIR"
+    cp $SERVER_INSTALL_DIR/apache/${SERVER_URL}.conf "$APACHE_DIR"
     cp "$SERVER_INSTALL_DIR/wsgi.conf" "$APACHE_DIR"
 
     service httpd restart
@@ -435,9 +400,7 @@ eraseDir "$SERVER_UNPACK_DIR"
 # first Visit to warm-up caches and to verify that the setup works
 
 if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
-    echo "o-o-o    FIRST VISIT    o-o-o"
-
-    $TM curl "$SERVER_URL/$TEST_CONTROLLER" | tail
+    firstVisit
 fi
 
 # Todo after install

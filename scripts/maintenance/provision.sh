@@ -6,6 +6,8 @@
 # Run it on your local computer.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
@@ -86,7 +88,7 @@ ssh "$SERVER_USER@$SERVER" "mkdir -p $SERVER_INSTALL_DIR"
 
 latestBackup="$BACKUP_DIR/latest"
 
-if [[ "$DB_HOST" == "" ]]; then
+if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
         echo "o-o-o previous dynamic data if any o-o-o"
 
@@ -111,30 +113,55 @@ fi
 if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
     echo "o-o-o scripts o-o-o"
 
+    good="v"
+
     for script in grants.sql routes.py shebanq.cnf parameters_443.py unconfigure.sql wsgi.conf
     do
-        scp -r "$SCRIPT_SRC_DIR/$script" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
-    done
-    for script in backup.sh config.sh install.sh restore.sh uninstall.sh update.sh
-    do
-        scp -r "$LOCAL_SCRIPT_DIR/$script" "$SERVER_USER@$SERVER:$SERVER_HOME_DIR"
+        theFile="$SCRIPT_SRC_DIR/$script"
+        if [[ -e "$theFile" ]]; then
+            scp -r "$theFile" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
+        else
+            good="x"
+            echo "File not found: $theFile"
+        fi
     done
 
-    if [[ -e "$LOCAL_CFG" ]]; then
-        rm -rf "$LOCAL_CFG"
-    fi
-    if [[ -e "$LOCAL_APA" ]]; then
-        rm -rf "$LOCAL_APA"
-    fi
-    cp -r "$LOCAL_CFG_SPECIFIC" "$LOCAL_CFG"
-    cp -r "$LOCAL_APA_SPECIFIC" "$LOCAL_APA"
-    for item in "$LOCAL_CFG" "$LOCAL_APA"
+    for script in backup.sh config.sh doconfig.sh functions.sh install.sh restore.sh uninstall.sh update.sh
     do
-        scp -r "$item" "$SERVER_USER@$SERVER:/$SERVER_INSTALL_DIR/"
+        theFile="$LOCAL_DIR/$script"
+        if [[ -e "$theFile" ]]; then
+            scp -r "$theFile" "$SERVER_USER@$SERVER:$SERVER_HOME_DIR"
+        else
+            good="x"
+            echo "File not found: $theFile"
+        fi
     done
+
+    for template in apache.conf host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
+    do
+        theTemplate="$SCRIPT_SRC_DIR/maintenance/templates/$template"
+        theFile="$LOCAL_DIR/$template"
+        theFill="$SCRIPT_SRC_DIR/maintenance/fill.py"
+        if [[ -e "$theTemplate" ]]; then
+            python3 "$theFill" "$theTemplate" "$theFile" "$KEYVALUES" 
+            if [[ "$template" == "apache.conf" ]]; then
+                theConf="$LOCAL_DIR/${SERVER_URL}.conf"
+                mv "$theFile" "$theConf"
+                theFile="$theConf"
+            fi
+            scp -r "$theFile" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
+        else
+            good="x"
+            "Template not found: $theTemplate"
+        fi
+    done
+
+    if [[ "$good" == "x" ]]; then
+        exit
+    fi
 fi
 
-if [[ "$DB_HOST" == "" ]]; then
+if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
         echo "o-o-o static data o-o-o"
         for version in $versions

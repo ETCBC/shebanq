@@ -5,7 +5,7 @@ REVOKE SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER ON shebanq_web.* FROM 'sheb
 REVOKE SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER ON shebanq_note.* FROM 'shebanq'@'localhost';
 
 REVOKE USAGE ON *.* FROM 'shebanq_admin'@'localhost';
-REVOKE ALL PRIVILEGES ON `shebanq%`.* FROM 'shebanq_admin'@'localhost' WITH GRANT OPTION; 
+REVOKE ALL PRIVILEGES ON `shebanq%`.* FROM 'shebanq_admin'@'localhost'; 
 
 FLUSH PRIVILEGES;
 

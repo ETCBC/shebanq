@@ -11,10 +11,10 @@ EMDROS_VERSIONS = [
 
 CONFIG = dict(shebanqUser='shebanq')
 
-configPath = '/opt/emdros/cfg/mql.cfg'
+configPath = '/opt/cfg/mql.cfg'
 with open(configPath) as p:
     CONFIG['shebanqPassword'] = p.read().rstrip('\n')
 
-configPath = '/opt/emdros/cfg/host.cfg'
+configPath = '/opt/cfg/host.cfg'
 with open(configPath) as p:
     CONFIG['shebanqHost'] = p.read().rstrip('\n')

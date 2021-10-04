@@ -6,6 +6,8 @@
 # Run it on the server.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
@@ -25,13 +27,17 @@ showUsage "$1" "$USAGE"
 
 setSituation "$HOSTNAME" "Backing up" "$USAGE"
 
+if [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
+fi
+
 backupDatetime=`date +"%Y-%m-%dT%H-%M-%S"`
 backupDir="$SERVER_BACKUP_DIR/$backupDatetime"
 latestDir="$SERVER_BACKUP_DIR/latest"
 
 ensureDir "$backupDir"
-
-sudo -n /usr/bin/systemctl stop httpd.service
 
 echo "creating database dumps for $DYNAMIC_WEB and $DYNAMIC_NOTE in $backupDir"
 for db in $DYNAMIC_WEB $DYNAMIC_NOTE
@@ -49,7 +55,3 @@ fi
 ln -s "$backupDir" "$latestDir"
 chown -R $SERVER_USER:$SERVER_USER "$latestDir"
 chmod -R go-rwx "$latestDir"
-
-sleep 1
-
-sudo -n /usr/bin/systemctl start httpd.service

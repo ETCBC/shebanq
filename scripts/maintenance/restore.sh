@@ -6,6 +6,8 @@
 # Run it on the server.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
@@ -22,6 +24,12 @@ You can get a recent backup on the server by means of provision.sh
 showUsage "$1" "$USAGE"
 
 setSituation "$HOSTNAME" "Restoring data on" "$USAGE"
+
+if [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
+fi
 
 ensureDir "$SERVER_UNPACK_DIR"
 
@@ -42,6 +50,7 @@ mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e 'create database $DY
 echo "loading databases $DYNAMIC_WEB and $DYNAMIC_NOTE"
 echo "use $DYNAMIC_WEB" | cat - $SERVER_UNPACK_DIR/$DYNAMIC_WEB.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
 echo "use $DYNAMIC_NOTE" | cat - $SERVER_UNPACK_DIR/$DYNAMIC_NOTE.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
+
 sleep 2
 
 sudo -n /usr/bin/systemctl start httpd.service

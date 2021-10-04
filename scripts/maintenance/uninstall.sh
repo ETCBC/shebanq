@@ -6,6 +6,8 @@
 # Run it on the server.
 
 source ${0%/*}/config.sh
+source ${0%/*}/doconfig.sh
+source ${0%/*}/functions.sh
 
 
 USAGE="
@@ -19,15 +21,16 @@ This script will not remove the provisions directory ~/shebanq-install
 or anything in it. That means that the install action fetchShebanq is not undone.
 
 Options:
-    --python: the python programming language
+    --apache: remove apache configuration file for shebanq
+      but retain wsgi.conf file
+    --web2py: remove web2py
+    --$APP: remove $REPO from web-apps
+    --static: drop static data bases from mysql
+    --dynamic: drop dynamic data bases from mysql
+    --mysqlconfig: unconfigure mysql
     --emdros: the emdros software
-    --mysqlinstall: install mariadb (drop-in replacement of mysql)
-    --mysqlconfig: configure mysql
-    --static: load static data into mysql
-    --dynamic: load dynamic data into mysql
-    --$APP: clone $REPO
-    --web2py: install web2py
-    --apache: setup apache (assume certificates are already in place)
+    --mysqlinstall: remove mariadb (drop-in replacement of mysql)
+    --python: the python programming language
 
 version:
     a valid SHEBANQ data version, such as 4, 4b, c, 2017, 2021
@@ -35,7 +38,6 @@ version:
     that belong to this version.
     If left out, all versions will be done.
     Especially relevant if --static is passed.
-
 "
 
 showUsage "$1" "$USAGE"
@@ -89,6 +91,10 @@ elif [[ "$1" == "--apache" ]]; then
     doAll="x"
     doApache="v"
     shift
+elif [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
 fi
 
 if [[ "$1" == "" ]]; then
@@ -104,6 +110,15 @@ eraseDir "$SERVER_UNPACK_DIR"
 
 # Uninstall procedure
 
+# remove apache configuration
+
+if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
+    echo "o-o-o    REMOVE APACHE config file    o-o-o"
+
+    rm -rf $APACHE_DIR/${SERVER_URL}.conf
+    service httpd restart
+fi
+
 # uninstall web2py
 
 if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
@@ -114,7 +129,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     # remove /opt/web-apps if it is empty
     if ls -1qA "$SERVER_APP_DIR" | grep -q .
     then
-        echo "not removing $SERVER_APP_DIR_YET"
+        echo "not yet removing $SERVER_APP_DIR"
     else
         rm -rf "$SERVER_APP_DIR"
     fi
@@ -140,7 +155,7 @@ fi
 #   passage databases
 #   emdros databases
 
-if [[ "$DB_HOST" == "" ]]; then
+if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
         echo "o-o-o    DROP STATIC DATA   o-o-o"
 
@@ -151,6 +166,7 @@ if [[ "$DB_HOST" == "" ]]; then
             for db in "$STATIC_PASSAGE$version" "$STATIC_ETCBC$version"
             do
                 mysql $mysqlOpt -e "drop database if exists $db;"
+                echo "o-o-o database $db dropped"
             done
         done
     fi
@@ -159,7 +175,7 @@ fi
 # Drop dynamic data:
 #   user-generated-content databases in the right order
 
-if [[ "$DB_HOST" == "" ]]; then
+if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
         echo "o-o-o    DROP DYNAMIC DATA  o-o-o"
 
@@ -168,6 +184,7 @@ if [[ "$DB_HOST" == "" ]]; then
         for db in $DYNAMIC_NOTE $DYNAMIC_WEB
         do
             mysql $mysqlOpt -e "drop database if exists $db;"
+            echo "o-o-o database $db dropped"
         done
     fi
 fi

@@ -152,12 +152,13 @@ is already installed and:
 We assume that the following packages can be installed with `yum`.
 That means that you must have the right package repositories enabled.
 
-*   python36
-*   python36-devel
-*   python3-markdown
-*   mariadb
-*   mariadb-devel
-*   mariadb-server
+*   `python36`
+*   `python36-devel`
+*   `python3-markdown`
+*   `mod_wsgi`
+*   `mariadb`
+*   `mariadb-devel`
+*   `mariadb-server`
 
 ### Local computer
 
@@ -185,10 +186,35 @@ but the structure within the `github` directory must be as prescribed.
 
 #### The `_local` directory
 
-You need to create a directory `_local` in `~/github/etcbc/shebanq`
-with some subdirectories, copied from the shebanq repo.
+The scripts in `~/github/etcbc/scripts/maintenance` have generic content.
+Before working with it, the file `configtemplate` must be edited
+to reflect your actual situation.
+Do this as follows:
 
-You can then make local adjustment to the configuration files.
+```
+cd ~/github/etcbc/shebanq/scripts/maintenance
+./localize.sh
+```
+
+Now you have a directory `~/github/etcbc/shebanq/_local`
+And the command ends with telling you what to do next:
+
+*   copy configtemplate.sh to config.sh
+*   edit config.sh
+
+What needs to be done is:
+
+*   adapt the `serverOther` variables to your situation.
+    *   give the database host server (typically: localhost)
+    *   give passwords for mysql users `shebanq` and `shebanq_admin`
+        these users will be created and will be used for importing
+        data,
+        and the shebanq webapp will use the `shebanq` user
+        for its business.
+    *   give the locations where the https-certificates are installed
+        in Apache.
+        These will be used in in the httpd config file for shebanq
+        on your server.
 
 The `_local` directory is never pushed online
 (because of the `.gitignore` file in the shebanq repo),
@@ -197,70 +223,18 @@ Also, when you tweak files in your `_local` directory, you can still
 pull new versions of the shebanq repository without overwriting your
 local changes.
 
-#### Copy files
-
-Start with copying the maintenance scripts to the `_local` directory:
-
-```
-cd ~/github/etcbc/shebanq
-cp -R scripts/maintenance _local/maintenance
-```
-
-When you run a maintenance script, you should run them from your 
-`_local/maintenance` directory, to be sure that you run your
+When you run a maintenance script, you should run them from this 
+`_local` directory, to be sure that you run your
 adapted version.
-Currently, you only have to adapt the `config.sh` script, 
-the others will not get modified.
-But it is very possible that your own situation is different
-in ways that I have not foreseen.
-In that case you can freely modify your local copies as you wish.
 
-These local copies are also the ones that are sent to the server
+You only have to adapt the `config.sh` script, 
+the others will not get modified.
+
+These local files are the ones that are sent to the server
 in the provisioning step below.
 
 The scripts can be run from any directory, because they do not depend
 on the current working directory.
-
-If you are going to work with your own shebanq server, do
-
-```
-cd ~/github/etcbc/shebanq
-cp -R scripts/cfg_other _local/cfg_other
-cp -R scripts/apache_other _local/apache_other
-```
-
-If you are going to work with the offical production and test servers
-of SHEBANQ, do
-
-```
-cd ~/github/etcbc/shebanq
-cp -R scripts/cfg_other _local/cfg_prod
-cp -R scripts/apache_other _local/apache_prod
-cp -R scripts/cfg_other _local/cfg_test
-cp -R scripts/apache_other _local/apache_test
-```
-
-#### Tweak files
-
-You need to tweak the contents of your `_local` files to
-reflect your current situation.
-
-All maintenance scripts start with the same configuration
-by including `config.sh`.
-
-Tweak `config.sh`:
-adapt the `server`*Xxx* variables to your situation.
-
-Tweak the files in `/apache_`*xxx*:
-Adapt the url of your server, certificate locations, and other things
-you might wish.
-
-Tweak the files in `/cfg_`*xxx*:
-Adapt credentials for the database connections.
-
-!!! caution "multiple files"
-    The connection details occur in multiple files.
-    Have a thorough look at them all.
 
 ## The scripts
 
@@ -269,6 +243,9 @@ in the shebanq repository
 in the `scripts/maintenance` directory.
 In the previous step you have copied them to the `_local`
 directory.
+
+You can run all scripts with `--help` to view the options
+and arguments it accepts.
 
 *   `backup.sh`
     *   Run it on the server.
@@ -294,6 +271,7 @@ directory.
         your home directory on the server.
     *   The latest backup of dynamic data from will be taken
         from your local computer and copied over to the server.
+    *   You can run this script in single steps by passing an option.
 
 *   `install.sh`
     *   Run it on the server.
@@ -301,6 +279,12 @@ directory.
         MySQL, Python, Emdros, Web2py, shebanq itself.
     *   Install `mod_wsgi` and configure the apache webserver.
     *   Fill the databases with data, if needed.
+    *   You can run this script in single steps by passing an option.
+
+*   `uninstall.sh`
+    *   Run it on the server.
+        Uninstall what `install.sh` has installed.
+    *   You can run this script in single steps by passing an option.
 
 *   `restore.sh`
     *   Run it on the server.
@@ -627,3 +611,10 @@ and import it to the databases.
     the `serverOtherNew` and `serverProdNew` servers.
     These backups have no importance except for testing the processes,
     so they will be stored in the alternative place.
+
+#### Trouble shooting
+
+It is very difficult to view messages issued by Python code.
+So far, I have not been able to view them anymwhere in the log files.
+
+The recommended practice is, to install SHEBANQ on you
