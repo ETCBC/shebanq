@@ -22,18 +22,16 @@ The following tasks must be addressed:
 *   **'Foreign' servers**
 
     We encourage people to host their own SHEBANQ,
-    so we must support new installations
-    of SHEBANQ on third party servers.
-    Those servers must be maintainable as well
-    as the offical servers.
+    so we must support new installations on third party servers.
+    Those servers must be equally maintainable as
+    the offical servers.
 
 *   **Software updates**
 
     In order to keep SHEBANQ alive over the years,
     software updates must be carried out,
-    not only of SHEBANQ itself,
-    but also of the supporting systems,
-    such as
+    not only of the webapp,
+    but also of its supporting systems,
     [Emdros](https://emdros.org),
     [Web2Py](http://web2py.com),
     [Python](https://www.python.org),
@@ -49,20 +47,20 @@ The following tasks must be addressed:
     textual and linguistic data of the Hebrew Bible,
     produces data updates through its
     [BHSA](https://github.com/etcbc/bhsa) repository.
-    These data updates have to find their way to the
+    These data updates must be applied to the
     servers that host SHEBANQ.
 
-In the carrying out of these tasks there are
-some additional requirements which are vital for 
+
+There are some additional requirements which are vital for 
 the long-term support of SHEBANQ.
 
 *   **Security**
 
-    Servers that host SHEBANQ should be secure.
-    The must be hardened against attacks,
+    SHEBANQ servers should be secure.
+    They must be hardened against attacks,
     and the user data must be kept safe,
-    even if SHEBANQ only stores the bare minimum
-    of personal data
+    even if only the bare minimum
+    of personal data is stored
     (names, email addresses, password hashes).
 
 *   **Automation**
@@ -92,6 +90,7 @@ The remaining assets are available through the
     Although SHEBANQ can be installed on a personal computer,
     it is not documented here.
     It is considerably easier than installing it on a server.
+    See some hints under Trouble-shooting below.
 
 !!! caution "SELINUX only"
     So far, the scripts only support servers that run under
@@ -121,6 +120,11 @@ However, there are a few key advantages you enjoy after the installation:
     an extra long time.
     Often, new security updates are back-ported to older versions,
     so that you can avoid upgrading to newer but incompatible versions.
+
+The latter advantage is quite convenient for SHEBANQ, because the Emdros
+software is compiled against de MySQL libraries.
+So when MySQL is upgraded to a new version, Emdros has to be recompiled.
+And that is something we do not want to do too often.
 
 ## Requirements
 
@@ -197,24 +201,23 @@ cd ~/github/etcbc/shebanq/scripts/maintenance
 ```
 
 Now you have a directory `~/github/etcbc/shebanq/_local`
-And the command ends with telling you what to do next:
+And the command tells you what to do next:
 
-*   copy configtemplate.sh to config.sh
-*   edit config.sh
+*   copy `configtemplate.sh` to `config.sh`
+*   edit `config.sh`
 
 What needs to be done is:
 
-*   adapt the `serverOther` variables to your situation.
-    *   give the database host server (typically: localhost)
-    *   give passwords for mysql users `shebanq` and `shebanq_admin`
-        these users will be created and will be used for importing
-        data,
-        and the shebanq webapp will use the `shebanq` user
-        for its business.
-    *   give the locations where the https-certificates are installed
-        in Apache.
-        These will be used in in the httpd config file for shebanq
-        on your server.
+*   adapt the `serverOther` variables to your situation:
+    *   provide the name of the database host server (typically: localhost)
+    *   provide passwords for mysql users named  `shebanq` and `shebanq_admin`;
+        these users will be created and later in the installation process
+        `shebanq_admin` is used for importing data,
+        and after installation the webapp will use `shebanq`
+        to fetch data in response to requests by web users.
+    *   provide the locations where the https-certificates are installed
+        in Apache;
+        these will be used in in the httpd config file for the webapp.
 
 The `_local` directory is never pushed online
 (because of the `.gitignore` file in the shebanq repo),
@@ -226,8 +229,7 @@ local changes.
 When you run a maintenance script, you should run them from this 
 `_local` directory, to be sure that you run your
 adapted version.
-
-These local files are the ones that are sent to the server
+These local files are also the ones that are sent to the server
 in the provisioning step below.
 
 The scripts can be run from any directory, because they do not depend
@@ -608,13 +610,13 @@ and import it to the databases.
     These backups have no importance except for testing the processes,
     so they will be stored in the alternative place.
 
-#### Trouble shooting
+## Trouble shooting
 
 It is very difficult to view messages issued by Python code.
-So far, I have not been able to view them anymwhere in the log files.
+So far, I have not been able to view them anywhere in the log files.
 
-The recommended practice is, to install SHEBANQ on your local computer,
-without Apache, but using its built-in webserver.
+The recommended practice is to install Web2Py and SHEBANQ on your local computer,
+without Apache, but using Web2pu's built-in webserver.
 You do need to have the proper mysql installed, from the downloaded
 [community edition](https://dev.mysql.com/downloads/mysql/).
 
@@ -649,3 +651,5 @@ Now you have a local webserver on your ocmputer that serves shebanq on
 When you browse shebanq, you might see messages in the terminal,
 and when you change the Python code in SHEBANQ, you can see the effects.
 You can write debug messages to the terminal.
+
+Use this local SHEBANQ for debugging.
