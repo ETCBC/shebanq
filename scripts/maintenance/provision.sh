@@ -84,31 +84,9 @@ else
     shift
 fi
 
+# transfer scripts from _local to server
+
 ssh "$SERVER_USER@$SERVER" "mkdir -p $SERVER_INSTALL_DIR"
-
-latestBackup="$BACKUP_DIR/latest"
-
-if [[ "$DB_HOST" == "localhost" ]]; then
-    if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
-        echo "o-o-o previous dynamic data if any o-o-o"
-
-        stampFile="$latestBackup/stamp"
-
-        if [[ -f "$stampFile" ]]; then
-            stamp=`cat "$stampFile"`
-            echo "found backup made on $stamp"
-        fi
-        for db in $DYNAMIC_WEB $DYNAMIC_NOTE
-        do
-            dbFile="$latestBackup/${db}.sql.gz"
-            if [[ ! -f "$dbFile" ]]; then
-                echo "WARNING: no latest backup found for ($dbFile), we use an empty db"
-                dbFile="$SCRIPT_SRC_DIR/${db}.sql.gz"
-            fi
-            scp -r "$dbFile" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
-        done
-    fi
-fi
 
 if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
     echo "o-o-o scripts o-o-o"
@@ -161,6 +139,34 @@ if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
     fi
 fi
 
+# transfer dynamic data from latest backup stored locally to server
+
+latestBackup="$BACKUP_DIR/latest"
+
+if [[ "$DB_HOST" == "localhost" ]]; then
+    if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
+        echo "o-o-o previous dynamic data if any o-o-o"
+
+        stampFile="$latestBackup/stamp"
+
+        if [[ -f "$stampFile" ]]; then
+            stamp=`cat "$stampFile"`
+            echo "found backup made on $stamp"
+        fi
+        for db in $DYNAMIC_WEB $DYNAMIC_NOTE
+        do
+            dbFile="$latestBackup/${db}.sql.gz"
+            if [[ ! -f "$dbFile" ]]; then
+                echo "WARNING: no latest backup found for ($dbFile), we use an empty db"
+                dbFile="$SCRIPT_SRC_DIR/${db}.sql.gz"
+            fi
+            scp -r "$dbFile" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
+        done
+    fi
+fi
+
+# transfer static data from local bhsa clones to server
+
 if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
         echo "o-o-o static data o-o-o"
@@ -179,10 +185,14 @@ if [[ "$DB_HOST" == "localhost" ]]; then
     fi
 fi
 
+# transfer emdros zip from local shebanq clone to server
+
 if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
         echo "o-o-o emdros package o-o-o"
         scp -r "$EMDROS_PATH" "$SERVER_USER@$SERVER:/$SERVER_INSTALL_DIR"
 fi
+
+# transfer web2py zip from local shebanq clone to server
 
 if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         echo "o-o-o web2py package o-o-o"

@@ -178,7 +178,10 @@ function testController {
 # make a first visit to SHEBANQ by means of curl
 
 function firstVisit {
-    echo "o-o-o    FIRST VISIT    o-o-o"
+    echo "o-o-o    FIRST VISIT (this might take a minute)   o-o-o"
+    echo "o-o-o An expensive index will be computed and cached"
 
+    fullUrl="https://$SERVER_URL/$TEST_CONTROLLER"
+    echo "fetching $fullUrl"
     $TM curl "https://$SERVER_URL/$TEST_CONTROLLER" | tail
 }

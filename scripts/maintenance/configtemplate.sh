@@ -105,7 +105,7 @@ mysqlShebanqPwdProd=xxx                         # wrong of course
 mysqlShebanqAdminPwdProd=yyy                    # wrong of course
 certFileProd=/etc/pki/tls/certs/ancient-data_org.cer
 certKeyProd=/etc/pki/tls/private/ancient-data_org.key
-certChainProd=/etc/pli/tls/certs/ancient-data_org_interm.cer
+certChainProd=/etc/pki/tls/certs/ancient-data_org_interm.cer
 
 serverTest="t1.dansknaw.nl"                     # deliberately wrong
 serverUrlTest="test.shebanq.ancient-data.org"
@@ -114,7 +114,7 @@ mysqlShebanqPwdTest=xxx                         # wrong of course
 mysqlShebanqAdminPwdTest=yyy                    # wrong of course
 certFileTest=/etc/pki/tls/certs/test_shebanq_ancient-data_org.cer
 certKeyTest=/etc/pki/tls/private/test_shebanq_ancient-data_org.key
-certChainTest=/etc/pli/tls/certs/test_shebanq_ancient-data_org_interm.cer
+certChainTest=/etc/pki/tls/certs/test_shebanq_ancient-data_org_interm.cer
 
 serverOther="other1.server.edu"                 # replace by your own  
 serverOtherNew="other2.server.edu"              # replace by your own
@@ -124,6 +124,6 @@ mysqlShebanqPwdOther=xxx                        # obtain yourself
 mysqlShebanqAdminPwdOther=yyy                   # obtain yourself
 certFileOther=/etc/pki/tls/certs/other_server_edu.cer
 certKeyOther=/etc/pki/tls/private/other_server_edu.key
-certChainOther=/etc/pli/tls/certs/other_server_edu.cer
+certChainOther=/etc/pki/tls/certs/other_server_edu.cer
 #
 # END TWEAKING PART #################################################

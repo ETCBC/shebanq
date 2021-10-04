@@ -227,9 +227,6 @@ When you run a maintenance script, you should run them from this
 `_local` directory, to be sure that you run your
 adapted version.
 
-You only have to adapt the `config.sh` script, 
-the others will not get modified.
-
 These local files are the ones that are sent to the server
 in the provisioning step below.
 
@@ -249,20 +246,20 @@ and arguments it accepts.
 
 *   `backup.sh`
     *   Run it on the server.
-    *   Backup the databases that have dynamic web data:
+    *   Backs up the databases that have dynamic web data:
         *   `shebanq_web`
         *   `shebanq_note`
 
 *   `save.sh`
     *   Run it on your local computer. It will retrieve data from the server.
-    *   Save backups of dynamic web data from the shebanq server to a
+    *   Saves backups of dynamic web data from the shebanq server to a
         directory on your local computer where you hold backups.
         The backup is saved in a subfolder
         `yyyy-mm-ddT-hh-mm-ss` (the datetime of the backup).
 
 *   `provision.sh`
     *   Run it on your local computer. It will send data to the server.
-    *   Copy all files needed for installation from your local
+    *   Copies all files needed for installation from your local
         computer to the shebanq server.
         These files end up in `shebanq-install`
         under your home directory there.
@@ -275,28 +272,27 @@ and arguments it accepts.
 
 *   `install.sh`
     *   Run it on the server.
-        Install and configure required software.
-        MySQL, Python, Emdros, Web2py, shebanq itself.
-    *   Install `mod_wsgi` and configure the apache webserver.
-    *   Fill the databases with data, if needed.
+        Installs required software
+        (MySQL, Python, ModWsgi, Emdros, Web2py, and Shebanq itself)
+        and loads data into the databases.
     *   You can run this script in single steps by passing an option.
 
 *   `uninstall.sh`
     *   Run it on the server.
-        Uninstall what `install.sh` has installed.
+        Uninstalls what `install.sh` has installed.
     *   You can run this script in single steps by passing an option.
 
 *   `restore.sh`
     *   Run it on the server.
-    *   Restore the databases that have dynamic web data:
+    *   Restores the databases that have dynamic web data:
         *   `shebanq_web`
         *   `shebanq_note`
     *   They are restored from a previous backup.
 
 *   `update.sh`
     *   Run it on the server.
-    *   Update the shebanq software, i.e. the web-app as it is hung into
-        the `web2py` framework.
+    *   Updates the shebanq webapp,
+        i.e. the web-app as it is hung into the `web2py` framework.
 
 
 ## The situations
@@ -617,4 +613,39 @@ and import it to the databases.
 It is very difficult to view messages issued by Python code.
 So far, I have not been able to view them anymwhere in the log files.
 
-The recommended practice is, to install SHEBANQ on you
+The recommended practice is, to install SHEBANQ on your local computer,
+without Apache, but using its built-in webserver.
+You do need to have the proper mysql installed, from the downloaded
+[community edition](https://dev.mysql.com/downloads/mysql/).
+
+Then you have to compile Emdros against this MySQL.
+
+You have to clone `web2py` itself:
+
+```
+mkdir ~/github/web2py
+cd ~/github/web2py
+git clone --recursive https://github.com/web2py/web2py
+```
+
+You hook shebanq in by
+
+```
+cd ~/github/web2py/web2py/applications
+ln -s ~/github/etcbc/shebanq shebanq
+```
+
+After that you can start web2py by means of
+
+```
+cd ~/github/web2py/web2py
+python3 web2py.py --no_gui -s localhost -p 8000 -a demo -c server.crt -k server.key
+```
+
+Now you have a local webserver on your ocmputer that serves shebanq on 
+
+[localhost](https://127.0.0.1:8000/)
+
+When you browse shebanq, you might see messages in the terminal,
+and when you change the Python code in SHEBANQ, you can see the effects.
+You can write debug messages to the terminal.

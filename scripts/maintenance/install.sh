@@ -167,29 +167,30 @@ skipGrants="x"
 if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
     echo "o-o-o    CONFIGURE MYSQL    o-o-o"
 
+    eraseDir "$SERVER_CFG_DIR"
+    ensureDir "$SERVER_CFG_DIR"
+    for file in host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
+    do
+        cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
+    done
+    chown -R apache:apache "$SERVER_CFG_DIR"
+
     cd "$SERVER_INSTALL_DIR"
 
     if [[ "$DB_HOST" == "localhost" ]]; then
-        cp shebanq.cnf /etc/my.cnf.d/
+        cp "$SERVER_INSTALL_DIR/shebanq.cnf" /etc/my.cnf.d/
         if [[ "$skipUsers" != "v" ]]; then
             echo "o-o-o - create users"
             mysql -u root < "$SERVER_CFG_DIR/user.sql"
         fi
         if [[ "$skipGrants" != "v" ]]; then
             echo "o-o-o - grant privileges"
-            mysql -u root < grants.sql
+            mysql -u root < "$SERVER_INSTALL_DIR/grants.sql"
         fi
     fi
 
     setsebool -P httpd_can_network_connect 1
     setsebool -P httpd_can_network_connect_db 1
-
-    mkdir "$SERVER_CFG_DIR"
-    for file in host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
-    do
-        cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
-    done
-    chown -R apache:apache "$SERVER_CFG_DIR"
 fi
 
 # Emdros
@@ -233,7 +234,7 @@ if [[ "$DB_HOST" == "localhost" ]]; then
             $TM gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
 
             echo "o-o-o - loading $db"
-            $TM echo "use $db" | cat - $SERVER_UNPACK_DIR/$db.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
+            echo "use $db" | cat - $SERVER_UNPACK_DIR/$db.sql | mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt
 
             rm "$SERVER_UNPACK_DIR/$db.sql"
         done
@@ -389,8 +390,10 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
     if [[ -e "$APACHE_DIR/welcome.conf" ]]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
     fi
-    cp $SERVER_INSTALL_DIR/apache/${SERVER_URL}.conf "$APACHE_DIR"
-    cp "$SERVER_INSTALL_DIR/wsgi.conf" "$APACHE_DIR"
+    for conf in "${SERVER_URL}.conf" wsgi.conf
+    do
+        cp "$SERVER_INSTALL_DIR/$conf" "$APACHE_DIR"
+    done
 
     service httpd restart
 fi
