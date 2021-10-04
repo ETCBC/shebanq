@@ -196,10 +196,12 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "o-o-o - Emdros CONFIGURE"
     $TM ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug > /dev/null
 
-    echo "o-o-o - Emdros MAKE"
+    echo "o-o-o - Emdros MAKE (may take 5-10 minutes)"
+    echo "There will be some alarming warnings, but that's ok"
     $TM make > /dev/null
 
     echo "o-o-o - Emdros INSTALL"
+    echo "There will be some warnings, but that's ok"
     $TM make install > /dev/null
 
     cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
@@ -254,7 +256,7 @@ if [[ "$DB_HOST" == "" ]]; then
                 echo "o-o-o - unzipping $db"
                 cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
                 $TM gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"
-                echo "o-o-o - loading $db"
+                echo "o-o-o - loading $db (may take half a minute)"
                 $TM mysql $mysqlOpt < "$SERVER_UNPACK_DIR/$db.sql"
                 rm "$SERVER_UNPACK_DIR/$db.sql"
             fi
@@ -267,7 +269,7 @@ if [[ "$DB_HOST" == "" ]]; then
                 $TM bunzip2 -f $SERVER_UNPACK_DIR/$db.mql.bz2
                 echo "o-o-o - dropping $db"
                 mysql $mysqlOpt -e "drop database if exists $db;"
-                echo "o-o-o - importing $db"
+                echo "o-o-o - importing $db (may take a minute or two)"
                 mqlPwd=`cat $SERVER_CFG_DIR/mqlimportopt`
                 mqlOpt="-e UTF8 -n -b m -u $MYSQL_ADMIN"
                 $TM $SERVER_MQL_DIR/mql $mqlOpt -p $mqlPwd < $SERVER_UNPACK_DIR/$db.mql

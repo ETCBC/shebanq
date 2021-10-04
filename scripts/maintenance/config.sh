@@ -157,7 +157,7 @@ EMDROS_PATH="$packageDir/$EMDROS_FILE"
 
 TEST_CONTROLLER="hebrew/text"
 
-TM="time -f '%E' "
+TM="/usr/bin/time -f 'Elapsed time = %E' "
 
 # Set some variables that depend on the situation
 

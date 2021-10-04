@@ -149,6 +149,16 @@ is already installed and:
     `/etc/pki/tls/certs` and `/etc/pki/tls/private`
 *   `mod_wsgi` is not yet installed.
 
+We assume that the following packages can be installed with `yum`.
+That means that you must have the right package repositories enabled.
+
+*   python36
+*   python36-devel
+*   python3-markdown
+*   mariadb
+*   mariadb-devel
+*   mariadb-server
+
 ### Local computer
 
 You have cloned the `shebanq` and `bhsa` repositories
