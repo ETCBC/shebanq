@@ -25,6 +25,7 @@ Options:
     --fetch$APP: clone or pull $REPO
     --$APP: install $REPO
     --web2py: install web2py
+    --firstvisit: run controller from shell, outside apache, to warm up cache
     --apache: setup apache (assume certificates are already in place)
 
 version:
@@ -56,6 +57,7 @@ doFetchShebanq="x"
 doShebanq="x"
 doWeb2py="x"
 doApache="x"
+doFirstVisit="x"
 
 if [[ "$1" == "--python" ]]; then
     doAll="x"
@@ -92,6 +94,10 @@ elif [[ "$1" == "--$APP" ]]; then
 elif [[ "$1" == "--web2py" ]]; then
     doAll="x"
     doWeb2py="v"
+    shift
+elif [[ "$1" == "--firstvisit" ]]; then
+    doAll="x"
+    doFirstVisit="v"
     shift
 elif [[ "$1" == "--apache" ]]; then
     doAll="x"
@@ -374,7 +380,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         cd "$SERVER_APP_DIR/web2py/applications"
         for app in welcome admin $APP
         do
-            for dir in databases cache errors sessions private uploads
+            for dir in languages databases cache errors sessions private uploads
             do
                 # if [[ -e ${app}/${dir} ]]; then
                 #     rm -rf ${app}/${dir}
@@ -389,6 +395,16 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         done
     fi
 
+fi
+
+# first Visit to warm-up caches and to verify that the setup works
+
+if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
+    echo "o-o-o    FIRST VISIT    o-o-o"
+
+    python3 web2py.py -S $APP/hebrew/text -M
+    chown -R apache:apache "$SERVER_APP_DIR/$APP"
+    chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
 fi
 
 # configure apache
@@ -406,16 +422,6 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
 fi
 
 eraseDir "$SERVER_UNPACK_DIR"
-
-# first Visit to warm-up caches and to verify that the setup works
-
-if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
-    echo "o-o-o    FIRST VISIT    o-o-o"
-
-    python3 web2py.py -S $APP/hebrew/text -M
-    chown -R apache:apache "$SERVER_APP_DIR/$APP"
-    chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
-fi
 
 # Todo after install
 #
