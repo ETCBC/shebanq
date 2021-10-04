@@ -26,7 +26,7 @@ sudo -n /usr/bin/systemctl stop httpd.service
 # pull updates to $REPO code
 
 echo "Updating $APP ..."
-cd $SERVER_SHEBANQ_DIR
+cd $SERVER_APP_DIR/$APP
 echo "- Pull from github..."
 git fetch origin
 git checkout master
@@ -44,7 +44,7 @@ compileApp $APP
 # Failing to remove this file will result in
 # an Internal Server Error by SHEBANQ!
 
-cd $SERVER_WEB2PY_DIR
+cd $SERVER_APP_DIR/web2py
 echo "- Remove sessions ..."
 python3 web2py.py -S $APP -M -R scripts/sessions2trash.py -A -o -x 600000
 

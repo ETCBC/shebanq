@@ -22,7 +22,8 @@ Options:
     --mysqlconfig: configure mysql
     --static: load static data into mysql
     --dynamic: load dynamic data into mysql
-    --$APP: clone $REPO
+    --fetch$APP: clone or pull $REPO
+    --$APP: install $REPO
     --web2py: install web2py
     --apache: setup apache (assume certificates are already in place)
 
@@ -51,6 +52,7 @@ doMysqlinstall="x"
 doMysqlConfig="x"
 doStatic="x"
 doDynamic="x"
+doFetchShebanq="x"
 doShebanq="x"
 doWeb2py="x"
 doApache="x"
@@ -79,6 +81,10 @@ elif [[ "$1" == "--dynamic" ]]; then
     doAll="x"
     doDynamic="v"
     shift
+elif [[ "$1" == "--fetch$APP" ]]; then
+    doAll="x"
+    doFetchShebanq="v"
+    shift
 elif [[ "$1" == "--$APP" ]]; then
     doAll="x"
     doShebanq="v"
@@ -91,6 +97,10 @@ elif [[ "$1" == "--apache" ]]; then
     doAll="x"
     doApache="v"
     shift
+elif [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
 fi
 
 if [[ "$1" == "" ]]; then
@@ -112,8 +122,6 @@ export PATH
 # Install procedure
 
 # Python
-# * install module markdown (probably sudo pip3 install markdown)
-# also: mod_wsgi
 
 if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
     echo "o-o-o    INSTALL PYTHON o-o-o"
@@ -127,10 +135,6 @@ fi
 
 # MariaDB
 # * install mariadb
-# * configure mariadb
-# * (/etc/my.cnf should contain default-character-set=utf8)
-# * create users $MYSQL_USER and $MYSQL_ADMIN if needed
-# * grant rights on tables to these users if needed
 
 if [[ "$doAll" == "v" || "$doMysqlinstall" == "v" ]]; then
     echo "o-o-o    INSTALL MARIADB    o-o-o"
@@ -141,28 +145,8 @@ if [[ "$doAll" == "v" || "$doMysqlinstall" == "v" ]]; then
     service mariadb start
 fi
 
-# We do Emdros right now, because some cfg files
-# end up inside the emdros installation
 
-if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
-    echo "o-o-o    INSTALL Emdros    o-o-o"
-
-    cd "$SERVER_INSTALL_DIR"
-    tar xvf "$EMDROS_FILE"
-    cd "$EMDROS_BARE"
-
-    echo "o-o-o - Emdros CONFIGURE"
-    ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug
-
-    echo "o-o-o - Emdros MAKE"
-    make
-
-    echo "o-o-o - Emdros INSTALL"
-    make install
-
-    cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
-    chown -R apache:apache "$SERVER_EMDROS_DIR"
-fi
+# Configure mysql databases, set users and grants
 
 skipUsers="x"
 skipGrants="x"
@@ -188,13 +172,35 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
     setsebool -P httpd_can_network_connect_db 1
 fi
 
+# Emdros
+
+if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
+    echo "o-o-o    INSTALL Emdros    o-o-o"
+
+    cd "$SERVER_INSTALL_DIR"
+    tar xvf "$EMDROS_FILE"
+    cd "$EMDROS_BARE"
+
+    echo "o-o-o - Emdros CONFIGURE"
+    ./configure --prefix=$SERVER_EMDROS_DIR --with-sqlite3=no --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug
+
+    echo "o-o-o - Emdros MAKE"
+    make
+
+    echo "o-o-o - Emdros INSTALL"
+    make install
+
+    cp -r "$SERVER_INSTALL_DIR/cfg" "$SERVER_EMDROS_DIR"
+    chown -R apache:apache "$SERVER_EMDROS_DIR"
+fi
+
 # Import dynamic data:
-#   user-generated-content databases
+#   user-generated-content databases, previously save in a backup
 
 if [[ "$DB_HOST" == "" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
         echo "o-o-o    LOAD DYNAMIC DATA start    o-o-o"
-        for db in $DYNAMIC_NOTE $DYNAMIC_WEB
+        for db in $DYNAMIC_WEB $DYNAMIC_NOTE
         do
             echo "o-o-o - DB $db"
 
@@ -218,7 +224,6 @@ fi
 # Import static data:
 #   passage databases
 #   emdros databases
-#   user-generated-content databases
 
 skipPdb="x"
 skipEdb="x"
@@ -261,32 +266,51 @@ if [[ "$DB_HOST" == "" ]]; then
     fi
 fi
 
-# clone $REPO
+# fetch Shebanq
 
-if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
-    ensureDir "$SERVER_APP_DIR"
-    chmod 755 /opt
-    chmod 755 "$SERVER_APP_DIR"
-    cd "$SERVER_APP_DIR"
+if [[ "$doAll" == "v" || "$doFetchShebanq" == "v" ]]; then
 
-    if [[ -d "$SERVER_APP_DIR/$APP" ]]; then
+    if [[ -d "$SERVER_INSTALL_DIR/$APP" ]]; then
         echo "o-o-o    SHEBANQ pull    o-o-o"
-        cd "$SERVER_SHEBANQ_DIR"
+        cd "$SERVER_INSTALL_DIR/$APP"
         git fetch origin
         git checkout master
         git reset --hard origin/master
     else
         echo "o-o-o    SHEBANQ clone    o-o-o"
+    cd "$SERVER_INSTALL_DIR"
         if [[ -e "$APP" ]]; then
             rm -rf "$APP"
         fi
         git clone "$REPO_URL"
     fi
+fi
 
+# install Shebanq
+
+if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
+    echo "o-o-o    INSTALL SHEBANQ    o-o-o"
+    ensureDir "$SERVER_APP_DIR"
+    chmod 755 /opt
+    chmod 755 "$SERVER_APP_DIR"
+    cd "$SERVER_APP_DIR"
+
+    if [[ -e "$SERVER_APP_DIR/$APP" ]]; then
+        rm -rf "$SERVER_APP_DIR/$APP"
+    fi
+
+    # copy the SHEBANQ repo from the install dir to the webapps dir
+    # we do not copy the hidden files, such as the big .git directory
+    mkdir "$SERVER_APP_DIR/$APP"
+    cp -R $SERVER_INSTALL_DIR/$APP/* "$SERVER_APP_DIR/$APP"
+
+    # warming up
     cd "$SERVER_APP_DIR"
     chown -R apache:apache $APP
-    if [[ -e "$SERVER_WEB2PY_DIR" ]]; then
+    if [[ -e "$SERVER_APP_DIR/web2py" ]]; then
         compileApp $APP
+        chown -R apache:apache "$SERVER_APP_DIR/$APP"
+        chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
     fi
 fi
 
@@ -321,14 +345,14 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     compileApp admin
 
     echo "o-o-o - Removing examples app"
-    rm -rf "$SERVER_WEB2PY_DIR/applications/examples"
+    rm -rf "$SERVER_APP_DIR/web2py/applications/examples"
 
     setsebool -P httpd_tmp_exec on
 
     # hook up SHEBANQ
 
     echo "o-o-o - hookup $APP"
-    cd "$SERVER_WEB2PY_DIR/applications"
+    cd "$SERVER_APP_DIR/web2py/applications"
     if [[ -e $APP ]]; then
         rm -rf $APP
     fi
@@ -338,16 +362,16 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     if [[ -e "$APP" ]]; then
         compileApp $APP
         chown -R apache:apache "$SERVER_APP_DIR/$APP"
+        chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
     fi
 
     cd "$SERVER_APP_DIR"
     chown -R apache:apache web2py
-    chcon -R -t httpd_sys_rw_content_t /opt/web-apps/
-    # chcon -R -t httpd_sys_content_t /opt/web-apps/
+    chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/web2py"
 
     if [[ "$skipExtradirs" != "v" ]]; then
         echo "o-o-o - make writable dirs"
-        cd "$SERVER_WEB2PY_DIR/applications"
+        cd "$SERVER_APP_DIR/web2py/applications"
         for app in welcome admin $APP
         do
             for dir in databases cache errors sessions private uploads
@@ -382,6 +406,16 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
 fi
 
 eraseDir "$SERVER_UNPACK_DIR"
+
+# first Visit to warm-up caches and to verify that the setup works
+
+if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
+    echo "o-o-o    FIRST VISIT    o-o-o"
+
+    python3 web2py.py -S $APP/hebrew/text -M
+    chown -R apache:apache "$SERVER_APP_DIR/$APP"
+    chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
+fi
 
 # Todo after install
 #

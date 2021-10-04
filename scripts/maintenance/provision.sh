@@ -69,6 +69,10 @@ elif [[ "$1" == "--web2py" ]]; then
     doAll="x"
     doWeb2py="v"
     shift
+elif [[ "$1" == --* ]]; then
+    echo "Unrecognized switch: $1"
+    echo "Do ./$(basename $0) --help for available options"
+    exit
 fi
 
 if [[ "$1" == "" ]]; then
@@ -107,11 +111,11 @@ fi
 if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
     echo "o-o-o scripts o-o-o"
 
-    for script in grants.sql shebanq.cnf parameters_443.py routes.py wsgi.conf
+    for script in grants.sql routes.py shebanq.cnf parameters_443.py unconfigure.sql wsgi.conf
     do
         scp -r "$SCRIPT_SRC_DIR/$script" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
     done
-    for script in backup.sh restore.sh config.sh install.sh update.sh
+    for script in backup.sh config.sh install.sh restore.sh uninstall.sh update.sh
     do
         scp -r "$LOCAL_SCRIPT_DIR/$script" "$SERVER_USER@$SERVER:$SERVER_HOME_DIR"
     done

@@ -125,8 +125,6 @@ SERVER_BACKUP_DIR="$SERVER_HOME_DIR/$APP-backups"
 SERVER_UNPACK_DIR="$SERVER_HOME_DIR/$APP-tmp"
 
 SERVER_APP_DIR="/opt/web-apps"
-SERVER_SHEBANQ_DIR="$SERVER_APP_DIR/$APP"
-SERVER_WEB2PY_DIR="$SERVER_APP_DIR/web2py"
 SERVER_EMDROS_DIR="/opt/emdros"
 SERVER_CFG_DIR="$SERVER_EMDROS_DIR/cfg"
 SERVER_MQL_DIR="$SERVER_EMDROS_DIR/bin"
@@ -220,11 +218,11 @@ function compileApp {
     cmd1="import gluon.compileapp;"
     cmd2="gluon.compileapp.compile_application('applications/$app')"
 
-    cd $SERVER_WEB2PY_DIR
+    cd "$SERVER_APP_DIR/web2py"
     python3 -c "$cmd1 $cmd2"
 
     echo "- Compile modules of $app ..."
-    cd "$SERVER_WEB2PY_DIR/applications/$app"
+    cd "$SERVER_APP_DIR/web2py/applications/$app"
     python3 -m compileall modules
     echo "- Done compiling $app."
 }

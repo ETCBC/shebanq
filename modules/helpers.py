@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 from base64 import b64decode, b64encode
 
@@ -6,7 +7,7 @@ from gluon import current
 
 def debug(msg):
     if current.DEBUG:
-        print(msg, file=current.request.wsgi.environ['wsgi.errors'])
+        sys.stderr(f"{msg}\n")
 
 
 def isodt(dt=None):
