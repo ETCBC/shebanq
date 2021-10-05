@@ -81,44 +81,69 @@ extra:
   repo: https://github.com/etcbc/shebanq
   docSite: https://etcbc.github.io/shebanq
 
-  # DARIAH
-  dans: https://dans.knaw.nl
-  etcbc: http://www.etcbc.nl
-
-  # TECH
+  # Rest
+  apache: https://httpd.apache.org
+  appleCmd: https://developer.apple.com/library/archive/technotes/tn2339/_index.html 
+  appleCmdDoc: https://developer.apple.com/library/archive/documentation/OpenSource/Conceptual/ShellScripting/CommandLInePrimer/CommandLine.html
+  appleCmdInstall: https://www.freecodecamp.org/news/install-xcode-command-line-tools/
   atom: https://atom.io 
   bash: https://www.gnu.org/software/bash/
+  bhsa: https://github.com/etcbc/bhsa
   black: https://black.readthedocs.io/en/stable/
+  bol: https://bibleol.3bmoodle.dk/text/show_text/ETCBC4/Genesis/1
   css: https://developer.mozilla.org/en-US/docs/Web/CSS
+  dans: https://dans.knaw.nl
+  emdros: https://emdros.org
   eslint: http://eslint.org
+  etcbc: http://www.etcbc.nl
   flake8: https://github.com/PyCQA/flake8
   githubBase: https://github.com/
+  homebrew: https://brew.sh
   html: https://developer.mozilla.org/en-US/docs/Web/HTML
   javascript: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   jquery: https://api.jquery.com
+  mariadb: https://mariadb.org
   markdownDoc: https://guides.github.com/features/mastering-markdown/
   mkdocs: https://github.com/mkdocs/mkdocs
   mkdocsmaterial: https://github.com/squidfunk/mkdocs-material
+  mysql: https://dev.mysql.com/downloads/mysql/
+  mysqlInstall: https://dev.mysql.com/doc/mysql-macos-excerpt/8.0/en/macos-installation-pkg.html
+  parabible: https://parabible.com/Genesis/1
+  pipeline: https://github.com/etcbc/pipeline
   python: https://www.python.org
   pythondocstrings: https://www.python.org/dev/peps/pep-0257/
+  scp: https://man.openbsd.org/scp.1
+  selinux: https://en.wikipedia.org/wiki/Security-Enhanced_Linux
+  shellsudo: https://linuxtect.com/linux-sudo-command-run-commands-with-root-privileges/
+  ssh: https://man.openbsd.org/ssh.1
+  ssl: https://smallstep.com/blog/use-ssh-certificates/
+  textfabric: https://annotation/text-fabric
+  web2py: http://web2py.com
+  web2pyRepo: https://github.com/web2py/web2py
   webApi: https://developer.mozilla.org/en-US/docs/Web/API/document
   wsgi: https://modwsgi.readthedocs.io/en/develop
   yaml: http://www.yaml.org
   zenodo: https://zenodo.org
 
+
+
 nav:
   - About:
-    - Intro: 'intro.md'
+    - Intro: 'index.md'
     - News: 'news.md'
+  - Topics:
+    - Elements: 'topics/elements.md'
   - Server:
-    - Intro: 'server/intro.md'
+    - Intro: 'server/index.md'
     - Models: 'server/models.md'
     - Controllers: 'server/controllers.md'
     - Modules: 'server/modules.md'
     - Views: 'server/views.md'
   - Client:
-    - Intro: 'client/intro.md'
+    - Intro: 'client/index.md'
     - CSS: 'client/css.md'
     - Javascript: 'client/js.md'
   - Deploy:
     - Maintenance: 'deploy/maintenance.md'
+    - Computer: 'deploy/computer.md'
+    - Server: 'deploy/server.md'
