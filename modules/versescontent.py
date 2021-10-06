@@ -1,3 +1,4 @@
+from textwrap import dedent
 import collections
 
 from gluon import current
@@ -19,6 +20,7 @@ class VersesContent:
         tr=None,
         lang="en",
     ):
+        """my docs"""
         if tr is None:
             tr = "hb"
         self.version = vr
@@ -55,13 +57,17 @@ class VersesContent:
         verseIdField = "verse.id"
         wordVerseField = "word_verse.verse_id"
         conditionPre = (
-            f"""
-where {{}} in ({verseIdsStr})
-"""
+            dedent(
+                f"""
+                where {{}} in ({verseIdsStr})
+                """
+            )
             if verseIds is not None
-            else f"""
-where chapter_id = {chapter}
-"""
+            else dedent(
+                f"""
+                where chapter_id = {chapter}
+                """
+            )
             if chapter is not None
             else ""
         )
@@ -70,20 +76,22 @@ where chapter_id = {chapter}
 
         verseInfo = (
             passageDb.executesql(
-                f"""
-select
-    verse.id,
-    book.name,
-    chapter.chapter_num,
-    verse.verse_num
-    {", verse.xml" if tp == "txtp" else ""}
-from verse
-inner join chapter on verse.chapter_id=chapter.id
-inner join book on chapter.book_id=book.id
-{condition}
-order by verse.id
-;
-"""
+                dedent(
+                    f"""
+                    select
+                        verse.id,
+                        book.name,
+                        chapter.chapter_num,
+                        verse.verse_num
+                        {", verse.xml" if tp == "txtp" else ""}
+                    from verse
+                    inner join chapter on verse.chapter_id=chapter.id
+                    inner join book on chapter.book_id=book.id
+                    {condition}
+                    order by verse.id
+                    ;
+                    """
+                )
             )
             if passageDb
             else []
@@ -92,14 +100,16 @@ order by verse.id
         wordRecords = []
         wordRecords = (
             passageDb.executesql(
-                f"""
-select {",".join(FIELDNAMES[tp])}, verse_id, lexicon_id from word
-inner join word_verse on word_number = word_verse.anchor
-inner join verse on verse.id = word_verse.verse_id
-{wcondition}
-order by word_number
-;
-""",
+                dedent(
+                    f"""
+                    select {",".join(FIELDNAMES[tp])}, verse_id, lexicon_id from word
+                    inner join word_verse on word_number = word_verse.anchor
+                    inner join verse on verse.id = word_verse.verse_id
+                    {wcondition}
+                    order by word_number
+                    ;
+                    """
+                ),
                 as_dict=True,
             )
             if passageDb

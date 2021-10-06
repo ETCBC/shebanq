@@ -1,3 +1,4 @@
+from textwrap import dedent
 import collections
 
 from gluon import current
@@ -13,25 +14,39 @@ class Make:
         nDefaultClrRows = 3
         nDefaultClrCols = 4
 
-        colorSpec = """
-red,#ff0000,#ff0000,1 salmon,#ff6688,#ee7799,1 orange,#ffcc66,#eebb55,1
-yellow,#ffff00,#dddd00,1 green,#00ff00,#00bb00,1 spring,#ddff77,#77dd44,1
-tropical,#66ffcc,#55ddbb,1 turquoise,#00ffff,#00eeee,1 blue,#8888ff,#0000ff,1
-skye,#66ccff,#55bbff,1 lilac,#cc88ff,#aa22ff,1 magenta,#ff00ff,#ee00ee,1
-grey,#eeeeee,#eeeeee,0 gray,#aaaaaa,#aaaaaa,0 black,#000000,#000000,0
-white,#ffffff,#ffffff,0
-"""
+        colorSpec = dedent(
+            """
+            red,#ff0000,#ff0000,1
+            salmon,#ff6688,#ee7799,1
+            orange,#ffcc66,#eebb55,1
+            yellow,#ffff00,#dddd00,1
+            green,#00ff00,#00bb00,1
+            spring,#ddff77,#77dd44,1
+            tropical,#66ffcc,#55ddbb,1
+            turquoise,#00ffff,#00eeee,1
+            blue,#8888ff,#0000ff,1
+            skye,#66ccff,#55bbff,1
+            lilac,#cc88ff,#aa22ff,1
+            magenta,#ff00ff,#ee00ee,1
+            grey,#eeeeee,#eeeeee,0
+            gray,#aaaaaa,#aaaaaa,0
+            black,#000000,#000000,0
+            white,#ffffff,#ffffff,0
+            """
+        )
 
-        colorSpecCls = """
- 0,z0
- 1,z1
- 2,z2
- 5,z3
-10,z4
-20,z5
-50,z6
-51,z7
-"""
+        colorSpecCls = dedent(
+            """
+             0,z0
+             1,z1
+             2,z2
+             5,z3
+            10,z4
+            20,z5
+            50,z6
+            51,z7
+            """
+        )
 
         colorProto = [tuple(spec.split(",")) for spec in colorSpec.strip().split()]
         colorsDefault = [x[0] for x in colorProto if x[3] == "1"]
@@ -147,22 +162,28 @@ white,#ffffff,#ffffff,0
             ],
         )
 
-        featureFieldSpec = """
-ht:ht_ht=word_heb=text-h,ht_hk=word_ktv=ketiv
-pt:pt=word_phono=text-p
-hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
-tt:tt=word_tran=text-t
-tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
-gl:gl=word_gloss=gloss
-wd1:wd1_nmtp=word_nmtp=nametype,wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=slot
-wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
-wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
-wd4:wd4_statfl=word_freq_lex=freq-lex,wd4_statrl=word_rank_lex=rank-lex,wd4_statfo=word_freq_occ=freq-occ,wd4_statro=word_rank_occ=rank-occ
-sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
-ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_rela=phrase_rela=rela,ph_arela=phrase_atom_rela=rela_a,ph_an=phrase_atom_number=phrase_a#,ph_n=phrase_number=phrase#
-cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_par=clause_atom_pargr=par,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
-sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
-""".strip().split()
+        featureFieldSpec = (
+            dedent(
+                """
+                ht:ht_ht=word_heb=text-h,ht_hk=word_ktv=ketiv
+                pt:pt=word_phono=text-p
+                hl:hl_hlv=word_vlex=lexeme-v,hl_hlc=word_clex=lexeme-c
+                tt:tt=word_tran=text-t
+                tl:tl_tlv=word_glex=lexeme-g,tl_tlc=word_lex=lexeme-t
+                gl:gl=word_gloss=gloss
+                wd1:wd1_nmtp=word_nmtp=nametype,wd1_subpos=word_subpos=lexical_set,wd1_pos=word_pos=part-of-speech,wd1_pdp=word_pdp=phrase-dependent-part-of-speech,wd1_lang=word_lang=language,wd1_n=word_number=slot
+                wd2:wd2_gender=word_gender=gender,wd2_gnumber=word_gnumber=number,wd2_person=word_person=person,wd2_state=word_state=state,wd2_tense=word_tense=tense,wd2_stem=word_stem=verbal_stem
+                wd3:wd3_nme=word_nme=nme,wd3_pfm=word_pfm=pfm,wd3_prs=word_prs=prs,wd3_uvf=word_uvf=uvf,wd3_vbe=word_vbe=vbe,wd3_vbs=word_vbs=vbs
+                wd4:wd4_statfl=word_freq_lex=freq-lex,wd4_statrl=word_rank_lex=rank-lex,wd4_statfo=word_freq_occ=freq-occ,wd4_statro=word_rank_occ=rank-occ
+                sp:sp_rela=subphrase_rela=rela,sp_n=subphrase_number=subphrase#
+                ph:ph_det=phrase_det=determination,ph_fun=phrase_function=function,ph_typ=phrase_typ=type-ph,ph_rela=phrase_rela=rela,ph_arela=phrase_atom_rela=rela_a,ph_an=phrase_atom_number=phrase_a#,ph_n=phrase_number=phrase#
+                cl:cl_txt=clause_txt=txt,cl_typ=clause_typ=type-cl,cl_rela=clause_rela=rela,cl_tab=clause_atom_tab=tab,cl_par=clause_atom_pargr=par,cl_code=clause_atom_code=code,cl_an=clause_atom_number=clause_a#,cl_n=clause_number=clause#
+                sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
+                """
+            )
+            .strip()
+            .split()
+        )
 
         featureLines = []
         for item in featureFieldSpec:
@@ -229,55 +250,61 @@ sn:sn_an=sentence_atom_number=sentence_a#,sn_n=sentence_number=sentence#
                 {"": """2021 Genesis 1 1 None 1 m x txtp hb en"""},
             ),
             hebrewdata=(
-                """
-ht ht_ht ht_hk
-pt
-hl hl_hlv hl_hlc
-tt
-tl tl_tlv tl_tlc
-gl
-wd1 wd1_nmtp wd1_subpos wd1_pos wd1_pdp wd1_lang wd1_n
-wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
-wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
-wd4 wd4_statfl wd4_statrl wd4_statfo wd4_statro
-sp sp_rela sp_n
-ph ph_det ph_fun ph_typ ph_rela ph_arela ph_an ph_n
-cl cl_txt cl_typ cl_rela cl_tab cl_par cl_code cl_an cl_n
-sn sn_an sn_n
-""",
-                """
-bool bool bool bool
-bool
-bool bool bool
-bool
-bool bool bool
-bool
-bool bool bool bool bool bool
-bool bool bool bool bool bool bool
-bool bool bool bool bool bool bool
-bool bool bool bool bool
-bool bool bool
-bool bool bool bool bool bool bool bool
-bool bool bool bool bool bool bool bool bool
-bool bool bool
-""",
+                dedent(
+                    """
+                    ht ht_ht ht_hk
+                    pt
+                    hl hl_hlv hl_hlc
+                    tt
+                    tl tl_tlv tl_tlc
+                    gl
+                    wd1 wd1_nmtp wd1_subpos wd1_pos wd1_pdp wd1_lang wd1_n
+                    wd2 wd2_gender wd2_gnumber wd2_person wd2_state wd2_tense wd2_stem
+                    wd3 wd3_nme wd3_pfm wd3_prs wd3_uvf wd3_vbe wd3_vbs
+                    wd4 wd4_statfl wd4_statrl wd4_statfo wd4_statro
+                    sp sp_rela sp_n
+                    ph ph_det ph_fun ph_typ ph_rela ph_arela ph_an ph_n
+                    cl cl_txt cl_typ cl_rela cl_tab cl_par cl_code cl_an cl_n
+                    sn sn_an sn_n
+                    """
+                ),
+                dedent(
+                    """
+                    bool bool bool bool
+                    bool
+                    bool bool bool
+                    bool
+                    bool bool bool
+                    bool
+                    bool bool bool bool bool bool
+                    bool bool bool bool bool bool bool
+                    bool bool bool bool bool bool bool
+                    bool bool bool bool bool
+                    bool bool bool
+                    bool bool bool bool bool bool bool bool
+                    bool bool bool bool bool bool bool bool bool
+                    bool bool bool
+                    """
+                ),
                 {
-                    "": """
-v v v v
-v
-v x v
-x
-x x v
-v
-v x v x x x
-v v v v v v v
-x x x v x v x
-v v v x x
-v v v
-v v v x x v v v
-v v v v v v v v v
-v v v
-"""
+                    "": dedent(
+                        """
+                        v v v v
+                        v
+                        v x v
+                        x
+                        x x v
+                        v
+                        v x v x x x
+                        v v v v v v v
+                        x x x v x v x
+                        v v v x x
+                        v v v
+                        v v v x x v v v
+                        v v v v v v v v v
+                        v v v
+                        """
+                    )
                 },
             ),
             highlights=(
@@ -392,32 +419,36 @@ v v v
     def export(self):
         return {
             key: getattr(self, key)
-            for key in """
-nColorRows
-nColorCols
-nDefaultClrRows
-nDefaultClrCols
-colorsDefault
-colorSpecCls
-colorNames
-colors
-nTabViews
-tabInfo
-tabLabels
-trInfo
-trLabels
-nextTp
-nextTr
-noteStatusCls
-noteStatusSym
-noteStatusNxt
-featureFields
-featureLines
-itemStyle
-specs
-settings
-validation
-""".strip().split()
+            for key in dedent(
+                """
+                nColorRows
+                nColorCols
+                nDefaultClrRows
+                nDefaultClrCols
+                colorsDefault
+                colorSpecCls
+                colorNames
+                colors
+                nTabViews
+                tabInfo
+                tabLabels
+                trInfo
+                trLabels
+                nextTp
+                nextTr
+                noteStatusCls
+                noteStatusSym
+                noteStatusNxt
+                featureFields
+                featureLines
+                itemStyle
+                specs
+                settings
+                validation
+                """
+            )
+            .strip()
+            .split()
         }
 
 

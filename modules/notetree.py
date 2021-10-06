@@ -1,3 +1,4 @@
+from textwrap import dedent
 import collections
 import json
 
@@ -29,30 +30,37 @@ class NOTETREE:
             return f'<span n="1">{hEsc(name)}</span><span class="brn">({badge})</span>'
 
         condition = (
-            """
-where note.is_shared = 'T'
-"""
+            dedent(
+                """
+                where note.is_shared = 'T'
+                """
+            )
             if myId is None
-            else f"""
-where note.is_shared = 'T' or note.created_by = {myId}
-"""
+            else dedent(
+                f"""
+                where note.is_shared = 'T' or note.created_by = {myId}
+                """
+            )
         )
 
-        projectNoteSql = f"""
-select
-    count(note.id) as amount,
-    note.version,
-    note.keywords,
-    concat(auth_user.first_name, ' ', auth_user.last_name) as uname,
-    auth_user.id as user_id
-from note
-inner join shebanq_web.auth_user on note.created_by = shebanq_web.auth_user.id
-{condition}
-group by auth_user.id, note.keywords, note.version
-order by shebanq_web.auth_user.last_name,
-shebanq_web.auth_user.first_name, note.keywords
-;
-"""
+        projectNoteSql = dedent(
+            f"""
+            select
+                count(note.id) as amount,
+                note.version,
+                note.keywords,
+                concat(auth_user.first_name, ' ', auth_user.last_name) as uname,
+                auth_user.id as user_id
+            from note
+            inner join shebanq_web.auth_user
+            on note.created_by = shebanq_web.auth_user.id
+            {condition}
+            group by auth_user.id, note.keywords, note.version
+            order by shebanq_web.auth_user.last_name,
+            shebanq_web.auth_user.first_name, note.keywords
+            ;
+            """
+        )
 
         projectNote = NOTE_DB.executesql(projectNoteSql)
         projectNotes = collections.OrderedDict()

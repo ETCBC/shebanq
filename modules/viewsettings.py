@@ -1,3 +1,4 @@
+from textwrap import dedent
 import collections
 import json
 import urllib
@@ -57,9 +58,7 @@ class VIEWSETTINGS:
                         try:
                             fromCookie = json.loads(
                                 urllib.parse.unquote(
-                                    requestCookies[
-                                        self.pref + group + qw
-                                    ].value
+                                    requestCookies[self.pref + group + qw].value
                                 )
                             )
                         except ValueError:
@@ -77,9 +76,7 @@ class VIEWSETTINGS:
                             continue
                         fid = f[3:]
                         if len(fid) <= 32 and fid.replace("_", "").isalnum():
-                            validationState = Check.field(
-                                group, qw, fid, default=False
-                            )
+                            validationState = Check.field(group, qw, fid, default=False)
                             if validationState is not None:
                                 fromCookie[fid] = validationState
                                 self.state[group][qw][fid] = validationState
@@ -96,12 +93,10 @@ class VIEWSETTINGS:
                         self.state[group][qw][f] = validationState
 
                 if group != "rest":
-                    responseCookies[
-                        self.pref + group + qw
-                    ] = urllib.parse.quote(json.dumps(fromCookie))
-                    responseCookies[self.pref + group + qw]["expires"] = (
-                        30 * 24 * 3600
+                    responseCookies[self.pref + group + qw] = urllib.parse.quote(
+                        json.dumps(fromCookie)
                     )
+                    responseCookies[self.pref + group + qw]["expires"] = 30 * 24 * 3600
                     responseCookies[self.pref + group + qw]["path"] = "/"
 
         books = {}
@@ -125,65 +120,67 @@ class VIEWSETTINGS:
         URL = current.URL
         VERSIONS = current.VERSIONS
 
-        return f"""
-var Config = {{
-bookLangs: {json.dumps(BOOK_LANGS[BIBLANG])},
-bookLatin: {json.dumps(BOOK_NAMES[BIBLANG]["la"])},
-bookOrder: {json.dumps(self.booksOrder)},
-books: {json.dumps(self.books)},
-bookTrans: {json.dumps(BOOK_TRANS)},
-colorsDefault: {json.dumps(ViewDefs.colorsDefault)},
-colorsCls: {json.dumps(ViewDefs.makeColors())},
-colors: {json.dumps(ViewDefs.colors)},
-nDefaultClrCols: {ViewDefs.nDefaultClrCols},
-nDefaultClrRows: {ViewDefs.nDefaultClrRows},
-featureHost: "https://etcbc.github.io/bhsa/features",
-nextTp: {json.dumps(ViewDefs.nextTp)},
-nextTr: {json.dumps(ViewDefs.nextTr)},
-noteStatusCls: {json.dumps(ViewDefs.noteStatusCls)},
-noteStatusNxt: {json.dumps(ViewDefs.noteStatusNxt)},
-noteStatusSym: {json.dumps(ViewDefs.noteStatusSym)},
-pref: "{self.pref}",
-itemStyle: {json.dumps(ViewDefs.itemStyle)},
-nTabViews: {ViewDefs.nTabViews},
-tabInfo: {json.dumps(ViewDefs.tabInfo)},
-tabLabels: {json.dumps(ViewDefs.tabLabels)},
-trInfo: {json.dumps(ViewDefs.trInfo)},
-trLabels: {json.dumps(ViewDefs.trLabels)},
-versions: {json.dumps(list(VERSIONS))},
-viewInit: {json.dumps(self.state)},
+        return dedent(
+            f"""
+            var Config = {{
+            bookLangs: {json.dumps(BOOK_LANGS[BIBLANG])},
+            bookLatin: {json.dumps(BOOK_NAMES[BIBLANG]["la"])},
+            bookOrder: {json.dumps(self.booksOrder)},
+            books: {json.dumps(self.books)},
+            bookTrans: {json.dumps(BOOK_TRANS)},
+            colorsDefault: {json.dumps(ViewDefs.colorsDefault)},
+            colorsCls: {json.dumps(ViewDefs.makeColors())},
+            colors: {json.dumps(ViewDefs.colors)},
+            nDefaultClrCols: {ViewDefs.nDefaultClrCols},
+            nDefaultClrRows: {ViewDefs.nDefaultClrRows},
+            featureHost: "https://etcbc.github.io/bhsa/features",
+            nextTp: {json.dumps(ViewDefs.nextTp)},
+            nextTr: {json.dumps(ViewDefs.nextTr)},
+            noteStatusCls: {json.dumps(ViewDefs.noteStatusCls)},
+            noteStatusNxt: {json.dumps(ViewDefs.noteStatusNxt)},
+            noteStatusSym: {json.dumps(ViewDefs.noteStatusSym)},
+            pref: "{self.pref}",
+            itemStyle: {json.dumps(ViewDefs.itemStyle)},
+            nTabViews: {ViewDefs.nTabViews},
+            tabInfo: {json.dumps(ViewDefs.tabInfo)},
+            tabLabels: {json.dumps(ViewDefs.tabLabels)},
+            trInfo: {json.dumps(ViewDefs.trInfo)},
+            trLabels: {json.dumps(ViewDefs.trLabels)},
+            versions: {json.dumps(list(VERSIONS))},
+            viewInit: {json.dumps(self.state)},
 
-pageShareUrl: "{URL("hebrew", "text", host=True)}",
-wordShareUrl: "{URL("hebrew", "word", host=True)}",
-queryShareUrl: "{URL("hebrew", "query", host=True)}",
-noteShareUrl: "{URL("hebrew", "note", host=True)}",
+            pageShareUrl: "{URL("hebrew", "text", host=True)}",
+            wordShareUrl: "{URL("hebrew", "word", host=True)}",
+            queryShareUrl: "{URL("hebrew", "query", host=True)}",
+            noteShareUrl: "{URL("hebrew", "note", host=True)}",
 
-pageUrl: "{URL("hebrew", "text")}",
-pageMaterialUrl: "{URL("hebrew", "material")}",
-pageSidebarUrl: "{URL("hebrew", "side")}",
-verseFeaturesUrl: "{URL("hebrew", "verse")}",
+            pageUrl: "{URL("hebrew", "text")}",
+            pageMaterialUrl: "{URL("hebrew", "material")}",
+            pageSidebarUrl: "{URL("hebrew", "side")}",
+            verseFeaturesUrl: "{URL("hebrew", "verse")}",
 
-wordsPageUrl: "{URL("hebrew", "words")}",
-queriesPageUrl: "{URL("hebrew", "queries")}",
-notesPageUrl: "{URL("hebrew", "notes")}",
+            wordsPageUrl: "{URL("hebrew", "words")}",
+            queriesPageUrl: "{URL("hebrew", "queries")}",
+            notesPageUrl: "{URL("hebrew", "notes")}",
 
-queryTreeJsonUrl: "{URL("hebrew", "querytree.json")}",
-noteTreeJsonUrl: "{URL("hebrew", "notetree.json")}",
+            queryTreeJsonUrl: "{URL("hebrew", "querytree.json")}",
+            noteTreeJsonUrl: "{URL("hebrew", "notetree.json")}",
 
-queriesRecentJsonUrl: "{URL("hebrew", "queriesr.json")}",
-queryUpdateJsonUrl: "{URL("hebrew", "queryupdate.json")}",
-querySharingJsonUrl: "{URL("hebrew", "querysharing.json")}",
+            queriesRecentJsonUrl: "{URL("hebrew", "queriesr.json")}",
+            queryUpdateJsonUrl: "{URL("hebrew", "queryupdate.json")}",
+            querySharingJsonUrl: "{URL("hebrew", "querysharing.json")}",
 
-getNotesVerseJsonUrl: "{URL("hebrew", "getversenotes.json")}",
-putNotesVerseJsonUrl: "{URL("hebrew", "putversenotes.json")}",
-noteUploadJsonUrl: "{URL("hebrew", "noteupload.json")}",
+            getNotesVerseJsonUrl: "{URL("hebrew", "getversenotes.json")}",
+            putNotesVerseJsonUrl: "{URL("hebrew", "putversenotes.json")}",
+            noteUploadJsonUrl: "{URL("hebrew", "noteupload.json")}",
 
-itemRecordJsonUrl: "{URL("hebrew", "itemrecord.json")}",
+            itemRecordJsonUrl: "{URL("hebrew", "itemrecord.json")}",
 
-chartUrl: "{URL("hebrew", "chart")}",
-itemCsvUrl: "{URL("hebrew", "item.csv")}",
+            chartUrl: "{URL("hebrew", "chart")}",
+            itemCsvUrl: "{URL("hebrew", "item.csv")}",
 
-bolUrl: "http://bibleol.3bmoodle.dk/text/show_text",
-pblUrl: "https://parabible.com",
-}}
-"""
+            bolUrl: "http://bibleol.3bmoodle.dk/text/show_text",
+            pblUrl: "https://parabible.com",
+            }}
+            """
+        )

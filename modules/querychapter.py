@@ -1,4 +1,5 @@
 import time
+from textwrap import dedent
 
 from gluon import current
 
@@ -54,29 +55,33 @@ class QUERYCHAPTER:
             None,
         )
 
-        chapterSQL = """
-select id, first_m, last_m from chapter
-;
-"""
+        chapterSQL = dedent(
+            """
+            select id, first_m, last_m from chapter
+            ;
+            """
+        )
         chapterList = PASSAGE_DBS[vr].executesql(chapterSQL)
         for (chapter_id, first_m, last_m) in chapterList:
             for m in range(first_m, last_m + 1):
                 chapterFromSlot[m] = chapter_id
                 slotsFromChapter[chapter_id] = last_m
-        resultSQL1 = f"""
-select
-    query_exe.id, query_exe.is_published, query.id
-from query
-inner join query_exe on
-    query.id = query_exe.query_id
-where
-    query_exe.version = '{vr}'
-and
-    query_exe.executed_on >= query_exe.modified_on
-and
-    query.is_shared = 'T'
-;
-"""
+        resultSQL1 = dedent(
+            f"""
+            select
+                query_exe.id, query_exe.is_published, query.id
+            from query
+            inner join query_exe on
+                query.id = query_exe.query_id
+            where
+                query_exe.version = '{vr}'
+            and
+                query_exe.executed_on >= query_exe.modified_on
+            and
+                query.is_shared = 'T'
+            ;
+            """
+        )
 
         queryTime = time.time()
         results1 = db.executesql(resultSQL1)
@@ -173,26 +178,30 @@ and
         uptodateSQL = (
             ""
             if uptodate
-            else """
-and
-    query_exe.executed_on >= query_exe.modified_on
-"""
+            else dedent(
+                """
+                and
+                    query_exe.executed_on >= query_exe.modified_on
+                """
+            )
         )
-        resultSQL1 = f"""
-select
-    query_exe.id, query.id
-from query
-inner join query_exe on
-    query.id = query_exe.query_id
-where
-    query.id = {query_id}
-and
-    query_exe.version = '{vr}'
-and
-    query.is_shared = 'T'
-{uptodateSQL}
-;
-"""
+        resultSQL1 = dedent(
+            f"""
+            select
+                query_exe.id, query.id
+            from query
+            inner join query_exe on
+                query.id = query_exe.query_id
+            where
+                query.id = {query_id}
+            and
+                query_exe.version = '{vr}'
+            and
+                query.is_shared = 'T'
+            {uptodateSQL}
+            ;
+            """
+        )
         queryTime = time.time()
         results1 = db.executesql(resultSQL1)
         queryTime = time.time() - queryTime
@@ -217,12 +226,14 @@ def doQueryIndex(db, vr, queryFromExe):
     chaptersFromQuery = Caching.get(f"chaptersFromQuery_{vr}_", lambda: {}, None)
     queriesFromChapter = Caching.get(f"queriesFromChapter_{vr}_", lambda: {}, None)
 
-    resultSQL2 = f"""
-select query_exe_id, first_m, last_m from monads
-where
-query_exe_id in ({",".join(str(idx) for idx in queryFromExe)})
-;
-"""
+    resultSQL2 = dedent(
+        f"""
+        select query_exe_id, first_m, last_m from monads
+        where
+        query_exe_id in ({",".join(str(idx) for idx in queryFromExe)})
+        ;
+        """
+    )
     queryTime = time.time()
     results2 = db.executesql(resultSQL2)
     queryTime = time.time() - queryTime

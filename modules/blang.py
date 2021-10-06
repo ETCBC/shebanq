@@ -31,6 +31,9 @@ BOOK_LANGS = {
         yo=("yoruba", "èdè Yorùbá"),
     ),
 }
+"""Languages for bible book names
+"""
+
 BOOK_NAMES = {
     "Hebrew": dict(
         la=tuple(
@@ -1153,6 +1156,9 @@ BOOK_NAMES = {
         ),
     ),
 }
+"""Book names in all the languages
+"""
+
 
 # make a translation table from latin book names (the ETCBC ones)
 # to the specific languages

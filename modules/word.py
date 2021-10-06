@@ -1,3 +1,4 @@
+from textwrap import dedent
 import collections
 import json
 
@@ -94,13 +95,15 @@ class WORD:
             return []
 
         occurrences = PASSAGE_DBS[vr].executesql(
+            dedent(
                 f"""
-select anchor, lexicon_id
-from word_verse
-where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
-;
-"""
+                select anchor, lexicon_id
+                from word_verse
+                where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
+                ;
+                """
             )
+        )
         lexemes = collections.defaultdict(lambda: [])
 
         for (slot, lexicon_id) in occurrences:
@@ -109,10 +112,12 @@ where anchor BETWEEN {chapter["first_m"]} AND {chapter["last_m"]}
         r = []
         if len(lexemes):
             lexiconIdsRep = ",".join(f"'{lexicon_id}'" for lexicon_id in lexemes)
-            wordSql = f"""
-select * from lexicon where id in ({lexiconIdsRep})
-;
-"""
+            wordSql = dedent(
+                f"""
+                select * from lexicon where id in ({lexiconIdsRep})
+                ;
+                """
+            )
             wordRecords = sorted(
                 PASSAGE_DBS[vr].executesql(wordSql, as_dict=True),
                 key=lambda x: hebKey(x["entryid_heb"]),
@@ -125,10 +130,14 @@ select * from lexicon where id in ({lexiconIdsRep})
         PASSAGE_DBS = current.PASSAGE_DBS
         rows = (
             PASSAGE_DBS[vr].executesql(
-                f"""
-select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
-;
-"""
+                dedent(
+                    f"""
+                    select anchor
+                    from word_verse
+                    where lexicon_id = '{lexicon_id}' order by anchor
+                    ;
+                    """
+                )
             )
             if vr in PASSAGE_DBS
             else []
@@ -141,10 +150,12 @@ select anchor from word_verse where lexicon_id = '{lexicon_id}' order by anchor
             return {}
 
         records = PASSAGE_DBS[vr].executesql(
-            f"""
-select * from lexicon where id = '{lexicon_id}'
-;
-""",
+            dedent(
+                f"""
+                select * from lexicon where id = '{lexicon_id}'
+                ;
+                """
+            ),
             as_dict=True,
         )
         return records[0] if records else {}
@@ -153,10 +164,12 @@ select * from lexicon where id = '{lexicon_id}'
         PASSAGE_DBS = current.PASSAGE_DBS
         VERSIONS = current.VERSIONS
 
-        sql = f"""
-select * from lexicon where id = '{iid}'
-;
-"""
+        sql = dedent(
+            f"""
+            select * from lexicon where id = '{iid}'
+            ;
+            """
+        )
         wordRecord = dict(id=iid, versions={})
         for v in VERSIONS:
             records = PASSAGE_DBS[v].executesql(sql, as_dict=True)
@@ -177,10 +190,12 @@ select * from lexicon where id = '{iid}'
             return ({}, {})
         hebrewData = sorted(
             PASSAGE_DBS[vr].executesql(
-                """
-select id, entry_heb, entryid_heb, lan, gloss from lexicon
-;
-"""
+                dedent(
+                    """
+                    select id, entry_heb, entryid_heb, lan, gloss from lexicon
+                    ;
+                    """
+                )
             ),
             key=lambda x: (x[3], hebKey(x[2])),
         )

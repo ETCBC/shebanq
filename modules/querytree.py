@@ -1,3 +1,4 @@
+from textwrap import dedent
 import collections
 import json
 
@@ -49,61 +50,74 @@ class QUERYTREE:
                         rename = (
                             f'<a class="r_{objType}" obj_id="{obj_id}" href="#"></a>'
                         )
-                    select = (
+                    select = dedent(
                         f"""<a
-class="s_{objType} fa fa-lg" obj_id="{obj_id}" href="#"></a>"""
+                            class="s_{objType} fa fa-lg"
+                            obj_id="{obj_id}"
+                            href="#"></a>"""
                     )
                 else:
                     if obj_id:
                         rename = (
                             f'<a class="v_{objType}" obj_id="{obj_id}" href="#"></a>'
                         )
-            return f"""{select}
-<span n="1">{hEsc(name)}</span><span class="brq">({badge})</span> {rename}"""
+            return dedent(
+                f"""{select}
+                <span n="1">{hEsc(name)}</span><span
+                class="brq">({badge})</span> {rename}"""
+            )
 
         condition = (
-            """
-where query.is_shared = 'T'
-"""
+            dedent(
+                """
+                where query.is_shared = 'T'
+                """
+            )
             if myId is None
-            else f"""
-where query.is_shared = 'T' or query.created_by = {myId}
-"""
+            else dedent(
+                f"""
+                where query.is_shared = 'T' or query.created_by = {myId}
+            """
+            )
         )
 
-        projectQueryXSql = f"""
-select
-    query_exe.query_id,
-    query_exe.version,
-    query_exe.is_published,
-    query_exe.published_on,
-    query_exe.modified_on,
-    query_exe.executed_on
-from query_exe
-inner join query on query.id = query_exe.query_id
-{condition};
-"""
+        projectQueryXSql = dedent(
+            f"""
+            select
+                query_exe.query_id,
+                query_exe.version,
+                query_exe.is_published,
+                query_exe.published_on,
+                query_exe.modified_on,
+                query_exe.executed_on
+            from query_exe
+            inner join query on query.id = query_exe.query_id
+            {condition};
+            """
+        )
 
-        projectQuerySql = f"""
-select
-    query.id as query_id,
-    organization.name as org_name, organization.id as org_id,
-    project.name as project_name, project.id as project_id,
-    concat(auth_user.first_name, ' ', auth_user.last_name) as uname,
-    auth_user.id as user_id,
-    query.name as query_name, query.is_shared as is_shared
-from query
-inner join auth_user on query.created_by = auth_user.id
-inner join project on query.project = project.id
-inner join organization on query.organization = organization.id
-{condition}
-order by organization.name,
-project.name,
-auth_user.last_name,
-auth_user.first_name,
-query.name
-;
-"""
+        projectQuerySql = dedent(
+            f"""
+            select
+                query.id as query_id,
+                organization.name as org_name, organization.id as org_id,
+                project.name as project_name, project.id as project_id,
+                concat(auth_user.first_name, ' ', auth_user.last_name) as uname,
+                auth_user.id as user_id,
+                query.name as query_name, query.is_shared as is_shared
+            from query
+            inner join auth_user on query.created_by = auth_user.id
+            inner join project on query.project = project.id
+            inner join organization on query.organization = organization.id
+            {condition}
+            order by organization.name,
+            project.name,
+            auth_user.last_name,
+            auth_user.first_name,
+            query.name
+            ;
+            """
+        )
 
         projectQuery = db.executesql(projectQuerySql)
         projectQueryX = db.executesql(projectQueryXSql)
@@ -176,16 +190,20 @@ query.name
             if queryExeStatus:
                 queryInfo["good"] = True
 
-        projectOrgSql = """
-select name, id from organization order by name
-;
-"""
+        projectOrgSql = dedent(
+            """
+            select name, id from organization order by name
+            ;
+            """
+        )
         porg = db.executesql(projectOrgSql)
 
-        projectSql = """
-select name, id from project order by name
-;
-"""
+        projectSql = dedent(
+            """
+            select name, id from project order by name
+            ;
+            """
+        )
         project = db.executesql(projectSql)
 
         tree = collections.OrderedDict()
@@ -345,11 +363,15 @@ select name, id from project order by name
                         queryGood = projectQueryInfo["good"]
                         queryVersions = projectQueryInfo["v"]
                         queryOwnRep = "r" if queryOwn else "v"
-                        queryMyRep = ("qmy" if queryOwn else "")
+                        queryMyRep = "qmy" if queryOwn else ""
                         querySharedRep = "" if queryShared else "qpriv"
                         queryIdRep = iEncode("q", query_id)
-                        rename = f"""<a
-class="{queryOwnRep}_q" obj_id="{queryIdRep}" href="#"></a>"""
+                        rename = dedent(
+                            f"""<a
+                            class="{queryOwnRep}_q"
+                            obj_id="{queryIdRep}"
+                            href="#"></a>"""
+                        )
                         versionRep = " ".join(
                             formatVersion(
                                 "q", query_id, v, queryVersions[VERSION_INDEX[v]]
@@ -358,10 +380,14 @@ class="{queryOwnRep}_q" obj_id="{queryIdRep}" href="#"></a>"""
                         )
                         curUserDest.append(
                             dict(
-                                title=f"""{versionRep} <a
-class="q {queryMyRep} {querySharedRep}"
-n="1" query_id="{query_id}" href="#">{hEsc(queryName)}</a>
-<a class="md" href="#"></a> {rename}""",
+                                title=dedent(
+                                    f"""{versionRep} <a
+                                    class="q {queryMyRep} {querySharedRep}"
+                                    n="1"
+                                    query_id="{query_id}"
+                                    href="#">{hEsc(queryName)}</a>
+                                    <a class="md" href="#"></a> {rename}"""
+                                ),
                                 key=f"q{query_id}",
                                 folder=False,
                             )

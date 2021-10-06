@@ -61,6 +61,8 @@ plugins:
   - search
   - mkdocstrings:
       default_handler: python
+      watch:
+        - "modules"
       handlers:
         python:
           setup_commands:
@@ -68,7 +70,8 @@ plugins:
             - sys.path.insert(0, "../../web2py/web2py")
             - sys.path.insert(0, "modules")
           rendering:
-            show_source: false
+            show_source: true
+            show_root_heading: true
   - minify:
       minify_html: true
 

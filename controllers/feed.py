@@ -1,3 +1,4 @@
+from textwrap import dedent
 from markdown import markdown
 
 from helpers import hEsc, sanitize, isodt
@@ -18,45 +19,50 @@ def atom():
     xml = []
     xml.append(
         """<?xml version="1.0" encoding="utf-8"?>
-"""
-    )
-    xml.append(
         """
-<feed
-        xmlns="http://www.w3.org/2005/Atom"
-        xmlns:webfeeds="http://webfeeds.org/rss/1.0"
->"""
     )
     xml.append(
-        f"""
-    <title>SHEBANQ</title>
-    <subtitle>Shared queries, recently executed</subtitle>
-    <link href="{hEsc(feed)}" rel="self"
-        title="SHEBANQ - Shared Queries" type="application/atom+xml"/>
-    <link href="{hEsc(base)}" rel="alternate" type="text/html"/>
-    <id>{hEsc(base + "/hebrew/queries")}</id>
-    <updated>{isodt()}</updated>
-    <category term="bible study"/>
-    <category term="biblical studies"/>
-    <category term="text"/>
-    <category term="linguistic"/>
-    <category term="hebrew"/>
-    <category term="bible"/>
-    <category term="query"/>
-    <category term="database"/>
-    <category term="research"/>
-    <category term="scholar"/>
-    <category term="annotation"/>
-    <category term="digital bible"/>
-    <category term="digital"/>
-    <category term="religion"/>
-    <category term="theology"/>
-    <icon>{hEsc(icon)}</icon>
-    <webfeeds:icon>{hEsc(icon)}</webfeeds:icon>
-    <logo>{hEsc(cover)}</logo>
-    <webfeeds:cover image="{hEsc(cover)}"/>
-    <webfeeds:accentColor>DDBB00</webfeeds:accentColor>
-"""
+        dedent(
+            """
+            <feed
+                xmlns="http://www.w3.org/2005/Atom"
+                xmlns:webfeeds="http://webfeeds.org/rss/1.0"
+            >
+            """
+        )
+    )
+    xml.append(
+        dedent(
+            f"""
+            <title>SHEBANQ</title>
+            <subtitle>Shared queries, recently executed</subtitle>
+            <link href="{hEsc(feed)}" rel="self"
+                title="SHEBANQ - Shared Queries" type="application/atom+xml"/>
+            <link href="{hEsc(base)}" rel="alternate" type="text/html"/>
+            <id>{hEsc(base + "/hebrew/queries")}</id>
+            <updated>{isodt()}</updated>
+            <category term="bible study"/>
+            <category term="biblical studies"/>
+            <category term="text"/>
+            <category term="linguistic"/>
+            <category term="hebrew"/>
+            <category term="bible"/>
+            <category term="query"/>
+            <category term="database"/>
+            <category term="research"/>
+            <category term="scholar"/>
+            <category term="annotation"/>
+            <category term="digital bible"/>
+            <category term="digital"/>
+            <category term="religion"/>
+            <category term="theology"/>
+            <icon>{hEsc(icon)}</icon>
+            <webfeeds:icon>{hEsc(icon)}</webfeeds:icon>
+            <logo>{hEsc(cover)}</logo>
+            <webfeeds:cover image="{hEsc(cover)}"/>
+            <webfeeds:accentColor>DDBB00</webfeeds:accentColor>
+            """
+        )
     )
 
     for (
@@ -92,26 +98,30 @@ def atom():
         tag = f"tag:shebanq.ancient-data.org,2016-01-01:{query_id}/{qvid}/{qver}"
         name = hEsc(f"{first_name} {last_name}")
         xml.append(
-            f"""
-    <entry>
-        <title>{hEsc(query_name)}</title>
-        <link href="{href}" rel="alternate" type="text/html"/>
-        <id>{tag}</id>
-        <updated>{isodt(qexe)}</updated>
-        <category term="query"/>
-        <content type="xhtml">
-            <div xmlns="http://www.w3.org/1999/xhtml">
-                {standardImage}
-                {descHtml}
-            </div>
-        </content>
-        <author><name>{name}</name></author>
-    </entry>
-"""
+            dedent(
+                f"""
+                <entry>
+                    <title>{hEsc(query_name)}</title>
+                    <link href="{href}" rel="alternate" type="text/html"/>
+                    <id>{tag}</id>
+                    <updated>{isodt(qexe)}</updated>
+                    <category term="query"/>
+                    <content type="xhtml">
+                        <div xmlns="http://www.w3.org/1999/xhtml">
+                            {standardImage}
+                            {descHtml}
+                        </div>
+                    </content>
+                    <author><name>{name}</name></author>
+                </entry>
+                """
+            )
         )
     xml.append(
-        """
-</feed>
-"""
+        dedent(
+            """
+            </feed>
+            """
+        )
     )
     return dict(xml="".join(xml))

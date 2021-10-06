@@ -1,3 +1,4 @@
+from textwrap import dedent
 import json
 
 from gluon import current
@@ -236,10 +237,14 @@ class RECORD:
                     dbRecord = [0, "", ""]
                 else:
                     dbRecord = db.executesql(
-                        f"""
-select {",".join(fields)} from {table} where id = {obj_id}
-;
-""",
+                        dedent(
+                            f"""
+                            select {",".join(fields)}
+                            from {table}
+                            where id = {obj_id}
+                            ;
+                            """
+                        ),
                         as_dict=True,
                     )
             if dbRecord:
@@ -319,18 +324,25 @@ select {",".join(fields)} from {table} where id = {obj_id}
         if good:
             if obj_id:
                 fieldVals = [f" {f} = '{fieldsUpd[f]}'" for f in fields]
-                sql = (
+                sql = dedent(
                     f"""
-update {table} set{",".join(fieldVals)} where id = {obj_id}
-;"""
+                    update {table}
+                    set{",".join(fieldVals)}
+                    where id = {obj_id}
+                    ;
+                    """
                 )
                 thisMsg = "updated"
             else:
                 fieldVals = [f"'{fieldsUpd[f]}'" for f in fields]
-                sql = f"""
-insert into {table} ({",".join(fields)}) values ({",".join(fieldVals)})
-;
-"""
+                sql = dedent(
+                    f"""
+                    insert into {table}
+                    ({",".join(fields)})
+                    values ({",".join(fieldVals)})
+                    ;
+                    """
+                )
                 thisMsg = f"{label} added"
 
             db.executesql(sql)
@@ -339,10 +351,12 @@ insert into {table} ({",".join(fields)}) values ({",".join(fieldVals)})
 
             if obj_id == 0:
                 obj_id = db.executesql(
+                    dedent(
+                        """
+                    select last_insert_id() as x
+                    ;
                     """
-select last_insert_id() as x
-;
-"""
+                    )
                 )[0][0]
 
             msgs.append(("good", thisMsg))

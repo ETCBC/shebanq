@@ -1,5 +1,6 @@
 import collections
 import json
+from textwrap import dedent
 
 from gluon import current
 
@@ -20,9 +21,11 @@ class NOTE:
         if auth.user:
             myId = auth.user.id
         if myId:
-            sql = f"""
-select uid from uploaders where uid = {myId}
-"""
+            sql = dedent(
+                f"""
+                select uid from uploaders where uid = {myId}
+                """
+            )
             records = db.executesql(sql)
             authorized = (
                 records is not None and len(records) == 1 and records[0][0] == myId
@@ -102,20 +105,25 @@ select uid from uploaders where uid = {myId}
             isPubVersion = ""
         else:
             isPubVersion = " and is_published = 'T'"
-        sql = f"""
-select
-    note.created_by,
-    shebanq_web.auth_user.first_name,
-    shebanq_web.auth_user.last_name,
-    note.keywords,
-    note.verse,
-    note.is_published
-from note
-inner join shebanq_web.auth_user on shebanq_web.auth_user.id = created_by
-where version = '{vr}' and book = '{bk}' and chapter = {ch} {isPubVersion}
-order by note.verse
-;
-"""
+        sql = dedent(
+            f"""
+            select
+                note.created_by,
+                shebanq_web.auth_user.first_name,
+                shebanq_web.auth_user.last_name,
+                note.keywords,
+                note.verse,
+                note.is_published
+            from note
+            inner join shebanq_web.auth_user
+            on shebanq_web.auth_user.id = created_by
+            where
+                version = '{vr}' and
+                book = '{bk}' and chapter = {ch} {isPubVersion}
+            order by note.verse
+            ;
+            """
+        )
         records = NOTE_DB.executesql(sql)
         user = {}
         nPublished = collections.Counter()
@@ -162,12 +170,14 @@ order by note.verse
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
         extra = "" if myId is None else f" or created_by = {myId} "
-        sql = f"""
-select book, clause_atom from note
-where keywords like '% {keywordsSql} %'
-and version = '{vr}' and (is_shared = 'T' {extra})
-;
-"""
+        sql = dedent(
+            f"""
+            select book, clause_atom from note
+            where keywords like '% {keywordsSql} %'
+            and version = '{vr}' and (is_shared = 'T' {extra})
+            ;
+            """
+        )
         clauseAtoms = NOTE_DB.executesql(sql)
         slots = {clauseAtomFirst[x[0]][x[1]] for x in clauseAtoms}
         return normRanges(None, fromset=slots)
@@ -186,25 +196,29 @@ and version = '{vr}' and (is_shared = 'T' {extra})
         clauseAtoms = []
         caData = (
             PASSAGE_DBS[vr].executesql(
-                f"""
-select
-   distinct word.clause_atom_number
-from
-    verse
-inner join
-    word_verse on verse.id = word_verse.verse_id
-inner join
-    word on word.word_number = word_verse.anchor
-inner join
-    chapter on chapter.id = verse.chapter_id
-inner join
-    book on book.id = chapter.book_id
-where
-    book.name = '{bk}' and chapter.chapter_num = {ch} and verse.verse_num = {vs}
-order by
-    word.clause_atom_number
-;
-"""
+                dedent(
+                    f"""
+                    select
+                       distinct word.clause_atom_number
+                    from
+                        verse
+                    inner join
+                        word_verse on verse.id = word_verse.verse_id
+                    inner join
+                        word on word.word_number = word_verse.anchor
+                    inner join
+                        chapter on chapter.id = verse.chapter_id
+                    inner join
+                        book on book.id = chapter.book_id
+                    where
+                        book.name = '{bk}' and
+                        chapter.chapter_num = {ch} and
+                        verse.verse_num = {vs}
+                    order by
+                        word.clause_atom_number
+                    ;
+                    """
+                )
             )
             if vr in PASSAGE_DBS
             else []
@@ -228,11 +242,13 @@ order by
         PASSAGE_DBS = current.PASSAGE_DBS
 
         (books, booksOrder, bookIds, bookName) = Books.get(vr)
-        sql = """
-select book_id, ca_num, first_m
-from clause_atom
-;
-"""
+        sql = dedent(
+            """
+            select book_id, ca_num, first_m
+            from clause_atom
+            ;
+            """
+        )
         caData = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
         caFirst = {}
         for (book_id, ca_num, first_m) in caData:
@@ -255,10 +271,12 @@ from clause_atom
             versions={},
         )
         nRecord["versions"] = self.countNotes(iid, keywords)
-        sql = f"""
-select first_name, last_name from auth_user where id = '{iid}'
-;
-"""
+        sql = dedent(
+            f"""
+            select first_name, last_name from auth_user where id = '{iid}'
+            ;
+            """
+        )
         uinfo = db.executesql(sql)
         if uinfo is not None and len(uinfo) > 0:
             nRecord["first_name"] = uinfo[0][0]
@@ -272,14 +290,19 @@ select first_name, last_name from auth_user where id = '{iid}'
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
         extra = f" or created_by = {user_id} " if myId == user_id else ""
-        sql = f"""
-select
-    version,
-    count(id) as amount
-from note
-where keywords like '% {keywordsSql} %' and (is_shared = 'T' {extra})
-group by version
-;"""
+        sql = dedent(
+            f"""
+            select
+                version,
+                count(id) as amount
+            from note
+            where
+                keywords like '% {keywordsSql} %' and
+                (is_shared = 'T' {extra})
+            group by version
+            ;
+            """
+        )
         records = NOTE_DB.executesql(sql)
         vrs = set()
         versionInfo = {}
@@ -297,35 +320,37 @@ group by version
         if myId is not None:
             condition += f" or note.created_by = {myId} "
 
-        noteSql = f"""
-select
-    note.id,
-    note.created_by as user_id,
-    shebanq_web.auth_user.first_name,
-    shebanq_web.auth_user.last_name,
-    note.clause_atom,
-    note.is_shared,
-    note.is_published,
-    note.published_on,
-    note.status,
-    note.keywords,
-    note.ntext
-from note inner join shebanq_web.auth_user
-on note.created_by = shebanq_web.auth_user.id
-where
-    ({condition})
-and
-    note.version = '{vr}'
-and
-    note.book ='{bk}'
-and
-    note.chapter = {ch}
-and
-    note.verse = {vs}
-order by
-    modified_on desc
-;
-"""
+        noteSql = dedent(
+            f"""
+            select
+                note.id,
+                note.created_by as user_id,
+                shebanq_web.auth_user.first_name,
+                shebanq_web.auth_user.last_name,
+                note.clause_atom,
+                note.is_shared,
+                note.is_published,
+                note.published_on,
+                note.status,
+                note.keywords,
+                note.ntext
+            from note inner join shebanq_web.auth_user
+            on note.created_by = shebanq_web.auth_user.id
+            where
+                ({condition})
+            and
+                note.version = '{vr}'
+            and
+                note.book ='{bk}'
+            and
+                note.chapter = {ch}
+            and
+                note.verse = {vs}
+            order by
+                modified_on desc
+            ;
+            """
+        )
 
         records = NOTE_DB.executesql(noteSql)
         users = {}

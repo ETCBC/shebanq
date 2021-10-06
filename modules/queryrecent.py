@@ -1,3 +1,4 @@
+from textwrap import dedent
 import json
 
 from gluon import current
@@ -35,34 +36,39 @@ class QUERYRECENT:
 
         db = current.db
 
-        projectQueryXSql = f"""
-select
-    query.id as query_id,
-    auth_user.first_name,
-    auth_user.last_name,
-    query.name as query_name,
-    qe.executed_on as qexe,
-    qe.version as qver
-from query inner join
-    (
-        select qe1.query_id, qe1.executed_on, qe1.version
-        from query_exe qe1
-          left outer join query_exe qe2
-            on (
-                qe1.query_id = qe2.query_id and
-                qe1.executed_on < qe2.executed_on and
-                qe2.executed_on >= qe2.modified_on
-            )
-        where
-            (qe1.executed_on is not null and qe1.executed_on >= qe1.modified_on) and
-            qe2.query_id is null
-    ) as qe
-on qe.query_id = query.id
-inner join auth_user on query.created_by = auth_user.id
-where query.is_shared = 'T'
-order by qe.executed_on desc, auth_user.last_name
-limit {RECENT_LIMIT};
-"""
+        projectQueryXSql = dedent(
+            f"""
+            select
+                query.id as query_id,
+                auth_user.first_name,
+                auth_user.last_name,
+                query.name as query_name,
+                qe.executed_on as qexe,
+                qe.version as qver
+            from query inner join
+                (
+                    select qe1.query_id, qe1.executed_on, qe1.version
+                    from query_exe qe1
+                      left outer join query_exe qe2
+                        on (
+                            qe1.query_id = qe2.query_id and
+                            qe1.executed_on < qe2.executed_on and
+                            qe2.executed_on >= qe2.modified_on
+                        )
+                    where
+                        (
+                            qe1.executed_on is not null and
+                            qe1.executed_on >= qe1.modified_on
+                        ) and
+                        qe2.query_id is null
+                ) as qe
+            on qe.query_id = query.id
+            inner join auth_user on query.created_by = auth_user.id
+            where query.is_shared = 'T'
+            order by qe.executed_on desc, auth_user.last_name
+            limit {RECENT_LIMIT};
+            """
+        )
 
         pqueryx = db.executesql(projectQueryXSql)
         pqueries = []
@@ -76,34 +82,39 @@ limit {RECENT_LIMIT};
     def feed(self):
         db = current.db
 
-        sql = """
-    select
-        query.id as query_id,
-        auth_user.first_name,
-        auth_user.last_name,
-        query.name as query_name,
-        query.description,
-        qe.id as qvid,
-        qe.executed_on as qexe,
-        qe.version as qver
-    from query inner join
-        (
-            select t1.id, t1.query_id, t1.executed_on, t1.version
-            from query_exe t1
-              left outer join query_exe t2
-                on (
-                    t1.query_id = t2.query_id and
-                    t1.executed_on < t2.executed_on and
-                    t2.executed_on >= t2.modified_on
-                )
-            where
-                (t1.executed_on is not null and t1.executed_on >= t1.modified_on) and
-                t2.query_id is null
-        ) as qe
-    on qe.query_id = query.id
-    inner join auth_user on query.created_by = auth_user.id
-    where query.is_shared = 'T'
-    order by qe.executed_on desc, auth_user.last_name
-    """
+        sql = dedent(
+            """
+            select
+                query.id as query_id,
+                auth_user.first_name,
+                auth_user.last_name,
+                query.name as query_name,
+                query.description,
+                qe.id as qvid,
+                qe.executed_on as qexe,
+                qe.version as qver
+            from query inner join
+                (
+                    select t1.id, t1.query_id, t1.executed_on, t1.version
+                    from query_exe t1
+                      left outer join query_exe t2
+                        on (
+                            t1.query_id = t2.query_id and
+                            t1.executed_on < t2.executed_on and
+                            t2.executed_on >= t2.modified_on
+                        )
+                    where
+                        (
+                            t1.executed_on is not null and
+                            t1.executed_on >= t1.modified_on
+                        ) and
+                        t2.query_id is null
+                ) as qe
+            on qe.query_id = query.id
+            inner join auth_user on query.created_by = auth_user.id
+            where query.is_shared = 'T'
+            order by qe.executed_on desc, auth_user.last_name
+            """
+        )
 
         return db.executesql(sql)

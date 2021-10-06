@@ -1,3 +1,4 @@
+from textwrap import dedent
 import xml.etree.ElementTree as ET
 
 from gluon import current
@@ -217,16 +218,21 @@ class VerseContent:
         smalltab = "&lt;" * tab10r
         bigtab = "&lt;" * tab10s
         result = [
-            f"""
-<tr clause_atom="{clauseAtomNumber}">
-    <td colspan="3" class="t1_txt">
-"""
+            dedent(
+                f"""
+                <tr clause_atom="{clauseAtomNumber}">
+                    <td colspan="3" class="t1_txt">
+                """
+            )
         ]
         for word in words:
             if "r" in word["phrase_border"]:
                 result.append(
-                    f"""<span class="t1_phf1"
->{word["phrase_function"]}</span><span class="t1_phfn">{word["phrase_number"]}</span>"""
+                    dedent(
+                        f"""<span class="t1_phf1"
+                    >{word["phrase_function"]}</span><span
+                    class="t1_phfn">{word["phrase_number"]}</span>"""
+                    )
                 )
             if self.tr == "hb":
                 wordText = word["word_heb"]
@@ -237,14 +243,16 @@ class VerseContent:
                 f"""{wordText}</span>"""
             )
         result.append(
-            f"""
-    </td>
-    <td class="t1_tb1">{smalltab}</td>
-    <td class="t1_tb10">{bigtab}</td>
-    <td class="t1_txttp">{textType}</td>
-    <td class="t1_ctp">{clauseType}</td>
-</tr>
-"""
+            dedent(
+                f"""
+                </td>
+                <td class="t1_tb1">{smalltab}</td>
+                <td class="t1_tb10">{bigtab}</td>
+                <td class="t1_txttp">{textType}</td>
+                <td class="t1_ctp">{clauseType}</td>
+                </tr>
+                """
+            )
         )
         return "".join(result)
 
@@ -257,10 +265,13 @@ class VerseContent:
         tabN = int(words[0]["clause_atom_tab"])
         tab = '<span class="fa">&#xf060;</span>' * tabN  # arrow-left
         result = [
-            f"""<dt class="lv2"><span class="ctxt2"
->{textType}</span> <span class="ctp2">{clauseType}</span> <span class="ccode2"
->{code}</span></dt><dd class="lv2"
-><span class="tb2">{tab}</span>&nbsp;"""
+            dedent(
+                f"""<dt class="lv2"><span class="ctxt2"
+                >{textType}</span>
+                <span class="ctp2">{clauseType}</span> <span class="ccode2"
+                >{code}</span></dt><dd class="lv2"
+            ><span class="tb2">{tab}</span>&nbsp;"""
+            )
         ]
         for word in words:
             if "r" in word["phrase_border"]:

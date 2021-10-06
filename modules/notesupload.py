@@ -1,3 +1,4 @@
+from textwrap import dedent
 import json
 
 from gluon import current
@@ -44,7 +45,7 @@ class NOTESUPLOAD:
             status
             keywords
             ntext
-""".strip().split()
+            """.strip().split()
         )
         good = True
         fieldnames = normFields.split("\t")
@@ -59,12 +60,14 @@ class NOTESUPLOAD:
         nerrors = 0
         chunks = []
         chunksize = 100
-        sqlhead = f"""
-insert into note
-({", ".join(fieldnames)},
- created_by, created_on, modified_on, shared_on, published_on,
- bulk) values
-"""
+        sqlhead = dedent(
+            f"""
+            insert into note
+            ({", ".join(fieldnames)},
+             created_by, created_on, modified_on, shared_on, published_on,
+             bulk) values
+            """
+        )
         thisChunk = []
         thisI = 0
         for (i, linenl) in enumerate(fileText.value.decode("utf8").split("\n")):
@@ -203,12 +206,17 @@ insert into note
             )
             # first delete previously bulk uploaded notes by this author
             # and with these keywords and these versions
-            delSql = f"""
-delete from note
-where bulk = 'b'
-and created_by = {myId}
-and {whereVersion}
-and {whereKeywords};"""
+            delSql = dedent(
+                f"""
+                delete from note
+                where
+                    bulk = 'b'
+                    and created_by = {myId}
+                    and {whereVersion}
+                    and {whereKeywords}
+            ;
+                """
+            )
             NOTE_DB.executesql(delSql)
 
             NOTE_DB.commit()

@@ -1,3 +1,4 @@
+from textwrap import dedent
 import json
 
 from gluon import current
@@ -83,13 +84,18 @@ class VERSES:
             good = False
         if good:
             verseInfo = passageDb.executesql(
-                f"""
-select verse.id, verse.text from verse
-inner join chapter on verse.chapter_id=chapter.id
-inner join book on chapter.book_id=book.id
-where book.name = '{bk}' and chapter.chapter_num = {ch} and verse_num = {vs}
-;
-"""
+                dedent(
+                    f"""
+                    select verse.id, verse.text from verse
+                    inner join chapter on verse.chapter_id=chapter.id
+                    inner join book on chapter.book_id=book.id
+                    where
+                        book.name = '{bk}' and
+                        chapter.chapter_num = {ch} and
+                        verse_num = {vs}
+                    ;
+                    """
+                )
             )
             if len(verseInfo) == 0:
                 msgs.append(("Error", f"No such verse: {bk} {ch}:{vs}"))
@@ -98,15 +104,17 @@ where book.name = '{bk}' and chapter.chapter_num = {ch} and verse_num = {vs}
                 data = verseInfo[0]
                 vid = data[0]
                 wordInfo = passageDb.executesql(
-                    f"""
-select word.word_phono, word.word_phono_sep
-from word
-inner join word_verse on word_number = word_verse.anchor
-inner join verse on verse.id = word_verse.verse_id
-where verse.id = {vid}
-order by word_number
-;
-"""
+                    dedent(
+                        f"""
+                        select word.word_phono, word.word_phono_sep
+                        from word
+                        inner join word_verse on word_number = word_verse.anchor
+                        inner join verse on verse.id = word_verse.verse_id
+                        where verse.id = {vid}
+                        order by word_number
+                        ;
+                        """
+                    )
                 )
                 data = dict(
                     text=data[1], phonetic="".join(x[0] + x[1] for x in wordInfo)

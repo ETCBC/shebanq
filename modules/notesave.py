@@ -1,3 +1,4 @@
+from textwrap import dedent
 import json
 
 from gluon import current
@@ -38,26 +39,30 @@ class NOTESAVE:
             is_shared = "'T'" if is_shared else "null"
             is_published = "'T'" if is_published else "null"
             status = "o" if status not in {"o", "*", "+", "?", "-", "!"} else status
-            updateSql = f"""
-update note
-    set modified_on = '{now}',
-    is_shared = {is_shared},
-    is_published = {is_published},
-    status = '{status}',
-    keywords = '{keywords.replace("'", "''")}',
-    ntext = '{ntext.replace("'", "''")}'{"".join(extrafields)}
-where id = {note_id}
-;
-"""
+            updateSql = dedent(
+                f"""
+                update note
+                    set modified_on = '{now}',
+                    is_shared = {is_shared},
+                    is_published = {is_published},
+                    status = '{status}',
+                    keywords = '{keywords.replace("'", "''")}',
+                    ntext = '{ntext.replace("'", "''")}'{"".join(extrafields)}
+                where id = {note_id}
+                ;
+                """
+            )
             NOTE_DB.executesql(updateSql)
             updated += 1
             doCommit = True
 
         if len(notesDel) > 0:
-            deleteSql = f"""
-delete from note where id in ({",".join(str(x) for x in notesDel)})
-;
-"""
+            deleteSql = dedent(
+                f"""
+                delete from note where id in ({",".join(str(x) for x in notesDel)})
+                ;
+                """
+            )
             NOTE_DB.executesql(deleteSql)
             doCommit = True
 
@@ -70,18 +75,20 @@ delete from note where id in ({",".join(str(x) for x in notesDel)})
             fl = "o" if status not in {"o", "*", "+", "?", "-", "!"} else status
             keywordsSql = keywords.replace("'", "''")
             ntr = ntext.replace("'", "''")
-            insertSql = f"""
-insert into note
-(version, book, chapter, verse, clause_atom,
-created_by, created_on, modified_on,
-is_shared, shared_on, is_published, published_on,
-status, keywords, ntext)
-values
-('{vr}', '{bk}', {ch}, {vs}, {clause_atom},
- {myId}, '{now}', '{now}', {sh}, {sht}, {pb}, {pbt},
- '{fl}', '{keywordsSql}', '{ntr}')
-;
-"""
+            insertSql = dedent(
+                f"""
+                insert into note
+                (version, book, chapter, verse, clause_atom,
+                created_by, created_on, modified_on,
+                is_shared, shared_on, is_published, published_on,
+                status, keywords, ntext)
+                values
+                ('{vr}', '{bk}', {ch}, {vs}, {clause_atom},
+                 {myId}, '{now}', '{now}', {sh}, {sht}, {pb}, {pbt},
+                 '{fl}', '{keywordsSql}', '{ntr}')
+                ;
+                """
+            )
             NOTE_DB.executesql(insertSql)
             doCommit = True
 
@@ -146,9 +153,7 @@ values
                 if requestVars and requestVars.notes
                 else []
             )
-            changed = self.put(
-                myId, vr, bk, ch, vs, notes, clauseAtoms, msgs
-            )
+            changed = self.put(myId, vr, bk, ch, vs, notes, clauseAtoms, msgs)
         return Note.inVerse(
             vr, bk, ch, vs, myId, clauseAtoms, changed, msgs, authenticated, edit
         )
@@ -207,11 +212,13 @@ values
                 )
         if len(notesUpd) > 0 or len(notesDel) > 0:
             ids = ",".join(str(x) for x in (set(notesUpd.keys()) | notesDel))
-            sqlOld = f"""
-select id, created_by, is_shared, is_published, status, keywords, ntext
-from note where id in ({ids})
-;
-"""
+            sqlOld = dedent(
+                f"""
+                select id, created_by, is_shared, is_published, status, keywords, ntext
+                from note where id in ({ids})
+                ;
+                """
+            )
             changeCandidates = NOTE_DB.executesql(sqlOld)
             if changeCandidates is not None:
                 for (

@@ -1,4 +1,5 @@
 from gluon import current
+from textwrap import dedent
 
 from helpers import flatten, iDecode
 
@@ -20,12 +21,19 @@ def csv(data):
 
 
 class CSVDATA:
+    """roduces various kinds of csv exports of lists of items.
+
+    Items are word occirrences, query results or noteset members.
+    """
+
     def __init__(self, Record, Word, Query):
         self.Record = Record
         self.Word = Word
         self.Query = Query
 
     def page(self):
+        """Read request parameters and get the data and ready for the controller.
+        """
         ViewDefs = current.ViewDefs
         Check = current.Check
         Record = self.Record
@@ -52,6 +60,9 @@ class CSVDATA:
         return dict(fileName=fileName, data=data)
 
     def get(self, vr, mr, qw, iid, keywords, tp, extra, hebrewFields, fileName):
+        """Get csv data as specified by parameters.
+        """
+
         Word = self.Word
         Query = self.Query
         auth = current.auth
@@ -70,19 +81,25 @@ class CSVDATA:
             extra = "" if myId is None else f" or created_by = {myId} "
 
             hflist = ", ".join(hf[0] for hf in hebrewFields)
-            sql = f"""
-select
-    shebanq_note.note.book, shebanq_note.note.chapter, shebanq_note.note.verse,
-    {hflist}
-from shebanq_note.note
-inner join book on shebanq_note.note.book = book.name
-inner join clause_atom on clause_atom.ca_num = shebanq_note.note.clause_atom
-    and clause_atom.book_id = book.id
-where shebanq_note.note.keywords like '% {keywordsSql} %'
-    and shebanq_note.note.version = '{vr}'
-    and (shebanq_note.note.is_shared = 'T' {extra})
-;
-"""
+            sql = dedent(
+                f"""
+                select
+                    shebanq_note.note.book,
+                    shebanq_note.note.chapter,
+                    shebanq_note.note.verse,
+                    {hflist}
+                from shebanq_note.note
+                inner join book
+                on shebanq_note.note.book = book.name
+                inner join clause_atom
+                on clause_atom.ca_num = shebanq_note.note.clause_atom
+                    and clause_atom.book_id = book.id
+                where shebanq_note.note.keywords like '% {keywordsSql} %'
+                    and shebanq_note.note.version = '{vr}'
+                    and (shebanq_note.note.is_shared = 'T' {extra})
+                ;
+                """
+            )
             dataRows = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
         else:
             (nSlots, slotSets) = (
@@ -93,25 +110,27 @@ where shebanq_note.note.keywords like '% {keywordsSql} %'
             if len(slots):
                 hflist = ", ".join(f"word.{hf[0]}" for hf in hebrewFields)
                 slotsVal = ",".join(str(x) for x in slots)
-                sql = f"""
-select
-    book.name, chapter.chapter_num, verse.verse_num,
-    {hflist}
-from word
-inner join word_verse on
-    word_verse.anchor = word.word_number
-inner join verse on
-    verse.id = word_verse.verse_id
-inner join chapter on
-    verse.chapter_id = chapter.id
-inner join book on
-    chapter.book_id = book.id
-where
-    word.word_number in ({slotsVal})
-order by
-    word.word_number
-;
-"""
+                sql = dedent(
+                    f"""
+                    select
+                        book.name, chapter.chapter_num, verse.verse_num,
+                        {hflist}
+                    from word
+                    inner join word_verse on
+                        word_verse.anchor = word.word_number
+                    inner join verse on
+                        verse.id = word_verse.verse_id
+                    inner join chapter on
+                        verse.chapter_id = chapter.id
+                    inner join book on
+                        chapter.book_id = book.id
+                    where
+                        word.word_number in ({slotsVal})
+                    order by
+                        word.word_number
+                    ;
+                    """
+                )
                 dataRows = PASSAGE_DBS[vr].executesql(sql) if vr in PASSAGE_DBS else []
         allRows = csv([headRow] + list(dataRows))
         return allRows

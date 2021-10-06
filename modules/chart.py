@@ -1,4 +1,5 @@
 import json
+from textwrap import dedent
 
 from gluon import current
 
@@ -8,12 +9,20 @@ BLOCK_SIZE = 500
 
 
 class CHART:
+    """Make heat maps of lists of items.
+
+    The items are word occurrences or query results or note set members.
+    We divide the bible in 500-word blocks and count the number of
+    items per block.
+
+    We present the blocks in a chart, where each block shows the
+    number of items by means of color.
+
+    The blocks are clickable and move to the chapter in
+    which the first word of the block occurs.
+    """
+
     def __init__(self, Books, Record, Word, Query, Note):
-        """Test
-
-        Test
-        """
-
         self.Books = Books
         self.Record = Record
         self.Word = Word
@@ -21,6 +30,8 @@ class CHART:
         self.Note = Note
 
     def page(self):
+        """Read request parameters and get chart data ready for the controller.
+        """
         Check = current.Check
         Record = self.Record
 
@@ -41,6 +52,8 @@ class CHART:
         return result
 
     def get(self, vr, qw, iidRep):
+        """Get chart data, using the cache.
+        """
         Caching = current.Caching
 
         return Caching.get(
@@ -67,30 +80,36 @@ class CHART:
         return result
 
     def getBlocks(self, vr):
+        """Get info on the 500-word blocks.
+
+        *   for each slot: to which block it belongs,
+        *   for each block: book and chapter number of first word.
+
+        Possibly there are gaps between books.
+        """
         Caching = current.Caching
         return Caching.get(f"blocks_{vr}_", lambda: self.getBlocks_c(vr), None)
 
     def getBlocks_c(self, vr):
-        """get block info
-        For each slot: to which block it belongs,
-        for each block: book and chapter number of first word.
-        Possibly there are gaps between books.
-        """
         PASSAGE_DBS = current.PASSAGE_DBS
 
         if vr not in PASSAGE_DBS:
             return ([], {})
         bookSlots = PASSAGE_DBS[vr].executesql(
-            """
-select name, first_m, last_m from book
-;
-"""
+            dedent(
+                """
+                select name, first_m, last_m from book
+                ;
+                """
+            )
         )
         chapterSlots = PASSAGE_DBS[vr].executesql(
-            """
-select chapter_num, first_m, last_m from chapter
-;
-    """
+            dedent(
+                """
+                select chapter_num, first_m, last_m from chapter
+                ;
+                """
+            )
         )
         m = -1
         curBlkF = None
@@ -149,9 +168,15 @@ select chapter_num, first_m, last_m from chapter
         return (blocks, blockMapping)
 
     def compose(self, vr, slotSets):
-        # get data for a chart of the slotset: organized by book and block
-        # return a dict keyed by book, with values lists of blocks
-        # (chapter num, start point, end point, number of results, size)
+        """Organize the raw chart data in books and then in blocks.
+
+        Returns
+        -------
+        dict
+            keyed by book, with values lists of blocks
+            where each block is a tuple
+            (chapter number, start position, end position, number of results, size)
+        """
 
         Books = self.Books
 

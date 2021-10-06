@@ -1,4 +1,5 @@
 import json
+from textwrap import dedent
 
 from gluon import current
 
@@ -10,11 +11,13 @@ class BOOKS:
         pass
 
     def getNames(self):
-        jsinit = f"""
-var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};
-var bookTrans = {json.dumps(BOOK_TRANS)};
-var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
-"""
+        jsinit = dedent(
+            f"""
+            var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};
+            var bookTrans = {json.dumps(BOOK_TRANS)};
+            var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
+            """
+        )
         return dict(jsinit=jsinit)
 
     def get(self, vr):
@@ -28,12 +31,14 @@ var bookLangs = {json.dumps(BOOK_LANGS["Hebrew"])};
 
         if vr in PASSAGE_DBS:
             booksData = PASSAGE_DBS[vr].executesql(
-                """
-select book.id, book.name, max(chapter_num)
-from chapter inner join book
-on chapter.book_id = book.id group by name order by book.id
-;
-"""
+                dedent(
+                    """
+                    select book.id, book.name, max(chapter_num)
+                    from chapter inner join book
+                    on chapter.book_id = book.id group by name order by book.id
+                    ;
+                    """
+                )
             )
             booksOrder = [x[1] for x in booksData]
             books = dict((x[1], x[2]) for x in booksData)

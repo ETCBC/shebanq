@@ -1,3 +1,4 @@
+from textwrap import dedent
 import json
 
 from gluon import current
@@ -25,10 +26,12 @@ class QUERYSAVE:
             return
 
         db.executesql(
-            f"""
-delete from monads where query_exe_id={query_exe_id}
-;
-"""
+            dedent(
+                f"""
+                delete from monads where query_exe_id={query_exe_id}
+                ;
+                """
+            )
         )
 
         db.commit()
@@ -42,9 +45,11 @@ delete from monads where query_exe_id={query_exe_id}
         nRows = len(rows)
         if nRows > 0:
             limitRow = 10000
-            start = """
-insert into monads (query_exe_id, first_m, last_m) values
-"""
+            start = dedent(
+                """
+                insert into monads (query_exe_id, first_m, last_m) values
+                """
+            )
             query = ""
             r = 0
             while r < nRows:
@@ -122,10 +127,14 @@ insert into monads (query_exe_id, first_m, last_m) values
             if valsql is None:
                 break
             if fname == "is_shared" and valsql == "":
-                sql = f"""
-select count(*) from query_exe where query_id = {query_id} and is_published = 'T'
-;
-"""
+                sql = dedent(
+                    f"""
+                    select count(*)
+                    from query_exe
+                    where query_id = {query_id} and is_published = 'T'
+                    ;
+                    """
+                )
                 pv = db.executesql(sql)
                 hasPublicVersions = pv is not None and len(pv) == 1 and pv[0][0] > 0
                 if hasPublicVersions:
@@ -146,11 +155,14 @@ select count(*) from query_exe where query_id = {query_id} and is_published = 'T
                 )
                 extra["execq"] = ("show", valsql != "T")
                 if valsql == "T":
-                    sql = f"""
-select executed_on, modified_on as xmodified_on
-from query_exe where query_id = {query_id} and version = '{vr}'
-;
-"""
+                    sql = dedent(
+                        f"""
+                        select executed_on, modified_on as xmodified_on
+                        from query_exe
+                        where query_id = {query_id} and version = '{vr}'
+                        ;
+                        """
+                    )
                     pv = db.executesql(sql, as_dict=True)
                     if pv is None or len(pv) != 1:
                         msgs.append(
@@ -172,10 +184,12 @@ from query_exe where query_id = {query_id} and version = '{vr}'
                             )
                         )
                         break
-                    sql = f"""
-select is_shared from query where id = {query_id}
-;
-"""
+                    sql = dedent(
+                        f"""
+                        select is_shared from query where id = {query_id}
+                        ;
+                        """
+                    )
                     pv = db.executesql(sql)
                     is_shared = pv is not None and len(pv) == 1 and pv[0][0] == "T"
                     if not is_shared:
@@ -185,10 +199,14 @@ select is_shared from query where id = {query_id}
                         modDates[modDateFld] = modDate
                         extra["is_shared"] = ("checked", True)
                 else:
-                    sql = f"""
-select published_on from query_exe where query_id = {query_id} and version = '{vr}'
-;
-"""
+                    sql = dedent(
+                        f"""
+                        select published_on
+                        from query_exe
+                        where query_id = {query_id} and version = '{vr}'
+                        ;
+                        """
+                    )
                     pv = db.executesql(sql)
                     pubDateOk = (
                         pv is None
@@ -213,9 +231,7 @@ select published_on from query_exe where query_id = {query_id} and version = '{v
 
         if good:
             if fname == "is_shared":
-                (modDateFld, modDate) = self.putShared(
-                    myId, query_id, valsql, msgs
-                )
+                (modDateFld, modDate) = self.putShared(myId, query_id, valsql, msgs)
             else:
                 (modDateFld, modDate) = self.putPublished(
                     myId, vr, query_id, valsql, msgs
@@ -239,10 +255,12 @@ select published_on from query_exe where query_id = {query_id} and version = '{v
         modDate = now.replace(microsecond=0) if valsql == "T" else None
         modDateSql = "null" if modDate is None else f" '{modDate}'"
         fieldval += f", {modDateFld} = {modDateSql} "
-        sql = f"""
-update {table} set{fieldval} where id = {query_id}
-;
-"""
+        sql = dedent(
+            f"""
+            update {table} set{fieldval} where id = {query_id}
+            ;
+            """
+        )
         db.executesql(sql)
 
         db.commit()
@@ -271,10 +289,14 @@ update {table} set{fieldval} where id = {query_id}
         modDate = now.replace(microsecond=0) if valsql == "T" else None
         modDateSql = "null" if modDate is None else f" '{modDate}'"
         fieldval += f", {modDateFld} = {modDateSql} "
-        sql = f"""
-update {table} set{fieldval} where query_id = {query_id} and version = '{vr}'
-;
-"""
+        sql = dedent(
+            f"""
+            update {table}
+            set{fieldval}
+            where query_id = {query_id} and version = '{vr}'
+            ;
+            """
+        )
         db.executesql(sql)
         db.commit()
 
@@ -293,10 +315,12 @@ update {table} set{fieldval} where query_id = {query_id} and version = '{vr}'
             fieldRep = ", ".join(
                 f" {f} = '{fields[f]}'" for f in fields if f != "status"
             )
-            sql = f"""
-update query set{fieldRep} where id = {query_id}
-;
-"""
+            sql = dedent(
+                f"""
+                update query set{fieldRep} where id = {query_id}
+                ;
+                """
+            )
             db.executesql(sql)
             doCommit = True
             Caching.clear(r"^items_q_")
@@ -304,10 +328,14 @@ update query set{fieldRep} where id = {query_id}
             fieldRep = ", ".join(
                 f" {f} = '{fieldsExe[f]}'" for f in fieldsExe if f != "status"
             )
-            sql = f"""
-update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
-;
-"""
+            sql = dedent(
+                f"""
+                update query_exe
+                set{fieldRep}
+                where query_id = {query_id} and version = '{vr}'
+                ;
+                """
+            )
             db.executesql(sql)
             doCommit = True
             Caching.clear(f"^items_q_{vr}_")
@@ -442,16 +470,22 @@ update query_exe set{fieldRep} where query_id = {query_id} and version = '{vr}'
         db = current.db
 
         existVersion = db.executesql(
-            f"""
-select id from query_exe where version = '{vr}' and query_id = {query_id}
-;
-"""
+            dedent(
+                f"""
+                select id from query_exe
+                where version = '{vr}' and query_id = {query_id}
+                ;
+                """
+            )
         )
         if existVersion is None or len(existVersion) == 0:
             db.executesql(
-                f"""
-insert into query_exe (id, version, query_id) values (null, '{vr}', {query_id})
-;
-"""
+                dedent(
+                    f"""
+                insert into query_exe
+                (id, version, query_id) values (null, '{vr}', {query_id})
+                ;
+                """
+                )
             )
             db.commit()

@@ -1,3 +1,4 @@
+from textwrap import dedent
 from urllib.parse import urlparse, urlunparse
 
 from gluon import current
@@ -94,15 +95,20 @@ class CHECK:
         (label, table) = TPS[tp]
         for x in [1]:
             if tp == "q":
-                checkSql = f"""
-select id from query where name = '{val}' and query.created_by = {myId}
-;
-"""
+                checkSql = dedent(
+                    f"""
+                    select id from query
+                    where name = '{val}' and query.created_by = {myId}
+                    ;
+                    """
+                )
             else:
-                checkSql = f"""
-select id from {table} where name = '{val}'
-;
-"""
+                checkSql = dedent(
+                    f"""
+                    select id from {table} where name = '{val}'
+                    ;
+                    """
+                )
             try:
                 ids = db.executesql(checkSql)
             except Exception:
@@ -265,10 +271,12 @@ select id from {table} where name = '{val}'
         (label, table) = TPS[tp]
         result = None
         for x in [1]:
-            checkSql = f"""
-select count(*) as occurs from {table} where id = {val}
-;
-"""
+            checkSql = dedent(
+                f"""
+                select count(*) as occurs from {table} where id = {val}
+                ;
+                """
+            )
             try:
                 occurs = db.executesql(checkSql)[0][0]
             except Exception:

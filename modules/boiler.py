@@ -36,6 +36,12 @@ FIELDNAMES = dict(
         sentence_number clause_number clause_atom_number clause_atom_tab
         """.strip().split(),
 )
+"""Lists of field names of the data that is displayed in text presentations.
+
+Keyed by the code of the text presentation type,
+the values are combinations of data type (word, phrase, clause etc.)
+and feature name (gloss, phono, gender, etc.)
+"""
 
 LEGEND = """
 <table id="legend" class="il">
@@ -269,8 +275,10 @@ LEGEND = """
 """.replace(
     "\n", " "
 )
+"""The legend as an HTML table.
+"""
 
-TEXT_TPL = """<table class="il c">
+TEXT_TPL = ("""<table class="il c">
     <tr class="il ht">
         <td class="il ht"><span m="{word_number}" class="il ht_ht"
         >{word_heb}</span>&nbsp;&nbsp;<span class="il ht_hk">{word_ktv}</span></td>
@@ -359,4 +367,6 @@ TEXT_TPL = """<table class="il c">
         >{sentence_atom_number}</span>&nbsp;<span class="n sn_n"
         >{sentence_number}</span></td>
     </tr>
-</table>"""
+</table>""")
+"""The representation of a word in data view as an HTML table.
+"""

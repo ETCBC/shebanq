@@ -9,9 +9,14 @@ EMDROS_VERSIONS = [
     "emdros 3.5.3",
     "emdros 3.7.3",
 ]
-# copied manually from /opt/emdros/include/emdros/version-emdros.h
+"""Emdros versions that have been in use by SHEBANQ.
+
+Copied manually from /opt/emdros/include/emdros/version-emdros.h
+"""
 
 CONFIG = dict(shebanqUser="shebanq")
+"""Connection details for the databases.
+"""
 
 configPath = "/opt/cfg/mql.cfg"
 if os.path.exists(configPath):

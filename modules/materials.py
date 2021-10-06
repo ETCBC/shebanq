@@ -1,4 +1,5 @@
 import json
+from textwrap import dedent
 
 from gluon import current
 
@@ -63,19 +64,24 @@ class MATERIAL:
         if bookname is None or chapternum is None or vr not in PASSAGE_DBS:
             return ({}, {})
         bookrecords = PASSAGE_DBS[vr].executesql(
-            f"""
-select * from book where name = '{bookname}'
-;
-""",
+            dedent(
+                f"""
+                select * from book where name = '{bookname}'
+                ;
+                """
+            ),
             as_dict=True,
         )
         book = bookrecords[0] if bookrecords else {}
         if book and "id" in book:
             chapterrecords = PASSAGE_DBS[vr].executesql(
-                f"""
-select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]}
-;
-""",
+                dedent(
+                    f"""
+                    select * from chapter
+                    where chapter_num = {chapternum} and book_id = {book["id"]}
+                    ;
+                    """
+                ),
                 as_dict=True,
             )
             chapter = chapterrecords[0] if chapterrecords else {}
@@ -92,7 +98,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
 
         mrrep = "m" if mr == "m" else qw
         book = bk if mr == "m" else iidRep
-        chapter = (ch if mr == "m" else page)
+        chapter = ch if mr == "m" else page
         return Caching.get(
             f"verses_{vr}_{mrrep}_{book}_{chapter}_{tp}_{tr}_{lang}_",
             lambda: self.get_c(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang),
@@ -107,9 +113,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
         if mr == "m":
             (book, chapter) = self.getPassage(vr, bk, ch)
             material = (
-                VersesContent(
-                    vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang
-                )
+                VersesContent(vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang)
                 if chapter
                 else None
             )
@@ -153,9 +157,7 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
                 (nresults, npages, verses, slots) = self.getPagination(
                     vr, page, slotSets
                 )
-                material = VersesContent(
-                    vr, mr, verses, tp=tp, tr=tr, lang=lang
-                )
+                material = VersesContent(vr, mr, verses, tp=tp, tr=tr, lang=lang)
                 result = dict(
                     mr=mr,
                     qw=qw,
@@ -180,10 +182,12 @@ select * from chapter where chapter_num = {chapternum} and book_id = {book["id"]
             Caching.get(
                 f"verse_boundaries_{vr}_",
                 lambda: PASSAGE_DBS[vr].executesql(
-                    """
-select first_m, last_m from verse order by id
-;
-"""
+                    dedent(
+                        """
+                        select first_m, last_m from verse order by id
+                        ;
+                        """
+                    )
                 ),
                 None,
             )
