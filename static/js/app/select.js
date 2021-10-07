@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS */
 
+/**
+ * @module select
+ */
+
 import { closeDialog } from "./helpers.js"
 
 const docName = "0_home"

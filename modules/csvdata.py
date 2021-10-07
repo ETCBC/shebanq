@@ -21,7 +21,7 @@ def csv(data):
 
 
 class CSVDATA:
-    """roduces various kinds of csv exports of lists of items.
+    """Produces various kinds of csv exports of lists of items.
 
     Items are word occirrences, query results or noteset members.
     """

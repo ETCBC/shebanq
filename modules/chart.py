@@ -20,6 +20,8 @@ class CHART:
 
     The blocks are clickable and move to the chapter in
     which the first word of the block occurs.
+
+    See also the client code: [chartchart][].
     """
 
     def __init__(self, Books, Record, Word, Query, Note):

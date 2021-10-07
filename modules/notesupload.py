@@ -5,11 +5,17 @@ from gluon import current
 
 
 class NOTESUPLOAD:
+    """Handles bulk uploads of notes.
+    """
+
     def __init__(self, Books, Note):
         self.Books = Books
         self.Note = Note
 
     def upload(self):
+        """Checks a set of uploaded notes and stores them.
+        """
+
         Books = self.Books
         ViewDefs = current.ViewDefs
         Note = self.Note

@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, VS */
 
+/**
+ * @module materialcontent
+ */
+
 export class MaterialContent {
   /* the actual Hebrew content, either plain text or tabbed data
    */

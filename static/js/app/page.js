@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, VS, LS */
 
+/**
+ * @module page
+ */
+
 import { colorDefault, idPrefixQueries } from "./helpers.js"
 import { Material } from "./material.js"
 import { Sidebars } from "./sidebars.js"

@@ -10,6 +10,15 @@ from boiler import LEGEND
 
 
 class VIEWSETTINGS:
+    """Handles the settings that customize the look and feel on the page.
+
+    In fact, all parameters that originate from the user are treated here.
+    They are stored in local storage in the browser,
+    to when a page is loaded, these stored settings will be merged with
+    the incoming request variables, and the outcome of that will again
+    be stored in LocalStorage.
+    """
+
     def __init__(self, Books):
         self.Books = Books
 
@@ -21,6 +30,15 @@ class VIEWSETTINGS:
         self.pref = Check.field("rest", "", "pref")
 
     def page(self):
+        """Determines all settings and writes them out to Javascript.
+
+        This is the start of rendering a page.
+        At the client, the Javascript picks up the data and uses
+        it to customise the view.
+
+        Client code: [viewstate][]
+        """
+
         ViewDefs = current.ViewDefs
 
         pageConfig = self.writeConfig()

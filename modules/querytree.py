@@ -13,6 +13,9 @@ class QUERYTREE:
         pass
 
     def get(self):
+        """Get the metadata of all queries and deliver it as json.
+        """
+
         auth = current.auth
         db = current.db
         VERSION_ORDER = current.VERSION_ORDER

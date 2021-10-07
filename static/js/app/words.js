@@ -2,6 +2,10 @@
 /* eslint-disable no-new */
 /* globals Config, ConfigW */
 
+/**
+ * @module words
+ */
+
 const setHeightW = () => {
   /* the heights of the sidebars are set, depending on the height of the window
    */

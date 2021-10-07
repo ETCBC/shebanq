@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS */
 
+/**
+ * @module material
+ */
+
 import { colorDefault, closeDialog } from "./helpers.js"
 import { Notes } from "./notes.js"
 import { SelectLanguage, SelectPassage, SelectResultPage } from "./select.js"
@@ -9,10 +13,10 @@ import { MaterialContent } from "./materialcontent.js"
 import { MaterialSettings } from "./materialsettings.js"
 import { FeatureSettings } from "./featuresettings.js"
 
+/**
+ * Controls the main area of the page.
+ */
 export class Material {
-  /* Object corresponding to everything that controls the material in the main part
-   * (not in the side bars)
-   */
   constructor() {
     this.name = "material"
     this.hid = `#${this.name}`
@@ -77,9 +81,12 @@ export class Material {
     }
   }
 
+  /**
+   * get the material by AJAX if needed, and process the material afterward
+   *
+   * @see Triggers controller [controllers.hebrew.material][]
+   */
   fetch() {
-    /* get the material by AJAX if needed, and process the material afterward
-     */
     const { pageMaterialUrl } = Config
     const { materialFetched, materialKind } = PG
 
@@ -211,6 +218,13 @@ export class Material {
     this.notes = new Notes(contentNew)
   }
 
+  /**
+   * add a click event to the verse number by which
+   * linguistic features for the words in that verse
+   * can be retrieved from the server.
+   *
+   * @see Triggers controller [controllers.hebrew.verse][].
+  */
   addVerseRefs(contentNew, mf) {
     const { verseFeaturesUrl } = Config
 

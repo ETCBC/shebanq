@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS, LS, State */
 
+/**
+ * @module sidecontent
+ */
+
 /* SIDELIST MATERIAL
  *
  */
@@ -18,9 +22,10 @@ import {
 import { Diagnostics } from "./diagnostics.js"
 import { ColorPicker1 } from "./colorpicker.js"
 
+/**
+ * Controls the content of a side bar
+ */
 export class SideContent {
-  /* the contents of an individual sidebar
-   */
   constructor(mr, qw) {
     this.mr = mr
     this.qw = qw
@@ -392,6 +397,18 @@ export class SideContent {
     $("#statm").html(statusElem)
   }
 
+  /**
+   * Updates a single field of a query.
+   *
+   * Meant for `is_shared` and `is_published`.
+   *
+   * !!! note
+   *     `is_shared` is a field of a query record.
+   *
+   *     `is_published` is a field of a query_exe record.
+   *
+   * @see Triggers controller [controllers.hebrew.querysharing][].
+   */
   sendVal(query, box, valNew, vr, iid, fieldName, val) {
     const { querySharingJsonUrl } = Config
 
@@ -448,6 +465,11 @@ export class SideContent {
     )
   }
 
+  /**
+   * Sends un updated record to the database.
+   *
+   * @see Triggers controller [controllers.hebrew.queryupdate][].
+   */
   sendVals(sendData) {
     const { queryUpdateJsonUrl } = Config
 
@@ -515,6 +537,16 @@ export class SideContent {
     }
   }
 
+  /**
+   * get the material by AJAX if needed, and process the material afterward
+   *
+   * This method takes into account what kind of sidebar this is:
+   *
+   * @see Triggers controller [controllers.hebrew.sidematerial][]
+   * @see Triggers controller [controllers.hebrew.sideword][]
+   * @see Triggers controller [controllers.hebrew.sidequery][]
+   * @see Triggers controller [controllers.hebrew.sidenote][]
+   */
   fetch() {
     const { itemStyle, pageSidebarUrl } = Config
     const {

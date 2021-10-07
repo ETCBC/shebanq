@@ -1,6 +1,15 @@
 /* eslint-env jquery */
 /* globals Config, PG */
 
+/**
+ * @module viewstate
+ */
+
+/**
+ * Handles settings that cusomise the view of the page
+ *
+ * @see Corresponds to [viewsettings.VIEWSETTINGS.page][].
+ */
 export class ViewState {
   constructor(init, pref) {
     this.data = init
@@ -26,6 +35,11 @@ export class ViewState {
     return vars
   }
 
+  /**
+   * Sets the precise url by which the user can request a csv download from the server.
+   *
+   * @see Triggers controller [controllers.hebrew.item][].
+   */
   csvUrl(vr, mr, qw, iid, tp, extra) {
     const { itemCsvUrl } = Config
 

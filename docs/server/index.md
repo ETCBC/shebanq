@@ -4,7 +4,7 @@ This is the part of SHEBANQ that works on the server.
 
 It consists of [controllers](controllers.md) that are triggered by urls.
 The actual work of the controllers is implemented in the
-[modules](modules.md).
+[modules](bymodule/index.md).
 
 The result of that work is data, in the form of dictionaries.
 

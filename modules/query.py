@@ -95,6 +95,8 @@ class QUERY:
         )
 
     def body(self):
+        """Retrieves a query record based on parameters.
+        """
         Check = current.Check
         auth = current.auth
 

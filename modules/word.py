@@ -65,6 +65,8 @@ class WORD:
         )
 
     def body(self):
+        """Retrieves a query word based on parameters.
+        """
         Check = current.Check
 
         vr = Check.field("material", "", "version")

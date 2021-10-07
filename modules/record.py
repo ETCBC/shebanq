@@ -8,6 +8,16 @@ from helpers import iDecode
 
 
 class RECORD:
+    """Handles record data.
+
+    This is about some aspects of query and note records and
+    organization and project records by which they are organized.
+    And it is about word records.
+
+    It is called by controllers that fetch sidebar material,
+    see [record.RECORD.body][].
+    """
+
     def __init__(self):
         pass
 
@@ -43,6 +53,40 @@ class RECORD:
         return (None, f"Not a valid id: {iidRep}")
 
     def body(self):
+        """Produce data that will get sidebar material later via AJAX.
+
+        !!! caution "Web2py device"
+            We use a
+            [web2py device](http://www.web2py.com/books/default/chapter/29/11/jquery-and-ajax)
+            here that shields the mechanics of an AJAX call.
+            That leads to code that is not very clear.
+
+            These calls are hidden in Web2Py javascript, and you will
+            not find them in the SHEBANQ client app code.
+
+        This is where the controllers
+        [controllers.hebrew.sidewordbody][],
+        [controllers.hebrew.sidequerybody][] and
+        [controllers.hebrew.sidenotebody][]
+        will be used.
+
+        These calls are used when the user requests a **record**
+        page directly.
+
+        However, when a user navigates between **main** pages and **record**
+        pages, the pages are not served from scratch.
+        The only things needed are to fetch new content for the side bars
+        depending on parameters.
+
+        These calls will be done by AJAX calls that do show up in the SHEBANQ
+        client code: [sidecontentfetch][].
+
+        It is probably a good idea ditch the web2py way of fetching sidebar content
+        in favour fo the more explicit way, which is already in our code.
+        Now we have two ways of doing the same thing!
+        My apologies.
+        """  # noqa E501
+
         Check = current.Check
         LOAD = current.LOAD
 
@@ -69,7 +113,21 @@ class RECORD:
             )
         )
 
-    def getItem(self):
+    def setItem(self):
+        """Saves a record to the database.
+
+        Meant for: objects that organize the notes and query overviews:
+        organizations and projects.
+        Can also save query records.
+
+        !!! hint "Note records and word records"
+            Word records are readonly and will nver be saved.
+
+            There are no such things as note records.
+            Notes are organized in sets bases on keywords and authoring users,
+            but a notes set does not have an embodiment as record in the database.
+        """
+
         Check = current.Check
         auth = current.auth
 

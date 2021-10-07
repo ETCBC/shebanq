@@ -9,6 +9,8 @@ from helpers import iEncode, iDecode, normRanges
 
 
 class NOTE:
+    """Handles notes.
+    """
     def __init__(self, Books):
         self.Books = Books
 
@@ -49,6 +51,10 @@ class NOTE:
         )
 
     def getVerseNotes(self):
+        """Get the notes belonging to a single verse.
+
+        Reads request parameters to determine which verse.
+        """
         Check = current.Check
         auth = current.auth
 
@@ -73,6 +79,8 @@ class NOTE:
         )
 
     def body(self):
+        """Retrieves a note set record based on parameters.
+        """
         Check = current.Check
 
         vr = Check.field("material", "", "version")

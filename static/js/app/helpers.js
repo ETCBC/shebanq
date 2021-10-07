@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, markdown */
 
+/**
+ * @module helpers
+ */
+
 export const idPrefixNotes = "n"
 export const idPrefixQueries = "q"
 

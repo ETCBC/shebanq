@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals PG, VS */
 
+/**
+ * @module sidesettings
+ */
+
 import { ColorPicker2 } from "./colorpicker.js"
 
 export class SideSettings {

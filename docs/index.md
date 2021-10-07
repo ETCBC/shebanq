@@ -1,4 +1,4 @@
-# SHEBANQ Technical documentation
+# Technical Home
 
 What it is, how it is designed, how it works and how it can be installed and maintained.
 
@@ -30,7 +30,7 @@ or use the navigation controls.
 
 ## Topics
 
-*   [Elements of the page](topics/elements.md)
+*   [Elements of the page](elements/index.md)
 *   Installation on
     [personal computers](deploy/computer.md) and
     [servers](deploy/server.md)

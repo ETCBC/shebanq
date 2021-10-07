@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS */
 
+/**
+ * @module colorpicker
+ */
+
 import { closeDialog, colorDefault } from "./helpers.js"
 
 export class ColorPicker1 {

@@ -1,9 +1,18 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS, LS, markdown */
 
+/**
+ * @module notes
+ */
+
 import { escHT, specialLinks, markdownEscape, idPrefixNotes } from "./helpers.js"
 import { Diagnostics } from "./diagnostics.js"
 
+/**
+ * Controls notes on **text** pages
+ *
+ * @see [notetree] for the notes overview page.
+ */
 export class Notes {
   constructor(contentNew) {
     this.show = false
@@ -81,6 +90,9 @@ export class Notes {
   }
 }
 
+/**
+ * Controls the notes belonging to a single verse.
+ */
 class NoteVerse {
   constructor(vr, bk, ch, vs, ctl, dest) {
     this.loaded = false
@@ -135,6 +147,11 @@ class NoteVerse {
     saveCtls.hide()
   }
 
+  /**
+   * get the notes belonging to the current verse.
+   *
+   * @see Triggers controller [controllers.hebrew.getversenotes][]
+   */
   fetch(adjustVerse) {
     const { getNotesVerseJsonUrl } = Config
 
@@ -326,6 +343,11 @@ class NoteVerse {
     }
   }
 
+  /**
+   * sends edited notes to the server in order to be saved.
+   *
+   * @see Triggers controller [controllers.hebrew.putversenotes][]
+   */
   sendnotes(sendData) {
     const { putNotesVerseJsonUrl } = Config
 

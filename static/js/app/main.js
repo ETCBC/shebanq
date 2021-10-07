@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config */
 
+/**
+ * @module main
+ */
+
 import { LStorage } from "./localstorage.js"
 import { Page } from "./page.js"
 import { ViewState } from "./viewstate.js"

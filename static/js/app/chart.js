@@ -1,15 +1,23 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS */
 
+/**
+ * @module chart
+ */
+
 import { colorDefault } from "./helpers.js"
 
 const chartCols = 30
 /* number of chapters in a row in a chart
  */
 
+
+/**
+ * Class for chart slection and generation
+ *
+ * @see also the server code [chart.CHART][].
+ */
 export class Chart {
-  /* for chart selection and generation
-   */
   constructor(vr, qw) {
     this.vr = vr
     this.qw = qw
@@ -25,6 +33,9 @@ export class Chart {
     })
   }
 
+  /**
+   * Method for chart slection and generation
+   */
   apply() {
     if (!this.loaded[`${this.qw}_${PG.iid}`]) {
       if ($(`#select_contents_chart_${this.vr}_${this.qw}_${PG.iid}`).length == 0) {
@@ -38,6 +49,11 @@ export class Chart {
     }
   }
 
+  /**
+   * get the material by AJAX if needed, and process the material afterward
+   *
+   * @see Triggers controller [controllers.hebrew.chart][]
+   */
   fetch(iid) {
     const { chartUrl } = Config
 

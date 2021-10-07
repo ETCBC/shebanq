@@ -5,12 +5,15 @@ from helpers import hEsc, sanitize, isodt
 from urls import Urls
 from queryrecent import QUERYRECENT
 
-U = Urls()
-QueryRecent = QUERYRECENT()
-
 
 def atom():
+    """Serves an RSS feed of recently saved shared queries.
+
+    See also [queryrecent.QUERYRECENT][].
+    """
     session.forget(response)
+    U = Urls()
+    QueryRecent = QUERYRECENT()
     queries = QueryRecent.feed()
     icon = URL("static", "images/shebanq_logo_xxsmall.png", host=True)
     cover = URL("static", "images/shebanq_cover.png", host=True)

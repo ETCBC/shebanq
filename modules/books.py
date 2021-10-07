@@ -7,10 +7,26 @@ from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
 
 
 class BOOKS:
+    """All information about the names of bible books.
+
+    The order of the books and the names of the books
+    in all supported languages.
+
+    This information is meant to be permanently cached.
+    """
     def __init__(self):
         pass
 
     def getNames(self):
+        """Send information about bible booknames.
+
+        The info consists of the latin booknames,
+        the languages in which we have translations for them,
+        and a translation table for all book names.
+
+        The info is wrapped in global Javascript variables,
+        so that the whole client app can use the info.
+        """
         jsinit = dedent(
             f"""
             var bookLatin = {json.dumps(BOOK_NAMES["Hebrew"]["la"])};

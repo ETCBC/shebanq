@@ -3,12 +3,33 @@
 
 # from gluon.custom_import import track_changes; track_changes(True)
 
-EXPIRE = 3600*24*30
+EXPIRE = 3600 * 24 * 30
 
 # def myerror(): return 1/0
 
 
+# The next bit is used to be able to "import" this file
+# for the purposes of documentation generation by mkdocstrings
+
+
+if "cache" not in globals():
+
+    class Dummy:
+        def action(self):
+            return lambda f: f
+
+        def requires_signature(self):
+            return lambda f: f
+
+    cache = Dummy()
+    auth = Dummy()
+
+
 def index():
+    """Serves the **home** page.
+
+    Corresponds with the SHEBANQ logo in the navigation bar.
+    """
     session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the BHSA database")
@@ -16,7 +37,8 @@ def index():
 
 
 def user():
-    """
+    """Unchanged from web2py.
+
     exposes:
     http://..../[app]/default/user/login
     http://..../[app]/default/user/logout
@@ -37,7 +59,8 @@ def user():
 
 @cache.action()
 def download():
-    """
+    """Unchanged from web2py.
+
     allows downloading of uploaded files
     http://..../[app]/default/download/[filename]
     """
@@ -45,18 +68,20 @@ def download():
 
 
 def call():
-    """
+    """Unchanged from web2py.
+
     exposes services. for example:
     http://..../[app]/default/call/jsonrpc
     decorate with @services.jsonrpc the functions to expose
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
-    return service() # noqa F821
+    return service()  # noqa F821
 
 
 @auth.requires_signature()
 def data():
-    """
+    """Unchanged from web2py.
+
     http://..../[app]/default/data/tables
     http://..../[app]/default/data/create/[table]
     http://..../[app]/default/data/read/[table]/[id]
@@ -69,4 +94,4 @@ def data():
     or with the signed load operator
       LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
     """
-    return dict(form=crud()) # noqa F821
+    return dict(form=crud())  # noqa F821

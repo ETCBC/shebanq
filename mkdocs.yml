@@ -59,16 +59,21 @@ markdown_extensions:
 plugins:
   - markdownextradata
   - search
+  - autorefs
   - mkdocstrings:
       default_handler: python
       watch:
         - "modules"
+        - "controllers"
       handlers:
         python:
           setup_commands:
             - import sys
             - sys.path.insert(0, "../../web2py/web2py")
             - sys.path.insert(0, "modules")
+            - from gluon.cache import Cache
+            - cache = Cache({})
+            - print(cache)
           rendering:
             show_source: true
             show_root_heading: true
@@ -82,6 +87,7 @@ extra:
   repBase: https://github.com/etcbc/shebanq/blob/master
   liveBase: https://shebanq.ancient-data.org
   repo: https://github.com/etcbc/shebanq
+  wiki: https://github.com/ETCBC/shebanq/wiki
   docSite: https://etcbc.github.io/shebanq
 
   # Rest
@@ -99,6 +105,7 @@ extra:
   emdros: https://emdros.org
   eslint: http://eslint.org
   etcbc: http://www.etcbc.nl
+  fancytree: https://github.com/mar10/fancytree/
   flake8: https://github.com/PyCQA/flake8
   githubBase: https://github.com/
   homebrew: https://brew.sh
@@ -112,6 +119,7 @@ extra:
   mysql: https://dev.mysql.com/downloads/mysql/
   mysqlInstall: https://dev.mysql.com/doc/mysql-macos-excerpt/8.0/en/macos-installation-pkg.html
   parabible: https://parabible.com/Genesis/1
+  pdoc3: https://pdoc3.github.io/pdoc/
   pipeline: https://github.com/etcbc/pipeline
   python: https://www.python.org
   pythondocstrings: https://www.python.org/dev/peps/pep-0257/
@@ -127,26 +135,3 @@ extra:
   wsgi: https://modwsgi.readthedocs.io/en/develop
   yaml: http://www.yaml.org
   zenodo: https://zenodo.org
-
-
-
-nav:
-  - About:
-    - Intro: 'index.md'
-    - News: 'news.md'
-  - Topics:
-    - Elements: 'topics/elements.md'
-  - Server:
-    - Intro: 'server/index.md'
-    - Models: 'server/models.md'
-    - Controllers: 'server/controllers.md'
-    - Modules: 'server/modules.md'
-    - Views: 'server/views.md'
-  - Client:
-    - Intro: 'client/index.md'
-    - CSS: 'client/css.md'
-    - Javascript: 'client/js.md'
-  - Deploy:
-    - Maintenance: 'deploy/maintenance.md'
-    - Computer: 'deploy/computer.md'
-    - Server: 'deploy/server.md'

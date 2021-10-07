@@ -1,5 +1,9 @@
 /* eslint-env jquery */
 
+/**
+ * @module diagnostics
+ */
+
 export class Diagnostics {
   constructor(destination, onClear) {
     this.destination = $(`#${destination}`)

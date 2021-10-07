@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* eslint-disable no-new */
 
+/**
+ * @module notetree
+ */
+
 /* globals Config, LS */
 
 import { LStorage } from "./localstorage.js"
@@ -204,7 +208,17 @@ class Filter {
   }
 }
 
+/**
+ * Handles the tree of note sets
+ */
 class Tree {
+  /**
+   * Initializes the notes tree
+   *
+   * Stores a url to fetch content from the server.
+   *
+   * @see Triggers controller [controllers.hebrew.notetree][]
+   */
   constructor() {
     const { noteTreeJsonUrl } = Config
     const { lsNotesMuted: lsMuted } = LS
@@ -377,6 +391,9 @@ class Tree {
   }
 }
 
+/**
+ * Controls the bulk-uploading of notes
+ */
 class Upload {
   constructor() {
     this.inpt = $("#ncsv")
@@ -419,6 +436,11 @@ class Upload {
       inpt.val("")
     })
   }
+  /**
+   * Submits a csv file with notes to the server
+   *
+   * @see Triggers controller [controllers.hebrew.noteupload][].
+   */
   submit() {
     const { noteUploadJsonUrl } = Config
     const { msgs } = this

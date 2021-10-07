@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* eslint-disable no-new */
 
+/**
+ * @module querytree
+ */
+
 /* globals Config, LS */
 
 import { LStorage } from "./localstorage.js"
@@ -268,7 +272,17 @@ class Filter {
   }
 }
 
+/**
+ * Handles the tree of queries
+ */
 class Tree {
+  /**
+   * Initializes the query tree
+   *
+   * Stores a url to fetch content from the server.
+   *
+   * @see Triggers controller [controllers.hebrew.querytree][]
+   */
   constructor() {
     const { queryTreeJsonUrl } = Config
     const { lsQueriesMuted: lsMuted } = LS
@@ -405,6 +419,11 @@ class Tree {
     })
   }
 
+  /**
+   * Sends a record to the database to be saved
+   *
+   * @see Triggers controller [controllers.hebrew.itemrecord][]
+   */
   record(tp, o, update, view) {
     const { itemRecordJsonUrl, pageUrl } = Config
 

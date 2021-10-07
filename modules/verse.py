@@ -6,11 +6,18 @@ from gluon import current
 from versecontent import VerseContent
 
 
-class VERSES:
+class VERSE:
+    """Get verse data of a verse.
+
+    The verse data are the linguistic feature data for the words in a verse.
+    """
+
     def __init__(self):
         pass
 
     def get(self):
+        """Get linguistic data of a verse.
+        """
         extension = current.request.extension
 
         if extension == "json":

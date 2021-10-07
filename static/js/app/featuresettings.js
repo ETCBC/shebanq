@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS */
 
+/**
+ * @module featuresettings
+ */
+
 /* HEBREW DATA (which fields to show if interlinear text is displayed)
  *
  */

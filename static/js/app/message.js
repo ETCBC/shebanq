@@ -1,5 +1,9 @@
 /* eslint-env jquery */
 
+/**
+ * @module message
+ */
+
 export class Message {
   /* diagnostic output
    */

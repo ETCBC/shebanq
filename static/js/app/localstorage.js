@@ -1,5 +1,9 @@
 /* eslint-env jquery */
 
+/**
+ * @module localstorage
+ */
+
 export class LStorage {
   constructor() {
     this.lsQueries = $.initNamespaceStorage("lsQueries").localStorage

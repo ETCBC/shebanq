@@ -124,6 +124,10 @@ class NOTESAVE:
         return changed
 
     def putVerseNotes(self):
+        """Save notes.
+
+        Reads request parameters to determine which notes for which verse.
+        """
         Check = current.Check
         Note = self.Note
         auth = current.auth

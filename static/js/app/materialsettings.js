@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS, State */
 
+/**
+ * @module materialsettings
+ */
+
 /* MATERIAL SETTINGS (for choosing between plain text and tabbed data)
  *
  */

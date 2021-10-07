@@ -73,6 +73,8 @@ class QUERYSAVE:
         QueryChapter.updateQCindex(vr, query_id, uptodate=True)
 
     def sharing(self):
+        """Receives a new sharing status of a query and saves it to the database.
+        """
         Check = current.Check
         Query = self.Query
 
@@ -345,6 +347,8 @@ class QUERYSAVE:
             db.commit()
 
     def putRecord(self):
+        """Receives updated record data of a query and stores it in the database.
+        """
         Check = current.Check
         Query = self.Query
         auth = current.auth

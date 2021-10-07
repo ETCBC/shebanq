@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* eslint-disable camelcase */
 
+/**
+ * @module share
+ */
+
 /* globals Config, PG, VS */
 
 import { escHT, toggleDetail } from "./helpers.js"

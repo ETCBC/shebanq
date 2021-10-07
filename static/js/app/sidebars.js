@@ -1,6 +1,10 @@
 /* eslint-env jquery */
 /* globals Config, PG, VS */
 
+/**
+ * @module sidebars
+ */
+
 import { Chart } from "./chart.js"
 import { SideContent } from "./sidecontent.js"
 

@@ -1,8 +1,16 @@
 /* eslint-env jquery */
 /* globals Config */
 
+/**
+ * @module queryrecent
+ */
+
 import { Diagnostics } from "./diagnostics.js"
 
+/**
+ * Controls the widget for recent queries on the
+ * query overview page.
+ */
 export class QueryRecent {
   constructor(treeObj) {
     this.treeObj = treeObj
@@ -23,6 +31,11 @@ export class QueryRecent {
     this.fetch()
   }
 
+  /**
+   * get the material by AJAX if needed, and process the material afterward
+   *
+   * @see Triggers controller [controllers.hebrew.queriesr][]
+   */
   fetch() {
     const { queriesRecentJsonUrl } = Config
 
