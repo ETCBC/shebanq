@@ -132,6 +132,8 @@ def main():
         makePyDocs()
         shipDocs()
     elif task == "ship":
+        makeJsDocs()
+        makePyDocs()
         shipDocs()
         commit(task, msg)
 
