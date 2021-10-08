@@ -84,7 +84,7 @@ export class Material {
   /**
    * get the material by AJAX if needed, and process the material afterward
    *
-   * @see Triggers controller [controllers.hebrew.material][]
+   * @see Triggers [C:hebrew.material][controllers.hebrew.material]
    */
   fetch() {
     const { pageMaterialUrl } = Config
@@ -223,7 +223,7 @@ export class Material {
    * linguistic features for the words in that verse
    * can be retrieved from the server.
    *
-   * @see Triggers controller [controllers.hebrew.verse][].
+   * @see Triggers [C:hebrew.verse][controllers.hebrew.verse].
   */
   addVerseRefs(contentNew, mf) {
     const { verseFeaturesUrl } = Config

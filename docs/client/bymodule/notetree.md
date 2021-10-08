@@ -14,7 +14,7 @@
 Handles the tree of note sets
 
 **Kind**: inner class of [<code>notetree</code>](#module_notetree)  
-**See**: Triggers controller [controllers.hebrew.notetree][]  
+**See**: Triggers [C:hebrew.notetree][controllers.hebrew.notetree]  
 <a name="new_module_notetree..Tree_new"></a>
 
 #### new Tree()
@@ -34,4 +34,4 @@ Controls the bulk-uploading of notes
 Submits a csv file with notes to the server
 
 **Kind**: instance method of [<code>Upload</code>](#module_notetree..Upload)  
-**See**: Triggers controller [controllers.hebrew.noteupload][].  
+**See**: Triggers [C:hebrew.noteupload][controllers.hebrew.noteupload].  

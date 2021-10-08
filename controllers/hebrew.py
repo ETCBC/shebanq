@@ -38,7 +38,7 @@ def books():
     This is a utility page for website users.
     This controller is not used by other parts of the webapp.
 
-    See also [books.BOOKS.getNames][].
+    See also [M:BOOKS.getNames][books.BOOKS.getNames].
     """
     Books = BOOKS()
     session.forget(response)
@@ -52,7 +52,7 @@ def text():
 
     Only the skeleton of the page is fetched.
 
-    See also [viewsettings.VIEWSETTINGS.page][].
+    See also [M:VIEWSETTINGS.page][viewsettings.VIEWSETTINGS.page].
     """
     session.forget(response)
     init()
@@ -164,7 +164,7 @@ def note():
 def material():
     """Serves AJAX call for HTML content for the main area.
 
-    Client code: [materialfetch][].
+    Client code: [{material.fetch}][materialfetch].
     """
     session.forget(response)
     Books = BOOKS()
@@ -179,9 +179,9 @@ def material():
 def verse():
     """Get the linguistic data of a verse.
 
-    See also [verse.VERSE.get][].
+    See also [M:VERSE.get][verse.VERSE.get].
 
-    Client code: [materialaddverserefs][].
+    Client code: [{material.addverserefs}][materialaddverserefs].
     """
     session.forget(response)
     Verse = VERSE()
@@ -191,7 +191,7 @@ def verse():
 def sidematerial():
     """Serves AJAX call for HTML content for the sidebar (**main** page).
 
-    Client code: [sidecontentfetch][].
+    Client code: [{sidecontent.fetch}][sidecontentfetch].
     """
     session.forget(response)
     Books = BOOKS()
@@ -209,9 +209,9 @@ def sideword():
 
     Used when the user is switching between **main** and **record** pages.
 
-    See also [record.RECORD.body][].
+    See also [M:RECORD.body][record.RECORD.body].
 
-    Client code: [sidecontentfetch][].
+    Client code: [{sidecontent.fetch}][sidecontentfetch].
     """
     session.forget(response)
     Record = RECORD()
@@ -223,9 +223,9 @@ def sidequery():
 
     Used when the user is switching between **main** and **record** pages.
 
-    See also [record.RECORD.body][].
+    See also [M:RECORD.body][record.RECORD.body].
 
-    Client code: [sidecontentfetch][].
+    Client code: [{sidecontent.fetch}][sidecontentfetch].
     """
     session.forget(response)
     Record = RECORD()
@@ -237,9 +237,9 @@ def sidenote():
 
     Used when the user is switching between **main** and **record** pages.
 
-    See also [record.RECORD.body][].
+    See also [M:RECORD.body][record.RECORD.body].
 
-    Client code: [sidecontentfetch][].
+    Client code: [{sidecontent.fetch}][sidecontentfetch].
     """
     session.forget(response)
     Record = RECORD()
@@ -251,7 +251,7 @@ def sidewordbody():
 
     Used when the user is loading *word* page directly.
 
-    See also [word.WORD.body][].
+    See also [M:WORD.body][word.WORD.body].
     """
     session.forget(response)
     if not request.ajax:
@@ -265,7 +265,7 @@ def sidequerybody():
 
     Used when the user is loading a *query* page directly.
 
-    See also [query.QUERY.body][].
+    See also [M:QUERY.body][query.QUERY.body].
     """
     session.forget(response)
     if not request.ajax:
@@ -279,7 +279,7 @@ def sidenotebody():
 
     Used when the user is loading a *notes set* page directly.
 
-    See also [note.NOTE.body][].
+    See also [M:NOTE.body][note.NOTE.body].
     """
     session.forget(response)
     if not request.ajax:
@@ -294,7 +294,7 @@ def queriesr():
 
     See also [queryrecent.QUERYRECENT.recent].
 
-    Client code: [queryrecentfetch][]
+    Client code: [{queryrecent.fetch}][queryrecentfetch]
     """
     session.forget(response)
     QueryRecent = QUERYRECENT()
@@ -304,9 +304,9 @@ def queriesr():
 def querytree():
     """Serves AJAX call for json data for the tree overview of queries.
 
-    See also [querytree.QUERYTREE.get][].
+    See also [M:QUERYTREE.get][querytree.QUERYTREE.get].
 
-    Client code: [querytreetree][]
+    Client code: [{querytree.Tree}][querytreetree]
     """
     session.forget(response)
     QueryTree = QUERYTREE()
@@ -316,9 +316,9 @@ def querytree():
 def notetree():
     """Serves AJAX call for json data for the tree overview of notes sets.
 
-    See also [notetree.NOTETREE.get][].
+    See also [M:NOTETREE.get][notetree.NOTETREE.get].
 
-    Client code: [notetreetree][]
+    Client code: [{notetree.Tree}][notetreetree]
     """
     session.forget(response)
     NoteTree = NOTETREE()
@@ -328,9 +328,9 @@ def notetree():
 def getversenotes():
     """Serves AJAX call for json data for all notes belonging to a single verse.
 
-    See also [note.NOTE.getVerseNotes][].
+    See also [M:NOTE.getVerseNotes][note.NOTE.getVerseNotes].
 
-    Client code: [noteversefetch][]
+    Client code: [{noteverse.fetch}][noteversefetch]
     """
     session.forget(response)
     Books = BOOKS()
@@ -341,9 +341,9 @@ def getversenotes():
 def putversenotes():
     """Serves AJAX call for json data to save notes.
 
-    See also [notesave.NOTESAVE.putVerseNotes][].
+    See also [M:NOTESAVE.putVerseNotes][notesave.NOTESAVE.putVerseNotes].
 
-    Client code: [noteversesendnotes][]
+    Client code: [{noteverse.sendnotes}][noteversesendnotes]
     """
     session.forget(response)
     Books = BOOKS()
@@ -355,9 +355,9 @@ def putversenotes():
 def noteupload():
     """Receives bulk-uploaded notes and stores them.
 
-    See also [notesupload.NOTESUPLOAD.upload][].
+    See also [M:NOTESUPLOAD.upload][notesupload.NOTESUPLOAD.upload].
 
-    Client code: [uploadsubmit][].
+    Client code: [{notetree.Upload.submit}][uploadsubmit].
     """
     session.forget(response)
     Books = BOOKS()
@@ -372,9 +372,9 @@ def item():
     Items are:
     the occurrences of a word, the results of a query, the notes of a notes set.
 
-    See also [csvdata.CSVDATA.page][].
+    See also [M:CSVDATA.page][csvdata.CSVDATA.page].
 
-    Client code: [viewstatecsvurl][].
+    Client code: [{viewstate.csvUrl}][viewstatecsvurl].
     """
     session.forget(response)
     Word = WORD()
@@ -390,9 +390,9 @@ def chart():  # controller to produce a chart of query results or lexeme occurre
     Items are:
     the occurrences of a word, the results of a query, the notes of a notes set.
 
-    See also [chart.CHART.page][].
+    See also [M:CHART.page][chart.CHART.page].
 
-    Client code: [chartfetch][].
+    Client code: [{chart.fetch}][chartfetch].
     """
     session.forget(response)
     Books = BOOKS()
@@ -407,9 +407,9 @@ def chart():  # controller to produce a chart of query results or lexeme occurre
 def itemrecord():
     """Saves a record to the database, typically organizations, projects, queries.
 
-    See also [record.RECORD.setItem][].
+    See also [M:RECORD.setItem][record.RECORD.setItem].
 
-    Client code: [treerecord][].
+    Client code: [{querytree.Tree.record}][treerecord].
     """
     session.forget(response)
     Query = QUERY()
@@ -420,9 +420,9 @@ def itemrecord():
 def querysharing():
     """Saves the shared status of a query to the database.
 
-    See also [querysave.QUERYSAVE.sharing][].
+    See also [M:QUERYSAVE.sharing][querysave.QUERYSAVE.sharing].
 
-    Client code: [sidecontentsendval][].
+    Client code: [{sidecontent.sendval}][sidecontentsendval].
     """
     session.forget(response)
     Query = QUERY()
@@ -434,9 +434,9 @@ def querysharing():
 def queryupdate():
     """Saves metadata of a query to the database.
 
-    See also [querysave.QUERYSAVE.putRecord][].
+    See also [M:QUERYSAVE.putRecord][querysave.QUERYSAVE.putRecord].
 
-    Client code: [sidecontentsendval][].
+    Client code: [{sidecontent.sendvals}][sidecontentsendvals].
     """
     session.forget(response)
     Query = QUERY()

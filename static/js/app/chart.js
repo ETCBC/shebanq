@@ -15,7 +15,7 @@ const chartCols = 30
 /**
  * Class for chart slection and generation
  *
- * @see also the server code [chart.CHART][].
+ * @see also the server code [M:CHART][chart.CHART].
  */
 export class Chart {
   constructor(vr, qw) {
@@ -52,7 +52,7 @@ export class Chart {
   /**
    * get the material by AJAX if needed, and process the material afterward
    *
-   * @see Triggers controller [controllers.hebrew.chart][]
+   * @see Triggers [C:hebrew.chart][controllers.hebrew.chart]
    */
   fetch(iid) {
     const { chartUrl } = Config

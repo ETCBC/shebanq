@@ -33,14 +33,14 @@ Meant for `is_shared` and `is_published`.
     `is_published` is a field of a query_exe record.
 
 **Kind**: instance method of [<code>SideContent</code>](#module_sidecontent.SideContent)  
-**See**: Triggers controller [controllers.hebrew.querysharing][].  
+**See**: Triggers [C:hebrew.querysharing][controllers.hebrew.querysharing].  
 <a name="module_sidecontent.SideContent+sendVals"></a>
 
 #### sideContent.sendVals()
 Sends un updated record to the database.
 
 **Kind**: instance method of [<code>SideContent</code>](#module_sidecontent.SideContent)  
-**See**: Triggers controller [controllers.hebrew.queryupdate][].  
+**See**: Triggers [C:hebrew.queryupdate][controllers.hebrew.queryupdate].  
 <a name="module_sidecontent.SideContent+fetch"></a>
 
 #### sideContent.fetch()
@@ -51,8 +51,8 @@ This method takes into account what kind of sidebar this is:
 **Kind**: instance method of [<code>SideContent</code>](#module_sidecontent.SideContent)  
 **See**
 
-- Triggers controller [controllers.hebrew.sidematerial][]
-- Triggers controller [controllers.hebrew.sideword][]
-- Triggers controller [controllers.hebrew.sidequery][]
-- Triggers controller [controllers.hebrew.sidenote][]
+- Triggers [C:hebrew.sidematerial][controllers.hebrew.sidematerial]
+- Triggers [C:hebrew.sideword][controllers.hebrew.sideword]
+- Triggers [C:hebrew.sidequery][controllers.hebrew.sidequery]
+- Triggers [C:hebrew.sidenote][controllers.hebrew.sidenote]
 

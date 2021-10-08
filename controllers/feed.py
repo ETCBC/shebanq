@@ -9,7 +9,7 @@ from queryrecent import QUERYRECENT
 def atom():
     """Serves an RSS feed of recently saved shared queries.
 
-    See also [queryrecent.QUERYRECENT][].
+    See also [M:QUERYRECENT][queryrecent.QUERYRECENT].
     """
     session.forget(response)
     U = Urls()

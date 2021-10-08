@@ -217,7 +217,7 @@ class Tree {
    *
    * Stores a url to fetch content from the server.
    *
-   * @see Triggers controller [controllers.hebrew.notetree][]
+   * @see Triggers [C:hebrew.notetree][controllers.hebrew.notetree]
    */
   constructor() {
     const { noteTreeJsonUrl } = Config
@@ -439,7 +439,7 @@ class Upload {
   /**
    * Submits a csv file with notes to the server
    *
-   * @see Triggers controller [controllers.hebrew.noteupload][].
+   * @see Triggers [C:hebrew.noteupload][controllers.hebrew.noteupload].
    */
   submit() {
     const { noteUploadJsonUrl } = Config

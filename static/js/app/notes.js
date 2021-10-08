@@ -150,7 +150,7 @@ class NoteVerse {
   /**
    * get the notes belonging to the current verse.
    *
-   * @see Triggers controller [controllers.hebrew.getversenotes][]
+   * @see Triggers [C:hebrew.getversenotes][controllers.hebrew.getversenotes]
    */
   fetch(adjustVerse) {
     const { getNotesVerseJsonUrl } = Config
@@ -346,7 +346,7 @@ class NoteVerse {
   /**
    * sends edited notes to the server in order to be saved.
    *
-   * @see Triggers controller [controllers.hebrew.putversenotes][]
+   * @see Triggers [C:hebrew.putversenotes][controllers.hebrew.putversenotes]
    */
   sendnotes(sendData) {
     const { putNotesVerseJsonUrl } = Config

@@ -281,7 +281,7 @@ class Tree {
    *
    * Stores a url to fetch content from the server.
    *
-   * @see Triggers controller [controllers.hebrew.querytree][]
+   * @see Triggers [C:hebrew.querytree][controllers.hebrew.querytree]
    */
   constructor() {
     const { queryTreeJsonUrl } = Config
@@ -422,7 +422,7 @@ class Tree {
   /**
    * Sends a record to the database to be saved
    *
-   * @see Triggers controller [controllers.hebrew.itemrecord][]
+   * @see Triggers [C:hebrew.itemrecord][controllers.hebrew.itemrecord]
    */
   record(tp, o, update, view) {
     const { itemRecordJsonUrl, pageUrl } = Config

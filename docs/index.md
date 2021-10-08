@@ -25,8 +25,23 @@ of MySQL and speaks with it.
 Shebanq and the pipeline have been constructed using
 [Text-Fabric]({{textfabric}}) as the main tool.
 
+There are several kinds of documentation of SHEBANQ,
+see [documentation](deploy/documentation.md) where it is decribed
+how to maintain that information.
+
 Quickly jump to a topic below,
 or use the navigation controls.
+
+## Conventions
+
+### Code references
+
+This documentation contains many references to code.
+These references have shapes that help you recognize to what code they refer:
+
+*   `[M:XXX.yyy]` refers to Python code for `yyy` in module `modules/xxx.py`
+*   `[C:xxx.yyy]` refers to Python controller `yyy()` in file `controllers/xxx.py`
+*   `[{xxx.yyy}]` refers to Javascript code for `yyy` in file `static/js/app/xxx.js`
 
 ## Topics
 

@@ -407,7 +407,7 @@ export class SideContent {
    *
    *     `is_published` is a field of a query_exe record.
    *
-   * @see Triggers controller [controllers.hebrew.querysharing][].
+   * @see Triggers [C:hebrew.querysharing][controllers.hebrew.querysharing].
    */
   sendVal(query, box, valNew, vr, iid, fieldName, val) {
     const { querySharingJsonUrl } = Config
@@ -468,7 +468,7 @@ export class SideContent {
   /**
    * Sends un updated record to the database.
    *
-   * @see Triggers controller [controllers.hebrew.queryupdate][].
+   * @see Triggers [C:hebrew.queryupdate][controllers.hebrew.queryupdate].
    */
   sendVals(sendData) {
     const { queryUpdateJsonUrl } = Config
@@ -542,10 +542,10 @@ export class SideContent {
    *
    * This method takes into account what kind of sidebar this is:
    *
-   * @see Triggers controller [controllers.hebrew.sidematerial][]
-   * @see Triggers controller [controllers.hebrew.sideword][]
-   * @see Triggers controller [controllers.hebrew.sidequery][]
-   * @see Triggers controller [controllers.hebrew.sidenote][]
+   * @see Triggers [C:hebrew.sidematerial][controllers.hebrew.sidematerial]
+   * @see Triggers [C:hebrew.sideword][controllers.hebrew.sideword]
+   * @see Triggers [C:hebrew.sidequery][controllers.hebrew.sidequery]
+   * @see Triggers [C:hebrew.sidenote][controllers.hebrew.sidenote]
    */
   fetch() {
     const { itemStyle, pageSidebarUrl } = Config

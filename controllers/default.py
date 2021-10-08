@@ -39,6 +39,7 @@ def index():
 def user():
     """Unchanged from web2py.
 
+    ```
     exposes:
     http://..../[app]/default/user/login
     http://..../[app]/default/user/logout
@@ -51,6 +52,7 @@ def user():
         @auth.requires_membership('group name')
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
+    ```
     """
 
     response.title = T("User Profile")
@@ -61,8 +63,10 @@ def user():
 def download():
     """Unchanged from web2py.
 
+    ```
     allows downloading of uploaded files
     http://..../[app]/default/download/[filename]
+    ```
     """
     return response.download(request, db)
 
@@ -70,10 +74,12 @@ def download():
 def call():
     """Unchanged from web2py.
 
+    ```
     exposes services. for example:
     http://..../[app]/default/call/jsonrpc
     decorate with @services.jsonrpc the functions to expose
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    ```
     """
     return service()  # noqa F821
 
@@ -82,6 +88,7 @@ def call():
 def data():
     """Unchanged from web2py.
 
+    ```
     http://..../[app]/default/data/tables
     http://..../[app]/default/data/create/[table]
     http://..../[app]/default/data/read/[table]/[id]
@@ -93,5 +100,6 @@ def data():
       A('table',_href=URL('data/tables',user_signature=True))
     or with the signed load operator
       LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
+    ```
     """
     return dict(form=crud())  # noqa F821

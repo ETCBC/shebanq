@@ -36,7 +36,7 @@ class VIEWSETTINGS:
         At the client, the Javascript picks up the data and uses
         it to customise the view.
 
-        Client code: [viewstate][]
+        Client code: [{viewstate}][viewstate]
         """
 
         ViewDefs = current.ViewDefs

@@ -8,7 +8,7 @@
 /**
  * Handles settings that cusomise the view of the page
  *
- * @see Corresponds to [viewsettings.VIEWSETTINGS.page][].
+ * @see Corresponds to [M:VIEWSETTINGS.page][viewsettings.VIEWSETTINGS.page].
  */
 export class ViewState {
   constructor(init, pref) {
@@ -38,7 +38,7 @@ export class ViewState {
   /**
    * Sets the precise url by which the user can request a csv download from the server.
    *
-   * @see Triggers controller [controllers.hebrew.item][].
+   * @see Triggers [C:hebrew.item][controllers.hebrew.item].
    */
   csvUrl(vr, mr, qw, iid, tp, extra) {
     const { itemCsvUrl } = Config

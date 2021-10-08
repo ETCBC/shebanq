@@ -34,11 +34,11 @@ Controls the notes belonging to a single verse.
 get the notes belonging to the current verse.
 
 **Kind**: instance method of [<code>NoteVerse</code>](#module_notes..NoteVerse)  
-**See**: Triggers controller [controllers.hebrew.getversenotes][]  
+**See**: Triggers [C:hebrew.getversenotes][controllers.hebrew.getversenotes]  
 <a name="module_notes..NoteVerse+sendnotes"></a>
 
 #### noteVerse.sendnotes()
 sends edited notes to the server in order to be saved.
 
 **Kind**: instance method of [<code>NoteVerse</code>](#module_notes..NoteVerse)  
-**See**: Triggers controller [controllers.hebrew.putversenotes][]  
+**See**: Triggers [C:hebrew.putversenotes][controllers.hebrew.putversenotes]  

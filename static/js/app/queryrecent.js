@@ -34,7 +34,7 @@ export class QueryRecent {
   /**
    * get the material by AJAX if needed, and process the material afterward
    *
-   * @see Triggers controller [controllers.hebrew.queriesr][]
+   * @see Triggers [C:hebrew.queriesr][controllers.hebrew.queriesr]
    */
   fetch() {
     const { queriesRecentJsonUrl } = Config

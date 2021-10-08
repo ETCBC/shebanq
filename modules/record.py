@@ -15,7 +15,7 @@ class RECORD:
     And it is about word records.
 
     It is called by controllers that fetch sidebar material,
-    see [record.RECORD.body][].
+    see [M:RECORD.body][record.RECORD.body].
     """
 
     def __init__(self):
@@ -57,7 +57,7 @@ class RECORD:
 
         !!! caution "Web2py device"
             We use a
-            [web2py device](http://www.web2py.com/books/default/chapter/29/11/jquery-and-ajax)
+            [web2py device]({{web2pycomponents}})
             here that shields the mechanics of an AJAX call.
             That leads to code that is not very clear.
 
@@ -65,24 +65,26 @@ class RECORD:
             not find them in the SHEBANQ client app code.
 
         This is where the controllers
-        [controllers.hebrew.sidewordbody][],
-        [controllers.hebrew.sidequerybody][] and
-        [controllers.hebrew.sidenotebody][]
+        [C:hebrew.sidewordbody][controllers.hebrew.sidewordbody],
+        [C:hebrew.sidequerybody][controllers.hebrew.sidequerybody] and
+        [C:hebrew.sidenotebody][controllers.hebrew.sidenotebody]
         will be used.
 
         These calls are used when the user requests a **record**
-        page directly.
+        page directly. The web2py device takes care that when the sidebar
+        is editable, the edits will be submitted via AJAX.
+        So far so good.
 
         However, when a user navigates between **main** pages and **record**
-        pages, the pages are not served from scratch.
-        The only things needed are to fetch new content for the side bars
-        depending on parameters.
+        pages, the pages are not served from scratch, and new sidebar material
+        has to be fetched through AJAX as well.
 
-        These calls will be done by AJAX calls that do show up in the SHEBANQ
-        client code: [sidecontentfetch][].
+        In the SHEBANQ code we do these AJAX calls explicitly
+        client code: [{sidecontent.fetch}][sidecontentfetch].
 
-        It is probably a good idea ditch the web2py way of fetching sidebar content
-        in favour fo the more explicit way, which is already in our code.
+        Since I was not able to use the Web2py approach for this part of the use case,
+        it is probably a good idea ditch this usage of the web2py mechanism
+        altogehter in favour fo the more explicit way, which is already in our code.
         Now we have two ways of doing the same thing!
         My apologies.
         """  # noqa E501

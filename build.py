@@ -130,9 +130,9 @@ def main():
     elif task == "sdocs":
         makeJsDocs()
         makePyDocs()
-        shipDocs(ORG, REPO, PKG)
+        shipDocs()
     elif task == "ship":
-        shipDocs(ORG, REPO, PKG)
+        shipDocs()
         commit(task, msg)
 
 

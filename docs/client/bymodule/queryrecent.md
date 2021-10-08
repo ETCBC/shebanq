@@ -19,4 +19,4 @@ query overview page.
 get the material by AJAX if needed, and process the material afterward
 
 **Kind**: instance method of [<code>QueryRecent</code>](#module_queryrecent.QueryRecent)  
-**See**: Triggers controller [controllers.hebrew.queriesr][]  
+**See**: Triggers [C:hebrew.queriesr][controllers.hebrew.queriesr]  

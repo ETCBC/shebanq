@@ -131,6 +131,7 @@ extra:
   textfabric: https://annotation/text-fabric
   web2py: http://web2py.com
   web2pyRepo: https://github.com/web2py/web2py
+  web2pycomponents: http://www.web2py.com/books/default/chapter/29/12/components-and-plugins#Components-LOAD-and-Ajax
   webApi: https://developer.mozilla.org/en-US/docs/Web/API/document
   wsgi: https://modwsgi.readthedocs.io/en/develop
   yaml: http://www.yaml.org

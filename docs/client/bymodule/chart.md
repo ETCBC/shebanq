@@ -13,7 +13,7 @@
 Class for chart slection and generation
 
 **Kind**: static class of [<code>chart</code>](#module_chart)  
-**See**: also the server code [chart.CHART][].  
+**See**: also the server code [M:CHART][chart.CHART].  
 
 * [.Chart](#module_chart.Chart)
     * [.apply()](#module_chart.Chart+apply)
@@ -31,4 +31,4 @@ Method for chart slection and generation
 get the material by AJAX if needed, and process the material afterward
 
 **Kind**: instance method of [<code>Chart</code>](#module_chart.Chart)  
-**See**: Triggers controller [controllers.hebrew.chart][]  
+**See**: Triggers [C:hebrew.chart][controllers.hebrew.chart]  

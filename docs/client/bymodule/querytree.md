@@ -13,7 +13,7 @@
 Handles the tree of queries
 
 **Kind**: inner class of [<code>querytree</code>](#module_querytree)  
-**See**: Triggers controller [controllers.hebrew.querytree][]  
+**See**: Triggers [C:hebrew.querytree][controllers.hebrew.querytree]  
 
 * [~Tree](#module_querytree..Tree)
     * [new Tree()](#new_module_querytree..Tree_new)
@@ -32,4 +32,4 @@ Stores a url to fetch content from the server.
 Sends a record to the database to be saved
 
 **Kind**: instance method of [<code>Tree</code>](#module_querytree..Tree)  
-**See**: Triggers controller [controllers.hebrew.itemrecord][]  
+**See**: Triggers [C:hebrew.itemrecord][controllers.hebrew.itemrecord]  
