@@ -9,7 +9,13 @@ from boiler import FIELDNAMES, TEXT_TPL
 from helpers import hEsc
 
 
-class VerseContent:
+class VERSECONTENT:
+    """Handle a single verse.
+
+    It can retrieve word data from the database
+    and render it in various textual formats.
+    """
+
     def __init__(
         self,
         vr,
@@ -23,12 +29,6 @@ class VerseContent:
         mr=None,
         lang="en",
     ):
-        """Handle a single verse.
-
-        It can retrieve word data from the database
-        and render it in various textual formats.
-        """
-
         self.version = vr
         self.tp = tp
         self.tr = tr
@@ -56,18 +56,20 @@ class VerseContent:
         passageDb = PASSAGE_DBS.get(vr, None)
         if wordData is None and passageDb:
             fieldNames = ",".join(FIELDNAMES["txtd"])
-            wsql = f"""
-    select {fieldNames}, lexicon_id from word
-    inner join word_verse on word_number = word_verse.anchor
-    inner join verse on verse.id = word_verse.verse_id
-    inner join chapter on verse.chapter_id = chapter.id
-    inner join book on chapter.book_id = book.id
-    where book.name = '{book_name}'
-    and chapter.chapter_num = {chapter_num}
-    and verse.verse_num = {verse_num}
-    order by word_number
-    ;
-    """
+            wsql = dedent(
+                f"""
+                select {fieldNames}, lexicon_id from word
+                inner join word_verse on word_number = word_verse.anchor
+                inner join verse on verse.id = word_verse.verse_id
+                inner join chapter on verse.chapter_id = chapter.id
+                inner join book on chapter.book_id = book.id
+                where book.name = '{book_name}'
+                and chapter.chapter_num = {chapter_num}
+                and verse.verse_num = {verse_num}
+                order by word_number
+                ;
+                """
+            )
             wordRecords = passageDb.executesql(wsql, as_dict=True) if passageDb else []
             wordData = []
             for record in wordRecords:
@@ -128,6 +130,10 @@ class VerseContent:
             return self.dataText(userAgent)
 
     def plainText(self, userAgent):
+        """Present text in plain Hebrew or plain phonetic text.
+
+        See [∈ text-representation][elem-text-representation]
+        """
         material = []
         for word in self.getWords():
             if self.tr == "hb":
@@ -142,12 +148,26 @@ class VerseContent:
         return "".join(material)
 
     def dataText(self, userAgent):
+        """Present text in data format.
+
+        Linguistic features of the words will be shown,
+        according to the current settings of the legend.
+
+        See [∈ legend][elem-feature-legend], [∈ show-verse-data][elem-show-verse-data]
+        """
         material = []
         for word in self.wordData:
             material.append(TEXT_TPL.format(**word))
         return "".join(material)
 
     def tab1Text(self, userAgent):
+        """Present text in a table, mode 1.
+
+        Mode 1 is notes view, i.e. notes are viewed
+        interlinear with the clause atoms.
+
+        See [∈ text-presentation][elem-text-presentation]
+        """
         material = ["""<table class="t1_table">"""]
         curNum = (0, 0, 0)
         curClauseAtom = []
@@ -167,6 +187,13 @@ class VerseContent:
         return "".join(material)
 
     def tab2Text(self, userAgent):
+        """Present text in a table, mode 2.
+
+        Mode 2 is syntactic view, i.e. indentation is used to
+        represent linguistic embedding.
+
+        See [∈ text-presentation][elem-text-presentation]
+        """
         material = ['<dl class="lv2">']
         curNum = (0, 0, 0)
         curClauseAtom = []
@@ -186,6 +213,14 @@ class VerseContent:
         return "".join(material)
 
     def tab3Text(self, userAgent):
+        """Present text in a table, mode 3.
+
+        Mode 3 is abstract view, i.e. letters are replaced by
+        abstract symbols, where many letters map to the same symbol.
+        represent linguistic embedding.
+
+        See [∈ text-presentation][elem-text-presentation]
+        """
         material = ['<dl class="lv3">']
         curNum = (0, 0, 0)
         curClauseAtom = []

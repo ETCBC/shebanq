@@ -5,8 +5,11 @@
  * @module materialsettings
  */
 
-/* MATERIAL SETTINGS (for choosing between plain text and tabbed data)
+/* MATERIAL SETTINGS (for choosing between plain text and tabbed data, etc)
  *
+ * [∈ text-presentation][elem-text-presentation]
+ * [∈ text-representation][elem-text-representation]
+ * [∈ feature-legend][elem-feature-legend]
  */
 
 import { closeDialog, escHT } from "./helpers.js"

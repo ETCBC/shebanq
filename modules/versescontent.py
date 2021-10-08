@@ -6,10 +6,10 @@ from gluon import current
 from constants import NOTFILLFIELDS
 from boiler import FIELDNAMES
 from helpers import hEsc
-from versecontent import VerseContent
+from versecontent import VERSECONTENT
 
 
-class VersesContent:
+class VERSESCONTENT:
     def __init__(
         self,
         vr,
@@ -132,7 +132,7 @@ class VersesContent:
             verse_id = int(verse[0])
             xml = verse[4] if tp == "txtp" else ""
             self.verses.append(
-                VerseContent(
+                VERSECONTENT(
                     vr,
                     verse[1],
                     verse[2],

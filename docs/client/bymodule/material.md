@@ -13,6 +13,15 @@
 Controls the main area of the page.
 
 **Kind**: static class of [<code>material</code>](#module_material)  
+**See**
+
+- [M:MATERIAL][materials.MATERIAL]
+- page elements:
+*    [∈ book][elem-book],
+*    [∈ chapter][elem-chapter],
+*    [∈ page][elem-page],
+*    [∈ goto-chapter][elem-goto-chapter],
+
 
 * [.Material](#module_material.Material)
     * [.fetch()](#module_material.Material+fetch)
@@ -33,4 +42,8 @@ linguistic features for the words in that verse
 can be retrieved from the server.
 
 **Kind**: instance method of [<code>Material</code>](#module_material.Material)  
-**See**: Triggers [C:hebrew.verse][controllers.hebrew.verse].  
+**See**
+
+- Triggers [C:hebrew.verse][controllers.hebrew.verse].
+- [∈ show-verse-data][elem-show-verse-data]
+

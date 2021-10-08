@@ -35,10 +35,9 @@ def init():
 def books():
     """Get all bible book names in all their translations.
 
-    This is a utility page for website users.
-    This controller is not used by other parts of the webapp.
-
     See also [M:BOOKS.getNames][books.BOOKS.getNames].
+
+    See [∈ language-info][elem-language-info].
     """
     Books = BOOKS()
     session.forget(response)

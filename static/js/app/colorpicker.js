@@ -8,7 +8,7 @@
 import { closeDialog, colorDefault } from "./helpers.js"
 
 export class ColorPicker1 {
-  /* the ColorPicker associated with individual items
+  /** the ColorPicker associated with individual items
    *
    * These pickers show up in lists of items (in mq and mw sidebars) and
    * near individual items (in rq and rw sidebars).
@@ -18,6 +18,9 @@ export class ColorPicker1 {
    *
    * All actions are processed by the highlight2 (!) method
    * of the associated Settings object.
+   *
+   * @see [∈ highlight-select-single-color][elem-highlight-select-single-color]
+   * @see [∈ highlight-select-color][elem-highlight-select-color]
    */
   constructor(qw, iid, isItem, doHighlight) {
     const { itemStyle, colors } = Config
@@ -120,7 +123,7 @@ export class ColorPicker1 {
 }
 
 export class ColorPicker2 {
-  /* the ColorPicker associated with the view settings in a sidebar
+  /** the ColorPicker associated with the view settings in a sidebar
    *
    * These pickers show up at the top of the individual sidebars,
    * only on mq and mw sidebars.
@@ -135,6 +138,8 @@ export class ColorPicker2 {
    * which are synchronized in a cookie.
    * All actions are processed by the highlight2 method
    * of the associated Settings object.
+   *
+   * @see [∈ highlight-select-single-color][elem-highlight-select-single-color]
    */
   constructor(qw, doHighlight) {
     const { itemStyle, colors } = Config

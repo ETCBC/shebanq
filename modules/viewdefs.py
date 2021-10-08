@@ -8,6 +8,28 @@ from helpers import debug
 
 
 class Make:
+    """Set up the definition of all settings and parameters.
+
+    This involves
+
+    *   specifying value types,
+    *   defining default values
+    *   defining validation functions
+    *   value compilation
+    *   exporting setttings data in Javascript to the client
+
+    See also [{SideSettings}][sidesettings].
+
+    Page elements:
+
+    *   [∈ highlight-published][elem-highlight-published]
+    *   [∈ highlight-reset][elem-highlight-reset]
+    *   [∈ highlight-many][elem-highlight-many]
+    *   [∈ highlight-custom][elem-highlight-custom]
+    *   [∈ highlight-one][elem-highlight-one]
+    *   [∈ highlight-off][elem-highlight-off]
+    *   [∈ highlight-select-single-color][elem-highlight-select-single-color]
+    """
     def __init__(self):
         nColorRows = 4
         nColorCols = 4

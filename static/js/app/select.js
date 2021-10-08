@@ -9,9 +9,10 @@ import { closeDialog } from "./helpers.js"
 
 const docName = "0_home"
 
+/**
+ * Handles book and chapter selection
+ */
 export class SelectPassage {
-  /* for book and chapter selection
-   */
 
   constructor() {
     this.name = "select_passage"
@@ -21,11 +22,30 @@ export class SelectPassage {
     $("#self_link").hide()
   }
 
+  /** apply current passage selection
+   *
+   * New material is fetched from the current data version;
+   *
+   * The link to the feature documentation is adapted the
+   * data version.
+   *
+   * !!! caution
+   *     But currently the docs are no longer
+   *     dependent on the data version.
+   *
+   * The links to other applications are adapted to the
+   * new passage selection:
+   *
+   * *   bol = [Bible Online Learner]({{bol}})
+   * *   pbl = [ParaBible]({{parabible}})
+   *
+   * @see Page elements:
+   *
+   * *   [∈ info][elem-info]
+   * *   [∈ version][elem-version]
+   * *   [∈ links][elem-links]
+   */
   apply() {
-    /* apply material ViewSettings to current material
-     * bol = bible online learner
-     * pbl = parabible
-     */
     const { versions, featureHost, bolUrl, pblUrl } = Config
 
     const thisFeaturehost = `${featureHost}/${docName}`
@@ -61,6 +81,11 @@ export class SelectPassage {
     }
   }
 
+  /**
+   * Switch to another version of the ETCBC data, such as 4b or 2021
+   *
+   * *   [∈ version][elem-version]
+   */
   selectVersion(v) {
     const { sidebars } = PG
 
@@ -75,9 +100,10 @@ export class SelectPassage {
   }
 }
 
+/**
+ * Handles selection of a result page
+ */
 export class SelectResultPage {
-  /* for result page selection
-   */
   constructor() {
     this.name = "select_pages"
     this.hid = `#${this.name}`
@@ -105,9 +131,14 @@ export class SelectResultPage {
   }
 }
 
+/**
+ * Handles selection of the language in which the names
+ * of bible books are presented.
+ *
+ * @see [M:blang][blang].
+ * @see [∈ language][elem-language].
+ */
 export class SelectLanguage {
-  /* language selection
-   */
   constructor() {
     this.name = "select_contents_lang"
     this.hid = `#${this.name}`
@@ -196,9 +227,12 @@ export class SelectLanguage {
   }
 }
 
+/**
+ * Handles book selection
+ *
+ * @see [∈ book][elem-book]
+ */
 class SelectBook {
-  /* book selection
-   */
   constructor() {
     this.name = "select_contents_book"
     this.hid = `#${this.name}`
@@ -276,9 +310,12 @@ class SelectBook {
   }
 }
 
+/**
+ * Handles selection of chapters and result pages.
+ *
+ * @see [∈ chapter][elem-chapter], [∈ page][elem-page]
+ */
 class SelectItems {
-  /* both for chapters and for result pages
-   */
   constructor(key) {
     this.key = key
     this.keyOther = key == "chapter" ? "page" : "chapter"

@@ -38,7 +38,7 @@ class WORD:
 
         vr = Check.field("material", "", "version", default=False)
         if not vr:
-            vr = ViewSettings.theVersion()
+            vr = ViewSettings.currentVersion()
         lan = Check.field("rest", "", "lan")
         letter = Check.field("rest", "", "letter")
 

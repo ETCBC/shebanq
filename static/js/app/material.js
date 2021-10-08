@@ -15,6 +15,13 @@ import { FeatureSettings } from "./featuresettings.js"
 
 /**
  * Controls the main area of the page.
+ *
+ * @see [M:MATERIAL][materials.MATERIAL]
+ * @see page elements:
+ * *    [∈ book][elem-book],
+ * *    [∈ chapter][elem-chapter],
+ * *    [∈ page][elem-page],
+ * *    [∈ goto-chapter][elem-goto-chapter],
  */
 export class Material {
   constructor() {
@@ -224,6 +231,8 @@ export class Material {
    * can be retrieved from the server.
    *
    * @see Triggers [C:hebrew.verse][controllers.hebrew.verse].
+   *
+   * @see [∈ show-verse-data][elem-show-verse-data]
   */
   addVerseRefs(contentNew, mf) {
     const { verseFeaturesUrl } = Config

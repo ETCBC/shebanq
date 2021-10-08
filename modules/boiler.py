@@ -276,6 +276,8 @@ LEGEND = """
     "\n", " "
 )
 """The legend as an HTML table.
+
+See [∈ feature-legend][elem-feature-legend].
 """
 
 TEXT_TPL = ("""<table class="il c">

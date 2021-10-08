@@ -130,7 +130,13 @@ class VIEWSETTINGS:
         for v in VERSIONS:
             (books[v], booksOrder[v], bookIds[v], bookName[v]) = Books.get(v)
 
-    def theVersion(self):
+    def currentVersion(self):
+        """Return the current version.
+
+        This is the version as determined by the latest request.
+
+        See [∈ version][elem-version].
+        """
         return self.state["material"][""]["version"]
 
     def writeConfig(self):

@@ -3,6 +3,10 @@
 
 /**
  * @module share
+ *
+ * Provides stable urls for citing words, queries, note sets.
+ *
+ * @see [∈ cite-slider][elem-cite-slider]
  */
 
 /* globals Config, PG, VS */

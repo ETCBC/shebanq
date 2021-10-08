@@ -36,12 +36,16 @@ or use the navigation controls.
 
 ### Code references
 
-This documentation contains many references to code.
-These references have shapes that help you recognize to what code they refer:
 
-*   `[M:XXX.yyy]` refers to Python code for `yyy` in module `modules/xxx.py`
-*   `[C:xxx.yyy]` refers to Python controller `yyy()` in file `controllers/xxx.py`
-*   `[{xxx.yyy}]` refers to Javascript code for `yyy` in file `static/js/app/xxx.js`
+This documentation contains many references to all kind of things.
+
+Some references have shapes that help you recognize to what they refer:
+
+*   `[∈ element]` refers to a page element called *element*; it links
+    to its documentation;
+*   `[M:XXX.yyy]` refers to Python code for `yyy` in module `modules/xxx.py`;
+*   `[C:xxx.yyy]` refers to Python controller `yyy()` in file `controllers/xx;x.py`
+*   `[{xxx.yyy}]` refers to Javascript code for `yyy` in file `static/js/app/x;xx.js`
 
 ## Topics
 

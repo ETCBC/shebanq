@@ -3,7 +3,7 @@ import json
 
 from gluon import current
 
-from versecontent import VerseContent
+from versecontent import VERSECONTENT
 
 
 class VERSE:
@@ -42,7 +42,7 @@ class VERSE:
         )
 
     def get_c(self, vr, bk, ch, vs, tr):
-        material = VerseContent(
+        material = VERSECONTENT(
             vr,
             bk,
             ch,

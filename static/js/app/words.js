@@ -38,12 +38,20 @@ const RequestInfo = {
   },
 }
 
+/**
+ * Handles a words overview page
+ */
 class View {
   constructor(version) {
     this.version = version
     this.init()
   }
 
+  /**
+   * Switch to another version
+   *
+   * @see [∈ version][elem-version]
+   */
   selectVersion(v, gotoWord) {
     const { wordsPageUrl } = Config
     const { lan, letter } = ConfigW

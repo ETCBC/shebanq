@@ -7,9 +7,22 @@
 
 import { ColorPicker2 } from "./colorpicker.js"
 
+/**
+ * Handles the view controls belonging to a side bar with a list of items
+ *
+ * @see [M:viewdefs.Make]
+ *
+ * @see Page elements:
+ *
+ * *   [∈ highlight-published][elem-highlight-published]
+ * *   [∈ highlight-reset][elem-highlight-reset]
+ * *   [∈ highlight-many][elem-highlight-many]
+ * *   [∈ highlight-custom][elem-highlight-custom]
+ * *   [∈ highlight-one][elem-highlight-one]
+ * *   [∈ highlight-off][elem-highlight-off]
+ * *   [∈ highlight-select-single-color][elem-highlight-select-single-color]
+ */
 export class SideSettings {
-  /* the view controls belonging to a side bar with a list of items
-   */
   constructor(qw) {
     this.qw = qw
 

@@ -3,7 +3,7 @@ from textwrap import dedent
 
 from gluon import current
 
-from versescontent import VersesContent
+from versescontent import VERSESCONTENT
 from helpers import iDecode, pagelist
 
 
@@ -11,6 +11,15 @@ RESULT_PAGE_SIZE = 20
 
 
 class MATERIAL:
+    """Responsible for the data for the main area of the page.
+
+    See
+
+    *   [{Material}][material]
+    *   [∈ book][elem-book],
+    *   [∈ chapter][elem-chapter],
+    *   [∈ page][elem-page],
+    """
     def __init__(self, Record, Word, Query, Note):
         self.Record = Record
         self.Word = Word
@@ -113,7 +122,7 @@ class MATERIAL:
         if mr == "m":
             (book, chapter) = self.getPassage(vr, bk, ch)
             material = (
-                VersesContent(vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang)
+                VERSESCONTENT(vr, mr, chapter=chapter["id"], tp=tp, tr=tr, lang=lang)
                 if chapter
                 else None
             )
@@ -157,7 +166,7 @@ class MATERIAL:
                 (nresults, npages, verses, slots) = self.getPagination(
                     vr, page, slotSets
                 )
-                material = VersesContent(vr, mr, verses, tp=tp, tr=tr, lang=lang)
+                material = VERSESCONTENT(vr, mr, verses, tp=tp, tr=tr, lang=lang)
                 result = dict(
                     mr=mr,
                     qw=qw,
