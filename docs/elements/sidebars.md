@@ -85,6 +85,23 @@ mql-box
 properties and values, among which the published status
 ```
 
+and when editing there the area for the reocrd increases and shows:
+
+```
+link
+name-entry-box
+description-markdown-entry-box
+shared-control
+```
+
+and then per version
+
+```
+collapse csv-controls chart-control mql-doc-link execute save save-close cancel
+mql-entry-box
+properties and values, among which the published status
+```
+
 ## **record** page of type **note set**
 
 ```
