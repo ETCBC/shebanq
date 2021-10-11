@@ -149,7 +149,7 @@ class Filter {
     })
     $("#filter_control_n").off("click").click(e => {
       e.preventDefault()
-      this.search("q")
+      this.search("n")
     })
     $("#filter_clear").off("click").click(e => {
       e.preventDefault()

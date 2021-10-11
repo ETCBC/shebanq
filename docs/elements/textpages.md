@@ -19,6 +19,51 @@ they are subdivided into two kinds:
         *   for a query, shows the verses where it has results;
         *   for a note set, the verses where it has members.
 
+## Operation
+
+When a SHEBANQ user navigates on a text page, he can switch between
+**material** and **record** pages.
+
+On a **material** page he sees chapter material, in a sidebar he sees lists of
+related words, queries, notes.
+
+A click on a related query item opens an `rq` page.
+
+There he sees hits of that query.
+Every hit has a link to the chapter the hit is in.
+A click on that chapter opens a **material** page for that chapter.
+
+In the sidebars there are again related words, queries, notes.
+
+A click on a related word opens an `rw` page.
+
+And so on.
+
+Under the hood there is just a single page.
+
+All blocks are always present on a text page, but not all are visible.
+Two parameters regulate which one are visible
+
+*   *mr* = `m` or `r` (**material** or **record**)
+*   *qw* = `w` or `q` or `n` (**word**, **query** or **note set**)
+
+Changes in *mr* and *qw* trigger the showing and hiding of the appropriate
+blocks.
+Moreover, if needed, fresh content for these blocks is fetched
+from the server by means of AJAX calls and inserted into them.
+
+So, during all this navigation, the skeleton of the page does not
+change, and the server is only accessed by for partial content.
+
+The controls for content selection and view settings belong to the skeleton.
+
+code type | associated names
+--- | ---
+JS |  `materialsettings.MaterialSettings`, `sideSettings.sideSettings.js`
+view | text.html
+controller | `hebrew.text()`
+
+
 ## Skeleton
 
 All text pages have a left side bar and a main area.
@@ -75,50 +120,10 @@ qualifier | page type
 `rq:` | all record *text* pages of type query
 `rn:` | all record *text* pages of type noteset
 
-## Operation
-
-When a SHEBANQ user navigates on a text page, he can switch between
-`m` and `r` pages.
-
-On an `m` page he sees chapter material, in a sidebar he sees lists of
-related words, queries, notes.
-
-A click on a related query item opens an `rq` page.
-
-There he sees hits of that query.
-Every hit has a link to the chapter the hit is in.
-A click on that chapter opens an `m` page for that chapter.
-
-In the sidebars there are again related words, queries, notes.
-
-A click on a related word opens an `rw` page.
-
-And so on.
-
-Under the hood there is just a single page.
-
-All blocks are always present on a text page, but not all are visible.
-Two parameters regulate which one are visible
-
-*   *mr* = `m` or `r`
-*   *qw* = `w` or `q` or `n`
-
-Changes in *mr* and *qw* trigger the showing and hiding of the appropriate
-blocks.
-Moreover, if needed, fresh content for these blocks is fetched
-from the server by means of AJAX calls and inserted into them.
-
-So, during all this navigation, the skeleton of the page does not
-change, and the server is only accessed by for partial content.
-
-The controls for content selection and view settings belong to the skeleton.
-
-code type | associated names
---- | ---
-JS |  `materialsettings.MaterialSettings`, `sideSettings.sideSettings.js`
-view | text.html
-controller | `hebrew.text()`
-
+Below we give the elements on these pages.
+However, for the sidebars we show only the generic controls, not the elements
+that are specific for the kind of sidebar.
+See [sidebars](sidebars.md) for those details.
 
 ## Material Controls
 
@@ -337,14 +342,15 @@ code | [{SideSettings}][sidesettings], [{ColorPicker1}][colorpickercolorpicker1]
 ## Content
 
 The main area presents a verse list.
-The verses are those of a chapter for an `m` page, and those of a record for an `r` page.
+The verses are those of a chapter for a **material** page,
+and those of a record for an **record** page.
 Think of query results and word occurrences and notes from a note set.
 
 ### elem-goto-chapter
 ![chapterverse](../images/elem_chapterverse.png)
 
-`r` pages show book-chapter indications next to the verses,
-which link to the `m` pages of the corresponding book chapters.
+**record** pages show book-chapter indications next to the verses,
+which link to the **material** pages of the corresponding book chapters.
 
 code type | associated names
 --- | ---
@@ -355,7 +361,7 @@ code | [{Material}][material]
 ### elem-show-verse-data
 ![chapterverse](../images/elem_versedata.png)
 
-Both `m` and `r` pages show verse numbers next to the verses,
+Both **material** and **record** pages show verse numbers next to the verses,
 which are clickable and open a data view of the corresponding verses,
 together with a legend button.
 

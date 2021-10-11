@@ -114,7 +114,7 @@ def word():
     request.vars["mr"] = "r"
     request.vars["qw"] = "w"
     request.vars["page"] = 1
-    return ()
+    return text()
 
 
 def query():
@@ -133,7 +133,7 @@ def query():
         return Query.bodyJson()
     else:
         request.vars["page"] = 1
-    return ()
+    return text()
 
 
 def note():
@@ -148,7 +148,7 @@ def note():
     request.vars["mr"] = "r"
     request.vars["qw"] = "n"
     request.vars["page"] = 1
-    return ()
+    return text()
 
 
 def material():
@@ -179,7 +179,7 @@ def verse():
 
 
 def sidematerial():
-    """Serves AJAX call for HTML content for the sidebar (**main** page).
+    """Serves AJAX call for HTML content for the sidebar (**material** page).
 
     Client code: [{sidecontent.fetch}][sidecontentfetch].
     """
@@ -197,7 +197,7 @@ def sidematerial():
 def sideword():
     """Serves AJAX call for HTML content for the sidebar (*word* **record** page).
 
-    Used when the user is switching between **main** and **record** pages.
+    Used when the user is switching between **material** and **record** pages.
 
     See also [M:RECORD.body][record.RECORD.body].
 
@@ -211,7 +211,7 @@ def sideword():
 def sidequery():
     """Serves AJAX call for HTML content for the sidebar (*query* **record** page).
 
-    Used when the user is switching between **main** and **record** pages.
+    Used when the user is switching between **material** and **record** pages.
 
     See also [M:RECORD.body][record.RECORD.body].
 
@@ -225,7 +225,7 @@ def sidequery():
 def sidenote():
     """Serves AJAX call for HTML content for the sidebar (*note set* **record** page).
 
-    Used when the user is switching between **main** and **record** pages.
+    Used when the user is switching between **material** and **record** pages.
 
     See also [M:RECORD.body][record.RECORD.body].
 

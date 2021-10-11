@@ -75,7 +75,7 @@ class RECORD:
         is editable, the edits will be submitted via AJAX.
         So far so good.
 
-        However, when a user navigates between **main** pages and **record**
+        However, when a user navigates between **material** pages and **record**
         pages, the pages are not served from scratch, and new sidebar material
         has to be fetched through AJAX as well.
 
