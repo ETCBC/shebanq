@@ -158,6 +158,13 @@ function installShebanq {
     cd "$SERVER_APP_DIR"
     chown -R apache:apache $APP
     if [[ -e "$SERVER_APP_DIR/web2py" ]]; then
+        # if routes and logging confs have changed, pick them up
+        # and place them in the web2py dir
+        for pyFile in parameters_443.py routes.py logging.conf
+        do
+            cp "$SERVER_APP_DIR/$APP/scripts/$pyFile" web2py
+        done
+
         compileApp $APP
         chown -R apache:apache "$SERVER_APP_DIR/$APP"
         chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"

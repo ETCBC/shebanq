@@ -322,7 +322,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     rm web2py.zip
     mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
 
-    for pyFile in parameters_443.py routes.py
+    for pyFile in parameters_443.py routes.py logging.conf
     do
         cp "$SERVER_INSTALL_DIR/$pyFile" web2py
     done
@@ -359,7 +359,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         cd "$SERVER_APP_DIR/web2py/applications"
         for app in welcome admin $APP
         do
-            for dir in languages databases cache errors sessions private uploads
+            for dir in languages log databases cache errors sessions private uploads
             do
                 # if [[ -e ${app}/${dir} ]]; then
                 #     rm -rf ${app}/${dir}

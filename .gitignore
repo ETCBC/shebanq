@@ -15,4 +15,5 @@ errors/*
 cache/*
 site/*
 build/*
+log/*
 _local
