@@ -1,4 +1,3 @@
-import sys
 from datetime import datetime
 from base64 import b64decode, b64encode
 
@@ -6,8 +5,16 @@ from gluon import current
 
 
 def debug(msg):
+    """Issue a debug message.
+
+    The message is written to the console and into a log file:
+    *shebanqDir*`/log/debug.log`.
+    It works on your local shebanq and the shebanq on a server.
+
+    See [logging]({{pythonLogging}}).
+    """
     if current.DEBUG:
-        sys.stderr.write(f"{msg}\n")
+        current.logger.debug(msg)
 
 
 def isodt(dt=None):

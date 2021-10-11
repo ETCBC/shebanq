@@ -332,48 +332,46 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     echo "o-o-o - Removing examples app"
     rm -rf "$SERVER_APP_DIR/web2py/applications/examples"
 
-    setsebool -P httpd_tmp_exec on
-
-    # hook up SHEBANQ
-
-    echo "o-o-o - hookup $APP"
-    cd "$SERVER_APP_DIR/web2py/applications"
-    if [[ -e $APP ]]; then
-        rm -rf $APP
-    fi
-    ln -s "$SERVER_APP_DIR/$APP" "$APP"
-    chown apache:apache "$APP"
-
-    if [[ -e "$APP" ]]; then
-        compileApp $APP
-        chown -R apache:apache "$SERVER_APP_DIR/$APP"
-        chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
-    fi
-
-    cd "$SERVER_APP_DIR"
-    chown -R apache:apache web2py
+    chown -R apache:apache "$SERVER_APP_DIR/web2py"
     chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/web2py"
 
     if [[ "$skipExtradirs" != "v" ]]; then
         echo "o-o-o - make writable dirs"
         cd "$SERVER_APP_DIR/web2py/applications"
-        for app in welcome admin $APP
+        for app in welcome admin
         do
             for dir in languages log databases cache errors sessions private uploads
             do
-                # if [[ -e ${app}/${dir} ]]; then
-                #     rm -rf ${app}/${dir}
-                # fi
-                if [[ ! -e ${app}/${dir} ]]; then
-                    mkdir ${app}/${dir}
+                path="$app/$dir"
+                if [[ ! -e "$path" ]]; then
+                    mkdir "$path"
                 fi
-                chown -R apache:apache ${app}/${dir}
-                # chcon -R -t tmp_t ${app}/${dir}
-                chcon -R -t httpd_sys_rw_content_t ${app}/${dir}
+                chown -R apache:apache "$path"
+                chcon -R -t httpd_sys_rw_content_t "$path"
             done
         done
     fi
 
+    setsebool -P httpd_tmp_exec on
+
+    # hook up SHEBANQ
+
+    echo "o-o-o - hookup $APP"
+
+    if [[ -e "$SERVER_APP_DIR/$APP" ]]; then
+        cd "$SERVER_APP_DIR/web2py/applications"
+        if [[ -e $APP ]]; then
+            rm -rf $APP
+        fi
+        ln -s "$SERVER_APP_DIR/$APP" "$APP"
+        chown apache:apache "$APP"
+
+        if [[ -e "$APP" ]]; then
+            compileApp $APP
+            chown -R apache:apache "$SERVER_APP_DIR/$APP"
+            chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
+        fi
+    fi
 fi
 
 # test controller to spot errors

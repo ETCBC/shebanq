@@ -128,6 +128,7 @@ extra:
   pipeline: https://github.com/etcbc/pipeline
   python: https://www.python.org
   pythondocstrings: https://www.python.org/dev/peps/pep-0257/
+  pythonLogging: https://docs.python.org/3/library/logging.html#module-logging
   scp: https://man.openbsd.org/scp.1
   selinux: https://en.wikipedia.org/wiki/Security-Enhanced_Linux
   shellsudo: https://linuxtect.com/linux-sudo-command-run-commands-with-root-privileges/
@@ -139,6 +140,7 @@ extra:
   web2pyCache: http://web2py.com/books/default/chapter/29/04/the-core#cache
   web2pyComponents: http://www.web2py.com/books/default/chapter/29/12/components-and-plugins#Components-LOAD-and-Ajax
   web2pyCurrent: http://web2py.com/books/default/chapter/29/04/the-core#Sharing-the-global-scope-with-modules-using-the-current-object
+  web2pyLogging: http://web2py.com/books/default/chapter/29/04/the-core#Logging
   webApi: https://developer.mozilla.org/en-US/docs/Web/API/document
   wsgi: https://modwsgi.readthedocs.io/en/develop
   yaml: http://www.yaml.org

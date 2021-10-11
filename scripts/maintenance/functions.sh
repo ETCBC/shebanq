@@ -165,12 +165,16 @@ function installShebanq {
             cp "$SERVER_APP_DIR/$APP/scripts/$pyFile" web2py
         done
 
-        logDir="$SERVER_APP_DIR/$APP/log"
-        if [[ ! -e "$logDir" ]]; then
-            mkdir "$logDir"
-            chown -R apache:apache "$logDir"
-            chcon -R -t httpd_sys_rw_content_t "$logDir"
-        fi
+        shebanqDir="$SERVER_APP_DIR/$APP"
+        for dir in languages log databases cache errors sessions private uploads
+        do
+            path="$shebanqDir/$dir"
+            if [[ ! -e "$path" ]]; then
+                mkdir "$path"
+            fi
+            chown -R apache:apache "$path"
+            chcon -R -t httpd_sys_rw_content_t "$path"
+        done
 
         compileApp $APP
         chown -R apache:apache "$SERVER_APP_DIR/$APP"
@@ -194,8 +198,10 @@ function testController {
 function firstVisit {
     echo "o-o-o    FIRST VISIT (this might take a minute)   o-o-o"
     echo "o-o-o An expensive index will be computed and cached"
+    echo "o-o-o This may take a minute ! ..."
 
     fullUrl="https://$SERVER_URL/$TEST_CONTROLLER"
     echo "fetching $fullUrl"
     $TM curl "https://$SERVER_URL/$TEST_CONTROLLER" | tail
+    echo "o-o-o First visit done"
 }

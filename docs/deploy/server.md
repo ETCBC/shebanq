@@ -535,7 +535,90 @@ and import it to the databases.
 ## Trouble shooting
 
 It is very difficult to view messages issued by Python code.
-So far, I have not been able to view them anywhere in the log files.
+`print` and `sys.stderr.write()` do not work.
 
-The recommended practice is to install Web2Py and SHEBANQ on your local computer,
+What does work is to use the module
+[logging]({{pythonLogging}})
+from the standard Python library, and
+[hook it up in the Web2py framework]({{web2pyLogging}}).
+
+But you do not have to do that yourself, it is already done in the
+debug helper [M: helpers.debug][helpers.debug]
+
+Just say
+
+```
+from helpers import debug
+
+debug("here you are")
+```
+
+and you'll see the message `here you are` ending up in 
+`opt/web-apps/shebanq/log/debug.log`.
+
+However, use this only in emergencies or if there are discrepancies between 
+the SHEBANQ on your local computer and the SHEBANQ on the server.
+
+The recommended practice is to
+[install Web2Py and SHEBANQ on your local computer](computer.md),
 and debug it there.
+
+### SELINUX violations
+
+If you get an internal error, but there are no Web2Py errors listed for the SHEBANQ app,
+it is probably a permissions error that has nothing to do with the application logic.
+
+Try to run the server in *permissive* mode:
+
+```
+setenforce 0
+```
+
+and make a new visit to the website.
+If all is well, there you have the culprit.
+Probably all stays well if you now put the mode back to enforcing:
+
+```
+setenforce 1
+```
+
+But this is not et the solution. You want to know what permission got violated.
+On the server you can inspect the audit log
+
+```
+ausearch -m avc --start today
+```
+
+This gives you the violations for today. It might give you a hint to what went wrong.
+
+Probably the webserver needed to write a file for which it had no permissions.
+Obvious cases in a web2py application are:
+
+1.  compilation of Python files. This standard Python behaviour compiles a Python
+    file before running it and saves it in a `__pychache__` directory next to the
+    Python scripts.
+    This write action is usually not permitted in directories with code.
+2.  Some directories should be writable by the webserver, such as logs, uploads, databases.
+    But when these directories are removed and then recreated, their writability might
+    also been gone.
+
+To remedy this, our `install.sh` and `update.sh` take great care to
+precompile all possible Python files (under `sudo`) and to
+give the writable directories the right security context, whenever they are
+created (`httpd_sys_rw_content_t`).
+
+### Database permissions
+
+The next frequent source of errors is when the database cannot be reached.
+Here is a checklist:
+
+*   The database should be up and running;
+*   The required databases should be present in the database;
+*   The database must allow connections with the `shebanq` user on the server;
+    and, during installation, also to the `shebanq_admin` user;
+*   The database should be set up with the right grants to its data;
+*   The web app should provide the right credentials;
+*   The web app should issue legal SQL statements.
+
+If one of these things goes wrong, there will be error messages in the
+Web2py errors for SHEBANQ.

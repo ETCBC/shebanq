@@ -45,12 +45,10 @@ def text():
     See also [M:VIEWSETTINGS.page][viewsettings.VIEWSETTINGS.page].
     """
     session.forget(response)
-    logger.debug("entering hebrew text", exc_info=True)
     init()
     Books = BOOKS()
     ViewSettings = VIEWSETTINGS(Books)
     ViewSettings.initState()
-    logger.debug("leaving hebrew text", exc_info=True)
     return ViewSettings.page()
 
 
