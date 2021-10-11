@@ -57,7 +57,7 @@ class RECORD:
 
         !!! caution "Web2py device"
             We use a
-            [web2py device]({{web2pycomponents}})
+            [web2py device]({{web2pyComponents}})
             here that shields the mechanics of an AJAX call.
             That leads to code that is not very clear.
 

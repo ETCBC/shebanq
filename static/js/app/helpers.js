@@ -8,6 +8,9 @@
 export const idPrefixNotes = "n"
 export const idPrefixQueries = "q"
 
+/**
+ * Escape the `&` `<` `>` in strings that must be rendered as HTML.
+ */
 export const escHT = text => {
   const chr = {
     "&": "&amp;",
@@ -17,11 +20,25 @@ export const escHT = text => {
   return text.replace(/[&<>]/g, a => chr[a])
 }
 
+/**
+ * Escape the `_` character in strings that must be rendered as markdown.
+ */
 const mEscape = ns => ns.replace(/_/g, "\\_")
 
 export const markdownEscape = ntext =>
   ntext.replace(/\[[^\]\n\t]+\]\([^)]*\)/g, mEscape)
 
+/**
+ * Display markdown
+ *
+ * The markdown is formatted as HTML, where shebanq-specific links
+ * are resolved into working hyperlinks.
+ *
+ * @param wdg A div in the HTML
+ *
+ * This div has a subdiv with the source markdown in it
+ * and a destination div which gets the result of the conversion
+ */
 export const putMarkdown = wdg => {
   const did = wdg.attr("did")
   const src = $(`#dv_${did}`)
@@ -29,6 +46,9 @@ export const putMarkdown = wdg => {
   mdw.html(specialLinks(markdown.toHTML(src.val())))
 }
 
+/**
+ * Hide and expand material
+ */
 export const toggleDetail = (wdg, detail, extra) => {
   const thedetail = detail == undefined ? wdg.closest("div").find(".detail") : detail
   thedetail.toggle()
@@ -47,6 +67,9 @@ export const toggleDetail = (wdg, detail, extra) => {
   wdg.addClass(othercl)
 }
 
+/**
+ * Resolve shebanq-specific links into working hyperlinks
+ */
 export const specialLinks = mdIn => {
   const { featureHost, pageShareUrl } = Config
 
@@ -98,13 +121,14 @@ export const specialLinks = mdIn => {
   return mdOut
 }
 
+/**
+ * Computes the default color
+ *
+ * The data for the computation comes from the server
+ * and is stored in the javascript global variable Config
+ * colorsDefault, nDefaultClrCols, nDefaultClrRows
+ */
 export const colorDefault = (qw, iid) => {
-  /* compute the default color
-   *
-   * The data for the computation comes from the server
-   * and is stored in the javascript global variable Config
-   * colorsDefault, nDefaultClrCols, nDefaultClrRows
-   */
   const { itemStyle, colorsDefault, nDefaultClrCols, nDefaultClrRows } = Config
 
   let result
@@ -131,6 +155,9 @@ export const colorDefault = (qw, iid) => {
   return result
 }
 
+/**
+ * Close a dialog box
+ */
 export const closeDialog = dia => {
   const wasOpen = Boolean(
     dia && dia.length && dia.dialog("instance") && dia.dialog("isOpen")

@@ -4,6 +4,12 @@
  * @module diagnostics
  */
 
+/**
+ * Handles diagnostic messages on the HTML page.
+ *
+ * When something goes wrong, messages can be displayed in
+ * divs. There will also be a control to clear those messages.
+ */
 export class Diagnostics {
   constructor(destination, onClear) {
     this.destination = $(`#${destination}`)

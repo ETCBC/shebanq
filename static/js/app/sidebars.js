@@ -8,9 +8,16 @@
 import { Chart } from "./chart.js"
 import { SideContent } from "./sidecontent.js"
 
+/**
+ * Handles the sidebars.
+ *
+ * Any kind is handled.
+ * But it only manages the administration of whether content has been fetched
+ * for the sidebar.
+ * All things that depend on the kind of sidebar are delegated
+ * to the [{sidebar}][sidebarssidebar] object.
+ */
 export class Sidebars {
-  /* TOP LEVEL: all four kinds of sidebars
-   */
   constructor() {
     this.sidebar = {}
     for (const mr of ["m", "r"]) {
@@ -42,14 +49,12 @@ export class Sidebars {
   }
 }
 
-/* SPECIFIC sidebars, the [mr][qw] type is frozen into the object
+/**
+ * Handles specific sidebars.
  *
+ * The *mr* and *qw* types are frozen into the object
  */
-
 class Sidebar {
-  /* the individual sidebar, parametrized with mr and qw
-   * to specify one of the four kinds
-   */
   constructor(mr, qw) {
     const { versions } = Config
 

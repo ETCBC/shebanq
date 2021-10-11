@@ -5,14 +5,14 @@
  * @module featuresettings
  */
 
-/* HEBREW DATA (which fields to show if interlinear text is displayed)
- *
+/*
+ * Manages the selection of linguistic features to be displayed
+ * when the data of a verse is shown.
  */
-
 export class FeatureSettings {
   constructor() {
     for (const fld in VS.getHebrew()) {
-      this[fld] = new HebrewSetting(fld)
+      this[fld] = new FeatureSetting(fld)
     }
   }
 
@@ -28,7 +28,10 @@ export class FeatureSettings {
   }
 }
 
-class HebrewSetting {
+/**
+ * Handles the display a single lingusitic feature.
+ */
+class FeatureSetting {
   constructor(fld) {
     const { versions } = Config
 

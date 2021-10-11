@@ -12,11 +12,16 @@ import { Diagnostics } from "./diagnostics.js"
 import { idPrefixNotes } from "./helpers.js"
 
 let treeObj, diagnostics, rootData
-const subtractForNotesPage = 80
-/* the canvas holding the material gets a height equal to
+/**
+ * the canvas holding the material gets a height equal to
  * the window height minus this amount
  */
+const subtractForNotesPage = 80
 
+/**
+ * Advanced or simple view of the tree of notes.
+ * In advanced views there are more sophisticated counts.
+ */
 class View {
   constructor() {
     const { lsNotes } = LS
@@ -58,6 +63,12 @@ class View {
   }
 }
 
+/**
+ * The tree can be shown at different levels:
+ *
+ * *   user
+ * *   noteset
+ */
 class Level {
   constructor() {
     const { lsNotes } = LS
@@ -109,6 +120,11 @@ class Level {
   }
 }
 
+/**
+ * The tree can be filtered.
+ *
+ * This is a full text search on the texts of the nodes.
+ */
 class Filter {
   constructor() {
     const { lsNotes } = LS

@@ -63,6 +63,7 @@ plugins:
   - mkdocstrings:
       default_handler: python
       watch:
+        - "models"
         - "modules"
         - "controllers"
       handlers:
@@ -74,9 +75,13 @@ plugins:
             - from gluon.cache import Cache
             - cache = Cache({})
             - print(cache)
+          selection:
+            docstring_style: numpy
           rendering:
             show_source: true
             show_root_heading: true
+            show_if_no_docstring: true
+            members_order: source
   - minify:
       minify_html: true
 
@@ -131,7 +136,9 @@ extra:
   textfabric: https://annotation/text-fabric
   web2py: http://web2py.com
   web2pyRepo: https://github.com/web2py/web2py
-  web2pycomponents: http://www.web2py.com/books/default/chapter/29/12/components-and-plugins#Components-LOAD-and-Ajax
+  web2pyCache: http://web2py.com/books/default/chapter/29/04/the-core#cache
+  web2pyComponents: http://www.web2py.com/books/default/chapter/29/12/components-and-plugins#Components-LOAD-and-Ajax
+  web2pyCurrent: http://web2py.com/books/default/chapter/29/04/the-core#Sharing-the-global-scope-with-modules-using-the-current-object
   webApi: https://developer.mozilla.org/en-US/docs/Web/API/document
   wsgi: https://modwsgi.readthedocs.io/en/develop
   yaml: http://www.yaml.org

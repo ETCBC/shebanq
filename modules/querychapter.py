@@ -17,6 +17,11 @@ class QUERYCHAPTER:
             self.makeQCindex(vr)
 
     def makeQCindex(self, vr):
+        """We build an index of queries by chapter in which they have results.
+
+        The index building takes may take multiple seconds per data version.
+        But the result is stored in the cache.
+        """
         Caching = current.Caching
 
         Caching.get(f"qcindex_{vr}_", lambda: self.makeQCindex_c(vr), None)
@@ -113,7 +118,8 @@ class QUERYCHAPTER:
         debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
 
     def updateQCindex(self, vr, query_id, uptodate=True):
-        """
+        """Update the chapter-query index if a query has been run or rerun.
+
         We want an up to date mapping from chapters to the shared, up-to-date
         queries with results in those chapters.
 

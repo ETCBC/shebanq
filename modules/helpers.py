@@ -179,10 +179,10 @@ def normRanges(ranges, fromset=None):
     return (len(covered), result)
 
 
-# we need to hEsc the markdown text
-# but markdown does an extra layer of escaping & inside href attributes.
-# we have to unescape doubly escaped &
-
-
 def sanitize(text):
+    """We need to hEsc the markdown text.
+
+    But markdown does an extra layer of escaping `&` inside `href` attributes.
+    We have to unescape doubly escaped `&`.
+    """
     return text.replace("&amp;amp;", "&amp;")

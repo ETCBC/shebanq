@@ -1160,8 +1160,6 @@ BOOK_NAMES = {
 """
 
 
-# make a translation table from latin book names (the ETCBC ones)
-# to the specific languages
 BOOK_TRANS = {}
 for lng in BOOK_NAMES[BIBLANG]:
     for (i, book) in enumerate(BOOK_NAMES[BIBLANG][lng]):

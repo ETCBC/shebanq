@@ -81,6 +81,7 @@ In order to modify it, you have to install it, and a plugin:
 pip3 install mkdocs
 pip3 install mkdocs-material
 pip3 install mkdocstrings
+pip3 install 'pytkdocs[numpy-style]'
 ```
 
 You need an extra tool for Javascript documentation:

@@ -42,7 +42,8 @@ class BOOKS:
         return Caching.get(f"books_{vr}_", lambda: self.get_c(vr), None)
 
     def get_c(self, vr):
-        # get book information: number of chapters per book
+        """get book information: number of chapters per book
+        """
         PASSAGE_DBS = current.PASSAGE_DBS
 
         if vr in PASSAGE_DBS:

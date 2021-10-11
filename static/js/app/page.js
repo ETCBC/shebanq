@@ -10,9 +10,16 @@ import { Material } from "./material.js"
 import { Sidebars } from "./sidebars.js"
 import { SideSettings } from "./sidesettings.js"
 
+/**
+ * The one and only page object
+ *
+ * This object manages the skeleton of the page,
+ * and acts as a director of the updates that are needed
+ * when the user is navigating from main pages to record
+ * pages. It only gives top-level commands to the objects
+ * that handle individual parts of the pages.
+ */
 export class Page {
-  /* the one and only page object
-   */
   constructor() {
 
     this.mqlSmallHeight = "10em"
@@ -194,24 +201,23 @@ export class Page {
     this.material.apply()
   }
 
-  /*
-   * the origin must be an object which has a member indicating
-   * the type of origin and the kind of page.
-
-   * 1: a color picker 1 from an item in a list
-   * 1a: the color picker 1 on an item page
-   * 2: a color picker 2 on a list page
-   * 3: a button of the list view settings
-   * 4: a click on a word in the text
-   * 5: when the data or text representation is loaded
-   */
   highlight2(origin) {
-    /* all highlighting goes through this function
-        highlighting is holistic: when the user changes a view settings,
-        all highlights have to be reevaluated.
-        The only reduction is that word highlighting is completely orthogonal
-        to query result highlighting.
-    */
+    /** all highlighting goes through this function
+     *
+     * highlighting is holistic: when the user changes a view setting,
+     * all highlights have to be re-evaluated.
+     * The only reduction is that word highlighting is completely orthogonal
+     * to query result highlighting.
+     * The origin must be an object which has a member indicating
+     * the type of origin and the kind of page.
+     *
+     * *   `1`: a color picker 1 from an item in a list
+     * *   `1a`: the color picker 1 on an item page
+     * *   `2`: a color picker 2 on a list page
+     * *   `3`: a button of the list view settings
+     * *   `4`: a click on a word in the text
+     * *   `5`: when the data or text representation is loaded
+     */
     const { itemStyle } = Config
 
     const { qw, iid, code } = origin
@@ -219,8 +225,6 @@ export class Page {
     const { sideSettings } = this
     const active = VS.active(qw)
     if (active == "hlreset") {
-      /* all ViewSettings for either queries or words are restored to 'factory' settings
-       */
       VS.delColorsAll(qw)
       VS.setHighlight(qw, { active: "hlcustom", sel_one: colorDefault(qw, null) })
       sideSettings[qw].apply()
@@ -236,7 +240,7 @@ export class Page {
 
     /* first we are going to compute what to paint,
      * resulting in a list of paint instructions.
-       Then we apply the paint instructions in one batch.
+     * Then we apply the paint instructions in one batch.
      */
 
     /* computing the paint instructions */

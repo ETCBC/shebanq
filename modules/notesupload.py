@@ -199,9 +199,6 @@ class NOTESUPLOAD:
         if len(thisChunk):
             chunks.append(thisChunk)
 
-        # with open('/tmp/xxx.txt', 'w') as fh:
-        #    for line in fileText.value:
-        #        fh.write(line)
         if errors or nerrors:
             good = False
         else:

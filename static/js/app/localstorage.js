@@ -4,6 +4,12 @@
  * @module localstorage
  */
 
+/**
+ * Set up sections of local storage for several kinds of settings:
+ *
+ * *   notes settings, and which notes are muted
+ * *   queries settings, and which queries are muted
+ */
 export class LStorage {
   constructor() {
     this.lsQueries = $.initNamespaceStorage("lsQueries").localStorage

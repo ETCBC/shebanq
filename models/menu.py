@@ -38,10 +38,8 @@ current.SITUATION = (
     "prod" if onProd else "test" if onTest else "local" if onLocal else "other"
 )
 current.DEBUG = onLocal or onTest
-# debug("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 
 
-# response.title = request.application.replace('_',' ').title()
 response.title = request.function.replace("_", " ").capitalize()
 response.subtitle = ""
 

@@ -9,10 +9,19 @@ from helpers import iDecode
 from viewdefs import VIEWDEFS
 
 
-current.ViewDefs = VIEWDEFS()
-
-
 class CHECK:
+    """Checks values for parameters
+
+    Before passing on request parameters to the rest of the application,
+    they will be checked for sanity. Default values will be supplied, if
+    needed.
+
+    !!! caution "other location"
+        This module is not in the `modules` directory but in the `models` directory.
+        In the module an instance of this class is created and added to
+        [current]({{web2py}}) (a web2py concept),
+        which means that the object is available for each request.
+    """
     def __init__(self):
         pass
 
@@ -297,4 +306,6 @@ class CHECK:
         return result
 
 
-current.Check = CHECK()
+if hasattr(current, "cache"):
+    current.ViewDefs = VIEWDEFS()
+    current.Check = CHECK()

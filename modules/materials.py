@@ -101,10 +101,6 @@ class MATERIAL:
     def get(self, vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang):
         Caching = current.Caching
 
-        # We build an index of queries by chapter in which they have results.
-        # The index building takes may take multiple seconds per data version.
-        # But the result is stored in the cache.
-
         mrrep = "m" if mr == "m" else qw
         book = bk if mr == "m" else iidRep
         chapter = ch if mr == "m" else page

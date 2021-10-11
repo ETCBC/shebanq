@@ -4,23 +4,12 @@
 
 * [colorpicker](#module_colorpicker)
     * [.ColorPicker1](#module_colorpicker.ColorPicker1)
-        * [new exports.ColorPicker1()](#new_module_colorpicker.ColorPicker1_new)
     * [.ColorPicker2](#module_colorpicker.ColorPicker2)
-        * [new exports.ColorPicker2()](#new_module_colorpicker.ColorPicker2_new)
 
 <a name="module_colorpicker.ColorPicker1"></a>
 
 ### colorpicker.ColorPicker1
-**Kind**: static class of [<code>colorpicker</code>](#module_colorpicker)  
-**See**
-
-- [∈ highlight-select-single-color][elem-highlight-select-single-color]
-- [∈ highlight-select-color][elem-highlight-select-color]
-
-<a name="new_module_colorpicker.ColorPicker1_new"></a>
-
-#### new exports.ColorPicker1()
-the ColorPicker associated with individual items
+The ColorPicker associated with individual items
 
 These pickers show up in lists of items (in mq and mw sidebars) and
 near individual items (in rq and rw sidebars).
@@ -31,15 +20,16 @@ which is saved in a cookie upon every picking action.
 All actions are processed by the highlight2 (!) method
 of the associated Settings object.
 
+**Kind**: static class of [<code>colorpicker</code>](#module_colorpicker)  
+**See**
+
+- [∈ highlight-select-single-color][elem-highlight-select-single-color]
+- [∈ highlight-select-color][elem-highlight-select-color]
+
 <a name="module_colorpicker.ColorPicker2"></a>
 
 ### colorpicker.ColorPicker2
-**Kind**: static class of [<code>colorpicker</code>](#module_colorpicker)  
-**See**: [∈ highlight-select-single-color][elem-highlight-select-single-color]  
-<a name="new_module_colorpicker.ColorPicker2_new"></a>
-
-#### new exports.ColorPicker2()
-the ColorPicker associated with the view settings in a sidebar
+The ColorPicker associated with the view settings in a sidebar
 
 These pickers show up at the top of the individual sidebars,
 only on mq and mw sidebars.
@@ -55,3 +45,5 @@ which are synchronized in a cookie.
 All actions are processed by the highlight2 method
 of the associated Settings object.
 
+**Kind**: static class of [<code>colorpicker</code>](#module_colorpicker)  
+**See**: [∈ highlight-select-single-color][elem-highlight-select-single-color]  

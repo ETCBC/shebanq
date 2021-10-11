@@ -3,9 +3,12 @@
 ## chart
 
 * [chart](#module_chart)
-    * [.Chart](#module_chart.Chart)
-        * [.apply()](#module_chart.Chart+apply)
-        * [.fetch()](#module_chart.Chart+fetch)
+    * _static_
+        * [.Chart](#module_chart.Chart)
+            * [.apply()](#module_chart.Chart+apply)
+            * [.fetch()](#module_chart.Chart+fetch)
+    * _inner_
+        * [~chartCols](#module_chart..chartCols)
 
 <a name="module_chart.Chart"></a>
 
@@ -32,3 +35,9 @@ get the material by AJAX if needed, and process the material afterward
 
 **Kind**: instance method of [<code>Chart</code>](#module_chart.Chart)  
 **See**: Triggers [C:hebrew.chart][controllers.hebrew.chart]  
+<a name="module_chart..chartCols"></a>
+
+### chart~chartCols
+number of chapters in a row in a chart
+
+**Kind**: inner constant of [<code>chart</code>](#module_chart)  

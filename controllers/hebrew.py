@@ -18,15 +18,6 @@ from chart import CHART
 from csvdata import CSVDATA
 
 
-# it is essential that this is performed at the start
-# of each Hebrew reuqest
-# The first time it computes a query-chapter index.
-# All subsequent times, it takes the index from cache.
-# If a page would succeed before building this index,
-# it might get a sidebar with insufficient material,
-# and the insufficient material alrerady cached.
-
-
 def init():
     QueryChapter = QUERYCHAPTER()
     QueryChapter.makeQCindexes()

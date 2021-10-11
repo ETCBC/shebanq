@@ -4,9 +4,10 @@
  * @module message
  */
 
+/**
+ * Diagnostic output
+ */
 export class Message {
-  /* diagnostic output
-   */
   constructor() {
     this.name = "material_message"
     this.hid = `#${this.name}`

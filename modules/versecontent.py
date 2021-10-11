@@ -246,8 +246,6 @@ class VERSECONTENT:
         clauseType = words[0]["clause_typ"]
         tabN = int(words[0]["clause_atom_tab"])
         clauseAtomNumber = int(words[0]["clause_atom_number"])
-        # tab = '<span class="fa fa-plus-square">&#xf0fe;</span>' * tabN # plus square
-        # tab = '&gt;' * tabN # plus square
         tab10s = int(tabN // 10)
         tab10r = tabN % 10
         smalltab = "&lt;" * tab10r

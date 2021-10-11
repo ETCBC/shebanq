@@ -13,14 +13,21 @@ import { Diagnostics } from "./diagnostics.js"
 import { QueryRecent } from "./queryrecent.js"
 
 let treeObj, diagnostics, diagnosticsTree, rootData
-const subtractForQueriesPage = 80
-/* the canvas holding the material gets a height equal to
+
+/**
+ * the canvas holding the material gets a height equal to
  * the window height minus this amount
  */
-const controlHeight = 100
-/* height for messages and controls
+const subtractForQueriesPage = 80
+/**
+ * height for messages and controls
  */
+const controlHeight = 100
 
+/**
+ * Advanced or simple view of the tree of queries.
+ * In advanced views there are more sophisticated counts.
+ */
 class View {
   constructor() {
     const { lsQueries } = LS
@@ -61,6 +68,14 @@ class View {
   }
 }
 
+/**
+ * The tree can be shown at different levels:
+ *
+ * *   organization
+ * *   project
+ * *   user
+ * *   query
+ */
 class Level {
   constructor() {
     const { lsQueries } = LS
@@ -120,6 +135,11 @@ class Level {
   }
 }
 
+/**
+ * The tree can be filtered.
+ *
+ * This is a full text search on the texts of the nodes.
+ */
 class Filter {
   constructor() {
     const { lsQueries } = LS

@@ -7,9 +7,10 @@
 
 import { colorDefault } from "./helpers.js"
 
-const chartCols = 30
-/* number of chapters in a row in a chart
+/**
+ * number of chapters in a row in a chart
  */
+const chartCols = 30
 
 
 /**
@@ -116,7 +117,8 @@ export class Chart {
   }
 
   genHtml(iid) {
-    /* generate a new chart
+    /**
+     * generate a chart
      */
     const { itemStyle, colorsCls } = Config
 
