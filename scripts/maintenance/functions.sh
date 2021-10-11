@@ -165,6 +165,13 @@ function installShebanq {
             cp "$SERVER_APP_DIR/$APP/scripts/$pyFile" web2py
         done
 
+        logDir="$SERVER_APP_DIR/$APP/log"
+        if [[ ! -e "$logDir" ]]; then
+            mkdir "$logDir"
+            chown -R apache:apache "$logDir"
+            chcon -R -t httpd_sys_rw_content_t "$logDir"
+        fi
+
         compileApp $APP
         chown -R apache:apache "$SERVER_APP_DIR/$APP"
         chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"

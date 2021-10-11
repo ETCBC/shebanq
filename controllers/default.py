@@ -1,6 +1,3 @@
-from gluon import current
-
-
 EXPIRE = 3600 * 24 * 30
 
 # def myerror(): return 1/0
@@ -31,7 +28,6 @@ def index():
     session.forget(response)
     response.title = T("SHEBANQ")
     response.subtitle = T("Query the Hebrew Bible through the BHSA database")
-    current.logger.debug("hebrew text", exc_info=True)
     return dict()
 
 

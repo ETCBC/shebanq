@@ -14,7 +14,11 @@ showUsage "$1" "$USAGE"
 
 cd "$SERVER_APP_DIR/web2py"
 
-cp "$SCRIPT_SRC_DIR/routes.py" .
+for item in routes.py logging.conf
+do
+    cp "$SCRIPT_SRC_DIR/$item" .
+done
+
 for item in local.crt local.csr local.key
 do
     cp "$SCRIPT_SRC_DIR/computer/$item" .
