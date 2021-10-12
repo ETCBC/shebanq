@@ -63,15 +63,15 @@ plugins:
   - mkdocstrings:
       default_handler: python
       watch:
+        - "controllers"
         - "models"
         - "modules"
-        - "controllers"
+        - "ftests"
       handlers:
         python:
           setup_commands:
             - import sys
-            - sys.path.insert(0, "../../web2py/web2py")
-            - sys.path.insert(0, "modules")
+            - sys.path[0:0] = ["modules", "ftests", ".", "../../web2py/web2py"]
             - from gluon.cache import Cache
             - cache = Cache({})
             - print(cache)
@@ -126,10 +126,13 @@ extra:
   parabible: https://parabible.com/Genesis/1
   pdoc3: https://pdoc3.github.io/pdoc/
   pipeline: https://github.com/etcbc/pipeline
+  pytest: https://github.com/pytest-dev/pytest
+  pytestFixtures: https://docs.pytest.org/en/latest/explanation/fixtures.html
   python: https://www.python.org
   pythondocstrings: https://www.python.org/dev/peps/pep-0257/
   pythonLogging: https://docs.python.org/3/library/logging.html#module-logging
   scp: https://man.openbsd.org/scp.1
+  selenium: https://www.selenium.dev
   selinux: https://en.wikipedia.org/wiki/Security-Enhanced_Linux
   shellsudo: https://linuxtect.com/linux-sudo-command-run-commands-with-root-privileges/
   ssh: https://man.openbsd.org/ssh.1

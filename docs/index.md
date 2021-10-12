@@ -29,6 +29,9 @@ There are several kinds of documentation of SHEBANQ,
 see [documentation](deploy/documentation.md) where it is decribed
 how to maintain that information.
 
+In order to develop effectively, we use a test framework,
+see [testing](tests/index.md).
+
 Quickly jump to a topic below,
 or use the navigation controls.
 
@@ -54,3 +57,4 @@ Some references have shapes that help you recognize to what they refer:
     [personal computers](deploy/computer.md) and
     [servers](deploy/server.md)
 *   [Maintenance](deploy/maintenance.md)
+*   [Testing](tests/index.md)

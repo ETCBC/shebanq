@@ -78,6 +78,18 @@ the long-term support of SHEBANQ.
     Together with automation it is the best help we can offer
     to the maintainers of SHEBANQ in the years to come.
 
+*   **Testing**
+
+    Whenever parts of the SHEBANQ codebase are changed,
+    it is immensely helpful to run a battery of tests
+    as an indication that nothing has been broken by the
+    changes.
+    This is in an early stage of development.
+    We have set up the framework and implemented a couple of tests,
+    just to show the mechanism.
+    The test themselves are also documented.
+    See (testing)[../tests/index.md] 
+
 ## Operation
 
 SHEBANQ has a build script by which you can take care of

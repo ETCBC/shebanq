@@ -8,7 +8,7 @@ The controllers can be grouped as follows.
 
 ## Feed
 
-### :::controllers.feed
+### ::: controllers.feed
 
 ## Hebrew
 

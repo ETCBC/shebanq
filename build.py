@@ -8,6 +8,9 @@ ORG = "etcbc"
 REPO = "shebanq"
 PKG = "shebanq"
 
+TEST_SRC = "ftests/"
+TEST_DST = "docs/tests/bymodule"
+
 PY_SRC = "modules/"
 PY_DST = "docs/server/bymodule"
 
@@ -28,6 +31,7 @@ docs  : serve docs locally (after building them, including js docs)
 mdocs : build docs (excluding jsdocs)
 mkdocs : build docs (including jsdocs)
 sdocs : ship docs (after building them, including js docs)
+test  : run tests
 ship  : build for shipping
 
 For g and ship you need to pass a commit message.
@@ -52,6 +56,7 @@ def readArgs():
         "mkdocs",
         "sdocs",
         "clean",
+        "test",
         "ship",
     }:
         console(HELP)
@@ -61,6 +66,8 @@ def readArgs():
             console("Provide a commit message")
             return (False, None, [])
         return (arg, args[1], args[2:])
+    elif arg in {"test"}:
+        return (arg, None, args[1:])
     return (arg, None, [])
 
 
@@ -80,6 +87,31 @@ def makeDocs():
 
 def shipDocs():
     run(["mkdocs", "gh-deploy"])
+
+
+def runTests(args):
+    run(["pytest", *args], cwd="ftests")
+
+
+def makeTestDocs():
+    pyFiles = sorted(
+        pyFile.removesuffix(".py")
+        for pyFile in os.listdir(TEST_SRC)
+        if pyFile.endswith(".py")
+    )
+    console(f"update references for {len(pyFiles)} test scripts")
+    for pyFile in pyFiles:
+        with open(f"{TEST_DST}/{pyFile}.md", "w") as fh:
+            fh.write(
+                dedent(
+                    f"""
+                ## ::: ftests.{pyFile}
+
+                ---
+
+                """
+                )
+            )
 
 
 def makePyDocs():
@@ -120,20 +152,26 @@ def main():
     elif task == "docs":
         makeJsDocs()
         makePyDocs()
+        makeTestDocs()
         serveDocs()
     elif task == "mdocs":
         makeDocs()
     elif task == "mkdocs":
         makeJsDocs()
         makePyDocs()
+        makeTestDocs()
         makeDocs()
     elif task == "sdocs":
         makeJsDocs()
         makePyDocs()
+        makeTestDocs()
         shipDocs()
+    elif task == "test":
+        runTests(remaining)
     elif task == "ship":
         makeJsDocs()
         makePyDocs()
+        makeTestDocs()
         shipDocs()
         commit(task, msg)
 
