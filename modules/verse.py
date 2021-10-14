@@ -3,6 +3,7 @@ import json
 
 from gluon import current
 
+from constants import ONE_HOUR
 from versecontent import VERSECONTENT
 
 
@@ -38,7 +39,7 @@ class VERSE:
         return Caching.get(
             f"verse_{vr}_{bk}_{ch}_{vs}_{tr}_",
             lambda: self.get_c(vr, bk, ch, vs, tr),
-            None,
+            ONE_HOUR,
         )
 
     def get_c(self, vr, bk, ch, vs, tr):
@@ -70,7 +71,7 @@ class VERSE:
         return Caching.get(
             f"versej_{vr}_{bk}_{ch}_{vs}_",
             lambda: self.getJson_c(vr, bk, ch, vs),
-            None,
+            ONE_HOUR,
         )
 
     def getJson_c(self):

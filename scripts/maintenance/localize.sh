@@ -14,7 +14,8 @@ do
     cp "$SCRIPT_SRC_DIR/maintenance/$file" "$LOCAL_DIR"
 done
 
-echo "
+if [[ ! -e "$LOCAL_DIR/config.sh" ]]; then
+    echo "
 Do not forget to:
 
 cd $LOCAL_DIR
@@ -24,3 +25,4 @@ vim config.sh
 
 and adapt the contents to your situation.
 "
+fi

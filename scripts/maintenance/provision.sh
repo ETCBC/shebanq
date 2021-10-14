@@ -5,6 +5,20 @@
 # Script to provision a server.
 # Run it on your local computer.
 
+if [[ ! -e "${0%/*}/config.sh" ]]; then
+    echo "No config.sh found
+Probably you are running this script from the maintenance directory.
+You should run it from the _local directory where you have your
+localized config.sh.
+
+Hint: do
+
+./localize.sh
+cd ../../_local
+    "
+    exit
+fi
+
 source ${0%/*}/config.sh
 source ${0%/*}/doconfig.sh
 source ${0%/*}/functions.sh

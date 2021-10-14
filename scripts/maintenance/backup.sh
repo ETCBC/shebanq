@@ -40,10 +40,14 @@ latestDir="$SERVER_BACKUP_DIR/latest"
 ensureDir "$backupDir"
 
 echo "creating database dumps for $DYNAMIC_WEB and $DYNAMIC_NOTE in $backupDir"
+serverCfgDir="$SERVER_CFG_DIR"
+if [[ ! -e "$serverCfgDir" ]]; then
+    serverCfgDir="$SERVER_OLD_CFG_DIR"
+fi
 for db in $DYNAMIC_WEB $DYNAMIC_NOTE
 do
     bufl="$backupDir/$db.sql.gz"
-    mysqldump --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt $db | gzip > "$bufl"
+    mysqldump --defaults-extra-file=$serverCfgDir/mysqldumpopt $db | gzip > "$bufl"
 done
 echo "$backupDatetime" > "$backupDir/stamp"
 chown -R $SERVER_USER:$SERVER_USER "$backupDir"

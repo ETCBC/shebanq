@@ -24,7 +24,10 @@ function setSituation {
         echo "$2 PRODUCTION server $SERVER ..."
     elif [[ "$1" == "pn" || "$1" == "$serverProdNew" ]]; then
         SERVER="$serverProdNew"
-        SERVER_URL="$serverUrlProd"
+        # the new server works initially with the server name as url
+        # in order to test with it before it becomes public
+        # When it has become public use the serverProd settings
+        SERVER_URL="$serverProdNew"
         DB_HOST="$dbHostProd"
         MYSQL_SHEBANQ="$mysqlShebanqPwdProd"
         MYSQL_SHEBANQ_ADMIN="$mysqlShebanqAdminPwdProd"

@@ -3,6 +3,7 @@ from textwrap import dedent
 
 from gluon import current
 
+from constants import ALWAYS
 from helpers import debug, delta
 
 
@@ -24,7 +25,7 @@ class QUERYCHAPTER:
         """
         Caching = current.Caching
 
-        Caching.get(f"qcindex_{vr}_", lambda: self.makeQCindex_c(vr), None)
+        Caching.get(f"qcindex_{vr}_", lambda: self.makeQCindex_c(vr), ALWAYS)
 
     def makeQCindex_c(self, vr):
         Caching = current.Caching
@@ -37,27 +38,27 @@ class QUERYCHAPTER:
         pubStatus = Caching.get(
             f"pubStatus_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         slotsFromChapter = Caching.get(
             f"slotsFromChapter_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         chapterFromSlot = Caching.get(
             f"chapterFromSlot_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         queriesFromChapter = Caching.get(
             f"queriesFromChapter_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         chaptersFromQuery = Caching.get(
             f"chaptersFromQuery_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
 
         chapterSQL = dedent(
@@ -112,7 +113,7 @@ class QUERYCHAPTER:
         pubStatus = Caching.get(
             f"pubStatus_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         pubStatus.setdefault(query_id, {})[vr] = is_published
         debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
@@ -162,12 +163,12 @@ class QUERYCHAPTER:
         chaptersFromQuery = Caching.get(
             f"chaptersFromQuery_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         queriesFromChapter = Caching.get(
             f"queriesFromChapter_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         # remove query_id from both indexes: chaptersFromQuery and queriesFromChapter
         if query_id in chaptersFromQuery:
@@ -227,10 +228,10 @@ class QUERYCHAPTER:
 def doQueryIndex(db, vr, queryFromExe):
     Caching = current.Caching
 
-    slotsFromChapter = Caching.get(f"slotsFromChapter_{vr}_", lambda: {}, None)
-    chapterFromSlot = Caching.get(f"chapterFromSlot_{vr}_", lambda: {}, None)
-    chaptersFromQuery = Caching.get(f"chaptersFromQuery_{vr}_", lambda: {}, None)
-    queriesFromChapter = Caching.get(f"queriesFromChapter_{vr}_", lambda: {}, None)
+    slotsFromChapter = Caching.get(f"slotsFromChapter_{vr}_", lambda: {}, ALWAYS)
+    chapterFromSlot = Caching.get(f"chapterFromSlot_{vr}_", lambda: {}, ALWAYS)
+    chaptersFromQuery = Caching.get(f"chaptersFromQuery_{vr}_", lambda: {}, ALWAYS)
+    queriesFromChapter = Caching.get(f"queriesFromChapter_{vr}_", lambda: {}, ALWAYS)
 
     resultSQL2 = dedent(
         f"""

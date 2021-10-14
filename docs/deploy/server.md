@@ -75,6 +75,16 @@ is already installed and:
     `/etc/pki/tls/certs` and `/etc/pki/tls/private`
 *   `mod_wsgi` is not yet installed.
 
+!!! caution
+    The installation procedure installs an Apache config file for SHEBANQ.
+    It claims 1 process and 5 threads.
+    You can modify this later on, manually.
+
+    **But keep the number of processes to 1**
+
+    Because SHEBANQ stores global data in a cache that is local
+    to the process. See [Model: CACHING][models.caching.CACHING]
+
 We assume that the following packages can be installed with `yum`.
 That means that you must have the right package repositories enabled.
 
@@ -229,7 +239,7 @@ There are several situations, depending on the server that hosts SHEBANQ:
     * publicly accessible,
     * the one and only offical shebanq website
 * **Production (new)** `pn`
-    * url: not yet `shebanq.ancient-data.org`
+    * url: `server.dans.knaw.nl`
     * hosted by DANS on a KNAW server,
       as a successor of the current production server
     * not yet publicly accessible,
@@ -362,15 +372,35 @@ The database resides on a separate database server, no data operations needed.
     upload all needed installation files to the new production server;
     the static database files will be skipped.
 
+    !!! hint "url configuration"
+        The shebanq configuration file that is hung into apache
+        will specify a virtual host with the server name as url,
+        not `shebanq.ancient-data.org`.
+        In this way, the new server can be tested before changing the DNS.
+
 1.  (new production server) `./install.sh`
 
     perform the complete installation of shebanq
 
+1.  (local computer) Tweak `config.sh`
+
+    If all went well, and shebanq works on the new machine,
+    change your `_local/config.sh` and put the server name
+    of the new machine in the `serverProd` variable
+    (it was in the `serverProdNew` variable).
+
+1.  (local computer) `./provision.sh p --scripts`
+
+    upload the scripts again. Note that we use `p` now, and not `pn`.
+    This has the effect that the url of the virtual host in the Apache
+    config file of shebanq will be set to `shebanq.ancient-data.nl`.
+
+1.  (new production server) `./install.sh --apache`
+
+    This puts the updated config file in place.
+
 1.  Arrange with your internet provider to let the domain name point to the
     IP address of the new production server
-
-1.  (local computer) Tweak `config.sh`
-    and put the name of the new production server into `serverProd`.
 
 ### Update SHEBANQ on an existing server 
 

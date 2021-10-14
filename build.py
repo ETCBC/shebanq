@@ -26,13 +26,13 @@ command:
 --help
 
 
-jdocs : build jsdocs
-docs  : serve docs locally (after building them, including js docs)
-mdocs : build docs (excluding jsdocs)
+jdocs  : build jsdocs
+docs   : serve docs locally (after building them, including js docs)
+mdocs  : build docs (excluding jsdocs)
 mkdocs : build docs (including jsdocs)
-sdocs : ship docs (after building them, including js docs)
-test  : run tests
-ship  : build for shipping
+sdocs  : ship docs (after building them, including js docs)
+test   : run tests
+ship   : build for shipping
 
 For g and ship you need to pass a commit message.
 """

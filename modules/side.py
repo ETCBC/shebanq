@@ -1,5 +1,7 @@
 from gluon import current
 
+from constants import ONE_HOUR
+
 
 class SIDE:
     def __init__(self, Material, Word, Query, Note):
@@ -24,7 +26,7 @@ class SIDE:
         return Caching.get(
             f"items_{qw}_{vr}_{bk}_{ch}_{is_published}_",
             lambda: self.get_c(vr, qw, bk, ch, is_published),
-            None,
+            ONE_HOUR,
         )
 
     def get_c(self, vr, qw, bk, ch, is_published):

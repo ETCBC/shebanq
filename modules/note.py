@@ -4,7 +4,7 @@ from textwrap import dedent
 
 from gluon import current
 
-from constants import PUBLISH_FREEZE
+from constants import PUBLISH_FREEZE, ALWAYS
 from helpers import iEncode, iDecode, normRanges
 
 
@@ -169,12 +169,9 @@ class NOTE:
 
     def read(self, vr, iid, keywords):
         auth = current.auth
-        Caching = current.Caching
         NOTE_DB = current.NOTE_DB
 
-        clauseAtomFirst = Caching.get(
-            f"clause_atom_f_{vr}_", lambda: self.getClauseAtomFirstSlot(vr), None
-        )
+        clauseAtomFirst = self.getClauseAtomFirstSlot(vr)
         keywordsSql = keywords.replace("'", "''")
         myId = auth.user.id if auth.user is not None else None
         extra = "" if myId is None else f" or created_by = {myId} "
@@ -195,7 +192,7 @@ class NOTE:
         return Caching.get(
             f"clause_atoms_{vr}_{bk}_{ch}_{vs}_",
             lambda: self.getClauseAtoms_c(vr, bk, ch, vs),
-            None,
+            ALWAYS,
         )
 
     def getClauseAtoms_c(self, vr, bk, ch, vs):
@@ -242,7 +239,7 @@ class NOTE:
         return Caching.get(
             f"clause_atom_f_{vr}_",
             lambda: self.getClauseAtomFirstSlot_c(vr),
-            None,
+            ALWAYS,
         )
 
     def getClauseAtomFirstSlot_c(self, vr):

@@ -20,6 +20,7 @@ SERVER_UNPACK_DIR="$SERVER_HOME_DIR/$APP-tmp"
 
 SERVER_APP_DIR="/opt/web-apps"
 SERVER_CFG_DIR="/opt/cfg"
+SERVER_OLD_CFG_DIR="/opt/emdros/cfg"
 SERVER_EMDROS_DIR="/opt/emdros"
 SERVER_MQL_DIR="$SERVER_EMDROS_DIR/bin"
 

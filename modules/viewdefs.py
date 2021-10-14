@@ -3,6 +3,7 @@ import collections
 
 from gluon import current
 
+from constants import ALWAYS
 from blang import BK_NAMES
 from helpers import debug
 
@@ -482,7 +483,7 @@ class VIEWDEFS:
             makeObj = Make()
             return makeObj.export()
 
-        keyValues = Caching.get("viewsettings_", make, None)
+        keyValues = Caching.get("viewsettings_", make, ALWAYS)
 
         for (key, value) in keyValues.items():
             setattr(self, key, value)

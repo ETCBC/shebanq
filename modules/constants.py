@@ -1,5 +1,9 @@
 import datetime
 
+# cache expire times
+ALWAYS = None
+ONE_DAY = 24 * 3600
+ONE_HOUR = 3600
 
 NULLDT = "____-__-__ __:__:__"
 """Empty date time representation.

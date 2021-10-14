@@ -4,6 +4,7 @@ import json
 
 from gluon import current
 
+from constants import ALWAYS
 from helpers import collapseToRanges, hebKey, iDecode
 
 
@@ -45,14 +46,14 @@ class WORD:
         return Caching.get(
             f"words_page_{vr}_{lan}_{letter}_",
             lambda: self.page_c(pageConfig, vr, lan=lan, letter=letter),
-            None,
+            ALWAYS,
         )
 
     def page_c(self, pageConfig, vr, lan=None, letter=None):
         Caching = current.Caching
 
         (letters, words) = Caching.get(
-            f"words_data_{vr}_", lambda: self.getData(vr), None
+            f"words_data_{vr}_", lambda: self.getData(vr), ALWAYS
         )
 
         return dict(

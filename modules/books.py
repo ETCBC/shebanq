@@ -3,6 +3,7 @@ from textwrap import dedent
 
 from gluon import current
 
+from constants import ALWAYS
 from blang import BOOK_LANGS, BOOK_TRANS, BOOK_NAMES
 
 
@@ -39,7 +40,7 @@ class BOOKS:
     def get(self, vr):
         Caching = current.Caching
 
-        return Caching.get(f"books_{vr}_", lambda: self.get_c(vr), None)
+        return Caching.get(f"books_{vr}_", lambda: self.get_c(vr), ALWAYS)
 
     def get_c(self, vr):
         """get book information: number of chapters per book

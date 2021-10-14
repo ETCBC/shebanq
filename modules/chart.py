@@ -3,6 +3,7 @@ from textwrap import dedent
 
 from gluon import current
 
+from constants import ONE_DAY, ALWAYS
 from helpers import flatten, iDecode
 
 BLOCK_SIZE = 500
@@ -61,7 +62,7 @@ class CHART:
         return Caching.get(
             f"chart_{vr}_{qw}_{iidRep}_",
             lambda: self.get_c(vr, qw, iidRep),
-            None,
+            ONE_DAY,
         )
 
     def get_c(self, vr, qw, iidRep):
@@ -90,7 +91,7 @@ class CHART:
         Possibly there are gaps between books.
         """
         Caching = current.Caching
-        return Caching.get(f"blocks_{vr}_", lambda: self.getBlocks_c(vr), None)
+        return Caching.get(f"blocks_{vr}_", lambda: self.getBlocks_c(vr), ALWAYS)
 
     def getBlocks_c(self, vr):
         PASSAGE_DBS = current.PASSAGE_DBS

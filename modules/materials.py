@@ -3,6 +3,7 @@ from textwrap import dedent
 
 from gluon import current
 
+from constants import ALWAYS, ONE_HOUR
 from versescontent import VERSESCONTENT
 from helpers import iDecode, pagelist
 
@@ -64,7 +65,7 @@ class MATERIAL:
         return Caching.get(
             f"passage_{vr}_{bk}_{ch}",
             lambda: self.getPassage_c(vr, bk, ch),
-            None,
+            ALWAYS,
         )
 
     def getPassage_c(self, vr, bookname, chapternum):
@@ -107,7 +108,7 @@ class MATERIAL:
         return Caching.get(
             f"verses_{vr}_{mrrep}_{book}_{chapter}_{tp}_{tr}_{lang}_",
             lambda: self.get_c(vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang),
-            None,
+            ONE_HOUR,
         )
 
     def get_c(self, vr, mr, qw, bk, iidRep, ch, page, tp, tr, lang):
@@ -194,7 +195,7 @@ class MATERIAL:
                         """
                     )
                 ),
-                None,
+                ALWAYS,
             )
             if vr in PASSAGE_DBS
             else []

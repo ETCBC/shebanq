@@ -2,11 +2,37 @@ from gluon import current
 
 
 CACHING_ENABLED = True
+
+"""Whether we should also cache on disk
+
+!!! caution "Do not cache on disk"
+    Two problems: some of the cached objects cannot be pickled:
+    [M viewdefs.Make][viewdefs.Make.setupValidation] caches
+    validation *functions*.
+    We could work around this.
+
+    But:
+
+    It causes deadlock. In order to write to the cache file,
+    the file must be locked, but the process somehow never allows
+    the lock to be obtained.
+
+"""
 CACHING_RAM_ONLY = True
 
 
 class CACHING:
     """Handles all caching requests.
+
+    !!! caution "The cache is used for global data structures"
+        In web2py the cache is global to the threads, but local to the process.
+        Since we use the cache to maintain a live index between queries and chapters,
+        the index in one process might get out of touch with the situation
+        in another process. For example if a query is run and different or new
+        results are obtained. It will trigger an update of certain cache values,
+        but other processes do not see that.
+
+        So configure a SHEBANQ server to use 1 process and multiple threads.
 
     !!! caution "other location"
         This module is not in the `modules` directory but in the `models` directory.
@@ -14,6 +40,7 @@ class CACHING:
         [current]({{web2py}}) (a web2py concept),
         which means that the object is available for each request.
     """
+
     def __init__(self):
         pass
 

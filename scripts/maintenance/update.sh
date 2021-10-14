@@ -23,8 +23,8 @@ Options:
 In a normal case, it does a non-disruptive update:
 
 *   it updates the SHEBANQ code
-*   it executes the test controller
-*   it does a graceful httpd restart
+*   it does a httpd restart
+*   a first visit is triggered, to warm up the cache
 
 When --thorough is passed the sequence is as follows:
 
@@ -68,7 +68,10 @@ python3 web2py.py -S $APP -M -R scripts/sessions2trash.py -A -o -x 600000
 
 # test the controller
 
-testController
+if [[ "$doThorough" == "v" ]]; then
+    echo "o-o-o Run test controller ..."
+    testController
+fi
 
 # (re) start Apache nad do post-update steps
 
@@ -76,11 +79,12 @@ if [[ "$doThorough" == "v" ]]; then
     echo "o-o-o Starting Apache ..."
     sudo -n /usr/bin/systemctl start httpd.service
 
-    # make a first visit to warm up cache
-    firstVisit
 else
-    echo "o-o-o Gracefully restarting Apache ..."
+    echo "o-o-o Restarting Apache ..."
     sudo -n /usr/bin/systemctl restart httpd.service
 fi
+
+# make a first visit to warm up cache
+firstVisit
 
 echo "o-o-o Update done."

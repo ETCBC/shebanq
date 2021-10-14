@@ -6,7 +6,7 @@ from markdown import markdown
 
 from gluon import current
 
-from constants import NULLDT
+from constants import NULLDT, ALWAYS
 from helpers import normRanges, iDecode
 
 from dbconfig import EMDROS_VERSIONS
@@ -175,12 +175,12 @@ class QUERY:
         pubStatus = Caching.get(
             f"pubStatus_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         queriesFromChapter = Caching.get(
             f"queriesFromChapter_{vr}_",
             lambda: {},
-            None,
+            ALWAYS,
         )
         chapter_id = chapter.get("id", None)
 
