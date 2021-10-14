@@ -6,6 +6,9 @@
  * @module words
  */
 
+import { DOC_NAME } from "./helpers.js"
+
+
 const setHeightW = () => {
   /* the heights of the sidebars are set, depending on the height of the window
    */
@@ -53,8 +56,10 @@ class View {
    * @see [∈ version][elem-version]
    */
   selectVersion(v, gotoWord) {
-    const { wordsPageUrl } = Config
+    const { wordsPageUrl, featureHost } = Config
     const { lan, letter } = ConfigW
+    const thisFeaturehost = `${featureHost}/${DOC_NAME}`
+    $(".source").attr("href", thisFeaturehost)
 
     $(`#version_${v}`).off("click").click(e => {
       e.preventDefault()

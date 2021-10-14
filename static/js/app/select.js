@@ -5,9 +5,7 @@
  * @module select
  */
 
-import { closeDialog } from "./helpers.js"
-
-const docName = "0_home"
+import { closeDialog, DOC_NAME } from "./helpers.js"
 
 /**
  * Handles book and chapter selection
@@ -48,7 +46,7 @@ export class SelectPassage {
   apply() {
     const { versions, featureHost, bolUrl, pblUrl } = Config
 
-    const thisFeaturehost = `${featureHost}/${docName}`
+    const thisFeaturehost = `${featureHost}/${DOC_NAME}`
     $(".source").attr("href", thisFeaturehost)
     $(".source").attr("title", "BHSA feature documentation")
     $(".mvradio").removeClass("ison")

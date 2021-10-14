@@ -5,6 +5,7 @@
  * @module helpers
  */
 
+export const DOC_NAME = "0_home"
 export const idPrefixNotes = "n"
 export const idPrefixQueries = "q"
 

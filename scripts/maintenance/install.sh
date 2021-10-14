@@ -175,10 +175,9 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
     done
     chown -R apache:apache "$SERVER_CFG_DIR"
 
-    cd "$SERVER_INSTALL_DIR"
+    cp "$SERVER_INSTALL_DIR/shebanq.cnf" /etc/my.cnf.d/
 
     if [[ "$DB_HOST" == "localhost" ]]; then
-        cp "$SERVER_INSTALL_DIR/shebanq.cnf" /etc/my.cnf.d/
         if [[ "$skipUsers" != "v" ]]; then
             echo "o-o-o - create users"
             mysql -u root < "$SERVER_CFG_DIR/user.sql"
@@ -403,8 +402,3 @@ eraseDir "$SERVER_UNPACK_DIR"
 if [[ "$doAll" == "v" || "$doFirstVisit" == "v" ]]; then
     firstVisit
 fi
-
-# Todo after install
-#
-# Let DNS resolve the server name to the IP address of the newly
-# installed server
