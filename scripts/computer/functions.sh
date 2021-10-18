@@ -125,8 +125,6 @@ function testController {
 
     cd "$SERVER_APP_DIR/web2py"
     $TM python3 web2py.py -S $APP/hebrew/text -M > /dev/null
-    chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
-    chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
 }
 
 # make a first visit to SHEBANQ by means of curl

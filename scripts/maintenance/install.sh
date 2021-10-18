@@ -335,9 +335,8 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     fi
     $TM unzip web2py.zip > /dev/null
     rm web2py.zip
-    mv web2py/handlers/wsgihandler.py web2py/wsgihandler.py
 
-    for pyFile in parameters_443.py routes.py logging.conf
+    for pyFile in parameters_443.py routes.py logging.conf wsgihandler.py
     do
         cp "$SERVER_INSTALL_DIR/$pyFile" web2py
     done

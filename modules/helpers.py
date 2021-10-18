@@ -14,7 +14,7 @@ def debug(msg):
     See [logging]({{pythonLogging}}).
     """
     if current.DEBUG:
-        current.logger.debug(msg)
+        current.logger.error(msg)
 
 
 def isodt(dt=None):

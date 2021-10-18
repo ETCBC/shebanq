@@ -56,14 +56,27 @@ if [[ "$doThorough" == "v" ]]; then
     sudo -n /usr/bin/systemctl stop httpd.service
 fi
 
+# just in case routes or parameters_443 (password hash) or wsgihandler
+# have changed
+
+cd $SERVER_APP_DIR/web2py
+
+for pyFile in parameters_443.py routes.py logging.conf wsgihandler.py
+do
+    cp "$SERVER_INSTALL_DIR/$pyFile" .
+    chown $SERVER_USER:shebanq "$pyFile"
+    chcon -t httpd_sys_content_t "$pyFile"
+done
+
 # pull updates to $REPO code
 
 fetchShebanq
 updateShebanq
 
-cd $SERVER_APP_DIR/web2py
 echo "o-o-o Remove sessions ..."
 echo "- Remove sessions ..."
+
+cd $SERVER_APP_DIR/web2py
 python3 web2py.py -S $APP -M -R scripts/sessions2trash.py -A -o -x 600000
 logFile="$SERVER_APP_DIR/$APP/log/debug.log"
 if [[ -e "$logFile" ]]; then
@@ -75,6 +88,7 @@ fi
 if [[ "$doThorough" == "v" ]]; then
     echo "o-o-o Run test controller ..."
     testController
+    chown $SERVER_USER:shebanq "$logFile"
 fi
 
 # (re) start Apache nad do post-update steps
