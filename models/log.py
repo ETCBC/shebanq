@@ -4,5 +4,5 @@ from gluon import current
 
 
 logger = logging.getLogger("web2py.app.shebanq")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARN)
 current.logger = logger
