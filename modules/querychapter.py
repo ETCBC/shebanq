@@ -14,7 +14,9 @@ class QUERYCHAPTER:
     def makeQCindexes(self):
         VERSIONS = current.VERSIONS
 
-        for vr in ("2017", "2021") if current.SITUATION == "local" else VERSIONS:
+        for vr in (
+            ("2017", "2021") if current.SITUATION == "local" else VERSIONS
+        ):
             self.makeQCindex(vr)
 
     def makeQCindex(self, vr):
@@ -22,10 +24,51 @@ class QUERYCHAPTER:
 
         The index building takes may take multiple seconds per data version.
         But the result is stored in the cache.
+
+        We need to prevent that index-making is triggered multiple times by
+        several requests that are fired while index-making is in progress.
+
+        So we put an indicator value in the cache during index buidling,
+        and we let everybody else wait until the index has been completed.
+
+        We do this per version.
+
+        To that end we put an empty dictionary in the cache.
+        We only start computing the index key "busy" has a falsy value.
+        Before computing the index, we set the value to 1.
+        After computing the index, we set the value to 2.
+
+        When the index is needed and the busy status is 1, we wait for it
+        to become 2 before we continue.
+
+        When the index is needed and busy is 2, the index has been
+        built and we have to do nothing.
+
+        Note that we do not need anything of the value of the index here,
+        we only need it to be built, so that other parts of the app can get it
+        quickly.
+
+        We cannot allow that other parts of the app see an unfinished index,
+        because it will lead to served content that is not yet correct.
+        Because this content will be cached, it will take a long time (or forever)
+        until it gets recomputed.
         """
         Caching = current.Caching
 
-        Caching.get(f"qcindex_{vr}_", lambda: self.makeQCindex_c(vr), ALWAYS)
+        busyStatus = Caching.get(f"busyIndex_{vr}_", lambda: {}, ALWAYS)
+        busy = busyStatus.get("busy", 0)
+        if busy == 0:
+            busyStatus["busy"] = 1
+            Caching.get(f"qcindex_{vr}_", lambda: self.makeQCindex_c(vr), ALWAYS)
+            busyStatus["busy"] = 2
+        elif busy == 1:
+            n = 0
+            while (
+                Caching.get(f"busyIndex_{vr}_", lambda: {}, ALWAYS).get("busy", 0) == 1
+            ):
+                time.sleep(1)
+                n += 1
+                debug(f"o-o-o waiting for chapter-query index {vr} ({n} sec) ...")
 
     def makeQCindex_c(self, vr):
         Caching = current.Caching

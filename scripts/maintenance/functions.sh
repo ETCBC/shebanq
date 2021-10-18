@@ -24,10 +24,11 @@ function setSituation {
         echo "$2 PRODUCTION server $SERVER ..."
     elif [[ "$1" == "pn" || "$1" == "$serverProdNew" ]]; then
         SERVER="$serverProdNew"
+
         # the new server works initially with the server name as url
         # in order to test with it before it becomes public
-        # When it has become public use the serverProd settings
-        SERVER_URL="$serverProdNew"
+        # When it has become public update and use the serverProd settings
+        SERVER_URL="$SERVER"
         DB_HOST="$dbHostProd"
         MYSQL_SHEBANQ="$mysqlShebanqPwdProd"
         MYSQL_SHEBANQ_ADMIN="$mysqlShebanqAdminPwdProd"
@@ -57,7 +58,12 @@ function setSituation {
         echo "$2 OTHER server $SERVER ..."
     elif [[ "$1" == "on" || "$1" == "$serverOtherNew" ]]; then
         SERVER="$serverOtherNew"
-        SERVER_URL="$serverUrlOther"
+
+        # the new server works initially with the server name as url
+        # in order to test with it before it becomes public
+        # When it has become public update and use the serverOther settings
+        SERVER_URL="$serverProdNew"
+        SERVER_URL="$SERVER"
         DB_HOST="$dbHostOther"
         MYSQL_SHEBANQ="$mysqlShebanqPwdOther"
         MYSQL_SHEBANQ_ADMIN="$mysqlShebanqAdminPwdOther"
@@ -159,7 +165,7 @@ function installShebanq {
 
     # warming up
     cd "$SERVER_APP_DIR"
-    chown -R apache:apache $APP
+    chown -R $SERVER_USER:shebanq $APP
     if [[ -e "$SERVER_APP_DIR/web2py" ]]; then
         # if routes and logging confs have changed, pick them up
         # and place them in the web2py dir
@@ -175,12 +181,12 @@ function installShebanq {
             if [[ ! -e "$path" ]]; then
                 mkdir "$path"
             fi
-            chown -R apache:apache "$path"
+            chown -R $SERVER_USER:shebanq "$path"
             chcon -R -t httpd_sys_rw_content_t "$path"
         done
 
         compileApp $APP
-        chown -R apache:apache "$SERVER_APP_DIR/$APP"
+        chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
         chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
     fi
 }
@@ -192,7 +198,7 @@ function testController {
 
     cd "$SERVER_APP_DIR/web2py"
     $TM python3 web2py.py -S $APP/hebrew/text -M > /dev/null
-    chown -R apache:apache "$SERVER_APP_DIR/$APP"
+    chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
     chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
 }
 
@@ -203,8 +209,16 @@ function firstVisit {
     echo "o-o-o An expensive index will be computed and cached"
     echo "o-o-o This may take a minute ! ..."
 
-    fullUrl="https://$SERVER_URL/$TEST_CONTROLLER"
-    echo "fetching $fullUrl"
-    $TM curl "https://$SERVER_URL/$TEST_CONTROLLER" | tail
+    protocol="https"
+    flags=""
+    if [[ "$firstVisitHttp"=="v" ]]; then
+        protocol="http"
+        flags="-L"
+    elif [[ "firstVisitSloppy"=="v" ]]; then
+        flags="-k"
+    fi
+    fullUrl="${protocol}://$SERVER_URL/$TEST_CONTROLLER"
+    echo "curl $flags $fullUrl"
+    $TM curl $flags "$fullUrl" | tail
     echo "o-o-o First visit done"
 }

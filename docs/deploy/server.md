@@ -66,6 +66,10 @@ You must have
 [sudo]({{shellsudo}})
 rights on this server.
 
+There should be a user group `shebanq` on the system and 
+the user who is you and the `apache` users should be members of this
+group.
+
 We assume that the
 [Apache webserver]({{apache}})
 is already installed and:
@@ -74,6 +78,7 @@ is already installed and:
 *   the relevant certificates are installed in
     `/etc/pki/tls/certs` and `/etc/pki/tls/private`
 *   `mod_wsgi` is not yet installed.
+*   the ports 80 and 443 are open to the outside world
 
 !!! caution
     The installation procedure installs an Apache config file for SHEBANQ.

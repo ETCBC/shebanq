@@ -30,6 +30,10 @@ Options:
     --testcontroller: run a controller in the web2py shell for testing
     --apache: setup apache (assume certificates are already in place)
     --firstvisit: run controller from shell, outside apache, to warm up cache
+    --firstvisit http:
+        same as first visit, but use http and allow curl to follow redirects (-L)
+    --firstvisit sloppy:
+        same as first visit, while using https, force curl to accept insecure certificates (-k)
 
 version:
     a valid SHEBANQ data version, such as 4, 4b, c, 2017, 2021
@@ -62,6 +66,8 @@ doWeb2py="x"
 doTestController="x"
 doApache="x"
 doFirstVisit="x"
+firstVisitHttp="x"
+firstVisitSloppy="x"
 
 if [[ "$1" == "--python" ]]; then
     doAll="x"
@@ -111,6 +117,13 @@ elif [[ "$1" == "--firstvisit" ]]; then
     doAll="x"
     doFirstVisit="v"
     shift
+    if [[ "$1" == "sloppy" ]]; then
+        firstVisitSloppy="v"
+        shift
+    elif [[ "$1" == "http" ]]; then
+        firstVisitHttp="v"
+        shift
+    fi
 elif [[ "$1" == --* ]]; then
     echo "Unrecognized switch: $1"
     echo "Do ./$(basename $0) --help for available options"
@@ -173,7 +186,7 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
     do
         cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
     done
-    chown -R apache:apache "$SERVER_CFG_DIR"
+    chown -R $SERVER_USER:shebanq "$SERVER_CFG_DIR"
 
     cp "$SERVER_INSTALL_DIR/shebanq.cnf" /etc/my.cnf.d/
 
@@ -211,7 +224,7 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "o-o-o - Emdros INSTALL"
     echo "There will be some warnings, but that's ok"
     $TM make install > /dev/null
-    chown -R apache:apache "$SERVER_EMDROS_DIR"
+    chown -R SERVER_USER:shebanq "$SERVER_EMDROS_DIR"
 fi
 
 # Import dynamic data:
@@ -331,7 +344,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     echo "o-o-o - Removing examples app"
     rm -rf "$SERVER_APP_DIR/web2py/applications/examples"
 
-    chown -R apache:apache "$SERVER_APP_DIR/web2py"
+    chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/web2py"
     chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/web2py"
 
     if [[ "$skipExtradirs" != "v" ]]; then
@@ -345,7 +358,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
                 if [[ ! -e "$path" ]]; then
                     mkdir "$path"
                 fi
-                chown -R apache:apache "$path"
+                chown -R $SERVER_USER:shebanq "$path"
                 chcon -R -t httpd_sys_rw_content_t "$path"
             done
         done
@@ -363,11 +376,11 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
             rm -rf $APP
         fi
         ln -s "$SERVER_APP_DIR/$APP" "$APP"
-        chown apache:apache "$APP"
+        chown $SERVER_USER:shebanq "$APP"
 
         if [[ -e "$APP" ]]; then
             compileApp $APP
-            chown -R apache:apache "$SERVER_APP_DIR/$APP"
+            chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
             chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
         fi
     fi
@@ -386,6 +399,11 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
 
     if [[ -e "$APACHE_DIR/welcome.conf" ]]; then
         mv "$APACHE_DIR/welcome.conf" "$APACHE_DIR/welcome.conf.disabled"
+    fi
+    if [[ "$SERVER_URL" != "$SERVER" && -e "${SERVER}.conf" ]]; then
+        # remove temporary conf based on the server name
+        # which is used before DNS has been updated to new server
+        rm -rf "$APACHE_DIR/${SERVER}.conf"
     fi
     for conf in "${SERVER_URL}.conf" wsgi.conf
     do
