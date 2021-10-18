@@ -572,13 +572,19 @@ and import it to the databases.
 It is very difficult to view messages issued by Python code.
 `print` and `sys.stderr.write()` do not work.
 
-What does work is to use the module
+Neither does the following work: use the module
 [logging]({{pythonLogging}})
 from the standard Python library, and
 [hook it up in the Web2py framework]({{web2pyLogging}}).
 
-But you do not have to do that yourself, it is already done in the
-debug helper [M: helpers.debug][helpers.debug]
+That is to say: al these methods of logging work on your local computer,
+but none of these work on the server, and I cannot figure out why,
+because according to the WSGI documentation they all should work.
+
+Somewhere between Apache and WSGI information is lost.
+The situation is very unsatisfactory.
+
+We have a debug helper [M: helpers.debug][helpers.debug]
 
 Just say
 
@@ -588,8 +594,15 @@ from helpers import debug
 debug("here you are")
 ```
 
-and you'll see the message `here you are` ending up in 
-`opt/web-apps/shebanq/log/debug.log`.
+Such messages may go to these destinations, dependent on switches.
+
+*   `stderr`
+*   `logger` (file `opt/web-apps/shebanq/log/debug.log`).
+*   the response
+
+Currently only `stderr` is switched on.
+If you are desperate to get output on the server, switch the response on, temporarily.
+Then you get the messages at the top of your page, after the page has loaded.
 
 However, use this only in emergencies or if there are discrepancies between 
 the SHEBANQ on your local computer and the SHEBANQ on the server.

@@ -1,7 +1,12 @@
+import sys
 from datetime import datetime
 from base64 import b64decode, b64encode
 
 from gluon import current
+
+TO_STDERR = True
+TO_LOGGER = False
+TO_RESPONSE = False
 
 
 def debug(msg):
@@ -14,8 +19,13 @@ def debug(msg):
     See [logging]({{pythonLogging}}).
     """
     if current.DEBUG:
-        current.logger.info(f"LOGGER {msg}")
-        print(f"STDERR {msg}", file=current.request.wsgi.environ["wsgi.errors"])
+        if TO_STDERR:
+            sys.stderr.write(f"{msg}\n")
+        if TO_LOGGER:
+            current.logger.info(f"{msg}")
+        if TO_RESPONSE:
+            msgRep = msg.replace("\n", "<br>")
+            current.response.write(f"{msgRep}<br>")
 
 
 def isodt(dt=None):
