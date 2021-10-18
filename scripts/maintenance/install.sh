@@ -148,6 +148,9 @@ export PATH
 
 # Install procedure
 
+# users and groups
+
+setGroups
 # Python
 
 if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then

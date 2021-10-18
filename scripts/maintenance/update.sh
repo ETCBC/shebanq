@@ -59,12 +59,16 @@ fi
 # pull updates to $REPO code
 
 fetchShebanq
-installShebanq
+updateShebanq
 
 cd $SERVER_APP_DIR/web2py
 echo "o-o-o Remove sessions ..."
 echo "- Remove sessions ..."
 python3 web2py.py -S $APP -M -R scripts/sessions2trash.py -A -o -x 600000
+logFile="$SERVER_APP_DIR/$APP/log/debug.log"
+if [[ -e "$logFile" ]]; then
+    rm -rf "$logFile"
+fi
 
 # test the controller
 
@@ -85,6 +89,6 @@ else
 fi
 
 # make a first visit to warm up cache
-firstVisit
+# firstVisit
 
 echo "o-o-o Update done."

@@ -66,10 +66,6 @@ You must have
 [sudo]({{shellsudo}})
 rights on this server.
 
-There should be a user group `shebanq` on the system and 
-the user who is you and the `apache` users should be members of this
-group.
-
 We assume that the
 [Apache webserver]({{apache}})
 is already installed and:
@@ -214,6 +210,10 @@ and arguments it accepts.
         Installs required software
         (MySQL, Python, ModWsgi, Emdros, Web2py, and Shebanq itself)
         and loads data into the databases.
+
+        A user group `shebanq` will be created if it does not exist;
+        the user who is you and the `apache` users
+        are added to the members of this group.
     *   You can run this script in single steps by passing an option.
 
 *   `uninstall.sh`
