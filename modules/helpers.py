@@ -14,8 +14,8 @@ def debug(msg):
     See [logging]({{pythonLogging}}).
     """
     if current.DEBUG:
-        # current.logger.info(msg)
-        print(msg, file=current.request.wsgi.environ["wsgi.errors"])
+        current.logger.info(f"LOGGER {msg}")
+        print(f"STDERR {msg}", file=current.request.wsgi.environ["wsgi.errors"])
 
 
 def isodt(dt=None):
