@@ -26,9 +26,9 @@ response.logo2 = A(
 # On macos it is HOST, on Linux it is HOSTNAME
 servedOn = request.env.SERVER_NAME
 if not servedOn:
-    servedOn = os.environ["HOST"]
+    servedOn = os.environ.get("HOST", None)
 if not servedOn:
-    servedOn = os.environ["HOSTNAME"]
+    servedOn = os.environ.get("HOSTNAME", None)
 
 onLocal = False
 onProd = False
