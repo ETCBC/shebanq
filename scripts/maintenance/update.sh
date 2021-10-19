@@ -71,7 +71,7 @@ done
 # pull updates to $REPO code
 
 fetchShebanq
-updateShebanq
+installShebanq "x"
 
 echo "o-o-o Remove sessions ..."
 echo "- Remove sessions ..."
@@ -103,6 +103,6 @@ else
 fi
 
 # make a first visit to warm up cache
-# firstVisit
+firstVisit
 
 echo "o-o-o Update done."

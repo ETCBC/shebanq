@@ -1,3 +1,4 @@
+import os
 from gluon import current
 
 # from helpers import debug
@@ -19,7 +20,16 @@ response.logo2 = A(
     _style="margin-bottom: -2em;",
 )
 
+# we get the machine name by inspecting several values
+# it is in request.env.SERVER_NAME if we are running in a web server
+# But if we run in the web2py shell, we have to inspect the environment
+# On macos it is HOST, on Linux it is HOSTNAME
 servedOn = request.env.SERVER_NAME
+if not servedOn:
+    servedOn = os.environ["HOST"]
+if not servedOn:
+    servedOn = os.environ["HOSTNAME"]
+
 onLocal = False
 onProd = False
 onTest = False

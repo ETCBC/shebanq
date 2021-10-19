@@ -137,114 +137,90 @@ function setGroups {
 # i.e. ~/shebanq-install/shebanq
 
 function fetchShebanq {
+    cloneDir="$SERVER_INSTALL_DIR/$APP-clone"
+
     if [[ -d "$SERVER_INSTALL_DIR/$APP" ]]; then
         echo "o-o-o    SHEBANQ pull    o-o-o"
-        cd "$SERVER_INSTALL_DIR/$APP"
+        cd "$cloneDir"
         git fetch origin
         git checkout master
         git reset --hard origin/master
     else
         echo "o-o-o    SHEBANQ clone    o-o-o"
-    cd "$SERVER_INSTALL_DIR"
-        if [[ -e "$APP" ]]; then
-            rm -rf "$APP"
+        if [[ -e "$cloneDir" ]]; then
+            rm -rf "$cloneDir"
         fi
+        cd "$SERVER_INSTALL_DIR"
         $TM git clone "$REPO_URL"
     fi
+
+    chown -R $SERVER_USER:$SERVER_USER "$cloneDir"
 }
 
 # put shebanq into place
 # i.e. copy it from the install location to the web-apps location
 
 function installShebanq {
-    echo "o-o-o    INSTALL SHEBANQ    o-o-o"
-    ensureDir "$SERVER_APP_DIR"
-    chmod 755 /opt
-    chmod 755 "$SERVER_APP_DIR"
-    cd "$SERVER_APP_DIR"
+    fresh="$1"
+    if [[ "$fresh" == "v" ]]; then
+        label="INSTALL"
+    else
+        label="UPDATE"
+    fi
+    echo "o-o-o    $label SHEBANQ    o-o-o"
 
+    if [[ "$fresh" == "v" ]]; then
+        ensureDir "$SERVER_APP_DIR"
+        chmod 755 /opt
+        chmod 755 "$SERVER_APP_DIR"
+    fi
+
+    cloneDir="$SERVER_INSTALL_DIR/$APP-clone"
     shebanqDir="$SERVER_APP_DIR/$APP"
+    web2PyDir="$SERVER_APP_DIR/web2py"
+
     if [[ -e "$shebanqDir" ]]; then
         rm -rf "$shebanqDir"
     fi
 
+    # in the install procedure we wipe out an earlier shebanq at this place
+    # so we remove errors, logs, uploads, etc
+    # in the update procedure we preserve the existing shebanq
+    if [[ "$fresh" == "v" ]]; then
+        eraseDir "$shebanqDir"
+    fi
+    ensureDir "$shebanqDir"
+
     # copy the SHEBANQ repo from the install dir to the webapps dir
     # we do not copy the hidden files, such as the big .git directory
-    mkdir "$shebanqDir"
-    cp -R $SERVER_INSTALL_DIR/$APP/* "$shebanqDir"
+    cp -R $cloneDir/* "$shebanqDir"
 
     # warming up
-    cd "$SERVER_APP_DIR"
-    chown -R $SERVER_USER:shebanq $APP
-    if [[ -e "$SERVER_APP_DIR/web2py" ]]; then
+    chown -R $SERVER_USER:shebanq "$shebanqDir"
+    chcon -R -t httpd_sys_content_t "$shebanqDir"
+
+    if [[ -e "$web2pyDir" ]]; then
         # if routes and logging confs have changed, pick them up
         # and place them in the web2py dir
         for pyFile in parameters_443.py routes.py logging.conf
         do
-            cp "$SERVER_APP_DIR/$APP/scripts/$pyFile" web2py
+            cp "$shebanqDir/scripts/$pyFile" "$web2pyDir"
         done
 
         compileApp $APP
-        chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
-        chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
-
-        for dir in languages log databases cache errors sessions private uploads
-        do
-            path="$shebanqDir/$dir"
-            if [[ ! -e "$path" ]]; then
-                mkdir "$path"
-            fi
-            chown -R $SERVER_USER:shebanq "$path"
-            chcon -R -t httpd_sys_rw_content_t "$path"
-        done
+        chown -R $SERVER_USER:shebanq "$shebanqDir"
+        chcon -R -t httpd_sys_content_t "$shebanqDir"
     fi
-}
 
-# put shebanq into place, but preserve its writable directories
-
-function updateShebanq {
-    echo "o-o-o    UPDATE SHEBANQ    o-o-o"
-    ensureDir "$SERVER_APP_DIR"
-    chmod 755 /opt
-    chmod 755 "$SERVER_APP_DIR"
-    cd "$SERVER_APP_DIR"
-
-    # copy the SHEBANQ repo from the install dir to the webapps dir
-    # we do not copy the hidden files, such as the big .git directory
-    # we also do not copy the directories with writable files
-    # such as log, databases, ...
-    shebanqDir="$SERVER_APP_DIR/$APP"
-    if [[ ! -e "$shebanqDir" ]]; then
-        mkdir "$SERVER_APP_DIR/$APP"
-    fi
-    cp -R $SERVER_INSTALL_DIR/$APP/* "$shebanqDir"
-
-    # warming up
-    cd "$SERVER_APP_DIR"
-    chown -R $SERVER_USER:shebanq $APP
-    if [[ -e "$SERVER_APP_DIR/web2py" ]]; then
-        # if routes and logging confs have changed, pick them up
-        # and place them in the web2py dir
-        for pyFile in parameters_443.py routes.py logging.conf
-        do
-            cp "$SERVER_APP_DIR/$APP/scripts/$pyFile" web2py
-        done
-
-        compileApp $APP
-        chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
-        chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
-
-        for dir in languages log databases cache errors sessions private uploads
-        do
-            path="$shebanqDir/$dir"
-            if [[ ! -e "$path" ]]; then
-                mkdir "$path"
-            fi
-            chown -R $SERVER_USER:shebanq "$path"
-            chcon -R -t httpd_sys_rw_content_t "$path"
-        done
-
-    fi
+    # make sure the writable directories exists and have the right
+    # ownership and security context
+    for dir in languages log databases cache errors sessions private uploads
+    do
+        path="$shebanqDir/$dir"
+        ensureDir "$path"
+        chown -R $SERVER_USER:shebanq "$path"
+        chcon -R -t httpd_sys_rw_content_t "$path"
+    done
 }
 
 # run a controller of shebanq outside the apache ocntext

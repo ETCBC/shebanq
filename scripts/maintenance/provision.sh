@@ -118,7 +118,7 @@ if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
         fi
     done
 
-    for script in backup.sh config.sh doconfig.sh functions.sh install.sh restore.sh uninstall.sh update.sh
+    for script in backup.sh config.sh doconfig.sh functions.sh install.sh restore.sh uninstall.sh update.sh 'test.sh'
     do
         theFile="$LOCAL_DIR/$script"
         if [[ -e "$theFile" ]]; then

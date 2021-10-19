@@ -311,7 +311,7 @@ fi
 # install Shebanq
 
 if [[ "$doAll" == "v" || "$doShebanq" == "v" ]]; then
-    installShebanq
+    installShebanq "v"
 fi
 
 # install web2py
