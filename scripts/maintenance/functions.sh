@@ -139,7 +139,7 @@ function setGroups {
 function fetchShebanq {
     cloneDir="$SERVER_INSTALL_DIR/$APP-clone"
 
-    if [[ -d "$SERVER_INSTALL_DIR/$APP" ]]; then
+    if [[ -d "$cloneDir" ]]; then
         echo "o-o-o    SHEBANQ pull    o-o-o"
         cd "$cloneDir"
         git fetch origin
@@ -152,6 +152,7 @@ function fetchShebanq {
         fi
         cd "$SERVER_INSTALL_DIR"
         $TM git clone "$REPO_URL"
+        mv "$APP" "$APP-clone"
     fi
 
     chown -R $SERVER_USER:$SERVER_USER "$cloneDir"
@@ -178,10 +179,6 @@ function installShebanq {
     cloneDir="$SERVER_INSTALL_DIR/$APP-clone"
     shebanqDir="$SERVER_APP_DIR/$APP"
     web2PyDir="$SERVER_APP_DIR/web2py"
-
-    if [[ -e "$shebanqDir" ]]; then
-        rm -rf "$shebanqDir"
-    fi
 
     # in the install procedure we wipe out an earlier shebanq at this place
     # so we remove errors, logs, uploads, etc
