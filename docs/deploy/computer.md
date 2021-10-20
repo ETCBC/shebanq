@@ -171,7 +171,7 @@ databases with empty data.
 
 ### Static data
 
-Static data is the fixed data offered by the ETCBC: the text and linguistic
+Static data is the frozen data offered by the ETCBC: the text and linguistic
 features of the Hebrew Bible in several versions.
 That data is in the BHSA repository that we clone, and will be imported
 from there, a lengthy process.

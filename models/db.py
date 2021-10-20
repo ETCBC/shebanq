@@ -12,8 +12,6 @@ shebanqUser = CONFIG["shebanqUser"]
 shebanqPassword = CONFIG["shebanqPassword"]
 shebanqHost = CONFIG["shebanqHost"]
 
-VERSION_ORDER = """2021 c 2017 4b 4""".split()
-
 VERSIONS = {
     "4": {
         "name": "BHSA_4",
@@ -47,7 +45,7 @@ VERSIONS = {
         "date": "2017-06-30",
         "desc": "Fourth online version of the BHSA database in SHEBANQ",
         "notes": (
-            "More updates"
+            "Most consistent data ever"
         ),
         "active": True,
     },
@@ -62,7 +60,7 @@ VERSIONS = {
     },
 }
 
-oddVersions = ["4", "4b", "2017", "c"]
+oddVersions = ["4", "4b", "c"]
 oddVersionSet = set(oddVersions)
 VERSION_ORDER = oddVersions + sorted(v for v in VERSIONS if v not in oddVersionSet)
 VERSION_ORDER = tuple(v for v in VERSION_ORDER)

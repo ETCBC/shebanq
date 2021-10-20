@@ -71,11 +71,11 @@ statusMap = dict(
         {{if writable:}}
             {{if v in {'4b', '4'}:}}
                 <p style="background-color: orange;"><span class="fa fa-exclamation" title="obsolete version with incomplete linguistic annotations. Version 2017 is recommended."/>
-                Obsolete data version. Consider running this query in version 2017.
+                Obsolete data version. Consider running this query in version 2021.
                 <a target="_blank" title="4(b) - 2017 upgrade guide" class="ctli" href="https://github.com/ETCBC/shebanq/wiki/Upgrade2017">4(b)-2017 upgrade guide<span class="fa fa-info-circle ctli"/></a></p>
             {{pass}}
-            {{if v == 'c':}}
-                <p style="background-color: orange;"><span class="fa fa-exclamation"/>Data version c is subject to change. For publishing, version 2017 is recommended.</p>
+            {{if v in {'c', '2017'}:}}
+                <p style="background-color: orange;"><span class="fa fa-exclamation"/>Legacy version. For publishing, version 2021 is recommended.</p>
             {{pass}}
         {{pass}}
     {{else:}}

@@ -41,7 +41,7 @@ web2pyVersion="2.21.1-stable"
 # Versions of the ETCBC data that you want to install/update
 # NB: the shebanq software has hardcoded references to these versions.
 #
-STATIC_VERSIONS="4 4b 2017 c 2021"
+STATIC_VERSIONS="4 4b c 2017 2021"
 #
 #
 # Where backups of the user-generated data of shebanq can be found
