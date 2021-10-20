@@ -4,17 +4,60 @@
 </code></pre></div> </details> </div> </div> <div class="doc doc-object doc-method"> <h4 id=querychapter.QUERYCHAPTER.makeQCindexes class="doc doc-heading"> <code class="codehilite language-python"><span class=n>makeQCindexes</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span></code> <a href=#querychapter.QUERYCHAPTER.makeQCindexes class=headerlink title="Permanent link">&para;</a></h4> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>modules/querychapter.py</code></summary> <div class=codehilite><pre><span></span><code><span class=k>def</span> <span class=nf>makeQCindexes</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
     <span class=n>VERSIONS</span> <span class=o>=</span> <span class=n>current</span><span class=o>.</span><span class=n>VERSIONS</span>
 
-    <span class=k>for</span> <span class=n>vr</span> <span class=ow>in</span> <span class=p>(</span><span class=s2>&quot;2017&quot;</span><span class=p>,</span> <span class=s2>&quot;2021&quot;</span><span class=p>)</span> <span class=k>if</span> <span class=n>current</span><span class=o>.</span><span class=n>SITUATION</span> <span class=o>==</span> <span class=s2>&quot;local&quot;</span> <span class=k>else</span> <span class=n>VERSIONS</span><span class=p>:</span>
+    <span class=k>for</span> <span class=n>vr</span> <span class=ow>in</span> <span class=p>(</span>
+        <span class=p>(</span><span class=s2>&quot;2017&quot;</span><span class=p>,</span> <span class=s2>&quot;2021&quot;</span><span class=p>)</span> <span class=k>if</span> <span class=n>current</span><span class=o>.</span><span class=n>SITUATION</span> <span class=o>==</span> <span class=s2>&quot;local&quot;</span> <span class=k>else</span> <span class=n>VERSIONS</span>
+    <span class=p>):</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>makeQCindex</span><span class=p>(</span><span class=n>vr</span><span class=p>)</span>
-</code></pre></div> </details> </div> </div> <div class="doc doc-object doc-method"> <h4 id=querychapter.QUERYCHAPTER.makeQCindex class="doc doc-heading"> <code class="codehilite language-python"><span class=n>makeQCindex</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vr</span><span class=p>)</span></code> <a href=#querychapter.QUERYCHAPTER.makeQCindex class=headerlink title="Permanent link">&para;</a></h4> <div class="doc doc-contents "> <p>We build an index of queries by chapter in which they have results.</p> <p>The index building takes may take multiple seconds per data version. But the result is stored in the cache.</p> <details class=quote> <summary>Source code in <code>modules/querychapter.py</code></summary> <div class=codehilite><pre><span></span><code><span class=k>def</span> <span class=nf>makeQCindex</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vr</span><span class=p>):</span>
+</code></pre></div> </details> </div> </div> <div class="doc doc-object doc-method"> <h4 id=querychapter.QUERYCHAPTER.makeQCindex class="doc doc-heading"> <code class="codehilite language-python"><span class=n>makeQCindex</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vr</span><span class=p>)</span></code> <a href=#querychapter.QUERYCHAPTER.makeQCindex class=headerlink title="Permanent link">&para;</a></h4> <div class="doc doc-contents "> <p>We build an index of queries by chapter in which they have results.</p> <p>The index building takes may take multiple seconds per data version. But the result is stored in the cache.</p> <p>We need to prevent that index-making is triggered multiple times by several requests that are fired while index-making is in progress.</p> <p>So we put an indicator value in the cache during index buidling, and we let everybody else wait until the index has been completed.</p> <p>We do this per version.</p> <p>To that end we put an empty dictionary in the cache. We only start computing the index key "busy" has a falsy value. Before computing the index, we set the value to 1. After computing the index, we set the value to 2.</p> <p>When the index is needed and the busy status is 1, we wait for it to become 2 before we continue.</p> <p>When the index is needed and busy is 2, the index has been built and we have to do nothing.</p> <p>Note that we do not need anything of the value of the index here, we only need it to be built, so that other parts of the app can get it quickly.</p> <p>We cannot allow that other parts of the app see an unfinished index, because it will lead to served content that is not yet correct. Because this content will be cached, it will take a long time (or forever) until it gets recomputed.</p> <details class=quote> <summary>Source code in <code>modules/querychapter.py</code></summary> <div class=codehilite><pre><span></span><code><span class=k>def</span> <span class=nf>makeQCindex</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vr</span><span class=p>):</span>
     <span class=sd>&quot;&quot;&quot;We build an index of queries by chapter in which they have results.</span>
 
 <span class=sd>    The index building takes may take multiple seconds per data version.</span>
 <span class=sd>    But the result is stored in the cache.</span>
+
+<span class=sd>    We need to prevent that index-making is triggered multiple times by</span>
+<span class=sd>    several requests that are fired while index-making is in progress.</span>
+
+<span class=sd>    So we put an indicator value in the cache during index buidling,</span>
+<span class=sd>    and we let everybody else wait until the index has been completed.</span>
+
+<span class=sd>    We do this per version.</span>
+
+<span class=sd>    To that end we put an empty dictionary in the cache.</span>
+<span class=sd>    We only start computing the index key &quot;busy&quot; has a falsy value.</span>
+<span class=sd>    Before computing the index, we set the value to 1.</span>
+<span class=sd>    After computing the index, we set the value to 2.</span>
+
+<span class=sd>    When the index is needed and the busy status is 1, we wait for it</span>
+<span class=sd>    to become 2 before we continue.</span>
+
+<span class=sd>    When the index is needed and busy is 2, the index has been</span>
+<span class=sd>    built and we have to do nothing.</span>
+
+<span class=sd>    Note that we do not need anything of the value of the index here,</span>
+<span class=sd>    we only need it to be built, so that other parts of the app can get it</span>
+<span class=sd>    quickly.</span>
+
+<span class=sd>    We cannot allow that other parts of the app see an unfinished index,</span>
+<span class=sd>    because it will lead to served content that is not yet correct.</span>
+<span class=sd>    Because this content will be cached, it will take a long time (or forever)</span>
+<span class=sd>    until it gets recomputed.</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=n>Caching</span> <span class=o>=</span> <span class=n>current</span><span class=o>.</span><span class=n>Caching</span>
 
-    <span class=n>Caching</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;qcindex_</span><span class=si>{</span><span class=n>vr</span><span class=si>}</span><span class=s2>_&quot;</span><span class=p>,</span> <span class=k>lambda</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>makeQCindex_c</span><span class=p>(</span><span class=n>vr</span><span class=p>),</span> <span class=n>ALWAYS</span><span class=p>)</span>
+    <span class=n>busyStatus</span> <span class=o>=</span> <span class=n>Caching</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;busyIndex_</span><span class=si>{</span><span class=n>vr</span><span class=si>}</span><span class=s2>_&quot;</span><span class=p>,</span> <span class=k>lambda</span><span class=p>:</span> <span class=p>{},</span> <span class=n>ALWAYS</span><span class=p>)</span>
+    <span class=n>busy</span> <span class=o>=</span> <span class=n>busyStatus</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;busy&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>busy</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+        <span class=n>busyStatus</span><span class=p>[</span><span class=s2>&quot;busy&quot;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=n>Caching</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;qcindex_</span><span class=si>{</span><span class=n>vr</span><span class=si>}</span><span class=s2>_&quot;</span><span class=p>,</span> <span class=k>lambda</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>makeQCindex_c</span><span class=p>(</span><span class=n>vr</span><span class=p>),</span> <span class=n>ALWAYS</span><span class=p>)</span>
+        <span class=n>busyStatus</span><span class=p>[</span><span class=s2>&quot;busy&quot;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span>
+    <span class=k>elif</span> <span class=n>busy</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+        <span class=n>n</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=k>while</span> <span class=p>(</span>
+            <span class=n>Caching</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;busyIndex_</span><span class=si>{</span><span class=n>vr</span><span class=si>}</span><span class=s2>_&quot;</span><span class=p>,</span> <span class=k>lambda</span><span class=p>:</span> <span class=p>{},</span> <span class=n>ALWAYS</span><span class=p>)</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;busy&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+        <span class=p>):</span>
+            <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+            <span class=n>n</span> <span class=o>+=</span> <span class=mi>1</span>
+            <span class=n>debug</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;o-o-o waiting for chapter-query index </span><span class=si>{</span><span class=n>vr</span><span class=si>}</span><span class=s2> (</span><span class=si>{</span><span class=n>n</span><span class=si>}</span><span class=s2> sec) ...&quot;</span><span class=p>)</span>
 </code></pre></div> </details> </div> </div> <div class="doc doc-object doc-method"> <h4 id=querychapter.QUERYCHAPTER.makeQCindex_c class="doc doc-heading"> <code class="codehilite language-python"><span class=n>makeQCindex_c</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vr</span><span class=p>)</span></code> <a href=#querychapter.QUERYCHAPTER.makeQCindex_c class=headerlink title="Permanent link">&para;</a></h4> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>modules/querychapter.py</code></summary> <div class=codehilite><pre><span></span><code><span class=k>def</span> <span class=nf>makeQCindex_c</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>vr</span><span class=p>):</span>
     <span class=n>Caching</span> <span class=o>=</span> <span class=n>current</span><span class=o>.</span><span class=n>Caching</span>
     <span class=n>db</span> <span class=o>=</span> <span class=n>current</span><span class=o>.</span><span class=n>db</span>
