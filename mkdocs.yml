@@ -124,6 +124,7 @@ extra:
   mysql: https://dev.mysql.com/downloads/mysql/
   mysqlInstall: https://dev.mysql.com/doc/mysql-macos-excerpt/8.0/en/macos-installation-pkg.html
   parabible: https://parabible.com/Genesis/1
+  parallels: https://github.com/etcbc/parallels
   pdoc3: https://pdoc3.github.io/pdoc/
   pipeline: https://github.com/etcbc/pipeline
   pytest: https://github.com/pytest-dev/pytest
@@ -134,10 +135,13 @@ extra:
   scp: https://man.openbsd.org/scp.1
   selenium: https://www.selenium.dev
   selinux: https://en.wikipedia.org/wiki/Security-Enhanced_Linux
+  shebanqnotes: https://shebanq.ancient-data.org/hebrew/notes
+  shebanqwikibulk: https://github.com/ETCBC/shebanq/wiki/Notes-Bulk
   shellsudo: https://linuxtect.com/linux-sudo-command-run-commands-with-root-privileges/
   ssh: https://man.openbsd.org/ssh.1
   ssl: https://smallstep.com/blog/use-ssh-certificates/
   textfabric: https://annotation/text-fabric
+  valence: https://github.com/etcbc/valence
   web2py: http://web2py.com
   web2pyRepo: https://github.com/web2py/web2py
   web2pyCache: http://web2py.com/books/default/chapter/29/04/the-core#cache

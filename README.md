@@ -33,3 +33,6 @@
 
 Read all about SHEBANQ on the [wiki](https://github.com/ETCBC/shebanq/wiki) of this repository.
 There you find information on the data sources as well.
+And there are the [techdocs](https://etcbc.github.io/shebanq/) of course.
+
+
