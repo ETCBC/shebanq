@@ -248,5 +248,8 @@ class MATERIAL:
                 else:
                     v += 1
 
+        if nvp == 0:
+            # no verses on last current page, so it is empty, so discard it
+            curPage -= 1
         verses = verseIds if p <= curPage and len(verseIds) else None
         return (nvt, curPage if nvt else 0, verses, list(verseSlots))
