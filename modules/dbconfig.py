@@ -38,7 +38,10 @@ if os.path.exists(configPath):
         keyValueLines = p.read().split("\n")
         keyValues = {}
         for line in keyValueLines:
-            (key, value) = line.strip().split("=", 1)
+            line = line.strip()
+            if not line:
+                continue
+            (key, value) = line.split("=", 1)
             key = key.strip()
             value = value.strip()
             keyValues[key] = value
