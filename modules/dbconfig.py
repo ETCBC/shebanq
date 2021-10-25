@@ -45,5 +45,8 @@ if os.path.exists(configPath):
             key = key.strip()
             value = value.strip()
             keyValues[key] = value
-        CONFIG["shebanqMailServer"] = keyValues.get("server", None)
-        CONFIG["shebanqMailSender"] = keyValues.get("sender", None)
+        CONFIG["mailServer"] = keyValues.get("server", None)
+        CONFIG["mailSender"] = keyValues.get("sender", None)
+else:
+    CONFIG["mailServer"] = "localhost"
+    CONFIG["mailSender"] = "shebanq@localhost"
