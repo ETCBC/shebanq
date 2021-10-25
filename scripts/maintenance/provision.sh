@@ -129,7 +129,7 @@ if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
         fi
     done
 
-    for template in apache.conf host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
+    for template in apache.conf mail.cfg host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
     do
         theTemplate="$SCRIPT_SRC_DIR/maintenance/templates/$template"
         theFile="$LOCAL_DIR/$template"

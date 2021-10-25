@@ -11,6 +11,8 @@ request.requires_https()
 shebanqUser = CONFIG["shebanqUser"]
 shebanqPassword = CONFIG["shebanqPassword"]
 shebanqHost = CONFIG["shebanqHost"]
+mailServer = CONFIG["mailServer"]
+mailSender = CONFIG["mailSender"]
 
 VERSIONS = {
     "4": {
@@ -109,9 +111,10 @@ crud, service, plugins = Crud(db), Service(), PluginManager()
 auth.define_tables(username=False, signature=False)
 
 # configure email
+# dependent on your site and existing mail accounts
 mail = auth.settings.mailer
-mail.settings.server = "localhost"  # 'logging' or 'smtp.gmail.com:587'
-mail.settings.sender = "shebanq@ancient-data.org"
+mail.settings.server = mailServer  # 'logging' or 'smtp.gmail.com:587'
+mail.settings.sender = mailSender
 mail.settings.login = None  # 'username:password'
 mail.settings.tls = None
 

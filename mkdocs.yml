@@ -127,6 +127,7 @@ extra:
   parallels: https://github.com/etcbc/parallels
   pdoc3: https://pdoc3.github.io/pdoc/
   pipeline: https://github.com/etcbc/pipeline
+  powertools: https://computingforgeeks.com/enable-powertools-repository-on-centos-rhel-linux/
   pytest: https://github.com/pytest-dev/pytest
   pytestFixtures: https://docs.pytest.org/en/latest/explanation/fixtures.html
   python: https://www.python.org

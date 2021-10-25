@@ -3,7 +3,9 @@
 # READ THIS FIRST: maintenance.md
 
 # Script to update a server.
-# Run it on the server.
+# Run it on the server without root privileges
+# but make sure that you are entitled to run
+# sudo -n /usr/bin/systemctl start/stop/restart.
 
 source ${0%/*}/config.sh
 source ${0%/*}/doconfig.sh

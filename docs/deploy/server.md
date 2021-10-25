@@ -3,6 +3,11 @@
 This article describes the installation and maintenance of SHEBANQ
 of a secure RedHat Fedora linux server.
 
+## Acknowledgements
+
+Thanks to Elia Fiore for installing SHEBANQ on RHEL/Centos/AlmaLinux/RockyLinux
+and giving essential feedback.
+
 !!! hint "Ubuntu"
     If you prefer Ubuntu, that should be easier.
     You need to change a few things: `yum` becomes `apt-get`,
@@ -66,6 +71,16 @@ You must have
 [sudo]({{shellsudo}})
 rights on this server.
 
+If the server runs on RHEL/Centos/AlmaLinux/RockyLinux:
+
+*   the [PowerTools repository]({{powertools}}) must be activated;
+*   the Git and Development Tools packages must have been installed
+*   the `mod_wsgi` module mentioned below is called `python3-mod_wsgi`.
+    That means you have to modify the installation script `install.sh` before
+    you run it, look for `python3-mod_wsgi` and uncomment that line,
+    while commenting the line with `mod_wsgi`.
+
+
 We assume that the
 [Apache webserver]({{apache}})
 is already installed and:
@@ -75,6 +90,7 @@ is already installed and:
     `/etc/pki/tls/certs` and `/etc/pki/tls/private`
 *   `mod_wsgi` is not yet installed.
 *   the ports 80 and 443 are open to the outside world
+*   `mod_ssl` is installed and activated
 
 !!! caution
     The installation procedure installs an Apache config file for SHEBANQ.
@@ -92,10 +108,13 @@ That means that you must have the right package repositories enabled.
 *   `python36`
 *   `python36-devel`
 *   `python3-markdown`
-*   `mod_wsgi`
+*   `mod_wsgi` or `python3-mod_wsgi` if on RHEL/Centos/AlmaLinux/RockyLinux
 *   `mariadb`
 *   `mariadb-devel`
 *   `mariadb-server`
+
+We assume that an email account is configured on the server that can be used to send
+emails on behalf of SHEBANQ (for password verfication and lost passwords).
 
 ### Local computer
 
@@ -151,6 +170,9 @@ What needs to be done is:
     *   provide the locations where the https-certificates are installed
         in Apache;
         these will be used in in the httpd config file for the webapp.
+    *   adapt the `mailServerOther` and `mailSenderOther` to the values
+        that correspond to the email account you have configured for SHEBANQ
+        emails to users.
 
 The `_local` directory is never pushed online
 (because of the `.gitignore` file in the shebanq repo),
@@ -164,6 +186,17 @@ When you run a maintenance script, you should run them from this
 adapted version.
 These local files are also the ones that are sent to the server
 in the provisioning step below.
+
+!!! hint "view and edit install.sh"
+    Since installation involves running `install.sh` with root privileges,
+    you are morally obliged to open `_local/install.sh` and view its contents.
+    If you see something you do not understand, do not run it, or run it in
+    a sandboxed (test)-machine.
+
+    If you are on RHEL/Centos/AlmaLinux/RockyLinux, you can now make an edit in
+    `_local/install.sh` and uncomment the line with `python3-mod_wsgi` in it
+    and comment the line with `mod_wsgi` in it.
+    
 
 The scripts can be run from any directory, because they do not depend
 on the current working directory.
@@ -181,9 +214,11 @@ and arguments it accepts.
 
 *   `backup.sh`
     *   Run it on the server.
+    *   No need for root privileges.
     *   Backs up the databases that have dynamic web data:
         *   `shebanq_web`
         *   `shebanq_note`
+    *   The backups are created in your home directory under `shebanq-backups`.
 
 *   `save.sh`
     *   Run it on your local computer. It will retrieve data from the server.
@@ -207,7 +242,8 @@ and arguments it accepts.
 
 *   `install.sh`
     *   Run it on the server.
-        Installs required software
+    *   Run it with root privileges, e.g. `sudo ./install.sh`
+    *   Installs required software
         (MySQL, Python, ModWsgi, Emdros, Web2py, and Shebanq itself)
         and loads data into the databases.
 
@@ -218,11 +254,13 @@ and arguments it accepts.
 
 *   `uninstall.sh`
     *   Run it on the server.
-        Uninstalls what `install.sh` has installed.
+    *   Run it with root privileges, e.g. `sudo ./install.sh`
+    *   Uninstalls what `install.sh` has installed.
     *   You can run this script in single steps by passing an option.
 
 *   `restore.sh`
     *   Run it on the server.
+    *   No need for root privileges.
     *   Restores the databases that have dynamic web data:
         *   `shebanq_web`
         *   `shebanq_note`
@@ -230,6 +268,12 @@ and arguments it accepts.
 
 *   `update.sh`
     *   Run it on the server.
+    *   No need for root privileges, but you must be able to run a specific
+        command with sudo without being prompted for a password:
+
+        `sudo -n /usr/bin/systemctl restart httpd.service`
+
+        and likewise for `start` and `stop`.
     *   Updates the shebanq webapp,
         i.e. the web-app as it is hung into the `web2py` framework.
 

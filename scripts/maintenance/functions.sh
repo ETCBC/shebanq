@@ -21,6 +21,8 @@ function setSituation {
         CERT_FILE="$certFileProd"
         CERT_KEY="$certKeyProd"
         CERT_CHAIN="$certChainProd"
+        MAIL_SERVER="$mailServerProd"
+        MAIL_SENDER="$mailSenderProd"
         echo "$2 PRODUCTION server $SERVER ..."
     elif [[ "$1" == "pn" || "$1" == "$serverProdNew" ]]; then
         SERVER="$serverProdNew"
@@ -35,6 +37,8 @@ function setSituation {
         CERT_FILE="$certFileProd"
         CERT_KEY="$certKeyProd"
         CERT_CHAIN="$certChainProd"
+        MAIL_SERVER="$mailServerProd"
+        MAIL_SENDER="$mailSenderProd"
         echo "$2 PRODUCTION server (new) $SERVER ..."
     elif [[ "$1" == "t" || "$1" == "$serverTest" ]]; then
         SERVER="$serverTest"
@@ -45,6 +49,8 @@ function setSituation {
         CERT_FILE="$certFileTest"
         CERT_KEY="$certKeyTest"
         CERT_CHAIN="$certChainTest"
+        MAIL_SERVER="$mailServerTest"
+        MAIL_SENDER="$mailSenderTest"
         echo "$2 TEST server $SERVER ..."
     elif [[ "$1" == "o" || "$1" == "$serverOther" ]]; then
         SERVER="$serverOther"
@@ -55,6 +61,8 @@ function setSituation {
         CERT_FILE="$certFileOther"
         CERT_KEY="$certKeyOther"
         CERT_CHAIN="$certChainOther"
+        MAIL_SERVER="$mailServerOther"
+        MAIL_SENDER="$mailSenderOther"
         echo "$2 OTHER server $SERVER ..."
     elif [[ "$1" == "on" || "$1" == "$serverOtherNew" ]]; then
         SERVER="$serverOtherNew"
@@ -70,6 +78,8 @@ function setSituation {
         CERT_FILE="$certFileOther"
         CERT_KEY="$certKeyOther"
         CERT_CHAIN="$certChainOther"
+        MAIL_SERVER="$mailServerOther"
+        MAIL_SENDER="$mailSenderOther"
         echo "$2 OTHER server (new) $SERVER ..."
     else
         echo "$3"
@@ -84,6 +94,8 @@ function setSituation {
     CERT_FILE=$CERT_FILE
     CERT_KEY=$CERT_KEY
     CERT_CHAIN=$CERT_CHAIN
+    MAIL_SERVER=$MAIL_SERVER
+    MAIL_SENDER=$MAIL_SENDER
     "
 }
 
@@ -218,6 +230,12 @@ function installShebanq {
         chown -R $SERVER_USER:shebanq "$path"
         chcon -R -t httpd_sys_rw_content_t "$path"
     done
+
+    for file in mail.cfg host.cfg mql.cfg
+    do
+        cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
+    done
+    chown -R $SERVER_USER:shebanq "$SERVER_CFG_DIR"
 }
 
 # run a controller of shebanq outside the apache ocntext

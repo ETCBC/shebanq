@@ -3,7 +3,12 @@
 # READ THIS FIRST: maintenance.md
 
 # Script to install a server.
-# Run it on the server.
+# Run it on the server with root privileges.
+
+# Acknowledgements
+
+# Thanks to Elia Fiore for installing SHEBANQ on RHEL/Centos/AlmaLinux/RockyLinux
+# and giving essential feedback.
 
 source ${0%/*}/config.sh
 source ${0%/*}/doconfig.sh
@@ -160,7 +165,13 @@ if [[ "$doAll" == "v" || "$doPython" == "v" ]]; then
     $TM yum -q -y install python3-markdown
     # we need the python command (for emdros compilation)
     alternatives --set python /usr/bin/python3
+
+    # mod_wsgi: use either one of the following two lines
+    # depending on your system
+    # The first one works under RedHat Fedora SELinux
+    # The second one works under RHEL/Centos/AlmaLinux/RockyLinux
     $TM yum -q -y install mod_wsgi
+    #$TM yum -q -y install python3-mod_wsgi
 fi
 
 # MariaDB
@@ -185,7 +196,7 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
 
     eraseDir "$SERVER_CFG_DIR"
     ensureDir "$SERVER_CFG_DIR"
-    for file in host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
+    for file in mail.cfg host.cfg mql.cfg mqlimportopt mysqldumpopt user.sql
     do
         cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
     done
@@ -231,7 +242,7 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
 fi
 
 # Import dynamic data:
-#   user-generated-content databases, previously save in a backup
+#   user-generated-content databases, previously saved in a backup
 
 if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then

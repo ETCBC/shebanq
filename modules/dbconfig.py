@@ -13,6 +13,9 @@ Copied manually from /opt/emdros/include/emdros/version-emdros.h
 
 CONFIG = dict(shebanqUser="shebanq")
 """Connection details for the databases.
+
+Also details about the mailserver and account that can send
+shebanq emails to users for the purpose of password verification.
 """
 
 configPath = "/opt/cfg/mql.cfg"
@@ -28,3 +31,15 @@ if os.path.exists(configPath):
         CONFIG["shebanqHost"] = p.read().rstrip("\n")
 else:
     CONFIG["shebanqHost"] = "localhost"
+
+configPath = "/opt/cfg/mail.cfg"
+if os.path.exists(configPath):
+    with open(configPath) as p:
+        keyValueLines = p.read().split("\n")
+        keyValues = {}
+        for line in keyValueLines:
+            (key, value) = line.strip().split("=", 1)
+            key = key.strip()
+            value = value.strip()
+        CONFIG["shebanqMailServer"] = keyValues.get("server", None)
+        CONFIG["shebanqMailSender"] = keyValues.get("sender", None)
