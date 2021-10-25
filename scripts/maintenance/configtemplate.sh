@@ -111,8 +111,8 @@ mysqlShebanqAdminPwdProd=yyy                    # wrong of course
 certFileProd=/etc/pki/tls/certs/ancient-data_org.cer
 certKeyProd=/etc/pki/tls/private/ancient-data_org.key
 certChainProd=/etc/pki/tls/certs/ancient-data_org_interm.cer
-mailServer=localhost
-mailSender=shebanq@ancient-data.org
+mailServerProd=localhost
+mailSenderProd=shebanq@ancient-data.org
 
 serverTest="t1.dansknaw.nl"                     # deliberately wrong
 serverUrlTest="test.shebanq.ancient-data.org"
@@ -122,8 +122,8 @@ mysqlShebanqAdminPwdTest=yyy                    # wrong of course
 certFileTest=/etc/pki/tls/certs/test_shebanq_ancient-data_org.cer
 certKeyTest=/etc/pki/tls/private/test_shebanq_ancient-data_org.key
 certChainTest=/etc/pki/tls/certs/test_shebanq_ancient-data_org_interm.cer
-mailServer=localhost
-mailSender=testshebanq@ancient-data.org
+mailServerTest=localhost
+mailSenderTest=testshebanq@ancient-data.org
 
 serverOther="other1.server.edu"                 # replace by your own  
 serverOtherNew="other2.server.edu"              # replace by your own
@@ -134,7 +134,7 @@ mysqlShebanqAdminPwdOther=yyy                   # obtain yourself
 certFileOther=/etc/pki/tls/certs/other_server_edu.cer
 certKeyOther=/etc/pki/tls/private/other_server_edu.key
 certChainOther=/etc/pki/tls/certs/other_server_edu.cer
-mailServer=localhost
-mailSender=shebanq@mydomain.org
+mailServerOther=localhost
+mailSenderOther=shebanq@mydomain.org
 #
 # END TWEAKING PART #################################################

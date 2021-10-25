@@ -41,5 +41,6 @@ if os.path.exists(configPath):
             (key, value) = line.strip().split("=", 1)
             key = key.strip()
             value = value.strip()
+            keyValues[key] = value
         CONFIG["shebanqMailServer"] = keyValues.get("server", None)
         CONFIG["shebanqMailSender"] = keyValues.get("sender", None)
