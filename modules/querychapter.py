@@ -3,7 +3,6 @@ from textwrap import dedent
 
 from gluon import current
 
-from dbconfig import CONFIG
 from constants import ALWAYS
 from helpers import debug, delta
 
@@ -16,7 +15,7 @@ class QUERYCHAPTER:
         VERSIONS = current.VERSIONS
 
         for vr in (
-            ("2017", "2021") if current.SITUATION == "local" else VERSIONS
+            ("2017", "2021") if current.SITUATION in {"local", "test"} else VERSIONS
         ):
             self.makeQCindex(vr)
 
@@ -76,8 +75,6 @@ class QUERYCHAPTER:
         db = current.db
         PASSAGE_DBS = current.PASSAGE_DBS
 
-        debug(f"mailServer={CONFIG['mailServer']}")
-        debug(f"mailSender={CONFIG['mailSender']}")
         debug(f"o-o-o making chapter-query index for version {vr} ...")
         startTime = time.time()
 
