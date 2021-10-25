@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from helpers import debug
 from dbconfig import CONFIG
 from gluon import current
 from gluon.tools import Auth, Crud, Service, PluginManager
@@ -13,6 +14,8 @@ shebanqPassword = CONFIG["shebanqPassword"]
 shebanqHost = CONFIG["shebanqHost"]
 mailServer = CONFIG["mailServer"]
 mailSender = CONFIG["mailSender"]
+debug(f"mailServer={mailServer}")
+debug(f"mailSender={mailSender}")
 
 VERSIONS = {
     "4": {
