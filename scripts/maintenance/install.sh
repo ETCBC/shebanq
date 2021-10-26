@@ -200,7 +200,7 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
     do
         cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
     done
-    chown -R $SERVER_USER:shebanq "$SERVER_CFG_DIR"
+    chown -R apache:shebanq "$SERVER_CFG_DIR"
 
     cp "$SERVER_INSTALL_DIR/shebanq.cnf" /etc/my.cnf.d/
 
@@ -238,7 +238,7 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "o-o-o - Emdros INSTALL"
     echo "There will be some warnings, but that's ok"
     $TM make install > /dev/null
-    chown -R SERVER_USER:shebanq "$SERVER_EMDROS_DIR"
+    chown -R apache:shebanq "$SERVER_EMDROS_DIR"
 fi
 
 # Import dynamic data:
@@ -357,7 +357,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     echo "o-o-o - Removing examples app"
     rm -rf "$SERVER_APP_DIR/web2py/applications/examples"
 
-    chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/web2py"
+    chown -R apache:shebanq "$SERVER_APP_DIR/web2py"
     chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/web2py"
 
     if [[ "$skipExtradirs" != "v" ]]; then
@@ -371,7 +371,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
                 if [[ ! -e "$path" ]]; then
                     mkdir "$path"
                 fi
-                chown -R $SERVER_USER:shebanq "$path"
+                chown -R apache:shebanq "$path"
                 chcon -R -t httpd_sys_rw_content_t "$path"
             done
         done
@@ -389,11 +389,11 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
             rm -rf $APP
         fi
         ln -s "$SERVER_APP_DIR/$APP" "$APP"
-        chown -R $SERVER_USER:shebanq "$APP"
+        chown -R apache:shebanq "$APP"
 
         if [[ -e "$APP" ]]; then
             compileApp $APP
-            chown -R $SERVER_USER:shebanq "$SERVER_APP_DIR/$APP"
+            chown -R apache:shebanq "$SERVER_APP_DIR/$APP"
             chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
         fi
     fi

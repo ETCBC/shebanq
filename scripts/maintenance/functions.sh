@@ -205,7 +205,7 @@ function installShebanq {
     cp -R $cloneDir/* "$shebanqDir"
 
     # warming up
-    chown -R $SERVER_USER:shebanq "$shebanqDir"
+    chown -R apache:shebanq "$shebanqDir"
     chcon -R -t httpd_sys_content_t "$shebanqDir"
 
     if [[ -e "$web2pyDir" ]]; then
@@ -217,7 +217,7 @@ function installShebanq {
         done
 
         compileApp $APP
-        chown -R $SERVER_USER:shebanq "$shebanqDir"
+        chown -R apache:shebanq "$shebanqDir"
         chcon -R -t httpd_sys_content_t "$shebanqDir"
     fi
 
@@ -227,7 +227,7 @@ function installShebanq {
     do
         path="$shebanqDir/$dir"
         ensureDir "$path"
-        chown -R $SERVER_USER:shebanq "$path"
+        chown -R apache:shebanq "$path"
         chcon -R -t httpd_sys_rw_content_t "$path"
     done
 
@@ -235,7 +235,7 @@ function installShebanq {
     do
         cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
     done
-    chown -R $SERVER_USER:shebanq "$SERVER_CFG_DIR"
+    chown -R apache:shebanq "$SERVER_CFG_DIR"
 }
 
 # run a controller of shebanq outside the apache ocntext
