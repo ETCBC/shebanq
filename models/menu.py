@@ -37,9 +37,9 @@ onOther = False
 
 if servedOn is None or servedOn.endswith("local") or servedOn.endswith("home"):
     onLocal = True
-elif servedOn == "shebanq.ancient-data.org":
+elif servedOn in {"shebanq.ancient-data.org", "clarin31.dans.knaw.nl"}:
     onProd = True
-elif servedOn == "test.shebanq.ancient-data.org":
+elif servedOn in {"test.shebanq.ancient-data.org", "tclarin31.dans.knaw.nl"}:
     onTest = True
 else:
     onOther = True

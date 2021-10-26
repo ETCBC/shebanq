@@ -389,7 +389,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
             rm -rf $APP
         fi
         ln -s "$SERVER_APP_DIR/$APP" "$APP"
-        chown $SERVER_USER:shebanq "$APP"
+        chown -R $SERVER_USER:shebanq "$APP"
 
         if [[ -e "$APP" ]]; then
             compileApp $APP
