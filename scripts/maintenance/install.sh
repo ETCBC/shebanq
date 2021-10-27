@@ -200,7 +200,7 @@ if [[ "$doAll" == "v" || "$doMysqlConfig" == "v" ]]; then
     do
         cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
     done
-    chown -R apache:shebanq "$SERVER_CFG_DIR"
+    chown -R "$SERVER_USER":shebanq "$SERVER_CFG_DIR"
 
     cp "$SERVER_INSTALL_DIR/shebanq.cnf" /etc/my.cnf.d/
 
@@ -238,7 +238,7 @@ if [[ "$doAll" == "v" || "$doEmdros" == "v" ]]; then
     echo "o-o-o - Emdros INSTALL"
     echo "There will be some warnings, but that's ok"
     $TM make install > /dev/null
-    chown -R apache:shebanq "$SERVER_EMDROS_DIR"
+    chown -R "$SERVER_USER":shebanq "$SERVER_EMDROS_DIR"
 fi
 
 # Import dynamic data:
@@ -338,6 +338,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     ensureDir "$SERVER_APP_DIR"
     chmod 755 /opt
     chmod 755 "$SERVER_APP_DIR"
+    chown "$SERVER_USER":shebanq "$SERVER_APP_DIR"
 
     cd "$SERVER_APP_DIR"
     cp "$SERVER_INSTALL_DIR/$WEB2PY_FILE" web2py.zip
@@ -345,9 +346,10 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         rm -rf web2py
     fi
     $TM unzip web2py.zip > /dev/null
+    chmod 2775 web2py
     rm web2py.zip
 
-    for pyFile in parameters_443.py routes.py logging.conf wsgihandler.py
+    for pyFile in parameters_443.py routes.py wsgihandler.py
     do
         cp "$SERVER_INSTALL_DIR/$pyFile" web2py
     done
@@ -357,23 +359,14 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     echo "o-o-o - Removing examples app"
     rm -rf "$SERVER_APP_DIR/web2py/applications/examples"
 
-    chown -R apache:shebanq "$SERVER_APP_DIR/web2py"
+    chown -R "$SERVER_USER":shebanq "$SERVER_APP_DIR/web2py"
     chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/web2py"
 
     if [[ "$skipExtradirs" != "v" ]]; then
-        echo "o-o-o - make writable dirs"
         cd "$SERVER_APP_DIR/web2py/applications"
         for app in welcome admin
         do
-            for dir in languages log databases cache errors sessions private uploads
-            do
-                path="$app/$dir"
-                if [[ ! -e "$path" ]]; then
-                    mkdir "$path"
-                fi
-                chown -R apache:shebanq "$path"
-                chcon -R -t httpd_sys_rw_content_t "$path"
-            done
+            writableDirs "$app"
         done
     fi
 
@@ -389,11 +382,11 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
             rm -rf $APP
         fi
         ln -s "$SERVER_APP_DIR/$APP" "$APP"
-        chown -R apache:shebanq "$APP"
+        chown -R "$SERVER_USER":shebanq "$APP"
 
         if [[ -e "$APP" ]]; then
             compileApp $APP
-            chown -R apache:shebanq "$SERVER_APP_DIR/$APP"
+            chown -R "$SERVER_USER":shebanq "$SERVER_APP_DIR/$APP"
             chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
         fi
     fi

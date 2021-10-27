@@ -14,7 +14,7 @@ showUsage "$1" "$USAGE"
 
 cd "$SERVER_APP_DIR/web2py"
 
-for item in routes.py logging.conf
+for item in routes.py
 do
     cp "$SCRIPT_SRC_DIR/$item" .
 done

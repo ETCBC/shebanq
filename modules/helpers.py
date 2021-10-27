@@ -5,27 +5,25 @@ from base64 import b64decode, b64encode
 from gluon import current
 
 TO_STDERR = True
-TO_LOGGER = False
 TO_RESPONSE = False
 
 
 def debug(msg):
     """Issue a debug message.
 
-    The message is written to the console and into a log file:
-    *shebanqDir*`/log/debug.log`.
-    It works on your local shebanq and the shebanq on a server.
+    The message is written to the console or into a log file:
+    depending on whether you run it locally or on a server under apache.
 
-    See [logging]({{pythonLogging}}).
+    In case logging does not work, you can, by way of emergency,
+    set `TO_RESPONSE` to True, and then the messages will be added
+    to the respnse, probably creating an ugly mess, but at least
+    you get information out.
     """
     if current.DEBUG:
         if TO_STDERR:
             sys.stderr.write(f"{msg}\n")
-        if TO_LOGGER:
-            current.logger.info(f"{msg}")
         if TO_RESPONSE:
-            msgRep = msg.replace("\n", "<br>")
-            current.response.write(f"{msgRep}<br>")
+            current.response.write(f"{msg}\n")
 
 
 def isodt(dt=None):

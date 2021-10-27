@@ -107,7 +107,7 @@ if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
 
     good="v"
 
-    for script in grants.sql routes.py logging.conf shebanq.cnf parameters_443.py unconfigure.sql wsgi.conf wsgihandler.py
+    for script in grants.sql routes.py shebanq.cnf parameters_443.py unconfigure.sql wsgi.conf wsgihandler.py
     do
         theFile="$SCRIPT_SRC_DIR/$script"
         if [[ -e "$theFile" ]]; then

@@ -124,15 +124,36 @@ function compileApp {
     app="$1"
 
     echo "- Compile $app ..."
+
+    if [[ "$app" == "$APP" ]]; then
+        parentDir="$SERVER_APP_DIR"
+    else
+        parentDir="$SERVER_APP_DIR/web2py/applications"
+    fi
+
+    appPath="$parentDir/$app"
     cmd1="import gluon.compileapp;"
     cmd2="gluon.compileapp.compile_application('applications/$app')"
 
     cd "$SERVER_APP_DIR/web2py"
     python3 -c "$cmd1 $cmd2" > /dev/null
 
+    generatedDir="$appPath/compiled"
+    chmod -R 775 "$generatedDir" 
+    chmod 2775 "$generatedDir" 
+    chown -R "$SERVER_USER":shebanq "$generatedDir"
+    chcon -R -t httpd_sys_content_t "$generatedDir"
+
     echo "- Compile modules of $app ..."
     cd "$SERVER_APP_DIR/web2py/applications/$app"
     python3 -m compileall modules > /dev/null
+
+    generatedDir="$appPath/modules/__pycache__"
+    chmod -R 775 "$generatedDir" 
+    chmod 2775 "$generatedDir" 
+    chown -R "$SERVER_USER":shebanq "$generatedDir"
+    chcon -R -t httpd_sys_content_t "$generatedDir"
+
     echo "- Done compiling $app."
 }
 
@@ -167,7 +188,30 @@ function fetchShebanq {
         mv "$APP" "$APP-clone"
     fi
 
-    chown -R $SERVER_USER:$SERVER_USER "$cloneDir"
+    chown -R $SERVER_USER:$SERVer_USER "$cloneDir"
+}
+
+# make certain directories in a web2py app writable
+
+function writableDirs {
+    app=$1
+    echo "o-o-o - make writable dirs in $app"
+    if [[ "$app" == "$APP" ]]; then
+        parentDir="$SERVER_APP_DIR"
+    else
+        parentDir="$SERVER_APP_DIR/web2py/applications"
+    fi
+    appPath="$parentDir/$app"
+    for dir in languages log databases cache errors sessions private uploads
+    do
+        dirPath="$appPath/$dir"
+        if [[ ! -e "$dirPath" ]]; then
+            mkdir "$dirPath"
+        fi
+        chmod 2775 "$dirPath"
+        chown -R "$SERVER_USER":shebanq "$dirPath"
+        chcon -R -t httpd_sys_rw_content_t "$dirPath"
+    done
 }
 
 # put shebanq into place
@@ -205,40 +249,35 @@ function installShebanq {
     cp -R $cloneDir/* "$shebanqDir"
 
     # warming up
-    chown -R apache:shebanq "$shebanqDir"
+    chown -R "$SERVER_USER":shebanq "$shebanqDir"
     chcon -R -t httpd_sys_content_t "$shebanqDir"
 
     if [[ -e "$web2pyDir" ]]; then
-        # if routes and logging confs have changed, pick them up
+        # if some configs have changed, pick them up
         # and place them in the web2py dir
-        for pyFile in parameters_443.py routes.py logging.conf
+        for pyFile in parameters_443.py routes.py
         do
             cp "$shebanqDir/scripts/$pyFile" "$web2pyDir"
         done
 
         compileApp $APP
-        chown -R apache:shebanq "$shebanqDir"
+        chown -R "$SERVER_USER":shebanq "$shebanqDir"
         chcon -R -t httpd_sys_content_t "$shebanqDir"
     fi
 
     # make sure the writable directories exists and have the right
     # ownership and security context
-    for dir in languages log databases cache errors sessions private uploads
-    do
-        path="$shebanqDir/$dir"
-        ensureDir "$path"
-        chown -R apache:shebanq "$path"
-        chcon -R -t httpd_sys_rw_content_t "$path"
-    done
+    writableDirs "$APP"
 
+    ensureDir "$SERVER_CFG_DIR"
     for file in mail.cfg host.cfg mql.cfg
     do
         cp -r "$SERVER_INSTALL_DIR/$file" "$SERVER_CFG_DIR"
     done
-    chown -R apache:shebanq "$SERVER_CFG_DIR"
+    chown -R "$SERVER_USER":shebanq "$SERVER_CFG_DIR"
 }
 
-# run a controller of shebanq outside the apache ocntext
+# run a controller of shebanq outside the apache context
 
 function testController {
     echo "o-o-o    TEST CONTROLLER o-o-o"

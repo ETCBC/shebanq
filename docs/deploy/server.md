@@ -93,11 +93,11 @@ is already installed and:
 *   `mod_ssl` is installed and activated
 
 !!! caution
-    The installation procedure installs an Apache config file for SHEBANQ.
+    The installation procedure installs a bunch of Apache config file for SHEBANQ.
     It claims 1 process and 5 threads.
     You can modify this later on, manually.
 
-    **But keep the number of processes to 1**
+    **But keep the number of processes to its default 1** (see wsgi.conf).
 
     Because SHEBANQ stores global data in a cache that is local
     to the process. See [Model: CACHING][models.caching.CACHING]
@@ -691,39 +691,36 @@ That's it.
 
 ## Trouble shooting
 
-It is very difficult to view messages issued by Python code.
-`print` and `sys.stderr.write()` do not work.
-
-Neither does the following work: use the module
-[logging]({{pythonLogging}})
-from the standard Python library, and
-[hook it up in the Web2py framework]({{web2pyLogging}}).
-
-That is to say: al these methods of logging work on your local computer,
-but none of these work on the server, and I cannot figure out why,
-because according to the WSGI documentation they all should work.
-
-Somewhere between Apache and WSGI information is lost.
-The situation is very unsatisfactory.
-
+You can add debug statements in the Python code.
 We have a debug helper [M: helpers.debug][helpers.debug]
 
-Just say
-
-```
+``` python
 from helpers import debug
 
-debug("here you are")
+debug("here I am")
 ```
 
-Such messages may go to these destinations, dependent on switches.
+but you can also do simply:
 
-*   `stderr`
-*   `logger` (file `opt/web-apps/shebanq/log/debug.log`).
-*   the response
+```
+import sys
 
-Currently only `stderr` is switched on.
-If you are desperate to get output on the server, switch the response on, temporarily.
+sys.stderr.write("here I am\n")
+```
+
+If you work locally, you'll see these messages on the console.
+
+If SHEBANQ is served under Apache, you see these messages in
+the Apache log files, more precisely in
+
+```
+/var/log/httpd/shebanq_error
+```
+
+If somehow logging fails in this way and
+you are desperate to get output from the server so that you can read it,
+switch the `TO_RESONSE` flag on, temporarily
+(it is here: [M: helpers.debug][helpers.debug]).
 Then you get the messages at the top of your page, after the page has loaded.
 
 However, use this only in emergencies or if there are discrepancies between 

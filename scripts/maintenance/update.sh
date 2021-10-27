@@ -63,10 +63,10 @@ fi
 
 cd $SERVER_APP_DIR/web2py
 
-for pyFile in parameters_443.py routes.py logging.conf wsgihandler.py
+for pyFile in parameters_443.py routes.py wsgihandler.py
 do
     cp "$SERVER_INSTALL_DIR/$pyFile" .
-    chown apache:shebanq "$pyFile"
+    chown "$SERVER_USER":shebanq "$pyFile"
     chcon -t httpd_sys_content_t "$pyFile"
 done
 
@@ -90,7 +90,7 @@ fi
 if [[ "$doThorough" == "v" ]]; then
     echo "o-o-o Run test controller ..."
     testController
-    chown apache:shebanq "$logFile"
+    chown "$SERVER_USER":shebanq "$logFile"
 fi
 
 # (re) start Apache nad do post-update steps
