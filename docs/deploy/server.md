@@ -277,6 +277,13 @@ and arguments it accepts.
     *   Updates the shebanq webapp,
         i.e. the web-app as it is hung into the `web2py` framework.
 
+*   `test.sh`
+    *   Run it on the server.
+    *   No need for root privileges.
+    *   Performs a loose bunch of tasks, such as
+        *   Run a controller outside Apache
+        *   Visit the website
+        *   Compile the application code.
 
 ## The situations
 
@@ -729,6 +736,31 @@ the SHEBANQ on your local computer and the SHEBANQ on the server.
 The recommended practice is to
 [install Web2Py and SHEBANQ on your local computer](computer.md),
 and debug it there.
+
+!!! caution "SHEBANQ does not react to modified code"
+    When you have modified code directly on the server, SHEBANQ does not sense it!
+    Two reasons:
+
+    Web2py uses the compiled Python code, not the Python source code.
+    And due to security reasons, Apache cannot recompile the code on the fly.
+    So you have to do it yourself. From your home directory on the server, run
+
+    ``` sh
+    ./test.sh --compile
+    ```
+
+    The second reason is that the whole program is in the memory of the Apache process.
+    You have to restart Apache.
+
+    ``` sh
+    service httpd restart
+    ```
+
+    Mind: first compile, then restart.
+
+    When you update shebanq from Github, by running the `update.sh` script,
+    all these things are taken care of.
+
 
 ### SELINUX violations
 
