@@ -69,7 +69,7 @@ list of properties and values of the word
 link big-area-button
 full-description
 shared-status
-````
+```
 
 Below that, for all data versions
 
@@ -108,7 +108,7 @@ properties and values, among which the published status
 link
 full-user
 full-keyword
-````
+```
 
 Below that, for all data versions
 
