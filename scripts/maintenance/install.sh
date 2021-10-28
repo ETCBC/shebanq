@@ -247,14 +247,15 @@ fi
 if [[ "$DB_HOST" == "localhost" ]]; then
     if [[ "$doAll" == "v" || "$doDynamic" == "v" ]]; then
         echo "o-o-o    LOAD DYNAMIC DATA start    o-o-o"
-        for db in $DYNAMIC_WEB $DYNAMIC_NOTE
+        for db in $DYNAMIC_NOTE $DYNAMIC_WEB
         do
-            echo "o-o-o - DB $db"
-
-            echo "o-o-o - creating fresh $db"
+            echo "o-o-o - clearing $db"
             mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e "drop database if exists $db;"
             mysql --defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt -e "create database $db;"
+        done
 
+        for db in $DYNAMIC_WEB $DYNAMIC_NOTE
+        do
             echo "o-o-o - unzipping $db"
             cp "$SERVER_INSTALL_DIR/$db.sql.gz" "$SERVER_UNPACK_DIR"
             $TM gunzip -f "$SERVER_UNPACK_DIR/$db.sql.gz"

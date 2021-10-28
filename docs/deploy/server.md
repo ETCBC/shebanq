@@ -5,8 +5,11 @@ of a secure RedHat Fedora linux server.
 
 ## Acknowledgements
 
-Thanks to Elia Fiore for installing SHEBANQ on RHEL/Centos/AlmaLinux/RockyLinux
+Thanks to
+[Elia Fiore and his people]({{biblicalstudies}})
+for installing SHEBANQ on RHEL/Centos/AlmaLinux/RockyLinux
 and giving essential feedback.
+
 
 !!! hint "Ubuntu"
     If you prefer Ubuntu, that should be easier.
