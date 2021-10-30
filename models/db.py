@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from helpers import debug
 from dbconfig import CONFIG
 from gluon import current
 from gluon.tools import Auth, Crud, Service, PluginManager
@@ -122,7 +121,6 @@ mail.settings.tls = None
 # configure auth policy
 
 canMailVerification = mailSender != ""
-debug(f"o-o-o Mail sending ability = {canMailVerification}")
 
 auth.settings.registration_requires_verification = canMailVerification
 auth.settings.registration_requires_approval = False

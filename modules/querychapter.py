@@ -147,6 +147,7 @@ class QUERYCHAPTER:
 
         exe = time.time() - startTime
         debug(f"o-o-o made chapter-query index for data {vr} in {delta(exe)}")
+        debug("TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST ")
         return (queriesFromChapter, chaptersFromQuery)
 
     def updatePubStatus(self, vr, query_id, is_published):
