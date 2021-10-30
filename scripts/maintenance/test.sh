@@ -63,8 +63,8 @@ if [[ "$doAll" == "v" || "$doVisit" == "v" ]]; then
     firstVisit
 fi
 if [[ "$doAll" == "v" || "$doCompile" == "v" ]]; then
-    compileApp admin
-    compileApp $APP
+    compileApp admin "x"
+    compileApp $APP "x"
 fi
 
 echo "o-o-o Testing done."

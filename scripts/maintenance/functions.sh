@@ -122,6 +122,7 @@ function eraseDir {
 
 function compileApp {
     app="$1"
+    fresh="$2"
 
     echo "- Compile $app ..."
 
@@ -132,27 +133,45 @@ function compileApp {
     fi
 
     appPath="$parentDir/$app"
+    generatedDir="$appPath/compiled"
+    if [[ ! -e "$generatedDir" ]]; then
+        mkdir "$generatedDir"
+        chmod -R 775 "$generatedDir" 
+        chmod 2775 "$generatedDir" 
+        setfacl -d -m g::rw "$generatedDir"
+        chown "$SERVER_USER":shebanq "$generatedDir"
+    fi
     cmd1="import gluon.compileapp;"
     cmd2="gluon.compileapp.compile_application('applications/$app')"
 
     cd "$SERVER_APP_DIR/web2py"
     python3 -c "$cmd1 $cmd2" > /dev/null
 
-    generatedDir="$appPath/compiled"
-    chmod -R 775 "$generatedDir" 
-    chmod 2775 "$generatedDir" 
-    chown -R "$SERVER_USER":shebanq "$generatedDir"
-    chcon -R -t httpd_sys_content_t "$generatedDir"
+    if [[ "$fresh" == "v" ]]; then
+        chown -R "$SERVER_USER":shebanq "$generatedDir"
+        chcon -R -t httpd_sys_content_t "$generatedDir"
+    else
+        chown -R --from=$SERVER_USER "$SERVER_USER":shebanq "$generatedDir"
+    fi
 
     echo "- Compile modules of $app ..."
     cd "$SERVER_APP_DIR/web2py/applications/$app"
     python3 -m compileall modules > /dev/null
 
     generatedDir="$appPath/modules/__pycache__"
-    chmod -R 775 "$generatedDir" 
-    chmod 2775 "$generatedDir" 
-    chown -R "$SERVER_USER":shebanq "$generatedDir"
-    chcon -R -t httpd_sys_content_t "$generatedDir"
+    if [[ ! -e "$generatedDir" ]]; then
+        mkdir "$generatedDIr"
+        chmod -R 775 "$generatedDir" 
+        chmod 2775 "$generatedDir" 
+        setfacl -d -m g::rw "$generatedDir"
+        chown "$SERVER_USER":shebanq "$generatedDir"
+    fi
+    if [[ "$fresh" == "v" ]]; then
+        chown -R "$SERVER_USER":shebanq "$generatedDir"
+        chcon -R -t httpd_sys_content_t "$generatedDir"
+    else
+        chown -R --from=$SERVER_USER "$SERVER_USER":shebanq "$generatedDir"
+    fi
 
     echo "- Done compiling $app."
 }
@@ -188,13 +207,14 @@ function fetchShebanq {
         mv "$APP" "$APP-clone"
     fi
 
-    chown -R $SERVER_USER:$SERVer_USER "$cloneDir"
+    chown -R $SERVER_USER:$SERVER_USER "$cloneDir"
 }
 
 # make certain directories in a web2py app writable
 
 function writableDirs {
     app=$1
+    fresh=$2
     parentDir="$SERVER_APP_DIR"
     wDirs="languages log databases cache errors sessions private uploads"
 
@@ -216,8 +236,13 @@ function writableDirs {
             mkdir "$dirPath"
         fi
         chmod 2775 "$dirPath"
-        chown -R "$SERVER_USER":shebanq "$dirPath"
-        chcon -R -t httpd_sys_rw_content_t "$dirPath"
+        setfacl -d -m g::rw "$dirPath"
+        if [[ "$fresh" == "v" ]]; then
+            chown -R "$SERVER_USER":shebanq "$dirPath"
+            chcon -R -t httpd_sys_rw_content_t "$dirPath"
+        else
+            chown -R --from=$SERVER_USER "$SERVER_USER":shebanq "$dirPath"
+        fi
     done
 }
 
@@ -292,22 +317,30 @@ function installShebanq {
     cp -R $cloneDir/* "$shebanqDir"
 
     # warming up
-    chown -R "$SERVER_USER":shebanq "$shebanqDir"
-    chcon -R -t httpd_sys_content_t "$shebanqDir"
+    if [[ "$fresh" == "v" ]]; then
+        chown -R "$SERVER_USER":shebanq "$shebanqDir"
+        chcon -R -t httpd_sys_content_t "$shebanqDir"
+    else
+        chown -R --from=$SERVER_USER "$SERVER_USER":shebanq "$shebanqDir"
+    fi
 
     if [[ -e "$web2pyDir" ]]; then
         # if some configs have changed, pick them up
         # and place them in the web2py dir
         additionals
 
-        compileApp $APP
-        chown -R "$SERVER_USER":shebanq "$shebanqDir"
-        chcon -R -t httpd_sys_content_t "$shebanqDir"
+        compileApp $APP $fresh
+        if [[ "$fresh" == "v" ]]; then
+            chown -R "$SERVER_USER":shebanq "$shebanqDir"
+            chcon -R -t httpd_sys_content_t "$shebanqDir"
+        else
+            chown -R --from=$SERVER_USER "$SERVER_USER":shebanq "$shebanqDir"
+        fi
     fi
 
     # make sure the writable directories exists and have the right
     # ownership and security context
-    writableDirs "$APP"
+    writableDirs "$APP" "$fresh"
 
     ensureDir "$SERVER_CFG_DIR"
     for file in mail.cfg host.cfg mql.cfg

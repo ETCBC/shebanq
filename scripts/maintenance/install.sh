@@ -356,12 +356,13 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     fi
     $TM unzip web2py.zip > /dev/null
     chmod 2775 web2py
+    setfacl -d -m g::rw web2py
     rm web2py.zip
 
     additionals
 
-    writableDirs web2py
-    compileApp admin
+    writableDirs web2py v
+    compileApp admin v
 
     echo "o-o-o - Removing examples app"
     rm -rf "$SERVER_APP_DIR/web2py/applications/examples"
@@ -373,7 +374,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         cd "$SERVER_APP_DIR/web2py/applications"
         for app in welcome admin
         do
-            writableDirs "$app"
+            writableDirs "$app" v
         done
     fi
 
@@ -392,7 +393,7 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
         chown -R "$SERVER_USER":shebanq "$APP"
 
         if [[ -e "$APP" ]]; then
-            compileApp $APP
+            compileApp $APP v
             chown -R "$SERVER_USER":shebanq "$SERVER_APP_DIR/$APP"
             chcon -R -t httpd_sys_content_t "$SERVER_APP_DIR/$APP"
         fi
