@@ -176,6 +176,8 @@ What needs to be done is:
     *   adapt the `mailServerOther` and `mailSenderOther` to the values
         that correspond to the email account you have configured for SHEBANQ
         emails to users.
+        If you leave `mailSenderOther` empty, we assume your server cannot
+        send mail, and we'll instruct web2py to not send verification emails.
 
 The `_local` directory is never pushed online
 (because of the `.gitignore` file in the shebanq repo),
@@ -254,10 +256,26 @@ and arguments it accepts.
         the user who is you and the `apache` users
         are added to the members of this group.
     *   You can run this script in single steps by passing an option.
+    *   Web2py offers an administrative webapp (admin), by which you can inspect
+        the database and errors of SHEBANQ in the browser.
+        You reach it by the url which consists of the url of shebanq with
+        `/admin` appended to it. Admin is protected by a password, that you have
+        to set during installation.
+        This can be done by `sudo ./install.sh --adminpwd`
 
+        The result is a file parameters_443.py, which you can copy back
+        to your local computer and place in the `_local` directory of your
+        shebanq clone.
+
+        After that, in subsequent runs of `provision.sh`, `install.sh` and 
+        `update.sh`, this password will be preserved, and there is no need for
+        setting it again.
+
+        But of course, you can set the password anytime with the command above.
+        
 *   `uninstall.sh`
     *   Run it on the server.
-    *   Run it with root privileges, e.g. `sudo ./install.sh`
+    *   Run it with root privileges, e.g. `sudo ./uninstall.sh`
     *   Uninstalls what `install.sh` has installed.
     *   You can run this script in single steps by passing an option.
 
@@ -354,9 +372,15 @@ We assume that this there is no previous dynamic data to be imported.
     upload all needed installation files to the server;
     there will also be (big) data transfers of the static databases.
 
-1.  (server) `./install.sh`
+1.  (server) `sudo ./install.sh`
 
     perform the complete installation of shebanq
+
+1. (server) `sudo ./install.sh --adminpwd
+
+    you will be prompted to enter an admin password.
+    You'll see instructions on the screen how to save the password(hash)
+    back to your local computer.
 
 1.  Arrange with your internet provider to let the domain name point to the
     IP address of the server
@@ -379,9 +403,12 @@ You have a server with SHEBANQ running and want to migrate to a new server.
     the backup of the current server will be imported;
     there will also be (big) data transfers of the static databases.
 
-1.  (new server) `./install.sh`
+1.  (new server) `sudo ./install.sh`
 
-    perform the complete installation of shebanq
+    perform the complete installation of shebanq.
+    We assume you'll keep the same admin password, if not, run
+
+    `sudo ./install.sh --adminpwd` afterwards.
 
 1.  Arrange with your internet provider to let the domain name point to the
     IP address of the new server
@@ -408,9 +435,12 @@ The database resides on the test server itself, data operations will be performe
     upload all needed installation files to the server;
     there will also be (big) data transfers of the static databases.
 
-1.  (test server) `./install.sh`
+1.  (test server) `sudo ./install.sh`
 
     perform the complete installation of shebanq
+
+    You might want to run `sudo ./install.sh --adminpwd` afterwards
+    to set an admin password, if you have not done so before.
 
 #### **Production** (migrating)
 
@@ -437,9 +467,12 @@ The database resides on a separate database server, no data operations needed.
         not `shebanq.ancient-data.org`.
         In this way, the new server can be tested before changing the DNS.
 
-1.  (new production server) `./install.sh`
+1.  (new production server) `sudo ./install.sh`
 
-    perform the complete installation of shebanq
+    perform the complete installation of shebanq.
+    We assume you'll keep the same admin password, if not, run
+
+    `sudo ./install.sh --adminpwd` afterwards.
 
 1.  (local computer) Tweak `config.sh`
 
@@ -454,7 +487,7 @@ The database resides on a separate database server, no data operations needed.
     This has the effect that the url of the virtual host in the Apache
     config file of shebanq will be set to `shebanq.ancient-data.nl`.
 
-1.  (new production server) `./install.sh --apache`
+1.  (new production server) `sudo ./install.sh --apache`
 
     This puts the updated config file in place.
 
@@ -502,7 +535,7 @@ that you want to import, such as
 
     upload all needed data files files to the server;
 
-1.  (server) `install.sh --static` *version*
+1.  (server) `sudo install.sh --static` *version*
 
     This imports both the `shebanq_passage` and `shebanq_etcbc` databases of that
     version.
@@ -534,7 +567,7 @@ In that case, the SHEBANQ repository contains all that is necessary.
 
     Only transfer the new Emdros distribution.
 
-1.  (server) `./install.sh --emdros`
+1.  (server) `sudo ./install.sh --emdros`
 
     Install Emdros only.
 
@@ -556,7 +589,7 @@ In that case, the SHEBANQ repository contains all that is necessary.
 
     Only transfer the new Web2py distribution.
 
-1.  (server) `./install.sh --web2py`
+1.  (server) `sudo ./install.sh --web2py`
 
     Install Web2py only.
 

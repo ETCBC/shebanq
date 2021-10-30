@@ -101,6 +101,8 @@ APACHE_DIR="/etc/httpd/conf.d"
 #   of which SHEBANQ sends emails to users (for password verification)
 #   Make sure that your server is set up so that it is permitted
 #   to send mail for this user.
+#   If you do not want the server to send mail, put an empty value
+#   in the mailSender... fields.
 #   
 serverProd="p1.dansknaw.nl"                     # deliberately wrong
 serverProdNew="p2.dansknaw.nl"                  # deliberately wrong

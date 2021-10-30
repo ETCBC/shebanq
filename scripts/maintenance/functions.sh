@@ -195,14 +195,21 @@ function fetchShebanq {
 
 function writableDirs {
     app=$1
-    echo "o-o-o - make writable dirs in $app"
-    if [[ "$app" == "$APP" ]]; then
-        parentDir="$SERVER_APP_DIR"
+    parentDir="$SERVER_APP_DIR"
+    wDirs="languages log databases cache errors sessions private uploads"
+
+    if [[ "$app" == "web2py" ]]; then
+        wDirs="logs deposit"
+    elif [[ "$app" == "$APP" ]]; then
+        :
     else
         parentDir="$SERVER_APP_DIR/web2py/applications"
     fi
+    echo "o-o-o - make writable dirs in $app"
+    echo "    $wDirs"
+    echo "    under $parentDir/$app"
     appPath="$parentDir/$app"
-    for dir in languages log databases cache errors sessions private uploads
+    for dir in $wDirs
     do
         dirPath="$appPath/$dir"
         if [[ ! -e "$dirPath" ]]; then
@@ -213,6 +220,42 @@ function writableDirs {
         chcon -R -t httpd_sys_rw_content_t "$dirPath"
     done
 }
+
+# use possibly updated parameters_443.py and routes.py and wsgihandler.py
+
+function additionals {
+    shebanqScriptDir="$SERVER_APP_DIR/$APP/scripts"
+    web2pyDir="$SERVER_APP_DIR/web2py"
+
+    for pyFile in parameters_443.py routes.py wsgihandler.py
+    do
+        skip="x"
+        if [[ "$pyFile" == "parameters_443.py" ]]; then
+            sourceFile="$SERVER_INSTALL_DIR/$pyFile"
+            if [[ ! -f "$sourceFile" ]]; then
+                skip="v"
+                echo "Warning: administrative interface. No file $pyFile provided."
+                echo "In order to use the administrative interface you need this file.
+                After installation you can generate it here and put it into your
+                $SERVER_INSTALL_DIR.
+                Even better, copy it to you local computer in your
+                _local directory in your clone of the shebanq repo.
+                From there it will be picked up by subsequent runs of the provision script.
+                "
+            fi
+        else
+            sourceFile="$shebanqScriptDir/$pyFile"
+        fi
+
+        if [[ "$skip" == "x" ]]; then
+            cp "$sourceFile" "$web2pyDir"
+            pyPath="$web2pyDir/$pyFile"
+            chown "$SERVER_USER":shebanq "$pyPath"
+            chcon -t httpd_sys_content_t "$pyPath"
+        fi
+    done
+}
+
 
 # put shebanq into place
 # i.e. copy it from the install location to the web-apps location
@@ -255,10 +298,7 @@ function installShebanq {
     if [[ -e "$web2pyDir" ]]; then
         # if some configs have changed, pick them up
         # and place them in the web2py dir
-        for pyFile in parameters_443.py routes.py
-        do
-            cp "$shebanqDir/scripts/$pyFile" "$web2pyDir"
-        done
+        additionals
 
         compileApp $APP
         chown -R "$SERVER_USER":shebanq "$shebanqDir"

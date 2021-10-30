@@ -34,6 +34,9 @@ Options:
     --web2py: install web2py
     --testcontroller: run a controller in the web2py shell for testing
     --apache: setup apache (assume certificates are already in place)
+    --adminpwd: set a password for the web2py admin app
+      This step is skipped in the full procedure.
+      It is only executed if this flag is explicitly provided.
     --firstvisit: run controller from shell, outside apache, to warm up cache
     --firstvisit http:
         same as first visit, but use http and allow curl to follow redirects (-L)
@@ -70,6 +73,7 @@ doShebanq="x"
 doWeb2py="x"
 doTestController="x"
 doApache="x"
+doAdminPwd="x"
 doFirstVisit="x"
 firstVisitHttp="x"
 firstVisitSloppy="x"
@@ -117,6 +121,10 @@ elif [[ "$1" == "--testcontroller" ]]; then
 elif [[ "$1" == "--apache" ]]; then
     doAll="x"
     doApache="v"
+    shift
+elif [[ "$1" == "--adminpwd" ]]; then
+    doAll="x"
+    doAdminPwd="v"
     shift
 elif [[ "$1" == "--firstvisit" ]]; then
     doAll="x"
@@ -350,11 +358,9 @@ if [[ "$doAll" == "v" || "$doWeb2py" == "v" ]]; then
     chmod 2775 web2py
     rm web2py.zip
 
-    for pyFile in parameters_443.py routes.py wsgihandler.py
-    do
-        cp "$SERVER_INSTALL_DIR/$pyFile" web2py
-    done
+    additionals
 
+    writableDirs web2py
     compileApp admin
 
     echo "o-o-o - Removing examples app"
@@ -421,6 +427,37 @@ if [[ "$doAll" == "v" || "$doApache" == "v" ]]; then
 fi
 
 eraseDir "$SERVER_UNPACK_DIR"
+
+if [[ "$doAll" == "v" || "$doAdminPwd" == "v" ]]; then
+    paramFile="parameters_443.py"
+    paramGenerated="$SERVER_APP_DIR/web2py/$paramFile"
+    paramSaved="$SERVER_INSTALL_DIR/$paramFile"
+
+    if [[ -f "$paramGenerated" ]]; then
+        echo "Found existing $paramFile with hash of admin password"
+    else
+        echo "No $paramFile with hash of admin password found"
+        if [[ "$doAdminPwd" == "x" ]]; then
+            echo "You can create one afterwards by running"
+            echo "sudo ./install.sh --adminpwd"
+        fi
+    fi
+    if [[ "$doAdminPwd" == "v" ]]; then
+        cd "$SERVER_APP_DIR/web2py"
+        python3 -c "from gluon.main import save_password; save_password(input('admin password: '),443)"
+        if [[ -f "$paramGenerated" ]]; then
+            chmod 775 "$paramGenerated"
+            chown -R $SERVER_USER:shebanq "$paramGenerated"
+            chcon -R -t httpd_sys_content_t "$paramGenerated"
+            cp "$paramGenerated" "$paramSaved"
+            chown $SERVER_USER:$SERVER_USER "$paramSaved"
+            echo "A new $paramFile file has been created and saved to $SERVER_INSTALL_DIR"
+            echo "Hint: on your local computer, fetch this file to your _local dir in your clone of shebanq."
+            echo 'cd ~/github/etcbc/shebanq/_local'
+            echo "scp $SERVER_USER@$SERVER:$SERVER_INSTALL_DIR/$paramFile ."
+        fi
+    fi
+fi
 
 # first Visit to warm-up caches and to verify that the setup works
 

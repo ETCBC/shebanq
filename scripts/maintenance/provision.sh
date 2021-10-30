@@ -107,7 +107,7 @@ if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
 
     good="v"
 
-    for script in grants.sql routes.py shebanq.cnf parameters_443.py unconfigure.sql wsgi.conf wsgihandler.py
+    for script in grants.sql shebanq.cnf unconfigure.sql wsgi.conf
     do
         theFile="$SCRIPT_SRC_DIR/$script"
         if [[ -e "$theFile" ]]; then
@@ -126,6 +126,20 @@ if [[ "$doAll" == "v" || "$doScripts" == "v" ]]; then
         else
             good="x"
             echo "File not found: $theFile"
+        fi
+    done
+
+    for script in parameters_443.py
+    do
+        theFile="$LOCAL_DIR/$script"
+        if [[ -e "$theFile" ]]; then
+            scp -r "$theFile" "$SERVER_USER@$SERVER:$SERVER_INSTALL_DIR"
+        else
+            echo "Warning: administrative interface. No file $theFile provided."
+            echo "In order to use the administrative interface you need this file.
+            After installation you can generate it on the server and put it into your
+            $LOCAL_DIR
+            "
         fi
     done
 

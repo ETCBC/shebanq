@@ -119,9 +119,12 @@ mail.settings.login = None  # 'username:password'
 mail.settings.tls = None
 
 # configure auth policy
-auth.settings.registration_requires_verification = True
+
+canMailVerification = mailSender != ""
+
+auth.settings.registration_requires_verification = canMailVerification
 auth.settings.registration_requires_approval = False
-auth.settings.reset_password_requires_verification = False
+auth.settings.reset_password_requires_verification = canMailVerification
 # If the user tried to access the register page but is already logged in,
 # redirect to profile.
 auth.settings.logged_url = URL("user", args="profile")

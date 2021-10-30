@@ -63,6 +63,7 @@ if [[ "$doAll" == "v" || "$doVisit" == "v" ]]; then
     firstVisit
 fi
 if [[ "$doAll" == "v" || "$doCompile" == "v" ]]; then
+    compileApp admin
     compileApp $APP
 fi
 

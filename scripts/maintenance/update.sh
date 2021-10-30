@@ -58,22 +58,11 @@ if [[ "$doThorough" == "v" ]]; then
     sudo -n /usr/bin/systemctl stop httpd.service
 fi
 
-# just in case routes or parameters_443 (password hash) or wsgihandler
-# have changed
-
-cd $SERVER_APP_DIR/web2py
-
-for pyFile in parameters_443.py routes.py wsgihandler.py
-do
-    cp "$SERVER_INSTALL_DIR/$pyFile" .
-    chown "$SERVER_USER":shebanq "$pyFile"
-    chcon -t httpd_sys_content_t "$pyFile"
-done
-
 # pull updates to $REPO code
 
 fetchShebanq
 installShebanq "x"
+additionals
 
 echo "o-o-o Remove sessions ..."
 echo "- Remove sessions ..."
