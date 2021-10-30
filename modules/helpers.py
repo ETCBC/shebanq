@@ -18,12 +18,32 @@ def debug(msg):
     set `TO_RESPONSE` to True, and then the messages will be added
     to the respnse, probably creating an ugly mess, but at least
     you get information out.
+
+    Messages are only written if DEBUG is True,
+    which is by default not the case on a production server.
     """
     if current.DEBUG:
         if TO_STDERR:
             sys.stderr.write(f"{msg}\n")
         if TO_RESPONSE:
             current.response.write(f"{msg}\n")
+
+
+def log(msg):
+    """Issue a log message.
+
+    The message is written to the console or into a log file:
+    depending on whether you run it locally or on a server under apache.
+
+    In case logging does not work, you can, by way of emergency,
+    set `TO_RESPONSE` to True, and then the messages will be added
+    to the respnse, probably creating an ugly mess, but at least
+    you get information out.
+    """
+    if TO_STDERR:
+        sys.stderr.write(f"{msg}\n")
+    if TO_RESPONSE:
+        current.response.write(f"{msg}\n")
 
 
 def isodt(dt=None):

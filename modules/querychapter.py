@@ -4,7 +4,7 @@ from textwrap import dedent
 from gluon import current
 
 from constants import ALWAYS
-from helpers import debug, delta
+from helpers import log, delta
 
 
 class QUERYCHAPTER:
@@ -68,14 +68,14 @@ class QUERYCHAPTER:
             ):
                 time.sleep(1)
                 n += 1
-                debug(f"o-o-o waiting for chapter-query index {vr} ({n} sec) ...")
+                log(f"o-o-o waiting for chapter-query index {vr} ({n} sec) ...")
 
     def makeQCindex_c(self, vr):
         Caching = current.Caching
         db = current.db
         PASSAGE_DBS = current.PASSAGE_DBS
 
-        debug(f"o-o-o making chapter-query index for version {vr} ...")
+        log(f"o-o-o making chapter-query index for version {vr} ...")
         startTime = time.time()
 
         pubStatus = Caching.get(
@@ -135,7 +135,7 @@ class QUERYCHAPTER:
         queryTime = time.time()
         results1 = db.executesql(resultSQL1)
         queryTime = time.time() - queryTime
-        debug(f"      found {len(results1)} shared queries in {delta(queryTime)}")
+        log(f"      found {len(results1)} shared queries in {delta(queryTime)}")
 
         queryFromExe = {}
         for (query_exe_id, is_published, query_id) in results1:
@@ -146,21 +146,20 @@ class QUERYCHAPTER:
             doQueryIndex(db, vr, queryFromExe)
 
         exe = time.time() - startTime
-        debug(f"o-o-o made chapter-query index for data {vr} in {delta(exe)}")
-        debug("TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST ")
+        log(f"o-o-o made chapter-query index for data {vr} in {delta(exe)}")
         return (queriesFromChapter, chaptersFromQuery)
 
     def updatePubStatus(self, vr, query_id, is_published):
         Caching = current.Caching
 
-        debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} ...")
+        log(f"o-o-o updating pubStatus for query {query_id} in version {vr} ...")
         pubStatus = Caching.get(
             f"pubStatus_{vr}_",
             lambda: {},
             ALWAYS,
         )
         pubStatus.setdefault(query_id, {})[vr] = is_published
-        debug(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
+        log(f"o-o-o updating pubStatus for query {query_id} in version {vr} done")
 
     def updateQCindex(self, vr, query_id, uptodate=True):
         """Update the chapter-query index if a query has been run or rerun.
@@ -201,7 +200,7 @@ class QUERYCHAPTER:
         Caching = current.Caching
         db = current.db
 
-        debug((f"o-o-o updating chapter-query index for data {vr}"))
+        log((f"o-o-o updating chapter-query index for data {vr}"))
         startTime = time.time()
 
         chaptersFromQuery = Caching.get(
@@ -256,7 +255,7 @@ class QUERYCHAPTER:
         queryTime = time.time()
         results1 = db.executesql(resultSQL1)
         queryTime = time.time() - queryTime
-        debug(f"      found {len(results1)} shared queries in {delta(queryTime)}")
+        log(f"      found {len(results1)} shared queries in {delta(queryTime)}")
 
         queryFromExe = {}
         for (query_exe_id, query_id) in results1:
@@ -266,7 +265,7 @@ class QUERYCHAPTER:
             doQueryIndex(db, vr, queryFromExe)
 
         exe = time.time() - startTime
-        debug(f"o-o-o updated chapter-query index for data {vr} in {delta(exe)}")
+        log(f"o-o-o updated chapter-query index for data {vr} in {delta(exe)}")
 
 
 def doQueryIndex(db, vr, queryFromExe):
@@ -288,16 +287,16 @@ def doQueryIndex(db, vr, queryFromExe):
     queryTime = time.time()
     results2 = db.executesql(resultSQL2)
     queryTime = time.time() - queryTime
-    debug(f"      found {len(results2)} result intervals in {delta(queryTime)}")
+    log(f"      found {len(results2)} result intervals in {delta(queryTime)}")
 
-    debug("      processing information about queries ...")
+    log("      processing information about queries ...")
     procTime = time.time()
 
     resultsByQ = {}
     for (query_exe_id, first_m, last_m) in results2:
         query_id = queryFromExe[query_exe_id]
         resultsByQ.setdefault(query_id, []).append((first_m, last_m))
-    debug(f"      found {len(resultsByQ)} shared queries")
+    log(f"      found {len(resultsByQ)} shared queries")
 
     for (query_id, ranges) in resultsByQ.items():
         chapters = {}
@@ -321,4 +320,4 @@ def doQueryIndex(db, vr, queryFromExe):
                 queriesFromChapter.setdefault(chapter_id, {})[query_id] = ranges
 
     procTime = time.time() - procTime
-    debug(f"      processed shared queries into index in {delta(procTime)}")
+    log(f"      processed shared queries into index in {delta(procTime)}")

@@ -4,7 +4,7 @@
 emdrosVersion="3.7.3"
 #
 #
-# Version of the Web2Py software that is in use.
+# Version of the Web2py software that is in use.
 # see also https://github.com/web2py/web2py
 #
 web2pyVersion="2.21.1-patched"

@@ -124,7 +124,7 @@ function compileApp {
     app="$1"
     fresh="$2"
 
-    echo "- Compile $app ..."
+    echo "o-o-o - compile $app"
 
     if [[ "$app" == "$APP" ]]; then
         parentDir="$SERVER_APP_DIR"
@@ -302,7 +302,7 @@ function installShebanq {
 
     cloneDir="$SERVER_INSTALL_DIR/$APP-clone"
     shebanqDir="$SERVER_APP_DIR/$APP"
-    web2PyDir="$SERVER_APP_DIR/web2py"
+    web2pyDir="$SERVER_APP_DIR/web2py"
 
     # in the install procedure we wipe out an earlier shebanq at this place
     # so we remove errors, logs, uploads, etc

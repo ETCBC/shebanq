@@ -33,7 +33,7 @@ The following tasks must be addressed:
     not only of the webapp,
     but also of its supporting systems,
     [Emdros](https://emdros.org),
-    [Web2Py](http://web2py.com),
+    [Web2py](http://web2py.com),
     [Python](https://www.python.org),
     and
     [MariaDB](https://mariadb.org)

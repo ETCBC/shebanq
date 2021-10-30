@@ -770,7 +770,7 @@ However, use this only in emergencies or if there are discrepancies between
 the SHEBANQ on your local computer and the SHEBANQ on the server.
 
 The recommended practice is to
-[install Web2Py and SHEBANQ on your local computer](computer.md),
+[install Web2py and SHEBANQ on your local computer](computer.md),
 and debug it there.
 
 !!! caution "SHEBANQ does not react to modified code"
@@ -800,7 +800,7 @@ and debug it there.
 
 ### SELINUX violations
 
-If you get an internal error, but there are no Web2Py errors listed for the SHEBANQ app,
+If you get an internal error, but there are no Web2py errors listed for the SHEBANQ app,
 it is probably a permissions error that has nothing to do with the application logic.
 
 Try to run the server in *permissive* mode:

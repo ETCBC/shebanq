@@ -61,7 +61,7 @@ class RECORD:
             here that shields the mechanics of an AJAX call.
             That leads to code that is not very clear.
 
-            These calls are hidden in Web2Py javascript, and you will
+            These calls are hidden in Web2py javascript, and you will
             not find them in the SHEBANQ client app code.
 
         This is where the controllers

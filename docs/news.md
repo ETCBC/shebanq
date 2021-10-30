@@ -4,7 +4,7 @@
 
 *   New ETCBC dataversion 2021
 *   Migration to Python3
-*   New versions of Emdros and Web2Py and MySQL
+*   New versions of Emdros and Web2py and MySQL
 *   Completely refactored codebase: all Python, Javascript and CSS code
     chopped up in managable chunks.
 *   Install and maintenance scripts

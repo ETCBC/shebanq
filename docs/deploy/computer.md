@@ -181,7 +181,7 @@ from there, a lengthy process.
 Our web framework is [web2py]({{web2py}}), a Python based system
 to build web applications.
 We install it from GitHub, and after that we plug SHEBANQ into it.
-Web2Py comes with its own local webserver, so we do not have to set up 
+Web2py comes with its own local webserver, so we do not have to set up 
 complicated webservers such as Apache.
 
 Instead, we can rely on the built-in webserver that comes with 
