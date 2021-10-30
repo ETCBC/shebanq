@@ -256,10 +256,8 @@ and arguments it accepts.
         the user who is you and the `apache` users
         are added to the members of this group.
     *   You can run this script in single steps by passing an option.
-    *   Web2py offers an administrative webapp (admin), by which you can inspect
-        the database and errors of SHEBANQ in the browser.
-        You reach it by the url which consists of the url of shebanq with
-        `/admin` appended to it. Admin is protected by a password, that you have
+    *   Web2py offers a handy [administrative webapp](admin.md).
+        This is protected by a password that you have
         to set during installation.
         This can be done by `sudo ./install.sh --adminpwd`
 

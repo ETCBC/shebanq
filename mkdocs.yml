@@ -145,6 +145,7 @@ extra:
   textfabric: https://annotation/text-fabric
   valence: https://github.com/etcbc/valence
   web2py: http://web2py.com
+  web2pyAdmin: http://web2py.com/books/default/chapter/29/03/overview#More-on-admin
   web2pyRepo: https://github.com/web2py/web2py
   web2pyCache: http://web2py.com/books/default/chapter/29/04/the-core#cache
   web2pyComponents: http://www.web2py.com/books/default/chapter/29/12/components-and-plugins#Components-LOAD-and-Ajax
