@@ -330,12 +330,6 @@ function installShebanq {
         additionals
 
         compileApp $APP $fresh
-        if [[ "$fresh" == "v" ]]; then
-            chown -R "$SERVER_USER":shebanq "$shebanqDir"
-            chcon -R -t httpd_sys_content_t "$shebanqDir"
-        else
-            chown -R --from=$SERVER_USER "$SERVER_USER":shebanq "$shebanqDir"
-        fi
     fi
 
     # make sure the writable directories exists and have the right
