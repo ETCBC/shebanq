@@ -1,6 +1,7 @@
 # SHEBANQ
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/ETCBC/shebanq/)](https://archive.softwareheritage.org/browse/origin/https://github.com/ETCBC/shebanq/)
 [![DOI](https://zenodo.org/badge/14582815.svg)](https://zenodo.org/badge/latestdoi/14582815)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 ![shebanq2](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq_logo.png)
 ![shebanq](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq.png)
