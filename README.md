@@ -1,4 +1,5 @@
 # SHEBANQ
+
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/ETCBC/shebanq/)](https://archive.softwareheritage.org/browse/origin/https://github.com/ETCBC/shebanq/)
 [![DOI](https://zenodo.org/badge/14582815.svg)](https://zenodo.org/badge/latestdoi/14582815)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -25,6 +26,16 @@
 * [shebanq](https://github.com/etcbc/shebanq) Engine of the
   [shebanq](https://shebanq.ancient-data.org) website
 
+### Extended family
+
+* [dss](https://github.com/etcbc/dss) Dead Sea Scrolls
+* [extrabiblical](https://github.com/etcbc/extrabiblical)
+  Extra-biblical writings from ETCBC-encoded texts
+* [peshitta](https://github.com/etcbc/peshitta)
+  Syriac translation of the Hebrew Bible
+* [syrnt](https://github.com/etcbc/syrnt)
+  Syriac translation of the New Testament
+
 ## About
 
 *System for HEBrew Text: ANnotations for Queries and Markup*
@@ -39,3 +50,11 @@ And there are the [techdocs](https://etcbc.github.io/shebanq/) of course.
 ## History
 
 See [Changes](https://github.com/ETCBC/shebanq/wiki/Changes)
+
+# Author
+
+[Dirk Roorda](https://github.com/dirkroorda)
+
+See [team](https://github.com/ETCBC/shebanq/wiki/Team) for a list of people
+that have all contributed in various ways to the existence of the website SHEBANQ.
+
