@@ -284,8 +284,8 @@ fi
 skipPdb="x"
 skipEdb="x"
 
-if [[ "$DB_HOST" == "localhost" ]]; then
-    if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
+    if [[ "$DB_HOST" == "localhost" || "$doAll" == "x" ]]; then
         echo "o-o-o    LOAD STATIC DATA start    o-o-o"
 
         mysqlOpt="--defaults-extra-file=$SERVER_CFG_DIR/mysqldumpopt"
@@ -313,7 +313,7 @@ if [[ "$DB_HOST" == "localhost" ]]; then
                 mysql $mysqlOpt -e "drop database if exists $db;"
                 echo "o-o-o - importing $db (may take a minute or two)"
                 mqlPwd=`cat $SERVER_CFG_DIR/mqlimportopt`
-                mqlOpt="-e UTF8 -n -b m -u $MYSQL_ADMIN"
+                mqlOpt="-e UTF8 -n -b m -h "$DB_HOST" -u $MYSQL_ADMIN"
                 $TM $SERVER_MQL_DIR/mql $mqlOpt -p $mqlPwd < $SERVER_UNPACK_DIR/$db.mql
                 rm "$SERVER_UNPACK_DIR/$db.mql"
             fi
