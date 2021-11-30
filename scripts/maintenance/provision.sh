@@ -194,9 +194,11 @@ if [[ "$DB_HOST" == "localhost" ]]; then
 fi
 
 # transfer static data from local bhsa clones to server
+# the only way to do this for new static data to a production server
+# that does not store the data on itself, is by an explicit --static
 
-if [[ "$DB_HOST" == "localhost" ]]; then
-    if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
+if [[ "$doAll" == "v" || "$doStatic" == "v" ]]; then
+    if [[ "$DB_HOST" == "localhost" || "$doAll" == "x" ]]; then
         echo "o-o-o static data o-o-o"
         for version in $versions
         do
