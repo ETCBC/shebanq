@@ -21,9 +21,6 @@ class VERSE:
         """
         extension = current.request.extension
 
-        if extension == "json":
-            return self.getJson()
-
         Check = current.Check
         Caching = current.Caching
 
@@ -32,6 +29,9 @@ class VERSE:
         ch = Check.field("material", "", "chapter")
         vs = Check.field("material", "", "verse")
         tr = Check.field("material", "", "tr")
+
+        if extension == "json":
+            return self.getJson(vr, bk, ch, vs)
 
         if vs is None:
             return dict(good=False, msgs=[])
@@ -74,14 +74,8 @@ class VERSE:
             ONE_HOUR,
         )
 
-    def getJson_c(self):
-        Check = current.Check
+    def getJson_c(self, vr, bk, ch, vs):
         PASSAGE_DBS = current.PASSAGE_DBS
-
-        vr = Check.field("material", "", "version")
-        bk = Check.field("material", "", "book")
-        ch = Check.field("material", "", "chapter")
-        vs = Check.field("material", "", "verse")
 
         passageDb = PASSAGE_DBS[vr] if vr in PASSAGE_DBS else None
         msgs = []

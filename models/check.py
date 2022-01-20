@@ -130,6 +130,9 @@ class CHECK:
         return result
 
     def isName(self, tp, obj_id, myId, val, msgs):
+        if val is None:
+            return None
+
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -154,6 +157,9 @@ class CHECK:
         return result
 
     def isDescription(self, tp, val, msgs):
+        if val is None:
+            return None
+
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -166,6 +172,9 @@ class CHECK:
         return result
 
     def isMql(self, tp, val, msgs):
+        if val is None:
+            return None
+
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -181,6 +190,9 @@ class CHECK:
         return result
 
     def isPublished(self, tp, val, msgs):
+        if val is None:
+            return None
+
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -196,6 +208,9 @@ class CHECK:
         return result
 
     def isWebsite(self, tp, val, msgs):
+        if val is None:
+            return None
+
         label = TPS[tp][0]
         result = None
         for x in [1]:
@@ -275,6 +290,9 @@ class CHECK:
         return val
 
     def isRel(self, tp, val, msgs):
+        if val is None:
+            return None
+
         db = current.db
 
         (label, table) = TPS[tp]

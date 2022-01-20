@@ -44,7 +44,6 @@ occurrenceLabel = 'occurrences' if hits != 1 else 'occurrence'
 <div id="material_content">
     <input type="hidden" id="theslots" value="{{=slots}}"/>
 {{ if material != None: }}
-    {{ua = request.user_agent().browser.name}}
     {{if len(material.verses) > 0: }}
         {{tp = material.tp}}
         {{if tp == 'txt1':}}
@@ -85,7 +84,7 @@ occurrenceLabel = 'occurrences' if hits != 1 else 'occurrence'
                     </span>{{
             pass
                 }}</span>
-                <span id="{{=tp}}_{{=book}}_{{=chapter}}_{{=vs}}">{{=XML(verse.material(ua))}}</span><span class="txtd_base" id="{{=tp}}_txtd_{{=book}}_{{=chapter}}_{{=vs}}" lf="x"></span>
+                <span id="{{=tp}}_{{=book}}_{{=chapter}}_{{=vs}}">{{=XML(verse.material())}}</span><span class="txtd_base" id="{{=tp}}_txtd_{{=book}}_{{=chapter}}_{{=vs}}" lf="x"></span>
             </div>
         {{ pass }}
     {{ pass }}

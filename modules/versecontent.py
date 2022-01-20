@@ -117,19 +117,19 @@ class VERSECONTENT:
                 i += 1
         return self.words
 
-    def material(self, userAgent):
+    def material(self):
         if self.tp == "txtp":
-            return self.plainText(userAgent)
+            return self.plainText()
         elif self.tp == "txt1":
-            return self.tab1Text(userAgent)
+            return self.tab1Text()
         elif self.tp == "txt2":
-            return self.tab2Text(userAgent)
+            return self.tab2Text()
         elif self.tp == "txt3":
-            return self.tab3Text(userAgent)
+            return self.tab3Text()
         elif self.tp == "txtd":
-            return self.dataText(userAgent)
+            return self.dataText()
 
-    def plainText(self, userAgent):
+    def plainText(self):
         """Present text in plain Hebrew or plain phonetic text.
 
         See [∈ text-representation][elem-text-representation]
@@ -147,7 +147,7 @@ class VERSECONTENT:
             )
         return "".join(material)
 
-    def dataText(self, userAgent):
+    def dataText(self):
         """Present text in data format.
 
         Linguistic features of the words will be shown,
@@ -160,7 +160,7 @@ class VERSECONTENT:
             material.append(TEXT_TPL.format(**word))
         return "".join(material)
 
-    def tab1Text(self, userAgent):
+    def tab1Text(self):
         """Present text in a table, mode 1.
 
         Mode 1 is notes view, i.e. notes are viewed
@@ -186,7 +186,7 @@ class VERSECONTENT:
         material.append("</table>")
         return "".join(material)
 
-    def tab2Text(self, userAgent):
+    def tab2Text(self):
         """Present text in a table, mode 2.
 
         Mode 2 is syntactic view, i.e. indentation is used to
@@ -212,7 +212,7 @@ class VERSECONTENT:
         material.append("</dl>")
         return "".join(material)
 
-    def tab3Text(self, userAgent):
+    def tab3Text(self):
         """Present text in a table, mode 3.
 
         Mode 3 is abstract view, i.e. letters are replaced by
