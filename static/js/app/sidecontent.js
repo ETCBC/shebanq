@@ -558,7 +558,7 @@ export class SideContent {
     const { mr, qw } = this
     const theList = $(`#side_material_${mr}${qw}`)
 
-    let vars = `?version=${version}&mr={mr}&qw=${qw}`
+    let vars = `?version=${version}&mr=${mr}&qw=${qw}`
 
     let doFetch = false
     let kind = ""
