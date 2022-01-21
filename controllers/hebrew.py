@@ -218,7 +218,8 @@ def sidequery():
     Client code: [{sidecontent.fetch}][sidecontentfetch].
     """
     session.forget(response)
-    Record = RECORD()
+    Query = QUERY()
+    Record = RECORDQUERY(Query)
     return Record.body()
 
 
