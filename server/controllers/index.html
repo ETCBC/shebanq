@@ -369,7 +369,8 @@
 <span class=sd>    Client code: [{sidecontent.fetch}][sidecontentfetch].</span>
 <span class=sd>    &quot;&quot;&quot;</span>
     <span class=n>session</span><span class=o>.</span><span class=n>forget</span><span class=p>(</span><span class=n>response</span><span class=p>)</span>
-    <span class=n>Record</span> <span class=o>=</span> <span class=n>RECORD</span><span class=p>()</span>
+    <span class=n>Query</span> <span class=o>=</span> <span class=n>QUERY</span><span class=p>()</span>
+    <span class=n>Record</span> <span class=o>=</span> <span class=n>RECORDQUERY</span><span class=p>(</span><span class=n>Query</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>Record</span><span class=o>.</span><span class=n>body</span><span class=p>()</span>
 </code></pre></div> </details> </div> </div> <div class="doc doc-object doc-function"> <h4 id=controllers.hebrew.sidenote class="doc doc-heading"> <code class="codehilite language-python"><span class=n>sidenote</span><span class=p>()</span></code> <a href=#controllers.hebrew.sidenote class=headerlink title="Permanent link">&para;</a></h4> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>controllers/hebrew.py</code></summary> <div class=codehilite><pre><span></span><code><span class=k>def</span> <span class=nf>sidenote</span><span class=p>():</span>
     <span class=sd>&quot;&quot;&quot;Serves AJAX call for HTML content for the sidebar (*note set* **record** page).</span>
