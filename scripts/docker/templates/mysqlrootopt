@@ -1,0 +1,9 @@
+[mysql]
+password = '«MYSQL_SHEBANQ_ADMIN»'
+user = shebanq_admin
+host = «DB_HOST»
+
+[mysqldump]
+password = '«MYSQL_SHEBANQ_ADMIN»'
+user = shebanq_admin
+host = «DB_HOST»

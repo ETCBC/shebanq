@@ -17,3 +17,5 @@ site/*
 build/*
 log/*
 _local
+_local/*
+_docker/*

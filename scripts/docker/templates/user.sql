@@ -1,0 +1,4 @@
+DROP USER IF EXISTS 'shebanq'@'%';
+CREATE USER 'shebanq'@'%' IDENTIFIED BY '«MYSQL_SHEBANQ»';
+DROP USER IF EXISTS 'shebanq_admin'@'%';
+CREATE USER 'shebanq_admin'@'%' IDENTIFIED BY '«MYSQL_SHEBANQ_ADMIN»';
