@@ -25,7 +25,7 @@ cp "$EMDROS_PATH" .
 tar xvf "$EMDROS_FILE" > /dev/null
 cd "$EMDROS_BARE"
 
-./configure --prefix=/opt/emdros --with-sqlite3=local --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug > /dev/nul
+./configure --prefix=/opt/emdros --with-sqlite3=local --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug > /dev/null
 
 make > /dev/null
 

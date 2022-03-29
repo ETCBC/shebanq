@@ -7,7 +7,7 @@ REPO_URL="https://github.com/$ORG/$REPO"
 
 # All the following settings are by convention
 
-sourceOrg="$githubBase/$ORg"
+sourceOrg="$githubBase/$ORG"
 sourceRepo="$sourceOrg/$REPO"
 SCRIPT_SRC_DIR="$sourceRepo/scripts"
 packageDir="$SCRIPT_SRC_DIR/packages"
