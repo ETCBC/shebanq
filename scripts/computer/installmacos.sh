@@ -9,7 +9,7 @@ USAGE="
 Usage: ./$(basename $0) [Options] [version]
 
 Without options, it runs the complete installation process to
-install Sheban locally on a Mac..
+install Shebanq locally on a Mac..
 By means of options, you can select exactly one step to be performed.
 
 Options:

@@ -17,6 +17,10 @@ cd ~/tmp
 
 # emdros
 
+if [[ ! -e "/usr/local/bin/python" ]]; then
+    cp "/usr/local/bin/python3" "/usr/local/bin/python"
+fi
+
 emdrosFile="emdros-$emdrosVersion.tar.gz"
 
 echo "o-o-o - Emdros (may take 5-10 minutes, with alarming warnings)"
@@ -25,9 +29,9 @@ cp "$EMDROS_PATH" .
 tar xvf "$EMDROS_FILE" > /dev/null
 cd "$EMDROS_BARE"
 
-./configure --prefix=/opt/emdros --with-sqlite3=local --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug > /dev/null
+./configure --prefix=/opt/emdros --with-sqlite3=local --with-mysql=yes --with-swig-language-java=no --with-swig-language-python2=no --with-swig-language-python3=yes --with-postgresql=no --with-wx=no --with-swig-language-csharp=no --with-swig-language-php7=no --with-bpt=no --disable-debug # > /dev/null
 
-make > /dev/null
+make # > /dev/null
 
 echo "o-o-o For the next step you have to enter your password"
-sudo make install > /dev/null
+sudo make install # > /dev/null

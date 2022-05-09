@@ -870,8 +870,8 @@ class Tree {
         $(".treehl").removeClass("treehl")
         this.orgProjectSelect(tp)
         elem.closest("span").addClass("treehl")
-        const obj_id = $(this).attr("obj_id")
-        this.doView(tp, $(this), obj_id)
+        const obj_id = $(elem).attr("obj_id")
+        this.doView(tp, $(elem), obj_id)
         return false
       })
     }
