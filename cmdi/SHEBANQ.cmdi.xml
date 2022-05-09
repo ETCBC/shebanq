@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF8'?>
+<CMD xmlns="http://www.clarin.eu/cmd/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" CMDVersion="1.1" xsi:schemaLocation="http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1342181139640/xsd ">
+   <Header>
+      <MdCreator>rogierkraf</MdCreator>
+      <MdCreationDate>2013-11-30+02:00</MdCreationDate>
+      <MdProfile>clarin.eu:cr1:p_1342181139640</MdProfile>
+   <MdCollectionDisplayName>CLARIN Netherlands</MdCollectionDisplayName></Header>
+   <Resources>
+	<ResourceProxyList>
+		<ResourceProxy id="SHEBANQ001">
+			<ResourceType>SearchPage</ResourceType>
+			<ResourceRef>https://shebanq.ancient-data.org/</ResourceRef>
+		</ResourceProxy>
+		<ResourceProxy id="SHEBANQ002">
+			<ResourceType>Resource</ResourceType>
+			<ResourceRef>https://github.com/ETCBC/bhsa</ResourceRef>
+		</ResourceProxy>
+		<ResourceProxy id="SHEBANQ003">
+			<ResourceType>Resource</ResourceType>
+			<ResourceRef>https://doi.org/10.5281/zenodo.1007624</ResourceRef>
+		</ResourceProxy>
+		<ResourceProxy id="SHEBANQ004">
+			<ResourceType>Resource</ResourceType>
+			<ResourceRef>https://doi.org/10.17026/dans-2z3-arxf</ResourceRef>
+		</ResourceProxy>
+		<ResourceProxy id="SHEBANQ005">
+			<ResourceType>Resource</ResourceType>
+			<ResourceRef>https://doi.org/10.17026/dans-z6y-skyh</ResourceRef>
+		</ResourceProxy>
+	</ResourceProxyList>
+      <JournalFileProxyList/>
+      <ResourceRelationList/>
+   </Resources>
+   <Components>
+      <ClarinSoftwareDescription>
+         <GeneralInfo>
+            <name xml:lang="eng">SHEBANQ</name>
+            <title xml:lang="eng">SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</title>
+            <publicationYear>2014</publicationYear>
+            <url>https://shebanq.ancient-data.org/</url><CLARINCentre>DANS</CLARINCentre><OriginalSource>https://github.com/ETCBC/shebanq/blob/master/docs/cmdi/SHEBANQ.cmdi.xml</OriginalSource>
+            <ReleaseStatus>
+               <LifeCycleStatus>published</LifeCycleStatus>
+               <lastUpdate>2022-03-07</lastUpdate>
+            </ReleaseStatus>
+            <NationalProjects><Project><name>CLARIN-NL</name><title>CLARIN in the Netherlands</title><id>184.021.003</id><funder>NWO</funder><url>http://www.clarin.nl</url><Contact><Person>Jan Odijk</Person><Role>National Coordinator</Role><Address>Utrecht, the Netherlands</Address><Email>j.odijk@uu.nl</Email><Department>UiL-OTS</Department><Organisation>Utrecht University</Organisation></Contact><Duration><StartYear>2009</StartYear><CompletionYear>2015</CompletionYear></Duration></Project></NationalProjects><Country><CountryName>Netherlands</CountryName><CountryCoding>NL</CountryCoding></Country><Description>
+                <Description>The Hebrew Text Database by the ETCBC (Eep Talstra Centre for Bible and Computer, formerly WIVU Werkgroep Informatica Vrije Universiteit) contains the Biblia Hebraica Stuttgartensia Amstelodamensis (BHSA) dataset, which consists of the BHS version of the text of the Hebrew Bible plus linguistic annotations by the ETCBC. The annotations of the ETCBC have been produced in the form of features of words, phrases, clauses, sentences, etc. The information in these features result from algorithmic linguistic analysis aided by human decisions. The database can be queried by means of a language that is optimized to deal with data that is modeled as objects + features. SHEBANQ builds a bridge between the linguistically annotated Hebrew Text corpus and biblical scholars by (1) making this text, including its annotations, available to scholars; (2) demonstrating how queries can function to address research questions; the query saver and the metadata added to them will be a growing repository of valuable best practices of what queries are used in addressing research questions and how they contribute to answering these questions; (3) giving textual scholarship a more empirical basis, by creating the opportunity that claims made in scholarly articles (e.g.: “this syntactic pattern is not attested elsewhere in the Hebrew Bible”) can be accompanied by the unique identifiers that refer to the saved queries that have led to the claim. The WIVU database is a resource under long-term development. New features are being added, new corrections are being made over time. When SHEBANQ was created, it was fed with textual/linguistic data in LAF format, produced by an adhoc conversion. Nowadays SHEBANQ's data resides in https://github.com/ETCBC/bhsa, and there is a pipeline from the ETCBC production environment to the BHSA on GitHub and from there to the databases that power SHEBANQ. See https://github.com/ETCBC/pipeline.</Description>
+            </Description>
+         </GeneralInfo>
+         <SoftwareFunction>
+            <toolCategory>search tool</toolCategory>
+            <toolCategory>written language tool</toolCategory>
+            <ToolTasks><toolTask>corpus exploration</toolTask>
+            <toolTask>corpus searching</toolTask>
+            <toolTask>browsing</toolTask>
+            <toolTask>analysis</toolTask>
+            <toolTask>visualisation</toolTask>
+			</ToolTasks><ResearchPhases><ResearchPhase>Browsing and Searching</ResearchPhase><ResearchPhase>Data analysis</ResearchPhase></ResearchPhases><ResearchDomains>
+				<researchDomain>Linguistics</researchDomain>
+				<researchDomain>Religion Studies</researchDomain>
+			</ResearchDomains>
+            <LinguisticsSubject>
+               <linguisticsSubject>historical linguistics</linguisticsSubject>
+				<Description>
+					<Description/>
+				</Description>
+            </LinguisticsSubject>
+            <LinguisticsSubject>
+               <linguisticsSubject>syntax</linguisticsSubject>
+				<Description>
+					<Description/>
+				</Description>
+            </LinguisticsSubject>
+            <LinguisticsSubject>
+               <linguisticsSubject>morpho-syntax</linguisticsSubject>
+				<Description>
+					<Description/>
+				</Description>
+            </LinguisticsSubject>
+            <LanguageVariety>
+               <languageDependent>yes</languageDependent>
+               <Language><LanguageName>Hebrew</LanguageName><ISO639><iso-639-3-code>hbo</iso-639-3-code></ISO639></Language><Centuries>
+					<centuryDependent>yes</centuryDependent>
+					<CenturyInterval>
+					   <centuryFrom>-12</centuryFrom>
+					   <centuryThrough>02</centuryThrough>
+					</CenturyInterval>
+				</Centuries>
+            </LanguageVariety>
+            <LanguageVariety>
+               <languageDependent>yes</languageDependent>
+               <Language><LanguageName>Aramaic</LanguageName><ISO639><iso-639-3-code>arc</iso-639-3-code></ISO639></Language><Centuries>
+					<centuryDependent>yes</centuryDependent>
+					<CenturyInterval>
+					   <centuryFrom>-12</centuryFrom>
+					   <centuryThrough>02</centuryThrough>
+					</CenturyInterval>
+				</Centuries>
+            </LanguageVariety>
+         </SoftwareFunction>
+         <SoftwareImplementation>
+            <distributionMedium>Online available</distributionMedium>
+            <UserInterface>
+               <interfaceType>graphical user interface</interfaceType>
+               <applicationType>web application</applicationType>
+            </UserInterface>
+            <Input>
+               <inputType>text</inputType>
+            </Input>
+			<Output>	
+				<outputType>text</outputType>
+				<characterEncoding>UTF8</characterEncoding>
+				<outputResource>query results</outputResource>
+				<Schema><schemaname/></Schema><MimeType>
+					<MimeType>text/plain</MimeType>
+				</MimeType>	
+			</Output>
+			<Output>	
+				<outputType>text</outputType>
+				<characterEncoding>UTF8</characterEncoding>
+				<outputResource>query results</outputResource>
+				<Schema><schemaname/></Schema><MimeType>
+					<MimeType>text/csv</MimeType>
+				</MimeType>	
+			</Output>
+         </SoftwareImplementation>
+         <Access>
+            <ResourceLicense>
+               <license>Creative Commons (non-commercial)</license>
+               <distributionType>public</distributionType>
+               <Price>
+                  <amount>0</amount>
+                  <ISO4217>
+                     <iso-4217-currency>EUR</iso-4217-currency>
+                  </ISO4217>
+               </Price>
+            </ResourceLicense>
+            <Contact>
+               <Person>Dirk Roorda</Person>
+               <Email>dirk.roorda@di.huc.knaw.nl</Email>
+               <Organisation xml:lang="eng">Data Archiving and Networked Services (DANS)</Organisation>
+            </Contact>
+         </Access>
+         <ResourceDocumentation>
+            <Documentation>
+               <title>SHEBANQ - help</title>
+               <documentationTarget>user</documentationTarget>
+               <url>https://github.com/ETCBC/shebanq/wiki</url>
+               <ISO639>
+                  <iso-639-3-code>eng</iso-639-3-code>
+               </ISO639>
+            </Documentation>
+		<Publication>
+		 <publicationCategory>article</publicationCategory>
+		 <publicationPurpose>background on the data resource</publicationPurpose>
+		 <peerReviewStatus>yes</peerReviewStatus>
+		 <Description>
+		   <Description LanguageID="nld">Roorda, D. (2018). Coding the Hebrew Bible, Research Data Journal for the Humanities and Social Sciences, Volume 3, Issue 1, July 31, 2018, pp. 27-41. Leiden, Brill https://doi.org/10.1163/24523666-01000011
+		   </Description>
+		 </Description>
+		</Publication>
+		<Publication><publicationCategory>in book</publicationCategory><publicationPurpose>scientific background</publicationPurpose><peerReviewStatus>yes</peerReviewStatus><Description><Description LanguageID="eng">Roorda, D. 2017. The Hebrew Bible as Data: Laboratory - Sharing - Experiences. In: Odijk, J and van Hessen, A. (eds.) CLARIN in the Low Countries, Pp. 217–229. London: Ubiquity Press. DOI: https://doi.org/10.5334/bbi.18. License: CC-BY 4.0</Description></Description></Publication><Publication>
+		 <publicationCategory>unpublished</publicationCategory>
+		 <publicationPurpose>scientific background</publicationPurpose>
+		 <peerReviewStatus>no</peerReviewStatus>
+		 <Description>
+		   <Description LanguageID="eng">Roorda, D. (2015). The Hebrew Bible as Data: Laboratory - Sharing - Experiences http://arxiv.org/abs/1501.01866
+    	   </Description>
+		 </Description>
+		</Publication>
+		<Publication>
+		 <publicationCategory>article</publicationCategory>
+		 <publicationPurpose>scientific background</publicationPurpose>
+		 <peerReviewStatus>yes</peerReviewStatus>
+		 <Description>
+		   <Description LanguageID="nld">Roorda, D. (2014). LAF-Fabric: a data analysis tool for Linguistic Annotation Framework with an application to the Hebrew Bible, Computational Linguistics in the Netherlands Journal, Volume 4, December 2014, pp. 105-109 http://www.clinjournal.org/sites/clinjournal.org/files/08-Roorda-etal-CLIN2014.pdf and http://arxiv.org/abs/1410.0286
+		   </Description>
+		 </Description>
+		</Publication>
+		<Pictures>
+		   <picture type="other">
+			  https://shebanq.ancient-data.org/static/apple-touch-icon.png
+		   </picture>
+		</Pictures>
+		</ResourceDocumentation>
+         <SoftwareDevelopment>
+            <Project>
+               <name>SHEBANQ</name>
+               <title>SHEBANQ: System for HEBrew Text: ANnotations for Queries and Markup</title>
+               <funder>CLARIN-NL</funder>
+               <url>http://portal.clarin.nl/node/4180</url>
+               <Contact>
+                  <Email>dirk.roorda@di.huc.knaw.nl</Email>
+               </Contact>
+               <Duration/>
+            </Project>
+            <Creator>
+               <Contact>
+				  <Person>Prof. Dr. W.T. (Willem) van Peursen</Person>
+                  <Email>w.t.van.peursen@vu.nl</Email>
+               </Contact>
+            </Creator>
+         </SoftwareDevelopment>
+         <TechnicalInfo>
+            <ImplementationLanguage>
+               <implementationLanguage>Python</implementationLanguage>
+               <version>continuous</version>
+            </ImplementationLanguage>
+         </TechnicalInfo>
+      </ClarinSoftwareDescription>
+   </Components>
+</CMD>
