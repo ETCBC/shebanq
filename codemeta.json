@@ -1,0 +1,32 @@
+{
+    "@context": [
+        "https://raw.githubusercontent.com/codemeta/codemeta/2.0/codemeta.jsonld",
+        "https://raw.githubusercontent.com/schemaorg/schemaorg/main/data/releases/13.0/schemaorgcontext.jsonld",
+        "https://w3id.org/software-types"
+    ],
+    "@id": "https://github.com/etcbc/shebanq",
+    "@type": "SoftwareSourceCode",
+    "codeRepository": "https://github.com/ETCBC/shebanq",
+    "dateCreated": "2013-11-21T09:13:04Z",
+    "dateModified": "2022-05-23T09:50:40Z",
+    "description": "Exposing the Hebrew Text Database of the ETCBC",
+    "issueTracker": "https://github.com/etcbc/shebanq/issues",
+    "keywords": [
+        "text-fabric",
+        "annotation",
+        "etcbc",
+        "etcbc-data",
+        "hebrew-bible",
+        "hebrew",
+        "search-engine"
+    ],
+    "license": "http://spdx.org/licenses/MIT",
+    "name": "shebanq",
+    "producer": {
+        "@id": "/org/eep-talstra-centre-for-bible-and-computer",
+        "email": "office@wi.th.vu.nl",
+        "name": "Eep Talstra Centre for Bible and Computer",
+        "url": "http://www.etcbc.nl"
+    },
+    "url": "https://shebanq.ancient-data.org"
+}

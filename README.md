@@ -53,8 +53,13 @@ See [Changes](https://github.com/ETCBC/shebanq/wiki/Changes)
 
 # Author
 
-[Dirk Roorda](https://github.com/dirkroorda)
+[Dirk Roorda](https://github.com/dirkroorda), working at
+[KNAW Humanities Cluster - Digital Infrastructure](https://huc.knaw.nl/di/text/).
 
 See [team](https://github.com/ETCBC/shebanq/wiki/Team) for a list of people
 that have all contributed in various ways to the existence of the website SHEBANQ.
 
+# Deployed
+
+SHEBANQ is served by 
+[DANS](https://www.dans.knaw.nl), and Dirk Roorda is still managing the site in production.
