@@ -1,1 +1,1 @@
-docker build -t shebanq-db "$DOCKER_DIR/shebanq-db"
+docker build -t shebanq "$DOCKER_DIR/shebanq"

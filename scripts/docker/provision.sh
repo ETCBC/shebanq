@@ -120,7 +120,7 @@ done
 # - static data from local bhsa clones
 
 echo "o-o-o static data o-o-o"
-for version in $versions
+for version in $STATIC_VERSIONS
 do
     echo "    o-o version $version ..."
     src="$STATIC_SRC_DIR/$version"

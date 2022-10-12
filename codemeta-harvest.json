@@ -1,0 +1,126 @@
+{
+    "description": "Exposing the Hebrew Text Database of the ETCBC",
+    "@type": "SoftwareSourceCode",
+    "operatingSystem": [ "Linux", "Windows", "macOS", "SELinux" ],
+    "runtimePlatform": "Python >= 3.6",
+    "programmingLanguage": ["Python", "ES6"],
+    "producer": {
+        "@id": "http://www.etcbc.nl",
+        "email": "office@wi.th.vu.nl",
+        "name": "Eep Talstra Centre for Bible and Computer",
+        "url": "w.t..van.peursen@vu.nl"
+    },
+    "softwareRequirements": [
+        {
+            "@type": "SoftwareLibrary",
+            "name": "Web2Py",
+            "version": ">= 2.21.1"
+        },
+        {
+            "@type": "SoftwareLibrary",
+            "name": "Emdros",
+            "version": ">= 3.7.3"
+        }
+    ],
+    "softwareHelp": [
+            {
+                "@id": "https://github.com/ETCBC/shebanq/wiki",
+                "@type": "WebSite",
+                "name": "Home — SHEBANQ documentation",
+                "url": "https://github.com/ETCBC/shebanq/wiki"
+            }
+    ],
+    "targetProduct": [
+        {
+            "@type": "WebApplication",
+            "name": "SHEBANQ",
+            "url": "https://shebanq.ancient-data.org",
+            "provider": {
+                "@type": "Organization",
+                "name": "Data Archiving and Networked Services",
+                "url": "https://www.dans.knaw.nl"
+            }
+        }
+    ],
+    "referencePublication": [
+        {
+            "@type": "ScholarlyArticle",
+            "@id": "https://doi.org/10.1163/24523666-01000011",
+            "name": "Coding the Hebrew Bible",
+            "author": "Dirk Roorda",
+            "pageStart": 27,
+            "pageEnd": 41,
+            "isPartOf": {
+                "@type": "PublicationVolume",
+                "datePublished": "2018",
+                "name": "Research Data Journal for the Humanities and Social Sciences",
+                "volumeNumber": 3,
+                "issueNumber": 1
+            },
+            "url": "https://brill.com/view/journals/rdj/3/1/article-p27_27.xml"
+        },
+        {
+            "@type": "ScholarlyArticle",
+            "@id": "http://dx.doi.org/10.5334/bbi.18",
+            "name": " The Hebrew Bible as Data: Laboratory – Sharing – Experiences",
+            "author": "Dirk Roorda",
+            "pageStart": 211,
+            "pageEnd": 224,
+            "isPartOf": {
+                "@type": "Book",
+                "datePublished": "2015",
+                "name": "CLARIN in the Low Countries",
+                "editor": ["Jan Odijk", "Arjan van Hessen"],
+                "location": "London, United Kingdom"
+            },
+            "url": "https://arxiv.org/abs/1501.01866"
+        },
+        {
+            "@type": "ScholarlyArticle",
+            "name": "LAF-Fabric: a data analysis tool for Linguistic Annotation Framework with an application to the Hebrew Bible",
+            "author": ["Dirk Roorda", "Gino Kalkman", "Martijn Naaijer", "Andreas van Cranenburgh"],
+            "pageStart": 105,
+            "pageEnd": 120,
+            "isPartOf": {
+                "@type": "PublicationVolume",
+                "datePublished": "2014",
+                "name": "Computational Linguistics in the Netherlands Journal",
+                "volumeNumber": 4
+            },
+            "url": "https://www.clinjournal.org/clinj/article/view/44"
+        },
+        {
+            "@type": "Dataset",
+            "name": "BHSA",
+            "text": "Hebrew Bible + Linguistic annotations by the Eep Talstra Center for Bible and Computer. Based on the Codex Leningradensis. Multiple versions and transliterations.",
+            "temporal": "1500-500 BCE",
+            "spatial": "Israel",
+            "encodingFormat": "https://dans.knaw.nl/en/file-formats/programming-languages/text-fabric/",
+            "author": ["Willem van Peursen", "Constantijn Sikkel", "Dirk Roorda"],
+            "datePublished": "2019-01-31",
+            "@id": "https://doi.org/10.5281/zenodo.1007624",
+            "url": "https://github.com/ETCBC/bhsa"
+        }
+    ],
+    "funding": [
+        {
+            "@type": "Grant",
+            "name": "CLARIAH-NL (NWO grant 184.021.003), Call IV: SHEBANQ",
+            "funder": {
+                "@type": "Organization",
+                "name": "NWO", 
+                "url": "https://www.nwo.nl"
+            }
+        },
+        {
+            "@type": "Projects at DANS 2014-2022",
+            "name": "Development carried out as part of various projects at DANS",
+            "funder": {
+                "@type": "Organization",
+                "name": "Data Archiving and Networked Services",
+                "url": "https://www.dans.knaw.nl"
+            }
+        }
+    ]
+}
+
