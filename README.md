@@ -3,6 +3,7 @@
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/ETCBC/shebanq/)](https://archive.softwareheritage.org/browse/origin/https://github.com/ETCBC/shebanq/)
 [![DOI](https://zenodo.org/badge/14582815.svg)](https://zenodo.org/badge/latestdoi/14582815)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+<img src="https://camo.githubusercontent.com/efdbaf92d577bd214ee5f26020d668e470045bd66de29266d8e74f336bd57d05/68747470733a2f2f773369642e6f72672f72657365617263682d746563686e6f6c6f67792d72656164696e6573732d6c6576656c732f4c6576656c3950726f76656e2e737667" alt="Technology Readiness Level 9/9 - Proven - Technology complete and proven in practise by real users" data-canonical-src="https://w3id.org/research-technology-readiness-levels/Level9Proven.svg" style="max-width: 100%;">
 
 ![shebanq2](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq_logo.png)
 ![shebanq](https://raw.github.com/etcbc/shebanq/master/static/images/shebanq.png)

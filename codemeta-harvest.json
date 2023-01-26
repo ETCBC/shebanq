@@ -4,11 +4,21 @@
     "operatingSystem": [ "Linux", "Windows", "macOS", "SELinux" ],
     "runtimePlatform": "Python >= 3.6",
     "programmingLanguage": ["Python", "ES6"],
+    "author": {
+        "@type": "Person",
+        "givenName": "Dirk",
+        "familyName": "Roorda"
+    },
     "producer": {
         "@id": "http://www.etcbc.nl",
         "email": "office@wi.th.vu.nl",
         "name": "Eep Talstra Centre for Bible and Computer",
-        "url": "w.t..van.peursen@vu.nl"
+        "url": "http://www.etcbc.nl",
+    },
+    "author": {
+        "@type": "Person",
+        "givenName": "Dirk",
+        "familyName": "Roorda"
     },
     "softwareRequirements": [
         {
@@ -41,6 +51,20 @@
                 "url": "https://www.dans.knaw.nl"
             }
         }
+    ],
+    "applicationCategory": [
+        "https://vocabs.dariah.eu/tadirah/structuralAnalysis",
+        "https://vocabs.dariah.eu/tadirah/rhetoricalAnalysis",
+        "https://vocabs.dariah.eu/tadirah/commenting",
+        "https://vocabs.dariah.eu/tadirah/sharing",
+        "https://vocabs.dariah.eu/tadirah/highlighting",
+        "https://vocabs.dariah.eu/tadirah/interpreting",
+        "https://vocabs.dariah.eu/tadirah/archiving",
+        "https://vocabs.dariah.eu/tadirah/informationRetrieval",
+        "https://w3id.org/nwo-research-fields#TextualAndContentAnalysis",
+        "https://w3id.org/nwo-research-fields#TextualAndLinguisticCorpora",
+        "https://w3id.org/nwo-research-fields#BibleStudies",
+        "https://w3id.org/nwo-research-fields#ComputationalLinguisticsAndPhilology"
     ],
     "referencePublication": [
         {
