@@ -63,6 +63,7 @@
         "https://vocabs.dariah.eu/tadirah/informationRetrieval",
         "https://w3id.org/nwo-research-fields#TextualAndContentAnalysis",
         "https://w3id.org/nwo-research-fields#TextualAndLinguisticCorpora",
+        "https://w3id.org/nwo-research-fields#ReligiousStudiesAndTheology",
         "https://w3id.org/nwo-research-fields#BibleStudies",
         "https://w3id.org/nwo-research-fields#ComputationalLinguisticsAndPhilology"
     ],
