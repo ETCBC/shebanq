@@ -48,6 +48,15 @@ Read all about SHEBANQ on the [wiki](https://github.com/ETCBC/shebanq/wiki) of t
 There you find information on the data sources as well.
 And there are the [techdocs](https://etcbc.github.io/shebanq/) of course.
 
+## Deployment
+
+As of summer 2023, SHEBANQ migrates from DANS to KNAW/HuC.
+The development of SHEBANQ moves from this repo to
+[CLARIAH/shebanqx](https://github.com/CLARIAH/shebanqx).
+
+**There you'll find ways to fire up your own shebanq on docker!**
+
+
 ## History
 
 See [Changes](https://github.com/ETCBC/shebanq/wiki/Changes)

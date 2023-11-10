@@ -374,7 +374,7 @@ We assume that this there is no previous dynamic data to be imported.
 
     perform the complete installation of shebanq
 
-1. (server) `sudo ./install.sh --adminpwd
+1. (server) `sudo ./install.sh --adminpwd`
 
     you will be prompted to enter an admin password.
     You'll see instructions on the screen how to save the password(hash)
