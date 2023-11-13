@@ -3,13 +3,13 @@
 ## select
 
 * [select](#module_select)
-    * _static_
+    * `static`
         * [.SelectPassage](#module_select.SelectPassage)
             * [.apply()](#module_select.SelectPassage+apply)
             * [.selectVersion()](#module_select.SelectPassage+selectVersion)
         * [.SelectResultPage](#module_select.SelectResultPage)
         * [.SelectLanguage](#module_select.SelectLanguage)
-    * _inner_
+    * `inner`
         * [~SelectBook](#module_select..SelectBook)
         * [~SelectItems](#module_select..SelectItems)
 
@@ -41,8 +41,8 @@ data version.
 The links to other applications are adapted to the
 new passage selection:
 
-*   bol = [Bible Online Learner]({{bol}})
-*   pbl = [ParaBible]({{parabible}})
+*   `bol` = [Bible Online Learner]({{bol}})
+*   `pbl` = [ParaBible]({{parabible}})
 
 **Kind**: instance method of [<code>SelectPassage</code>](#module_select.SelectPassage)  
 **See**: Page elements:
@@ -73,7 +73,7 @@ of bible books are presented.
 **Kind**: static class of [<code>select</code>](#module_select)  
 **See**
 
-- [M:blang][blang].
+- [M:`blang`][blang].
 - [∈ language][elem-language].
 
 <a name="module_select..SelectBook"></a>

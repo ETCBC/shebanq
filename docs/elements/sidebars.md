@@ -54,7 +54,7 @@ statistics for this chapter
 For all data versions
 
 ```
-expand version csv-icons chart-icon
+expand version CSV-icons chart-icon
 ```
 
 and when expanded the expansion is inserted below
@@ -85,7 +85,7 @@ mql-box
 properties and values, among which the published status
 ```
 
-and when editing there the area for the reocrd increases and shows:
+and when editing there the area for the record increases and shows:
 
 ```
 link

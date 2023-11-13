@@ -16,7 +16,7 @@ query overview page.
 <a name="module_queryrecent.QueryRecent+fetch"></a>
 
 #### queryRecent.fetch()
-get the material by AJAX if needed, and process the material afterward
+get the material by AJAX if needed, and process the material afterwards
 
 **Kind**: instance method of [<code>QueryRecent</code>](#module_queryrecent.QueryRecent)  
 **See**: Triggers [C:hebrew.queriesr][controllers.hebrew.queriesr]  

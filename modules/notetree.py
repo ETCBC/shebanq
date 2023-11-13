@@ -12,7 +12,7 @@ class NOTETREE:
         pass
 
     def get(self):
-        """Get the metadata of all queries and deliver it as json.
+        """Get the metadata of all queries and deliver it as JSON.
         """
 
         auth = current.auth

@@ -25,7 +25,7 @@ In advanced views there are more sophisticated counts.
 The tree can be shown at different levels:
 
 *   user
-*   noteset
+*   note set
 
 **Kind**: inner class of [<code>notetree</code>](#module_notetree)  
 <a name="module_notetree..Filter"></a>
@@ -48,7 +48,7 @@ Handles the tree of note sets
 #### new Tree()
 Initializes the notes tree
 
-Stores a url to fetch content from the server.
+Stores a URL to fetch content from the server.
 
 <a name="module_notetree..Upload"></a>
 
@@ -59,7 +59,7 @@ Controls the bulk-uploading of notes
 <a name="module_notetree..Upload+submit"></a>
 
 #### upload.submit()
-Submits a csv file with notes to the server
+Submits a CSV file with notes to the server
 
 **Kind**: instance method of [<code>Upload</code>](#module_notetree..Upload)  
 **See**: Triggers [C:hebrew.noteupload][controllers.hebrew.noteupload].  

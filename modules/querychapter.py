@@ -28,7 +28,7 @@ class QUERYCHAPTER:
         We need to prevent that index-making is triggered multiple times by
         several requests that are fired while index-making is in progress.
 
-        So we put an indicator value in the cache during index buidling,
+        So we put an indicator value in the cache during index building,
         and we let everybody else wait until the index has been completed.
 
         We do this per version.
@@ -168,11 +168,11 @@ class QUERYCHAPTER:
         queries with results in those chapters.
 
         We call this function when:
-        *   a query has run and a niew set of slots has been stored.
+        *   a query has run and a new set of slots has been stored.
         *   the sharing status of a query changes
 
         We do not call this function when:
-        *   the published state of a query has changed (see updatePubStatus)
+        *   the published state of a query has changed (see `updatePubStatus`)
         *   when a query body is edited but not run (see below).
 
         In those cases the following will be taken care of:
@@ -185,9 +185,9 @@ class QUERYCHAPTER:
         of the query have been stored in the database, before the metadata
         has arrived there.
         In that case we can not test on the uptodateness, so we assume that the
-        caller has passed uptodate=True.
+        caller has passed `uptodate=True`.
         Indeed, when the sharing status has changed, we are able to perform
-        this test, and then there is no need to pass uptodate=True.
+        this test, and then there is no need to pass `uptodate=True`.
 
 
         What if a query body is edited but not run? It will then become outdated,

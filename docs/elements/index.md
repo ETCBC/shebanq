@@ -5,7 +5,7 @@ and we will name the different parts.
 These concepts will recur in the discussion of the code,
 whether it is Python, Javascript, CSS, HTML or SQL.
 
-A good introduction into the kinds of pages is the menubar.
+A good introduction into the kinds of pages is the menu bar.
 
 ![menubar](../images/menubar.png)
 

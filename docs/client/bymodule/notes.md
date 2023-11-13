@@ -3,9 +3,9 @@
 ## notes
 
 * [notes](#module_notes)
-    * _static_
+    * `static`
         * [.Notes](#module_notes.Notes)
-    * _inner_
+    * `inner`
         * [~NoteVerse](#module_notes..NoteVerse)
             * [.fetch()](#module_notes..NoteVerse+fetch)
             * [.sendnotes()](#module_notes..NoteVerse+sendnotes)
@@ -16,7 +16,7 @@
 Controls notes on **text** pages
 
 **Kind**: static class of [<code>notes</code>](#module_notes)  
-**See**: [notetree] for the notes overview page.  
+**See**: [notetree](.) for the notes overview page.  
 <a name="module_notes..NoteVerse"></a>
 
 ### notes~NoteVerse

@@ -281,7 +281,7 @@ def sidenotebody():
 
 
 def queriesr():
-    """Serves AJAX call for json data for recently saved shared queries.
+    """Serves AJAX call for JSON data for recently saved shared queries.
 
     See also [queryrecent.QUERYRECENT.recent].
 
@@ -293,7 +293,7 @@ def queriesr():
 
 
 def querytree():
-    """Serves AJAX call for json data for the tree overview of queries.
+    """Serves AJAX call for JSON data for the tree overview of queries.
 
     See also [M:QUERYTREE.get][querytree.QUERYTREE.get].
 
@@ -305,7 +305,7 @@ def querytree():
 
 
 def notetree():
-    """Serves AJAX call for json data for the tree overview of notes sets.
+    """Serves AJAX call for JSON data for the tree overview of notes sets.
 
     See also [M:NOTETREE.get][notetree.NOTETREE.get].
 
@@ -317,7 +317,7 @@ def notetree():
 
 
 def getversenotes():
-    """Serves AJAX call for json data for all notes belonging to a single verse.
+    """Serves AJAX call for JSON data for all notes belonging to a single verse.
 
     See also [M:NOTE.getVerseNotes][note.NOTE.getVerseNotes].
 
@@ -330,7 +330,7 @@ def getversenotes():
 
 
 def putversenotes():
-    """Serves AJAX call for json data to save notes.
+    """Serves AJAX call for JSON data to save notes.
 
     See also [M:NOTESAVE.putVerseNotes][notesave.NOTESAVE.putVerseNotes].
 
@@ -358,7 +358,7 @@ def noteupload():
 
 
 def item():
-    """Get csv data of the items associated with a record.
+    """Get CSV data of the items associated with a record.
 
     Items are:
     the occurrences of a word, the results of a query, the notes of a notes set.

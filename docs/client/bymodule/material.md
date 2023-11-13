@@ -4,8 +4,8 @@
 
 * [material](#module_material)
     * [.Material](#module_material.Material)
-        * [.fetch()](#module_material.Material+fetch)
-        * [.addVerseRefs()](#module_material.Material+addVerseRefs)
+        * [`.fetch()`](#module_material.Material+fetch)
+        * [`.addVerseRefs()`](#module_material.Material+addVerseRefs)
 
 <a name="module_material.Material"></a>
 
@@ -24,13 +24,13 @@ Controls the main area of the page.
 
 
 * [.Material](#module_material.Material)
-    * [.fetch()](#module_material.Material+fetch)
-    * [.addVerseRefs()](#module_material.Material+addVerseRefs)
+    * [`.fetch()`](#module_material.Material+fetch)
+    * [`.addVerseRefs()`](#module_material.Material+addVerseRefs)
 
 <a name="module_material.Material+fetch"></a>
 
 #### material.fetch()
-get the material by AJAX if needed, and process the material afterward
+get the material by AJAX if needed, and process the material afterwards
 
 **Kind**: instance method of [<code>Material</code>](#module_material.Material)  
 **See**: Triggers [C:hebrew.material][controllers.hebrew.material]  

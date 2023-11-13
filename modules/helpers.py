@@ -16,7 +16,7 @@ def debug(msg):
 
     In case logging does not work, you can, by way of emergency,
     set `TO_RESPONSE` to True, and then the messages will be added
-    to the respnse, probably creating an ugly mess, but at least
+    to the response, probably creating an ugly mess, but at least
     you get information out.
 
     Messages are only written if DEBUG is True,
@@ -37,7 +37,7 @@ def log(msg):
 
     In case logging does not work, you can, by way of emergency,
     set `TO_RESPONSE` to True, and then the messages will be added
-    to the respnse, probably creating an ugly mess, but at least
+    to the response, probably creating an ugly mess, but at least
     you get information out.
     """
     if TO_STDERR:
@@ -216,7 +216,7 @@ def normRanges(ranges, fromset=None):
 
 
 def sanitize(text):
-    """We need to hEsc the markdown text.
+    """We need to `hEsc` the markdown text.
 
     But markdown does an extra layer of escaping `&` inside `href` attributes.
     We have to unescape doubly escaped `&`.

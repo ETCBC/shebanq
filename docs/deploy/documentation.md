@@ -5,7 +5,7 @@
 ### User guide of SHEBANQ
 
 How to use SHEBANQ is documented on the
-[wiki of the SHEBANQ repository on Github]({{wiki}}).
+[wiki of the SHEBANQ repository on GitHub]({{wiki}}).
 
 People with access can edit those pages directly in the browser, if they are logged
 in with GitHub.
@@ -38,7 +38,7 @@ The source docs are in its
 If you have cloned you can edit the docs locally,
 and then build the docs via [mkdocs]({{mkdocs}}).
 
-You install mkdocs by
+You install `mkdocs` by
 
 ```
 pip3 install mkdocs
@@ -73,7 +73,7 @@ git push origin master
 
 ### Technical documentation
 
-The technical documentation of SHEBANQ is also by means of mkdocs.
+The technical documentation of SHEBANQ is also by means of `mkdocs`.
 
 In order to modify it, you have to install it, and a plugin:
 
@@ -94,9 +94,9 @@ npm install -g jsdoc-to-markdown
 Apart from a nest of markdown files, the documentation consists also
 of special comments extract from the Python and Javascript code.
 
-We get the Python docstrings by means of the mkdocs plugin mkdocstrings.
+We get the Python docstrings by means of the `mkdocs` plugin `mkdocstrings`.
 
-We get the Javascript docstrings by means of jsdoc and jsdoc-to-markdown.
+We get the Javascript docstrings by means of `jsdoc` and `jsdoc-to-markdown`.
 
 We have [build script](maintenance.md#operation) to automate the maintenance steps,
 and it also takes care of documentation handling.
@@ -111,9 +111,9 @@ python3 build.py --help
 to look at the options, or inspect the
 [source code]({{repo}}/blob/master/build.py).
 
-#### Why mkdocs?
+#### Why `mkdocs`?
 
-One of the advantages of mkdocs is that you can 'invoke' docstring documentation
+One of the advantages of `mkdocs` is that you can 'invoke' docstring documentation
 from within markdown files. It will then inject the formatted docstrings
 at that place in the documentation.
 
@@ -122,18 +122,18 @@ That is handy, because this SHEBANQ is not a usual Python package, such as
 For example, automatically building documentation for the whole SHEBANQ using
 [pdoc3]({{pdoc3}}) is not possible, in contrast to Text-Fabric.
 
-A second good point is that mkdocstrings is potentially capable of
+A second good point is that `mkdocstrings` is potentially capable of
 doing Javascript as well.
 At the moment, there is not yet a handler for Javascript, so this advantage
 does not yet materialize.
 
 But still ...
 
-We extract the Javascript documentation using jsdoc(to markdown) and
+We extract the Javascript documentation using `jsdoc(-to-markdown)` and
 dump it into our source docs folder.
-From there it will be seen by mkdocs, and formatted with the other stuff.
+From there it will be seen by `mkdocs`, and formatted with the other stuff.
 
-And the excellent thing is the `autorefs` plugin of mkdocs, by which
+And the excellent thing is the `autorefs` plugin of `mkdocs`, by which
 we can easily cross-reference between all doc sources.
 
 That means that we can put a reference to a Javascript class right in the docstring

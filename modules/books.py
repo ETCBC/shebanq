@@ -19,9 +19,9 @@ class BOOKS:
         pass
 
     def getNames(self):
-        """Send information about bible booknames.
+        """Send information about bible book names.
 
-        The info consists of the latin booknames,
+        The info consists of the latin book names,
         the languages in which we have translations for them,
         and a translation table for all book names.
 

@@ -15,7 +15,7 @@ and giving essential feedback.
     If you prefer Ubuntu, that should be easier.
     You need to change a few things: `yum` becomes `apt-get`,
     the names of installation packages might be slightly different.
-    You can leave out typical selinux commands such as
+    You can leave out typical SELINUX commands such as
     `chcon` and `setsebool`.
     Various locations maybe a little bit different.
 
@@ -76,7 +76,7 @@ rights on this server.
 
 If the server runs on RHEL/Centos/AlmaLinux/RockyLinux:
 
-*   the [PowerTools repository]({{powertools}}) must be activated;
+*   the [Power Tools repository]({{powertools}}) must be activated;
 *   the Git and Development Tools packages must have been installed
 *   the `mod_wsgi` module mentioned below is called `python3-mod_wsgi`.
     That means you have to modify the installation script `install.sh` before
@@ -85,7 +85,7 @@ If the server runs on RHEL/Centos/AlmaLinux/RockyLinux:
 
 
 We assume that the
-[Apache webserver]({{apache}})
+[Apache web server]({{apache}})
 is already installed and:
 
 *   its config files reside in `/etc/httpd`;
@@ -117,15 +117,15 @@ That means that you must have the right package repositories enabled.
 *   `mariadb-server`
 
 We assume that an email account is configured on the server that can be used to send
-emails on behalf of SHEBANQ (for password verfication and lost passwords).
+emails on behalf of SHEBANQ (for password verification and lost passwords).
 
 ### Local computer
 
 You have cloned the `shebanq` and `bhsa` repositories
-from Github to your local computer:
+from GitHub to your local computer:
 
 ```
-cd ~/github/etcbc
+cd ~/github/ETCBC
 git clone {{repoUrl}}
 git clone {{bhsa}}
 ```
@@ -134,9 +134,9 @@ If you have cloned these long ago, you can make them up to date by
 pulling them again:
 
 ```
-cd ~/github/etcbc/shebanq
+cd ~/github/ETCBC/shebanq
 git pull origin master
-cd ~/github/etcbc/bhsa
+cd ~/github/ETCBC/bhsa
 git pull origin master
 ```
 
@@ -145,17 +145,17 @@ but the structure within the `github` directory must be as prescribed.
 
 #### The `_local` directory
 
-The scripts in `~/github/etcbc/scripts/maintenance` have generic content.
+The scripts in `~/github/ETCBC/scripts/maintenance` have generic content.
 Before working with it, the file `configtemplate` must be edited
 to reflect your actual situation.
 Do this as follows:
 
 ```
-cd ~/github/etcbc/shebanq/scripts/maintenance
+cd ~/github/ETCBC/shebanq/scripts/maintenance
 ./localize.sh
 ```
 
-Now you have a directory `~/github/etcbc/shebanq/_local`
+Now you have a directory `~/github/ETCBC/shebanq/_local`
 And the command tells you what to do next:
 
 *   copy `configtemplate.sh` to `config.sh`
@@ -164,20 +164,20 @@ And the command tells you what to do next:
 What needs to be done is:
 
 *   adapt the `serverOther` variables to your situation:
-    *   provide the name of the database host server (typically: localhost)
-    *   provide passwords for mysql users named  `shebanq` and `shebanq_admin`;
+    *   provide the name of the database host server (typically: `localhost`)
+    *   provide passwords for MYSQL users named  `shebanq` and `shebanq_admin`;
         these users will be created and later in the installation process
         `shebanq_admin` is used for importing data,
-        and after installation the webapp will use `shebanq`
+        and after installation the web app will use `shebanq`
         to fetch data in response to requests by web users.
     *   provide the locations where the https-certificates are installed
         in Apache;
-        these will be used in in the httpd config file for the webapp.
+        these will be used in in the `httpd` config file for the web app.
     *   adapt the `mailServerOther` and `mailSenderOther` to the values
         that correspond to the email account you have configured for SHEBANQ
         emails to users.
         If you leave `mailSenderOther` empty, we assume your server cannot
-        send mail, and we'll instruct web2py to not send verification emails.
+        send mail, and we'll instruct Web2py to not send verification emails.
 
 The `_local` directory is never pushed online
 (because of the `.gitignore` file in the shebanq repo),
@@ -256,7 +256,7 @@ and arguments it accepts.
         the user who is you and the `apache` users
         are added to the members of this group.
     *   You can run this script in single steps by passing an option.
-    *   Web2py offers a handy [administrative webapp](admin.md).
+    *   Web2py offers a handy [administrative web app](admin.md).
         This is protected by a password that you have
         to set during installation.
         This can be done by `sudo ./install.sh --adminpwd`
@@ -288,13 +288,13 @@ and arguments it accepts.
 *   `update.sh`
     *   Run it on the server.
     *   No need for root privileges, but you must be able to run a specific
-        command with sudo without being prompted for a password:
+        command with `sudo` without being prompted for a password:
 
         `sudo -n /usr/bin/systemctl restart httpd.service`
 
         and likewise for `start` and `stop`.
-    *   Updates the shebanq webapp,
-        i.e. the web-app as it is hung into the `web2py` framework.
+    *   Updates the shebanq web app,
+        i.e. the web-app as it is hung into the Web2py framework.
 
 *   `test.sh`
     *   Run it on the server.
@@ -309,33 +309,33 @@ and arguments it accepts.
 There are several situations, depending on the server that hosts SHEBANQ:
 
 * **Production** `p`
-    * url: `shebanq.ancient-data.org`
+    * URL: `shebanq.ancient-data.org`
     * hosted by DANS on a KNAW server
     * publicly accessible,
-    * the one and only offical shebanq website
+    * the one and only official shebanq website
 * **Production (new)** `pn`
-    * url: `server.dans.knaw.nl`
+    * URL: `server.dans.knaw.nl`
     * hosted by DANS on a KNAW server,
       as a successor of the current production server
     * not yet publicly accessible,
-    * not yet the one and only offical shebanq website
+    * not yet the one and only official shebanq website
 * **Test** `t`
-    * url: `test.shebanq.ancient-data.org`
+    * URL: `test.shebanq.ancient-data.org`
     * hosted by DANS on a KNAW server
     * only accessible from within the DANS-KNAW network
-    * the one and only offical shebanq *test* website
+    * the one and only official shebanq *test* website
 * **Other** `o`
-    * url: to be configured by you
+    * URL: to be configured by you
     * hosted on your server
     * access managed by you
-    * an unoffical shebanq website
+    * an unofficial shebanq website
       (very welcome, thanks for taking the trouble)
 * **Other (new)** `on`
-    * url: to be configured by you
+    * URL: to be configured by you
     * hosted on your new server,
       as a successor to your current server
     * access managed by you
-    * an unoffical shebanq website
+    * an unofficial shebanq website
 
 ## The scenarios
 
@@ -346,10 +346,10 @@ In all situations, when on the server, you must `sudo` the invocations
 of the scripts or run them as root.
 
 It might be the case, especially on production servers,
-that you do not have general sudo rights
+that you do not have general `sudo` rights
 and that the script as a whole can not be run with root privileges.
 In that case you need to have rights for specific commands
-to run them under sudo.
+to run them under `sudo`.
 That is why in some scripts the word `sudo` still appears.
 If it does not work for your situation,
 you can tweak your local copy of the script.
@@ -459,9 +459,9 @@ The database resides on a separate database server, no data operations needed.
     upload all needed installation files to the new production server;
     the static database files will be skipped.
 
-    !!! hint "url configuration"
+    !!! hint "URL configuration"
         The shebanq configuration file that is hung into apache
-        will specify a virtual host with the server name as url,
+        will specify a virtual host with the server name as URL,
         not `shebanq.ancient-data.org`.
         In this way, the new server can be tested before changing the DNS.
 
@@ -482,7 +482,7 @@ The database resides on a separate database server, no data operations needed.
 1.  (local computer) `./provision.sh p --scripts`
 
     upload the scripts again. Note that we use `p` now, and not `pn`.
-    This has the effect that the url of the virtual host in the Apache
+    This has the effect that the URL of the virtual host in the Apache
     config file of shebanq will be set to `shebanq.ancient-data.nl`.
 
 1.  (new production server) `sudo ./install.sh --apache`
@@ -506,17 +506,17 @@ Do this when you noticed that the SHEBANQ repo has updates.
 
 1.  (server) `update.sh`
 
-    Pull the SHEBANQ repository from GitHUb
+    Pull the SHEBANQ repository from GitHub
 
 That's all. Simple and quick.
 
 #### A version of the static data
 
-Do this when a new version of the etcbc data is released or an existing
+Do this when a new version of the ETCBC data is released or an existing
 version has got an update.
 
 These databases are released through the
-[etcbc/bhsa]({{bhsa}}) repository on GitHub, in the directory
+[ETCBC/bhsa]({{bhsa}}) repository on GitHub, in the directory
 [shebanq]({{bhsa}}/tree/master/shebanq).
 You have them in your local clone of the BHSA.
 
@@ -541,7 +541,7 @@ that you want to import, such as
 1. (local computer) bulk import additional notes for the new data version
 
     There are currently two sets of notes that will be generated alongside
-    an ETCBC data version: **crossref** and **valence**.
+    an ETCBC data version: *`crossref`* and ``valence**.
 
     Import them via the instructions mentioned
     [below](#bulk-uploading-sets-of-notes).
@@ -571,7 +571,7 @@ In that case, the SHEBANQ repository contains all that is necessary.
 
 1.  (server) `update.sh`
 
-    Pull the SHEBANQ repository from GitHUb
+    Pull the SHEBANQ repository from GitHub
 
 #### Web2py
 
@@ -593,7 +593,7 @@ In that case, the SHEBANQ repository contains all that is necessary.
 
 1.  (server) `update.sh`
 
-    Pull the SHEBANQ repository from GitHUb
+    Pull the SHEBANQ repository from GitHub
 
 ### Maintain backups of dynamic data
 
@@ -677,20 +677,20 @@ data version.
 #### Bulk uploading sets of notes
 
 Clone the repos
-[etcbc/parallels]({{parallells}}) and
-[etcbc/valence]({{valence}}).
+[ETCBC/parallels]({{parallells}}) and
+[ETCBC/valence]({{valence}}).
 
 Like so:
 
 ```
-cd ~/github/etcbc
-git clone https://github.com/etcbc/parallels
-git clone https://github.com/etcbc/valence
+cd ~/github/ETCBC
+git clone https://github.com/ETCBC/parallels
+git clone https://github.com/ETCBC/valence
 ```
 
 Both have a directory `shebanq` and under that subdirectories for the data versions
 of the BHSA.
-Go to the corresponding version, and locate the csv file that you find in each of those
+Go to the corresponding version, and locate the CSV file that you find in each of those
 places. These are the ones you will upload.
 
 You have to be known to SHEBANQ as a *bulk uploader*.
@@ -701,7 +701,7 @@ Then go to the
 [notes page of shebanq]({{shebanqnotes}})
 in your browser, and log in.
 
-In the right column you see a button to upload a csv file.
+In the right column you see a button to upload a CSV file.
 Use it to upload the files we mentioned above.
 
 The notes in those files will be imported into shebanq.
@@ -712,7 +712,7 @@ See also the [user manual]({{shebanqwikibulk}}).
 
 Users have to be added manually to the table `uploaders` in the
 `shebanq_web` database. Only then they are offered to button to upload
-a csv file with notes.
+a CSV file with notes.
 
 Find the user id in the `auth_user` table of the same database by
 
@@ -792,7 +792,7 @@ and debug it there.
 
     Mind: first compile, then restart.
 
-    When you update shebanq from Github, by running the `update.sh` script,
+    When you update shebanq from GitHub, by running the `update.sh` script,
     all these things are taken care of.
 
 
@@ -824,19 +824,20 @@ ausearch -m avc --start today
 
 This gives you the violations for today. It might give you a hint to what went wrong.
 
-Probably the webserver needed to write a file for which it had no permissions.
-Obvious cases in a web2py application are:
+Probably the web server needed to write a file for which it had no permissions.
+Obvious cases in a Web2py application are:
 
 1.  compilation of Python files. This standard Python behaviour compiles a Python
     file before running it and saves it in a `__pychache__` directory next to the
     Python scripts.
     This write action is usually not permitted in directories with code.
-2.  Some directories should be writable by the webserver, such as logs, uploads, databases.
+2.  Some directories should be writable by the web server, such as logs,
+    uploads, databases.
     But when these directories are removed and then recreated, their writability might
     also been gone.
 
 To remedy this, our `install.sh` and `update.sh` take great care to
-precompile all possible Python files (under `sudo`) and to
+pre-compile all possible Python files (under `sudo`) and to
 give the writable directories the right security context, whenever they are
 created (`httpd_sys_rw_content_t`).
 

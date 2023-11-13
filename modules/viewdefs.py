@@ -17,7 +17,7 @@ class Make:
     *   defining default values
     *   defining validation functions
     *   value compilation
-    *   exporting setttings data in Javascript to the client
+    *   exporting settings data in Javascript to the client
 
     See also [{SideSettings}][sidesettings].
 

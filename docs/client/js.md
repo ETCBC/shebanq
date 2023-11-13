@@ -4,7 +4,7 @@ The interaction with SHEBANQ is taken care of by a modern
 Javascript app.
 
 SHEBANQ uses vanilla Javascript (ES6 and higher), without any 
-code preprocessing. The Javascript source is directly
+code pre-processing. The Javascript source is directly
 included by the HTML.
 
 We only use a few Javascript libraries:
@@ -26,7 +26,7 @@ The entry point is `main.js`.
 It has the following responsibilities:
 
 *   Pick up a bunch of settings from the server
-*   Set up LocalStorage in the browser to remember those settings
+*   Set up `LocalStorage` in the browser to remember those settings
 *   Make the settings available in an `ViewState` object that is globally accessible
 *   Construct a Page object
 *   Start the dynamics of the Page object
@@ -52,7 +52,7 @@ These can be triggered by the `process()` methods of other objects.
 
 If objects need to interact with the server, they use AJAX
 to send/fetch data. When the response from the server has come back,
-a callback is executed in wich the method `process()` is called.
+a callback is executed in which the method `process()` is called.
 
 ### Process
 

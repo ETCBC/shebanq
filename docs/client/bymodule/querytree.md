@@ -55,7 +55,7 @@ Handles the tree of queries
 #### new Tree()
 Initializes the query tree
 
-Stores a url to fetch content from the server.
+Stores a URL to fetch content from the server.
 
 <a name="module_querytree..Tree+record"></a>
 

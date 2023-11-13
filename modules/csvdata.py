@@ -5,7 +5,7 @@ from helpers import flatten, iDecode
 
 
 def csv(data):
-    """converts an data structure of rows and fields into a csv string.
+    """converts an data structure of rows and fields into a CSV string.
     With proper quotations and escapes
     """
     result = []
@@ -21,9 +21,9 @@ def csv(data):
 
 
 class CSVDATA:
-    """Produces various kinds of csv exports of lists of items.
+    """Produces various kinds of CSV exports of lists of items.
 
-    Items are word occirrences, query results or noteset members.
+    Items are word occurrences, query results or note set members.
     """
 
     def __init__(self, Record, Word, Query):
@@ -60,7 +60,7 @@ class CSVDATA:
         return dict(fileName=fileName, data=data)
 
     def get(self, vr, mr, qw, iid, keywords, tp, extra, hebrewFields, fileName):
-        """Get csv data as specified by parameters.
+        """Get CSV data as specified by parameters.
         """
 
         Word = self.Word

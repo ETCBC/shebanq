@@ -25,7 +25,7 @@ class CACHING:
     """Handles all caching requests.
 
     !!! caution "The cache is used for global data structures"
-        In web2py the cache is global to the threads, but local to the process.
+        In Web2py the cache is global to the threads, but local to the process.
         Since we use the cache to maintain a live index between queries and chapters,
         the index in one process might get out of touch with the situation
         in another process. For example if a query is run and different or new
@@ -37,7 +37,7 @@ class CACHING:
     !!! caution "other location"
         This module is not in the `modules` directory but in the `models` directory.
         In the module an instance of this class is created and added to
-        [current]({{web2py}}) (a web2py concept),
+        [current]({{web2py}}) (a Web2py concept),
         which means that the object is available for each request.
     """
 
@@ -69,7 +69,7 @@ class CACHING:
         Returns
         -------
         data
-            Whatever `func()` returnss
+            Whatever `func()` returns
 
         """
         cache = current.cache

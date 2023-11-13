@@ -3,17 +3,17 @@
 ## chart
 
 * [chart](#module_chart)
-    * _static_
+    * `static`
         * [.Chart](#module_chart.Chart)
             * [.apply()](#module_chart.Chart+apply)
             * [.fetch()](#module_chart.Chart+fetch)
-    * _inner_
+    * `inner`
         * [~chartCols](#module_chart..chartCols)
 
 <a name="module_chart.Chart"></a>
 
 ### chart.Chart
-Class for chart slection and generation
+Class for chart selection and generation
 
 **Kind**: static class of [<code>chart</code>](#module_chart)  
 **See**: also the server code [M:CHART][chart.CHART].  
@@ -25,13 +25,13 @@ Class for chart slection and generation
 <a name="module_chart.Chart+apply"></a>
 
 #### chart.apply()
-Method for chart slection and generation
+Method for chart selection and generation
 
 **Kind**: instance method of [<code>Chart</code>](#module_chart.Chart)  
 <a name="module_chart.Chart+fetch"></a>
 
 #### chart.fetch()
-get the material by AJAX if needed, and process the material afterward
+get the material by AJAX if needed, and process the material afterwards
 
 **Kind**: instance method of [<code>Chart</code>](#module_chart.Chart)  
 **See**: Triggers [C:hebrew.chart][controllers.hebrew.chart]  

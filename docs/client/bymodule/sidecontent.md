@@ -30,7 +30,7 @@ Meant for `is_shared` and `is_published`.
 !!! note
     `is_shared` is a field of a query record.
 
-    `is_published` is a field of a query_exe record.
+    `is_published` is a field of a `query_exe` record.
 
 **Kind**: instance method of [<code>SideContent</code>](#module_sidecontent.SideContent)  
 **See**: Triggers [C:hebrew.querysharing][controllers.hebrew.querysharing].  
@@ -44,7 +44,7 @@ Sends un updated record to the database.
 <a name="module_sidecontent.SideContent+fetch"></a>
 
 #### sideContent.fetch()
-get the material by AJAX if needed, and process the material afterward
+get the material by AJAX if needed, and process the material afterwards
 
 This method takes into account what kind of sidebar this is:
 

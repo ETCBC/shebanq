@@ -3,14 +3,14 @@
 ## helpers
 
 * [helpers](#module_helpers)
-    * _static_
+    * `static`
         * [.escHT](#module_helpers.escHT)
         * [.putMarkdown](#module_helpers.putMarkdown)
         * [.toggleDetail](#module_helpers.toggleDetail)
         * [.specialLinks](#module_helpers.specialLinks)
         * [.colorDefault](#module_helpers.colorDefault)
         * [.closeDialog](#module_helpers.closeDialog)
-    * _inner_
+    * `inner`
         * [~mEscape()](#module_helpers..mEscape)
 
 <a name="module_helpers.escHT"></a>
@@ -29,9 +29,10 @@ are resolved into working hyperlinks.
 
 **Kind**: static constant of [<code>helpers</code>](#module_helpers)  
 
-| Param | Description |
+| Parameter | Description |
 | --- | --- |
-| wdg | A div in the HTML This div has a subdiv with the source markdown in it and a destination div which gets the result of the conversion |
+| `wdg` | A div in the HTML This div has a sub-div with the source markdown in it
+and a destination div which gets the result of the conversion |
 
 <a name="module_helpers.toggleDetail"></a>
 
@@ -51,8 +52,8 @@ Resolve shebanq-specific links into working hyperlinks
 Computes the default color
 
 The data for the computation comes from the server
-and is stored in the javascript global variable Config
-colorsDefault, nDefaultClrCols, nDefaultClrRows
+and is stored in the javascript global variables `Config`
+`colorsDefault`, `nDefaultClrCols`, `nDefaultClrRows`.
 
 **Kind**: static constant of [<code>helpers</code>](#module_helpers)  
 <a name="module_helpers.closeDialog"></a>

@@ -17,7 +17,7 @@ But there are disadvantages:
     Still, it is local to the current process. So you cannot configure SHEBANQ with more than 1 process.
     So far, multiple threads compensate for that, but this limitation is not ideal.
 
-Idea: store the index in the database as a simple corss-table between queries and chapters,
+Idea: store the index in the database as a simple cross-table between queries and chapters,
 more precisely: queries, versions and chapters.
 
 It will overcome both disadvantages.
@@ -25,6 +25,6 @@ In order to make it work, we need to update the cross table whenever query resul
 
 So we must make sure that saving query results and updating this table happens in one transaction.
 
-Also, this will change the datamodel of the `shebanq_web` database.
+Also, this will change the data model of the `shebanq_web` database.
 That means that it will be difficult to restore older backups.
-We can accomodate that by making new backups immediately.
+We can accommodate that by making new backups immediately.

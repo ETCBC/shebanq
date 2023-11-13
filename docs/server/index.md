@@ -26,5 +26,5 @@ in which the result of `xxx()` will be filled in.
     There might be more functions in a controller file than are
     controllers: auxiliary functions are allowed.
 
-    There might be more html files in the views directory
+    There might be more HTML files in the views directory
     than are proper views: views may include sub views.

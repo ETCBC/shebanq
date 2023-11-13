@@ -57,7 +57,7 @@ class RECORD:
 
         !!! caution "Web2py device"
             We use a
-            [web2py device]({{web2pyComponents}})
+            [Web2py device]({{web2pyComponents}})
             here that shields the mechanics of an AJAX call.
             That leads to code that is not very clear.
 
@@ -71,7 +71,7 @@ class RECORD:
         will be used.
 
         These calls are used when the user requests a **record**
-        page directly. The web2py device takes care that when the sidebar
+        page directly. The Web2py device takes care that when the sidebar
         is editable, the edits will be submitted via AJAX.
         So far so good.
 
@@ -83,8 +83,8 @@ class RECORD:
         client code: [{sidecontent.fetch}][sidecontentfetch].
 
         Since I was not able to use the Web2py approach for this part of the use case,
-        it is probably a good idea ditch this usage of the web2py mechanism
-        altogehter in favour fo the more explicit way, which is already in our code.
+        it is probably a good idea ditch this usage of the Web2py mechanism
+        altogether in favour of the more explicit way, which is already in our code.
         Now we have two ways of doing the same thing!
         My apologies.
         """  # noqa E501
@@ -123,7 +123,7 @@ class RECORD:
         Can also save query records.
 
         !!! hint "Note records and word records"
-            Word records are readonly and will nver be saved.
+            Word records are read-only and will never be saved.
 
             There are no such things as note records.
             Notes are organized in sets bases on keywords and authoring users,

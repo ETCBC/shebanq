@@ -24,13 +24,13 @@ The following tasks must be addressed:
     We encourage people to host their own SHEBANQ,
     so we must support new installations on third party servers.
     Those servers must be equally maintainable as
-    the offical servers.
+    the official servers.
 
 *   **Software updates**
 
     In order to keep SHEBANQ alive over the years,
     software updates must be carried out,
-    not only of the webapp,
+    not only of the web app,
     but also of its supporting systems,
     [Emdros](https://emdros.org),
     [Web2py](http://web2py.com),
@@ -80,7 +80,7 @@ the long-term support of SHEBANQ.
 
 *   **Testing**
 
-    Whenever parts of the SHEBANQ codebase are changed,
+    Whenever parts of the SHEBANQ code base are changed,
     it is immensely helpful to run a battery of tests
     as an indication that nothing has been broken by the
     changes.

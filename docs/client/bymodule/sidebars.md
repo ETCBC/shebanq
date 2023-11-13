@@ -3,9 +3,9 @@
 ## sidebars
 
 * [sidebars](#module_sidebars)
-    * _static_
+    * `static`
         * [.Sidebars](#module_sidebars.Sidebars)
-    * _inner_
+    * `inner`
         * [~Sidebar](#module_sidebars..Sidebar)
 
 <a name="module_sidebars.Sidebars"></a>
@@ -25,6 +25,6 @@ to the [{sidebar}][sidebarssidebar] object.
 ### sidebars~Sidebar
 Handles specific sidebars.
 
-The *mr* and *qw* types are frozen into the object
+The `mr` and `qw` types are frozen into the object
 
 **Kind**: inner class of [<code>sidebars</code>](#module_sidebars)  

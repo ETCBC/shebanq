@@ -44,10 +44,10 @@ Under the hood there is just a single page.
 All blocks are always present on a text page, but not all are visible.
 Two parameters regulate which one are visible
 
-*   *mr* = `m` or `r` (**material** or **record**)
-*   *qw* = `w` or `q` or `n` (**word**, **query** or **note set**)
+*   `mr` = `m` or `r` (**material** or **record**)
+*   `qw` = `w` or `q` or `n` (**word**, **query** or **note set**)
 
-Changes in *mr* and *qw* trigger the showing and hiding of the appropriate
+Changes in `mr` and `qw` trigger the showing and hiding of the appropriate
 blocks.
 Moreover, if needed, fresh content for these blocks is fetched
 from the server by means of AJAX calls and inserted into them.
@@ -59,7 +59,7 @@ The controls for content selection and view settings belong to the skeleton.
 
 code type | associated names
 --- | ---
-JS |  `materialsettings.MaterialSettings`, `sideSettings.sideSettings.js`
+`JS` |  `materialsettings.MaterialSettings`, `sideSettings.sideSettings.js`
 view | text.html
 controller | `hebrew.text()`
 
@@ -67,7 +67,7 @@ controller | `hebrew.text()`
 ## Skeleton
 
 All text pages have a left side bar and a main area.
-Both areas have a header which contains verious controls
+Both areas have a header which contains various controls
 that influence the selection and presentation of the content.
 
 Here is a schematic overview.
@@ -94,7 +94,7 @@ Here is a schematic overview.
 ======================    |rq: verse content                            verse |
 |rw: record control  |    |rq: verse content                            verse |
 |rw: word info       |    =====================================================
-|rw:                 |    |rn: material controls   noteset page               |
+|rw:                 |    |rn: material controls   note set page              |
 ======================    |rn: verse content                            verse |
 |rq: record control  |    |rn: verse content                            verse |
 |rq: query info      |    |rn: verse content                            verse |
@@ -115,10 +115,10 @@ qualifier | page type
 `m:` | all material *text* pages
 `m:w` | all material *text* pages if word sidebar is on
 `m:q` | all material *text* pages if query sidebar is on
-`m:n` | all material *text* pages if noteset sidebar is on
+`m:n` | all material *text* pages if note set sidebar is on
 `rw:` | all record *text* pages of type word
 `rq:` | all record *text* pages of type query
-`rn:` | all record *text* pages of type noteset
+`rn:` | all record *text* pages of type note set
 
 Below we give the elements on these pages.
 However, for the sidebars we show only the generic controls, not the elements

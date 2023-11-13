@@ -1,13 +1,13 @@
 # Admin
 
-Web2py offers a handy [administrative webapp]({{web2pyAdmin}}), by which you can inspect
+Web2py offers a handy [administrative web app]({{web2pyAdmin}}), by which you can inspect
 the database and errors of SHEBANQ in the browser.
-The web2py docs are a bit much on this topic, so here we list
+The Web2py docs are a bit much on this topic, so here we list
 the really handy things you can do with it.
 
 ## How to get there?
 
-You reach the admin app by the url which consists of the url of shebanq with
+You reach the admin app by the URL which consists of the URL of shebanq with
 `/admin` appended to it. Admin is protected by a password, which you must set
 as part of the installation or [update procedure](server.md#the-scripts).
 
@@ -17,7 +17,7 @@ If a user reports an "Internal error. A ticket has been issued", then you can
 view these tickets easily in the admin app.
 
 Once you're in the app, navigate to **errors**, or go there directly by putting
-`/admin/errors/shebanq` after the main url of your shebanq.
+`/admin/errors/shebanq` after the main URL of your shebanq.
 
 You see something like this
 
@@ -32,8 +32,8 @@ You can also delete errors if you have dealt with them.
 You can watch what is happening in the database. 
 There are tables for users, events, sessions, etc, and you can wade through them.
 
-It is a bit difficult to find, but click on **appadmin** if you encounter it.
-The url suffix is `/appadmin`.
+It is a bit difficult to find, but click on *`appadmin`* if you encounter it.
+The URL suffix is `/appadmin`.
 
 You see something like this
 

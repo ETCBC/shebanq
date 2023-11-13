@@ -32,7 +32,7 @@ def index():
 
 
 def user():
-    """Unchanged from web2py.
+    """Unchanged from Web2py.
 
     ```
     exposes:
@@ -56,7 +56,7 @@ def user():
 
 @cache.action()
 def download():
-    """Unchanged from web2py.
+    """Unchanged from Web2py.
 
     ```
     allows downloading of uploaded files
@@ -67,7 +67,7 @@ def download():
 
 
 def call():
-    """Unchanged from web2py.
+    """Unchanged from Web2py.
 
     ```
     exposes services. for example:
@@ -81,7 +81,7 @@ def call():
 
 @auth.requires_signature()
 def data():
-    """Unchanged from web2py.
+    """Unchanged from Web2py.
 
     ```
     http://..../[app]/default/data/tables

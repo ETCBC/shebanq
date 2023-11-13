@@ -19,7 +19,7 @@ class CHECK:
     !!! caution "other location"
         This module is not in the `modules` directory but in the `models` directory.
         In the module an instance of this class is created and added to
-        [current]({{web2py}}) (a web2py concept),
+        [current]({{web2py}}) (a Web2py concept),
         which means that the object is available for each request.
     """
     def __init__(self):

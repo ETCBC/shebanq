@@ -3,22 +3,22 @@
 We use caching to store material that is either frequently used or
 expensive to compute.
 
-We use [web2py caching]({{web2pyCache}}).
+We use [Web2py caching]({{web2pyCache}}).
 We do not deliberately manage browser caching.
-We use the lower-level mechanisms of web2py: `cache.ram`,
+We use the lower-level mechanisms of Web2py: `cache.ram`,
 and refrain from decorating controllers with `@cache` or `@cache.action`,
 because we have to be selective on which request vars are important
 for keying the cached items.
 
 All caching is triggered via the [Model: CACHING][models.caching.CACHING] object.
-We cahce in RAM only, but there is a switch by which we could also cache on disk,
+We cache in RAM only, but there is a switch by which we could also cache on disk,
 if we want to keep the cache between restarts of the server.
 
 Here is a list of what we cache:
 
 *   the numbers of chapters in each book
     [M: BOOKS.get][books.BOOKS.get]
-*   heatmaps (charts)
+*   heat maps (charts)
     [M: CHART.get][chart.CHART.get] and [M: CHART.getBlocks][chart.CHART.getBlocks]
 *   chapter records
     [M: MATERIAL.getPassage][materials.MATERIAL.getPassage]
@@ -49,14 +49,14 @@ We do not cache rendered views, because the views implement tweaks
 that are dependent on the browser.
 
 Note that what the user sees, is the effect of the javascript 
-on the html produced by rendered view.
+on the HTML produced by rendered view.
 So the cached data only has to be indexed by those request vars that select content:
-mr, qw, book, chapter, item id (iid) and (result) page.
+`mr`, `qw`, book, chapter, item `id` (`iid`) and (result) page.
 
 I think this strikes a nice balance:
-*   these chunks of html are equal for all users that visit such a page,
+*   these chunks of HTML are equal for all users that visit such a page,
     regardless of their view settings
-*   these chunks of html are relatively small, only the material of one page.
+*   these chunks of HTML are relatively small, only the material of one page.
 
 It is tempting to cache the SQL queries, but they fetch large amounts of data,
 of which only a tiny portion shows up. So it uses a lot of space.
@@ -65,7 +65,7 @@ that (s)he will visit all of them, so it is not worthwhile
 to keep the results of the one big query in cache all the time.
 On the other hand, many users look at the first page of query results,
 and by caching individual pages, the number of times
-that the big query is exececuted is reduced significantly.
+that the big query is executed is reduced significantly.
 
 There is one exception: looking up the queries that have results in a given
 chapter is quite expensive.

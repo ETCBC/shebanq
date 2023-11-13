@@ -16,7 +16,7 @@ class VIEWSETTINGS:
     They are stored in local storage in the browser,
     to when a page is loaded, these stored settings will be merged with
     the incoming request variables, and the outcome of that will again
-    be stored in LocalStorage.
+    be stored in `LocalStorage`.
     """
 
     def __init__(self, Books):

@@ -15,7 +15,7 @@ on your computer.
     Although everything that SHEBANQ depends on also runs on Windows,
     I have never taken the trouble to put the whole process
     together in a guide, hindered as I am by not having a 
-    Windos computer.
+    Windows computer.
     Especially the step of compiling Emdros might be a serious
     thing to get going.
 
@@ -41,7 +41,7 @@ After that we point you to a script that completes the installation.
 
 You have a modern Mac, running Catalina or higher.
 
-### Commandline tools
+### Command line tools
 
 The key asset is the command-line, and on macos that is offered by the
 `Terminal` app.
@@ -52,7 +52,7 @@ However, you will be doing deep system things, such as compiling software.
 For that, you need to boost your command-line by
 [tools]({{appleCmd}}) provided by Apple.
 
-It is easy but not obvious how to get those commandline tools on your computer.
+It is easy but not obvious how to get those command line tools on your computer.
 Here is a [guide]({{apleCmdInstall}}).
 Even here several options are given. From all those options, choose the following:
 
@@ -64,14 +64,14 @@ Give the following command:
 `git`
 
 This is an advance command, and it will trigger a prompt offering you
-to download and istall the commandline tools. Do it!
+to download and install the command line tools. Do it!
 It may take 5-10 minutes.
 
 After this, you have commands to interact with GitHub, to compile software, etc.
 
 ### Homebrew
 
-We need a package manager for macos, in order to install a mysql client later on.
+We need a package manager for macos, in order to install a MYSQL client later on.
 Install [Homebrew]({{homebrew}}) by following the instructions on its home page and
 then do
 
@@ -181,10 +181,10 @@ from there, a lengthy process.
 Our web framework is [web2py]({{web2py}}), a Python based system
 to build web applications.
 We install it from GitHub, and after that we plug SHEBANQ into it.
-Web2py comes with its own local webserver, so we do not have to set up 
-complicated webservers such as Apache.
+Web2py comes with its own local web server, so we do not have to set up 
+complicated web servers such as Apache.
 
-Instead, we can rely on the built-in webserver that comes with 
+Instead, we can rely on the built-in web server that comes with 
 [Web2py]({{web2py}}).
 
 ## Run install script
@@ -213,7 +213,7 @@ in your home folder, under `Applications/SHEBANQ`.
 
 !!! hint "shortcut"
     You can drag this file into the side bar of the Finder.
-    That way you have an easy shortcut to the shebanq webapp.
+    That way you have an easy shortcut to the shebanq web app.
 
 ## Debugging
 
