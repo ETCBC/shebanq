@@ -1,5 +1,9 @@
 # News
 
+2023-07-?? Upcoming
+
+*   Deployment via a docker container on KNAW/HuC infrastructure (CLARIAH)
+
 2022-05-09 Small fix
 
 *   In the query tree, it was not possible to view and edit details of projects 

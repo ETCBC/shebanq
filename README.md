@@ -50,12 +50,13 @@ And there are the [techdocs](https://etcbc.github.io/shebanq/) of course.
 
 ## Deployment
 
-As of summer 2023, SHEBANQ migrates from DANS to KNAW/HuC.
+As of 2023-12-21, SHEBANQ has moved from DANS to KNAW/HuC.
 The development of SHEBANQ moves from this repo to
-[CLARIAH/shebanqx](https://github.com/CLARIAH/shebanqx).
+[tt/shebanq](https://gitlab.huc.knaw.nl/tt/shebanq).
 
 **There you'll find ways to fire up your own shebanq on docker!**
 
+This repo is now archived and readonly.
 
 ## History
 

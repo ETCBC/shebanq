@@ -63,6 +63,10 @@ latestDstDir="$backupDir/latest"
 if [[ -e "$latestDstDir" ]]; then
     rm -rf "$latestDstDir"
 fi
+if [[ -L "$latestDstDir" ]]; then
+    rm "$latestDstDir"
+fi
+
 
 scp -r "$SERVER_USER@$SERVER:$latestSrcDir" "$backupDir/"
 cd "$latestDstDir"
